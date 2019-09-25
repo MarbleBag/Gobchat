@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8EBC386E-05F8-4047-AD82-AB7CC7C05852}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Gobchat</RootNamespace>
+    <AssemblyName>Gobchat</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Advanced Combat Tracker">
+      <HintPath>ThirdParty\ACT\Advanced Combat Tracker.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FFXIV_ACT_Plugin">
+      <HintPath>ThirdParty\ACT\FFXIV_ACT_Plugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HtmlRenderer">
+      <HintPath>ThirdParty\OverlayPlugin\HtmlRenderer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\OverlayPlugin\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OverlayPlugin">
+      <HintPath>ThirdParty\OverlayPlugin\OverlayPlugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OverlayPlugin.Common">
+      <HintPath>ThirdParty\OverlayPlugin\OverlayPlugin.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OverlayPlugin.Core">
+      <HintPath>ThirdParty\OverlayPlugin\OverlayPlugin.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Xilium.CefGlue">
+      <HintPath>ThirdParty\OverlayPlugin\Xilium.CefGlue.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACTParser\ACTLogLine.cs" />
+    <Compile Include="ACTParser\ACTLogLineCode.cs" />
+    <Compile Include="ACTParser\ACTLogLineDelegator.cs" />
+    <Compile Include="ACTParser\ACTLogLineHandler.cs" />
+    <Compile Include="ACTParser\ACTLogLineManager.cs" />
+    <Compile Include="ACTParser\ACTLogLineUtil.cs" />
+    <Compile Include="ACTParser\ACTLogParser.cs" />
+    <Compile Include="ACTParser\ACTParseException.cs" />
+    <Compile Include="ACTParser\Chat\ChatChannelEnum.cs" />
+    <Compile Include="ACTParser\Chat\ChatLogLineParser.cs" />
+    <Compile Include="ACTParser\Chat\ChatMessage.cs" />
+    <Compile Include="ACTParser\EnumHelper.cs" />
+    <Compile Include="JavascriptEvents.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="GobchatPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GobchatOverlayControlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GobchatOverlayControlPanel.Designer.cs">
+      <DependentUpon>GobchatOverlayControlPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VersionFetcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GobchatOverlayControlPanel.resx">
+      <DependentUpon>GobchatOverlayControlPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

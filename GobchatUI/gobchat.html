@@ -1,0 +1,63 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="defaults.css">
+  
+  <script src="lib/jquery-3.4.1.min.js"></script>
+  <script src="lib/lodash.min.js"></script>
+ 
+  <script src="common.js"></script>
+  
+  <link rel="stylesheet" href="resize_handle.css">
+  <script src="resize_handle.js"></script>
+  
+  <link rel="stylesheet" href="chat.css">
+  <script src="chat.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="raidboss.css">
+</head>
+<body>
+	<!-- 
+		TODO:
+		- transparency needs to be done via background-image, this version of Xilium does not support rgba 
+		- transparency can be done by using rgba(r,g,b,a) in CSS
+		- (stylisch) Scrollbar which stays at its current position, except if its all the way down, where it will follow the chat
+		- (saveable) Settings
+		- (highligthed) Mentions
+		- Maybe let parsing be done im c# plugin for performance?
+		- Store some MB of chat history im plugin for retrieval on reload
+		- clear command
+		- ooc comments should not trigger segment limiter: Example: "Das Haus ((oben links auf der Karte)) ist rot!" sollte nicht werden "Das Haus"((oben links auf der Karte))"ist rot!"
+	-->
+
+	<div id="container">
+
+		<div id="chatbox" class="chatbox">
+			<!--<div id="toolbar">
+				<button>Test</button>
+			</div>-->
+			<div id="chatcontent" class="chatbox-content">
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	'use strict'
+		  
+	jQuery(function($) { //runs if document is ready
+		// SendMessageToPlugin({event:"DocumentReady"})
+	});
+	
+	const gChatbox = new ChatManager("chatcontent")
+	jQuery(function ($) {
+		gChatbox.init()
+
+		//document.addEventListener("ChatMessageEvent", (e) => { gChatbox.onChatMessageEvent(e) })
+		//document.addEventListener("PlayerNameEvent",(e) => { gChatbox.onPlayerNameEvent(e) })
+	});
+	
+	//document.addEventListener("ChatMessageEvent", parseChatMessageOnEvent)
+</script>
+</html>
