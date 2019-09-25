@@ -295,25 +295,52 @@ class ChatManager {
     }
 	
 	findMentionMatches(mentions,message){		
-		function isBoundary(index){
-			if(index < 0 || message.length <= index) return true			
+		/*function isBoundary(index){
+			if(index < 0 || message.length <= index) return true //start & end		
 			const c = message.charAt(index)
-			return c === ' ' || c === '-' || c === "'" || c === '.' || c === ',' || c === '_'
+			switch(c){
+				case ' ':
+				case "'":
+				case '"':
+				case '*':
+				case '.':
+				case ',':
+				case '?':
+				case '!':
+				case ':':
+				case '-':
+				case '_':
+				case '+':
+					return true;
+				default:
+					return false;
+			}
+		}*/
+		
+		function isBoundary(index){ 
+			if(index < 0 || message.length <= index) return true //start & end		
+			const c = message.charAt(index)
+			const isLetter = c.toLowerCase() != c.toUpperCase() //works for a lot of character, but probably not for letters who don't have a diffrent lower and upper case :(
+			return !isLetter //as long it's not a letter, it's okay!
+		}
+		
+		function searchByIndexOf(result){
+			let startIndex,endIndex, index
+			for(let mention of mentions){
+				const length = mention.length
+				startIndex = 0
+				while((index = message.indexOf(mention,startIndex)) > -1){
+					endIndex = index+length
+					if(isBoundary2(index-1) && isBoundary2(endIndex)){
+						result.push([index,endIndex])
+					}
+					startIndex = endIndex
+				}			
+			}
 		}
 	
 		const result = []
-		let startIndex,endIndex, index
-		for(let mention of mentions){
-			const length = mention.length
-			startIndex = 0
-			while((index = message.indexOf(mention,startIndex)) > -1){
-				endIndex = index+length
-				if(isBoundary(index-1) && isBoundary(endIndex)){
-					result.push([index,endIndex])
-				}
-				startIndex = endIndex
-			}			
-		}
+		searchByIndexOf(result)
 		result.sort((a,b)=>{return a[0]-b[0]})
 		
 		const merged = []

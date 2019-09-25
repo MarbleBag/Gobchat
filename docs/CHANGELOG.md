@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Fixed
+- Mentions should work better, even while enclosed by non-alphanumeric letters
+
 ## [0.1.0] - 2019.09.25
 ### Added
 - A fixed roleplay format which will be applied to roleplay channels
