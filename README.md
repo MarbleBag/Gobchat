@@ -48,4 +48,4 @@ The end result should look something like that:
 9. Enter a name of your choice. Select `Gobchat`under type and click ok
 10. Click the button at the URL field and browse to your GobchatUI folder, select the `gobchat.html`
 11. It should start up!
-12. Check `Activate Plugin` and it should start to show any relevant content that's coming up
+12. Check `Activate parsing` and it should start to show any relevant content that's coming up
