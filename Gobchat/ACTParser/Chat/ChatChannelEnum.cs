@@ -39,5 +39,15 @@
         LINKSHELL_6 = 0x0015,
         LINKSHELL_7 = 0x0016,
         LINKSHELL_8 = 0x0017,        
+
+        BATTLE_LOG = 0xCACE //merge all battlelog stuff into this one
+    }
+
+    public enum ChatBattleLogEnum
+    {
+        BATTLE_BEGIN_SPELL = 2731,
+        BATTLE_FINISH_SPELL = 2091,
+        BATTLE_GAIN_EFFECT = 2222,
+        BATTLE_LOSE_EFFECT = 2224,
     }
 }

@@ -6,7 +6,7 @@ const FFXIV_SERVER = [
 		centers: [
 			{
 				label: "Aether",
-				server: [
+				servers: [
 					"Adamantoise",
 					"Cactuar",
 					"Faerie",
@@ -19,7 +19,7 @@ const FFXIV_SERVER = [
 			},
 			{
 				label: "Primal",
-				server: [
+				servers: [
 					"Behemoth",
 					"Excalibur",
 					"Exodus",
@@ -32,7 +32,7 @@ const FFXIV_SERVER = [
 			},
 			{
 				label: "Crystal",
-				server: [
+				servers: [
 					"Balmung",
 					"Brynhildr",
 					"Coeurl",
@@ -50,7 +50,7 @@ const FFXIV_SERVER = [
 		centers: [
 			{
 				label: "Chaos",
-				server: [
+				servers: [
 					"Cerberus",
 					"Louisoix",
 					"Moogle",
@@ -61,7 +61,7 @@ const FFXIV_SERVER = [
 			},
 			{
 				label: "Light",
-				server: [
+				servers: [
 					"Shiva",
 					"Twintania",
 					"Phoenix",
@@ -77,7 +77,7 @@ const FFXIV_SERVER = [
 		centers: [
 			{
 				label: "Elemental",
-				server: [
+				servers: [
 					"Aegis",
 					"Atomos",
 					"Carbuncle",
@@ -92,7 +92,7 @@ const FFXIV_SERVER = [
 			},
 			{
 				label: "Gaia",
-				server: [
+				servers: [
 					"Alexander",
 					"Bahamut",
 					"Durandal",
@@ -108,7 +108,7 @@ const FFXIV_SERVER = [
 			},
 			{
 				label: "Mana",
-				server: [
+				servers: [
 					"Anima",
 					"Asura",
 					"Belias",

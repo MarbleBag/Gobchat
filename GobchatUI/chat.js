@@ -36,37 +36,66 @@ const CHAT_TYPE_LINKSHELL_6 = 0x0015
 const CHAT_TYPE_LINKSHELL_7 = 0x0016
 const CHAT_TYPE_LINKSHELL_8 = 0x0017
 
+
+
 const CHAT_SEGMENT_TYPE_NONE 	= 0
 const CHAT_SEGMENT_TYPE_SAY 	= 1
 const CHAT_SEGMENT_TYPE_EMOTE 	= 2
 const CHAT_SEGMENT_TYPE_OOC 	= 3
 const CHAT_SEGMENT_TYPE_MENTION	= 4
 
-const ChatBoxConfig = {
+const Channel = { //List of relevant channels, makes it easier to deal with FFXIV's amount of channel ids
+	PlayerChannel: [ //channels in which a player can write (and npcs)
+		CHAT_TYPE_SAY, CHAT_TYPE_EMOTE, CHAT_TYPE_YELL, CHAT_TYPE_SHOUT, CHAT_TYPE_TELL_SEND, CHAT_TYPE_TELL_RECIEVE, CHAT_TYPE_PARTY, CHAT_TYPE_GUILD, CHAT_TYPE_ALLIANCE,
+		CHAT_TYPE_NPC_TALK, CHAT_TYPE_ANIMATED_EMOTE,
+		CHAT_TYPE_WORLD_LINKSHELL_1, CHAT_TYPE_WORLD_LINKSHELL_2, CHAT_TYPE_WORLD_LINKSHELL_3, CHAT_TYPE_WORLD_LINKSHELL_4, CHAT_TYPE_WORLD_LINKSHELL_5, CHAT_TYPE_WORLD_LINKSHELL_6, CHAT_TYPE_WORLD_LINKSHELL_7, CHAT_TYPE_WORLD_LINKSHELL_8,
+		CHAT_TYPE_LINKSHELL_1, CHAT_TYPE_LINKSHELL_2, CHAT_TYPE_LINKSHELL_3, CHAT_TYPE_LINKSHELL_4, CHAT_TYPE_LINKSHELL_5, CHAT_TYPE_LINKSHELL_6, CHAT_TYPE_LINKSHELL_7, CHAT_TYPE_LINKSHELL_8
+	],
+	InfoChannel: [
+		CHAT_TYPE_ECHO, CHAT_TYPE_LOCATION, CHAT_TYPE_TELEPORT
+	]
+}
 
+class Point3F {
+	constructor(x,y,z){
+		this.x = x	//float
+		this.y = y	//float
+		this.z = z	//float
+	}
+	
+	distanceSimple(point){
+		return Math.pow(this.x-point.x, 2) + Math.pow(this.y-point.y, 2) + Math.pow(this.z-point.z, 2)
+	}
 }
 
 class MessageSegment {
     constructor(type, message) {
-        this.type = type
-        this.message = message
+        this.type = type		//int
+        this.message = message  //string
     }
 }
 
 class MessageObjectSource{
 	constructor(name,server){
-		this.name = name
-		this.server = server
+		this.name = name		//string
+		this.server = server	//string
 	}
 }
 
 class MessageObject {
     constructor(timestamp, source, channel, segments) {
-        this.timestamp = timestamp
-        this.source = source
-        this.channel = channel
-        this.segments = segments
+        this.timestamp = timestamp 	//string
+        this.source = source 		//MessageObjectSource
+        this.channel = channel 		//int
+        this.segments = segments 	//MessageSegment[]
     }
+}
+
+class PlayerObject {
+	constructor(playerId){
+		this.playerId = playerId 	//string
+		this.position = null 		//point
+	}
 }
 
 class ChatManager {
@@ -76,6 +105,11 @@ class ChatManager {
 
         this.mentions = []
 		this.playerNameMentions = []
+		
+		this.playerName = "Lyren Collier" //TODO test
+		this.playerStore = new Map()
+		
+		this.datacenter = null
 		
         this.channels = {
             roleplay: [
@@ -102,9 +136,14 @@ class ChatManager {
 		document.addEventListener("ChatMessageEvent", (e) => { this.onChatMessageEvent(e) })
 		//document.addEventListener("PlayerNameEvent",(e) => { this.onPlayerNameEvent(e) })
 		document.addEventListener("MentionsEvent", (e) => { this.onMentionEvent(e) })
+		document.addEventListener("PlayerPositionEvent", (e) => { this.onPlayerPositionUpdate(e) })
 		
 		sendMessageToPlugin({event:"RequestMentions"})		
     }
+	
+	isShowableChannel(nChannel){		
+		return _.indexOf(Channel.PlayerChannel,nChannel) != -1 || _.indexOf(Channel.InfoChannel,nChannel) != -1
+	}
 	
 	isMentionChannel(nChannel){
 		return _.indexOf(this.channels.mention,nChannel) != -1
@@ -115,12 +154,15 @@ class ChatManager {
     }
 
     isIgnoredChannel(nChannel) {
-		//let val = _.indexOf(this.channels.ignore,nChannel)
-		//console.log("Ignore channel [" + nChannel + "]: " + val)
 		return _.indexOf(this.channels.ignore,nChannel) != -1
     }
+	
+	isRangedChannel(nChannel){
+		//for now
+		return nChannel === CHAT_TYPE_SAY || nChannel === CHAT_TYPE_EMOTE
+	}
 
-    addChatLine(messageObj) {
+    addChatLine(msgObj) {
         function getMessageBlockCssClass(msgObj) {
             switch (msgObj.channel) {
                 case CHAT_TYPE_SAY:             return "message-body-say"
@@ -192,16 +234,40 @@ class ChatManager {
         messageLine.classList.add("message-body-default")
 
         const timeSpan = document.createElement("span")
-        timeSpan.innerHTML = "[" + messageObj.timestamp + "] "
+        timeSpan.innerHTML = "[" + msgObj.timestamp + "] "
         messageLine.appendChild(timeSpan)
 
         const blockSpan = document.createElement("span")
-        const blockClass = getMessageBlockCssClass(messageObj)
+        const blockClass = getMessageBlockCssClass(msgObj)
         if (blockClass) blockSpan.classList.add(blockClass)
         messageLine.appendChild(blockSpan)
 
-        buildSender(blockSpan,messageObj)
-        buildMessage(blockSpan,messageObj)
+        buildSender(blockSpan,msgObj)
+        buildMessage(blockSpan,msgObj)
+		
+		//range filter //position updates are not reliable yet, so this feature needs to wait until that problem can be solved
+		/*
+		if(this.isRangedChannel(msgObj.channel)){
+			const player = this.getPlayerSelfData()
+			const sender = this.getPlayerData(msgObj.source.name)
+			console.log("Check distance to [" + msgObj.source.name + "] : ")
+			if(player.position && sender.position){
+				const distance = player.position.distanceSimple(sender.position)
+				console.log("Distance to [" + msgObj.source.name + "] is " + distance)
+				if( distance < 30 ){
+						//kay
+				}if( distance < 60 ){
+					blockSpan.classList.add("message-body-fade-80")	
+				}else if( distance < 90 ){
+					blockSpan.classList.add("message-body-fade-60")	
+				}else if( distance < 120 ){
+					blockSpan.classList.add("message-body-fade-40")	
+				}else{
+					blockSpan.classList.add("message-body-fade-20")					
+				}
+			}
+		}
+		*/
 
 		$(this.sChatId).append(messageLine)
         this.scrollToBottomIfNeeded()
@@ -231,10 +297,35 @@ class ChatManager {
 		//TODO for now
 		this.playerNameMentions = Array.from(result)
 	}
+	
+	getPlayerData(playerId){
+		if(playerId === undefined) return new PlayerObject(undefined) //TODO
+			
+		const playerStore = this.playerStore
+		if(playerStore.has(playerId)){
+			return playerStore.get(playerId)
+		}else{
+			const data = new PlayerObject(playerId)
+			playerStore.set(playerId, data)
+			return data
+		}
+	}
+	
+	getPlayerSelfData(){
+		return this.getPlayerData(this.playerName)
+	}
+	
+	onPlayerPositionUpdate(positionUpdateEvent){ // { playerId, x, y, z}
+		const detail = positionUpdateEvent.detail
+		this.getPlayerData(detail.playerId).position = new Point3F(detail.x,detail.y,detail.z)
+	}
 
     onChatMessageEvent(messageEvent) {
         if (this.isIgnoredChannel(messageEvent.detail.type))
             return
+		
+		if (!this.isShowableChannel(messageEvent.detail.type))
+			return
 
         const messageObject = this.buildMessageObject(messageEvent.detail)
 
@@ -260,7 +351,51 @@ class ChatManager {
     }
 	
 	buildMessageObjectSource(messageEvent){
-		return new MessageObjectSource(messageEvent.source,null) //TODO find server, this is only valid for player messages
+		if( false && messageEvent.source != null ){
+			const names = messageEvent.source.split(' ')
+			if(names.length === 2){
+				function getServerName(str){
+					for(let i = str.length-1;1<=i;--i){
+						const c = str.charAt(i)
+						if(c === c.toUpperCase()){
+							return str.substring(i,str.length)
+						}
+					}
+					return null
+				}
+				
+				function getDataCenter(serverName){
+					for(let region of FFXIV_SERVER){
+						for(let center of region.centers){
+							for(let server of center.servers){
+								if( server === serverName ){
+									return center	
+								}
+							}
+						}
+					}
+					return null
+				}
+				
+				const lastName = names[1]
+				const serverName = getServerName(lastName)
+				
+				if( serverName !== null){
+					if( this.datacenter === null ){
+						this.datacenter = getDataCenter(serverName)					
+					}	
+					
+					if( this.datacenter !== null){
+						if( _.indexOf(this.datacenter.servers,serverName) != -1 ){
+							const playerName = messageEvent.source.substring(0,messageEvent.source.length - serverName.length)
+							return new MessageObjectSource(playerName,serverName)
+						}
+					}
+				}
+			}
+		}
+		
+		return new MessageObjectSource(messageEvent.source,null)
 	}
 	
     parseMentions(msgObj) {

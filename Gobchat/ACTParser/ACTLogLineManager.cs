@@ -39,7 +39,7 @@ namespace Gobchat
 
             delegator = new ACTLogLineDelegator(logger, OnLogLineUnhandled);
             delegator.SetHandle(ACTLogLineCode.GameLogLine, new ChatLogLineParser(logger, OnGameLogLine));
-            //delegator.SetHandle(ACTLogLineCode.PositionUpdate, new PositionUpdateParser(logger,OnPositionUpdate));
+            delegator.SetHandle(ACTLogLineCode.PositionUpdate, new PlayerPositionParser(logger,OnPositionUpdate));
             //delegator.SetHandle(ACTLogLineCode.ChangePrimaryPlayer, new PrimaryPlayerParser(OnPrimaryPlayerUpdate));
 
             delegator.SetHandle(ACTLogLineCode.AddCombatant, new EmptyParser(null));
@@ -63,10 +63,11 @@ namespace Gobchat
             //eventDispatcher.DispatchEventToOverlay(new JavascriptEvents.PlayerNameEvent(msg));
         }
 
-        private void OnPositionUpdate(PositionUpdate positionUpdate)
+        private void OnPositionUpdate(PlayerPosition positionUpdate)
         {
             if (config.IsDebug)
                 logger.LogInfo($"PositionUpdate: {positionUpdate}");
+            eventDispatcher.DispatchEventToOverlay(new JavascriptEvents.PlayerPositionEvent(positionUpdate));
         }
 
         private void OnGameLogLine(ChatMessage message)

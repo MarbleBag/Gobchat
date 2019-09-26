@@ -33,6 +33,22 @@ namespace Gobchat
             }
         }
 
+        public class PlayerPositionEvent : JSEvent
+        {
+            public string playerId;
+            public float x;
+            public float y;
+            public float z;
+
+            public PlayerPositionEvent(PlayerPosition position) : base("PlayerPositionEvent")
+            {
+                this.playerId = position.Target;
+                this.x = position.X;
+                this.y = position.Y;
+                this.z = position.Z;
+            }
+        }
+
         public class PlayerNameEvent : JSEvent
         {
             public string playername;

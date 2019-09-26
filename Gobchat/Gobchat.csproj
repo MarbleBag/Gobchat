@@ -93,7 +93,7 @@
     <Compile Include="ACTParser\Chat\ChatLogLineParser.cs" />
     <Compile Include="ACTParser\Chat\ChatMessage.cs" />
     <Compile Include="ACTParser\EnumHelper.cs" />
-    <Compile Include="ACTParser\PositionUpdateParser.cs" />
+    <Compile Include="ACTParser\PlayerPositionParser.cs" />
     <Compile Include="ACTParser\PrimaryPlayerParser.cs" />
     <Compile Include="JavascriptBuilder.cs" />
     <Compile Include="JavascriptDispatcher.cs" />

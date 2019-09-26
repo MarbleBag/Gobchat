@@ -231,6 +231,7 @@ namespace Gobchat
         public event EventHandler<DebugeChangedEventArgs> DebugChanged;
         public event EventHandler<PluginActiveChangedEventArgs> PluginActiveChanged;
         public event EventHandler<MentionsChangedEventArgs> MentionsChanged;
+        
     }
 
     public class DebugeChangedEventArgs
@@ -249,6 +250,12 @@ namespace Gobchat
     {
         public string[] Mentions { get; }
         public MentionsChangedEventArgs(string[] mentions) { Mentions = mentions; }
+    }
+
+    public class HideServerChangedEventArgs
+    {
+        public bool IsHideServer { get; }
+        public HideServerChangedEventArgs(bool hideServer) { IsHideServer = hideServer; }
     }
 
     public class GobchatPlugin : IOverlayAddon
