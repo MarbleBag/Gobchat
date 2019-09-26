@@ -22,7 +22,7 @@ fflogs has [a good guide](https://www.fflogs.com/help/start/) to setting up ACT 
 
 ### Installing Gobchat
 
-1. Go to [latest release](https://github.com/marblegag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, except you want to build it yourself)
+1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, except you want to build it yourself)
 2. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click "Unblock", and then "OK" to close the menu. (zip file contains a dll)
 3. Unzip the zip file
 4. Copy the Gobchat.dll into your OverlayPlugin\addons folder (The OverlayPlugin will load all dll which are in this folder)
