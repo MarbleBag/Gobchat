@@ -39,6 +39,7 @@ namespace Gobchat
                 case ChatChannelEnum.SAY:
                 case ChatChannelEnum.EMOTE:
                 case ChatChannelEnum.YELL:
+                case ChatChannelEnum.SHOUT:
                 case ChatChannelEnum.PARTY:
                 case ChatChannelEnum.ALLIANCE:
                 case ChatChannelEnum.GUILD:

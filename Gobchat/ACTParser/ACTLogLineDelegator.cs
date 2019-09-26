@@ -38,11 +38,12 @@ namespace Gobchat
                     try
                     {
                         handle.Handle(index, record);
-                    }catch(ACTParseException e)
+                        return;
+                    }
+                    catch(ACTParseException e)
                     {
                         logger.LogWarning($"Exception in LogLine type {code}: {e}");
                     }
-                    return;
                 }
             }
 

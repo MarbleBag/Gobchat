@@ -3,9 +3,11 @@
     public enum ChatChannelEnum
     {
         UNKNOWN = 0x0000,
+        SERVER_MESSAGE = 0x0003,
         SAY = 0x000a,
         EMOTE = 0x001c,
         YELL = 0x001e,
+        SHOUT = 0x000b,
         PARTY = 0x000e,
         ALLIANCE = 0x000f,
         GUILD = 0x0018,

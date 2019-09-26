@@ -88,15 +88,19 @@
     <Compile Include="ACTParser\ACTLogLineHandler.cs" />
     <Compile Include="ACTParser\ACTLogLineManager.cs" />
     <Compile Include="ACTParser\ACTLogLineUtil.cs" />
-    <Compile Include="ACTParser\ACTLogParser.cs" />
     <Compile Include="ACTParser\ACTParseException.cs" />
     <Compile Include="ACTParser\Chat\ChatChannelEnum.cs" />
     <Compile Include="ACTParser\Chat\ChatLogLineParser.cs" />
     <Compile Include="ACTParser\Chat\ChatMessage.cs" />
     <Compile Include="ACTParser\EnumHelper.cs" />
+    <Compile Include="ACTParser\PositionUpdateParser.cs" />
+    <Compile Include="ACTParser\PrimaryPlayerParser.cs" />
+    <Compile Include="JavascriptBuilder.cs" />
+    <Compile Include="JavascriptDispatcher.cs" />
     <Compile Include="JavascriptEvents.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="GobchatPlugin.cs" />
+    <Compile Include="Point3F.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GobchatOverlayControlPanel.cs">
       <SubType>UserControl</SubType>
