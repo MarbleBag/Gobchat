@@ -37,7 +37,7 @@
 	height: 100%;
 	min-height:100%;
 	min-width:100%;
-	background-color: rgba(20, 20, 20, 0.9);
+	background-color: rgba(20, 20, 20, 0.95);
 	overflow: hidden;
 }
 
@@ -60,10 +60,12 @@
 
 .message-body-default{
 	color:#DEDEDE; 
+	font-family: "Times New Roman", Times, serif;
+	font-size: medium;
 }
 
 .message-body-say{
-	color:#FFF2EC;
+	color:#FFFFFF;
 }
 
 .message-body-emote{
@@ -74,16 +76,20 @@
 	color:#D1DE09;
 }
 
+.message-body-shout{
+	color:#D1DE09;
+}
+
 .message-body-guild{
 	color:#50DE09;
 }
 
 .message-body-party{
-	
+	color:#05f7ff;
 }
 
 .message-body-alliance{
-	
+	color:#ff5005;
 }
 
 .message-body-tells{
@@ -119,7 +125,7 @@
 }
 
 .message-segment-say{
-	color:#FFF2EC;
+	color:#FFFFFF;
 }
 
 .message-segment-emote{

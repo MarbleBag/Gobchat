@@ -3,6 +3,7 @@
 const CHAT_TYPE_SAY 			= 0x000a
 const CHAT_TYPE_EMOTE 			= 0x001c
 const CHAT_TYPE_YELL 			= 0x001e
+const CHAT_TYPE_SHOUT 			= 0x000b
 const CHAT_TYPE_TELL_SEND 		= 0x000c
 const CHAT_TYPE_TELL_RECIEVE 	= 0x000d
 const CHAT_TYPE_PARTY 			= 0x000e
@@ -41,10 +42,22 @@ const CHAT_SEGMENT_TYPE_EMOTE 	= 2
 const CHAT_SEGMENT_TYPE_OOC 	= 3
 const CHAT_SEGMENT_TYPE_MENTION	= 4
 
-let CHAT_SCROLL_TO_BOTTOM = true
-
 const ChatBoxConfig = {
 
+}
+
+class MessageSegment {
+    constructor(type, message) {
+        this.type = type
+        this.message = message
+    }
+}
+
+class MessageObjectSource{
+	constructor(name,server){
+		this.name = name
+		this.server = server
+	}
 }
 
 class MessageObject {
@@ -53,13 +66,6 @@ class MessageObject {
         this.source = source
         this.channel = channel
         this.segments = segments
-    }
-}
-
-class MessageSegment {
-    constructor(type, message) {
-        this.type = type
-        this.message = message
     }
 }
 
@@ -73,13 +79,13 @@ class ChatManager {
 		
         this.channels = {
             roleplay: [
-                CHAT_TYPE_SAY, CHAT_TYPE_EMOTE, CHAT_TYPE_YELL, CHAT_TYPE_PARTY, CHAT_TYPE_GUILD, CHAT_TYPE_ALLIANCE
+                CHAT_TYPE_SAY, CHAT_TYPE_EMOTE, CHAT_TYPE_YELL, CHAT_TYPE_SHOUT, CHAT_TYPE_PARTY, CHAT_TYPE_GUILD, CHAT_TYPE_ALLIANCE
             ],
             ignore: [
                 CHAT_TYPE_PARTYFINDER, CHAT_TYPE_TELEPORT, CHAT_TYPE_LOCATION
             ],
 			mention: [
-				CHAT_TYPE_SAY, CHAT_TYPE_EMOTE, CHAT_TYPE_YELL, CHAT_TYPE_PARTY, CHAT_TYPE_GUILD, CHAT_TYPE_ALLIANCE,
+				CHAT_TYPE_SAY, CHAT_TYPE_EMOTE, CHAT_TYPE_YELL, CHAT_TYPE_SHOUT, CHAT_TYPE_PARTY, CHAT_TYPE_GUILD, CHAT_TYPE_ALLIANCE,
 				CHAT_TYPE_LINKSHELL_1, CHAT_TYPE_LINKSHELL_2, CHAT_TYPE_LINKSHELL_3, CHAT_TYPE_LINKSHELL_4, CHAT_TYPE_LINKSHELL_5, CHAT_TYPE_LINKSHELL_6, CHAT_TYPE_LINKSHELL_7, CHAT_TYPE_LINKSHELL_8,
 				CHAT_TYPE_WORLD_LINKSHELL_1, CHAT_TYPE_WORLD_LINKSHELL_2, CHAT_TYPE_WORLD_LINKSHELL_3, CHAT_TYPE_WORLD_LINKSHELL_4, CHAT_TYPE_WORLD_LINKSHELL_5, CHAT_TYPE_WORLD_LINKSHELL_6, CHAT_TYPE_WORLD_LINKSHELL_7, CHAT_TYPE_WORLD_LINKSHELL_8
 			]
@@ -123,6 +129,7 @@ class ChatManager {
                 case CHAT_TYPE_TELL_RECIEVE:    return "message-body-tellr"
                 case CHAT_TYPE_GUILD:           return "message-body-guild"
                 case CHAT_TYPE_YELL:            return "message-body-yell"
+				case CHAT_TYPE_SHOUT:     		return "message-body-shout"
                 case CHAT_TYPE_PARTY:           return "message-body-party"
                 case CHAT_TYPE_ALLIANCE:        return "message-body-alliance"
                 default:                        return null
@@ -134,15 +141,15 @@ class ChatManager {
             switch (msgObj.channel) {
                 case CHAT_TYPE_TELL_RECIEVE:
                     senderSpan = document.createElement("span")
-                    senderSpan.innerHTML = msgObj.source + " >> "
+                    senderSpan.innerHTML = msgObj.source.name + " >> "
                     break;
                 case CHAT_TYPE_TELL_SEND:
                     senderSpan = document.createElement("span")
-                    senderSpan.innerHTML = ">> " + msgObj.source + ": "
+                    senderSpan.innerHTML = ">> " + msgObj.source.name + ": "
                     break;
                 case CHAT_TYPE_EMOTE:
                     senderSpan = document.createElement("span")
-                    senderSpan.innerHTML = msgObj.source + " "
+                    senderSpan.innerHTML = msgObj.source.name + " "
                     break;
                 case CHAT_TYPE_ECHO:
                     senderSpan = document.createElement("span")
@@ -152,9 +159,9 @@ class ChatManager {
                     //source is set, but the animation message already contains the source name
                     break;
                 default:
-                    if (msgObj.source) {
+                    if (msgObj.source.name != null) {
                         senderSpan = document.createElement("span")
-                        senderSpan.innerHTML = msgObj.source + ": "
+                        senderSpan.innerHTML = msgObj.source.name + ": "
                     }
             }
 
@@ -242,15 +249,19 @@ class ChatManager {
         this.addChatLine(messageObject)
     }
 
-    buildMessageObject(messageEvent) {
+    buildMessageObject(messageEvent) {		
         const msgObj = new MessageObject(
             messageEvent.timestamp,
-            messageEvent.source,
+            this.buildMessageObjectSource(messageEvent),
             messageEvent.type,
             [new MessageSegment(CHAT_SEGMENT_TYPE_NONE, messageEvent.message)]
         )
         return msgObj
     }
+	
+	buildMessageObjectSource(messageEvent){
+		return new MessageObjectSource(messageEvent.source,null) //TODO find server, this is only valid for player messages
+	}
 	
     parseMentions(msgObj) {
 		const mentions = this.mentions
@@ -433,244 +444,4 @@ DOMElement.scrollHeight//height of the content of the element
 
 //jQuery(function($){})
 //same as $(document).ready(function(){}) with $ as local variable (protects for overwrite)
-
-function parseChatMessageOnEvent(messageEvent) {
-    const msgObj = processChatMessageEvent(messageEvent.detail)
-    let html = []
-
-    let messageLine = document.createElement("div")
-    messageLine.classList.add("message-body-default")
-
-    const timeSpan = document.createElement("span")
-    timeSpan.innerHTML = "[" + msgObj.timestamp + "] "
-    messageLine.appendChild(timeSpan)
-
-    const blockSpan = document.createElement("span")
-    const blockClass = getMessageBlockCssClass(msgObj)
-    if (blockClass) blockSpan.classList.add(blockClass)
-    messageLine.appendChild(blockSpan)
-
-    let senderSpan
-    switch (msgObj.type) {
-        case CHAT_TYPE_TELL_RECIEVE:
-            senderSpan = document.createElement("span")
-            senderSpan.innerHTML = msgObj.source + " >> "
-            break;
-        case CHAT_TYPE_TELL_SEND:
-            senderSpan = document.createElement("span")
-            senderSpan.innerHTML = ">> " + msgObj.source + ": "
-            break;
-        case CHAT_TYPE_EMOTE:
-            senderSpan = document.createElement("span")
-            senderSpan.innerHTML = msgObj.source + " "
-            break;
-        case CHAT_TYPE_ECHO:
-            senderSpan = document.createElement("span")
-            senderSpan.innerHTML = "Echo: "
-            break;
-        case CHAT_TYPE_ANIMATED_EMOTE:
-            //source is set, but the animation message already contains the source name
-            break;
-        default:
-            if (msgObj.source) {
-                senderSpan = document.createElement("span")
-                senderSpan.innerHTML = msgObj.source + ": "
-            }
-    }
-
-    if (senderSpan) blockSpan.appendChild(senderSpan)
-    buildMessageBody(blockSpan, msgObj)
-    document.getElementById("chatcontent").appendChild(messageLine)
-
-    if (CHAT_SCROLL_TO_BOTTOM) {
-        $("#chatcontent").animate({
-            scrollTop: $('#chatcontent')[0].scrollHeight - $('#chatcontent')[0].clientHeight
-        }, 500);
-    }
-}
-
-
-
-function buildMessageBody(blockSpan, msgObj) {
-    let whiteSpaceAvailable = true
-    let whitespaced = false
-    msgObj.message.forEach(function (segment) {
-        if (segment.type == 'original') return
-
-        whitespaced = whiteSpaceAvailable || /\s/.test(segment.msg.charAt(0)) //current segment		
-        whiteSpaceAvailable = /\s/.test(segment.msg.charAt(segment.msg.length - 1)) //for next segment
-
-        let segmentSpan = document.createElement("span")
-
-        //if(!whitespaced){
-        //let whitespaceSpan = document.createElement("span")
-        //whitespaceSpan.innerHTML = "&#160;"
-        //segmentSpan.appendChild(whitespaceSpan)
-        //console.log("Add whitespace!")
-        //}
-
-        segmentSpan.innerHTML = whitespaced ? "" : " "
-
-        switch (segment.type) {
-            case CHAT_SEGMENT_TYPE_SAY:
-                segmentSpan.classList.add("message-segment-say")
-                segmentSpan.innerHTML += '"' + segment.msg.trim() + '"'
-                whiteSpaceAvailable = false
-                break
-            case CHAT_SEGMENT_TYPE_EMOTE:
-                segmentSpan.classList.add("message-segment-emote")
-                segmentSpan.innerHTML += segment.msg
-                break
-            case CHAT_SEGMENT_TYPE_OOC:
-                segmentSpan.classList.add("message-segment-ooc")
-                segmentSpan.innerHTML += '(( ' + segment.msg.trim() + ' ))'
-                whiteSpaceAvailable = false
-                break
-            default:
-                segmentSpan.classList.add("message-segment-default")
-                segmentSpan.innerHTML += segment.msg
-        }
-
-        blockSpan.appendChild(segmentSpan)
-    })
-}
-
-function getMessageBlockCssClass(messageObj) {
-    if (messageObj.type == CHAT_TYPE_SAY) {
-        return "message-body-say"
-    } else if (messageObj.type == CHAT_TYPE_EMOTE) {
-        return "message-body-emote"
-    } else if (messageObj.type == CHAT_TYPE_TELL_SEND) {
-        return "message-body-tells"
-    } else if (messageObj.type == CHAT_TYPE_TELL_RECIEVE) {
-        return "message-body-tellr"
-    } else if (messageObj.type == CHAT_TYPE_GUILD) {
-        return "message-body-guild"
-    } else if (messageObj.type == CHAT_TYPE_YELL) {
-        return "message-body-yell"
-    } else if (messageObj.type == CHAT_TYPE_PARTY) {
-        return "message-body-party"
-    } else if (messageObj.type == CHAT_TYPE_ALLIANCE) {
-        return "message-body-alliance"
-    } else {
-        return null
-    }
-}
-
-function blabla(messageEvent) {
-    const messageObj = {
-        message: { format: CHAT_SEGMENT_TYPE_NONE, msg: messageEvent.message },
-        type: messageEvent.type,
-        timestamp: messageEvent.timestamp,
-        source: messageEvent.source
-    }
-    return messageObj
-}
-
-function processChatMessageEvent(messageEvent) {
-
-    function getDefaultSegmentType(msgType) {
-        switch (msgType) {
-            case CHAT_TYPE_SAY: return CHAT_SEGMENT_TYPE_SAY
-            case CHAT_TYPE_EMOTE: return CHAT_SEGMENT_TYPE_EMOTE
-            default: return CHAT_SEGMENT_TYPE_NONE
-        }
-    }
-
-    function buildSegment(type, start, end) {
-        return {
-            type: type,
-            msgMark: { start: start, end: end }
-        }
-    }
-
-    const message = messageEvent.message
-    const defaultSegmentType = getDefaultSegmentType(messageEvent.type)
-
-    let mark = 0
-    let expectedEncounter = null
-
-    let segment = buildSegment(defaultSegmentType, 0, 0)
-
-    let messageSegments = []
-    for (let i = 0; i < message.length; ++i) {
-        let c = message.charAt(i)
-        if (c == '"') {
-            segment.msgMark.end = i
-            messageSegments.push(segment)
-
-            mark = i + 1
-
-            if (expectedEncounter == null) {
-                expectedEncounter = '"'
-                segment = buildSegment(CHAT_SEGMENT_TYPE_SAY, mark, mark)
-            } else if (expectedEncounter != null) {
-                expectedEncounter = null
-                segment = buildSegment(defaultSegmentType, mark, mark)
-            }
-        } else if (c == '*') {
-            segment.msgMark.end = i
-            messageSegments.push(segment)
-
-            mark = i + 1
-
-            if (expectedEncounter == null) {
-                expectedEncounter = '"'
-                segment = buildSegment(CHAT_SEGMENT_TYPE_EMOTE, mark, mark)
-            } else if (expectedEncounter != null) {
-                expectedEncounter = null
-                segment = buildSegment(defaultSegmentType, mark, mark)
-            }
-        } else if (c == '(') {
-            if (!(i + 1 < message.length && message.charAt(i + 1) == '(')) {
-                continue // '((' is the only valid marker	
-            }
-            continue //not working
-
-            segment.msgMark.end = i
-            messageSegments.push(segment)
-
-            mark = i + 2
-
-            segment = buildSegment(CHAT_SEGMENT_TYPE_OOC, mark, mark)
-        } else if (c == ')') {
-            if (!(i + 1 < message.length && message.charAt(i + 1) == ')')) {
-                continue // '))' is the only valid marker	
-            }
-            continue //not working
-
-            segment.msgMark.end = i
-            messageSegments.push(segment)
-
-            mark = i + 2
-
-            expectedEncounter = null
-            segment = buildSegment(defaultSegmentType, mark, mark)
-        }
-    }
-
-    //remaining segment
-    segment.msgMark.end = message.length
-    messageSegments.push(segment)
-
-    messageSegments = messageSegments
-        .filter((segment) => { return segment.msgMark.start < segment.msgMark.end })
-        .map((segment) => {
-            segment.msg = message.substring(segment.msgMark.start, segment.msgMark.end)
-            delete segment.msgMark
-            return segment
-        })
-        .filter((segment) => { return segment.msg.trim().length > 0 })
-
-    messageSegments.push({ type: 'original', msg: message })
-
-    const messageObj = {
-        message: messageSegments,
-        type: messageEvent.type,
-        timestamp: messageEvent.timestamp,
-        source: messageEvent.source
-    }
-
-    return messageObj
-}
 
