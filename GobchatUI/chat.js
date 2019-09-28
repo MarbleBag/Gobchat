@@ -477,7 +477,7 @@ class ChatManager {
 				startIndex = 0
 				while((index = message.indexOf(mention,startIndex)) > -1){
 					endIndex = index+length
-					if(isBoundary2(index-1) && isBoundary2(endIndex)){
+					if(isBoundary(index-1) && isBoundary(endIndex)){
 						result.push([index,endIndex])
 					}
 					startIndex = endIndex
