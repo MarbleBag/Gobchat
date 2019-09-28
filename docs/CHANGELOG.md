@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ## [0.1.2] - Unreleased
 ### Fixed
 - Error on mentions, because of typo in javascript
+- Autoscroll
 
 ## [0.1.1] - 2019.09.27
 ### Fixed
