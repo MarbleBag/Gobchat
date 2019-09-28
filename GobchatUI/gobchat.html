@@ -14,6 +14,8 @@
   <script src="resize_handle.js"></script>
   
   <link rel="stylesheet" href="chat.css">
+  
+  <script src="chatconfig.js"></script>
   <script src="chat.js"></script>
   
   <link rel="stylesheet" type="text/css" href="raidboss.css">
@@ -36,12 +38,15 @@
 
 		<div id="chatbox" class="chatbox">
 			<!--<div id="toolbar">
-				<button>Test</button>
+				<button onclick="window.open('config.html','Settings','width=800,height=600')">
+					Settings
+				</button>
 			</div>-->
 			<div class="chatbox-scrollbar">
 				<div id="chatcontent" class="chatbox-content">
 				</div>
 			</div>
+
 		</div>
 	</div>
 </body>
@@ -49,13 +54,13 @@
 <script>
 	'use strict'
 		  
-	jQuery(function($) { //runs if document is ready
+	//jQuery(function($) { //runs if document is ready
 		// SendMessageToPlugin({event:"DocumentReady"})
-	});
+	//});
 	
-	const gChatbox = new ChatManager("chatcontent")
+	window.chatManager = new ChatManager("chatcontent")
 	jQuery(function ($) {
-		gChatbox.init()
+		window.chatManager.init()
 
 		//document.addEventListener("ChatMessageEvent", (e) => { gChatbox.onChatMessageEvent(e) })
 		//document.addEventListener("PlayerNameEvent",(e) => { gChatbox.onPlayerNameEvent(e) })
