@@ -2,23 +2,30 @@
 <head>
   <meta charset="utf-8" />
   <title></title>
+  
   <link rel="stylesheet" href="defaults.css">
+  <link rel="stylesheet" href="chat.css">
+  <style id="custome_style_id" type="text/css"></style>
   
   <script src="lib/jquery-3.4.1.min.js"></script>
   <script src="lib/lodash.min.js"></script>
  
-  <script src="datacenters.js"></script>
-  <script src="common.js"></script>
-  
   <link rel="stylesheet" href="resize_handle.css">
   <script src="resize_handle.js"></script>
+   
+  <script src="gobchat/Datacenters.js"></script>
+  <script src="gobchat/Channels.js"></script>
+  <script src="gobchat/Common.js"></script>
   
-  <link rel="stylesheet" href="chat.css">
+  <script src="gobchat/DataObjects.js"></script>
   
-  <script src="chatconfig.js"></script>
-  <script src="chat.js"></script>
+  <script src="gobchat/Config.js"></script>
+  <script src="gobchat/StyleBuilder.js"></script>
   
-  <link rel="stylesheet" type="text/css" href="raidboss.css">
+  <script src="gobchat/MessageParser.js"></script>
+  <script src="gobchat/MessageHtmlBuilder.js"></script>  
+  <script src="gobchat/GobchatManager.js"></script>
+    
 </head>
 <body>
 	<!-- 
@@ -30,19 +37,18 @@
 		- (highligthed) Mentions
 		- Maybe let parsing be done im c# plugin for performance?
 		- Store some MB of chat history im plugin for retrieval on reload
-		- clear command
-		- ooc comments should not trigger segment limiter: Example: "Das Haus ((oben links auf der Karte)) ist rot!" sollte nicht werden "Das Haus"((oben links auf der Karte))"ist rot!"
+		- clear command		
 	-->
 
 	<div id="container">
 
-		<div id="chatbox" class="chatbox">
+		<div id="chatbox" class="chatbox-base chatbox">
 			<!--<div id="toolbar">
 				<button onclick="window.open('config.html','Settings','width=800,height=600')">
 					Settings
 				</button>
 			</div>-->
-			<div class="chatbox-scrollbar">
+			<div>
 				<div id="chatcontent" class="chatbox-content">
 				</div>
 			</div>
@@ -54,18 +60,9 @@
 <script>
 	'use strict'
 		  
-	//jQuery(function($) { //runs if document is ready
-		// SendMessageToPlugin({event:"DocumentReady"})
-	//});
-	
-	window.chatManager = new ChatManager("chatcontent")
+	window.chatManager = new Gobchat.GobchatManager("chatcontent")
 	jQuery(function ($) {
 		window.chatManager.init()
-
-		//document.addEventListener("ChatMessageEvent", (e) => { gChatbox.onChatMessageEvent(e) })
-		//document.addEventListener("PlayerNameEvent",(e) => { gChatbox.onPlayerNameEvent(e) })
 	});
-	
-	//document.addEventListener("ChatMessageEvent", parseChatMessageOnEvent)
 </script>
 </html>

@@ -1,5 +1,7 @@
 'use strict'
 
+
+
 const CHAT_TYPE_SAY 			= 0x000a
 const CHAT_TYPE_EMOTE 			= 0x001c
 const CHAT_TYPE_YELL 			= 0x001e
@@ -64,7 +66,10 @@ class Point3F {
 	}
 	
 	distanceSimple(point){
-		return Math.pow(this.x-point.x, 2) + Math.pow(this.y-point.y, 2) + Math.pow(this.z-point.z, 2)
+		const x = this.x-point.x
+		const y = this.y-point.y
+		const z = this.z-point.z
+		return x*x + y*y + z*z
 	}
 }
 
@@ -138,7 +143,7 @@ class ChatManager {
 		document.addEventListener("MentionsEvent", (e) => { this.onMentionEvent(e) })
 		document.addEventListener("PlayerPositionEvent", (e) => { this.onPlayerPositionUpdate(e) })
 		
-		sendMessageToPlugin({event:"RequestMentions"})		
+		Gobchat.sendMessageToPlugin({event:"RequestMentions"})		
     }
 	
 	isShowableChannel(nChannel){		
@@ -165,16 +170,32 @@ class ChatManager {
     addChatLine(msgObj) {
         function getMessageBlockCssClass(msgObj) {
             switch (msgObj.channel) {
-                case CHAT_TYPE_SAY:             return "message-body-say"
-                case CHAT_TYPE_EMOTE:           return "message-body-emote"
-                case CHAT_TYPE_TELL_SEND:       return "message-body-tells"
-                case CHAT_TYPE_TELL_RECIEVE:    return "message-body-tellr"
-                case CHAT_TYPE_GUILD:           return "message-body-guild"
-                case CHAT_TYPE_YELL:            return "message-body-yell"
-				case CHAT_TYPE_SHOUT:     		return "message-body-shout"
-                case CHAT_TYPE_PARTY:           return "message-body-party"
-                case CHAT_TYPE_ALLIANCE:        return "message-body-alliance"
-                default:                        return null
+                case CHAT_TYPE_SAY:             	return "message-body-say"
+                case CHAT_TYPE_EMOTE:           	return "message-body-emote"
+                case CHAT_TYPE_TELL_SEND:       	return "message-body-tells"
+                case CHAT_TYPE_TELL_RECIEVE:    	return "message-body-tellr"
+                case CHAT_TYPE_GUILD:           	return "message-body-guild"
+                case CHAT_TYPE_YELL:            	return "message-body-yell"
+				case CHAT_TYPE_SHOUT:     			return "message-body-shout"
+                case CHAT_TYPE_PARTY:           	return "message-body-party"
+                case CHAT_TYPE_ALLIANCE:        	return "message-body-alliance"
+				case CHAT_TYPE_LINKSHELL_1:
+				case CHAT_TYPE_LINKSHELL_2:
+				case CHAT_TYPE_LINKSHELL_3:
+				case CHAT_TYPE_LINKSHELL_4:
+				case CHAT_TYPE_LINKSHELL_5:
+				case CHAT_TYPE_LINKSHELL_6:
+				case CHAT_TYPE_LINKSHELL_7:
+				case CHAT_TYPE_LINKSHELL_8:     	return "message-body-ls"
+				case CHAT_TYPE_WORLD_LINKSHELL_1:
+				case CHAT_TYPE_WORLD_LINKSHELL_2:
+				case CHAT_TYPE_WORLD_LINKSHELL_3:
+				case CHAT_TYPE_WORLD_LINKSHELL_4:
+				case CHAT_TYPE_WORLD_LINKSHELL_5:
+				case CHAT_TYPE_WORLD_LINKSHELL_6:
+				case CHAT_TYPE_WORLD_LINKSHELL_7:
+				case CHAT_TYPE_WORLD_LINKSHELL_8:   return "message-body-cwls"
+                default:                        	return null
             }
         }
 
@@ -183,11 +204,11 @@ class ChatManager {
             switch (msgObj.channel) {
                 case CHAT_TYPE_TELL_RECIEVE:
                     senderSpan = document.createElement("span")
-                    senderSpan.innerHTML = msgObj.source.name + " >> "
+                    senderSpan.innerHTML = msgObj.source.name + " &gt;&gt; "
                     break;
                 case CHAT_TYPE_TELL_SEND:
                     senderSpan = document.createElement("span")
-                    senderSpan.innerHTML = ">> " + msgObj.source.name + ": "
+                    senderSpan.innerHTML = "&gt;&gt; " + msgObj.source.name + ": "
                     break;
                 case CHAT_TYPE_EMOTE:
                     senderSpan = document.createElement("span")
@@ -200,6 +221,82 @@ class ChatManager {
                 case CHAT_TYPE_ANIMATED_EMOTE:
                     //source is set, but the animation message already contains the source name
                     break;
+				case CHAT_TYPE_PARTY:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_ALLIANCE:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_GUILD:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[FC]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_1:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS1]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_2:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS2]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_3:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS3]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_4:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS4]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_5:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS5]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_6:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS6]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_7:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS7]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_LINKSHELL_8:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[LS1]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_1:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS1]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_2:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS2]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_3:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS3]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_4:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS4]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_5:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS5]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_6:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS6]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_7:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS7]&lt;" + msgObj.source.name + "&gt; "
+					break;
+				case CHAT_TYPE_WORLD_LINKSHELL_8:
+					senderSpan = document.createElement("span")
+                    senderSpan.innerHTML = "[CWLS8]&lt;" + msgObj.source.name + "&gt; "
+					break;
                 default:
                     if (msgObj.source.name != null) {
                         senderSpan = document.createElement("span")
