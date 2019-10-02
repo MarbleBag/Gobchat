@@ -54,6 +54,7 @@
             this.labelMentions = new System.Windows.Forms.Label();
             this.textMentions = new System.Windows.Forms.TextBox();
             this.labelMentionInfo = new System.Windows.Forms.Label();
+            this.btnShowDevtool = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -148,6 +149,7 @@
             // 
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
             this.tableLayoutPanel3.Controls.Add(this.btnReloadOverlay, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnShowDevtool, 1, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // btnReloadOverlay
@@ -226,6 +228,13 @@
             resources.ApplyResources(this.labelMentionInfo, "labelMentionInfo");
             this.labelMentionInfo.Name = "labelMentionInfo";
             // 
+            // btnShowDevtool
+            // 
+            resources.ApplyResources(this.btnShowDevtool, "btnShowDevtool");
+            this.btnShowDevtool.Name = "btnShowDevtool";
+            this.btnShowDevtool.UseVisualStyleBackColor = true;
+            this.btnShowDevtool.Click += new System.EventHandler(this.btnShowDevtool_Click);
+            // 
             // GobchatOverlayControlPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -268,5 +277,6 @@
         private System.Windows.Forms.Label labelMentions;
         private System.Windows.Forms.TextBox textMentions;
         private System.Windows.Forms.Label labelMentionInfo;
+        private System.Windows.Forms.Button btnShowDevtool;
     }
 }

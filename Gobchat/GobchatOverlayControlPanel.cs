@@ -195,6 +195,11 @@ namespace Gobchat
             this.config.GlobalHotkeyEnabled = this.checkEnableGlobalHotkey.Checked;
         }
 
+        private void btnShowDevtool_Click(object sender, EventArgs e)
+        {
+            this.overlay.Overlay.Renderer.showDevTools();
+        }
+
         #endregion
 
 
@@ -236,6 +241,8 @@ namespace Gobchat
             sbKeys.Append(Enum.ToObject(typeof(Keys), key).ToString());
             return sbKeys.ToString();
         }
+
+
 
     }
 }
