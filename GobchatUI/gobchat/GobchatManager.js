@@ -32,32 +32,35 @@ var Gobchat = (function(Gobchat){
 			
 			init(){
 				const manager = this
-				const config = new ParserConfigTest(manager)
-				this.messageParser = new Gobchat.MessageParser(config,(message) => { manager.onNewMessage(message) })
-				this.messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
-				this.scrollbar = new ScrollbarControl(this._chatHtmlId)
-				this.scrollbar.init()
+				const parserConfig = new ParserConfigTest(manager)
+				this._messageParser = new Gobchat.MessageParser(parserConfig,(message) => { manager.onNewMessage(message) })
+				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
+				
+				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
+				this._scrollbar.init()
+				
+				
 				
 				//TODO cleanup				
 				function onMentionEvent(mentionEvent){
 					let mentions = mentionEvent.detail.mentions
 					if( mentions ){						
-						config.mentions = mentions.map((e)=>{return e.toLowerCase().trim()}).filter((e)=>{return e.length>0})
+						parserConfig.mentions = mentions.map((e)=>{return e.toLowerCase().trim()}).filter((e)=>{return e.length>0})
 					}else{
-						config.mentions = []
+						parserConfig.mentions = []
 					}
 				}
 				
-				document.addEventListener("ChatMessageEvent", (e) => { manager.messageParser.parseMessageEvent(e) })
+				document.addEventListener("ChatMessageEvent", (e) => { manager._messageParser.parseMessageEvent(e) })
 				document.addEventListener("MentionsEvent", onMentionEvent)
 				
 				Gobchat.sendMessageToPlugin({event:"RequestMentions"})	
 			}
 			
 			onNewMessage(message){
-				const messageHtmlElement = this.messageHtmlBuilder.buildHtmlElement(message)
+				const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
 				$("#"+this._chatHtmlId).append(messageHtmlElement)
-				this.scrollbar.scrollToBottomIfNeeded()
+				this._scrollbar.scrollToBottomIfNeeded()
 			}
 		}
 		Gobchat.GobchatManager = GobchatManager
