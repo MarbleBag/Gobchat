@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.1.2] - Unreleased
+## [0.1.3] - Unreleased
+###
+- Add detection for 'ooc' comments. A ooc-comment starts with (( and ends with ))
+
+## [0.1.2] - 2019.09.28
 ### Fixed
 - Error on mentions, because of typo in javascript
 - Autoscroll
