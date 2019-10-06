@@ -70,22 +70,22 @@ var Gobchat = (function(Gobchat){
 	}
 	
 	function setStyle(styleId,styleCssText){		
-		let styleElement = document.getElementById(id)
+		let styleElement = document.getElementById(styleId)
 		if(!styleElement){
 			styleElement = document.createElement("style")
-			styleElement.id = id
+			styleElement.id = styleId
 			document.head.appendChild(styleElement)
 			//document.getElementsByTagName('head')[0].appendChild(styleElement)
 		}
 		
 		styleElement.type = 'text/css';
-		styleElement.innerHTML = styleText	
+		styleElement.innerHTML = styleCssText	
 	}
 	
 	Gobchat.StyleBuilder = {
-		updateStyle: function(styleConfig){
+		updateStyle: function(styleConfig,styleId){
 			const css = buildStyle(styleConfig)
-			setStyle("custome_style_id",css)
+			setStyle(styleId,css)
 		}
 	}
 		

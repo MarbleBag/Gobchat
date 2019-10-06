@@ -1,0 +1,270 @@
+<html>
+<head>
+	 <meta charset="utf-16" />
+	<link rel="stylesheet" href="lib/jquery/jquery-ui.min.css">
+	
+	<script src="lib/jquery-3.4.1.min.js"></script>
+	<script src="lib/jquery/jquery-ui.min.js"></script>
+	<script src="lib/lodash.min.js"></script>
+	
+	<script src="gobchat/Datacenters.js"></script>
+	<script src="gobchat/Channels.js"></script>
+	<script src="gobchat/DefaultConfig.js"></script>
+	<script src="gobchat/Common.js"></script>
+	
+	
+</head>
+<body>
+	<aside>
+		<ul>
+			<li>
+				<label>Menu 1</label>
+			</li>
+			<li>
+				<label>Menu 2</label>
+			</li>
+		</ul>
+	</aside>
+	<header>
+		<label>Header</label>
+	</header>
+	<main>
+		<button id="save_config">
+			Needs to go somewhere
+		</button>
+	
+		<section>
+			<article>
+				<p>
+					<label>Test</label>
+					<select>
+						<option value="en">English</option>
+						<option value="de">Deutsch</option>
+					</select>
+				</p>
+				<p>
+					<table id="betaconfig">
+						<thead>
+							<tr>
+								<th>Channel Name</th>
+								<th>Visible</th>
+								<th>Roleplay</th>
+								<th>Text Color</th>
+								<th>Background Color</th>
+							<tr>	
+						</thead>
+						<tbody>							
+						</tbody>
+					</table>
+				</p>
+				<p>
+					<label>Say</label>
+					<span>
+						<input type="checkbox" title=""/>
+						<input type="checkbox" title=""/>
+						<input type="color" id="testcolor" />						
+						<input type="text" id="testcolorfield" style="width: 10rem" placeholder="">
+					</span>
+				</p>
+				<p>
+					<div class="gc-table"></div>
+				</p>
+			</article>
+		</section>
+	</main>
+
+
+	<script>
+		'use strict';
+		//console.log(window.opener)
+		
+		$("#testcolor").on("change",function(e){
+			//$("#textcolorfield").val()
+			//console.log(e)
+		})
+		
+		$("#testcolorfield").on("change",function(e){
+			let txt = $("#testcolorfield").val()
+			if(!txt.startsWith("#")){
+				txt = "#" + txt
+			}
+			$("#testcolor").val(txt)			
+			//$(".message-segment-say").css("color",txt)
+			//not working this way, need to dynamically add a new css which can be overridden whenever needed
+		})
+		
+		jQuery(function ($) {
+			const tblConfig = [
+				["Say","style.channel.say"],
+				["Emote","style.channel.emote"],
+				["Yell","style.channel.yell"],
+				["Shout","style.channel.shout"],
+				["Party","style.channel.party"],
+				["Guild","style.channel.guild"],
+			]
+			
+			function makeNameLabel(c){
+				const td = document.createElement("td")
+				const lbl = document.createElement("label")
+				td.appendChild(lbl)
+				lbl.innerHTML = c[0]
+				return td
+			}
+			
+			const tbl = $("#betaconfig > tbody")
+			tblConfig.forEach((c)=>{
+				const tr = document.createElement("tr")
+				tbl.append(tr)
+				tr.appendChild(makeNameLabel(c))
+
+				{
+					const td = document.createElement("td")
+					tr.appendChild(td)
+					const input = document.createElement("input")
+					td.appendChild(input)
+					input.type = "checkbox"
+					input.title = "bla"
+				}
+				{
+					const td = document.createElement("td")
+					tr.appendChild(td)
+					const input = document.createElement("input")
+					td.appendChild(input)
+					input.type = "checkbox"
+					input.title = "bla"
+				}
+				{
+					const td = document.createElement("td")
+					tr.appendChild(td)
+					const input = document.createElement("input")
+					td.appendChild(input)
+					input.type = "color"
+					input.title = "bla"
+					
+					
+					
+					const btn = document.createElement("button")
+					td.appendChild(btn)
+					btn.title = "bla"
+					btn.innerHTML = "&#x274C;"
+				}
+				{
+					const td = document.createElement("td")
+					tr.appendChild(td)
+					const input = document.createElement("input")
+					td.appendChild(input)
+					input.type = "color"
+					input.title = "bla"
+					const btn = document.createElement("button")
+					td.appendChild(btn)
+					btn.title = "bla"
+					btn.innerHTML = "&#x274C;"
+				}
+			})
+		
+			
+		
+			$(document).on("ChangeableConfig",function(e){
+				const jsonConfig = e.detail.config				
+				const config = JSON.parse(jsonConfig)
+				
+			});
+			
+			const configJson = window.localStorage.getItem("gobchat-config")
+			if(!configJson){
+				alert("Error")
+			}
+			const config = JSON.parse(configJson)
+			
+			$("#testcolorfield").val(config.segment.say["color"])
+			
+			$("#save_config").on("click",function(e){
+				//const config = {} //TODO
+				//Gobchat.sendMessageToPlugin({event:"ConfigChanged",detail:config})
+				
+				const configData = JSON.stringify(config)
+				window.localStorage.setItem("gobchat-config",configData)
+				
+				window.close()
+				window.opener.postMessage("Done",'*')
+			});
+			
+			$("#testcolorfield").on("change",function(e){
+				let txt = $("#testcolorfield").val()
+				if(!txt.startsWith("#")){
+					txt = "#" + txt
+				}
+				config.segment.say["color"] = txt
+				
+				//$("#textcolorfield").val()
+				//console.log(this)
+			})
+		});
+		
+		$(window).on("message", function(e){
+			console.log("Test: " + window.chatManager)
+			//for(let k in e){
+			//	console.log(k + " | " + e[k])
+			//}		
+			//console.log("Test: " + window.chatManager)
+			//console.log("Origin1: " + window.location.origin)
+			//console.log("Origin2: " + window.origin)
+		})
+		
+		//window.addEventListener('message', event => {console.log("wat")})	
+		
+		//get a real color picker, like jquery.colorpicker or spectrum
+		/*$("#colPick").ColorPicker({
+			color: '#0000ff',
+			onShow: function (colpkr) {
+				$(colpkr).fadeIn(500);
+				return false;
+			},
+			onHide: function (colpkr) {
+				$(colpkr).fadeOut(500);
+				return false;
+			},
+			onChange: function (hsb, hex, rgb) {
+				$('#full').css('background-color', '#' + hex);
+			}    
+		});*/
+		
+		
+		
+	</script>
+	
+	<script type="text/javascript">
+		'use strict';
+		
+		class TableManager{
+			constructor(){
+				this.htmlElement = null
+				this.data = []
+			}
+						
+			buildTable(){
+				buildTable1(this)
+			}
+		}
+		
+		function buildTable1(control){
+			if(!control.htmlElement) return
+			const tblParent = control.htmlElement
+			while (tblParent.firstChild) {
+				tblParent.firstChild.remove();
+			}
+			
+			{
+				const toolbar = document.createElement("div")
+				const btnAddAll = document.createElement("button")
+				const btnRemoveAll = document.createElement("button")
+			}
+			
+			{
+			
+			}
+		}
+		
+	</script>
+</body>
+</html>

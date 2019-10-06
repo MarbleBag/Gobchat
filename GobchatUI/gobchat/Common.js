@@ -8,6 +8,27 @@ var Gobchat = (function(Gobchat){
 			let overlayName = OverlayPluginApi.overlayName
 			OverlayPluginApi.overlayMessage(overlayName, sJson)
 		}
+		
+		Gobchat.isString = function(value) {
+			return typeof value === 'string' || value instanceof String
+		}
+		
+		Gobchat.isNumber = function(value) {
+			return typeof value === 'number' && isFinite(value)
+		}
+		
+		Gobchat.isFunction = function(value) {
+			return typeof value === 'function';
+		}
+		
+		Gobchat.isArray = function(value) {
+			Array.isArray(value)
+			//return value && typeof value === 'object' && value.constructor === Array
+		}
+		
+		Gobchat.isObject = function(value) {
+			return value && typeof value === 'object' && value.constructor === Object;
+		}
 	
 		return Gobchat	
 }(Gobchat || {}));

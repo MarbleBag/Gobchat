@@ -1,30 +1,29 @@
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title></title>
-  
-  <link rel="stylesheet" href="defaults.css">
-  <link rel="stylesheet" href="chat.css">
-  <style id="custome_style_id" type="text/css"></style>
-  
-  <script src="lib/jquery-3.4.1.min.js"></script>
-  <script src="lib/lodash.min.js"></script>
- 
-  <link rel="stylesheet" href="resize_handle.css">
-  <script src="resize_handle.js"></script>
-   
-  <script src="gobchat/Datacenters.js"></script>
-  <script src="gobchat/Channels.js"></script>
-  <script src="gobchat/Common.js"></script>
-  
-  <script src="gobchat/DataObjects.js"></script>
-  
-  <script src="gobchat/Config.js"></script>
-  <script src="gobchat/StyleBuilder.js"></script>
-  
-  <script src="gobchat/MessageParser.js"></script>
-  <script src="gobchat/MessageHtmlBuilder.js"></script>  
-  <script src="gobchat/GobchatManager.js"></script>
+	  <meta charset="utf-16" />
+	  <title></title>
+	  
+	  <link rel="stylesheet" href="defaults.css">
+	  <link rel="stylesheet" href="chat.css">
+	  <style id="custome_style_id" type="text/css"></style>
+	  
+	  <script src="lib/jquery-3.4.1.min.js"></script>
+	  <script src="lib/lodash.min.js"></script>
+	 
+	  <link rel="stylesheet" href="resize_handle.css">
+	  <script src="resize_handle.js"></script>
+	   
+	  <script src="gobchat/Datacenters.js"></script>
+	  <script src="gobchat/Channels.js"></script>
+	  <script src="gobchat/DefaultConfig.js"></script>
+	  <script src="gobchat/Common.js"></script>
+	  
+	  <script src="gobchat/DataObjects.js"></script>  
+	  <script src="gobchat/GobchatConfig.js"></script>  
+	  <script src="gobchat/StyleBuilder.js"></script>  
+	  <script src="gobchat/MessageParser.js"></script>
+	  <script src="gobchat/MessageHtmlBuilder.js"></script>  
+	  <script src="gobchat/GobchatManager.js"></script>
     
 </head>
 <body>
@@ -32,9 +31,8 @@
 		TODO:
 		- transparency needs to be done via background-image, this version of Xilium does not support rgba 
 		- transparency can be done by using rgba(r,g,b,a) in CSS
-		- (stylisch) Scrollbar which stays at its current position, except if its all the way down, where it will follow the chat
+		-  Scrollbar which stays at its current position, except if its all the way down, where it will follow the chat
 		- (saveable) Settings
-		- (highligthed) Mentions
 		- Maybe let parsing be done im c# plugin for performance?
 		- Store some MB of chat history im plugin for retrieval on reload
 		- clear command		
@@ -43,11 +41,11 @@
 	<div id="container">
 
 		<div id="chatbox" class="chatbox-base chatbox">
-			<!--<div id="toolbar">
-				<button onclick="window.open('config.html','Settings','width=800,height=600')">
+			<div id="toolbar">
+				<button id="gobchat_config">
 					Settings
 				</button>
-			</div>-->
+			</div>
 			<div>
 				<div id="chatcontent" class="chatbox-content">
 				</div>
@@ -59,10 +57,43 @@
 
 <script>
 	'use strict'
-		  
-	window.chatManager = new Gobchat.GobchatManager("chatcontent")
+	//window.addEventListener('message', event => {})	  
+	
+	//$(window).on("message", function(e){
+	//	console.log()
+	//	for(let k in e){
+	//		console.log(k + " | " + e[k])
+	//	}		
+	//})
+	
 	jQuery(function ($) {
+		window.chatManager = new Gobchat.GobchatManager("chatcontent")
 		window.chatManager.init()
+						
+		$("#gobchat_config").on("click",function(e){
+			//TODO generalize the passing of data!
+			const configData = JSON.stringify(window.chatManager._chatConfig.configStyle)
+			window.localStorage.setItem("gobchat-config",configData)
+			
+			const handle = window.open('gobconfig.html','Settings','width=800,height=600')		
+			handle.focus()
+		})
+		
+		$(window).on("message",function(e){
+			//TODO somehow check for the correct data
+		
+			const configJson = window.localStorage.getItem("gobchat-config")
+			console.log(configJson)
+			window.localStorage.removeItem("gobchat-config")
+			if(!configJson){
+				alert("Error")
+			}
+			
+			//TODO needs a kind of merging function
+			const config = JSON.parse(configJson)
+			window.chatManager._chatConfig.configStyle.segment = config.segment
+			window.chatManager.updateStyle()
+		})
 	});
 </script>
 </html>

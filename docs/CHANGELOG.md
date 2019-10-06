@@ -3,8 +3,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## [0.1.3] - Unreleased
-###
-- Add detection for 'ooc' comments. A ooc-comment starts with (( and ends with ))
+### Added
+- Detection for 'ooc' comments. A ooc-comment starts with (( and ends with ))
+- Detection for 'emote' in say. When quotation marks are used to mark speech in say, everything that's not enclosed in quotation marks will be seen as emote
+
+### Fixed
+- Multiple whitespaces in chat are not removed anymore
 
 ## [0.1.2] - 2019.09.28
 ### Fixed

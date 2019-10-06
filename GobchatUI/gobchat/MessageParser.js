@@ -30,6 +30,9 @@ var Gobchat = (function(Gobchat){
 			if( this.isRoleplayChannel(channel) ){
 				processMessageSegmentOOC(message)
 				processMessageSegmentSayAndEmote(message)
+				if(this.isAutodetectEmoteInSay(channel)){
+					searchMessageSegmentForEmoteInSay(message)
+				}
 			}
 				
 			if( this.isMentionChannel(channel) ){
@@ -37,12 +40,18 @@ var Gobchat = (function(Gobchat){
 				if( mentions.length === 0 ) return
 				processMessageSegmentMention(message,mentions)
 			}
+			
+			applyMessageSegmentDefaults(message)
 				
 			this.onMessageCallback(message)
 		}
 			
 		createMessageSource(channelEnum,originalSource){			
 			return new MessageSource(originalSource) //TODO for now
+		}
+		
+		isAutodetectEmoteInSay(channelEnum){
+			return (channelEnum === ChannelEnum.SAY) && this.parserConfig.isAutodetectEmoteInSay
 		}
 			
 		isMessageRelevant(channelEnum){
@@ -84,6 +93,34 @@ var Gobchat = (function(Gobchat){
 		finish(){
 			if(this._activeMark) this._marks.push(this._activeMark)
 			this._activeMark = null
+		}
+	}
+	
+	function applyMessageSegmentDefaults(message){
+		//we have only defaults for SAY and EMOTE, skip rest		
+		if(message.channel === ChannelEnum.SAY){
+			message.segments.forEach((segment)=>{					
+					if(segment.segmentType === MessageSegmentEnum.UNDEFINED){
+						segment.segmentType = MessageSegmentEnum.SAY
+					}
+				})
+		}else if(message.channel === ChannelEnum.EMOTE){
+			message.segments.forEach((segment)=>{					
+					if(segment.segmentType === MessageSegmentEnum.UNDEFINED){
+						segment.segmentType = MessageSegmentEnum.EMOTE
+					}
+				})
+		}
+	}
+	
+	function searchMessageSegmentForEmoteInSay(message){
+		const foundSay = message.segments.some((segment)=>{return segment.segmentType === MessageSegmentEnum.SAY})		
+		if(foundSay){
+			message.segments.forEach((segment)=>{					
+					if(segment.segmentType === MessageSegmentEnum.UNDEFINED){
+						segment.segmentType = MessageSegmentEnum.EMOTE
+					}
+				})
 		}
 	}
 	

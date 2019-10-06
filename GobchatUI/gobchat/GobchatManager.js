@@ -22,7 +22,12 @@ var Gobchat = (function(Gobchat){
 			
 			isMentionChannel(channelEnum){
 				return true
-			}			
+			}
+
+			get isAutodetectEmoteInSay(){
+				const val = this._manager._chatConfig.get("behaviour.autodetectEmoteInSay")
+				return val
+			}
 		}
 		
 		class GobchatManager {
@@ -32,12 +37,17 @@ var Gobchat = (function(Gobchat){
 			
 			init(){
 				const manager = this
+				
+				this._chatConfig = new Gobchat.GobchatConfig()
+				this.updateStyle()
+				
 				const parserConfig = new ParserConfigTest(manager)
 				this._messageParser = new Gobchat.MessageParser(parserConfig,(message) => { manager.onNewMessage(message) })
 				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
 				
 				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
 				this._scrollbar.init()
+				
 				
 				
 				
@@ -55,6 +65,11 @@ var Gobchat = (function(Gobchat){
 				document.addEventListener("MentionsEvent", onMentionEvent)
 				
 				Gobchat.sendMessageToPlugin({event:"RequestMentions"})	
+			}
+			
+			//TODO test
+			updateStyle(){
+				Gobchat.StyleBuilder.updateStyle(this._chatConfig.configStyle,"custome_style_id")
 			}
 			
 			onNewMessage(message){
