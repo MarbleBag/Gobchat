@@ -22,6 +22,7 @@ but will gladly do so again, if you move the scroll bar back to the bottom of th
 ![autoscroll reenables](docs/screen_scroll_bottom.png)
 
 ### Formatting text
+(TODO)
 
 ![(missing) example screen](docs/screen3.png)
 
@@ -29,7 +30,7 @@ becomes
 
 ![(missing) example screen](docs/screen4.png)
 
-Four different types
+Four different types 
 
 ![Different formats](docs/screen_formats.png)
 
