@@ -28,7 +28,7 @@ Four different types
 ![screenshot 1](docs/screen_formats.png)
 
 ### Text-Highlighting for key words
-Case-insensitive detection for a customizable list of words, which then will be highlighted. Makes it harder to miss out on important messages..
+Case-insensitive detection for a customizable list of words, which then will be highlighted. This will help you not missing out on important messages.
 
 ![screenshot 1](docs/screen_mention_highlighting.png)
 
