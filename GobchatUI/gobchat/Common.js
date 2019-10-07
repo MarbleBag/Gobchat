@@ -22,7 +22,7 @@ var Gobchat = (function(Gobchat){
 		}
 		
 		Gobchat.isArray = function(value) {
-			Array.isArray(value)
+			return Array.isArray(value)
 			//return value && typeof value === 'object' && value.constructor === Array
 		}
 		
