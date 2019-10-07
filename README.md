@@ -11,7 +11,7 @@ It won't scroll if you are (re)reading a text from the past
 
 ![screenshot 1](docs/screen_scroll_noautoscrol.png)
 
-but will gladly do so again, if you move it back to the bottom
+but will gladly do so again, if you move the scroll bar back to the bottom of the chat
 
 ![screenshot 1](docs/screen_scroll_bottom.png)
 
@@ -27,10 +27,10 @@ Four different types
 
 ![screenshot 1](docs/screen_formats.png)
 
-### Highlightning for key words
+### Text-Highlighting for key words
+Case-insensitive detection for a customizable list of words, which then will be highlighted. Makes it harder to miss out on important messages..
 
-![screenshot 1](docs/screen6.png)
-
+![screenshot 1](docs/screen_mention_highlighting.png)
 
 
 ## Installation
