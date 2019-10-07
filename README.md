@@ -6,6 +6,12 @@ Gobchat in its current version is a plugin for [hibiyasleep's OverlayPlugin](htt
 
 This plugin took a lot of inspiration (and some code) from [quisquous cactbot](https://github.com/quisquous/cactbot)
 
+1. [Features](#features)
+1. [Installation](#installation)
+1. [Updating Gobchat](#updating-gobchat)
+
+## Features
+
 ### Smart autoscroll
 It won't scroll if you are (re)reading a text from the past
 
