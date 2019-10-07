@@ -49,7 +49,7 @@ fflogs has a video [guide](https://www.fflogs.com/help/start/) for setting up AC
 
 ### Installing Gobchat
 
-1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, except you want to build it yourself)
+1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, unless you want to build it yourself)
 2. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click "Unblock", and then "OK" to close the menu. (zip file contains a dll)
 3. Unzip the zip file
 4. Copy the Gobchat.dll into your OverlayPlugin\addons folder (The OverlayPlugin will load all dlls which are inside of this folder)
@@ -80,4 +80,4 @@ The end result should look something like that:
 
 ### Updating Gobchat
 
-1. Repeat steps 1 to 5 of [installing Gobchat](#Installing Gobchat), replace all files.
+1. Repeat steps 1 to 5 of [installing Gobchat](#installing-gobchat), replace all files.
