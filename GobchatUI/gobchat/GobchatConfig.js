@@ -98,6 +98,30 @@ var Gobchat = (function(Gobchat,undefined){
 		const parts = key.split(".")
 		return parts
 	}
+	
+	function resolvePath(key,config,value){
+		let _config = config
+		const keySteps = breakKeyDown(key)
+		
+		for(let i=0;i<keySteps.length-1;++i){
+			const keyStep = keySteps[i]
+			if(keyStep in _config){
+				_config = _config[keyStep]
+			}else{
+				throw new Error(`Config error. Key invalid at ${keyStep} - ${key}`);
+			}
+		}
+		
+		if(keySteps.length === 0){
+			return _config
+		}
+		
+		const targetKey = keySteps[keySteps.length-1]
+		if(value !== undefined){
+			_config[targetKey] = value
+		}
+		return _config[targetKey]
+	}
 		
 	//maybe not fast, but free of hassle :^)
 	function copyByJson(obj) {
@@ -110,14 +134,38 @@ var Gobchat = (function(Gobchat,undefined){
 			this._config = copyByJson(Gobchat.DefaultChatConfig)
 		}
 		
-		loadConfig(config){
+		overwriteConfig(config){
+			//TODO return a set of update flags?
 			mergeIterator(this._config,config)
 		}
 		
-		saveConfig(){
+		getConfigChanges(){
 			const config = copyByJson(this._config)
 			retainChangesIterator(config,Gobchat.DefaultChatConfig)
 			return config
+		}
+		
+		writeChangesToLocalStore(){
+			const json = JSON.stringify(this.getConfigChanges())
+			window.localStorage.setItem("gobchat-config",json)
+		}
+		
+		loadChangesFromLocalStore(){			
+			const json = window.localStorage.getItem("gobchat-config")
+			window.localStorage.removeItem("gobchat-config")
+			const config = JSON.parse(json)
+			this.overwriteConfig(config)
+		}
+		
+		saveToPlugin(){
+			//TODO
+			const json = JSON.stringify(this.getConfigChanges())
+			Gobchat.sendMessageToPlugin({event:"SaveGobchatConfig",detail:json})
+		}
+		
+		loadFromPlugin(){
+			//TODO
+			Gobchat.sendMessageToPlugin({event:"RequestGobchatConfig"})
 		}
 		
 		get configStyle(){
@@ -125,44 +173,25 @@ var Gobchat = (function(Gobchat,undefined){
 		}
 		
 		get(key){
-			let _config = this._config
-			const keySteps = breakKeyDown(key)
-			
-			for(let i=0;i<keySteps.length-1;++i){
-				const keyStep = keySteps[i]
-				if(keyStep in _config){
-					_config = _config[keyStep]
-				}else{
-					throw new Error(`Config error. Key invalid at ${keyStep} - ${key}`);
-				}
+			if(key===null || key.length===0){
+				return this._config
 			}
-			
-			if(keySteps.length === 0){
-				return _config
-			}
-			
-			const targetKey = keySteps[keySteps.length-1]
-			return _config[targetKey]
+			return resolvePath(key,this._config)
 		}
 		
 		set(key, value){
-			let _config = this._config
-			const keySteps = breakKeyDown(key)
-			for(let i=0;i<keySteps.length-1;++i){
-				const keyStep = keySteps[i]
-				if(keyStep in _config){
-					_config = _config[keyStep]
-				}else{
-					throw new Error(`Config error. Key invalid at ${keyStep} - ${key}`);
-				}
-			}
-			
-			if(keySteps.length === 0){
+			if(key===null || key.length===0){
 				this._config = value
-			}else{
-				const targetKey = keySteps[keySteps.length-1]
-				_config[targetKey] = value
 			}
+			resolvePath(key,this._config,value)
+		}
+		
+		reset(key){
+			if(key===null || key.length===0){
+				this._config = copyByJson(Gobchat.DefaultChatConfig)
+			}
+			const original = resolvePath(key,Gobchat.DefaultChatConfig)
+			resolvePath(key,this._config,original)
 		}
 		
 		addPropertyListener(topic,callback){

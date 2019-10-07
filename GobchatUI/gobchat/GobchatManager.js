@@ -48,9 +48,6 @@ var Gobchat = (function(Gobchat){
 				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
 				this._scrollbar.init()
 				
-				
-				
-				
 				//TODO cleanup				
 				function onMentionEvent(mentionEvent){
 					let mentions = mentionEvent.detail.mentions
@@ -65,6 +62,14 @@ var Gobchat = (function(Gobchat){
 				document.addEventListener("MentionsEvent", onMentionEvent)
 				
 				Gobchat.sendMessageToPlugin({event:"RequestMentions"})	
+			}
+			
+			saveConfigToLocalStore(){
+				this._chatConfig.writeChangesToLocalStore()
+			}
+			
+			loadConfigFromLocalStore(){
+				this._chatConfig.loadChangesFromLocalStore()
 			}
 			
 			//TODO test

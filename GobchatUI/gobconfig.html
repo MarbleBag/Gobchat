@@ -4,15 +4,20 @@
 	<link rel="stylesheet" href="lib/jquery/jquery-ui.min.css">
 	
 	<script src="lib/jquery-3.4.1.min.js"></script>
-	<script src="lib/jquery/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
+	<script src="lib/jquery-ui-1.12.1.min.js"></script>
 	<script src="lib/lodash.min.js"></script>
+	<link rel="stylesheet" href="lib/spectrum.css">
+	<script src="lib/spectrum.js"></script>
 	
 	<script src="gobchat/Datacenters.js"></script>
 	<script src="gobchat/Channels.js"></script>
 	<script src="gobchat/DefaultConfig.js"></script>
 	<script src="gobchat/Common.js"></script>
 	
+	<script src="gobchat/GobchatConfig.js"></script>
 	
+	<script src="gobconfig-ui.js"></script>
 </head>
 <body>
 	<aside>
@@ -43,11 +48,15 @@
 					</select>
 				</p>
 				<p>
+					<input type="test" id="atestdiv"></div>
+				</p>
+				<p>
 					<table id="betaconfig">
 						<thead>
 							<tr>
 								<th>Channel Name</th>
 								<th>Visible</th>
+								<th>Mention</th>
 								<th>Roleplay</th>
 								<th>Text Color</th>
 								<th>Background Color</th>
@@ -94,143 +103,165 @@
 		})
 		
 		jQuery(function ($) {
-			const tblConfig = [
-				["Say","style.channel.say"],
-				["Emote","style.channel.emote"],
-				["Yell","style.channel.yell"],
-				["Shout","style.channel.shout"],
-				["Party","style.channel.party"],
-				["Guild","style.channel.guild"],
+			const gobconfig	= new Gobchat.GobchatConfig()
+			gobconfig.loadChangesFromLocalStore()
+		
+			const channelTblConfig = [
+				{label:"General", 	channelEnum:null, 		styleId:"style.channel.base"},
+				
+				{label:"Say", 	channelEnum:"SAY", 		styleId:"style.channel.say"},
+				{label:"Emote", channelEnum:"EMOTE", 	styleId:"style.channel.emote"},
+				{label:"Yell", 	channelEnum:"YELL", 	styleId:"style.channel.yell"},
+				{label:"Shout", channelEnum:"SHOUT", 	styleId:"style.channel.shout"},
+				{label:"Party", channelEnum:"PARTY", 	styleId:"style.channel.party"},
+				{label:"Guild", channelEnum:"GUILD", 	styleId:"style.channel.guild"},
+				
+				{label:"Tell send", channelEnum:"GUILD", 	styleId:"style.channel.tellsend"},
+				{label:"Tell recieve", channelEnum:"GUILD", 	styleId:"style.channel.tellrecieve"},
+				
+				{label:"Alliance", channelEnum:"GUILD", 	styleId:"style.channel.alliance"},
+				
+				{label:"Linkshells", channelEnum:null, 	styleId:"style.channel.linkshell"},
+				{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:null},
+				{label:"Linkshell 2", channelEnum:"LINKSHELL_2", 	styleId:null},
+				{label:"Linkshell 3", channelEnum:"LINKSHELL_3", 	styleId:null},
+				{label:"Linkshell 4", channelEnum:"LINKSHELL_4", 	styleId:null},
+				{label:"Linkshell 5", channelEnum:"LINKSHELL_5", 	styleId:null},
+				{label:"Linkshell 6", channelEnum:"LINKSHELL_6", 	styleId:null},
+				{label:"Linkshell 7", channelEnum:"LINKSHELL_7", 	styleId:null},
+				{label:"Linkshell 8", channelEnum:"LINKSHELL_8", 	styleId:null},
+				
+				{label:"Cross-world Linkshells", channelEnum:null, 	styleId:"style.channel.worldlinkshell"},		
+				{label:"Cross-world Linkshell 1", channelEnum:"WORLD_LINKSHELL_1", 	styleId:null},			
+				{label:"Cross-world Linkshell 2", channelEnum:"WORLD_LINKSHELL_2", 	styleId:null},	
+				{label:"Cross-world Linkshell 3", channelEnum:"WORLD_LINKSHELL_3", 	styleId:null},	
+				{label:"Cross-world Linkshell 4", channelEnum:"WORLD_LINKSHELL_4", 	styleId:null},
+				{label:"Cross-world Linkshell 5", channelEnum:"WORLD_LINKSHELL_5", 	styleId:null},
+				{label:"Cross-world Linkshell 6", channelEnum:"WORLD_LINKSHELL_6", 	styleId:null},	
+				{label:"Cross-world Linkshell 7", channelEnum:"WORLD_LINKSHELL_7", 	styleId:null},	
+				{label:"Cross-world Linkshell 8", channelEnum:"WORLD_LINKSHELL_8", 	styleId:null},	
 			]
 			
-			function makeNameLabel(c){
+			function addToTableRow(rowElement, element){
 				const td = document.createElement("td")
+				if(element){					
+					td.appendChild(element)					
+				}
+				rowElement.appendChild(td)
+			}
+			
+			function makeChannelNameLabel(entry){
+				if(entry.label===null || entry.label===undefined){
+					return null
+				}
 				const lbl = document.createElement("label")
-				td.appendChild(lbl)
-				lbl.innerHTML = c[0]
-				return td
+				lbl.innerHTML = entry.label
+				return lbl
+			}
+			
+			function makeCheckboxForChannelBehaviour(entry,type){
+				if(entry.channelEnum===null || entry.channelEnum===undefined){
+					return null
+				}
+			
+				const input = document.createElement("input")
+				input.type = "checkbox"
+				const channelEnum = Gobchat.ChannelEnum[entry.channelEnum]
+				const configKey = `behaviour.channel.${type}` 
+				
+				const data = gobconfig.get(configKey)
+				
+				if( channelEnum === undefined || channelEnum === null || data === undefined || data === null ){
+					input.disabled = true
+					return
+				}				
+				
+				input.checked  = _.includes(data,channelEnum)
+				$(input).on("change",function(event){
+						if(event.target.checked && !_.includes(data,channelEnum)){
+							data.push(channelEnum)
+						}else{
+							_.remove(data,(i)=>{return i===channelEnum})
+						}
+					})				
+					
+				return input
+			}
+			
+			let spectrumColorPalette = channelTblConfig.map(e=>e.styleId).filter(e=>e!==null&&e!==undefined).map(e=>e + ".color").map(e=>gobconfig.get(e)).filter(e=>e!==null&&e!==undefined)
+			spectrumColorPalette = _.union(spectrumColorPalette)
+			
+			function makeColorSelectorForChannel(entry,type){
+				if(entry.styleId===null || entry.styleId===undefined){
+					return null
+				}
+			
+				const div = document.createElement("div")
+				const input = document.createElement("input")
+				div.appendChild(input)
+				
+				const configKey = entry.styleId + "." + type
+				const data = gobconfig.get(configKey)
+				
+				input.type = "text"		
+				$(input).spectrum({
+					preferredFormat: "hex3",
+					color: data,
+					allowEmpty:true,
+					showInput: true,
+					showInitial: true,
+					showAlpha: true,
+					showPalette: true,
+					palette: spectrumColorPalette,
+					showSelectionPalette: true,
+					selectionPalette: [],
+					maxSelectionSize: 6,
+					clickoutFiresChange: false,
+					hide: function(color) {
+							if(color !== null){
+								gobconfig.set(configKey,color.toString())
+							}else{
+								gobconfig.set(configKey,null)
+							}
+						},
+				})
+								
+				const btn = document.createElement("button")
+				btn.innerHTML = "&#x274C;"
+				btn.title = "Reset to default"
+				
+				$(btn).on("click",function(event){
+						gobconfig.reset(configKey)
+						$(input).spectrum("set", gobconfig.get(configKey));
+					})	
+				
+				div.appendChild(btn)
+				
+				return div
 			}
 			
 			const tbl = $("#betaconfig > tbody")
-			tblConfig.forEach((c)=>{
+			channelTblConfig.forEach((entry)=>{
 				const tr = document.createElement("tr")
 				tbl.append(tr)
-				tr.appendChild(makeNameLabel(c))
-
-				{
-					const td = document.createElement("td")
-					tr.appendChild(td)
-					const input = document.createElement("input")
-					td.appendChild(input)
-					input.type = "checkbox"
-					input.title = "bla"
-				}
-				{
-					const td = document.createElement("td")
-					tr.appendChild(td)
-					const input = document.createElement("input")
-					td.appendChild(input)
-					input.type = "checkbox"
-					input.title = "bla"
-				}
-				{
-					const td = document.createElement("td")
-					tr.appendChild(td)
-					const input = document.createElement("input")
-					td.appendChild(input)
-					input.type = "color"
-					input.title = "bla"
-					
-					
-					
-					const btn = document.createElement("button")
-					td.appendChild(btn)
-					btn.title = "bla"
-					btn.innerHTML = "&#x274C;"
-				}
-				{
-					const td = document.createElement("td")
-					tr.appendChild(td)
-					const input = document.createElement("input")
-					td.appendChild(input)
-					input.type = "color"
-					input.title = "bla"
-					const btn = document.createElement("button")
-					td.appendChild(btn)
-					btn.title = "bla"
-					btn.innerHTML = "&#x274C;"
-				}
-			})
-		
-			
-		
-			$(document).on("ChangeableConfig",function(e){
-				const jsonConfig = e.detail.config				
-				const config = JSON.parse(jsonConfig)
 				
-			});
-			
-			const configJson = window.localStorage.getItem("gobchat-config")
-			if(!configJson){
-				alert("Error")
-			}
-			const config = JSON.parse(configJson)
-			
-			$("#testcolorfield").val(config.segment.say["color"])
+				addToTableRow(tr,makeChannelNameLabel(entry))
+				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"visible"))
+				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"mention"))
+				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"roleplay"))
+				
+				addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))
+				addToTableRow(tr,makeColorSelectorForChannel(entry,"background-color"))
+			})
+											
+			$("#testcolorfield").val(gobconfig.get("style.segment.say.color"))
 			
 			$("#save_config").on("click",function(e){
-				//const config = {} //TODO
-				//Gobchat.sendMessageToPlugin({event:"ConfigChanged",detail:config})
-				
-				const configData = JSON.stringify(config)
-				window.localStorage.setItem("gobchat-config",configData)
-				
+				gobconfig.writeChangesToLocalStore()
 				window.close()
 				window.opener.postMessage("Done",'*')
 			});
-			
-			$("#testcolorfield").on("change",function(e){
-				let txt = $("#testcolorfield").val()
-				if(!txt.startsWith("#")){
-					txt = "#" + txt
-				}
-				config.segment.say["color"] = txt
-				
-				//$("#textcolorfield").val()
-				//console.log(this)
-			})
 		});
-		
-		$(window).on("message", function(e){
-			console.log("Test: " + window.chatManager)
-			//for(let k in e){
-			//	console.log(k + " | " + e[k])
-			//}		
-			//console.log("Test: " + window.chatManager)
-			//console.log("Origin1: " + window.location.origin)
-			//console.log("Origin2: " + window.origin)
-		})
-		
-		//window.addEventListener('message', event => {console.log("wat")})	
-		
-		//get a real color picker, like jquery.colorpicker or spectrum
-		/*$("#colPick").ColorPicker({
-			color: '#0000ff',
-			onShow: function (colpkr) {
-				$(colpkr).fadeIn(500);
-				return false;
-			},
-			onHide: function (colpkr) {
-				$(colpkr).fadeOut(500);
-				return false;
-			},
-			onChange: function (hsb, hex, rgb) {
-				$('#full').css('background-color', '#' + hex);
-			}    
-		});*/
-		
-		
-		
 	</script>
 	
 	<script type="text/javascript">
