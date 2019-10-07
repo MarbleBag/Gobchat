@@ -15,28 +15,28 @@ This plugin took a lot of inspiration (and some code) from [quisquous cactbot](h
 ### Smart autoscroll
 It won't scroll if you are (re)reading a text from the past
 
-![screenshot 1](docs/screen_scroll_noautoscrol.png)
+![no autoscroll](docs/screen_scroll_noautoscroll.png)
 
 but will gladly do so again, if you move the scroll bar back to the bottom of the chat
 
-![screenshot 1](docs/screen_scroll_bottom.png)
+![autoscroll reenables](docs/screen_scroll_bottom.png)
 
 ### Formatting text
 
-![screenshot 2](docs/screen3.png)
+![(missing) example screen](docs/screen3.png)
 
 becomes
 
-![screenshot 3](docs/screen4.png)
+![(missing) example screen](docs/screen4.png)
 
 Four different types
 
-![screenshot 1](docs/screen_formats.png)
+![Different formats](docs/screen_formats.png)
 
-### Text-Highlighting for key words
+### Text-Highlighting for key words - mentions
 Case-insensitive detection for a customizable list of words, which then will be highlighted. This will help you not missing out on important messages.
 
-![screenshot 1](docs/screen_mention_highlighting.png)
+![Mentions](docs/screen_mention_highlighting.png)
 
 
 ## Installation
