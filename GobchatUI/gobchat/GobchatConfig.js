@@ -108,7 +108,7 @@ var Gobchat = (function(Gobchat,undefined){
 			if(keyStep in _config){
 				_config = _config[keyStep]
 			}else{
-				throw new Error(`Config error. Key invalid at ${keyStep} - ${key}`);
+				throw new InvalidKeyError(`Config error. Key invalid at ${keyStep} - ${key}`);
 			}
 		}
 		
@@ -126,6 +126,13 @@ var Gobchat = (function(Gobchat,undefined){
 	//maybe not fast, but free of hassle :^)
 	function copyByJson(obj) {
 		return JSON.parse(JSON.stringify(obj))
+	}
+	
+	class InvalidKeyError extends Error {
+	  constructor(message) {
+		super(message)
+		this.name = "InvalidKeyError"
+	  }
 	}
 			
 	class GobchatConfig{
@@ -154,7 +161,8 @@ var Gobchat = (function(Gobchat,undefined){
 			const json = window.localStorage.getItem("gobchat-config")
 			window.localStorage.removeItem("gobchat-config")
 			const config = JSON.parse(json)
-			this.overwriteConfig(config)
+			this._config = copyByJson(Gobchat.DefaultChatConfig)
+			mergeIterator(this._config,config)
 		}
 		
 		saveToPlugin(){
@@ -172,11 +180,24 @@ var Gobchat = (function(Gobchat,undefined){
 			return this._config.style
 		}
 		
-		get(key){
+		get(key,defaultValue){
 			if(key===null || key.length===0){
 				return this._config
 			}
-			return resolvePath(key,this._config)
+			try{
+				const value = resolvePath(key,this._config)
+				return value === undefined ? defaultValue : value
+			}catch(error){
+				if( defaultValue !== undefined ){
+					if(error instanceof InvalidKeyError){
+						return defaultValue
+					}else{
+						throw error
+					}
+				}else{
+					throw error
+				}				
+			}
 		}
 		
 		set(key, value){
