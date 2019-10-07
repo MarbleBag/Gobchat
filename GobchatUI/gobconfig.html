@@ -35,23 +35,24 @@
 	</header>
 	<main>
 		<button id="save_config">
-			Needs to go somewhere
+			Save button needs to go somewhere
 		</button>
 	
 		<section>
 			<article>
 				<p>
 					<label>Test</label>
-					<select>
+					<select id="dropdown_language" disabled="true">
 						<option value="en">English</option>
 						<option value="de">Deutsch</option>
 					</select>
 				</p>
 				<p>
-					<input type="test" id="atestdiv"></div>
+					<label>Mentions</label>
+					<input type="text" id="txt_mentions">
 				</p>
 				<p>
-					<table id="betaconfig">
+					<table id="tbl_channel_config">
 						<thead>
 							<tr>
 								<th>Channel Name</th>
@@ -66,18 +67,6 @@
 						</tbody>
 					</table>
 				</p>
-				<p>
-					<label>Say</label>
-					<span>
-						<input type="checkbox" title=""/>
-						<input type="checkbox" title=""/>
-						<input type="color" id="testcolor" />						
-						<input type="text" id="testcolorfield" style="width: 10rem" placeholder="">
-					</span>
-				</p>
-				<p>
-					<div class="gc-table"></div>
-				</p>
 			</article>
 		</section>
 	</main>
@@ -85,23 +74,7 @@
 
 	<script>
 		'use strict';
-		//console.log(window.opener)
-		
-		$("#testcolor").on("change",function(e){
-			//$("#textcolorfield").val()
-			//console.log(e)
-		})
-		
-		$("#testcolorfield").on("change",function(e){
-			let txt = $("#testcolorfield").val()
-			if(!txt.startsWith("#")){
-				txt = "#" + txt
-			}
-			$("#testcolor").val(txt)			
-			//$(".message-segment-say").css("color",txt)
-			//not working this way, need to dynamically add a new css which can be overridden whenever needed
-		})
-		
+				
 		jQuery(function ($) {
 			const gobconfig	= new Gobchat.GobchatConfig()
 			gobconfig.loadChangesFromLocalStore()
@@ -240,19 +213,39 @@
 				return div
 			}
 			
-			const tbl = $("#betaconfig > tbody")
-			channelTblConfig.forEach((entry)=>{
-				const tr = document.createElement("tr")
-				tbl.append(tr)
-				
-				addToTableRow(tr,makeChannelNameLabel(entry))
-				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"visible"))
-				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"mention"))
-				addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"roleplay"))
-				
-				addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))
-				addToTableRow(tr,makeColorSelectorForChannel(entry,"background-color"))
+			{
+				const tbl = $("#tbl_channel_config > tbody")
+				channelTblConfig.forEach((entry)=>{
+					const tr = document.createElement("tr")
+					tbl.append(tr)
+					
+					addToTableRow(tr,makeChannelNameLabel(entry))
+					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"visible"))
+					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"mention"))
+					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"roleplay"))
+					
+					addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))
+					addToTableRow(tr,makeColorSelectorForChannel(entry,"background-color"))
+				})
+			}
+			
+			
+			$("#dropdown_language").val(gobconfig.get("behaviour.language"))
+			$("#dropdown_language").on("change",function(event){
+				const newLanguage = event.target.value || "en"
+				gobconfig.set("behaviour.language",newLanguage)
 			})
+			
+			
+			{
+				const mentions = gobconfig.get("behaviour.mentions")
+				$("#txt_mentions").val(mentions.join(", "))
+				$("#txt_mentions").on("change",function(event){
+					let words = (event.target.value || "").split(",")
+					words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.trim()).filter(w=>w.length>0)
+					gobconfig.set("behaviour.mentions",words)
+				})
+			}
 											
 			$("#testcolorfield").val(gobconfig.get("style.segment.say.color"))
 			

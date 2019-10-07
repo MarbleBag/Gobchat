@@ -26,10 +26,12 @@ var Gobchat = (function(Gobchat,undefined){
 					ChannelEnum.LINKSHELL_5, ChannelEnum.LINKSHELL_6, ChannelEnum.LINKSHELL_7, ChannelEnum.LINKSHELL_8,
 				],
 			},
+			mentions: [],
 			language: "en",
 			autodetectEmoteInSay: true,
 			playSoundOnMention: false,
 			datacenter: null,
+			displayServerType: 0,
 		},
 		style: { //will be used to generate css
 			chatbox: {
