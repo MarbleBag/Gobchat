@@ -8,25 +8,35 @@ var Gobchat = (function(Gobchat){
 		//TODO cleanup
 		class ParserConfigTest{ //TODO make this configurateable
 			constructor(manager){
-				this._manager = manager
-				this.mentions = []
+				this.getConfig = function(key,defaultValue){
+					return manager._chatConfig.get(key,defaultValue)
+				}
 			}
 			
 			isMessageRelevant(channelEnum){
-				return _.indexOf(Gobchat.PlayerChannel, channelEnum) != -1
+				const channels = this.getConfig("behaviour.channel.visible")
+				return _.includes(channels,channelEnum)
+				//return _.indexOf(channels, channelEnum) != -1
 			}
 			
-			isRoleplayChannel(channelEnum){				
-				return _.indexOf(Gobchat.RoleplayChannel, channelEnum) != -1
+			isRoleplayChannel(channelEnum){		
+				const channels = this.getConfig("behaviour.channel.roleplay")
+				return _.includes(channels,channelEnum)			
+				//return _.indexOf(Gobchat.RoleplayChannel, channelEnum) != -1
 			}
 			
 			isMentionChannel(channelEnum){
-				return true
+				const channels = this.getConfig("behaviour.channel.mention")
+				return _.includes(channels,channelEnum)		
 			}
 
 			get isAutodetectEmoteInSay(){
 				const val = this._manager._chatConfig.get("behaviour.autodetectEmoteInSay")
 				return val
+			}
+			
+			get mentions(){
+				return this.getConfig("behaviour.mentions")
 			}
 		}
 		
@@ -39,6 +49,7 @@ var Gobchat = (function(Gobchat){
 				const manager = this
 				
 				this._chatConfig = new Gobchat.GobchatConfig()
+				this._chatConfig.loadFromPlugin()
 				this.updateStyle()
 				
 				const parserConfig = new ParserConfigTest(manager)
@@ -65,11 +76,12 @@ var Gobchat = (function(Gobchat){
 			}
 			
 			saveConfigToLocalStore(){
-				this._chatConfig.writeChangesToLocalStore()
+				this._chatConfig.saveToLocalStore()
 			}
 			
 			loadConfigFromLocalStore(){
-				this._chatConfig.loadChangesFromLocalStore()
+				this._chatConfig.loadFromLocalStore()
+				this._chatConfig.saveToPlugin()
 			}
 			
 			//TODO test

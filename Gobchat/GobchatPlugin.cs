@@ -97,6 +97,11 @@ namespace Gobchat
             Advanced_Combat_Tracker.ActGlobals.oFormActMain.OnLogLineRead += OnACTLogLineRead;
         }
 
+        private void InitializeConfigListener()
+        {
+           
+        }
+
         private void OnACTLogLineRead(bool isImport, Advanced_Combat_Tracker.LogLineEventArgs logInfo)
         {
             if (logInfo != null && Config.IsPluginActive)
@@ -141,30 +146,42 @@ namespace Gobchat
             var serializer = new Newtonsoft.Json.JsonSerializer();
             var obj = serializer.Deserialize<Dictionary<string, string>>(reader);
 
-            if (obj.ContainsKey("event"))
+            try
             {
-                var eventName = obj["event"];
-                //TODO for now
-                if ("RequestMentions".Equals(eventName))
+                if (obj.ContainsKey("event"))
                 {
-                    DispatchMentionsToOverlay();
+                    var eventName = obj["event"];
+                    //logger.LogInfo("Event: " + eventName);
+                    //logger.LogInfo("Data: " + message.Replace("{", "{{").Replace("}", "}}"));
+
+                    if ("SaveGobchatConfig".Equals(eventName))
+                    {
+                        if (obj.ContainsKey("detail"))
+                        {
+                            Config.OverlayConfigData = obj["detail"];
+                        }
+                        else
+                        {
+                            logger.LogError("SaveGobchatConfig is empty");
+                        }                        
+                    }
+                    else if ("LoadGobchatConfig".Equals(eventName))
+                    {
+                        JavascriptDispatcher dispatcher = new JavascriptDispatcher(this);
+                        dispatcher.DispatchEventToOverlay(new JavascriptEvents.LoadGobchatConfigEvent(Config.OverlayConfigData));
+                    }
                 }
+            }catch(Exception e)
+            {
+                logger.LogError("Exception in OverlayMessage: " + e.Message);
+                logger.LogError("Exception in OverlayMessage: " + e.StackTrace);
+                logger.LogError("Exception in OverlayMessage: " + e.Source);
             }
-            //TODO
+            //TODO find out how to do a ping on mention
             //Advanced_Combat_Tracker.ActGlobals.oFormActMain.TTS(obj["cmd"]);
         }
 
-        private void InitializeConfigListener()
-        {
-            Config.MentionsChanged += (s, evt) => DispatchMentionsToOverlay();
-        }
 
-        //TODO early mention feature
-        private void DispatchMentionsToOverlay()
-        {
-            JavascriptDispatcher dispatcher = new JavascriptDispatcher(this);
-            dispatcher.DispatchEventToOverlay(new JavascriptEvents.MentionsEvent(Config.Mentions));
-        }
     }
 
     public class GobchatOverlayConfig : OverlayConfigBase
@@ -194,24 +211,33 @@ namespace Gobchat
                     handler.Invoke(this, new PluginActiveChangedEventArgs(pluginActive));
             }
         }
-        
-        public string[] Mentions
+
+        public override Type OverlayType
         {
-            get { return mentions; }
+            get { return typeof(GobchatOverlay); }
+        }
+
+        public string OverlayConfigData {
+            get
+            {
+                return overlayConfigData;
+            }
             set
             {
-                this.mentions = value;
-
-                var handler = MentionsChanged;
+                overlayConfigData = value;
+                var handler = OverlayConfigDataChanged;
                 if (handler != null)
-                    handler.Invoke(this, new MentionsChangedEventArgs(mentions));
+                    handler.Invoke(this, new OverlayConfigDataChangedEventArgs(overlayConfigData));
             }
         }
 
         private bool debug;
         private bool pluginActive;
+        private string overlayConfigData;
 
-        private string[] mentions = new string[0];
+        public event EventHandler<DebugeChangedEventArgs> DebugChanged;
+        public event EventHandler<PluginActiveChangedEventArgs> PluginActiveChanged;
+        public event EventHandler<OverlayConfigDataChangedEventArgs> OverlayConfigDataChanged;
 
         public GobchatOverlayConfig(string name) : base(name)
         {
@@ -223,15 +249,6 @@ namespace Gobchat
 
         }
 
-        public override Type OverlayType
-        {
-            get { return typeof(GobchatOverlay); }
-        }
-
-        public event EventHandler<DebugeChangedEventArgs> DebugChanged;
-        public event EventHandler<PluginActiveChangedEventArgs> PluginActiveChanged;
-        public event EventHandler<MentionsChangedEventArgs> MentionsChanged;
-        
     }
 
     public class DebugeChangedEventArgs
@@ -246,10 +263,10 @@ namespace Gobchat
         public PluginActiveChangedEventArgs(bool active) { IsPluginActive = active; }
     }
 
-    public class MentionsChangedEventArgs
+    public class OverlayConfigDataChangedEventArgs
     {
-        public string[] Mentions { get; }
-        public MentionsChangedEventArgs(string[] mentions) { Mentions = mentions; }
+        public string OverlayConfigData { get; }
+        public OverlayConfigDataChangedEventArgs(string overlayConfigData) { OverlayConfigData = overlayConfigData; }
     }
 
     public class HideServerChangedEventArgs

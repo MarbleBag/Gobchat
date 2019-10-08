@@ -4,8 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## [0.1.3] - Unreleased
 ### Added
+- Config button to overlay. On click it will open a config dialog
 - Detection for 'ooc' comments. A ooc-comment starts with (( and ends with ))
 - Detection for 'emote' in say. When quotation marks are used to mark speech in say, everything that's not enclosed in quotation marks will be seen as emote
+- Mention config to config dialog
+- Channel color selection to config dialog
+- Channel visibility to config dialog
+- Channel roleplay formatting to config dialog
+
+### Changed
+- Moved mention config from plugin to overlay
 
 ### Fixed
 - Multiple whitespaces in chat are not removed anymore

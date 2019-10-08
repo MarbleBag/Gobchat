@@ -10,71 +10,58 @@ var Gobchat = (function(Gobchat,undefined){
 		invalidKeys.forEach((k)=>{delete map[k]}) //remove keys which are not allowed
 	}
 		
-	function removeIteratorHelper1(data, defaultData, checkFunction){
-		if(Gobchat.isArray(defaultData)){
-			if(Gobchat.isArray(data)){
-				return false //do not delete arrays
-			}else{
-				return true //invalid property type
-			}			
-		}else if(Gobchat.isArray(data)){
-			return true //invalid property type
-		}else if(Gobchat.isObject(defaultData)){
-			if(Gobchat.isObject(data)){
-				return removeIteratorHelper2(data, defaultData, checkFunction)
-			}else{
-				return true //invalid property type
-			}
-		}else if(Gobchat.isObject(data)){
-			return true //invalid property type
-		}else{
-			return checkFunction(data,defaultData)
-		}
-	}
-	
-	function removeIteratorHelper2(data, defaultData, checkFunction){ //both are objects
-		removeInvalidKeys(data,Object.keys(defaultData)) 
-		for(let key of Object.keys(data)){
-			//if(!(key in comparedToMap))
-			//	continue //trivial
-			if(removeIteratorHelper1(data[key], defaultData[key], checkFunction))
-				delete data[key]
-		}
-		return Object.keys(data).length == 0 //if data is empty, it can be deleted
-	}
-	
-	function retainChanges(config, defaultConfig){		
-		removeIteratorHelper2(config,defaultConfig,(a,b)=>{return a==b})
-	}
-	
+	//removes every value from data that is the same as in 	extendedData
 	function retainChangesIterator(data, extendedData){
-		function onObjectCompare(data,extendedData,compareFunction,nFunction){
-			removeInvalidKeys(data,Object.keys(extendedData)) 
-			for(let key of Object.keys(data)){
-				if(!dataIteratorHelper(data[key], extendedData[key], compareFunction, nFunction))
-					delete data[key]
-			}
-			return Object.keys(data).length != 0 //if data is empty, it can be deleted
-		}		
-		dataIteratorHelper(data, extendedData, (a,b)=>{return a!=b}, onObjectCompare)
-	}
-	
-	function mergeIterator(data, extendedData){
-		for(let key of Object.keys(extendedData)){
-			if(!(key in data)){
-				data[key] = extendedData[key]
-			}else{
-				if(dataIteratorHelper(data[key], extendedData[key], (a,b)=>{return true}, mergeIterator)){
-					data[key] = extendedData[key]
-				}				
+		const callbackHelper = {
+			onArray: function(data,extendedData){				
+				return _.isEqual(_.sortBy(data), _.sortBy(extendedData)) //same, can be removed
+			},
+			onCompare: function(data,extendedData){
+				return data == extendedData //same, can be removed
+			},
+			onObject: function(data,extendedData,callbackHelper){
+				removeInvalidKeys(data,Object.keys(extendedData)) 
+				for(let key of Object.keys(data)){
+					if(dataIteratorHelper(data[key], extendedData[key], callbackHelper)) //delete on true
+						delete data[key]
+				}
+				return Object.keys(data).length == 0 //if data is empty, it can be deleted
 			}
 		}
+		
+		dataIteratorHelper(data, extendedData, callbackHelper)
 	}
 	
-	function dataIteratorHelper(data, extendedData,compareFunction,onObjectFunction){
+	//Will merge every value from extendedData into data 
+	function mergeIterator(data, extendedData){
+		const callbackHelper= {
+			onArray: function(data,extendedData){
+				return true //lazy, just merge
+			},
+			onCompare: function(data,extendedData){
+				return true //lazy, just merge
+			},
+			onObject: function(data, extendedData, callbackHelper){
+				for(let key of Object.keys(extendedData)){
+					if(!(key in data)){
+						data[key] = extendedData[key]
+					}else{
+						if(dataIteratorHelper(data[key], extendedData[key], callbackHelper)){ //merge on true
+							data[key] = extendedData[key]
+						}				
+					}
+				}
+				return false
+			}
+		}
+		
+		callbackHelper.onObject(data, extendedData, callbackHelper)
+	}
+		
+	function dataIteratorHelper(data, extendedData, callbackHelper){
 		if(Gobchat.isArray(data)){
 			if(Gobchat.isArray(extendedData)){
-				return true //valid
+				return callbackHelper.onArray(data,extendedData)
 			}else{
 				return false //invalid
 			}
@@ -82,14 +69,14 @@ var Gobchat = (function(Gobchat,undefined){
 			return false //invalid
 		}else if(Gobchat.isObject(data)){
 			if(Gobchat.isObject(extendedData)){
-				return onObjectFunction(data, extendedData, compareFunction, onObjectFunction)
+				return callbackHelper.onObject(data, extendedData, callbackHelper)
 			}else{
 				return false //invalid
 			}
 		}else if(Gobchat.isObject(extendedData)){
 			return false //invalid
 		}else{
-			return compareFunction(data,extendedData)
+			return callbackHelper.onCompare(data,extendedData)
 		}		
 	}
 	
@@ -141,6 +128,10 @@ var Gobchat = (function(Gobchat,undefined){
 			this._config = copyByJson(Gobchat.DefaultChatConfig)
 		}
 		
+		restoreDefaultConfig(){
+			this._config = copyByJson(Gobchat.DefaultChatConfig)
+		}
+		
 		overwriteConfig(config){
 			//TODO return a set of update flags?
 			mergeIterator(this._config,config)
@@ -152,28 +143,43 @@ var Gobchat = (function(Gobchat,undefined){
 			return config
 		}
 		
-		writeChangesToLocalStore(){
+		saveToLocalStore(){
 			const json = JSON.stringify(this.getConfigChanges())
 			window.localStorage.setItem("gobchat-config",json)
 		}
 		
-		loadChangesFromLocalStore(){			
+		loadFromLocalStore(){			
 			const json = window.localStorage.getItem("gobchat-config")
 			window.localStorage.removeItem("gobchat-config")
+			if(json===undefined || json===null)
+				return
 			const config = JSON.parse(json)
-			this._config = copyByJson(Gobchat.DefaultChatConfig)
-			mergeIterator(this._config,config)
+			this.restoreDefaultConfig()				
+			this.overwriteConfig(config)
 		}
 		
 		saveToPlugin(){
-			//TODO
 			const json = JSON.stringify(this.getConfigChanges())
+			console.log("Send: " + json)
 			Gobchat.sendMessageToPlugin({event:"SaveGobchatConfig",detail:json})
 		}
 		
 		loadFromPlugin(){
-			//TODO
-			Gobchat.sendMessageToPlugin({event:"RequestGobchatConfig"})
+			const self = this
+			const onLoad = function(e){
+				document.removeEventListener("LoadGobchatConfig",onLoad)
+				const json = e.detail.data
+				if(json===undefined || json===null){
+					console.log("No config data from plugin available")
+					return
+				}
+				
+				const config = JSON.parse(json)
+				self.restoreDefaultConfig()				
+				self.overwriteConfig(config)
+			}			
+			document.addEventListener("LoadGobchatConfig",onLoad,false)
+			Gobchat.sendMessageToPlugin({event:"LoadGobchatConfig"})
 		}
 		
 		get configStyle(){
@@ -191,12 +197,9 @@ var Gobchat = (function(Gobchat,undefined){
 				if( defaultValue !== undefined ){
 					if(error instanceof InvalidKeyError){
 						return defaultValue
-					}else{
-						throw error
 					}
-				}else{
-					throw error
-				}				
+				}
+				throw error								
 			}
 		}
 		

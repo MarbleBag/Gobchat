@@ -6,6 +6,7 @@ var Gobchat = (function(Gobchat,undefined){
 	
 	const ChannelEnum = Gobchat.ChannelEnum
 	Gobchat.DefaultChatConfig = Object.freeze({
+		version: "0.1.3",
 		behaviour: {
 			channel: {
 				roleplay: [ //which channels are formatted for roleplay

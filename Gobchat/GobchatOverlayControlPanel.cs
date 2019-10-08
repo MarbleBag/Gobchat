@@ -55,10 +55,6 @@ namespace Gobchat
             this.config.GlobalHotkeyEnabledChanged += (o, e) => {
                 UISync(() =>{ this.checkEnableGlobalHotkey.Checked = e.NewGlobalHotkeyEnabled; });
             };
-
-            this.config.MentionsChanged += (o, e) => {
-                UISync(() => { this.textMentions.Text = string.Join(", ", e.Mentions); });
-            };
         }
 
         private void SetupInitialValues()
@@ -72,8 +68,6 @@ namespace Gobchat
 
             this.textGlobalHotkey.Text = GetHotkeyString(config.GlobalHotkeyModifiers, config.GlobalHotkey);
             this.checkEnableGlobalHotkey.Checked = config.GlobalHotkeyEnabled;
-
-            this.textMentions.Text = string.Join(", ", config.Mentions);
 
             SetupFileWatcher();
         }
@@ -159,17 +153,6 @@ namespace Gobchat
         {
             this.config.Url = textUrl.Text;
             SetupFileWatcher();
-        }
-
-        private void textMentions_Leave(object sender, EventArgs e)
-        {
-            string text = this.textMentions.Text;
-            if (text == null) config.Mentions = new string[0];
-            text = text.Trim();
-            if (text.Length == 0) config.Mentions = new string[0];
-            string[]split = text.Split(new char[] { ',' });
-            split = split.Select(s => s.Trim().ToLower()).Distinct().Where(s => s.Length>0).ToArray();
-            config.Mentions = split;
         }
 
         private void btnReloadOverlay_Click(object sender, EventArgs e)

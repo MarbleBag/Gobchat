@@ -35,7 +35,7 @@
 	</header>
 	<main>
 		<button id="save_config">
-			Save button needs to go somewhere
+			Save
 		</button>
 	
 		<section>
@@ -49,7 +49,7 @@
 				</p>
 				<p>
 					<label>Mentions</label>
-					<input type="text" id="txt_mentions">
+					<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
 				</p>
 				<p>
 					<table id="tbl_channel_config">
@@ -67,6 +67,18 @@
 						</tbody>
 					</table>
 				</p>
+				<p>
+					<table id="tbl_segment_config">
+						<thead>
+							<tr>
+								<th>Segment Name</th>								
+								<th>Text Color</th>
+							<tr>	
+						</thead>
+						<tbody>							
+						</tbody>
+					</table>
+				</p>
 			</article>
 		</section>
 	</main>
@@ -77,22 +89,20 @@
 				
 		jQuery(function ($) {
 			const gobconfig	= new Gobchat.GobchatConfig()
-			gobconfig.loadChangesFromLocalStore()
+			gobconfig.loadFromLocalStore()
 		
 			const channelTblConfig = [
 				{label:"General", 	channelEnum:null, 		styleId:"style.channel.base"},
 				
-				{label:"Say", 	channelEnum:"SAY", 		styleId:"style.channel.say"},
-				{label:"Emote", channelEnum:"EMOTE", 	styleId:"style.channel.emote"},
-				{label:"Yell", 	channelEnum:"YELL", 	styleId:"style.channel.yell"},
-				{label:"Shout", channelEnum:"SHOUT", 	styleId:"style.channel.shout"},
-				{label:"Party", channelEnum:"PARTY", 	styleId:"style.channel.party"},
-				{label:"Guild", channelEnum:"GUILD", 	styleId:"style.channel.guild"},
-				
-				{label:"Tell send", channelEnum:"GUILD", 	styleId:"style.channel.tellsend"},
-				{label:"Tell recieve", channelEnum:"GUILD", 	styleId:"style.channel.tellrecieve"},
-				
-				{label:"Alliance", channelEnum:"GUILD", 	styleId:"style.channel.alliance"},
+				{label:"Say", 			channelEnum:"SAY", 			styleId:"style.channel.say"},
+				{label:"Emote", 		channelEnum:"EMOTE", 		styleId:"style.channel.emote"},
+				{label:"Yell", 			channelEnum:"YELL", 		styleId:"style.channel.yell"},
+				{label:"Shout", 		channelEnum:"SHOUT", 		styleId:"style.channel.shout"},
+				{label:"Party", 		channelEnum:"PARTY", 		styleId:"style.channel.party"},
+				{label:"Guild", 		channelEnum:"GUILD", 		styleId:"style.channel.guild"},				
+				{label:"Tell send",		channelEnum:"TELL_SEND", 	styleId:"style.channel.tellsend"},
+				{label:"Tell recieve", 	channelEnum:"TELL_RECIEVE",	styleId:"style.channel.tellrecieve"},				
+				{label:"Alliance", 		channelEnum:"ALLIANCE", 	styleId:"style.channel.alliance"},
 				
 				{label:"Linkshells", channelEnum:null, 	styleId:"style.channel.linkshell"},
 				{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:null},
@@ -113,6 +123,13 @@
 				{label:"Cross-world Linkshell 6", channelEnum:"WORLD_LINKSHELL_6", 	styleId:null},	
 				{label:"Cross-world Linkshell 7", channelEnum:"WORLD_LINKSHELL_7", 	styleId:null},	
 				{label:"Cross-world Linkshell 8", channelEnum:"WORLD_LINKSHELL_8", 	styleId:null},	
+			]
+			
+			const segmentTblConfig = [
+				{label:"Say", styleId:"style.segment.say"},
+				{label:"Emote", styleId:"style.segment.emote"},
+				{label:"OoC", styleId:"style.segment.ooc"},
+				{label:"Mention", styleId:"style.segment.mention"},
 			]
 			
 			function addToTableRow(rowElement, element){
@@ -229,6 +246,16 @@
 				})
 			}
 			
+			{
+				const tbl = $("#tbl_segment_config > tbody")
+				segmentTblConfig.forEach((entry)=>{
+					const tr = document.createElement("tr")
+					tbl.append(tr)					
+					addToTableRow(tr,makeChannelNameLabel(entry))					
+					addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))					
+				})
+			}
+			
 			
 			$("#dropdown_language").val(gobconfig.get("behaviour.language"))
 			$("#dropdown_language").on("change",function(event){
@@ -242,15 +269,14 @@
 				$("#txt_mentions").val(mentions.join(", "))
 				$("#txt_mentions").on("change",function(event){
 					let words = (event.target.value || "").split(",")
-					words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.trim()).filter(w=>w.length>0)
+					words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.toLowerCase().trim()).filter(w=>w.length>0)
 					gobconfig.set("behaviour.mentions",words)
+					event.target.value = words.join(", ")
 				})
 			}
 											
-			$("#testcolorfield").val(gobconfig.get("style.segment.say.color"))
-			
 			$("#save_config").on("click",function(e){
-				gobconfig.writeChangesToLocalStore()
+				gobconfig.saveToLocalStore()
 				window.close()
 				window.opener.postMessage("Done",'*')
 			});
@@ -259,6 +285,16 @@
 	
 	<script type="text/javascript">
 		'use strict';
+		
+		class ColorControl{
+			constructor(options){
+				const defaultOptions = {
+			
+				}
+			
+				options = $.extend({},defaultOptions,options)
+			}
+		}
 		
 		class TableManager{
 			constructor(){
