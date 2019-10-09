@@ -41,7 +41,7 @@ var Gobchat = (function(Gobchat,undefined){
 			channel: {
 				base: { // base style for every message/channel
 					"color": "#DEDEDE", 
-					"font-family": "'Times New Roman', Times, serif",
+					"font-family": "'Times New Roman', Times, sans-serif",
 					"font-size": "medium",
 					"white-space": "pre-wrap",
 				},
