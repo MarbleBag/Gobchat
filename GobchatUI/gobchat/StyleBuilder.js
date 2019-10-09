@@ -45,7 +45,7 @@ var Gobchat = (function(Gobchat){
 		const gobchatStyle = []
 		
 		{
-			const style = buildCssClass(`chatbox`,styleConfig.chatbox)
+			const style = buildCssClass(`chatbox-gen`,styleConfig.chatbox)
 			gobchatStyle.push(style)
 		}
 			
