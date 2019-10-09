@@ -7,6 +7,10 @@ html {
   overflow: hidden;
 }
 
+button > * {
+	pointer-events: none;
+}
+
 .text {
   font-family: arial;
   font-weight: bold;

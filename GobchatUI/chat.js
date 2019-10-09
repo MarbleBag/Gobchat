@@ -143,7 +143,7 @@ class ChatManager {
 		document.addEventListener("MentionsEvent", (e) => { this.onMentionEvent(e) })
 		document.addEventListener("PlayerPositionEvent", (e) => { this.onPlayerPositionUpdate(e) })
 		
-		sendMessageToPlugin({event:"RequestMentions"})		
+		Gobchat.sendMessageToPlugin({event:"RequestMentions"})		
     }
 	
 	isShowableChannel(nChannel){		

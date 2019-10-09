@@ -33,30 +33,62 @@
 }
 
 .chatbox{
-	width: 100%;
-	height: 100%;
-	min-height:100%;
-	min-width:100%;
-	background-color: rgba(20, 20, 20, 0.95);
-	overflow: hidden;
+	/*background-color: rgba(20, 20, 20, 0.95);	*/
 }
 
-/*.chatbox-scrollbar{
+.chatbox-topbar{
+	display: table;
 	width: 100%;
+	z-index: 1;	
+	padding-bottom: 0px;
+}
+
+.chatbox-topbar > div{
+	display: table-cell;
+	
+}
+
+.chatbox-tabs{
+	text-align: right;
+}
+
+.chatbox-tabs > button{
+	
+}
+
+.chatbox-toolbar{
+	text-align: left;
+}
+
+.chatbox-toolbar > button{
+	background-color: #222;
+	border: none;
+	color: #c0c0c0;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	padding: 3px 3px;
+	font-size: 16px;	
+	cursor: pointer;
+	border-radius: 12px;
+	background-image: linear-gradient(to bottom, #d0d0d0 0%, #505050 50%, #505050 70%, #a0a0a0 100%);
+}
+
+.chatbox-toolbar > button:hover {
+	background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
+}
+
+.chatbox-content-container{
 	height: 100%;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	transform: scaleX(-1)
-}*/
+}
 
 .chatbox-content{		
-	width: 100%;
-	height: 100%;
+	position:absolute;
+	top: 22px;
+	left: 0;
+	right: 4;
+	bottom: 0;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	/*position: absolute;
-	top: 0px;
-	right: 0px;*/
+
 	/*width: 100%;
 	height: 100%;*/
 	/*min-width: 200px;
@@ -71,46 +103,18 @@
 	margin: 5px;
 }
 
-.message-body-default{
-	color:#DEDEDE; 
-	font-family: "Times New Roman", Times, serif;
-	font-size: medium;
+/* non generated message css */
+
+.message-segment-base{
+	
 }
 
-.message-body-say{
-	color:#FFFFFF;
+.message-body-error{
+	color:#d40420; 
 }
 
-.message-body-emote{
-	color:#F19212;
-}
-
-.message-body-yell{
-	color:#D1DE09;
-}
-
-.message-body-shout{
-	color:#D1DE09;
-}
-
-.message-body-guild{
-	color:#50DE09;
-}
-
-.message-body-party{
-	color:#05f7ff;
-}
-
-.message-body-alliance{
-	color:#ff5005;
-}
-
-.message-body-tells{
-	color:#AA3DC0;
-}
-
-.message-body-tellr{
-	color:#A118BC;
+.message-body-echo{
+	
 }
 
 .message-body-ls{
@@ -135,32 +139,4 @@
 
 .message-body-fade-20{
 	opacity:0.2;
-}
-
-.message-body-linkshell{
-	
-}
-
-.message-body-echo{
-	
-}
-
-.message-segment-default{
-	
-}
-
-.message-segment-say{
-	color:#FFFFFF;
-}
-
-.message-segment-emote{
-	color:#F19212;
-}
-
-.message-segment-ooc{
-	color:#FF5920;
-}
-
-.message-segment-mention{
-	color:#9358E4;
 }

@@ -33,6 +33,15 @@ namespace Gobchat
             }
         }
 
+        public class LoadGobchatConfigEvent : JSEvent
+        {
+            public string data;
+            public LoadGobchatConfigEvent(string data) : base("LoadGobchatConfig")
+            {
+                this.data = data;
+            }
+        }
+
         public class PlayerPositionEvent : JSEvent
         {
             public string playerId;

@@ -42,6 +42,7 @@
             this.btnUrl = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnReloadOverlay = new System.Windows.Forms.Button();
+            this.btnShowDevtool = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.checkShowDebug = new System.Windows.Forms.CheckBox();
             this.labelPluginActive = new System.Windows.Forms.Label();
@@ -51,9 +52,6 @@
             this.labelInfo1 = new System.Windows.Forms.Label();
             this.labelEnableGlobalHotkey = new System.Windows.Forms.Label();
             this.checkEnableGlobalHotkey = new System.Windows.Forms.CheckBox();
-            this.labelMentions = new System.Windows.Forms.Label();
-            this.textMentions = new System.Windows.Forms.TextBox();
-            this.labelMentionInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -80,9 +78,6 @@
             this.tableLayoutPanel1.Controls.Add(this.labelInfo1, 1, 8);
             this.tableLayoutPanel1.Controls.Add(this.labelEnableGlobalHotkey, 0, 10);
             this.tableLayoutPanel1.Controls.Add(this.checkEnableGlobalHotkey, 1, 10);
-            this.tableLayoutPanel1.Controls.Add(this.labelMentions, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.textMentions, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.labelMentionInfo, 1, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // labelOverlayVisible
@@ -148,6 +143,7 @@
             // 
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
             this.tableLayoutPanel3.Controls.Add(this.btnReloadOverlay, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnShowDevtool, 1, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // btnReloadOverlay
@@ -156,6 +152,13 @@
             this.btnReloadOverlay.Name = "btnReloadOverlay";
             this.btnReloadOverlay.UseVisualStyleBackColor = true;
             this.btnReloadOverlay.Click += new System.EventHandler(this.btnReloadOverlay_Click);
+            // 
+            // btnShowDevtool
+            // 
+            resources.ApplyResources(this.btnShowDevtool, "btnShowDevtool");
+            this.btnShowDevtool.Name = "btnShowDevtool";
+            this.btnShowDevtool.UseVisualStyleBackColor = true;
+            this.btnShowDevtool.Click += new System.EventHandler(this.btnShowDevtool_Click);
             // 
             // label1
             // 
@@ -209,23 +212,6 @@
             this.checkEnableGlobalHotkey.UseVisualStyleBackColor = true;
             this.checkEnableGlobalHotkey.CheckedChanged += new System.EventHandler(this.checkEnableGlobalHotkey_CheckedChanged);
             // 
-            // labelMentions
-            // 
-            resources.ApplyResources(this.labelMentions, "labelMentions");
-            this.labelMentions.Name = "labelMentions";
-            // 
-            // textMentions
-            // 
-            resources.ApplyResources(this.textMentions, "textMentions");
-            this.textMentions.Name = "textMentions";
-            this.textMentions.Enter += new System.EventHandler(this.textMentions_Leave);
-            this.textMentions.Leave += new System.EventHandler(this.textMentions_Leave);
-            // 
-            // labelMentionInfo
-            // 
-            resources.ApplyResources(this.labelMentionInfo, "labelMentionInfo");
-            this.labelMentionInfo.Name = "labelMentionInfo";
-            // 
             // GobchatOverlayControlPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -265,8 +251,6 @@
         private System.Windows.Forms.Label labelInfo1;
         private System.Windows.Forms.Label labelEnableGlobalHotkey;
         private System.Windows.Forms.CheckBox checkEnableGlobalHotkey;
-        private System.Windows.Forms.Label labelMentions;
-        private System.Windows.Forms.TextBox textMentions;
-        private System.Windows.Forms.Label labelMentionInfo;
+        private System.Windows.Forms.Button btnShowDevtool;
     }
 }

@@ -55,10 +55,6 @@ namespace Gobchat
             this.config.GlobalHotkeyEnabledChanged += (o, e) => {
                 UISync(() =>{ this.checkEnableGlobalHotkey.Checked = e.NewGlobalHotkeyEnabled; });
             };
-
-            this.config.MentionsChanged += (o, e) => {
-                UISync(() => { this.textMentions.Text = string.Join(", ", e.Mentions); });
-            };
         }
 
         private void SetupInitialValues()
@@ -72,8 +68,6 @@ namespace Gobchat
 
             this.textGlobalHotkey.Text = GetHotkeyString(config.GlobalHotkeyModifiers, config.GlobalHotkey);
             this.checkEnableGlobalHotkey.Checked = config.GlobalHotkeyEnabled;
-
-            this.textMentions.Text = string.Join(", ", config.Mentions);
 
             SetupFileWatcher();
         }
@@ -161,17 +155,6 @@ namespace Gobchat
             SetupFileWatcher();
         }
 
-        private void textMentions_Leave(object sender, EventArgs e)
-        {
-            string text = this.textMentions.Text;
-            if (text == null) config.Mentions = new string[0];
-            text = text.Trim();
-            if (text.Length == 0) config.Mentions = new string[0];
-            string[]split = text.Split(new char[] { ',' });
-            split = split.Select(s => s.Trim().ToLower()).Distinct().Where(s => s.Length>0).ToArray();
-            config.Mentions = split;
-        }
-
         private void btnReloadOverlay_Click(object sender, EventArgs e)
         {
             this.overlay.Navigate(this.config.Url);
@@ -193,6 +176,11 @@ namespace Gobchat
         private void checkEnableGlobalHotkey_CheckedChanged(object sender, EventArgs e)
         {
             this.config.GlobalHotkeyEnabled = this.checkEnableGlobalHotkey.Checked;
+        }
+
+        private void btnShowDevtool_Click(object sender, EventArgs e)
+        {
+            this.overlay.Overlay.Renderer.showDevTools();
         }
 
         #endregion
@@ -236,6 +224,8 @@ namespace Gobchat
             sbKeys.Append(Enum.ToObject(typeof(Keys), key).ToString());
             return sbKeys.ToString();
         }
+
+
 
     }
 }
