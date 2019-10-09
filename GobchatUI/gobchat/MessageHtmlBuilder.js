@@ -117,6 +117,7 @@ var Gobchat = (function(Gobchat){
 				segmentElement.innerHTML = segmentText
 				
 				const segmentClass = getCssClassForMessageSegmentType(segmentType)
+				segmentElement.classList.add("message-segment-base")
 				if(segmentClass) segmentElement.classList.add(segmentClass)
 				
 				messageContainer.appendChild(segmentElement)	
