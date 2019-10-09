@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.1.3] - Unreleased
+## [0.1.3] - 2019.10.09
 ### Added
 - Config button to overlay. On click it will open a config dialog
 - Detection for 'ooc' comments. A ooc-comment starts with (( and ends with ))
@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Channel color selection to config dialog
 - Channel visibility to config dialog
 - Channel roleplay formatting to config dialog
+- Basic font selection
 
 ### Changed
 - Moved mention config from plugin to overlay
