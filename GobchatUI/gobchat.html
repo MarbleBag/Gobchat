@@ -14,6 +14,8 @@
 
 	<link rel="stylesheet" href="resize_handle.css">
 	<script src="resize_handle.js"></script>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="gobchat/Datacenters.js"></script>
 	<script src="gobchat/Channels.js"></script>
@@ -40,17 +42,42 @@
 		- Store some MB of chat history im plugin for retrieval on reload
 		- clear command		
 	-->
+	
+	<style>
+		.btn {
+			background-color: rgba(0,0,0,0); /* Blue background */
+			border: none; /* Remove borders */
+			color: white; /* White text */
+			padding: 8px 8px; /* Some padding */
+			font-size: 16px; /* Set a font size */
+			cursor: pointer; /* Mouse pointer on hover */
+			border-radius: 12px;
+		}
+
+		/* Darker background on mouse-over */
+			.btn:hover {
+			background-color: RoyalBlue;
+		}
+	</style>
 
 	<div id="container">
-
-		<div id="chatbox" class="chatbox-base chatbox">
-			<div id="toolbar" class="">
-				<button id="gobchat_config">
-					Settings
-				</button>
+		<div id="chatbox" class="chatbox">
+			<div id="toolbar" class="chatbox-topbar">
+				<div class="chatbox-toolbar">
+					<button id="gobchat_config"><i class="fa fa-gear"></i></button>
+				</div>
+				<div id="toolbarTabs" class="chatbox-tabs">
+					<!--<button>A Tab</button>
+					<button>A Tab</button>
+					<button>A Tab</button>
+					<button>A Tab</button>
+					<button>A Tab</button>
+					<button>A Tab</button>
+					<button>A Tab</button>-->
+				</div>
 			</div>
-			<div>
-				<div id="chatcontent" class="chatbox-content">
+			<div class="chatbox-content-container chatbox-gen">
+				<div id="chatboxcontent" class="chatbox-content">
 				</div>
 			</div>
 
@@ -70,7 +97,7 @@
 	//})
 	
 	jQuery(function ($) {
-		window.chatManager = new Gobchat.GobchatManager("chatcontent")
+		window.chatManager = new Gobchat.GobchatManager("chatboxcontent")
 		window.chatManager.init()
 						
 		$("#gobchat_config").on("click",function(e){

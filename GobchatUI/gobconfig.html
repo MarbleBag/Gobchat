@@ -9,7 +9,7 @@
 	<script src="lib/lodash.min.js"></script>
 	<link rel="stylesheet" href="lib/spectrum.css">
 	<script src="lib/spectrum.js"></script>
-	
+
 	<script src="gobchat/Datacenters.js"></script>
 	<script src="gobchat/Channels.js"></script>
 	<script src="gobchat/DefaultConfig.js"></script>
@@ -20,38 +20,103 @@
 	<script src="gobconfig-ui.js"></script>
 </head>
 <body>
-	<aside>
-		<ul>
-			<li>
-				<label>Menu 1</label>
-			</li>
-			<li>
-				<label>Menu 2</label>
-			</li>
-		</ul>
-	</aside>
-	<header>
-		<label>Header</label>
-	</header>
-	<main>
-		<button id="save_config">
-			Save
-		</button>
+	<style>
+		.side-navigation{
+			margin: 0;
+			padding: 0;
+			width: 150px;
+			background-color: #f1f1f1;
+			position: fixed;
+			z-index: 1;
+			height: 100%
+			overflow: auto
+		}
+		
+		.side-navigation > *{
+			display: block;
+			color: black;
+			padding: 16px;
+			text-decoration: none;
+		}
+		
+		.side-navigation > *.active {
+			background-color: #4caf50;
+			color: white;
+		}
+		
+		.side-navigation > *:hover:not(.active){
+			background-color: #555555;
+			color: white;
+		}
+		
+		.content {
+			margin-left: 150px;
+			padding: 1px 16px;
+			height: 100%
+		}
+		
+		.btn-system{
+			background-color: #dcdcdc
+		}
+		
+		.btn-system:hover{
+		
+		}
+	</style>
+
+	<div id="mainNavigationBar" class="side-navigation">
+		<a data-nav-target="nav_general" class="active">General</a>
+		<a data-nav-target="nav_channels">Channels</a>
+		<a data-nav-target="nav_roleplay">Roleplay</a>
+		<a data-nav-target="nav_about">About</a>
+		<a class="btn-system" id="save_config">Save</a>
+		<a class="btn-system" id="reset_config">Defaults</a>
+	</div>
 	
+	<main class="content">
 		<section>
-			<article>
+			<article id="nav_general" >
 				<p>
-					<label>Test</label>
-					<select id="dropdown_language" disabled="true">
-						<option value="en">English</option>
-						<option value="de">Deutsch</option>
-					</select>
+					<div>
+						<label>Test</label>
+						<select id="dropdown_language" disabled="true">
+							<option value="en">English</option>
+							<option value="de">Deutsch</option>
+						</select>
+					</div>
 				</p>
 				<p>
-					<label>Mentions</label>
-					<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
+					<div>
+						<label>Mentions</label>
+						<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
+					</div>
 				</p>
 				<p>
+					<div>
+						<label>Autodetect emotes in say channel</label>
+						<input type="checkbox" id="input_autoemote">
+					</div>
+				</p>
+				<p>	
+					<div>
+						<label>Fonts: (picks the first available, or generic font type: serif, sans-serife, monospace)</label>							
+						<input type="text" id="general_font" style="width:100%;">	
+						<button id="general_font_reset" >&#x274C;</button>							
+					</div>
+				</p>
+				<p>
+					<div>
+						<label>Font size:</label>
+						<select id="general_font_size" >
+							<option value="small">Small</option>
+							<option value="medium">Medium</option>
+							<option value="large">Large</option>
+						</select>
+					</div>
+				</p>
+			</article>
+			<article id="nav_channels">
+				<div>
 					<table id="tbl_channel_config">
 						<thead>
 							<tr>
@@ -66,8 +131,10 @@
 						<tbody>							
 						</tbody>
 					</table>
-				</p>
-				<p>
+				</div>
+			</article>
+			<article id="nav_roleplay">
+				<div>
 					<table id="tbl_segment_config">
 						<thead>
 							<tr>
@@ -78,7 +145,10 @@
 						<tbody>							
 						</tbody>
 					</table>
-				</p>
+				</div>
+			</article>
+			<article id="nav_about">
+				<label>Test 3</label>
 			</article>
 		</section>
 	</main>
@@ -86,6 +156,52 @@
 
 	<script>
 		'use strict';
+		//TODO automat detection of config elements and type
+				
+		$( function() {
+			$( "#accordion" ).accordion({
+				collapsible: true,
+				heightStyle: "fill",
+			});
+		});		
+		
+		jQuery(function ($) { //navbar
+			const navAttribute = "data-nav-target"
+			const navigationBarId = "mainNavigationBar"
+		
+			function hideNavigationContent(navigationId){
+				$(`#${navigationId} > a`).each(function(){
+					const target = $(this).attr(navAttribute)
+					if(target){
+						$(`#${target}`).hide()
+					}
+				})
+			}
+			
+			function showActiveNavigationContent(navigationId){
+				$(`#${navigationId} > .active`).each(function(){
+					const target = $(this).attr(navAttribute)
+					if(target)
+						$(`#${target}`).show()				
+				})
+			}
+			
+			function hasNavigationAttribute(element){
+				const target = $(element).attr(navAttribute)
+				return target !== null && target !== undefined
+			}
+			
+			hideNavigationContent(navigationBarId)
+			showActiveNavigationContent(navigationBarId)
+			
+			$(`#${navigationBarId}`).on("click",function(event){
+				if(!hasNavigationAttribute(event.target)) return				
+				hideNavigationContent(navigationBarId)				
+				$(`#${navigationBarId} > .active`).removeClass("active")
+				$(event.target).addClass("active")
+				showActiveNavigationContent(navigationBarId)		
+			})
+		})
 				
 		jQuery(function ($) {
 			const gobconfig	= new Gobchat.GobchatConfig()
@@ -103,6 +219,11 @@
 				{label:"Tell send",		channelEnum:"TELL_SEND", 	styleId:"style.channel.tellsend"},
 				{label:"Tell recieve", 	channelEnum:"TELL_RECIEVE",	styleId:"style.channel.tellrecieve"},				
 				{label:"Alliance", 		channelEnum:"ALLIANCE", 	styleId:"style.channel.alliance"},
+				
+				{label:"NPC speech",		channelEnum:"NPC_TALK", 		styleId:null},
+				{label:"Animated emote", 	channelEnum:"ANIMATED_EMOTE", 	styleId:null},
+				{label:"Echo", 				channelEnum:"ECHO", 			styleId:null},
+				{label:"Error Messages",	channelEnum:"ERROR", 			styleId:null},
 				
 				{label:"Linkshells", channelEnum:null, 	styleId:"style.channel.linkshell"},
 				{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:null},
@@ -264,21 +385,54 @@
 			})
 			
 			
-			{
-				const mentions = gobconfig.get("behaviour.mentions")
-				$("#txt_mentions").val(mentions.join(", "))
-				$("#txt_mentions").on("change",function(event){
-					let words = (event.target.value || "").split(",")
-					words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.toLowerCase().trim()).filter(w=>w.length>0)
-					gobconfig.set("behaviour.mentions",words)
-					event.target.value = words.join(", ")
-				})
-			}
+			$("#txt_mentions").val(gobconfig.get("behaviour.mentions").join(", "))
+			$("#txt_mentions").on("change",function(event){
+				let words = (event.target.value || "").split(",")
+				words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.toLowerCase().trim()).filter(w=>w.length>0)
+				gobconfig.set("behaviour.mentions",words)
+				event.target.value = words.join(", ")
+			})
+			
+			
+			$("#input_autoemote").prop('checked',gobconfig.get("behaviour.autodetectEmoteInSay"))
+			$("#input_autoemote").on("change",function(event){					
+				gobconfig.set("behaviour.autodetectEmoteInSay",event.target.checked)
+			})
+			
+			$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
+			$("#general_font").on("change",function(event){
+				let newFont = event.target.value || "sans-serif"
+				gobconfig.set("style.channel.base.font-family",newFont)
+			})
+			
+			$("#general_font_reset").on("click",function(event){
+				gobconfig.reset("style.channel.base.font-family")
+				$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
+			})
+		
+			$("#general_font_size").val(gobconfig.get("style.channel.base.font-size"))
+			$("#general_font_size").on("change",function(event){
+				let newSize = event.target.value || "medium"
+				if(Gobchat.isNumber(newSize)){
+					const number = Math.round(newSize)
+					newSize = number + "px"
+				}
+				gobconfig.set("style.channel.base.font-size",newSize)
+			})
+		
 											
 			$("#save_config").on("click",function(e){
 				gobconfig.saveToLocalStore()
 				window.close()
 				window.opener.postMessage("Done",'*')
+			});
+			
+			$("#reset_config").on("click",function(e){
+				if(window.confirm("Restore current settings to default?\nPress save afterwards.")){
+					gobconfig.restoreDefaultConfig()
+					gobconfig.saveToLocalStore()
+					window.location.reload(false); 
+				}
 			});
 		});
 	</script>
