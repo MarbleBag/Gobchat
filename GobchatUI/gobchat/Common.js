@@ -13,6 +13,10 @@ var Gobchat = (function(Gobchat){
 			return typeof value === 'string' || value instanceof String
 		}
 		
+		Gobchat.isBoolean = function(value) {
+			return typeof value === 'boolean' || value instanceof Boolean
+		}
+		
 		Gobchat.isNumber = function(value) {
 			return typeof value === 'number' && isFinite(value)
 		}
