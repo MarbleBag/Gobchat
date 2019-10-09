@@ -160,23 +160,22 @@ var Gobchat = (function(Gobchat,undefined){
 		
 		saveToPlugin(){
 			const json = JSON.stringify(this.getConfigChanges())
-			console.log("Send: " + json)
 			Gobchat.sendMessageToPlugin({event:"SaveGobchatConfig",detail:json})
 		}
 		
-		loadFromPlugin(){
+		loadFromPlugin(callback){
 			const self = this
 			const onLoad = function(e){
 				document.removeEventListener("LoadGobchatConfig",onLoad)
 				const json = e.detail.data
 				if(json===undefined || json===null){
-					console.log("No config data from plugin available")
 					return
 				}
 				
 				const config = JSON.parse(json)
 				self.restoreDefaultConfig()				
 				self.overwriteConfig(config)
+				if(callback)callback()
 			}			
 			document.addEventListener("LoadGobchatConfig",onLoad,false)
 			Gobchat.sendMessageToPlugin({event:"LoadGobchatConfig"})

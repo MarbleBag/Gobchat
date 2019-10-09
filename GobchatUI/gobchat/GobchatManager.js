@@ -31,7 +31,7 @@ var Gobchat = (function(Gobchat){
 			}
 
 			get isAutodetectEmoteInSay(){
-				const val = this._manager._chatConfig.get("behaviour.autodetectEmoteInSay")
+				const val = this.getConfig("behaviour.autodetectEmoteInSay")
 				return val
 			}
 			
@@ -46,33 +46,19 @@ var Gobchat = (function(Gobchat){
 			}
 			
 			init(){
-				const manager = this
+				const self = this
 				
 				this._chatConfig = new Gobchat.GobchatConfig()
-				this._chatConfig.loadFromPlugin()
-				this.updateStyle()
+				this._chatConfig.loadFromPlugin(()=>self.updateStyle())
 				
-				const parserConfig = new ParserConfigTest(manager)
-				this._messageParser = new Gobchat.MessageParser(parserConfig,(message) => { manager.onNewMessage(message) })
+				const parserConfig = new ParserConfigTest(self)
+				this._messageParser = new Gobchat.MessageParser(parserConfig,(message) => { self.onNewMessage(message) })
 				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
 				
 				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
 				this._scrollbar.init()
-				
-				//TODO cleanup				
-				function onMentionEvent(mentionEvent){
-					let mentions = mentionEvent.detail.mentions
-					if( mentions ){						
-						parserConfig.mentions = mentions.map((e)=>{return e.toLowerCase().trim()}).filter((e)=>{return e.length>0})
-					}else{
-						parserConfig.mentions = []
-					}
-				}
-				
-				document.addEventListener("ChatMessageEvent", (e) => { manager._messageParser.parseMessageEvent(e) })
-				document.addEventListener("MentionsEvent", onMentionEvent)
-				
-				Gobchat.sendMessageToPlugin({event:"RequestMentions"})	
+								
+				document.addEventListener("ChatMessageEvent", (e) => { self._messageParser.parseMessageEvent(e) })
 			}
 			
 			saveConfigToLocalStore(){
