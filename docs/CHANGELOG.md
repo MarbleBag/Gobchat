@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [0.1.4] - Unreleased
+### Added
+- Color can be changed for each (cross-world)-linkshell separately
+
 ## [0.1.3] - 2019.10.09
 ### Added
 - Config button to overlay. On click it will open a config dialog
