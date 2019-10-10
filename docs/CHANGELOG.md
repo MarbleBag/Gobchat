@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.1.5] - Unreleased
+## [0.1.5] - 2019.10.11
 ### Added
 - Channels for random rolls
 
