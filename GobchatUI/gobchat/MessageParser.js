@@ -8,10 +8,47 @@ var Gobchat = (function(Gobchat){
 	const MessageSource = Gobchat.MessageSource
 	const Message = Gobchat.Message
 	
+	const PartyUnicodes = Object.freeze([
+		Gobchat.FFUnicode.PARTY_1, Gobchat.FFUnicode.PARTY_2, Gobchat.FFUnicode.PARTY_3, Gobchat.FFUnicode.PARTY_4,
+		Gobchat.FFUnicode.PARTY_5, Gobchat.FFUnicode.PARTY_6, Gobchat.FFUnicode.PARTY_7,  Gobchat.FFUnicode.PARTY_8
+	])
+	
+	const RaidUnicodes = Object.freeze([
+		Gobchat.FFUnicode.RAID_A, Gobchat.FFUnicode.RAID_B, Gobchat.FFUnicode.RAID_C
+	])
+	
+	const FFGroupUnicodes = Object.freeze([
+		Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
+		Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
+	])
+		
 	class MessageParser {
-		constructor(parserConfig,onMessageCallback){
-			this.onMessageCallback = onMessageCallback
-			this.parserConfig = parserConfig
+		constructor(config){
+			this._config = config
+			this._datacenter = null
+		}
+		
+		isMessageRelevant(channelEnum){
+			const channels = this._config.get("behaviour.channel.visible")
+			return _.includes(channels,channelEnum)
+		}
+		
+		isRoleplayChannel(channelEnum){		
+			const channels = this._config.get("behaviour.channel.roleplay")
+			return _.includes(channels,channelEnum)
+		}
+		
+		isMentionChannel(channelEnum){
+			const channels = this._config.get("behaviour.channel.mention")
+			return _.includes(channels,channelEnum)		
+		}
+
+		isAutodetectEmoteInSay(channelEnum){
+			return (channelEnum === ChannelEnum.SAY) && this._config.get("behaviour.autodetectEmoteInSay")
+		}
+		
+		getMentions(){
+			return this._config.get("behaviour.mentions")
 		}
 			
 		parseMessageEvent(messageEvent){
@@ -31,42 +68,123 @@ var Gobchat = (function(Gobchat){
 				processMessageSegmentOOC(message)
 				processMessageSegmentSayAndEmote(message)
 				if(this.isAutodetectEmoteInSay(channel)){
-					searchMessageSegmentForEmoteInSay(message)
+					searchMessageSegmentsForEmoteInSay(message)
 				}
 			}
 				
 			if( this.isMentionChannel(channel) ){
-				const mentions = this.parserConfig.mentions
+				const mentions = this.getMentions()
 				if( mentions.length === 0 ) return
 				processMessageSegmentMention(message,mentions)
 			}
 			
 			applyMessageSegmentDefaults(message)
 				
-			this.onMessageCallback(message)
+			return message
 		}
 			
 		createMessageSource(channelEnum,originalSource){			
-			return new MessageSource(originalSource) //TODO for now
-		}
-		
-		isAutodetectEmoteInSay(channelEnum){
-			return (channelEnum === ChannelEnum.SAY) && this.parserConfig.isAutodetectEmoteInSay
-		}
+			const source = new MessageSource(originalSource)		
 			
-		isMessageRelevant(channelEnum){
-			return this.parserConfig.isMessageRelevant(channelEnum)		
-		}
+			if(originalSource != null && _.includes(Gobchat.PlayerChannel,channelEnum) ){ //message from a player (or at least it should!)
+				const readIndex = 0
 			
-		isRoleplayChannel(channelEnum){
-			return this.parserConfig.isRoleplayChannel(channelEnum)
-		}
+				function getIndexForUnicode(unicodeList){
+					const unicodeValue = originalSource.codePointAt(readIndex)
+					const unicodeIndex = _.findIndex(unicodeList, (e) => {return e.value === unicodeValue})
+					return unicodeIndex 
+				}
 			
-		isMentionChannel(channelEnum){
-			return this.parserConfig.isMentionChannel(channelEnum)
-		}			
+				if(ChannelEnum.PARTY === channelEnum){ //first character is the position within the party
+					const index = getIndexForUnicode(PartyUnicodes)
+					if(index>=0){
+						source.prefix = (source.prefix || "") + `[${index + 1}]` //for now
+						readIndex = 1 //party unicodes should be of size 1
+					}				
+				}else if(ChannelEnum.RAID === channelEnum){ //first character is the raid group
+					let index = getIndexForUnicode(RaidUnicodes)
+					if(index>=0){
+						index += 'A'
+						source.prefix = (source.prefix || "") + `[${String.fromCharCode(index)}]` //for now
+						readIndex = 1 //raid unicodes should be of size 1
+					}	
+				}
+				
+				{
+					const ffGroup = getIndexForUnicode(FFGroupUnicodes)
+					if(ffGroup>=0){
+						source.ffGroupId = ffGroup+1
+						//do not increment readIndex. The used unicodes are not private and can be displayed without any additional works
+						//this system may be reworked later, if we have a better support for all those unicodes FF uses.
+					}
+				}
+				
+				source.playerName = source.sourceId.substring(readIndex)
+				//this._datacenter = findServer(source,this._datacenter)
+			}			
+			
+			return source
+		}
+				
 	}		
 	Gobchat.MessageParser = MessageParser
+	
+
+	
+	function findServer(messageSource, datacenter){ //TODO rename
+		if( messageSource.playerName == null )
+			return
+		
+		const names = messageSource.playerName.split(' ')
+		
+		if(names.length !== 2) //player have always first and last name, unfortunately, the server is joined to the last name
+			return
+		
+		//returns the last part of a given string, which starts with an uppercase letter and is shorter than the given string
+		function getPossibleServerName(str){
+			for(let i = str.length-1;1<=i;--i){
+				const c = str.charAt(i)
+				if(c === c.toUpperCase()){
+					return str.substring(i,str.length)
+				}
+			}
+			return null
+		}
+		
+		//try to find a matching datacenter for a given server	
+		function getDataCenter(serverName){
+			for(let region of Gobchat.Datacenters){
+				for(let center of region.centers){
+					for(let server of center.servers){
+						if( server === serverName ){
+							return center	
+						}
+					}
+				}
+			}
+			return null
+		}
+				
+		const lastName = names[names.length-1]
+		const serverName = getPossibleServerName(lastName)
+		
+		if(serverName === null) //doesn't have anything that may be a server
+			return
+		
+		if(!datacenter){
+			datacenter = getDataCenter(serverName)
+		}
+		
+		if( datacenter === null)
+			return
+		
+		if( _.indexOf(datacenter.servers,serverName) != -1 ){
+			messageSource.playerName = messageSource.playerName.substring(0, messageSource.playerName.length - serverName.length)
+			messageSource.serverName = serverName
+		}
+		
+		return datacenter
+	}
 	
 	class Marker{
 		constructor(){
@@ -113,7 +231,7 @@ var Gobchat = (function(Gobchat){
 		}
 	}
 	
-	function searchMessageSegmentForEmoteInSay(message){
+	function searchMessageSegmentsForEmoteInSay(message){
 		const foundSay = message.segments.some((segment)=>{return segment.segmentType === MessageSegmentEnum.SAY})		
 		if(foundSay){
 			message.segments.forEach((segment)=>{					

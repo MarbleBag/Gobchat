@@ -68,6 +68,7 @@
 		<a data-nav-target="nav_general" class="active">General</a>
 		<a data-nav-target="nav_channels">Channels</a>
 		<a data-nav-target="nav_roleplay">Roleplay</a>
+		<a data-nav-target="nav_groups">Groups</a>
 		<a data-nav-target="nav_about">About</a>
 		<a class="btn-system" id="save_config">Save</a>
 		<a class="btn-system" id="reset_config">Defaults</a>
@@ -78,7 +79,7 @@
 			<article id="nav_general" >
 				<p>
 					<div>
-						<label>Test</label>
+						<label>Language (soon)</label>
 						<select id="dropdown_language" disabled="true">
 							<option value="en">English</option>
 							<option value="de">Deutsch</option>
@@ -87,7 +88,7 @@
 				</p>
 				<p>
 					<div>
-						<label>Mentions</label>
+						<label>Mentions: (Only detects whole words! Separate entries with a comma)</label>
 						<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
 					</div>
 				</p>
@@ -126,7 +127,7 @@
 								<th>Roleplay</th>
 								<th>Text Color</th>
 								<th>Background Color</th>
-							<tr>	
+							</tr>	
 						</thead>
 						<tbody>							
 						</tbody>
@@ -140,11 +141,15 @@
 							<tr>
 								<th>Segment Name</th>								
 								<th>Text Color</th>
-							<tr>	
+							</tr>	
 						</thead>
 						<tbody>							
 						</tbody>
 					</table>
+				</div>
+			</article>
+			<article id="nav_groups">
+				<div id="ffGroups">
 				</div>
 			</article>
 			<article id="nav_about">
@@ -158,279 +163,17 @@
 		'use strict';
 		//TODO automat detection of config elements and type
 				
-		$( function() {
-			$( "#accordion" ).accordion({
-				collapsible: true,
-				heightStyle: "fill",
-			});
-		});		
-		
-		jQuery(function ($) { //navbar
-			const navAttribute = "data-nav-target"
-			const navigationBarId = "mainNavigationBar"
-		
-			function hideNavigationContent(navigationId){
-				$(`#${navigationId} > a`).each(function(){
-					const target = $(this).attr(navAttribute)
-					if(target){
-						$(`#${target}`).hide()
-					}
-				})
-			}
-			
-			function showActiveNavigationContent(navigationId){
-				$(`#${navigationId} > .active`).each(function(){
-					const target = $(this).attr(navAttribute)
-					if(target)
-						$(`#${target}`).show()				
-				})
-			}
-			
-			function hasNavigationAttribute(element){
-				const target = $(element).attr(navAttribute)
-				return target !== null && target !== undefined
-			}
-			
-			hideNavigationContent(navigationBarId)
-			showActiveNavigationContent(navigationBarId)
-			
-			$(`#${navigationBarId}`).on("click",function(event){
-				if(!hasNavigationAttribute(event.target)) return				
-				hideNavigationContent(navigationBarId)				
-				$(`#${navigationBarId} > .active`).removeClass("active")
-				$(event.target).addClass("active")
-				showActiveNavigationContent(navigationBarId)		
-			})
-		})
-				
-		jQuery(function ($) {
-			const gobconfig	= new Gobchat.GobchatConfig()
-			gobconfig.loadFromLocalStore()
-		
-			const channelTblConfig = [
-				{label:"General", 	channelEnum:null, 		styleId:"style.channel.base"},
-				
-				{label:"Say", 			channelEnum:"SAY", 			styleId:"style.channel.say"},
-				{label:"Emote", 		channelEnum:"EMOTE", 		styleId:"style.channel.emote"},
-				{label:"Yell", 			channelEnum:"YELL", 		styleId:"style.channel.yell"},
-				{label:"Shout", 		channelEnum:"SHOUT", 		styleId:"style.channel.shout"},
-				{label:"Party", 		channelEnum:"PARTY", 		styleId:"style.channel.party"},
-				{label:"Guild", 		channelEnum:"GUILD", 		styleId:"style.channel.guild"},				
-				{label:"Tell send",		channelEnum:"TELL_SEND", 	styleId:"style.channel.tellsend"},
-				{label:"Tell recieve", 	channelEnum:"TELL_RECIEVE",	styleId:"style.channel.tellrecieve"},				
-				{label:"Alliance", 		channelEnum:"ALLIANCE", 	styleId:"style.channel.alliance"},
-				
-				{label:"NPC speech",		channelEnum:"NPC_TALK", 		styleId:null},
-				{label:"Animated emote", 	channelEnum:"ANIMATED_EMOTE", 	styleId:null},
-				{label:"Echo", 				channelEnum:"ECHO", 			styleId:null},
-				{label:"Error Messages",	channelEnum:"ERROR", 			styleId:null},
-				
-				{label:"Linkshells", channelEnum:null, 	styleId:"style.channel.linkshell"},
-				{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:null},
-				{label:"Linkshell 2", channelEnum:"LINKSHELL_2", 	styleId:null},
-				{label:"Linkshell 3", channelEnum:"LINKSHELL_3", 	styleId:null},
-				{label:"Linkshell 4", channelEnum:"LINKSHELL_4", 	styleId:null},
-				{label:"Linkshell 5", channelEnum:"LINKSHELL_5", 	styleId:null},
-				{label:"Linkshell 6", channelEnum:"LINKSHELL_6", 	styleId:null},
-				{label:"Linkshell 7", channelEnum:"LINKSHELL_7", 	styleId:null},
-				{label:"Linkshell 8", channelEnum:"LINKSHELL_8", 	styleId:null},
-				
-				{label:"Cross-world Linkshells", channelEnum:null, 	styleId:"style.channel.worldlinkshell"},		
-				{label:"Cross-world Linkshell 1", channelEnum:"WORLD_LINKSHELL_1", 	styleId:null},			
-				{label:"Cross-world Linkshell 2", channelEnum:"WORLD_LINKSHELL_2", 	styleId:null},	
-				{label:"Cross-world Linkshell 3", channelEnum:"WORLD_LINKSHELL_3", 	styleId:null},	
-				{label:"Cross-world Linkshell 4", channelEnum:"WORLD_LINKSHELL_4", 	styleId:null},
-				{label:"Cross-world Linkshell 5", channelEnum:"WORLD_LINKSHELL_5", 	styleId:null},
-				{label:"Cross-world Linkshell 6", channelEnum:"WORLD_LINKSHELL_6", 	styleId:null},	
-				{label:"Cross-world Linkshell 7", channelEnum:"WORLD_LINKSHELL_7", 	styleId:null},	
-				{label:"Cross-world Linkshell 8", channelEnum:"WORLD_LINKSHELL_8", 	styleId:null},	
-			]
-			
-			const segmentTblConfig = [
-				{label:"Say", styleId:"style.segment.say"},
-				{label:"Emote", styleId:"style.segment.emote"},
-				{label:"OoC", styleId:"style.segment.ooc"},
-				{label:"Mention", styleId:"style.segment.mention"},
-			]
-			
-			function addToTableRow(rowElement, element){
-				const td = document.createElement("td")
-				if(element){					
-					td.appendChild(element)					
-				}
-				rowElement.appendChild(td)
-			}
-			
-			function makeChannelNameLabel(entry){
-				if(entry.label===null || entry.label===undefined){
-					return null
-				}
-				const lbl = document.createElement("label")
-				lbl.innerHTML = entry.label
-				return lbl
-			}
-			
-			function makeCheckboxForChannelBehaviour(entry,type){
-				if(entry.channelEnum===null || entry.channelEnum===undefined){
-					return null
-				}
-			
-				const input = document.createElement("input")
-				input.type = "checkbox"
-				const channelEnum = Gobchat.ChannelEnum[entry.channelEnum]
-				const configKey = `behaviour.channel.${type}` 
-				
-				const data = gobconfig.get(configKey)
-				
-				if( channelEnum === undefined || channelEnum === null || data === undefined || data === null ){
-					input.disabled = true
-					return
-				}				
-				
-				input.checked  = _.includes(data,channelEnum)
-				$(input).on("change",function(event){
-						if(event.target.checked && !_.includes(data,channelEnum)){
-							data.push(channelEnum)
-						}else{
-							_.remove(data,(i)=>{return i===channelEnum})
-						}
-					})				
-					
-				return input
-			}
-			
-			let spectrumColorPalette = channelTblConfig.map(e=>e.styleId).filter(e=>e!==null&&e!==undefined).map(e=>e + ".color").map(e=>gobconfig.get(e)).filter(e=>e!==null&&e!==undefined)
-			spectrumColorPalette = _.union(spectrumColorPalette)
-			
-			function makeColorSelectorForChannel(entry,type){
-				if(entry.styleId===null || entry.styleId===undefined){
-					return null
-				}
-			
-				const div = document.createElement("div")
-				const input = document.createElement("input")
-				div.appendChild(input)
-				
-				const configKey = entry.styleId + "." + type
-				const data = gobconfig.get(configKey)
-				
-				input.type = "text"		
-				$(input).spectrum({
-					preferredFormat: "hex3",
-					color: data,
-					allowEmpty:true,
-					showInput: true,
-					showInitial: true,
-					showAlpha: true,
-					showPalette: true,
-					palette: spectrumColorPalette,
-					showSelectionPalette: true,
-					selectionPalette: [],
-					maxSelectionSize: 6,
-					clickoutFiresChange: false,
-					hide: function(color) {
-							if(color !== null){
-								gobconfig.set(configKey,color.toString())
-							}else{
-								gobconfig.set(configKey,null)
-							}
-						},
-				})
-								
-				const btn = document.createElement("button")
-				btn.innerHTML = "&#x274C;"
-				btn.title = "Reset to default"
-				
-				$(btn).on("click",function(event){
-						gobconfig.reset(configKey)
-						$(input).spectrum("set", gobconfig.get(configKey));
-					})	
-				
-				div.appendChild(btn)
-				
-				return div
-			}
-			
-			{
-				const tbl = $("#tbl_channel_config > tbody")
-				channelTblConfig.forEach((entry)=>{
-					const tr = document.createElement("tr")
-					tbl.append(tr)
-					
-					addToTableRow(tr,makeChannelNameLabel(entry))
-					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"visible"))
-					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"mention"))
-					addToTableRow(tr,makeCheckboxForChannelBehaviour(entry,"roleplay"))
-					
-					addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))
-					addToTableRow(tr,makeColorSelectorForChannel(entry,"background-color"))
-				})
-			}
-			
-			{
-				const tbl = $("#tbl_segment_config > tbody")
-				segmentTblConfig.forEach((entry)=>{
-					const tr = document.createElement("tr")
-					tbl.append(tr)					
-					addToTableRow(tr,makeChannelNameLabel(entry))					
-					addToTableRow(tr,makeColorSelectorForChannel(entry,"color"))					
-				})
-			}
-			
-			
-			$("#dropdown_language").val(gobconfig.get("behaviour.language"))
-			$("#dropdown_language").on("change",function(event){
-				const newLanguage = event.target.value || "en"
-				gobconfig.set("behaviour.language",newLanguage)
-			})
-			
-			
-			$("#txt_mentions").val(gobconfig.get("behaviour.mentions").join(", "))
-			$("#txt_mentions").on("change",function(event){
-				let words = (event.target.value || "").split(",")
-				words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.toLowerCase().trim()).filter(w=>w.length>0)
-				gobconfig.set("behaviour.mentions",words)
-				event.target.value = words.join(", ")
-			})
-			
-			
-			$("#input_autoemote").prop('checked',gobconfig.get("behaviour.autodetectEmoteInSay"))
-			$("#input_autoemote").on("change",function(event){					
-				gobconfig.set("behaviour.autodetectEmoteInSay",event.target.checked)
-			})
-			
-			$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
-			$("#general_font").on("change",function(event){
-				let newFont = event.target.value || "sans-serif"
-				gobconfig.set("style.channel.base.font-family",newFont)
-			})
-			
-			$("#general_font_reset").on("click",function(event){
-				gobconfig.reset("style.channel.base.font-family")
-				$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
-			})
-		
-			$("#general_font_size").val(gobconfig.get("style.channel.base.font-size"))
-			$("#general_font_size").on("change",function(event){
-				let newSize = event.target.value || "medium"
-				if(Gobchat.isNumber(newSize)){
-					const number = Math.round(newSize)
-					newSize = number + "px"
-				}
-				gobconfig.set("style.channel.base.font-size",newSize)
-			})
-		
-											
+		jQuery(function ($) {																	
 			$("#save_config").on("click",function(e){
-				gobconfig.saveToLocalStore()
+				window.gobconfig.saveToLocalStore()
 				window.close()
 				window.opener.postMessage("Done",'*')
 			});
 			
 			$("#reset_config").on("click",function(e){
-				if(window.confirm("Restore current settings to default?\nPress save afterwards.")){
-					gobconfig.restoreDefaultConfig()
-					gobconfig.saveToLocalStore()
+				if(window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")){
+					window.gobconfig.restoreDefaultConfig()
+					window.gobconfig.saveToLocalStore()
 					window.location.reload(false); 
 				}
 			});

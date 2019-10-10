@@ -16,13 +16,11 @@ var Gobchat = (function(Gobchat){
 			isMessageRelevant(channelEnum){
 				const channels = this.getConfig("behaviour.channel.visible")
 				return _.includes(channels,channelEnum)
-				//return _.indexOf(channels, channelEnum) != -1
 			}
 			
 			isRoleplayChannel(channelEnum){		
 				const channels = this.getConfig("behaviour.channel.roleplay")
-				return _.includes(channels,channelEnum)			
-				//return _.indexOf(Gobchat.RoleplayChannel, channelEnum) != -1
+				return _.includes(channels,channelEnum)
 			}
 			
 			isMentionChannel(channelEnum){
@@ -52,13 +50,13 @@ var Gobchat = (function(Gobchat){
 				this._chatConfig.loadFromPlugin(()=>self.updateStyle())
 				
 				const parserConfig = new ParserConfigTest(self)
-				this._messageParser = new Gobchat.MessageParser(parserConfig,(message) => { self.onNewMessage(message) })
+				this._messageParser = new Gobchat.MessageParser(self._chatConfig)
 				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
 				
 				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
 				this._scrollbar.init()
 								
-				document.addEventListener("ChatMessageEvent", (e) => { self._messageParser.parseMessageEvent(e) })
+				document.addEventListener("ChatMessageEvent", (e) => {self.onNewMessage(e)})
 			}
 			
 			saveConfigToLocalStore(){
@@ -75,7 +73,10 @@ var Gobchat = (function(Gobchat){
 				Gobchat.StyleBuilder.updateStyle(this._chatConfig.configStyle,"custome_style_id")
 			}
 			
-			onNewMessage(message){
+			onNewMessage(messageEvent){
+				const message = this._messageParser.parseMessageEvent(messageEvent)
+				if(!message) return
+				
 				const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
 				$("#"+this._chatHtmlId).append(messageHtmlElement)
 				this._scrollbar.scrollToBottomIfNeeded()
