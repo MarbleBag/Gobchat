@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.1.4] - Unreleased
+## [0.1.4] - 2019.10.10
 ### Added
 - Color can be changed for each (cross-world)-linkshell separately
 - Friendlist Groups can now be colorized too!
