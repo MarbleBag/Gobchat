@@ -74,8 +74,9 @@ var Gobchat = (function(Gobchat){
 				
 			if( this.isMentionChannel(channel) ){
 				const mentions = this.getMentions()
-				if( mentions.length === 0 ) return
-				processMessageSegmentMention(message,mentions)
+				if( mentions && mentions.length !== 0 ){
+					processMessageSegmentMention(message,mentions)
+				}
 			}
 			
 			applyMessageSegmentDefaults(message)
@@ -87,7 +88,7 @@ var Gobchat = (function(Gobchat){
 			const source = new MessageSource(originalSource)		
 			
 			if(originalSource != null && _.includes(Gobchat.PlayerChannel,channelEnum) ){ //message from a player (or at least it should!)
-				const readIndex = 0
+				let readIndex = 0
 			
 				function getIndexForUnicode(unicodeList){
 					const unicodeValue = originalSource.codePointAt(readIndex)

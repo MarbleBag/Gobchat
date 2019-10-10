@@ -169,6 +169,7 @@ var Gobchat = (function(Gobchat,undefined){
 				document.removeEventListener("LoadGobchatConfig",onLoad)
 				const json = e.detail.data
 				if(json===undefined || json===null){
+					if(callback)callback()
 					return
 				}
 				

@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [0.1.5] - Unreleased
+### Added
+- Channels for random rolls
+
+### Fixed
+- Automatic Stylesheet generation was not triggered on a fresh start with no settings
+- No messages if mentions are empty
+- Party chat should work again
+
 ## [0.1.4] - 2019.10.10
 ### Added
 - Color can be changed for each (cross-world)-linkshell separately

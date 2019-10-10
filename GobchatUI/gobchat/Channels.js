@@ -19,6 +19,9 @@ var Gobchat = (function(Gobchat){
 		ECHO:			0x0038,
 		ERROR:			0x003c,
 		
+		RANDOM_SELF:	0x084A,
+		RANDOM_OTHER:	0x204A,
+		
 		TELEPORT:		0x001f,
 		LOCATION:		0x0039,
 		

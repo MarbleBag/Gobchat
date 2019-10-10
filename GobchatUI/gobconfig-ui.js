@@ -108,10 +108,12 @@
 			{label:"Tell recieve", 	channelEnum:"TELL_RECIEVE",	styleId:"style.channel.tellrecieve"},				
 			{label:"Alliance", 		channelEnum:"ALLIANCE", 	styleId:"style.channel.alliance"},
 			
-			{label:"NPC speech",		channelEnum:"NPC_TALK", 		styleId:null},
-			{label:"Animated emote", 	channelEnum:"ANIMATED_EMOTE", 	styleId:null},
-			{label:"Echo", 				channelEnum:"ECHO", 			styleId:null},
-			{label:"Error Messages",	channelEnum:"ERROR", 			styleId:null},
+			{label:"NPC speech",			channelEnum:"NPC_TALK", 		styleId:null},
+			{label:"Animated emote", 		channelEnum:"ANIMATED_EMOTE", 	styleId:null},
+			{label:"Echo", 					channelEnum:"ECHO", 			styleId:null},
+			{label:"Random (Other Player)",	channelEnum:"RANDOM_OTHER", 	styleId:null},
+			{label:"Random (You)", 			channelEnum:"RANDOM_SELF", 		styleId:null},
+			{label:"Error Messages",		channelEnum:"ERROR", 			styleId:null},
 			
 			{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:"style.channel.linkshell-1"},
 			{label:"Linkshell 2", channelEnum:"LINKSHELL_2", 	styleId:"style.channel.linkshell-2"},
