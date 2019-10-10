@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ## [0.1.4] - Unreleased
 ### Added
 - Color can be changed for each (cross-world)-linkshell separately
+- Friendlist Groups can now be colorized too!
 
 ## [0.1.3] - 2019.10.09
 ### Added

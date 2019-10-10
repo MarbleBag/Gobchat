@@ -5,7 +5,11 @@ var Gobchat = (function(Gobchat){
 	const ChannelEnum = Gobchat.ChannelEnum
 	const MessageSegmentEnum = Gobchat.MessageSegmentEnum
 	
-	function getCssClassForMessageChannel(channelEnum){		
+	function applyClass(element,cssClass){
+		if (cssClass) element.classList.add(cssClass)
+	}
+	
+	function getChannelCssClassForChannel(channelEnum){		
 		 switch (channelEnum) {
 			case ChannelEnum.SAY:         		return "message-body-say"
 			case ChannelEnum.EMOTE:           	return "message-body-emote"
@@ -37,6 +41,24 @@ var Gobchat = (function(Gobchat){
 		}
 	}
 	
+	function getChannelCssClassForFFGroup(message){
+		if(message.source.ffGroupId === null) return null
+		switch (message.channel){
+			case ChannelEnum.TELL_SEND:       	return null
+			case ChannelEnum.TELL_RECIEVE:    	return null
+		}
+		return `message-body-ffgroup-${message.source.ffGroupId}`
+	}
+	
+	function getSenderCssClassForFFGroup(message){
+		if(message.source.ffGroupId === null) return null
+		switch (message.channel){
+			case ChannelEnum.TELL_SEND:       	return null
+			case ChannelEnum.TELL_RECIEVE:    	return null
+		}
+		return `message-sender-ffgroup-${message.source.ffGroupId}`
+	}
+	
 		
 	function getCssClassForMessageSegmentType(messageSegmentEnum){
 		switch(messageSegmentEnum){
@@ -47,6 +69,7 @@ var Gobchat = (function(Gobchat){
 			default:							return null
 		}
 	}	
+
 	
 	function getMessageSenderInnerHtml(messageSource,channelEnum){
 		const sourceName = messageSource != null ? messageSource.sourceId : null
@@ -58,7 +81,7 @@ var Gobchat = (function(Gobchat){
 			case ChannelEnum.TELL_RECIEVE:    	return sourceName + " &gt;&gt; "
 			case ChannelEnum.ANIMATED_EMOTE:	return null //source is set, but the animation message already contains the source name
 			case ChannelEnum.GUILD:           	return "[FC]&lt;" + sourceName + "&gt; "	
-			case ChannelEnum.PARTY:           	return "(" + messageSource.prefix + messageSource.playerName + ") "
+			case ChannelEnum.PARTY:           	return "(" + sourceName + ") "
 			case ChannelEnum.ALLIANCE:        	return "&lt;" + sourceName + "&gt; "
 			case ChannelEnum.LINKSHELL_1:		return "[LS1]&lt;" + sourceName + "&gt; "
 			case ChannelEnum.LINKSHELL_2:		return "[LS2]&lt;" + sourceName + "&gt; "
@@ -91,21 +114,23 @@ var Gobchat = (function(Gobchat){
 		
 		buildHtmlElement(message){				
 			const chatEntry = document.createElement("div")
-			chatEntry.classList.add("message-body-base")
+			applyClass(chatEntry, "message-body-base")
+			applyClass(chatEntry, getChannelCssClassForFFGroup(message))
 			
 			const timeElement = document.createElement("span")
 			timeElement.innerHTML = "[" + message.timestamp + "] "
 			chatEntry.appendChild(timeElement)
 			
 			const messageContainer = document.createElement("span")
-			const channelClass = getCssClassForMessageChannel(message.channel)
-			if (channelClass) messageContainer.classList.add(channelClass)
+			applyClass(messageContainer, getChannelCssClassForChannel(message.channel))
+			//applyClass(messageContainer, getChannelCssClassForFFGroup(message))			
 			chatEntry.appendChild(messageContainer)
 		
 			const senderInnerHtml = getMessageSenderInnerHtml(message.source, message.channel)
 			if(senderInnerHtml != null){
 				const senderElement = document.createElement("span")
-				senderElement.innerHTML = senderInnerHtml
+				senderElement.innerHTML = senderInnerHtml				
+				applyClass(senderElement, getSenderCssClassForFFGroup(message))
 				messageContainer.appendChild(senderElement)   
 			}
 			
@@ -115,11 +140,8 @@ var Gobchat = (function(Gobchat){
 				
 				const segmentElement = document.createElement("span")
 				segmentElement.innerHTML = segmentText
-				
-				const segmentClass = getCssClassForMessageSegmentType(segmentType)
-				segmentElement.classList.add("message-segment-base")
-				if(segmentClass) segmentElement.classList.add(segmentClass)
-				
+				applyClass(segmentElement, "message-segment-base")
+				applyClass(segmentElement, getCssClassForMessageSegmentType(segmentType))				
 				messageContainer.appendChild(segmentElement)	
 			})
 			

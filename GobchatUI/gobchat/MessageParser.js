@@ -19,13 +19,36 @@ var Gobchat = (function(Gobchat){
 	
 	const FFGroupUnicodes = Object.freeze([
 		Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
-		Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7, Gobchat.FFUnicode.GROUP_8
+		Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
 	])
 		
 	class MessageParser {
-		constructor(parserConfig){
-			this._parserConfig = parserConfig
+		constructor(config){
+			this._config = config
 			this._datacenter = null
+		}
+		
+		isMessageRelevant(channelEnum){
+			const channels = this._config.get("behaviour.channel.visible")
+			return _.includes(channels,channelEnum)
+		}
+		
+		isRoleplayChannel(channelEnum){		
+			const channels = this._config.get("behaviour.channel.roleplay")
+			return _.includes(channels,channelEnum)
+		}
+		
+		isMentionChannel(channelEnum){
+			const channels = this._config.get("behaviour.channel.mention")
+			return _.includes(channels,channelEnum)		
+		}
+
+		isAutodetectEmoteInSay(channelEnum){
+			return (channelEnum === ChannelEnum.SAY) && this._config.get("behaviour.autodetectEmoteInSay")
+		}
+		
+		getMentions(){
+			return this._config.get("behaviour.mentions")
 		}
 			
 		parseMessageEvent(messageEvent){
@@ -50,7 +73,7 @@ var Gobchat = (function(Gobchat){
 			}
 				
 			if( this.isMentionChannel(channel) ){
-				const mentions = this._parserConfig.mentions
+				const mentions = this.getMentions()
 				if( mentions.length === 0 ) return
 				processMessageSegmentMention(message,mentions)
 			}
@@ -59,8 +82,6 @@ var Gobchat = (function(Gobchat){
 				
 			return message
 		}
-		
-
 			
 		createMessageSource(channelEnum,originalSource){			
 			const source = new MessageSource(originalSource)		
@@ -70,7 +91,7 @@ var Gobchat = (function(Gobchat){
 			
 				function getIndexForUnicode(unicodeList){
 					const unicodeValue = originalSource.codePointAt(readIndex)
-					const unicodeIndex = _.findIndex(unicodeList, e => e.value === unicodeValue)
+					const unicodeIndex = _.findIndex(unicodeList, (e) => {return e.value === unicodeValue})
 					return unicodeIndex 
 				}
 			
@@ -92,8 +113,7 @@ var Gobchat = (function(Gobchat){
 				{
 					const ffGroup = getIndexForUnicode(FFGroupUnicodes)
 					if(ffGroup>=0){
-						source.ffGroupId = ffGroup
-						console.log("Found FF Group!" + ffGroup)
+						source.ffGroupId = ffGroup+1
 						//do not increment readIndex. The used unicodes are not private and can be displayed without any additional works
 						//this system may be reworked later, if we have a better support for all those unicodes FF uses.
 					}
@@ -105,22 +125,7 @@ var Gobchat = (function(Gobchat){
 			
 			return source
 		}
-		
-		isAutodetectEmoteInSay(channelEnum){
-			return (channelEnum === ChannelEnum.SAY) && this._parserConfig.isAutodetectEmoteInSay
-		}
-			
-		isMessageRelevant(channelEnum){
-			return this._parserConfig.isMessageRelevant(channelEnum)		
-		}
-			
-		isRoleplayChannel(channelEnum){
-			return this._parserConfig.isRoleplayChannel(channelEnum)
-		}
-			
-		isMentionChannel(channelEnum){
-			return this._parserConfig.isMentionChannel(channelEnum)
-		}			
+				
 	}		
 	Gobchat.MessageParser = MessageParser
 	

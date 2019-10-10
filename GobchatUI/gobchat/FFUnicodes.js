@@ -36,7 +36,7 @@ var Gobchat = (function(Gobchat){
 	//lazy
 	Object.keys(Gobchat.FFUnicode).forEach( (e) => {
 			const tuple = Gobchat.FFUnicode[e]
-			tuple.value = tuple.char.codePointAt(0)
+			tuple.value = tuple.char.codePointAt(0)			
 		})
 		
 	return Gobchat

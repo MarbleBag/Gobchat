@@ -64,6 +64,14 @@ var Gobchat = (function(Gobchat){
 			gobchatStyle.push(style)
 		}
 		
+		{
+			const styles = styleConfig.sender
+			for(let key in styles){			
+				const styleData = styles[key]
+				const style = buildCssClass(`message-sender-${key}`,styleData)
+				gobchatStyle.push(style)
+			}
+		}		
 		//TODO
 		
 		return gobchatStyle.join("\n")

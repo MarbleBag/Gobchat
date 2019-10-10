@@ -143,7 +143,64 @@ var Gobchat = (function(Gobchat,undefined){
 						"color": "#03fc73",
 						"background-color": null,
 				},
-
+				"ffgroup-1" : {
+					"background-color": null,
+				},
+				"ffgroup-2" : {
+					"background-color": null,
+				},
+				"ffgroup-3" : {
+					"background-color": null,
+				},
+				"ffgroup-4" : {
+					"background-color": null,
+				},
+				"ffgroup-5" : {
+					"background-color": null,
+				},
+				"ffgroup-6" : {
+					"background-color": null,
+				},
+				"ffgroup-7" : {
+					"background-color": null,
+				},
+				"ffgroup-8" : {
+					"background-color": null,
+				},
+			},
+			sender: {
+				"ffgroup-1" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-2" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-3" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-4" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-5" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-6" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-7" : {
+					"color": null,
+					"background-color": null,
+				},
+				"ffgroup-8" : {
+					"color": null,
+					"background-color": null,
+				},
 			},
 			segment: {
 				say: {
