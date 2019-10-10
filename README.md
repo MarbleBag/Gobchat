@@ -49,15 +49,17 @@ Install [.NET Framework](https://www.microsoft.com/net/download/framework) versi
 Install [Advanced Combat Tracker](http://advancedcombattracker.com/) 64-bit version
 
 Install the most recent version of [ravahn's FFXIV ACT plugin](https://github.com/ravahn/FFXIV_ACT_Plugin/releases/latest) to ACT
+[Guide](https://github.com/ravahn/FFXIV_ACT_Plugin/tree/master)
 
 Install the most recent version of [hibiyasleep OverlayPlugin](https://github.com/hibiyasleep/OverlayPlugin/releases/latest) to ACT
+Download the `-x64-full.zip` file, right click it and go to properties. Click `Unblock` in the bottom right corner, otherwise Windows will remove needed files on unzip.
 
 fflogs has a video [guide](https://www.fflogs.com/help/start/) for setting up ACT
 
 ### Installing Gobchat
 
 1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, unless you want to build it yourself)
-2. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click "Unblock", and then "OK" to close the menu. (zip file contains a dll)
+2. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu. (zip file contains a dll)
 3. Unzip the zip file
 4. Copy the Gobchat.dll into your OverlayPlugin\addons folder (The OverlayPlugin will load all dlls which are inside of this folder)
 - The zip already contains a folder named `OverlayPlugin`, which already contains the correct folder structure and can be directly copied to your OverlayPlugin
