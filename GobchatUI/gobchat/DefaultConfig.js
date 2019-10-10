@@ -73,20 +73,77 @@ var Gobchat = (function(Gobchat,undefined){
 						color: "#ff5005",
 						"background-color": null,
 				},
-				linkshell: {
-						color: "#03fc73",
-						"background-color": null,
-				},
-				worldlinkshell: {
-						color: "#03fc73",
-						"background-color": null,
-				},
 				tellrecieve : {
 					color: "#A118BC",
 				},
 				tellsend : {
 					color: "#AA3DC0",
 				},
+				"linkshell-1": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-2": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-3": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-4": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-5": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-6": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-7": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"linkshell-8": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-1": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-2": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-3": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-4": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-5": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-6": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-7": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+				"worldlinkshell-8": {
+						"color": "#03fc73",
+						"background-color": null,
+				},
+
 			},
 			segment: {
 				say: {

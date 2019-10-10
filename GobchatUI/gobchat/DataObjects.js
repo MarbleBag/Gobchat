@@ -13,7 +13,13 @@ var Gobchat = (function(Gobchat){
 	class MessageSource {
 		constructor(sourceId){
 			this.sourceId = sourceId
+			this.ffGroupId = null
+			
+			this.playerName = null
+			this.serverName = null
+			this.prefix = null
 		}
+		
 	}
 	Gobchat.MessageSource = MessageSource
 		
