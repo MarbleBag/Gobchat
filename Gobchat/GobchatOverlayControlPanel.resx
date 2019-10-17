@@ -153,9 +153,6 @@
   <data name="&gt;&gt;labelOverlayVisible.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="checkOverlayVisible.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkOverlayVisible.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 3</value>
   </data>
@@ -210,14 +207,11 @@
   <data name="&gt;&gt;labelClickThrough.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="checkOverlayClickThrough.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkOverlayClickThrough.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 43</value>
   </data>
   <data name="checkOverlayClickThrough.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 14</value>
+    <value>15, 14</value>
   </data>
   <data name="checkOverlayClickThrough.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -264,14 +258,11 @@
   <data name="&gt;&gt;labelOverlayLocked.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="checkOverlayLocked.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkOverlayLocked.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 63</value>
   </data>
   <data name="checkOverlayLocked.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 14</value>
+    <value>15, 14</value>
   </data>
   <data name="checkOverlayLocked.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -543,14 +534,11 @@
   <data name="checkShowDebug.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="checkShowDebug.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkShowDebug.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 243</value>
   </data>
   <data name="checkShowDebug.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 14</value>
+    <value>15, 14</value>
   </data>
   <data name="checkShowDebug.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -603,14 +591,11 @@
   <data name="checkPluginActive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="checkPluginActive.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkPluginActive.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 23</value>
   </data>
   <data name="checkPluginActive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 14</value>
+    <value>15, 14</value>
   </data>
   <data name="checkPluginActive.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -759,14 +744,11 @@
   <data name="checkEnableGlobalHotkey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="checkEnableGlobalHotkey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="checkEnableGlobalHotkey.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 203</value>
   </data>
   <data name="checkEnableGlobalHotkey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 14</value>
+    <value>15, 14</value>
   </data>
   <data name="checkEnableGlobalHotkey.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
