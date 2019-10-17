@@ -31,50 +31,59 @@ var Gobchat = (function(Gobchat){
 		return buildAttributeList(Object.keys(source),source,fallback)
 	}
 	
-	function buildStyle(styleConfig){	
+	function buildCssClass(className, classAttributes, classAttributesFallback){		
+		const attributes = getAttributes(classAttributes,classAttributesFallback)
+							.map((attribute)=>{return `${attribute[0]}: ${attribute[1]};`})
 	
-		function buildCssClass(className, classAttributes, classAttributesFallback){			
-			const style = `
-					.${className}{
-						${getAttributes(classAttributes,classAttributesFallback).map((attribute)=>{return `${attribute[0]}: ${attribute[1]};`}).join("")}
-					}
-				`
-			return style
+		const style = `
+				.${className}{
+					${attributes.join("")}
+				}
+			`
+		return style
+	}
+	
+	function generateCssClass(cssResults, cssClassName, styleData, styleFallbackData){
+		const css = buildCssClass(cssClassName, styleData, styleFallbackData)
+		cssResults.push(css)
+	}
+	
+	function generateCssClasses(cssResults, cssClassNameTemplate, styleData, styleFallbackData){
+		for(let styleKey in styleData){
+			const cssAttributes = styleData[styleKey]
+			const fallbackAttributes = (styleFallbackData && styleKey in styleFallbackData) ? styleFallbackData[styleKey] : undefined
+			const cssClassName = Gobchat.formatString(cssClassNameTemplate, {styleKey: styleKey})
+			const css = buildCssClass(cssClassName, cssAttributes, fallbackAttributes)
+			cssResults.push(css)
 		}
-		
-		const gobchatStyle = []
-		
+	}
+	
+	function buildGeneralStyles(cssResults, styles){				
+		generateCssClass(cssResults, "chatbox-gen", styles.chatbox)
+		generateCssClasses(cssResults, "message-body-{styleKey}", styles.channel)
+		generateCssClasses(cssResults, "message-segment-{styleKey}", styles.segment, styles.channel)
+	}
+	
+	function buildUserdataStyles(cssResults, styles){
 		{
-			const style = buildCssClass(`chatbox-gen`,styleConfig.chatbox)
-			gobchatStyle.push(style)
-		}
-			
-		const channelStyle = styleConfig.channel
-		for(let channelName in channelStyle){
-			const channelData = channelStyle[channelName]
-			const style = buildCssClass(`message-body-${channelName}`,channelData)
-			gobchatStyle.push(style)
-		}
-		
-		const segmentStyle = styleConfig.segment
-		for(let segmentName in segmentStyle){			
-			const segmentData = segmentStyle[segmentName]
-			const fallback = segmentName in channelStyle ? channelStyle[segmentName] : undefined
-			const style = buildCssClass(`message-segment-${segmentName}`,segmentData,fallback)
-			gobchatStyle.push(style)
-		}
-		
-		{
-			const styles = styleConfig.sender
-			for(let key in styles){			
-				const styleData = styles[key]
-				const style = buildCssClass(`message-sender-${key}`,styleData)
-				gobchatStyle.push(style)
+			const data = styles.group.data
+			for(let dataKey in data){
+				const group = data[dataKey]
+				const groupStyle = group.style
+				
+				generateCssClass(cssResults, `message-group-body-${group.id}`, groupStyle.body)
+				generateCssClass(cssResults, `message-group-sender-${group.id}`, groupStyle.header)
 			}
-		}		
-		//TODO
+		}
+	}
+	
+	function buildStyle(gobchatConfig){	
+		const cssResults = []
 		
-		return gobchatStyle.join("\n")
+		buildGeneralStyles(cssResults, gobchatConfig.get("style"))
+		buildUserdataStyles(cssResults, gobchatConfig.get("userdata"))
+				
+		return cssResults.join("\n")
 	}
 	
 	function setStyle(styleId,styleCssText){		

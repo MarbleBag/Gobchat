@@ -41,24 +41,59 @@ var Gobchat = (function(Gobchat){
 		}
 	}
 	
-	function getChannelCssClassForFFGroup(message){
-		if(message.source.ffGroupId === null) return null
+	function findFirstMatchingGroup(config, message){
+		if(message.source === null || message.source.sourceId === null) return null
 		switch (message.channel){
 			case ChannelEnum.TELL_SEND:       	return null
 			case ChannelEnum.TELL_RECIEVE:    	return null
 		}
-		return `message-body-ffgroup-${message.source.ffGroupId}`
-	}
-	
-	function getSenderCssClassForFFGroup(message){
-		if(message.source.ffGroupId === null) return null
-		switch (message.channel){
-			case ChannelEnum.TELL_SEND:       	return null
-			case ChannelEnum.TELL_RECIEVE:    	return null
+		
+		const groups = config.get("userdata.group")
+		let resultId = null
+		
+		function createSearchTerm(){
+			const source = message.source
+			let result = source.sourceId
+			if( source.playerName !== null ){
+				if( message.source.serverName !== null ){
+					result = `${source.playerName} [${source.serverName}]`
+				}else{
+					result = `${source.playerName}`	
+				}
+			}
+			return result.toLowerCase()
 		}
-		return `message-sender-ffgroup-${message.source.ffGroupId}`
+		
+		const serachTerm = createSearchTerm()
+		
+		$.each(groups.sorting,function(idx,groupId){
+			const group = groups.data[groupId]
+			if(!group.active)
+				return
+			if("ffgroup" in group){
+				if(message.source.ffGroupId === group.ffgroup){
+					resultId = groupId
+					return false
+				}
+				return
+			}
+
+			if( _.includes(group.trigger, serachTerm) ){
+				resultId = groupId
+				return false
+			}
+		})
+		
+		return resultId
 	}
 	
+	function getChannelCssClassForPlayerGroup(groupId){
+		return `message-group-body-${groupId}`
+	}
+	
+	function getSenderCssClassForPlayerGroup(groupId){
+		return `message-group-sender-${groupId}`
+	}	
 		
 	function getCssClassForMessageSegmentType(messageSegmentEnum){
 		switch(messageSegmentEnum){
@@ -70,9 +105,22 @@ var Gobchat = (function(Gobchat){
 		}
 	}	
 
+	function getMessageSenderName(messageSource){
+		if(messageSource === null || messageSource.sourceId === null) return null;
+		if(messageSource.playerName !== null){
+			const prefix = messageSource.prefix || ""
+			if(messageSource.serverName !== null){
+				return `${prefix}${messageSource.playerName} [${messageSource.serverName}]`
+			}else{
+				return `${prefix}${messageSource.playerName}`
+			}
+		}else{
+			return messageSource.sourceId
+		}
+	}
 	
 	function getMessageSenderInnerHtml(messageSource,channelEnum){
-		const sourceName = messageSource != null ? messageSource.sourceId : null
+		const sourceName = getMessageSenderName(messageSource)
 		
 		switch(channelEnum){
 			case ChannelEnum.ECHO:				return "Echo: "
@@ -108,14 +156,16 @@ var Gobchat = (function(Gobchat){
 	}
 	
 	class MessageHtmlBuilder{
-		constructor(){
-			
+		constructor(config){
+			this._config = config
 		}
 		
 		buildHtmlElement(message){				
+			const groupId = findFirstMatchingGroup(this._config, message)
+		
 			const chatEntry = document.createElement("div")
 			applyClass(chatEntry, "message-body-base")
-			applyClass(chatEntry, getChannelCssClassForFFGroup(message))
+			applyClass(chatEntry, getChannelCssClassForPlayerGroup(groupId))
 			
 			const timeElement = document.createElement("span")
 			timeElement.innerHTML = "[" + message.timestamp + "] "
@@ -130,7 +180,7 @@ var Gobchat = (function(Gobchat){
 			if(senderInnerHtml != null){
 				const senderElement = document.createElement("span")
 				senderElement.innerHTML = senderInnerHtml				
-				applyClass(senderElement, getSenderCssClassForFFGroup(message))
+				applyClass(senderElement, getSenderCssClassForPlayerGroup(groupId))
 				messageContainer.appendChild(senderElement)   
 			}
 			

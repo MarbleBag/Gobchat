@@ -22,7 +22,7 @@ var Gobchat = (function(Gobchat){
 		Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
 	])
 		
-	class MessageParser {
+	class MessageParser {		
 		constructor(config){
 			this._config = config
 			this._datacenter = null
@@ -60,7 +60,7 @@ var Gobchat = (function(Gobchat){
 			}
 				
 			const timestamp = messageEventDetail.timestamp
-			const source = this.createMessageSource(channel, messageEventDetail.source)			
+			const source = this.createMessageSource(channel, messageEventDetail.source)					
 			const messageSegments = [new MessageSegment(MessageSegmentEnum.UNDEFINED, messageEventDetail.message)]
 			const message = new Message(timestamp, source, channel, messageSegments)
 				
@@ -87,7 +87,7 @@ var Gobchat = (function(Gobchat){
 		createMessageSource(channelEnum,originalSource){			
 			const source = new MessageSource(originalSource)		
 			
-			if(originalSource != null && _.includes(Gobchat.PlayerChannel,channelEnum) ){ //message from a player (or at least it should!)
+			if(originalSource != null && _.includes(Gobchat.PlayerChannel, channelEnum) ){ //message from a player (or at least it should!)
 				let readIndex = 0
 			
 				function getIndexForUnicode(unicodeList){
@@ -100,14 +100,14 @@ var Gobchat = (function(Gobchat){
 					const index = getIndexForUnicode(PartyUnicodes)
 					if(index>=0){
 						source.prefix = (source.prefix || "") + `[${index + 1}]` //for now
-						readIndex = 1 //party unicodes should be of size 1
+						readIndex += 1 //party unicodes should be of size 1
 					}				
 				}else if(ChannelEnum.RAID === channelEnum){ //first character is the raid group
 					let index = getIndexForUnicode(RaidUnicodes)
 					if(index>=0){
 						index += 'A'
 						source.prefix = (source.prefix || "") + `[${String.fromCharCode(index)}]` //for now
-						readIndex = 1 //raid unicodes should be of size 1
+						readIndex += 1 //raid unicodes should be of size 1
 					}	
 				}
 				
@@ -115,24 +115,49 @@ var Gobchat = (function(Gobchat){
 					const ffGroup = getIndexForUnicode(FFGroupUnicodes)
 					if(ffGroup>=0){
 						source.ffGroupId = ffGroup+1
-						//do not increment readIndex. The used unicodes are not private and can be displayed without any additional works
-						//this system may be reworked later, if we have a better support for all those unicodes FF uses.
+						source.prefix = (source.prefix || "") + FFGroupUnicodes[ffGroup].char
+						readIndex += 1
 					}
 				}
 				
 				source.playerName = source.sourceId.substring(readIndex)
-				//this._datacenter = findServer(source,this._datacenter)
+									
+				this.checkDatacenter()
+				this._datacenter = addServerToSource(source, this._datacenter)
 			}			
 			
 			return source
+		}
+		
+		checkDatacenter(){
+			const datacenterName = this._config.get("behaviour.datacenter",null)
+			if(datacenterName !== null){
+				if( this._datacenter && this._datacenter.label === datacenterName ){
+					return
+				}
+				this._datacenter = findDatacenter(datacenterName)
+			}
 		}
 				
 	}		
 	Gobchat.MessageParser = MessageParser
 	
-
+	function findDatacenter(datacenterName){
+		if(datacenterName === null)
+			return
+		
+		for(let region of Gobchat.Datacenters){
+			for(let center of region.centers){
+				if(center.label === datacenterName){
+					return center
+				}
+			}
+		}
+		
+		return
+	}
 	
-	function findServer(messageSource, datacenter){ //TODO rename
+	function addServerToSource(messageSource, datacenter){
 		if( messageSource.playerName == null )
 			return
 		
@@ -179,7 +204,7 @@ var Gobchat = (function(Gobchat){
 		if( datacenter === null)
 			return
 		
-		if( _.indexOf(datacenter.servers,serverName) != -1 ){
+		if( _.indexOf(datacenter.servers, serverName) != -1 ){
 			messageSource.playerName = messageSource.playerName.substring(0, messageSource.playerName.length - serverName.length)
 			messageSource.serverName = serverName
 		}

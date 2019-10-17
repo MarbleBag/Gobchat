@@ -33,28 +33,22 @@ var Gobchat = (function(Gobchat){
 		Gobchat.isObject = function(value) {
 			return value && typeof value === 'object' && value.constructor === Object;
 		}
-	
+		
+		Gobchat.generateId = function(length){
+			return Math.random().toString(36).substr(2, Math.max(1,length))
+		}
+		
+		Gobchat.formatString = function (str) {
+			if(arguments.length > 1){
+				let args = Array.prototype.slice.call(arguments, 1);
+				const t = typeof args[0]
+				args = ("string" === t || "number" === t) ? Array.prototype.slice.call(args) : args[0]
+				for (let key in args) {
+					str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key])
+				}
+			}
+			return str
+		}
+			
 		return Gobchat	
 }(Gobchat || {}));
-
-
-// Sends the given obj as json back to the overlay plugin which created this instance
-
-
-/*
-function findAllMatches(str,searchStr){
-	if(!str) return null
-	if(!searchStr) return null
-	
-	const searchStrLength = searchStr.length
-	let startIndex = 0, index
-	let result = []
-	
-    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
-        result.push(index);
-        startIndex = index + searchStrLength;
-    }
-	
-	return result
-}
-*/

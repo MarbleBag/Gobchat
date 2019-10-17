@@ -5,39 +5,17 @@
 
 var Gobchat = (function(Gobchat){
 	
-		//TODO cleanup
-		class ParserConfigTest{ //TODO make this configurateable
-			constructor(manager){
-				this.getConfig = function(key,defaultValue){
-					return manager._chatConfig.get(key,defaultValue)
-				}
+		function getHourAndMinutes(){
+			function twoDigits(t) {
+				return t < 10 ? '0' + t : t;
 			}
 			
-			isMessageRelevant(channelEnum){
-				const channels = this.getConfig("behaviour.channel.visible")
-				return _.includes(channels,channelEnum)
-			}
-			
-			isRoleplayChannel(channelEnum){		
-				const channels = this.getConfig("behaviour.channel.roleplay")
-				return _.includes(channels,channelEnum)
-			}
-			
-			isMentionChannel(channelEnum){
-				const channels = this.getConfig("behaviour.channel.mention")
-				return _.includes(channels,channelEnum)		
-			}
-
-			get isAutodetectEmoteInSay(){
-				const val = this.getConfig("behaviour.autodetectEmoteInSay")
-				return val
-			}
-			
-			get mentions(){
-				return this.getConfig("behaviour.mentions")
-			}
+			const d = new Date()
+			const hours = twoDigits(d.getHours())
+			const minutes = twoDigits(d.getMinutes())
+			return `${hours}:${minutes}`
 		}
-		
+			
 		class GobchatManager {
 			constructor(chatHtmlId){
 				this._chatHtmlId = chatHtmlId
@@ -49,14 +27,15 @@ var Gobchat = (function(Gobchat){
 				this._chatConfig = new Gobchat.GobchatConfig()
 				this._chatConfig.loadFromPlugin(()=>self.updateStyle())
 				
-				const parserConfig = new ParserConfigTest(self)
 				this._messageParser = new Gobchat.MessageParser(self._chatConfig)
-				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder()
+				this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
+				
+				this._cmdManager = new Gobchat.CommandManager(this, self._chatConfig)
 				
 				this._scrollbar = new ScrollbarControl(this._chatHtmlId)
 				this._scrollbar.init()
-								
-				document.addEventListener("ChatMessageEvent", (e) => {self.onNewMessage(e)})
+												
+				document.addEventListener("ChatMessageEvent", (e) => {self.onNewMessageEvent(e)})
 			}
 			
 			saveConfigToLocalStore(){
@@ -70,17 +49,47 @@ var Gobchat = (function(Gobchat){
 			
 			//TODO test
 			updateStyle(){
-				Gobchat.StyleBuilder.updateStyle(this._chatConfig.configStyle,"custome_style_id")
+				Gobchat.StyleBuilder.updateStyle(this._chatConfig, "custome_style_id")
 			}
 			
-			onNewMessage(messageEvent){
+			sendErrorMessage(msg){
+				this.onNewMessage(
+						new Gobchat.Message(
+							getHourAndMinutes(),
+							new Gobchat.MessageSource("Gobchat"),
+							Gobchat.ChannelEnum.ERROR,
+							[new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED,  msg)]
+						)
+					)
+			}
+			
+			sendInfoMessage(msg){
+				this.onNewMessage(
+						new Gobchat.Message(
+							getHourAndMinutes(),
+							new Gobchat.MessageSource("Gobchat"),
+							Gobchat.ChannelEnum.ECHO,
+							[new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, "&lt;Gobchat&gt; " + msg)]
+						)
+					)
+			}
+			
+			onNewMessageEvent(messageEvent){
 				const message = this._messageParser.parseMessageEvent(messageEvent)
 				if(!message) return
-				
+				this.onNewMessage(message)
+				if( message.channel === Gobchat.ChannelEnum.ECHO ){
+					this._cmdManager.processCommand(messageEvent.detail.message)
+				}
+			}
+			
+			onNewMessage(message){												
 				const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
 				$("#"+this._chatHtmlId).append(messageHtmlElement)
 				this._scrollbar.scrollToBottomIfNeeded()
 			}
+			
+			
 		}
 		Gobchat.GobchatManager = GobchatManager
 		
@@ -97,6 +106,35 @@ var Gobchat = (function(Gobchat){
 					let closeToBottom = ($(this).scrollTop() + $(this).innerHeight() + 5 >= $(this)[0].scrollHeight) // +5px for 'being very close'
 					control._bScrollToBottom = closeToBottom
 				})
+								
+				/*$(scrollTarget).on("wheel",function(event){
+					const scrollData = event.originalEvent.deltaY
+					const scrollElement = $(scrollTarget)[0]
+
+					const viewPortSize = scrollElement.clientHeight
+					const scrollableSpace = scrollElement.scrollHeight
+					
+					if( scrollableSpace <= viewPortSize )
+						return
+					
+					const scrollDistance = 0 //px
+					
+					if(scrollData < 0){					
+						scrollElement.scrollTop = Math.max(0,scrollElement.scrollTop - scrollDistance)
+					}else{						
+						scrollElement.scrollTop = Math.min(scrollableSpace-viewPortSize, scrollElement.scrollTop + scrollDistance)
+					}
+					
+					
+					//console.log($(scrollTarget)[0].clientHeight)
+					//console.log($(scrollTarget)[0].scrollHeight)
+					
+					//console.log($(scrollTarget)[0].scrollTop)
+				})*/
+				
+				/*$(scrollTarget).on("mouseover",function(event){
+					$(scrollTarget)[0].focus()
+				})*/
 			}
 			
 			get isScrollingNeeded(){
@@ -108,7 +146,7 @@ var Gobchat = (function(Gobchat){
 					const scrollTarget = this._scrollTargetId 
 					$(scrollTarget).animate({
 						scrollTop: $(scrollTarget)[0].scrollHeight - $(scrollTarget)[0].clientHeight
-					}, 500);
+					}, 200);
 				}
 			}
 		}

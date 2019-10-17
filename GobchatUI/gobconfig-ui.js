@@ -72,6 +72,33 @@
 			gobconfig.set("behaviour.autodetectEmoteInSay",event.target.checked)
 		})
 		
+		{
+			const dropdown = $("#dropdown_datacenter")
+			dropdown.append(new Option("Automatic","auto"))
+			$.each(Gobchat.Datacenters,function(idx,region){
+				const separator = new Option(`\u2500\u2500\u2500 ${region.label} \u2500\u2500\u2500`)
+				separator.disabled = true
+				dropdown.append(separator)
+				$.each(region.centers,function(idx,datacenter){
+					dropdown.append(new Option(datacenter.label,datacenter.label))
+				})
+			})
+
+			dropdown.val(gobconfig.get("behaviour.datacenter",null) || "auto")				
+			dropdown.on("change",function(event){	
+				const datacenter = event.target.value
+				if(datacenter === "auto"){
+					gobconfig.reset("behaviour.datacenter")
+				}else{
+					gobconfig.set("behaviour.datacenter",event.target.value)
+				}
+			})
+		}
+		
+		$("#dropdown_showserver").on("change",function(event){					
+			//TODO
+		})
+		
 		$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
 		$("#general_font").on("change",function(event){
 			let newFont = event.target.value || "sans-serif"
@@ -157,7 +184,7 @@
 			}
 			
 			const configKey = entry.styleId + "." + type
-			return buildColorSelector(configKey,true,null)
+			return buildColorSelector({configKey: configKey})
 		}
 			
 		const tbl = $("#tbl_channel_config > tbody")
@@ -198,7 +225,7 @@
 				return null
 			}
 			const configKey = entry.styleId + "." + type
-			return buildColorSelector(configKey,true,null)
+			return buildColorSelector({configKey: configKey})
 		}
 		
 		const tbl = $("#tbl_segment_config > tbody")
@@ -209,48 +236,168 @@
 				addToTableRow(tr,makeColorSelector(entry,"color"))
 			})
 	}
-	
-	function initializeGroupsConfig(){
-		const tblConfig = [
-			{label:"Group 1 ('\u2605')", senderStyle:"style.sender.ffgroup-1",messageStyle:"style.channel.ffgroup-1"},
-			{label:"Group 2 ('\u25CF')", senderStyle:"style.sender.ffgroup-2",messageStyle:"style.channel.ffgroup-2"},
-			{label:"Group 3 ('\u25B2')", senderStyle:"style.sender.ffgroup-3",messageStyle:"style.channel.ffgroup-3"},
-			{label:"Group 4 ('\u2666')", senderStyle:"style.sender.ffgroup-4",messageStyle:"style.channel.ffgroup-4"},
-			{label:"Group 5 ('\u2665')", senderStyle:"style.sender.ffgroup-5",messageStyle:"style.channel.ffgroup-5"},
-			{label:"Group 6 ('\u2660')", senderStyle:"style.sender.ffgroup-6",messageStyle:"style.channel.ffgroup-6"},
-			{label:"Group 7 ('\u2663')", senderStyle:"style.sender.ffgroup-7",messageStyle:"style.channel.ffgroup-7"},
-		]
-				
-		const tbl = $("#ffGroups")
-		tblConfig.forEach((entry)=>{
-				const groupElement = document.createElement("div") 
-				tbl.append(groupElement)
-			
-				const headerElement = document.createElement("h4")
-				headerElement.innerHTML = entry.label
-				groupElement.appendChild(headerElement)
-				
-				const dataElement = document.createElement("div")
-				groupElement.appendChild(dataElement)
-				
-				const dataTbl1 = document.createElement("table")
-				const dataTbl1R1 = document.createElement("tr")
-				const dataTbl1R2 = document.createElement("tr")
-				dataElement.appendChild(dataTbl1)
-				dataTbl1.appendChild(dataTbl1R1)
-				dataTbl1.appendChild(dataTbl1R2)
-				addToTableRow(dataTbl1R1,makeNameLabel("Sender Text"))
-				addToTableRow(dataTbl1R1,buildColorSelector(entry.senderStyle + ".color",false,null))
-				addToTableRow(dataTbl1R1,makeNameLabel("Sender Background"))
-				addToTableRow(dataTbl1R1,buildColorSelector(entry.senderStyle + ".background-color",true,null))
-				addToTableRow(dataTbl1R2,makeNameLabel("Message Background"))
-				addToTableRow(dataTbl1R2,buildColorSelector(entry.messageStyle + ".background-color",true,null))
-			})
-		$( "#ffGroups" ).accordion({
-				 heightStyle: "content",
-				 header: "> div > h4",
-			});	
 		
+	function initializeGroupsConfig(){	
+		const configKeyGroupSorting = "userdata.group.sorting"
+		const configKeyGroupData 	= "userdata.group.data"
+		
+		function updateGroupRenderer(){
+			$( "#chatgroups" ).sortable( "refresh" )
+			$( "#chatgroups" ).accordion( "refresh" )
+			updateGroupNumbers()
+		}
+		
+		function updateGroupNumbers(){
+			$( "#chatgroups #groupcounter" ).each(function(idx){
+				$(this).text(idx+1)
+			})
+		}
+		
+		function actionRemoveGroup(event){
+			event.stopPropagation()			
+			const groupId = $(this).data("groupId")			
+			_.remove(window.gobconfig.get(configKeyGroupSorting), e => e === groupId)
+			window.gobconfig.remove(configKeyGroupData + "." + groupId)	
+			$(`#chatgroups #group-${groupId}`).remove()	
+			updateGroupRenderer()
+		}
+
+		function buildGroupElement(groupId){
+			const groupKey = configKeyGroupData + "." + groupId
+			const groupData = window.gobconfig.get(groupKey)
+			const isFFGroup = "ffgroup" in groupData
+			
+			const template = document.querySelector("#t_group_entry")
+			const templateNode = document.importNode(template.content, true)
+			
+			const groupElement = $(templateNode).children("#groupelement")			
+			groupElement.attr("id",`group-${groupId}`)
+			groupElement.data("groupId",groupId)
+			groupElement.find("#groupcounter").text($("#chatgroups > div").length + 1)
+			groupElement.find("#groupname").text(groupData.name)
+			groupElement.find("#groupdelete").data("groupId",groupId)
+			
+			if(isFFGroup){
+				groupElement.find("#groupdelete").hide()
+			}else{
+				groupElement.find("#groupdelete").on("click", actionRemoveGroup)
+			}
+						
+			let groupUi = groupElement.find("#groupui")
+			groupUi = $("<tbody/>")
+						.appendTo(
+								$("<table/>")
+									.css("width","100%")
+									.appendTo(groupUi)
+							)
+			
+			function buildRow(){
+				const row = $("<tr/>").appendTo(groupUi)
+				if(arguments.length){
+					for(let element of arguments){
+						$("<td/>").append(element).appendTo(row)
+					}
+				}
+				
+				return row
+			}
+			
+			buildRow(
+					buildLabel("Active"),
+					buildCheckboxForElement(groupKey + ".active")
+				)
+				
+			buildRow(
+					buildLabel("Sender Text"),
+					buildColorSelector({configKey: groupKey + ".style.header.color", hasReset:isFFGroup}),
+					buildLabel("Sender Background"),
+					buildColorSelector({configKey: groupKey + ".style.header.background-color", hasReset:isFFGroup})
+				)
+				
+			buildRow(
+					buildLabel("Message Background"),
+					buildColorSelector({configKey: groupKey + ".style.body.background-color", hasReset:isFFGroup})
+				)
+
+			if("trigger" in groupData){
+				const row = buildRow(
+					buildLabel("Player names"),
+					$("<textarea/>")
+						.css("width","100%")
+						.attr("rows",2)
+				)
+				
+				row.children("td:has(> textarea)").last().attr("colspan",5)
+				
+				const txtArea = row.find("textarea")
+				
+				txtArea.val(gobconfig.get(groupKey + ".trigger").join(", "))
+				txtArea.on("change",function(event){
+					let words = (event.target.value || "").split(",")
+					words = words.filter(w=>w!==null&&w!==undefined).map(w=>w.toLowerCase().trim()).filter(w=>w.length>0)
+					gobconfig.set(groupKey + ".trigger",words)
+					event.target.value = words.join(", ")
+				})
+			}		
+						
+			$("#chatgroups").append(groupElement)
+		}
+						
+		window.gobconfig.get(configKeyGroupSorting).forEach((groupId)=>{
+				buildGroupElement(groupId)				
+			})
+						
+		$("#addchatgroup").on("click",function(){
+			function makeGroupId(){
+				const ids = window.gobconfig.get(configKeyGroupSorting)
+				let id = null
+				do{
+					id = Gobchat.generateId(6)					
+				}while(_.includes(ids,id))
+				return id
+			}
+			
+			const groupId = makeGroupId()
+			
+			const group = {
+				name: "Unnamed",
+				id: groupId,
+				active: true,
+				trigger: [],
+				style: {
+					body:{ "background-color": null, },
+					header: { "background-color": null, "color": null, },
+				},
+			}
+			
+			window.gobconfig.get(configKeyGroupSorting).push(groupId)
+			window.gobconfig.get(configKeyGroupData)[groupId] = group		
+			
+			buildGroupElement(groupId)
+			
+			updateGroupRenderer()
+		})
+			
+		$( "#chatgroups" ).accordion({
+				heightStyle: "content",
+				header: "> div > h4",
+			})
+			.sortable({
+				axis: "y",
+				handle: "h4",
+				stop: function( event, ui ) {	
+					//update sort order
+					const order = []					
+					$( "#chatgroups > div" ).each(function(){
+						order.push($(this).data("groupId"))
+					})
+					
+					window.gobconfig.set(configKeyGroupSorting, order.filter(e => e !== null && e !== undefined && e.length > 0))
+					
+					// Refresh accordion to handle new order
+					updateGroupRenderer()
+				}
+			});	
 	}
 	
 	//Helper functions
@@ -272,7 +419,36 @@
 		return lbl
 	}
 	
+	// helper functions
+	
+	function toggleValueInArray(array, value){
+		if( _.includes(array, value) ){
+			_.remove(array,(i)=>{return i===value})
+		}else{
+			array.push(value)
+		}
+	}
+	
+	function setValueInArray(array, value, available){		
+		if( available ){
+			if( ! _.includes(array, value) ){
+				array.push(value)
+			}
+		}else{
+			_.remove(array,(e)=>{return e === value})
+		}
+	}
+	
 	//UI elements
+	
+	function buildLabel(name){
+		if(name===null || name===undefined){
+			return null
+		}
+		const lbl = document.createElement("label")
+		lbl.innerHTML = name
+		return lbl
+	}
 	
 	function buildCheckboxForArray(configKey,checkboxValue){
 		const input = document.createElement("input")
@@ -284,22 +460,46 @@
 		
 		input.checked  = _.includes(data,checkboxValue)
 		$(input).on("change",function(event){
-				if(event.target.checked && !_.includes(data,checkboxValue)){
-					data.push(checkboxValue)
-				}else{
-					_.remove(data,(i)=>{return i===checkboxValue})
-				}
+				setValueInArray(data, checkboxValue, event.target.checked)
 			})		
 		
 		return input
 	}
 	
-	function buildColorSelector(configKey,hasAlpha,onBeforeShow){
+	function buildCheckboxForElement(configKey){
+		const input = document.createElement("input")
+		input.type = "checkbox"
+		
+		const data = window.gobconfig.get(configKey)
+		if(data === null || data === undefined)
+			input.disabled = true
+		
+		input.checked  = data
+		$(input).on("change",function(event){
+				window.gobconfig.set(configKey, event.target.checked)
+			})	
+			
+		return input
+	}
+	
+	function buildColorSelector(options){
+		const defaultOptions = {
+			configKey: null,
+			hasAlpha: true,
+			hasReset: true,
+			onBeforeShow: null
+		}
+		
+		options = $.extend(defaultOptions,options)
+		if(options.configKey === null){
+			throw new Error("ConfigKey can't be null")
+		}
+		
 		const div = document.createElement("div")
 		const input = document.createElement("input")		
 		div.appendChild(input)
 		
-		const data = window.gobconfig.get(configKey)
+		const data = window.gobconfig.get(options.configKey)
 		
 		input.type = "text"	
 		$(input).spectrum({
@@ -308,7 +508,7 @@
 			allowEmpty:true,
 			showInput: true,
 			showInitial: true,
-			showAlpha: hasAlpha,
+			showAlpha: options.hasAlpha,
 			showPalette: true,
 			//palette: spectrumColorPalette,
 			showSelectionPalette: true,
@@ -317,27 +517,28 @@
 			clickoutFiresChange: false,
 			hide: function(color) {
 					if(color !== null){
-						gobconfig.set(configKey,color.toString())
+						window.gobconfig.set(options.configKey, color.toString())
 					}else{
-						gobconfig.set(configKey,null)
+						window.gobconfig.set(options.configKey, null)
 					}
 				},
-			beforeShow: function(color){
-				if(onBeforeShow)onBeforeShow(input)
-				return true
-			}
+			beforeShow:	function(color){
+							if(options.onBeforeShow) options.onBeforeShow(input)
+							return true
+						}
 		})
 		
-		const btn = document.createElement("button")
-		btn.innerHTML = "&#x274C;"
-		btn.title = "Reset to default"
-		
-		$(btn).on("click",function(event){
-				window.gobconfig.reset(configKey)
-				$(input).spectrum("set", window.gobconfig.get(configKey));
-			})	
-		
-		div.appendChild(btn)
+		if(options.hasReset){
+			const btn = document.createElement("button")
+			btn.innerHTML = "&#x274C;"
+			btn.title = "Reset to default"
+			
+			$(btn).on("click",function(event){
+					window.gobconfig.reset(options.configKey)
+					$(input).spectrum("set", window.gobconfig.get(options.configKey));
+				})
+			div.appendChild(btn)	
+		}
 		
 		return div
 	}

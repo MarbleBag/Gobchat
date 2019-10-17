@@ -29,6 +29,7 @@
 	<script src="gobchat/StyleBuilder.js"></script>  
 	<script src="gobchat/MessageParser.js"></script>
 	<script src="gobchat/MessageHtmlBuilder.js"></script>  
+	<script src="gobchat/CommandManager.js"></script>
 	<script src="gobchat/GobchatManager.js"></script>
 
 </head>
@@ -51,13 +52,6 @@
 					<button id="gobchat_config"><i class="fa fa-gear"></i></button>
 				</div>
 				<div id="toolbarTabs" class="chatbox-tabs">
-					<!--<button>A Tab</button>
-					<button>A Tab</button>
-					<button>A Tab</button>
-					<button>A Tab</button>
-					<button>A Tab</button>
-					<button>A Tab</button>
-					<button>A Tab</button>-->
 				</div>
 			</div>
 			<div class="chatbox-content-container chatbox-gen">
@@ -86,7 +80,7 @@
 						
 		$("#gobchat_config").on("click",function(e){
 			window.chatManager.saveConfigToLocalStore()			
-			const handle = window.open('gobconfig.html','Settings','width=800,height=600')		
+			const handle = window.open('gobconfig.html','Settings','width=900,height=600')		
 			handle.focus()
 		})
 		
@@ -95,6 +89,18 @@
 			window.chatManager.loadConfigFromLocalStore()
 			window.chatManager.updateStyle()
 		})
-	});
+				
+		// test
+		function runTest(){
+			const fillMe = Array.from({length: 1}, (v, k) => `Say, *emote* and ((ooc)) - ${k+1}`).map(e =>{return {message: e, source:"\u2605Firstname LastnameOdin"}})
+			fillMe.forEach((e)=>{
+					const msg = {detail:{type: e.channel || Gobchat.ChannelEnum.SAY, timestamp:"HH:mm", source: e.source || "Browser", message: e.message || "Empty"}}
+					window.chatManager.onNewMessageEvent(msg)
+				})
+		}
+		
+		// window.setTimeout( runTest, 5000 );
+		
+	})
 </script>
 </html>

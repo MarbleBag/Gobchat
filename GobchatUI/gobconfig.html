@@ -11,6 +11,7 @@
 	<script src="lib/spectrum.js"></script>
 
 	<script src="gobchat/Datacenters.js"></script>
+	<script src="gobchat/FFUnicodes.js"></script>
 	<script src="gobchat/Channels.js"></script>
 	<script src="gobchat/DefaultConfig.js"></script>
 	<script src="gobchat/Common.js"></script>
@@ -88,6 +89,13 @@
 				</p>
 				<p>
 					<div>
+						<label>Datacenter</label>
+						<select id="dropdown_datacenter">
+						</select>
+					</div>
+				</p>
+				<p>
+					<div>
 						<label>Mentions: (Only detects whole words! Separate entries with a comma)</label>
 						<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
 					</div>
@@ -149,7 +157,32 @@
 				</div>
 			</article>
 			<article id="nav_groups">
-				<div id="ffGroups">
+			
+				<style>
+				
+				</style>
+			
+				<template id="t_group_entry">
+					<div id="groupelement">
+						<h4 id="groupheader">
+							<span>
+								<span id="groupcounter"></span>
+								<span id="groupprefix">. Group: </span>
+								<span id="groupname"></span>
+							</span>
+							<button id="groupdelete">&#x274C;</button>
+						</h4>
+						<div>
+							<div id="groupui">
+							</div>
+						</div>
+					</div>
+				</template>
+			
+				<div>
+					<button id="addchatgroup">Add group</button>
+				</div>
+				<div id="chatgroups">
 				</div>
 			</article>
 			<article id="nav_about">

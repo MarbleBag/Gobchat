@@ -5,8 +5,10 @@
 var Gobchat = (function(Gobchat,undefined){
 	
 	const ChannelEnum = Gobchat.ChannelEnum
+	const FFUnicode = Gobchat.FFUnicode
+	
 	Gobchat.DefaultChatConfig = Object.freeze({
-		version: "0.1.3",
+		version: "0.2.0",
 		behaviour: {
 			channel: {
 				roleplay: [ //which channels are formatted for roleplay
@@ -26,13 +28,95 @@ var Gobchat = (function(Gobchat,undefined){
 					ChannelEnum.LINKSHELL_1, ChannelEnum.LINKSHELL_2, ChannelEnum.LINKSHELL_3, ChannelEnum.LINKSHELL_4,
 					ChannelEnum.LINKSHELL_5, ChannelEnum.LINKSHELL_6, ChannelEnum.LINKSHELL_7, ChannelEnum.LINKSHELL_8,
 				],
-			},
+			},			
 			mentions: [],
 			language: "en",
 			autodetectEmoteInSay: true,
 			playSoundOnMention: false,
 			datacenter: null,
 			displayServerType: 0,
+		},
+		userdata: { //will be copied whole on save
+			group: {
+				sorting: ["group-ff-1","group-ff-2","group-ff-3","group-ff-4","group-ff-5","group-ff-6","group-ff-7"],
+				data: {
+					/*{ //Template
+						name: //group name
+						active: true/false //if false, group can't be triggered
+						ffgroup: //if set, group reflects one of the ffxiv friendlist groups. Not available for userAgent
+					}*/
+					"group-ff-1": {
+						name: FFUnicode.GROUP_1.char,
+						active: true,					
+						ffgroup: 1,
+						id: "group-ff-1",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},
+					},
+					"group-ff-2": {
+						name: FFUnicode.GROUP_2.char,
+						active: true,
+						ffgroup: 2,
+						id: "group-ff-2",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},
+					},
+					"group-ff-3": {
+						name: FFUnicode.GROUP_3.char,
+						active: true,
+						ffgroup: 3,
+						id: "group-ff-3",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},						
+					},
+					"group-ff-4": {
+						name: FFUnicode.GROUP_4.char,
+						active: true,
+						ffgroup: 4,
+						id: "group-ff-4",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},						
+					},
+					"group-ff-5": {
+						name: FFUnicode.GROUP_5.char,
+						active: true,
+						ffgroup: 5,
+						id: "group-ff-5",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},						
+					},
+					"group-ff-6": {
+						name: FFUnicode.GROUP_6.char,
+						active: true,
+						ffgroup: 6,
+						id: "group-ff-6",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},						
+					},
+					"group-ff-7": {
+						name: FFUnicode.GROUP_7.char,
+						active: true,
+						ffgroup: 7,
+						id: "group-ff-7",
+						style: {
+							body:{ "background-color": null, },
+							header: { "background-color": null, "color": null, },
+						},						
+					}				
+				},
+			},
 		},
 		style: { //will be used to generate css
 			chatbox: {
@@ -142,57 +226,6 @@ var Gobchat = (function(Gobchat,undefined){
 				"worldlinkshell-8": {
 						"color": "#03fc73",
 						"background-color": null,
-				},
-				"ffgroup-1" : {
-					"background-color": null,
-				},
-				"ffgroup-2" : {
-					"background-color": null,
-				},
-				"ffgroup-3" : {
-					"background-color": null,
-				},
-				"ffgroup-4" : {
-					"background-color": null,
-				},
-				"ffgroup-5" : {
-					"background-color": null,
-				},
-				"ffgroup-6" : {
-					"background-color": null,
-				},
-				"ffgroup-7" : {
-					"background-color": null,
-				},
-			},
-			sender: {
-				"ffgroup-1" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-2" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-3" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-4" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-5" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-6" : {
-					"color": null,
-					"background-color": null,
-				},
-				"ffgroup-7" : {
-					"color": null,
-					"background-color": null,
 				},
 			},
 			segment: {

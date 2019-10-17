@@ -9,18 +9,19 @@ var Gobchat = (function(Gobchat,undefined){
 		const invalidKeys = availableKeys.filter((k) => { return _.indexOf(allowedKeys,k) === -1 })
 		invalidKeys.forEach((k)=>{delete map[k]}) //remove keys which are not allowed
 	}
-		
+
 	//removes every value from data that is the same as in 	extendedData
 	function retainChangesIterator(data, extendedData){
 		const callbackHelper = {
 			onArray: function(data,extendedData){				
-				return _.isEqual(_.sortBy(data), _.sortBy(extendedData)) //same, can be removed
+				//return _.isEqual(data,extendedData) //same objects can be removed
+				return _.isEqual(_.sortBy(data), _.sortBy(extendedData)) //same objects can be removed
 			},
 			onCompare: function(data,extendedData){
-				return data == extendedData //same, can be removed
+				return data == extendedData //same objects can be removed
 			},
 			onObject: function(data,extendedData,callbackHelper){
-				removeInvalidKeys(data,Object.keys(extendedData)) 
+				removeInvalidKeys(data, Object.keys(extendedData)) 
 				for(let key of Object.keys(data)){
 					if(dataIteratorHelper(data[key], extendedData[key], callbackHelper)) //delete on true
 						delete data[key]
@@ -58,25 +59,25 @@ var Gobchat = (function(Gobchat,undefined){
 		callbackHelper.onObject(data, extendedData, callbackHelper)
 	}
 		
-	function dataIteratorHelper(data, extendedData, callbackHelper){
-		if(Gobchat.isArray(data)){
-			if(Gobchat.isArray(extendedData)){
-				return callbackHelper.onArray(data,extendedData)
+	function dataIteratorHelper(objA, objB, callbacks){
+		if(Gobchat.isArray(objA)){
+			if(Gobchat.isArray(objB)){
+				return callbacks.onArray(objA, objB, callbacks)
 			}else{
 				return false //invalid
 			}
-		}else if(Gobchat.isArray(extendedData)){
+		}else if(Gobchat.isArray(objB)){
 			return false //invalid
-		}else if(Gobchat.isObject(data)){
-			if(Gobchat.isObject(extendedData)){
-				return callbackHelper.onObject(data, extendedData, callbackHelper)
+		}else if(Gobchat.isObject(objA)){
+			if(Gobchat.isObject(objB)){
+				return callbacks.onObject(objA, objB, callbacks)
 			}else{
 				return false //invalid
 			}
-		}else if(Gobchat.isObject(extendedData)){
+		}else if(Gobchat.isObject(objB)){
 			return false //invalid
 		}else{
-			return callbackHelper.onCompare(data,extendedData)
+			return callbacks.onCompare(objA, objB, callbacks)
 		}		
 	}
 	
@@ -86,7 +87,7 @@ var Gobchat = (function(Gobchat,undefined){
 		return parts
 	}
 	
-	function resolvePath(key,config,value){
+	function resolvePath(key, config, value, remove){
 		let _config = config
 		const keySteps = breakKeyDown(key)
 		
@@ -107,7 +108,25 @@ var Gobchat = (function(Gobchat,undefined){
 		if(value !== undefined){
 			_config[targetKey] = value
 		}
+		if(remove !== undefined && remove){
+			delete _config[targetKey]
+		}
 		return _config[targetKey]
+	}
+	
+	function copyValueForKey(source, key, destination, doJsonCopy){
+		let val = resolvePath(key, source)
+		if(doJsonCopy)
+			val = copyByJson(val)		
+		resolvePath(key, destination, val)
+	}
+	
+	function tryAndRemapConfig(config){
+		if(config.version = "0.1.4"){
+			//TODO			
+		}
+		
+		return config
 	}
 		
 	//maybe not fast, but free of hassle :^)
@@ -124,7 +143,7 @@ var Gobchat = (function(Gobchat,undefined){
 			
 	class GobchatConfig{
 		constructor(){
-			this._propertyListener = []
+			this._propertyListener = new EventDispatcher()
 			this._config = copyByJson(Gobchat.DefaultChatConfig)
 		}
 		
@@ -134,12 +153,15 @@ var Gobchat = (function(Gobchat,undefined){
 		
 		overwriteConfig(config){
 			//TODO return a set of update flags?
-			mergeIterator(this._config,config)
+			mergeIterator(this._config,config)			
+			this.firePropertyChange("ALL") //TODO
 		}
 		
 		getConfigChanges(){
 			const config = copyByJson(this._config)
-			retainChangesIterator(config,Gobchat.DefaultChatConfig)
+			retainChangesIterator(config, Gobchat.DefaultChatConfig)
+			copyValueForKey(this._config, "version", config)
+			copyValueForKey(this._config, "userdata", config)
 			return config
 		}
 		
@@ -159,11 +181,12 @@ var Gobchat = (function(Gobchat,undefined){
 		}
 		
 		saveToPlugin(){
-			const json = JSON.stringify(this.getConfigChanges())
+			const config = this.getConfigChanges()			
+			const json = JSON.stringify(config)
 			Gobchat.sendMessageToPlugin({event:"SaveGobchatConfig",detail:json})
 		}
 		
-		loadFromPlugin(callback){
+		loadFromPlugin(callback){ //TODO make this function async 
 			const self = this
 			const onLoad = function(e){
 				document.removeEventListener("LoadGobchatConfig",onLoad)
@@ -173,13 +196,24 @@ var Gobchat = (function(Gobchat,undefined){
 					return
 				}
 				
-				const config = JSON.parse(json)
+				let config = JSON.parse(json)
+				const d = config.version
+				if( config.version && config.version !== Gobchat.DefaultChatConfig.version){
+					config = tryAndRemapConfig(config)
+				}
+				
+				
+				if( config.version && config.version !== Gobchat.DefaultChatConfig.version){
+					alert(`Error: Config version mismatch.\nSome settings are lost. Check options and resave.\nExpected ${Gobchat.DefaultChatConfig.version} but was ${config.version}`)
+				}
+				
 				self.restoreDefaultConfig()				
-				self.overwriteConfig(config)
+				self.overwriteConfig(config)		
 				if(callback)callback()
 			}			
+		
 			document.addEventListener("LoadGobchatConfig",onLoad,false)
-			Gobchat.sendMessageToPlugin({event:"LoadGobchatConfig"})
+			Gobchat.sendMessageToPlugin({event:"LoadGobchatConfig"})			
 		}
 		
 		get configStyle(){
@@ -208,25 +242,74 @@ var Gobchat = (function(Gobchat,undefined){
 				this._config = value
 			}
 			resolvePath(key,this._config,value)
+			this.firePropertyChange(key)
 		}
 		
 		reset(key){
-			if(key===null || key.length===0){
-				this._config = copyByJson(Gobchat.DefaultChatConfig)
-			}
-			const original = resolvePath(key,Gobchat.DefaultChatConfig)
-			resolvePath(key,this._config,original)
+			if(key===null || key.length===0)
+				return
+			
+			const original = resolvePath(key, Gobchat.DefaultChatConfig)
+			resolvePath(key, this._config, original)
+			this.firePropertyChange(key)
 		}
 		
-		addPropertyListener(topic,callback){
-			
+		remove(key){
+			if(key===null || key.length===0)
+				return
+			resolvePath(key, this._config, undefined, true)
+			this.firePropertyChange(key)
+		}
+		
+		addPropertyListener(topic, callback){
+			this._propertyListener.on(topic, callback)
 		}
 		
 		firePropertyChange(topic){
-			
+			this._propertyListener.dispatch(topic, {"topic":topic, manager:this})
 		}
 	}
 	Gobchat.GobchatConfig = GobchatConfig
+	
+	class EventDispatcher{
+		constructor(){
+			this.listenersByTopic = new Map([])
+		}
+		dispatch(topic,data){
+			const listeners = this.listenersByTopic.get(topic)
+			if(listeners){
+				const callbacks = listeners.slice(0)
+				callbacks.forEach((callback)=>{callback(data)})
+			}
+		}
+		on(topic,callback){
+			if( !callback) return
+			let listeners = this.listenersByTopic.get(topic)
+			if( !listeners ){
+				listeners = []
+				this.listenersByTopic.set(topic,listeners)
+			}
+			listeners.push(callback)
+		}
+		off(topic,callback){
+			let listeners = this.listenersByTopic.get(topic)
+			if( listeners ){
+				const idx = listeners.indexOf(callback)
+				if( idx > -1 ) listeners.splice(idx,1)
+				if( listeners.length === 0 ) this.listenersByTopic.delete(topic)
+			}
+		}
+	}
+	
+	class GobchatConfigLoader{
+		constructor(targetVersion){
+			this._targetVersion = targetVersion
+		}
+		
+		load(config){
+			return config
+		}
+	}
 		
 	return Gobchat	
 }(Gobchat || {}));
