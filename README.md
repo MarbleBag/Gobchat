@@ -7,6 +7,11 @@ Gobchat in its current version is a plugin for [hibiyasleep's OverlayPlugin](htt
 This plugin took a lot of inspiration (and some code) from [quisquous cactbot](https://github.com/quisquous/cactbot)
 
 1. [Features](#features)
+   1. [Smart Autoscroll](#smart-autoscroll)
+   1. [Text color encoding](#text-formatting)
+   1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
+   1. [Groups](#groups)
+   1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
 1. [Updating Gobchat](#updating-gobchat)
 
@@ -21,7 +26,7 @@ By moving the scroll bar back to the bottom of the chat, autoscroll will be re-e
 
 ![autoscroll reenables](docs/screen_scroll_bottom.png)
 
-### Formatting text
+### Text formatting
 (TODO)
 
 ![(missing) example screen](docs/screen3.png)
@@ -44,15 +49,24 @@ Case-insensitive detection for a customizable list of words, which then will be 
 ![Mentions](docs/screen_mention_highlighting.png)
 
 ### Groups
+The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
 
+Gobchat includes these groups into its styling options and allows to create as many additional groups as you want.
+Each group can have a name, activated or deactivated, styled and keeps track of the players which belong to it.
+It's no longer required to add players to your friend-list, just to make it easier to see what they're writing.
 
+Groups are sorted by importance. While a player can belong to multiple groups, only the style of the first matching group is applied. To change the order, just drag & drop the group to its new position.
 
-### Chat commands
+### Chat Commands
 Gobchat accepts chat commands. To send a chat command to Gobchat, use the echo channel `/e` and type `gc` (short for Gobchat!).
 Example:
 - `/e gc `
 
 Gobchat supports the following chat commands:
+- [group](#group)
+
+***
+
 #### group
 Usage:
 - `/e gc group groupnumber add/remove/clear playername`
