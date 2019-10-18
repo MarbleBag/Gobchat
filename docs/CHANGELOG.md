@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.2.0] - Unreleased
+## [0.2.0] - 2019.10.18
 ### Added
-- Player groups. It is now possible to make own groups which gets triggered on certain players to style their message further
+- Player groups. It is now possible to make own groups, which get activated on certain players to style their message further
 - Player groups are sorted. Only the first group that matches will be applied.
 - Server name. If someone comes from another server, the overlay tries to display their server separate from their last name
 - A chat command manager. To start a chat command use '/e gc'
