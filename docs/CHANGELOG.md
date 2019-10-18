@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [0.2.0] - Unreleased
+### Added
+- Player groups. It is now possible to make own groups which gets triggered on certain players to style their message further
+- Player groups are sorted. Only the first group that matches will be applied.
+- Server name. If someone comes from another server, the overlay tries to display their server separate from their last name
+- A chat command manager. To start a chat command use '/e gc'
+- chat command 'group'. Allows to add, remove and clear player groups. Example: /e gc group 1 add firstname lastname [server] (Server is only needed if the player comes from a different server than you!) 
+
+### Fixed
+- Checkboxes on the plugin control form have now the correct size
+
 ## [0.1.5] - 2019.10.11
 ### Added
 - Channels for random rolls

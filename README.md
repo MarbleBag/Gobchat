@@ -13,11 +13,11 @@ This plugin took a lot of inspiration (and some code) from [quisquous cactbot](h
 ## Features
 
 ### Smart autoscroll
-It won't scroll if you are (re)reading a text from the past
+By moving the scroll bar up, autoscroll will be disabled for new messages and you can undisturbed (re)read text from the past.
 
 ![no autoscroll](docs/screen_scroll_noautoscroll.png)
 
-but will gladly do so again, if you move the scroll bar back to the bottom of the chat
+By moving the scroll bar back to the bottom of the chat, autoscroll will be re-enabled!
 
 ![autoscroll reenables](docs/screen_scroll_bottom.png)
 
@@ -34,10 +34,61 @@ Four different types
 
 ![Different formats](docs/screen_formats.png)
 
+### Channel settings
+
+### Formatting settings
+
 ### Text-Highlighting for key words - mentions
 Case-insensitive detection for a customizable list of words, which then will be highlighted. This will help you not missing out on important messages.
 
 ![Mentions](docs/screen_mention_highlighting.png)
+
+### Groups
+
+
+
+### Chat commands
+Gobchat accepts chat commands. To send a chat command to Gobchat, use the echo channel `/e` and type `gc` (short for Gobchat!).
+Example:
+- `/e gc `
+
+Gobchat supports the following chat commands:
+#### group
+Usage:
+- `/e gc group groupnumber add/remove/clear playername`
+
+This chat command can be used to manipulate a player group without using the config menu, for example via macros.
+To use the group command, type `/e gc group`.
+
+Groupnumber is a number, starting from 1 and references the group you want to manipulate. The assigned number is identical to the position in the config menu..
+
+Next is the task which should be performed. Possible values are `add`, `remove` and `clear`
+##### clear
+Doesn't need any additional  arguments. This task will remove all players from a group.
+Example:
+- `/e gc group 3 clear` - will remove all players from group 3
+
+##### add
+Needs the full name of a player, which will be added to the group. Names are case-insensitive!
+When a player comes from a different server, it is also necessary to specify the server name in brackets. 
+Placeholders like <t> are an exception to this rule and will always be accepted.
+
+Examples:
+- `/e gc group 1 add M'aka Ghin` 			/ `/e gc group 1 add firstname lastname`
+- `/e gc group 1 add M'aka Ghin[ultros]` 	/ `/e gc group 1 add firstname lastname[servername]`
+- `/e gc group 1 add M'aka Ghin [ultros]` 	/ `/e gc group 1 add firstname lastname [servername]`
+- `/e gc group 1 add <t>`
+
+##### remove
+Needs the full name of a player, which will be removed to the group. Names are case-insensitive!
+When a player comes from a different server, it is also necessary to specify the server name in brackets. 
+Placeholders like <t> are an exception to this rule and will always be accepted.
+
+Examples:
+- `/e gc group 1 remove M'aka Ghin` 			/ `/e gc group 1 remove firstname lastname`
+- `/e gc group 1 remove M'aka Ghin[ultros]` 	/ `/e gc group 1 remove firstname lastname[servername]`
+- `/e gc group 1 remove M'aka Ghin [ultros]` 	/ `/e gc group 1 remove firstname lastname [servername]`
+- `/e gc group 1 remove <t>`
 
 
 ## Installation
