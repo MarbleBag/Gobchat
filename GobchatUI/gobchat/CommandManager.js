@@ -64,7 +64,7 @@ var Gobchat = (function(Gobchat,undefined){
 	}
 	
 	
-	const playerGroupRegEx = /(\d+)\b\s+\b(add|remove|clear)\b\s*.*?\b([ \w\[\]'`´]+)?/i
+	const playerGroupRegEx = /(\d+)\b\s+\b(add|remove|clear)\b\s*.*?\b(([ \w'`´]+)(\s*\[\w+\])?)?/i
 	class PlayerGroupCommandHandler extends CommandHandler{
 		get acceptedCommandNames(){
 			return ["group","g"]
@@ -78,16 +78,22 @@ var Gobchat = (function(Gobchat,undefined){
 				return
 			}
 			
-			const groupIdx = result[1]
-			const task = result[2].toLowerCase()
+			function getMatchingGroup(result, idx){
+				const r = result.length > idx - 1 ? result[idx] : null
+				return r === undefined ? null : r
+			}
 			
-			if((task === "add" || task === "remove") && !result[3] ){
+			const groupIdx = parseInt(getMatchingGroup(result,1),10) 	//a number
+			const task = getMatchingGroup(result,2).toLowerCase() 		//either add, remove or clear
+			const playerNameComposite = getMatchingGroup(result,4) 		//may be null
+			let serverName = getMatchingGroup(result,5) 				//may be null
+					
+			if((task === "add" || task === "remove") && getMatchingGroup(result,3).length === 0 ){ //add and remove also need a target name
 				commandManager.sendErrorMessage("Command 'group' expects: \ngroup groupnumber add/remove playername\ngroup groupnumber clear")
 				return
 			}
 			
-			const gobconfig = commandManager._config
-			
+			const gobconfig = commandManager._config			
 			const groupsorting = gobconfig.get("userdata.group.sorting")
 			if(groupIdx <= 0 || groupsorting.length < groupIdx){
 				commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [0,${groupsorting.length-1}]`)
@@ -105,31 +111,50 @@ var Gobchat = (function(Gobchat,undefined){
 			if(task === "clear"){
 				gobconfig.set(`userdata.group.data.${groupId}.trigger`,[])
 				commandManager.sendInfoMessage(`Removed all players from group ${groupIdx}`)	
-				gobconfig.saveToPlugin()				
-			}else {
-				const playerNameAndServer = result[3].toLowerCase().trim()
-				if( playerNameAndServer.length === 0 )
-					return
-				if(task === "add"){
-					if( ! _.includes(group.trigger, playerNameAndServer) ){
-						group.trigger.push(playerNameAndServer)
-						gobconfig.firePropertyChange(`userdata.group.data.${groupId}.trigger`)
-						commandManager.sendInfoMessage(`Added ${playerNameAndServer} to group ${groupIdx}`)
-						gobconfig.saveToPlugin()
-					}else{
-						commandManager.sendInfoMessage(`${playerNameAndServer} already in group ${groupIdx}`)
-					}
-				}else if(task === "remove"){
-					if( _.includes(group.trigger, playerNameAndServer) ){
-						_.remove(group.trigger,(i)=>{return i===playerNameAndServer})
-						gobconfig.firePropertyChange(`userdata.group.data.${groupId}.trigger`)
-						commandManager.sendInfoMessage(`Removed ${playerNameAndServer} to group ${groupIdx}`)
-						gobconfig.saveToPlugin()
-					}else{
-						commandManager.sendInfoMessage(`${playerNameAndServer} is not in group ${groupIdx}`)
-					}
+				gobconfig.saveToPlugin()
+				return //done
+			}
+			
+			let playerNameAndServer = null
+			
+			if( serverName !== null ){ //server is given in the form of '[server]'
+				serverName = serverName.trim()
+				playerNameAndServer = playerNameComposite + " " + serverName
+			}else{
+				//there may or may not be a server				
+				const result = Gobchat.MessageParserHelper.tryAndSeparatePlayerFromServer(playerNameComposite, null) //TODO remember datacenter
+				if(result.found){
+					playerNameAndServer = `${result.playerName} [${result.serverName}]`
+				}else{
+					playerNameAndServer = playerNameComposite
 				}				
-			}						
+			}
+			
+			playerNameAndServer = playerNameAndServer.trim().toLowerCase()
+			
+			if( playerNameAndServer.length === 0 )
+				return
+			
+			if(task === "add"){
+				if( ! _.includes(group.trigger, playerNameAndServer) ){
+					group.trigger.push(playerNameAndServer)
+					gobconfig.firePropertyChange(`userdata.group.data.${groupId}.trigger`)
+					commandManager.sendInfoMessage(`Added ${playerNameAndServer} to group ${groupIdx}`)
+					gobconfig.saveToPlugin()
+				}else{
+					commandManager.sendInfoMessage(`${playerNameAndServer} already in group ${groupIdx}`)
+				}
+			}else if(task === "remove"){
+				if( _.includes(group.trigger, playerNameAndServer) ){
+					_.remove(group.trigger,(i)=>{return i===playerNameAndServer})
+					gobconfig.firePropertyChange(`userdata.group.data.${groupId}.trigger`)
+					commandManager.sendInfoMessage(`Removed ${playerNameAndServer} to group ${groupIdx}`)
+					gobconfig.saveToPlugin()
+				}else{
+					commandManager.sendInfoMessage(`${playerNameAndServer} is not in group ${groupIdx}`)
+				}
+			}				
+								
 		}
 	}
 	

@@ -2,6 +2,8 @@
 
 var Gobchat = (function(Gobchat){
 
+	//Needs to be updated on server changes
+	//TODO Check for locale specific names
 	Gobchat.Datacenters = [
 		{
 			label: "North American",
@@ -89,7 +91,7 @@ var Gobchat = (function(Gobchat){
 						"Ramuh",
 						"Tonberry",
 						"Typhon",
-						"unicorn"
+						"Unicorn"
 					]
 				},
 				{
@@ -127,6 +129,38 @@ var Gobchat = (function(Gobchat){
 			]
 		},
 	]
+	
+	Gobchat.DatacenterHelper = Object.freeze({
+		
+		tryAndGetDatacenterByName: function(datacenterName){
+			if(datacenterName === null)
+				return			
+			for(let region of Gobchat.Datacenters){
+				for(let center of region.centers){
+					if(center.label === datacenterName){
+						return center
+					}
+				}
+			}			
+			return
+		},
+		
+		tryAndGetDatacenterByServerName: function(serverName){
+			if(serverName === null)
+				return			
+			for(let region of Gobchat.Datacenters){
+				for(let center of region.centers){
+					for(let server of center.servers){
+						if( server === serverName ){
+							return center	
+						}
+					}
+				}
+			}			
+			return
+		},
+		
+	})
 
 	return Gobchat
 	

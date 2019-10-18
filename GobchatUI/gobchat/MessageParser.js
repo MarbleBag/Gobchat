@@ -135,37 +135,29 @@ var Gobchat = (function(Gobchat){
 				if( this._datacenter && this._datacenter.label === datacenterName ){
 					return
 				}
-				this._datacenter = findDatacenter(datacenterName)
+				this._datacenter = Gobchat.DatacenterHelper.tryAndGetDatacenterByName(datacenterName)
 			}
 		}
 				
 	}		
 	Gobchat.MessageParser = MessageParser
 	
-	function findDatacenter(datacenterName){
-		if(datacenterName === null)
-			return
+	//public function
+	//playerName - a string. 	Contains first- and lastname, and sometimes also server name (which is joined to the lastname): Firstname Lastname or Firstname LastnameServername
+	//datacenter - an object. 	Will be used to find the name of the server. If null, tries to find the Datacenter. See Gobchat.Datacenter.
+	//returns - an object. 		Containing 'datacenter' and in case playerName is a combination of player- and server-name, the object also contains 'playerName' and 'serverName', otherwise not.
+	//							'found' is a boolean and indicates if the function was successfull
+	function tryAndSeparatePlayerFromServer(playerName, datacenter){ //TODO rewrite description
+		const result = {datacenter: datacenter, playerName:null, serverName:null, found:false}
 		
-		for(let region of Gobchat.Datacenters){
-			for(let center of region.centers){
-				if(center.label === datacenterName){
-					return center
-				}
-			}
-		}
+		if(playerName === null)
+			return result
 		
-		return
-	}
-	
-	function addServerToSource(messageSource, datacenter){
-		if( messageSource.playerName == null )
-			return
-		
-		const names = messageSource.playerName.split(' ')
+		const names = playerName.split(' ')
 		
 		if(names.length !== 2) //player have always first and last name, unfortunately, the server is joined to the last name
-			return
-		
+			return result
+			
 		//returns the last part of a given string, which starts with an uppercase letter and is shorter than the given string
 		function getPossibleServerName(str){
 			for(let i = str.length-1;1<=i;--i){
@@ -177,39 +169,40 @@ var Gobchat = (function(Gobchat){
 			return null
 		}
 		
-		//try to find a matching datacenter for a given server	
-		function getDataCenter(serverName){
-			for(let region of Gobchat.Datacenters){
-				for(let center of region.centers){
-					for(let server of center.servers){
-						if( server === serverName ){
-							return center	
-						}
-					}
-				}
-			}
-			return null
-		}
-				
 		const lastName = names[names.length-1]
 		const serverName = getPossibleServerName(lastName)
 		
 		if(serverName === null) //doesn't have anything that may be a server
-			return
-		
-		if(!datacenter){
-			datacenter = getDataCenter(serverName)
+			return result
+			
+		if( !result.datacenter ){
+			result.datacenter = Gobchat.DatacenterHelper.tryAndGetDatacenterByServerName(serverName)
 		}
 		
-		if( datacenter === null)
-			return
-		
-		if( _.indexOf(datacenter.servers, serverName) != -1 ){
-			messageSource.playerName = messageSource.playerName.substring(0, messageSource.playerName.length - serverName.length)
-			messageSource.serverName = serverName
+		if( result.datacenter === null ) // wasn't a server or we just failed to find it
+			return result
+			
+		if( _.includes(result.datacenter.servers, serverName) ){
+			result.playerName = playerName.substring(0, playerName.length - serverName.length)
+			result.serverName = serverName
+			result.found = true
 		}
 		
-		return datacenter
+		return result 
+	}
+	
+	function addServerToSource(messageSource, datacenter){
+		if( messageSource.playerName == null )
+			return
+		
+		const result = tryAndSeparatePlayerFromServer(messageSource.playerName, datacenter)
+		
+		if(result.found){
+			messageSource.playerName = result.playerName
+			messageSource.serverName = result.serverName			
+		}
+		
+		return result.datacenter
 	}
 	
 	class Marker{
@@ -327,7 +320,7 @@ var Gobchat = (function(Gobchat){
 		processMessage(message,ignoreFunction,parseFunction)
 	}
 	
-	function processMessageSegmentMention(message,mentions){
+	function processMessageSegmentMention(message, mentions){
 		const ignoreFunction = (_) => {return false}
 		const parseFunction = (marker,type,txt) => {
 			const matches = findAllWordMatches(mentions, txt.toLowerCase())
@@ -335,8 +328,8 @@ var Gobchat = (function(Gobchat){
 			marker.newMark(type,0,0)			
 			for(let match of matches){
 				marker.mark.end = match[0]
-				marker.newMark(MessageSegmentEnum.MENTION,match[0],match[1])
-				marker.newMark(type,match[1],match[1])
+				marker.newMark(MessageSegmentEnum.MENTION, match[0], match[1])
+				marker.newMark(type, match[1], match[1])
 			}			
 			marker.mark.end = txt.length
 		}
@@ -355,7 +348,7 @@ var Gobchat = (function(Gobchat){
 			if(ignoreFunction(segmentType)) continue
 			
 			const marker = new Marker()				
-			parseFunction(marker,segmentType,segmentText)
+			parseFunction(marker, segmentType, segmentText)
 			
 			marker.finish()
 			const newSegments = marker.marks
@@ -363,7 +356,7 @@ var Gobchat = (function(Gobchat){
 									.map((marker)=>{return new MessageSegment(marker.type, segmentText.substring(marker.start, marker.end))})
 			
 			if(newSegments.length > 0){
-				messageSegments.splice.apply(messageSegments,[i,1].concat(newSegments))
+				messageSegments.splice.apply(messageSegments, [i,1].concat(newSegments)) //deletes the old segment and adds the new segments at it's position
 				i += newSegments.length - 1 //so an already newly added segment doesn't get processed in the next step
 			}
 		}
@@ -412,6 +405,10 @@ var Gobchat = (function(Gobchat){
 
 		return merged	
 	}
+	
+	Gobchat.MessageParserHelper = Object.freeze({
+		tryAndSeparatePlayerFromServer: tryAndSeparatePlayerFromServer
+	})
 	
 	return Gobchat	
 }(Gobchat || {}));

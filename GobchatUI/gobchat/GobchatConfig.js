@@ -251,7 +251,7 @@ var Gobchat = (function(Gobchat,undefined){
 			
 			const original = resolvePath(key, Gobchat.DefaultChatConfig)
 			resolvePath(key, this._config, original)
-			this.firePropertyChange(key)
+			this.firePropertyChange(key)			
 		}
 		
 		remove(key){

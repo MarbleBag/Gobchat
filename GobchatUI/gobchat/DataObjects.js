@@ -13,7 +13,7 @@ var Gobchat = (function(Gobchat){
 	class MessageSource {
 		constructor(sourceId){
 			this.sourceId = sourceId
-			this.ffGroupId = null
+			this.ffGroupId = null //a number, only set if the source is a player, which is also in a group of the ingame friendlist
 			
 			this.playerName = null
 			this.serverName = null

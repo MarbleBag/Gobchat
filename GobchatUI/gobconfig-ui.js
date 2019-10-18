@@ -303,6 +303,12 @@
 			}
 			
 			buildRow(
+					buildLabel("Group name"),
+					$(buildTextbox({configKey: groupKey + ".name", hasReset: isFFGroup}))
+						.on("change",function(event){ groupElement.find("#groupname").text(window.gobconfig.get(groupKey + ".name")) })
+				)
+			
+			buildRow(
 					buildLabel("Active"),
 					buildCheckboxForElement(groupKey + ".active")
 				)
@@ -324,7 +330,7 @@
 					buildLabel("Player names"),
 					$("<textarea/>")
 						.css("width","100%")
-						.attr("rows",2)
+						.attr("rows",5)
 				)
 				
 				row.children("td:has(> textarea)").last().attr("colspan",5)
@@ -538,6 +544,38 @@
 					$(input).spectrum("set", window.gobconfig.get(options.configKey));
 				})
 			div.appendChild(btn)	
+		}
+		
+		return div
+	}
+	
+	function buildTextbox(options){
+		const defaultOptions = {
+			configKey: null,
+			hasReset: true,
+		}
+		
+		options = $.extend(defaultOptions,options)
+		if(options.configKey === null){
+			throw new Error("ConfigKey can't be null")
+		}
+		
+		const div = $("<div/>")
+		
+		const input = $("<input/>").appendTo(div)
+		input.attr("type","text")
+		input.val(window.gobconfig.get(options.configKey))
+		input.on("change",function(event){
+				window.gobconfig.set(options.configKey, input.val())
+			})
+		
+		if(options.hasReset){
+			$("<button>&#x274C;</button>")
+				.on("click",function(event){
+					window.gobconfig.reset(options.configKey)
+					input.val(window.gobconfig.get(options.configKey))
+				})
+				.appendTo(div)
 		}
 		
 		return div
