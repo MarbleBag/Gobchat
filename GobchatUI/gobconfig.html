@@ -1,7 +1,6 @@
 <html>
 <head>
-	 <meta charset="utf-16" />
-	<link rel="stylesheet" href="lib/jquery/jquery-ui.min.css">
+	<meta charset="utf-16" />
 	
 	<script src="lib/jquery-3.4.1.min.js"></script>
 	<link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
@@ -9,6 +8,10 @@
 	<script src="lib/lodash.min.js"></script>
 	<link rel="stylesheet" href="lib/spectrum.css">
 	<script src="lib/spectrum.js"></script>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="gobui_default.css">
 
 	<script src="gobchat/Datacenters.js"></script>
 	<script src="gobchat/FFUnicodes.js"></script>
@@ -96,7 +99,7 @@
 				</p>
 				<p>
 					<div>
-						<label>Mentions: (Only detects whole words! Separate entries with a comma)</label>
+						<label>Mentions:</label>
 						<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
 					</div>
 				</p>
@@ -108,9 +111,9 @@
 				</p>
 				<p>	
 					<div>
-						<label>Fonts: (picks the first available, or generic font type: serif, sans-serife, monospace)</label>							
+						<label>Fonts:</label>							
 						<input type="text" id="general_font" style="width:100%;">	
-						<button id="general_font_reset" >&#x274C;</button>							
+						<button id="general_font_reset" ><i class='fa fa-undo'></i></button>							
 					</div>
 				</p>
 				<p>
@@ -165,13 +168,17 @@
 				<template id="t_group_entry">
 					<div id="groupelement">
 						<h4 id="groupheader">
-							<span>
-								<span id="groupcounter"></span>
-								<span id="groupprefix">. Group: </span>
-								<span id="groupname"></span>
+							<span class="ui-gc-group-header">
+								<span>
+									<span id="groupcounter"></span>
+									<span id="groupprefix">. Group: </span>
+									<span id="groupname"></span>
+								</span>
+								<span>
+									<button id="groupdelete"><i class="fa fa-trash"></i></button> 
+								</span>
 							</span>
-							<button id="groupdelete">&#x274C;</button>
-						</h4>
+						</h4><!--&#x274C;-->
 						<div>
 							<div id="groupui">
 							</div>

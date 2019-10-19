@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [0.2.1] - Unreleased
+### Added
+- Tooltips to some interactable fields
+
+### Changed
+- Group delete requires a confirmation
+- Delete buttons have now a proper icon
+- Reset buttons have now a proper icon
+
 ## [0.2.0] - 2019.10.18
 ### Added
 - Player groups. It is now possible to make own groups, which get activated on certain players to style their message further

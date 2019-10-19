@@ -1,0 +1,66 @@
+body, html {
+  margin: 0;
+}
+
+button > * {
+	pointer-events: none;
+}
+
+.hide {
+  display: none !important;
+}
+
+.ui-gc-reset{
+	
+}
+
+.ui-gc-btn-delete {
+	border: none;
+}
+
+.ui-gc-btn-delete:hover {
+	
+}
+
+.ui-gc-group-header{
+	padding: 0px;
+	margin: 0px;
+}
+
+.ui-gc-group-header > *:first-child {
+	position:absolute;
+	left:10px;
+	top:50%;
+	transform:translateY(-50%);
+}
+
+.ui-gc-group-header > *:last-child{
+	position:absolute;
+	right:10px;
+	top:50%;
+	transform:translateY(-50%);
+}
+
+/*
+.ui-gc-bar #grouplabel{
+	float: left;	
+}
+*/
+
+/*
+.ui-gc-bar #grouplabel > span{
+	 background-color: #0000ff;
+}
+*/
+
+/*
+.ui-gc-bar #grouptools{
+	float: right
+}
+*/
+
+/*
+.ui-gc-bar #grouptools > *{
+	
+}
+*/

@@ -6,6 +6,13 @@
 		window.gobconfig = new Gobchat.GobchatConfig()
 		window.gobconfig.loadFromLocalStore()
 	
+		$( document ).tooltip({
+			classes: {
+				"ui-tooltip": "classes.ui-tooltip"
+			},
+			//track: true
+		})
+	
 		initializeNavigationBar()
 		initializeGeneralConfig()
 		initializeChannelConfig()
@@ -66,6 +73,7 @@
 			gobconfig.set("behaviour.mentions",words)
 			event.target.value = words.join(", ")
 		})			
+		$("#txt_mentions").attr("title","Text which will be highlighted. Only highlights whole matches. Case-insensitive. Separate several words by comma. Words not separated by comma are counted as one word.")
 		
 		$("#input_autoemote").prop('checked',gobconfig.get("behaviour.autodetectEmoteInSay"))
 		$("#input_autoemote").on("change",function(event){					
@@ -93,6 +101,7 @@
 					gobconfig.set("behaviour.datacenter",event.target.value)
 				}
 			})
+			dropdown.attr("title", "Set your current datacenter. On 'automatic', the app tries to figure out the current datacenter by checking the name of other players.")
 		}
 		
 		$("#dropdown_showserver").on("change",function(event){					
@@ -104,11 +113,14 @@
 			let newFont = event.target.value || "sans-serif"
 			gobconfig.set("style.channel.base.font-family",newFont)
 		})
-		
+		$("#general_font").attr("title","Picks the first available font. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
+
 		$("#general_font_reset").on("click",function(event){
 			gobconfig.reset("style.channel.base.font-family")
 			$("#general_font").val(gobconfig.get("style.channel.base.font-family"))
 		})
+		$("#general_font_reset").attr("title","Resets fonts to its default value")
+		
 	
 		$("#general_font_size").val(gobconfig.get("style.channel.base.font-size"))
 		$("#general_font_size").on("change",function(event){
@@ -255,6 +267,10 @@
 		
 		function actionRemoveGroup(event){
 			event.stopPropagation()			
+			if(!window.confirm("Group will be deleted. Are you sure?")){
+				return
+			}
+			
 			const groupId = $(this).data("groupId")			
 			_.remove(window.gobconfig.get(configKeyGroupSorting), e => e === groupId)
 			window.gobconfig.remove(configKeyGroupData + "." + groupId)	
@@ -276,6 +292,7 @@
 			groupElement.find("#groupcounter").text($("#chatgroups > div").length + 1)
 			groupElement.find("#groupname").text(groupData.name)
 			groupElement.find("#groupdelete").data("groupId",groupId)
+			groupElement.find("#groupdelete").attr("title","Deletes the group")
 			
 			if(isFFGroup){
 				groupElement.find("#groupdelete").hide()
@@ -344,6 +361,8 @@
 					gobconfig.set(groupKey + ".trigger",words)
 					event.target.value = words.join(", ")
 				})
+				txtArea.attr("title","Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name.")
+		
 			}		
 						
 			$("#chatgroups").append(groupElement)
@@ -409,9 +428,9 @@
 	//Helper functions
 	
 	function addToTableRow(rowElement, element){
-		const td = document.createElement("td")
-		if(element){					
-			td.appendChild(element)					
+		const td = document.createElement("td")		
+		if(element){
+			$(element).appendTo(td)				
 		}
 		rowElement.appendChild(td)
 	}
@@ -488,6 +507,11 @@
 		return input
 	}
 	
+	function buildResetButton(){
+		return $("<button><i class='fa fa-undo'></i></button>")				
+					.attr("title", "Resets the field to its default value")			
+	}
+	
 	function buildColorSelector(options){
 		const defaultOptions = {
 			configKey: null,
@@ -501,14 +525,11 @@
 			throw new Error("ConfigKey can't be null")
 		}
 		
-		const div = document.createElement("div")
-		const input = document.createElement("input")		
-		div.appendChild(input)
+		const div = $("<div/>")
 		
 		const data = window.gobconfig.get(options.configKey)
-		
-		input.type = "text"	
-		$(input).spectrum({
+		const input = $("<input type='text'/>").appendTo(div)		
+		input.spectrum({
 			preferredFormat: "hex3",
 			color: data,
 			allowEmpty:true,
@@ -535,20 +556,19 @@
 		})
 		
 		if(options.hasReset){
-			const btn = document.createElement("button")
-			btn.innerHTML = "&#x274C;"
-			btn.title = "Reset to default"
-			
-			$(btn).on("click",function(event){
+			buildResetButton()
+				.on("click",function(event){
 					window.gobconfig.reset(options.configKey)
-					$(input).spectrum("set", window.gobconfig.get(options.configKey));
-				})
-			div.appendChild(btn)	
+					input.spectrum("set", window.gobconfig.get(options.configKey));
+				})	
+				.appendTo(div)
 		}
 		
 		return div
 	}
 	
+
+		
 	function buildTextbox(options){
 		const defaultOptions = {
 			configKey: null,
@@ -570,11 +590,11 @@
 			})
 		
 		if(options.hasReset){
-			$("<button>&#x274C;</button>")
+			buildResetButton()
 				.on("click",function(event){
 					window.gobconfig.reset(options.configKey)
 					input.val(window.gobconfig.get(options.configKey))
-				})
+				})	
 				.appendTo(div)
 		}
 		
