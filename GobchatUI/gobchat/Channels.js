@@ -20,6 +20,7 @@ var Gobchat = (function(Gobchat){
 		ERROR:			0x003c,
 		
 		RANDOM_SELF:	0x084A,
+		RANDOM_PARTY:   0x104A,
 		RANDOM_OTHER:	0x204A,
 		
 		TELEPORT:		0x001f,

@@ -22,7 +22,8 @@ var Gobchat = (function(Gobchat,undefined){
 				visible: [
 					ChannelEnum.SAY, ChannelEnum.EMOTE, ChannelEnum.YELL, ChannelEnum.SHOUT, ChannelEnum.TELL_SEND, ChannelEnum.TELL_RECIEVE, ChannelEnum.PARTY, ChannelEnum.GUILD, ChannelEnum.ALLIANCE,
 					ChannelEnum.NPC_TALK, ChannelEnum.ANIMATED_EMOTE,
-					ChannelEnum.ECHO, ChannelEnum.ERROR, ChannelEnum.RANDOM_OTHER, ChannelEnum.RANDOM_SELF,
+					ChannelEnum.ECHO, ChannelEnum.ERROR,
+					ChannelEnum.RANDOM_OTHER, ChannelEnum.RANDOM_PARTY, ChannelEnum.RANDOM_SELF,
 					ChannelEnum.WORLD_LINKSHELL_1, ChannelEnum.WORLD_LINKSHELL_2, ChannelEnum.WORLD_LINKSHELL_3, ChannelEnum.WORLD_LINKSHELL_4,
 					ChannelEnum.WORLD_LINKSHELL_5, ChannelEnum.WORLD_LINKSHELL_6, ChannelEnum.WORLD_LINKSHELL_7, ChannelEnum.WORLD_LINKSHELL_8,
 					ChannelEnum.LINKSHELL_1, ChannelEnum.LINKSHELL_2, ChannelEnum.LINKSHELL_3, ChannelEnum.LINKSHELL_4,

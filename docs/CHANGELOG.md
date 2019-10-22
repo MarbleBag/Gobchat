@@ -5,11 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ## [0.2.1] - Unreleased
 ### Added
 - Tooltips to some interactable fields
+- Party 'Random / Roll / Dice' channel
 
 ### Changed
 - Group delete requires a confirmation
 - Delete buttons have now a proper icon
 - Reset buttons have now a proper icon
+- Merged all 'Random / Roll / Dice' channels into one
 
 ## [0.2.0] - 2019.10.18
 ### Added

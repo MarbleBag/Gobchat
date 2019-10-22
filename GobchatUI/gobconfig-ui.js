@@ -150,8 +150,7 @@
 			{label:"NPC speech",			channelEnum:"NPC_TALK", 		styleId:null},
 			{label:"Animated emote", 		channelEnum:"ANIMATED_EMOTE", 	styleId:null},
 			{label:"Echo", 					channelEnum:"ECHO", 			styleId:null},
-			{label:"Random (Other Player)",	channelEnum:"RANDOM_OTHER", 	styleId:null},
-			{label:"Random (You)", 			channelEnum:"RANDOM_SELF", 		styleId:null},
+			{label:"Random / Roll / Dice",	channelEnum:["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], 	styleId:null},
 			{label:"Error Messages",		channelEnum:"ERROR", 			styleId:null},
 			
 			{label:"Linkshell 1", channelEnum:"LINKSHELL_1", 	styleId:"style.channel.linkshell-1"},
@@ -174,11 +173,19 @@
 			{label:"Cross-world Linkshell 8", channelEnum:"WORLD_LINKSHELL_8", 	styleId:"style.channel.worldlinkshell-8"},	
 		]
 			
-		function makeBehaviourCheck(entry,behaviour){
+		function makeBehaviourCheck(entry, behaviour){
 			if(entry.channelEnum===null || entry.channelEnum===undefined){
 				return null
 			}
-			const channelEnum = Gobchat.ChannelEnum[entry.channelEnum]
+			
+			let channelEnum = null
+			
+			if( Gobchat.isArray( entry.channelEnum ) ){
+				channelEnum = entry.channelEnum.map( e => Gobchat.ChannelEnum[e] )
+			}else{
+				channelEnum = Gobchat.ChannelEnum[entry.channelEnum]
+			}
+			
 			const configKey = `behaviour.channel.${behaviour}` 
 			return buildCheckboxForArray(configKey, channelEnum)
 		}
@@ -221,17 +228,7 @@
 			{label:"OoC", 		styleId:"style.segment.ooc"},
 			{label:"Mention", 	styleId:"style.segment.mention"},
 		]
-		
-		
-		function makeBehaviourCheck(entry,behaviour){
-			if(entry.channelEnum===null || entry.channelEnum===undefined){
-				return null
-			}
-			const channelEnum = Gobchat.ChannelEnum[entry.channelEnum]
-			const configKey = `behaviour.channel.${behaviour}` 
-			return buildCheckboxForArray(configKey, channelEnum)
-		}
-		
+				
 		function makeColorSelector(entry,type){
 			if(entry.styleId===null || entry.styleId===undefined){
 				return null
@@ -293,6 +290,7 @@
 			groupElement.find("#groupname").text(groupData.name)
 			groupElement.find("#groupdelete").data("groupId",groupId)
 			groupElement.find("#groupdelete").attr("title","Deletes the group")
+			
 			
 			if(isFFGroup){
 				groupElement.find("#groupdelete").hide()
@@ -454,17 +452,46 @@
 		}
 	}
 	
-	function setValueInArray(array, value, available){		
+	function setValueInArray(array, values, available){	
+		let changed = false
+		
 		if( available ){
 			if( ! _.includes(array, value) ){
 				array.push(value)
+				changed = true
 			}
 		}else{
-			_.remove(array,(e)=>{return e === value})
+			const removedElements = _.remove(array,(e)=>{return e === value})
+			changed = removedElements.length > 0
 		}
+		
+		return changed
+	}
+	
+	function setValuesInArray(array, values, available){	
+		let changed = false
+		
+		if( available ){
+			values.forEach((value) => {
+					if( ! _.includes(array, value) ){
+						array.push(value)
+						changed = true
+					}
+				})
+		}else{
+			const removedElements =
+				_.remove(array,(arrayValue) => {
+						return _.includes(values, arrayValue)
+					})
+				
+			changed = removedElements.length > 0
+		}
+		
+		return changed
 	}
 	
 	//UI elements
+	
 	
 	function buildLabel(name){
 		if(name===null || name===undefined){
@@ -475,17 +502,22 @@
 		return lbl
 	}
 	
-	function buildCheckboxForArray(configKey,checkboxValue){
-		const input = document.createElement("input")
-		input.type = "checkbox"
+	function buildCheckboxForArray(configKey, checkboxValue){		
+		checkboxValue = [].concat(checkboxValue || [])
+		
+		const input = $("<input type=checkbox></input>")
 		
 		const data = window.gobconfig.get(configKey)
 		if(data === null || data === undefined)
-			input.disabled = true
+			input.prop("disabled", true)
 		
-		input.checked  = _.includes(data,checkboxValue)
-		$(input).on("change",function(event){
-				setValueInArray(data, checkboxValue, event.target.checked)
+		const checked = _.every(checkboxValue, (e) => _.includes(data, e))
+		input.prop("checked", checked)  
+		input.on("change",function(event){
+				const data = window.gobconfig.get(configKey)
+				if(setValuesInArray(data, checkboxValue, event.target.checked)){
+					window.gobconfig.set(configKey, data)				
+				}
 			})		
 		
 		return input
@@ -509,7 +541,8 @@
 	
 	function buildResetButton(){
 		return $("<button><i class='fa fa-undo'></i></button>")				
-					.attr("title", "Resets the field to its default value")			
+					.attr("title", "Resets the field to its default value")
+					.addClass("ui-gc-btn")
 	}
 	
 	function buildColorSelector(options){
@@ -594,7 +627,7 @@
 				.on("click",function(event){
 					window.gobconfig.reset(options.configKey)
 					input.val(window.gobconfig.get(options.configKey))
-				})	
+				})				
 				.appendTo(div)
 		}
 		
