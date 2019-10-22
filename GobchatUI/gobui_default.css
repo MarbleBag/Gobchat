@@ -14,12 +14,26 @@ button > * {
 	
 }
 
+.ui-gc-btn {
+	border: 1px solid #444444;
+	transition: all 0.4s ease 0s;
+}
+
+.ui-gc-btn:hover {
+	background: #f6b93b;
+	border-color: #f6b93b; 
+	transition: all 0.4s ease 0s;
+}
+
 .ui-gc-btn-delete {
-	border: none;
+	border: 1px solid #444444;
+	transition: all 0.4s ease 0s;
 }
 
 .ui-gc-btn-delete:hover {
-	
+	background: #f6b93b;
+	border-color: #f6b93b; 
+	transition: all 0.4s ease 0s;
 }
 
 .ui-gc-group-header{
@@ -40,27 +54,3 @@ button > * {
 	top:50%;
 	transform:translateY(-50%);
 }
-
-/*
-.ui-gc-bar #grouplabel{
-	float: left;	
-}
-*/
-
-/*
-.ui-gc-bar #grouplabel > span{
-	 background-color: #0000ff;
-}
-*/
-
-/*
-.ui-gc-bar #grouptools{
-	float: right
-}
-*/
-
-/*
-.ui-gc-bar #grouptools > *{
-	
-}
-*/

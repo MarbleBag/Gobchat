@@ -74,8 +74,8 @@
 		<a data-nav-target="nav_roleplay">Roleplay</a>
 		<a data-nav-target="nav_groups">Groups</a>
 		<a data-nav-target="nav_about">About</a>
-		<a class="btn-system" id="save_config">Save</a>
-		<a class="btn-system" id="reset_config">Defaults</a>
+		<a class="btn-system" id="save_config"><i class="fa fa-save"></i> Save</a>
+		<a class="btn-system" id="reset_config"><i class="fa fa-exclamation-circle"></i> Defaults</a>
 	</div>
 	
 	<main class="content">
@@ -113,7 +113,7 @@
 					<div>
 						<label>Fonts:</label>							
 						<input type="text" id="general_font" style="width:100%;">	
-						<button id="general_font_reset" ><i class='fa fa-undo'></i></button>							
+						<button id="general_font_reset" class="ui-gc-btn"><i class='fa fa-undo'></i></button>							
 					</div>
 				</p>
 				<p>
@@ -175,7 +175,7 @@
 									<span id="groupname"></span>
 								</span>
 								<span>
-									<button id="groupdelete"><i class="fa fa-trash"></i></button> 
+									<button id="groupdelete" class="ui-gc-btn-delete"><i class="fa fa-trash"></i></button> 
 								</span>
 							</span>
 						</h4><!--&#x274C;-->
@@ -187,7 +187,7 @@
 				</template>
 			
 				<div>
-					<button id="addchatgroup">Add group</button>
+					<button id="addchatgroup">Add group <i class="fa fa-folder-open"></i></button>
 				</div>
 				<div id="chatgroups">
 				</div>
