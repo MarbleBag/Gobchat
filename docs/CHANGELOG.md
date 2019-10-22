@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [0.2.1] - Unreleased
+## [0.2.1] - 2019.10.22
 ### Added
 - Tooltips to some interactable fields
 - Party 'Random / Roll / Dice' channel
