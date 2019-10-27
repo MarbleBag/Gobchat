@@ -88,7 +88,11 @@ var Gobchat = (function(Gobchat,undefined){
 			const playerNameComposite = getMatchingGroup(result,4) 		//may be null
 			let serverName = getMatchingGroup(result,5) 				//may be null
 					
-			if((task === "add" || task === "remove") && getMatchingGroup(result,3).length === 0 ){ //add and remove also need a target name
+			function isAvailable(str){
+				return str !== null && str !== undefined && str.length > 0
+			}								
+					
+			if((task === "add" || task === "remove") && !isAvailable(getMatchingGroup(result,3)) ){ //add and remove also need a target name
 				commandManager.sendErrorMessage("Command 'group' expects: \ngroup groupnumber add/remove playername\ngroup groupnumber clear")
 				return
 			}
@@ -132,8 +136,10 @@ var Gobchat = (function(Gobchat,undefined){
 			
 			playerNameAndServer = playerNameAndServer.trim().toLowerCase()
 			
-			if( playerNameAndServer.length === 0 )
+			if( playerNameAndServer.length === 0 ){
+				commandManager.sendErrorMessage(`Command 'group' unable to read player name '${playerNameAndServer}'`)
 				return
+			}
 			
 			if(task === "add"){
 				if( ! _.includes(group.trigger, playerNameAndServer) ){
@@ -148,7 +154,7 @@ var Gobchat = (function(Gobchat,undefined){
 				if( _.includes(group.trigger, playerNameAndServer) ){
 					_.remove(group.trigger,(i)=>{return i===playerNameAndServer})
 					gobconfig.firePropertyChange(`userdata.group.data.${groupId}.trigger`)
-					commandManager.sendInfoMessage(`Removed ${playerNameAndServer} to group ${groupIdx}`)
+					commandManager.sendInfoMessage(`Removed ${playerNameAndServer} from group ${groupIdx}`)
 					gobconfig.saveToPlugin()
 				}else{
 					commandManager.sendInfoMessage(`${playerNameAndServer} is not in group ${groupIdx}`)
