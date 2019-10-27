@@ -192,7 +192,7 @@ var Gobchat = (function(Gobchat){
 	}
 	
 	function addServerToSource(messageSource, datacenter){
-		if( messageSource.playerName == null )
+		if( messageSource.playerName === null )
 			return
 		
 		const result = tryAndSeparatePlayerFromServer(messageSource.playerName, datacenter)

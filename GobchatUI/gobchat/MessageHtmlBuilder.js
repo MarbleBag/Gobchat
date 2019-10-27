@@ -64,7 +64,7 @@ var Gobchat = (function(Gobchat){
 			return result.toLowerCase()
 		}
 		
-		const serachTerm = createSearchTerm()
+		const searchTerm = createSearchTerm()
 		
 		$.each(groups.sorting,function(idx,groupId){
 			const group = groups.data[groupId]
@@ -78,7 +78,7 @@ var Gobchat = (function(Gobchat){
 				return
 			}
 
-			if( _.includes(group.trigger, serachTerm) ){
+			if( _.includes(group.trigger, searchTerm) ){
 				resultId = groupId
 				return false
 			}
