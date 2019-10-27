@@ -39,7 +39,7 @@ namespace Gobchat
 
             delegator = new ACTLogLineDelegator(logger, OnLogLineUnhandled);
             delegator.SetHandle(ACTLogLineCode.GameLogLine, new ChatLogLineParser(logger, OnGameLogLine));
-            delegator.SetHandle(ACTLogLineCode.PositionUpdate, new PlayerPositionParser(logger,OnPositionUpdate));
+            //delegator.SetHandle(ACTLogLineCode.PositionUpdate, new PlayerPositionParser(logger,OnPositionUpdate));
             //delegator.SetHandle(ACTLogLineCode.ChangePrimaryPlayer, new PrimaryPlayerParser(OnPrimaryPlayerUpdate));
 
             delegator.SetHandle(ACTLogLineCode.AddCombatant, new EmptyParser(null));

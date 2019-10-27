@@ -33,7 +33,6 @@ namespace Gobchat
 
         private string ExtractSource(int channel, ReaderIndex index, string message)
         {
-            // var channelType = EnumHelper.ToEnum<Type0ChannelEnum>(channel.GetValueOrDefault(0));
             switch ((ChatChannelEnum)channel)
             {
                 case ChatChannelEnum.SAY:
