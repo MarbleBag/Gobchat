@@ -1,16 +1,6 @@
 'use strict'
 
 var Gobchat = (function(Gobchat){
-
-	Gobchat.FFGroupEnum2 = Object.freeze({
-		GROUP_1: "★", //U+2605 //CC: 9733 //&#9733;
-		GROUP_2: "●", //U+25CF	//CC: 9679
-		GROUP_3: "▲", //U+25B2	//CC: 9650
-		GROUP_4: "♦", //U+2666 	//CC: 9830
-		GROUP_5: "♥", //U+2665 	//CC: 9829
-		GROUP_6: "♠", //U+2660 	//CC: 9824
-		GROUP_7: "♣", //U+2663 	//CC: 9827
-	})
 		
 	Gobchat.FFUnicode = Object.freeze({	
 		GROUP_1: 	{char: '\u2605', 	value: 0x2605},
@@ -31,6 +21,7 @@ var Gobchat = (function(Gobchat){
 		RAID_A: 	{char: '\uE071', 	value: 0xE073},
 		RAID_B: 	{char: '\uE072', 	value: 0xE072},
 		RAID_C: 	{char: '\uE073', 	value: 0xE073},
+		ITEM_LINK:  {char: '\uE0BB',	value: 0xE0BB}, // replace that with \u2326		
 	})
 	
 	//lazy
