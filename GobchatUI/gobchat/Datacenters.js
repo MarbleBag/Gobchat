@@ -134,7 +134,7 @@ var Gobchat = (function(Gobchat){
 		
 		tryAndGetDatacenterByName: function(datacenterName){
 			if(datacenterName === null)
-				return			
+				return null			
 			for(let region of Gobchat.Datacenters){
 				for(let center of region.centers){
 					if(center.label === datacenterName){
@@ -142,12 +142,12 @@ var Gobchat = (function(Gobchat){
 					}
 				}
 			}			
-			return
+			return null
 		},
 		
 		tryAndGetDatacenterByServerName: function(serverName){
 			if(serverName === null)
-				return			
+				return null			
 			for(let region of Gobchat.Datacenters){
 				for(let center of region.centers){
 					for(let server of center.servers){
@@ -157,7 +157,7 @@ var Gobchat = (function(Gobchat){
 					}
 				}
 			}			
-			return
+			return null
 		},
 		
 	})
