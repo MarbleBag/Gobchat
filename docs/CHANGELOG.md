@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [0.2.2] - 2019.11.27
+### Added
+- Channel for npc dialogue 
+
+### Fixed
+- Players didn't show up, when their last name contained an apostrophe/additional uppercase letter and gobchat didn't know the datacenter yet
+
 ## [0.2.1] - 2019.10.22
 ### Added
 - Tooltips to some interactable fields
