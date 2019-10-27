@@ -13,7 +13,9 @@ var Gobchat = (function(Gobchat){
 		GUILD:			0x0018,
 		ALLIANCE:		0x000f,
 		
+		
 		NPC_TALK:		0x0044,
+		NPC_DIALOGUE:	0x003d,
 		ANIMATED_EMOTE:	0x001d,
 		PARTYFINDER:	0x0048,
 		ECHO:			0x0038,

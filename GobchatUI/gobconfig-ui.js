@@ -148,6 +148,7 @@
 			{label:"Alliance", 		channelEnum:"ALLIANCE", 	styleId:"style.channel.alliance"},
 			
 			{label:"NPC speech",			channelEnum:"NPC_TALK", 		styleId:null},
+			{label:"NPC dialogue",			channelEnum:"NPC_DIALOGUE", 	styleId:null},
 			{label:"Animated emote", 		channelEnum:"ANIMATED_EMOTE", 	styleId:null},
 			{label:"Echo", 					channelEnum:"ECHO", 			styleId:null},
 			{label:"Random / Roll / Dice",	channelEnum:["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], 	styleId:null},
