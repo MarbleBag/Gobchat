@@ -21,6 +21,7 @@ var Gobchat = (function(Gobchat){
 		RAID_A: 	{char: '\uE071', 	value: 0xE073},
 		RAID_B: 	{char: '\uE072', 	value: 0xE072},
 		RAID_C: 	{char: '\uE073', 	value: 0xE073},
+		
 		ITEM_LINK:  {char: '\uE0BB',	value: 0xE0BB}, // replace that with \u2326		
 	})
 	

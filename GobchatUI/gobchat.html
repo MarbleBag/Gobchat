@@ -94,7 +94,7 @@
 				
 		// test
 		function runTest(){
-			const fillMe = Array.from({length: 10}, (v, k) => `Say, *emote* and ((ooc)) - ${k+1}`).map(e =>{return {message: e, source:"\u2605Firstname LastnameOdin"}})
+			const fillMe = Array.from({length: 1}, (v, k) => ` | oof | \uE0BB Say, *emote* and ((ooc)) - ${k+1} <text>`).map(e =>{return {message: e, source: "Di'e I'of'oOdin"}})
 			fillMe.forEach((e)=>{
 					const msg = {detail:{type: e.channel || Gobchat.ChannelEnum.SAY, timestamp:"HH:mm", source: e.source || "Browser", message: e.message || "Empty"}}
 					window.chatManager.onNewMessageEvent(msg)

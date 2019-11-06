@@ -59,11 +59,12 @@ var Gobchat = (function(Gobchat){
 				return
 			}
 				
+			const messageText = replaceHtmlControlElements(messageEventDetail.message)	
 			const timestamp = messageEventDetail.timestamp
 			const source = this.createMessageSource(channel, messageEventDetail.source)					
-			const messageSegments = [new MessageSegment(MessageSegmentEnum.UNDEFINED, messageEventDetail.message)]
+			const messageSegments = [new MessageSegment(MessageSegmentEnum.UNDEFINED, messageText)]
 			const message = new Message(timestamp, source, channel, messageSegments)
-				
+			
 			if( this.isRoleplayChannel(channel) ){
 				processMessageSegmentOOC(message)
 				processMessageSegmentSayAndEmote(message)
@@ -404,6 +405,13 @@ var Gobchat = (function(Gobchat){
 		}
 
 		return merged	
+	}
+	
+	function replaceHtmlControlElements(txt){		
+		txt = txt.replace(/</g,"&lt;")
+		txt = txt.replace(/>/g,"&gt;")
+		txt = txt.replace(/\|/g,"&vert;")	
+		return txt
 	}
 	
 	Gobchat.MessageParserHelper = Object.freeze({

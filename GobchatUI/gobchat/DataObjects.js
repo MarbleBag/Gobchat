@@ -19,7 +19,6 @@ var Gobchat = (function(Gobchat){
 			this.serverName = null
 			this.prefix = null
 		}
-		
 	}
 	Gobchat.MessageSource = MessageSource
 		
