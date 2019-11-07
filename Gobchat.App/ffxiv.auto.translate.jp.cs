@@ -1,4 +1,7 @@
 /* Version 4.06a */
+/*
+ * Found on https://gist.github.com/3735943886/fe5ac8012ffe37c9dfa180b1944b513c 
+ */
 using System.Collections.Generic;
 
 namespace Ffxiv

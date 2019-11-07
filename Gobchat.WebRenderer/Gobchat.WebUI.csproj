@@ -61,33 +61,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\DeviceIndependentBitmap.cs" />
-    <Compile Include="Forms\Extensions.cs" />
-    <Compile Include="Forms\Helper\FormEnsureTopmostHelper.cs" />
-    <Compile Include="Forms\Helper\FormDragMoveHelper.cs" />
-    <Compile Include="Forms\Helper\FormResizeHelper.cs" />
-    <Compile Include="Forms\Helper\FormKeyToCefKeyEventConverter.cs" />
-    <Compile Include="Forms\Helper\MouseEventHelper.cs" />
-    <Compile Include="Forms\IManagedWebBrowser.cs" />
-    <Compile Include="Forms\RenderHandlerAdapter.cs" />
-    <Compile Include="Forms\NativeMethods.cs" />
-    <Compile Include="Forms\ManagedWebBrowser.cs" />
-    <Compile Include="KeyboardHook.cs" />
-    <Compile Include="UIManager.cs" />
-    <Compile Include="JavascriptBuilder.cs" />
-    <Compile Include="JSEvent.cs" />
-    <Compile Include="Forms\CefOverlayForm.cs" />
-    <Compile Include="Forms\CefOverlayForm.Designer.cs">
+    <Compile Include="Gobchat\UI\Forms\DeviceIndependentBitmap.cs" />
+    <Compile Include="Gobchat\UI\Forms\Extension\Extensions.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\FormEnsureTopmostHelper.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\FormDragMoveHelper.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\FormResizeHelper.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\FormKeyToCefKeyEventConverter.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\MouseEventHelper.cs" />
+    <Compile Include="Gobchat\UI\Forms\IManagedWebBrowser.cs" />
+    <Compile Include="Gobchat\UI\Forms\Helper\RenderHandlerAdapter.cs" />
+    <Compile Include="Gobchat\UI\Forms\NativeMethods.cs" />
+    <Compile Include="Gobchat\UI\Forms\ManagedWebBrowser.cs" />
+    <Compile Include="Gobchat\KeyboardHook.cs" />
+    <Compile Include="Gobchat\UI\UIManager.cs" />
+    <Compile Include="Gobchat\UI\Web\JavascriptBuilder.cs" />
+    <Compile Include="Gobchat\UI\Web\JSEvent.cs" />
+    <Compile Include="Gobchat\UI\Forms\CefOverlayForm.cs" />
+    <Compile Include="Gobchat\UI\Forms\CefOverlayForm.Designer.cs">
       <DependentUpon>CefOverlayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="WebRenderManager.cs" />
+    <Compile Include="Gobchat\UI\Web\WebRenderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\CefOverlayForm.resx">
+    <EmbeddedResource Include="Gobchat\UI\Forms\CefOverlayForm.resx">
       <DependentUpon>CefOverlayForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
