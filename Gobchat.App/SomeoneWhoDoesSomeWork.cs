@@ -45,6 +45,7 @@ namespace Gobchat.Core
         private GobchatAPI _api;
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private KeyboardHook _keyboardHook;
+        private ChatlogParser _chatlogParser;
 
         private readonly object lockObj = new object();
         private bool browserInitialized = false;
@@ -66,6 +67,8 @@ namespace Gobchat.Core
             {
                 InitializeBrowser();
             }
+
+            _chatlogParser = new ChatlogParser();
 
             //not working
             //_keyboardHook = new KeyboardHook();
@@ -109,13 +112,7 @@ namespace Gobchat.Core
             {
                 if (item.TimeStamp < timeFilter)
                     return;
-
-                System.Text.StringBuilder builder = new System.Text.StringBuilder();
-
-                var tokens = item.Tokens;
-                var idxToken = 0;
-
-
+                _chatlogParser.Process(item);
 
                 Debug.WriteLine($"Log: {item}");
                 //TODO process each message
@@ -129,117 +126,11 @@ namespace Gobchat.Core
             });
         }
 
-        private bool IsChatlogItemValid(ChatlogItem chatlogItem)
-        {
-            var tokens = chatlogItem.Tokens;
-            if (tokens.Count == 0) return false;
-            if (tokens[0] is TextToken txtToken)
-            {
-                var txt = txtToken.GetText();
-                if (txt == null || txt.Length == 0)
-                    return false;
-                return txt.StartsWith(":",System.StringComparison.InvariantCulture);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        internal class TokenReader
-        {
-            public List<IChatlogToken> Tokens;
-            public int LastTokenIndex;
-            public int LastReadIndex;
-
-            public IChatlogToken NextToken { get { return Tokens[LastTokenIndex++]; } }
-
-            public TokenReader(List<IChatlogToken> tokens)
-            {
-                Tokens = tokens;
-                LastTokenIndex = 0;
-                LastReadIndex = 0;
-            }
-        }
-
-        private void ExtractSource(TokenReader tokenReader)
-        {
-            var tokenIdx = tokenReader.LastTokenIndex;
-            var tokens = tokenReader.Tokens;
-
-            if(!(tokens[tokenIdx] is TextToken firstToken))
-                throw new ArgumentException(""); //TODO invalid chatlog
-
-            var text = firstToken.GetText();
-            if(text.Length == 0 || !text.StartsWith(":", System.StringComparison.InvariantCulture))
-                throw new ArgumentException(""); //TODO invalid chatlog
-
-            tokenReader.LastReadIndex += 1;
 
 
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+        
 
-            do
-            {
-                var token = tokens[tokenReader.LastTokenIndex];
-
-                if (token is TextToken txtToken)
-                {
-                    var txt = txtToken.GetText();
-                    var idx = txt.IndexOf(":", tokenReader.LastReadIndex, System.StringComparison.InvariantCulture);
-
-                    if (idx < 0)
-                        builder.Append(txt, tokenReader.LastReadIndex, txt.Length - tokenReader.LastReadIndex);
-                    else
-                        builder.Append(txt, tokenReader.LastReadIndex, idx - tokenReader.LastReadIndex);
-
-                    tokenReader.LastReadIndex = idx;
-                    if (txt.Length <= tokenReader.LastReadIndex)
-                    {
-                        tokenReader.LastReadIndex = 0;
-                        tokenReader.LastTokenIndex += 1;
-                    }
-                    else
-                        break; //end of header
-                }
-
-            } while (true);
-
-            for (int idx = ; idx < tokenReader.Tokens.Count; ++idx)
-            {
-                var token = tokens[idx];
-
-            }
-
-
-           
-
-
-
-            if (!(token is Memory.ChatlogItem.TextToken))
-               
-
-            if(token is Memory.ChatlogItem.TextToken)
-            {
-                var txtToken = token as Memory.ChatlogItem.TextToken;
-                var txt = txtToken.GetText(); 
-
-            }
-
-
-           
-        }
-
-        private void bla(List<IChatlogToken> tokens, int lastTokenIdx, out int nextTokenidx, Func<IChatlogToken, bool> f)
-        {
-            for (; lastTokenIdx < tokens.Count; ++lastTokenIdx)
-            {
-                var token = tokens[lastTokenIdx];
-                if (!f(token))
-                    break;
-            }
-            nextTokenidx = lastTokenIdx + 1;
-        }
+        
 
         internal void Update()
         {
