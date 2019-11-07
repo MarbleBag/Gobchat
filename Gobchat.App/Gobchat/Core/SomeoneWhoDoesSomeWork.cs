@@ -99,10 +99,12 @@ namespace Gobchat.Core
             {
                 if (item.TimeStamp < timeFilter)
                     return;
-                var message =  _chatlogParser.Process(item);
 
                 Debug.WriteLine($"Chatlog: {item}");
+                var message =  _chatlogParser.Process(item);
                 Debug.WriteLine($"Chatmessage: {message}");
+
+
                 //TODO process each message
                 // - filter unwanted tokens
                 // - extract source
