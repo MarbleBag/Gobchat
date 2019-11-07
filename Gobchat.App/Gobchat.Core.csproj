@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetCore.Analyzers.2.9.6\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetCore.Analyzers.2.9.6\build\Microsoft.NetCore.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Gobchat.Core</RootNamespace>
+    <AssemblyName>Gobchat.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Gobchat.MainEntry</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.7\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gobchat.Memory\Gobchat.Memory.csproj">
+      <Project>{040dddae-b434-4223-bc0d-284edcff2af5}</Project>
+      <Name>Gobchat.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gobchat.WebRenderer\Gobchat.WebUI.csproj">
+      <Project>{9b4f225d-b0a3-400e-92e0-6f4cd53ac8b5}</Project>
+      <Name>Gobchat.WebUI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\ui\gobchat.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\Channels.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\CommandManager.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\Common.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\Datacenters.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\DataObjects.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\DefaultConfig.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\FFUnicodes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\GobchatConfig.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\GobchatManager.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\MessageHtmlBuilder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\MessageParser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobchat\StyleBuilder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobconfig-ui.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobconfig.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobui_chat.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\gobui_default.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\jquery-3.4.1.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\jquery-ui-1.12.1.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\jquery-ui-1.12.1.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\lodash.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\react.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\spectrum.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\lib\spectrum.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\resize_handle.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Content Include="resources\ui\resize_handle.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DestinationFolder>resources\</DestinationFolder>
+    </Content>
+    <Compile Include="App.cs" />
+    <Compile Include="MainEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SomeoneWhoDoesSomeWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Chat\" />
+    <Folder Include="ui\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeQuality.Analyzers.2.9.6\build\Microsoft.CodeQuality.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetCore.Analyzers.2.9.6\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetCore.Analyzers.2.9.6\build\Microsoft.NetCore.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
+  </Target>
+</Project>

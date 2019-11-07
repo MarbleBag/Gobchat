@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.0.0] - Unreleased
+### Changed
+- Gobchat is now a standalone application
+
 ## [0.2.2] - 2019.11.27
 ### Added
 - Channel for npc dialogue 

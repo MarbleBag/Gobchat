@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.Core", "Gobchat.App\Gobchat.Core.csproj", "{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.Memory", "Gobchat.Memory\Gobchat.Memory.csproj", "{040DDDAE-B434-4223-BC0D-284EDCFF2AF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharlayan", "Sharlayan\Sharlayan.csproj", "{4AC09A41-896C-4715-B885-DE7611DE19CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CEB50431-8B3D-4DB7-93FC-20D0F2B8749C}"
+	ProjectSection(SolutionItems) = preProject
+		NLog.config = NLog.config
+		NLog.xsd = NLog.xsd
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.WebUI", "Gobchat.WebRenderer\Gobchat.WebUI.csproj", "{9B4F225D-B0A3-400E-92E0-6F4CD53AC8B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gobchat.Test", "Gobchat.Test\Gobchat.Test.csproj", "{1B504303-1CFC-4F76-8448-CD8C3396E14A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.Updater", "Gobchat.Updater\Gobchat.Updater.csproj", "{155CCB02-0991-42DF-B577-527EA1A7EBB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{85BBFA00-DF8A-45AA-9524-773DFA1FCFC6}"
+	ProjectSection(SolutionItems) = preProject
+		Resources\UI\gobchat\Channels.js = Resources\UI\gobchat\Channels.js
+		Resources\UI\gobchat\CommandManager.js = Resources\UI\gobchat\CommandManager.js
+		Resources\UI\gobchat\Common.js = Resources\UI\gobchat\Common.js
+		Resources\UI\gobchat\Datacenters.js = Resources\UI\gobchat\Datacenters.js
+		Resources\UI\gobchat\DataObjects.js = Resources\UI\gobchat\DataObjects.js
+		Resources\UI\gobchat\DefaultConfig.js = Resources\UI\gobchat\DefaultConfig.js
+		Resources\UI\gobchat\FFUnicodes.js = Resources\UI\gobchat\FFUnicodes.js
+		Resources\UI\gobchat.html = Resources\UI\gobchat.html
+		Resources\UI\gobchat\GobchatConfig.js = Resources\UI\gobchat\GobchatConfig.js
+		Resources\UI\gobchat\GobchatManager.js = Resources\UI\gobchat\GobchatManager.js
+		Resources\UI\gobconfig-ui.js = Resources\UI\gobconfig-ui.js
+		Resources\UI\gobconfig.html = Resources\UI\gobconfig.html
+		Resources\UI\gobui_chat.css = Resources\UI\gobui_chat.css
+		Resources\UI\gobui_default.css = Resources\UI\gobui_default.css
+		Resources\UI\lib\jquery-3.4.1.min.js = Resources\UI\lib\jquery-3.4.1.min.js
+		Resources\UI\lib\jquery-ui-1.12.1.min.css = Resources\UI\lib\jquery-ui-1.12.1.min.css
+		Resources\UI\lib\jquery-ui-1.12.1.min.js = Resources\UI\lib\jquery-ui-1.12.1.min.js
+		Resources\UI\lib\lodash.min.js = Resources\UI\lib\lodash.min.js
+		Resources\UI\gobchat\MessageHtmlBuilder.js = Resources\UI\gobchat\MessageHtmlBuilder.js
+		Resources\UI\gobchat\MessageParser.js = Resources\UI\gobchat\MessageParser.js
+		Resources\UI\resize_handle.css = Resources\UI\resize_handle.css
+		Resources\UI\resize_handle.js = Resources\UI\resize_handle.js
+		Resources\UI\lib\spectrum.css = Resources\UI\lib\spectrum.css
+		Resources\UI\lib\spectrum.js = Resources\UI\lib\spectrum.js
+		Resources\UI\gobchat\StyleBuilder.js = Resources\UI\gobchat\StyleBuilder.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040DDDAE-B434-4223-BC0D-284EDCFF2AF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040DDDAE-B434-4223-BC0D-284EDCFF2AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040DDDAE-B434-4223-BC0D-284EDCFF2AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040DDDAE-B434-4223-BC0D-284EDCFF2AF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC09A41-896C-4715-B885-DE7611DE19CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC09A41-896C-4715-B885-DE7611DE19CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC09A41-896C-4715-B885-DE7611DE19CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC09A41-896C-4715-B885-DE7611DE19CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4F225D-B0A3-400E-92E0-6F4CD53AC8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4F225D-B0A3-400E-92E0-6F4CD53AC8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4F225D-B0A3-400E-92E0-6F4CD53AC8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4F225D-B0A3-400E-92E0-6F4CD53AC8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{85BBFA00-DF8A-45AA-9524-773DFA1FCFC6} = {CEB50431-8B3D-4DB7-93FC-20D0F2B8749C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {229B367C-78AE-4B5F-A60B-6799A6225B4B}
+	EndGlobalSection
+EndGlobal
