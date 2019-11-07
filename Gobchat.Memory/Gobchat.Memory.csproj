@@ -49,13 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatlogBuilder.cs" />
-    <Compile Include="ChatlogEvent.cs" />
-    <Compile Include="ChatlogItem.cs" />
-    <Compile Include="ChatlogReader.cs" />
-    <Compile Include="FFXIVProcessMonitor.cs" />
-    <Compile Include="MemoryProcessor.cs" />
-    <Compile Include="ProcessChangeEvent.cs" />
+    <Compile Include="Gobchat\Memory\Chat\ChatlogBuilder.cs" />
+    <Compile Include="Gobchat\Memory\Chat\ChatlogEventArgs.cs" />
+    <Compile Include="Gobchat\Memory\Chat\ChatlogItem.cs" />
+    <Compile Include="Gobchat\Memory\Chat\ChatlogReader.cs" />
+    <Compile Include="Gobchat\Memory\FFXIVProcessMonitor.cs" />
+    <Compile Include="Gobchat\Memory\MemoryProcessor.cs" />
+    <Compile Include="Gobchat\Memory\ProcessChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,5 +67,6 @@
       <Name>Sharlayan</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
