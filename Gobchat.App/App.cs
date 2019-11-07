@@ -1,5 +1,4 @@
-﻿using Gobchat.WebRenderer;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +19,6 @@ namespace Gobchat.Core
         private Task<bool> _workerThread;
 
         private Thread thread;
-        private OverlayCefEmbedForm overlay2;
         private NotifyIcon trayIcon;
 
         [STAThread]
