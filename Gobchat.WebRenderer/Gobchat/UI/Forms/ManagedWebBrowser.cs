@@ -44,6 +44,7 @@ namespace Gobchat.UI.Forms
             }
         }
 
+        private readonly object lockObj = new object();
 
         private readonly CefOverlayForm Form;
 
@@ -60,8 +61,20 @@ namespace Gobchat.UI.Forms
 
         event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.BrowserInitialized
         {
-            add { BrowserInitialized += value; }
-            remove { BrowserInitialized -= value; }
+            //someone may register after the original event has already fired
+            add {
+                lock (lockObj)
+                {
+                    if (CefBrowser.IsBrowserInitialized)                    
+                        value.Invoke(this, new BrowserInitializedEventArgs());
+                    else
+                        BrowserInitialized += value;    
+                }
+            }
+
+            remove { 
+                BrowserInitialized -= value; 
+            }
         }
 
         public new bool IsBrowserInitialized { get { return base.IsBrowserInitialized; } }
@@ -142,8 +155,15 @@ namespace Gobchat.UI.Forms
 
         private void OnEvent_BrowserInitialized(object sender, EventArgs e)
         {
-            if (CefBrowser.IsBrowserInitialized)
-                BrowserInitialized?.Invoke(this, new BrowserInitializedEventArgs());
+            lock (lockObj)
+            {
+                if (CefBrowser.IsBrowserInitialized)
+                {
+                    var eventHandler = BrowserInitialized;                    
+                    eventHandler?.Invoke(this, new BrowserInitializedEventArgs());
+                    BrowserInitialized = null;
+                }
+            }
         }
 
         #endregion
@@ -206,7 +226,7 @@ namespace Gobchat.UI.Forms
 
         public void ExecuteScript(string script)
         {
-            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(script,"injected");
         }
 
         public void SendMoveOrResizeStartedEvent()
@@ -257,7 +277,7 @@ namespace Gobchat.UI.Forms
             {
                 if (keyEvent.Modifiers.HasFlag(CefEventFlags.ControlDown))
                 {
-                    if((keyEvent.WindowsKeyCode == 'C' || keyEvent.WindowsKeyCode == 'c'))
+                    if(keyEvent.WindowsKeyCode == 'C' || keyEvent.WindowsKeyCode == 'c') // ctrl + c
                     {
                         CefBrowser.GetFocusedFrame().Copy();
                         sendToBrowser = false;

@@ -28,6 +28,10 @@ namespace Gobchat.UI.Forms
 
         event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
         event EventHandler<BrowserErrorEventArgs> BrowserError;
+        /// <summary>
+        /// Will be fired as soon as the browser is initialized. Each registered listener will be unregistered afterwards.
+        /// When the browser is already initialized newly added listener will fire immediately and will not be registered.
+        /// </summary>
         event EventHandler<BrowserInitializedEventArgs> BrowserInitialized;
         event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPage;
         event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
