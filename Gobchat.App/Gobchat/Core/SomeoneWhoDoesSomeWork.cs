@@ -11,12 +11,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Memory.Chat;
 using Gobchat.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Gobchat.Memory;
-using Gobchat.Memory.Chat;
 
 namespace Gobchat.Core
 {
@@ -49,11 +48,7 @@ namespace Gobchat.Core
             _overlay.Browser.BindBrowserAPI(_api, true);
             //_overlay.InvokeUIThread(true, () => _overlay.Hide());
 
-            _overlay.Browser.BrowserInitialized += OnEvent_Browser_BrowserInitialized;
-            if (_overlay.Browser.IsBrowserInitialized)
-            {
-                InitializeBrowser();
-            }
+            _overlay.Browser.BrowserInitialized += (s, e) => InitializeBrowser();
 
             _chatlogParser = new Chat.ChatlogParser();
 
@@ -63,24 +58,13 @@ namespace Gobchat.Core
             // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.M, () => Debug.WriteLine("Yay!"));
         }
 
-        private void OnEvent_Browser_BrowserInitialized(object sender, EventArgs e)
-        {
-            InitializeBrowser();
-        }
-
         private void InitializeBrowser()
         {
             if (browserInitialized) return;
-            lock (lockObj)
-            {
-                if (browserInitialized) return;
-                browserInitialized = true;
-            }
-
-            _overlay.Browser.BrowserInitialized -= OnEvent_Browser_BrowserInitialized;
+            browserInitialized = true;
 
             var htmlpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources\ui\gobchat.html");
-            var ok = System.IO.File.Exists(htmlpath);
+            var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _overlay.Browser.Load(uri);
             //_overlay.Browser.Load("www.google.com");
@@ -101,7 +85,7 @@ namespace Gobchat.Core
                     return;
 
                 Debug.WriteLine($"Chatlog: {item}");
-                var message =  _chatlogParser.Process(item);
+                var message = _chatlogParser.Process(item);
                 Debug.WriteLine($"Chatmessage: {message}");
 
 
@@ -139,7 +123,7 @@ namespace Gobchat.Core
 
             if (_overlay.Browser.IsBrowserInitialized)
             {
-                foreach(var message in GetAndClearPendingRecords())
+                foreach (var message in GetAndClearPendingRecords())
                 {
                     //TODO maybe this can be done by directly calling gobchat
                     var script = _jsBuilder.BuildCustomEventDispatcher(new Chat.ChatMessageWebEvent(message));
