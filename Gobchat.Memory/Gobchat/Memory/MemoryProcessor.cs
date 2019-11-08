@@ -61,7 +61,7 @@ namespace Gobchat.Memory
                     {
                         try
                         {
-                            items.Add(chatlogBuilder.Build(item));
+                            items.Add(chatlogBuilder.Process(item));
                         }catch(Chat.ChatBuildException e)
                         {
                             //TODO handle this

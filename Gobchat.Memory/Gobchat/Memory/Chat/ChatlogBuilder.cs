@@ -20,7 +20,7 @@ namespace Gobchat.Memory.Chat
 {
     internal class ChatlogBuilder
     {
-        public bool DebugMode;
+        public bool DebugMode { get; set; }
 
         /// <summary>
         /// 
@@ -28,7 +28,7 @@ namespace Gobchat.Memory.Chat
         /// <param name="item"></param>
         /// <returns></returns>
         /// <exception cref="ChatBuildException">When an inner exception occures</exception>
-        public ChatlogItem Build(Sharlayan.Core.ChatLogItem item)
+        public ChatlogItem Process(Sharlayan.Core.ChatLogItem item)
         {
             if (item == null || item.TimeStamp == null)
                 return null;
@@ -38,8 +38,8 @@ namespace Gobchat.Memory.Chat
 
             try
             {
-                var segments = Tokenizer(item.Bytes, 8, item.Bytes.Length);
-                return new ChatlogItem(item.TimeStamp, channel, segments);
+                var tokens = Tokenizer(item.Bytes, 8, item.Bytes.Length);
+                return new ChatlogItem(item.TimeStamp, channel, tokens);
             }
             catch (Exception e)
             {
@@ -47,11 +47,10 @@ namespace Gobchat.Memory.Chat
             }
         }
 
-
         private List<IChatlogToken> Tokenizer(byte[] data, int offset, int length)
         {
             List<IChatlogToken> tokens = new List<IChatlogToken>();
-            int mark = offset;
+            int mark = offset; //marks the last read index for the utf8 encoded text within data
             for (int index = mark; index < length; ++index)
             {
                 if (0x02 == data[index]) //control character
@@ -59,7 +58,7 @@ namespace Gobchat.Memory.Chat
                     if (mark < index)
                     {
                         var tokenData = ExtractData(data, mark, index - mark);
-                        tokens.Add(new TextToken(tokenData));
+                        tokens.Add(new Token.TextToken(tokenData));
                     }
 
                     switch (data[index + 1])
@@ -73,14 +72,14 @@ namespace Gobchat.Memory.Chat
                             {
                                 var tokenData = ExtractData(data, index + 2);
                                 // Keeps: 0x022E | (YY-)*-03
-                                tokens.Add(new AutotranslateToken(tokenData));
+                                tokens.Add(new Token.AutotranslateToken(tokenData));
                                 index += 2 + tokenData.Length;
                                 break;
                             }
                         case 0x12: // 0x0212XX5903 -> Delimiter for server (it's the flower you can see in the chat)
                             {
                                 var tokenData = ExtractData(data, index + 2); //should always be the same, but just in case it's not.
-                                tokens.Add(new ServerDelimiterToken(tokenData));
+                                tokens.Add(new Token.ServerDelimiterToken(tokenData));
                                 index += 2 + tokenData.Length;
                                 break;
                             }
@@ -103,26 +102,29 @@ namespace Gobchat.Memory.Chat
                                   //TODO more research is needed
                                   //example: 	2, 39, 7, 3, 242, 111, 203, 2, 1, 3
                                     var linkType = BitConverter.ToString(tokenData).Replace("-", "");
-                                    tokens.Add(new UnknownLinkToken(trigger, linkType));
+                                    tokens.Add(new Token.UnknownLinkToken(trigger, linkType));
                                 }
                                 else
                                 {
                                     var linkType = BitConverter.ToString(tokenData, 0, idx - 1).Replace("-", "");
                                     var linkValue = BitConverter.ToString(tokenData, idx, tokenData.Length - idx - 1).Replace("-", "");
                                     // Keeps: 0x0227 | (YY-)+ | (ZZ-)+
-                                    tokens.Add(new LinkToken(trigger, linkType, linkValue));
+                                    tokens.Add(new Token.LinkToken(trigger, linkType, linkValue));
                                 }
 
                                 index += 2 + tokenData.Length;
                                 break;
                             }
                         case 0x49: // 0x0249XX -> seen at localized server messages
+                                   //TODO more research is needed
+                                   // Could be another type of autotranslate
+                                   // Fall through for now.
                         default: // 0x02UU-XX-(YY-)*-03
                             {
                                 var trigger = BitConverter.ToString(data, index, 2).Replace("-", "");
                                 var tokenData = ExtractData(data, index + 2);
                                 // Keeps: 0x02UU | (YY-)*-03
-                                tokens.Add(new UnknownToken(trigger, tokenData));
+                                tokens.Add(new Token.UnknownToken(trigger, tokenData));
                                 index += 2 + tokenData.Length;
                                 break;
                             }
@@ -134,11 +136,11 @@ namespace Gobchat.Memory.Chat
             if (mark < length)
             {
                 var tokenData = ExtractData(data, mark, length - mark);
-                tokens.Add(new TextToken(tokenData));
+                tokens.Add(new Token.TextToken(tokenData));
             }
 
             if (DebugMode)
-                tokens.Add(new TextToken(data.Skip(offset).Take(length).ToArray()));
+                tokens.Add(new Token.TextToken(data.Skip(offset).Take(length).ToArray()));
 
             return tokens;
         }
