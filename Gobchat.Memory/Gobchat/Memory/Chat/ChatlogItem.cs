@@ -113,6 +113,23 @@ namespace Gobchat.Memory.Chat
         }
     }
 
+    public class UnknownLinkToken : IChatlogToken
+    {
+        public string Trigger { get; }
+        public string LinkType { get; }
+
+        public UnknownLinkToken(string trigger, string linkType)
+        {
+            Trigger = trigger;
+            LinkType = linkType;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(this.GetType)}[0x{Trigger} | 0x{LinkType}]";
+        }
+    }
+
     public class ServerDelimiterToken : IChatlogToken
     {
         private byte[] Code { get; }
