@@ -37,6 +37,7 @@ namespace Gobchat.UI.Forms
         private readonly Web.JavascriptBuilder _jsBuilder = new Web.JavascriptBuilder();
 
         private DeviceIndependentBitmap _colorBuffer;
+       
 
         public IManagedWebBrowser Browser { get; private set; }
 
@@ -80,6 +81,7 @@ namespace Gobchat.UI.Forms
             */
 
             this.Resize += (sender, e) => Browser.Size = new System.Drawing.Size(Width, Height);
+
 
             browser.StartBrowser(this.Width, this.Height);            
         }

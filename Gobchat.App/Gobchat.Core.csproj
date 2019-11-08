@@ -88,6 +88,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -106,6 +107,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="resources\gobtray.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\gobchat.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -215,6 +219,8 @@
     <Compile Include="Gobchat\Core\Chat\ChatlogParser.cs" />
     <Compile Include="Gobchat\Core\Chat\ChatMessage.cs" />
     <Compile Include="Gobchat\Core\GobchatAPI.cs" />
+    <Compile Include="Gobchat\GobchatApplicationContext.cs" />
+    <Compile Include="Gobchat\GobchatBackgroundWorker.cs" />
     <Compile Include="Gobchat\MainEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
