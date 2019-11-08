@@ -16,6 +16,7 @@ using Gobchat.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Gobchat.Core
 {
@@ -30,10 +31,11 @@ namespace Gobchat.Core
         private KeyboardHook _keyboardHook;
 
         private Chat.ChatlogParser _chatlogParser;
-        private IList<Chat.ChatMessage> pendingChatMessages = new List<Chat.ChatMessage>();
+        private readonly object _lockObj = new object();
+        private IList<Chat.ChatMessage> _pendingChatMessages = new List<Chat.ChatMessage>();
+        private DateTime _lastChatMessageTime;
 
-        private readonly object lockObj = new object();
-        private bool browserInitialized = false;
+        private bool _browserInitialized = false;
 
         internal void Initialize(UI.Forms.CefOverlayForm overlay)
         {
@@ -43,6 +45,7 @@ namespace Gobchat.Core
             _memoryProcessor.ProcessChangeEvent += MemoryProcessor_ProcessChangeEvent;
             _memoryProcessor.ChatlogEvent += MemoryProcessor_ChatlogEvent;
             _memoryProcessor.Initialize();
+            _lastChatMessageTime = DateTime.Now;
 
             _api = new GobchatWebAPI(_overlay.Browser);
             _overlay.Browser.BindBrowserAPI(_api, true);
@@ -60,8 +63,9 @@ namespace Gobchat.Core
 
         private void LoadGobchatUI()
         {
-            if (browserInitialized) return;
-            browserInitialized = true;
+            if (_browserInitialized)
+                return;
+            _browserInitialized = true;
 
             var htmlpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources\ui\gobchat.html");
             var ok = System.IO.File.Exists(htmlpath); //TODO
@@ -77,28 +81,34 @@ namespace Gobchat.Core
 
         private void MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
-            DateTime timeFilter = DateTime.Now.Subtract(TimeSpan.FromSeconds(10));
+            var chatMessages = e.ChatlogItems
+                .Where((item) =>
+                {
+                    return _lastChatMessageTime <= item.TimeStamp;
+                })
+                .Select((item) =>
+                {
+                    return _chatlogParser.Process(item);
+                });
 
-            e.ChatlogItems.ForEach(item =>
+            _lastChatMessageTime = chatMessages.Select(msg => msg.Timestamp).DefaultIfEmpty(_lastChatMessageTime).Max();
+
+            lock (_lockObj)
             {
-                if (item.TimeStamp < timeFilter)
-                    return;
+                foreach (var msg in chatMessages)
+                {
+                    _pendingChatMessages.Add(msg);
+                    Debug.WriteLine($"Chatmessage: {msg}");
+                }
+            }
 
-                Debug.WriteLine($"Chatlog: {item}");
-                var message = _chatlogParser.Process(item);
-                Debug.WriteLine($"Chatmessage: {message}");
+            // - filter unwanted tokens
+            // - extract source
+            // - pack players and server
+            // - build a useful structure
+            // - send to browser
 
-
-                //TODO process each message
-                // - filter unwanted tokens
-                // - extract source
-                // - pack players and server
-                // - build a useful structure
-                // - send to browser
-
-                pendingChatMessages.Add(message);
-
-            });
+            //TODO process each message
         }
 
 
@@ -106,13 +116,13 @@ namespace Gobchat.Core
 
         private IList<Chat.ChatMessage> GetAndClearPendingRecords()
         {
-            if (pendingChatMessages.Count == 0)
+            if (_pendingChatMessages.Count == 0)
                 return new List<Chat.ChatMessage>();
 
-            lock (lockObj)
+            lock (_lockObj)
             {
-                var tmp = pendingChatMessages;
-                pendingChatMessages = new List<Chat.ChatMessage>();
+                var tmp = _pendingChatMessages;
+                _pendingChatMessages = new List<Chat.ChatMessage>();
                 return tmp;
             }
         }
@@ -151,7 +161,6 @@ namespace Gobchat.Core
 
             if (!_disposedValue)
             {
-
                 _keyboardHook?.Dispose();
                 _keyboardHook = null;
 
