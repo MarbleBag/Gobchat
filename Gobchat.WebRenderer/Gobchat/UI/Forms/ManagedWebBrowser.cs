@@ -194,8 +194,7 @@ namespace Gobchat.UI.Forms
 
         public void CloseBrowser(bool forceClose)
         {
-            if(IsBrowserInitialized)
-                CefBrowser.GetBrowser().CloseBrowser(forceClose);
+            CefBrowser.GetBrowser().CloseBrowser(forceClose);
         }
 
         public new void Load(string url)

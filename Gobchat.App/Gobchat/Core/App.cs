@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,10 +28,8 @@ namespace Gobchat.Core
         private SomeoneWhoDoesSomeWork _work;
 
         private Gobchat.UI.Forms.CefOverlayForm _overlay;
+        private NotifyIcon _notifyIcon;
         private Task<bool> _workerThread;
-
-        private Thread thread;
-        private NotifyIcon trayIcon;
 
         [STAThread]
         internal void Run()
@@ -58,6 +55,8 @@ namespace Gobchat.Core
              });
             _workerThread.Start();
 
+
+
             Application.EnableVisualStyles();
             Application.Run(_overlay);
         }
@@ -69,6 +68,33 @@ namespace Gobchat.Core
             Application.ApplicationExit += (sender, e) => Dispose();
 
             _work = new SomeoneWhoDoesSomeWork();
+
+
+            _notifyIcon = new NotifyIcon();
+            //_notifyIcon.Icon = new System.Drawing.Icon(@"resources/testico.ico"); // Eigenes Icon einsetzen
+            _notifyIcon.Text = "Doppelklick mich!";   // Eigenen Text einsetzen
+            _notifyIcon.Visible = true;
+            _notifyIcon.ContextMenu = new ContextMenu();
+            _notifyIcon.Click += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("Test");
+            };
+
+            var menuItemCloseApp = new MenuItem();
+            menuItemCloseApp.Text = "Shutdown";
+            menuItemCloseApp.Click += (s, e) =>
+            {
+                Application.Exit();
+            };
+            _notifyIcon.ContextMenu.MenuItems.Add(menuItemCloseApp);
+
+            var menuItemHideShow = new MenuItem();
+            menuItemHideShow.Text = "Hide";
+            menuItemHideShow.Click += (s, e) =>
+            {
+               // _overlay.Visible;
+            };
+            _notifyIcon.ContextMenu.MenuItems.Add(menuItemHideShow);
         }
 
         public void Dispose()
@@ -78,14 +104,15 @@ namespace Gobchat.Core
 
             _running = false;
 
+            _notifyIcon?.Dispose();
+            _notifyIcon = null;
+
             _workerThread?.Wait(30000);
             _workerThread = null;
 
             // thread?.Join();
             // thread = null;
 
-            trayIcon?.Dispose();
-            trayIcon = null;
         }
     }
 }
