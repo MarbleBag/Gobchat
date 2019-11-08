@@ -58,7 +58,18 @@ namespace Gobchat.Memory
                 {
                     List<Chat.ChatlogItem> items = new List<Chat.ChatlogItem>();
                     foreach (var item in logs)
-                        items.Add(chatlogBuilder.Build(item));
+                    {
+                        try
+                        {
+                            items.Add(chatlogBuilder.Build(item));
+                        }catch(Chat.ChatBuildException e)
+                        {
+                            //TODO handle this
+                            System.Diagnostics.Debug.WriteLine($"ChatBuildException: Caused by {e.InnerException.GetType().Name}");
+                            System.Diagnostics.Debug.Write($"{e.InnerException.StackTrace}");
+                            System.Diagnostics.Debug.WriteLine("");
+                        }
+                    }
                     ChatlogEvent.Invoke(this, new Chat.ChatlogEventArgs(items));
                 }
             }

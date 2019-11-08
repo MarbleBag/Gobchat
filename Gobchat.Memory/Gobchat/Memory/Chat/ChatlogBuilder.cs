@@ -22,6 +22,12 @@ namespace Gobchat.Memory.Chat
     {
         public bool DebugMode;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        /// <exception cref="ChatBuildException">When an inner exception occures</exception>
         public ChatlogItem Build(Sharlayan.Core.ChatLogItem item)
         {
             if (item == null)
@@ -30,19 +36,17 @@ namespace Gobchat.Memory.Chat
             if (!Int32.TryParse(item.Code, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int channel))
                 return null; //TODO
 
-            var segments = Tokenizer(item.Bytes, 8, item.Bytes.Length);
-
-            return new ChatlogItem(item.TimeStamp, channel, segments);
+            try
+            {
+                var segments = Tokenizer(item.Bytes, 8, item.Bytes.Length);
+                return new ChatlogItem(item.TimeStamp, channel, segments);
+            }
+            catch (Exception e)
+            {
+                throw new ChatBuildException(e, item.Bytes, item.Line);
+            }
         }
 
-        public ChatlogItem Build()
-        {
-            var test = new byte[] { 58, 58, 2, 39, 7, 8, 1, 1, 1, 255, 1, 3, 2, 72, 4, 242, 1, 244, 3, 2, 73, 4, 242, 1, 245, 3, 238, 130, 187, 2, 73, 2, 1, 3, 2, 72, 2, 1, 3, 79, 102, 32, 116, 104, 101, 32, 49, 52, 32, 112, 97, 114, 116, 105, 101, 115, 32, 99, 117, 114, 114, 101, 110, 116, 108, 121, 32, 114, 101, 99, 114, 117, 105, 116, 105, 110, 103, 44, 32, 97, 108, 108, 32, 109, 97, 116, 99, 104, 32, 121, 111, 117, 114, 32, 115, 101, 97, 114, 99, 104, 32, 99, 111, 110, 100, 105, 116, 105, 111, 110, 115, 46, 2, 39, 7, 207, 1, 1, 1, 255, 1, 3 };
-
-            var tokens = Tokenizer(test, 0, test.Length);
-
-            return new ChatlogItem(DateTime.Now, 0, tokens);
-        }
 
         private List<IChatlogToken> Tokenizer(byte[] data, int offset, int length)
         {
@@ -93,10 +97,22 @@ namespace Gobchat.Memory.Chat
                                 var trigger = BitConverter.ToString(data, index, 2).Replace("-", "");
                                 var tokenData = ExtractData(data, index + 2);
                                 var idx = Array.IndexOf<byte>(tokenData, 0xFF) + 1;
-                                var linkType = BitConverter.ToString(tokenData, 0, idx - 1).Replace("-", "");
-                                var linkValue = BitConverter.ToString(tokenData, idx, tokenData.Length - idx - 1).Replace("-", "");
-                                // Keeps: 0x0227 | (YY-)+ | (ZZ-)+
-                                tokens.Add(new LinkToken(trigger, linkType, linkValue));
+
+                                if (idx < 0)
+                                { //sometimes the data doesn't contain a delimiter. Its not clear why and what it does.
+                                  //TODO more research is needed
+                                  //example: 	2, 39, 7, 3, 242, 111, 203, 2, 1, 3
+                                    var linkType = BitConverter.ToString(tokenData).Replace("-", "");
+                                    tokens.Add(new UnknownLinkToken(trigger, linkType));
+                                }
+                                else
+                                {
+                                    var linkType = BitConverter.ToString(tokenData, 0, idx - 1).Replace("-", "");
+                                    var linkValue = BitConverter.ToString(tokenData, idx, tokenData.Length - idx - 1).Replace("-", "");
+                                    // Keeps: 0x0227 | (YY-)+ | (ZZ-)+
+                                    tokens.Add(new LinkToken(trigger, linkType, linkValue));
+                                }
+
                                 index += 2 + tokenData.Length;
                                 break;
                             }
@@ -121,7 +137,7 @@ namespace Gobchat.Memory.Chat
                 tokens.Add(new TextToken(tokenData));
             }
 
-            if(DebugMode)
+            if (DebugMode)
                 tokens.Add(new TextToken(data.Skip(offset).Take(length).ToArray()));
 
             return tokens;

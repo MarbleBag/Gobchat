@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gobchat\Memory\Chat\ChatBuildException.cs" />
     <Compile Include="Gobchat\Memory\Chat\ChatlogBuilder.cs" />
     <Compile Include="Gobchat\Memory\Chat\ChatlogEventArgs.cs" />
     <Compile Include="Gobchat\Memory\Chat\ChatlogItem.cs" />
