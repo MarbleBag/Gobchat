@@ -48,7 +48,7 @@ namespace Gobchat.Core
             _overlay.Browser.BindBrowserAPI(_api, true);
             //_overlay.InvokeUIThread(true, () => _overlay.Hide());
 
-            _overlay.Browser.BrowserInitialized += (s, e) => InitializeBrowser();
+            _overlay.Browser.BrowserInitialized += (s, e) => LoadGobchatUI();
 
             _chatlogParser = new Chat.ChatlogParser();
 
@@ -58,7 +58,7 @@ namespace Gobchat.Core
             // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.M, () => Debug.WriteLine("Yay!"));
         }
 
-        private void InitializeBrowser()
+        private void LoadGobchatUI()
         {
             if (browserInitialized) return;
             browserInitialized = true;
