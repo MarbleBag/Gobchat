@@ -31,6 +31,9 @@ namespace Gobchat.Core.Chat
             var text = CleanChatLog(item);
             var source = ExtractSource(text, out int readIdx);
             var message = ExtractMsg(text, readIdx);
+
+            //TODO check for errors /exception handling
+
             return new ChatMessage(item.TimeStamp, source, item.Channel, message);
         }
 
@@ -92,7 +95,7 @@ namespace Gobchat.Core.Chat
             }
             else
             {
-                throw new ArgumentException(""); //TODO
+                throw new ArgumentException(""); //TODO not useful
             }
         }
 
