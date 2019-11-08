@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Gobchat.UI.Web
 {
-    public static class WebRenderManager
+    public static class CEFManager
     {
         private static bool isInitialized = false;
         private static bool isDisposed = false;

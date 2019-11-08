@@ -21,32 +21,14 @@ using System.Windows.Forms;
 namespace Gobchat.UI.Forms
 {
 
-    public class CustomeContextMenuHandler : CefSharp.IContextMenuHandler
-    {
-        //howto: https://github.com/cefsharp/CefSharp/blob/935d3900ba2147f4786386596b62339087ff61b0/CefSharp.WinForms.Example/Handlers/MenuHandler.cs#L15
-        void IContextMenuHandler.OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
-        {
-            model.Clear();
-        }
-
-        bool IContextMenuHandler.OnContextMenuCommand(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
-        {
-            return false;
-        }
-
-        void IContextMenuHandler.OnContextMenuDismissed(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame)
-        {
-            
-        }
-
-        bool IContextMenuHandler.RunContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)
-        {
-            return false;
-        }
-    }
-
     public partial class CefOverlayForm : Form
     {
+        // used in CreateParams 
+        private const int WS_EX_TOPMOST = 0x00000008;
+        // Allows the use of layered windows functions
+        private const int WS_EX_LAYERED = 0x00080000;
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        private const int WS_EX_NOACTIVATE = 0x08000000;
 
         private readonly FormDragMoveHelper _formMover;
         private readonly FormResizeHelper _formResizer;
@@ -58,17 +40,12 @@ namespace Gobchat.UI.Forms
 
         public IManagedWebBrowser Browser { get; private set; }
 
-        private const int WS_EX_TOPMOST = 0x00000008;
-        private const int WS_EX_LAYERED = 0x00080000;
-        private const int CP_NOCLOSE_BUTTON = 0x200;
-        private const int WS_EX_NOACTIVATE = 0x08000000;
-
         protected override System.Windows.Forms.CreateParams CreateParams
         {
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle = cp.ExStyle | WS_EX_TOPMOST | WS_EX_LAYERED; //| WS_EX_NOACTIVATE;
+                cp.ExStyle = cp.ExStyle | WS_EX_TOPMOST | WS_EX_LAYERED; //form should be topmost and layered
                 cp.ClassStyle = cp.ClassStyle | CP_NOCLOSE_BUTTON;
                 return cp;
             }
@@ -87,12 +64,12 @@ namespace Gobchat.UI.Forms
             _formMover.FormMove += (sender, e) => Browser.SendMoveOrResizeStartedEvent();
 
 
-            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.ResizeRedraw, true); // May not be needed anymore
 
             var browser = new ManagedWebBrowser(form: this);
             Browser = browser;
 
-            browser.MenuHandler = new CustomeContextMenuHandler();
+            browser.MenuHandler = new CustomContextMenuHandler();
 
             //seems this is still not implemented by CefSharp, no events are fired            
             /*
@@ -104,8 +81,7 @@ namespace Gobchat.UI.Forms
 
             this.Resize += (sender, e) => Browser.Size = new System.Drawing.Size(Width, Height);
 
-            browser.StartBrowser(this.Width, this.Height);
-            
+            browser.StartBrowser(this.Width, this.Height);            
         }
 
 
@@ -126,9 +102,9 @@ namespace Gobchat.UI.Forms
         public void InvokeUIThread(bool async, Action action)
         {
             if(async)
-            this.InvokeAsyncOnUIThread(action);
+                this.InvokeAsyncOnUIThread(action);
             else
-            this.InvokeSyncOnUIThread(action);
+                this.InvokeSyncOnUIThread(action);
         }
 
         protected override void WndProc(ref Message m)

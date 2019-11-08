@@ -40,7 +40,7 @@ namespace Gobchat.Core
             if (!_isInitialized)
                 InitializApp();
 
-            Gobchat.UI.Web.WebRenderManager.Initialize();
+            Gobchat.UI.Web.CEFManager.Initialize();
             _overlay = new Gobchat.UI.Forms.CefOverlayForm();
 
             _workerThread = new System.Threading.Tasks.Task<bool>(() =>

@@ -56,7 +56,7 @@ namespace Gobchat.UI
 
         private void Initialize()
         {
-            Gobchat.UI.Web.WebRenderManager.Initialize();
+            Gobchat.UI.Web.CEFManager.Initialize();
             Application.ApplicationExit += (sender, e) => Dispose();
 
             _form = new Gobchat.UI.Forms.CefOverlayForm();
@@ -70,7 +70,7 @@ namespace Gobchat.UI
 
         private void Dispose()
         {
-            Gobchat.UI.Web.WebRenderManager.Dispose();
+            Gobchat.UI.Web.CEFManager.Dispose();
         }
 
         private class MultiFormContext : ApplicationContext

@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gobchat\UI\Forms\CustomContextMenuHandler.cs" />
     <Compile Include="Gobchat\UI\Forms\DeviceIndependentBitmap.cs" />
     <Compile Include="Gobchat\UI\Forms\Extension\Extensions.cs" />
     <Compile Include="Gobchat\UI\Forms\Helper\FormEnsureTopmostHelper.cs" />
@@ -76,11 +77,13 @@
     <Compile Include="Gobchat\UI\UIManager.cs" />
     <Compile Include="Gobchat\UI\Web\JavascriptBuilder.cs" />
     <Compile Include="Gobchat\UI\Web\JSEvent.cs" />
-    <Compile Include="Gobchat\UI\Forms\CefOverlayForm.cs" />
+    <Compile Include="Gobchat\UI\Forms\CefOverlayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gobchat\UI\Forms\CefOverlayForm.Designer.cs">
       <DependentUpon>CefOverlayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gobchat\UI\Web\WebRenderManager.cs" />
+    <Compile Include="Gobchat\UI\Web\CEFManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
