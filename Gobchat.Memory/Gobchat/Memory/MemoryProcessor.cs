@@ -66,7 +66,8 @@ namespace Gobchat.Memory
                         {
                             //TODO handle this
                             System.Diagnostics.Debug.WriteLine($"ChatBuildException: Caused by {e.InnerException.GetType().Name}");
-                            System.Diagnostics.Debug.Write($"{e.InnerException.StackTrace}");
+                            System.Diagnostics.Debug.WriteLine($"Error on: {item.Line}");
+                            System.Diagnostics.Debug.WriteLine($"{e.InnerException.StackTrace}");
                             System.Diagnostics.Debug.WriteLine("");
                         }
                     }

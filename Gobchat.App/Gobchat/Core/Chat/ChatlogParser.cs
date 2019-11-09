@@ -12,18 +12,26 @@
  *******************************************************************************/
 
 using Gobchat.Memory.Chat;
-using Gobchat.Memory.Chat.Token;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Gobchat.Core.Chat
 {
+    internal interface IAutotranslateProvider
+    {
+        String GetTranslationFor(string key);
+    }
+
     internal class ChatlogParser
     {
+        public IAutotranslateProvider AutotranslateLookup;
+
+        public ChatlogParser(IAutotranslateProvider autotranslateLookup)
+        {
+            AutotranslateLookup = autotranslateLookup ?? throw new ArgumentNullException(nameof(autotranslateLookup));
+        }
+
         public ChatMessage Process(ChatlogItem item)
         {
             if (!IsChatlogItemValid(item))
@@ -38,7 +46,6 @@ namespace Gobchat.Core.Chat
             return new ChatMessage(item.TimeStamp, source, item.Channel, message);
         }
 
-
         //Not the best solution, but works by simplifying the task
         private string CleanChatLog(ChatlogItem item)
         {
@@ -46,38 +53,42 @@ namespace Gobchat.Core.Chat
 
             var tokens = item.Tokens;
             StringBuilder builder = new StringBuilder();
-            for(int idx = 0; idx < tokens.Count; ++idx)
+            for (int idx = 0; idx < tokens.Count; ++idx)
             {
-                if(tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken)
+                if (tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken)
                 {
                     builder.Append(txtToken.GetText());
                 }
-                else if(tokens[idx] is Gobchat.Memory.Chat.Token.ServerDelimiterToken slToken)
+                else if (tokens[idx] is Gobchat.Memory.Chat.Token.ServerDelimiterToken slToken)
                 {
                     builder.Append(" ");
                     idx += 1;
-                    if (tokens.Count < idx && tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken1)
+                    if (idx < tokens.Count && tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken1)
                     {
                         var txt = txtToken1.GetText();
                         var match = regex.Match(txt);
                         if (match.Success)
                         {
                             var serverName = match.Value;
-                            builder.Append("[").Append(serverName).Append("] ");
+                            builder.Append("[").Append(serverName).Append("]");
                             builder.Append(txt, serverName.Length, txt.Length - serverName.Length);
                         }
                         else
                         {
                             builder.Append(txt);
-                        }                       
+                        }
                     }
                 }
-                
-                else if(tokens[idx] is Gobchat.Memory.Chat.Token.AutotranslateToken atToken)
+                else if (tokens[idx] is Gobchat.Memory.Chat.Token.AutotranslateToken atToken)
                 {
-                    builder.Append(" [Autotranslate Goes Here] ");
+                    var key = atToken.GetKey().ToLower();
+                    var autotranslatetxt = AutotranslateLookup.GetTranslationFor(key);
+                    if (autotranslatetxt != null)
+                        builder.Append($" {autotranslatetxt} ");
+                    else
+                        builder.Append($" [AT {key}] ");
                 }
-                else if(tokens[idx] is Gobchat.Memory.Chat.Token.LinkToken linkToken)
+                else if (tokens[idx] is Gobchat.Memory.Chat.Token.LinkToken linkToken)
                 {
                     //skip for now
                 }
@@ -107,7 +118,7 @@ namespace Gobchat.Core.Chat
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chatlogItem"></param>
         /// <returns>true when the chatlog is valid</returns>

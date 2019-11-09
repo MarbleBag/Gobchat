@@ -1,8 +1,14 @@
 # Gobchat (FFXIV chat overlay)
 Gobchat is an overlay with the goal to provide a better chat experience for roleplayer.
 
+***
+***
+
 ## Readme needs to be rewritten for release 1.0.0
 While the features stay, the way the app is installed and run changed significantly.
+
+***
+***
 
 Gobchat in its current version is a plugin for [hibiyasleep's OverlayPlugin](https://github.com/hibiyasleep/OverlayPlugin) which itself is a plugin for
 [Advanced Combat Tracker](http://advancedcombattracker.com/).
@@ -17,30 +23,31 @@ This plugin took a lot of inspiration (and some code) from [quisquous cactbot](h
    1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
 1. [Updating Gobchat](#updating-gobchat)
+1. [License](#license)
 
 ## Features
 
 ### Smart autoscroll
 By moving the scroll bar up, autoscroll will be disabled for new messages and you can undisturbed (re)read text from the past.
 
-![no autoscroll](docs/screen_scroll_noautoscroll.png)
+![no autoscroll](screen_scroll_noautoscroll.png)
 
 By moving the scroll bar back to the bottom of the chat, autoscroll will be re-enabled!
 
-![autoscroll reenables](docs/screen_scroll_bottom.png)
+![autoscroll reenables](screen_scroll_bottom.png)
 
 ### Text formatting
 (TODO)
 
-![(missing) example screen](docs/screen3.png)
+![(missing) example screen](screen3.png)
 
 becomes
 
-![(missing) example screen](docs/screen4.png)
+![(missing) example screen](screen4.png)
 
 Four different types 
 
-![Different formats](docs/screen_formats.png)
+![Different formats](screen_formats.png)
 
 ### Channel settings
 
@@ -49,7 +56,7 @@ Four different types
 ### Text-Highlighting for key words - mentions
 Case-insensitive detection for a customizable list of words, which then will be highlighted. This will help you not missing out on important messages.
 
-![Mentions](docs/screen_mention_highlighting.png)
+![Mentions](screen_mention_highlighting.png)
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
@@ -157,3 +164,5 @@ The end result should look something like that:
 ### Updating Gobchat
 
 1. Repeat steps 1 to 5 of [installing Gobchat](#installing-gobchat), replace all files.
+
+### License
