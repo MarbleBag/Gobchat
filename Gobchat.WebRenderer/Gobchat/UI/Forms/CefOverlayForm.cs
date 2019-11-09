@@ -203,17 +203,17 @@ namespace Gobchat.UI.Forms
 
         private void OverlayForm_MouseEnter(object sender, EventArgs e)
         {
-            Debug.WriteLine("OverlayForm_MouseEnter");
+           
         }
 
         private void OverlayForm_MouseLeave(object sender, EventArgs e)
         {
-            Debug.WriteLine("OverlayForm_MouseLeave");
+            
         }
 
         private void OverlayForm_MouseHover(object sender, EventArgs e)
         {
-            Debug.WriteLine("OverlayForm_MouseHover");
+           
         }
 
         private void OverlayForm_Scroll(object sender, ScrollEventArgs e)

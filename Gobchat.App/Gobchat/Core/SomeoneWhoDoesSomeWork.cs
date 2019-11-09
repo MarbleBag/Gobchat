@@ -11,16 +11,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Resource;
 using Gobchat.Memory.Chat;
 using Gobchat.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Gobchat.Core
 {
-
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
@@ -53,7 +55,17 @@ namespace Gobchat.Core
 
             _overlay.Browser.BrowserInitialized += (s, e) => LoadGobchatUI();
 
-            _chatlogParser = new Chat.ChatlogParser();
+            var languagePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources\lang");
+            var resourceResolvers = new IResourceResolver[] { new LocalFolderResourceResolver(languagePath) };
+            var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
+            autotranslateProvider.LoadCulture(new CultureInfo("en")); //TODO current language
+
+            _chatlogParser = new Chat.ChatlogParser(autotranslateProvider);
+
+            //  var autotranslatePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources\autotranslate_en.hjson");
+            //  var jsonValue = Hjson.HjsonValue.Load(autotranslatePath);
+            //   var off = jsonValue["0x170"];
+            //   Debug.WriteLine("Yay? " + off);
 
             //not working
             //_keyboardHook = new KeyboardHook();
@@ -76,7 +88,10 @@ namespace Gobchat.Core
 
         private void MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
         {
-            Debug.WriteLine($"FFXIV Process detected! {e.IsProcessValid} {e.ProcessId}");
+            if (e.IsProcessValid)
+                Debug.WriteLine($"FFXIV process with id {e.ProcessId} detected!");
+            else
+                Debug.WriteLine("No FFXIV process detected.");
         }
 
         private void MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
@@ -84,12 +99,27 @@ namespace Gobchat.Core
             var chatMessages = e.ChatlogItems
                 .Where((item) =>
                 {
-                    return _lastChatMessageTime <= item.TimeStamp;
+                    var isNew = _lastChatMessageTime <= item.TimeStamp;
+                    if (!isNew)
+                        Debug.WriteLine($"Old Msg: {item}");
+                    Debug.WriteLine($"Preparse: {item}");
+                    return isNew;
                 })
                 .Select((item) =>
                 {
-                    return _chatlogParser.Process(item);
-                });
+                    try
+                    {
+                        return _chatlogParser.Process(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Error in process chat log");
+                        Debug.WriteLine($"Log: {item}");
+                        Debug.WriteLine($"Error: {ex}");
+                        return null;
+                    }
+                })
+                .Where(item => item != null);
 
             _lastChatMessageTime = chatMessages.Select(msg => msg.Timestamp).DefaultIfEmpty(_lastChatMessageTime).Max();
 
@@ -98,7 +128,7 @@ namespace Gobchat.Core
                 foreach (var msg in chatMessages)
                 {
                     _pendingChatMessages.Add(msg);
-                    Debug.WriteLine($"Chatmessage: {msg}");
+                    Debug.WriteLine($"{msg}");
                 }
             }
 
@@ -110,9 +140,6 @@ namespace Gobchat.Core
 
             //TODO process each message
         }
-
-
-
 
         private IList<Chat.ChatMessage> GetAndClearPendingRecords()
         {
@@ -144,6 +171,7 @@ namespace Gobchat.Core
         }
 
         #region IDisposable Support
+
         private bool _disposedValue = false; // To detect redundant calls
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
@@ -176,8 +204,7 @@ namespace Gobchat.Core
                 _disposedValue = true;
             }
         }
-        #endregion
 
-
+        #endregion IDisposable Support
     }
 }

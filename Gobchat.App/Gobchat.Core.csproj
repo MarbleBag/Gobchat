@@ -12,7 +12,7 @@
     <ProjectGuid>{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Gobchat.Core</RootNamespace>
-    <AssemblyName>Gobchat.Core</AssemblyName>
+    <AssemblyName>Gobchat</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -76,8 +76,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="resources\lang\autotranslate_en.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hjson.3.0.0\lib\net40\Hjson.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -107,6 +113,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gobchat\Core\Resource\IResourceProvider.cs" />
+    <Compile Include="Gobchat\Core\Resource\IResourceResolver.cs" />
     <Content Include="resources\gobtray.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -215,9 +223,14 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Compile Include="Gobchat\Core\App.cs" />
+    <Compile Include="Gobchat\Core\AutotranslateProvider.cs" />
     <Compile Include="Gobchat\Core\Chat\ChatMessageWebEvent.cs" />
     <Compile Include="Gobchat\Core\Chat\ChatlogParser.cs" />
     <Compile Include="Gobchat\Core\Chat\ChatMessage.cs" />
+    <Compile Include="Gobchat\Core\Resource\LocalFolderResourceResolver.cs" />
+    <Compile Include="Gobchat\Core\Util\Lookup.cs" />
+    <Compile Include="Gobchat\Core\Resource\ResourceBundle.cs" />
+    <Compile Include="Gobchat\Core\Util\DirectoryTraverser.cs" />
     <Compile Include="Gobchat\Core\GobchatAPI.cs" />
     <Compile Include="Gobchat\GobchatApplicationContext.cs" />
     <Compile Include="Gobchat\GobchatBackgroundWorker.cs" />

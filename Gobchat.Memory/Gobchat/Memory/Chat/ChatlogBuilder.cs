@@ -23,7 +23,7 @@ namespace Gobchat.Memory.Chat
         public bool DebugMode { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace Gobchat.Memory.Chat
                             }
                         case 0x2E: // 0x022EXX-(YY-)*-03 -> Autotranslate token
                             {
-                                var tokenData = ExtractData(data, index + 2);
+                                var tokenData = ExtractPackedData(data, index + 2);
                                 // Keeps: 0x022E | (YY-)*-03
                                 tokens.Add(new Token.AutotranslateToken(tokenData));
                                 index += 2 + tokenData.Length;
@@ -78,7 +78,7 @@ namespace Gobchat.Memory.Chat
                             }
                         case 0x12: // 0x0212XX5903 -> Delimiter for server (it's the flower you can see in the chat)
                             {
-                                var tokenData = ExtractData(data, index + 2); //should always be the same, but just in case it's not.
+                                var tokenData = ExtractPackedData(data, index + 2); //should always be the same, but just in case it's not.
                                 tokens.Add(new Token.ServerDelimiterToken(tokenData));
                                 index += 2 + tokenData.Length;
                                 break;
@@ -94,8 +94,8 @@ namespace Gobchat.Memory.Chat
                                 // 03 Indicates end of token
 
                                 var trigger = BitConverter.ToString(data, index, 2).Replace("-", "");
-                                var tokenData = ExtractData(data, index + 2);
-                                var idx = Array.IndexOf<byte>(tokenData, 0xFF) + 1;
+                                var tokenData = ExtractPackedData(data, index + 2);
+                                var idx = Array.IndexOf<byte>(tokenData, 0xFF);
 
                                 if (idx < 0)
                                 { //sometimes the data doesn't contain a delimiter. Its not clear why and what it does.
@@ -106,8 +106,8 @@ namespace Gobchat.Memory.Chat
                                 }
                                 else
                                 {
-                                    var linkType = BitConverter.ToString(tokenData, 0, idx - 1).Replace("-", "");
-                                    var linkValue = BitConverter.ToString(tokenData, idx, tokenData.Length - idx - 1).Replace("-", "");
+                                    var linkType = BitConverter.ToString(tokenData, 0, idx).Replace("-", "");
+                                    var linkValue = BitConverter.ToString(tokenData, idx + 1, tokenData.Length - (idx + 1)).Replace("-", "");
                                     // Keeps: 0x0227 | (YY-)+ | (ZZ-)+
                                     tokens.Add(new Token.LinkToken(trigger, linkType, linkValue));
                                 }
@@ -122,7 +122,7 @@ namespace Gobchat.Memory.Chat
                         default: // 0x02UU-XX-(YY-)*-03
                             {
                                 var trigger = BitConverter.ToString(data, index, 2).Replace("-", "");
-                                var tokenData = ExtractData(data, index + 2);
+                                var tokenData = ExtractPackedData(data, index + 2);
                                 // Keeps: 0x02UU | (YY-)*-03
                                 tokens.Add(new Token.UnknownToken(trigger, tokenData));
                                 index += 2 + tokenData.Length;
@@ -145,10 +145,10 @@ namespace Gobchat.Memory.Chat
             return tokens;
         }
 
-        private byte[] ExtractData(byte[] src, int index)
+        private byte[] ExtractPackedData(byte[] src, int index)
         {
             var length = src[index] & 0xFF;
-            return ExtractData(src, index + 1, length);
+            return ExtractData(src, index + 1 /*skip length value*/, length /*always ends on 0x03*/);
         }
 
         private byte[] ExtractData(byte[] src, int index, int length)
