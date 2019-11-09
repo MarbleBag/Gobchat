@@ -44,7 +44,7 @@ namespace Gobchat.Core.Resource
         {
             get
             {
-                if (_mapping.TryGetValue(key, out string result))
+                if (_mapping.TryGetValue(key.ToUpperInvariant(), out string result))
                     return result;
                 return null;
             }
@@ -106,7 +106,7 @@ namespace Gobchat.Core.Resource
                     //TODO
                     foreach (var key in data.Keys)
                     {
-                        _mapping.Add(key, data[key].ToString());
+                        _mapping.Add(key.ToUpperInvariant(), data[key].ToString());
                     }
                 }
             }

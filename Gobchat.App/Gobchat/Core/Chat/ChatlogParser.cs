@@ -81,7 +81,7 @@ namespace Gobchat.Core.Chat
                 }
                 else if (tokens[idx] is Gobchat.Memory.Chat.Token.AutotranslateToken atToken)
                 {
-                    var key = atToken.GetKey().ToLower();
+                    var key = atToken.GetKey();
                     var autotranslatetxt = AutotranslateLookup.GetTranslationFor(key);
                     if (autotranslatetxt != null)
                         builder.Append($" {autotranslatetxt} ");
