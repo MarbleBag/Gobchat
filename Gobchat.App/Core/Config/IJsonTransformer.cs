@@ -11,19 +11,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
-namespace Gobchat
+namespace Gobchat.Core.Config
 {
-    public class MainEntry
+    public interface IJsonTransformer
     {
-        [STAThread]
-        static void Main(string[] args)
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GobchatApplicationContext());
-        }
+        JObject Transform(JObject json);
     }
 }

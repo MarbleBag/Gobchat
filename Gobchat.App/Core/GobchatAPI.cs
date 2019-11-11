@@ -25,7 +25,7 @@ namespace Gobchat.Core
     internal class GobchatWebAPI : IBrowserAPI
     {
         private IManagedWebBrowser _browser;
-        private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
+        private UI.Web.JavascriptBuilder _jsBuilder = new UI.Web.JavascriptBuilder();
 
         public GobchatWebAPI(IManagedWebBrowser browser)
         {
@@ -47,12 +47,10 @@ namespace Gobchat.Core
                 var eventName = obj["event"];
                 if ("LoadGobchatConfig".Equals(eventName))
                 {
-                    var script = _jsBuilder.BuildCustomEventDispatcher(new Gobchat.UI.Web.JavascriptEvents.LoadGobchatConfigEvent(null));
+                    var script = _jsBuilder.BuildCustomEventDispatcher(new UI.Web.JavascriptEvents.LoadGobchatConfigEvent(null));
                     _browser.ExecuteScript(script);
                 }
             }
         }
-
-
     }
 }

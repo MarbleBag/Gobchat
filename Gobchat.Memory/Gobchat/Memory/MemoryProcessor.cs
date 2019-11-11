@@ -18,18 +18,31 @@ namespace Gobchat.Memory
 {
     public class FFXIVMemoryProcessor
     {
-
         private readonly FFXIVProcessFinder processFinder = new FFXIVProcessFinder();
         private readonly Chat.ChatlogReader chatlogProcessor = new Chat.ChatlogReader();
         private readonly Chat.ChatlogBuilder chatlogBuilder = new Chat.ChatlogBuilder();
 
         public bool FFXIVProcessValid { get { return processFinder.FFXIVProcessValid; } }
+
         public int FFXIVProcessId { get { return processFinder.FFXIVProcessId; } }
+
+        public string LocalCacheDirectory
+        {
+            get
+            {
+                return Sharlayan.MemoryHandler.Instance.LocalCacheDirectory;
+            }
+            set
+            {
+                Sharlayan.MemoryHandler.Instance.LocalCacheDirectory = value;
+            }
+        }
 
         /// <summary>
         /// Fired when the currently tracked FFXIV process changes
         /// </summary>
         public event EventHandler<ProcessChangeEventArgs> ProcessChangeEvent;
+
         /// <summary>
         /// Fired when new FFXIV chatlog entries are read
         /// </summary>
@@ -37,15 +50,6 @@ namespace Gobchat.Memory
 
         public void Initialize()
         {
-            /* MemoryHandler.Instance.SignaturesFoundEvent += delegate (object sender, Sharlayan.Events.SignaturesFoundEvent e)
-             {
-                 foreach (KeyValuePair<string, Signature> kvp in e.Signatures)
-                 {
-                     Debug.WriteLine($"{kvp.Key} => {kvp.Value.GetAddress():X}");
-                 }
-             };
-
-             this.ProcessChangeEvent += (object sender, ProcessChangeEvent e) => Debug.WriteLine($"FFXIV Process changed! {e.IsProcessValid} {e.ProcessId}");*/
         }
 
         public void Update()
@@ -62,7 +66,8 @@ namespace Gobchat.Memory
                         try
                         {
                             items.Add(chatlogBuilder.Process(item));
-                        }catch(Chat.ChatBuildException e)
+                        }
+                        catch (Chat.ChatBuildException e)
                         {
                             //TODO handle this
                             System.Diagnostics.Debug.WriteLine($"ChatBuildException: Caused by {e.InnerException.GetType().Name}");
@@ -89,8 +94,5 @@ namespace Gobchat.Memory
 
             ProcessChangeEvent?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
         }
-
     }
 }
-
-

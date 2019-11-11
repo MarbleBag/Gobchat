@@ -21,6 +21,11 @@ namespace Gobchat
 {
     internal class GobchatApplicationContext : ApplicationContext
     {
+        //TODO not nice
+        public static string ResourceFolder;
+
+        public static string UserConfigFolder;
+
         public new Form MainForm { get { return _overlayForm; } private set { } }
 
         private NotifyIcon _notifyIcon;
@@ -30,8 +35,19 @@ namespace Gobchat
 
         public GobchatApplicationContext()
         {
+            ResourceFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources");
+            UserConfigFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Gobchat\config");
+
             Application.ApplicationExit += (s, e) => OnApplicationExit();
+            //   try
+            //    {
             OnApplicationStart();
+            //    }
+            //    catch (Exception e) //TODO
+            //    {
+            //         OnApplicationExit();
+            //         throw;
+            //    }
         }
 
         private void OnApplicationStart()
@@ -45,17 +61,16 @@ namespace Gobchat
             //   Debug.WriteLine(Application.CommonAppDataPath);
         }
 
-
-
         private void InitializeBackgroundWorker()
         {
+            // Initialized in UI thread
+            // Maybe add a kind of event queue to the UI thread?
+            var _work = new SomeoneWhoDoesSomeWork();
+            _work.Initialize(_overlayForm);
+
             GobchatBackgroundWorker.Job job = (CancellationToken token) =>
             {
-                //TODO for now
-                var _work = new SomeoneWhoDoesSomeWork();
-                //TODO maybe use a kind of UI interface instead?
                 //TODO try-catch the shit out of this
-                _work.Initialize(_overlayForm);
                 while (!token.IsCancellationRequested)
                 {
                     _work.Update();
@@ -91,28 +106,27 @@ namespace Gobchat
             _notifyIcon.ContextMenu = new ContextMenu();
 
             var itemHideShowChat = new MenuItem("Hide");
+            _overlayForm.VisibleChanged += (s, e) =>
+            {
+                if (_overlayForm == null)
+                    return;
+
+                if (_overlayForm.Visible)
+                    itemHideShowChat.Text = "Hide";
+                else
+                    itemHideShowChat.Text = "Show";
+            };
 
             EventHandler hideShowAction = (s, e) =>
                         {
                             if (_overlayForm == null)
                                 return;
-
-                            //TODO
-                            //lazy
-                            if (_overlayForm.Visible)
-                            {
-                                _overlayForm.Visible = false;
-                                itemHideShowChat.Text = "Show";
-                            }
-                            else
-                            {
-                                _overlayForm.Visible = true;
-                                itemHideShowChat.Text = "Hide";
-                            }
+                            System.Diagnostics.Debug.WriteLine("clicked me!");
+                            _overlayForm.Visible = !_overlayForm.Visible;
                         };
 
             itemHideShowChat.Click += hideShowAction;
-            _notifyIcon.Click += hideShowAction;
+            //   _notifyIcon.Click += hideShowAction;
             _notifyIcon.ContextMenu.MenuItems.Add(itemHideShowChat);
 
             var itemUnPauseChat = new MenuItem("Pause");
@@ -133,14 +147,17 @@ namespace Gobchat
         {
             //TODO try-catch the shit out of this
 
-            _overlayForm?.Close();
-            _overlayForm?.Dispose();
-            _overlayForm = null;
+            System.Diagnostics.Debug.WriteLine("Disposing Context");
+
+            _backgroundWorker?.Stop(true);
+            _backgroundWorker = null;
 
             _notifyIcon?.Dispose();
             _notifyIcon = null;
 
-            _backgroundWorker.Stop(true);
+            _overlayForm?.Close();
+            _overlayForm?.Dispose();
+            _overlayForm = null;
 
             Gobchat.UI.Web.CEFManager.Dispose();
         }

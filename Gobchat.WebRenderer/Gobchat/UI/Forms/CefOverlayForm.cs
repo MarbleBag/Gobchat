@@ -20,13 +20,14 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms
 {
-
     public partial class CefOverlayForm : Form
     {
-        // used in CreateParams 
+        // used in CreateParams
         private const int WS_EX_TOPMOST = 0x00000008;
+
         // Allows the use of layered windows functions
         private const int WS_EX_LAYERED = 0x00080000;
+
         private const int CP_NOCLOSE_BUTTON = 0x200;
         private const int WS_EX_NOACTIVATE = 0x08000000;
 
@@ -37,7 +38,6 @@ namespace Gobchat.UI.Forms
         private readonly Web.JavascriptBuilder _jsBuilder = new Web.JavascriptBuilder();
 
         private DeviceIndependentBitmap _colorBuffer;
-       
 
         public IManagedWebBrowser Browser { get; private set; }
 
@@ -64,7 +64,6 @@ namespace Gobchat.UI.Forms
 
             _formMover.FormMove += (sender, e) => Browser.SendMoveOrResizeStartedEvent();
 
-
             SetStyle(ControlStyles.ResizeRedraw, true); // May not be needed anymore
 
             var browser = new ManagedWebBrowser(form: this);
@@ -72,7 +71,7 @@ namespace Gobchat.UI.Forms
 
             browser.MenuHandler = new CustomContextMenuHandler();
 
-            //seems this is still not implemented by CefSharp, no events are fired            
+            //seems this is still not implemented by CefSharp, no events are fired
             /*
             var renderHandler = new Gobchat.UI.Forms.Helper.RenderHandlerAdapter();
             renderHandler.CursorChange += (sender, e) => Cursor = new Cursor(e.Cursor);
@@ -82,14 +81,13 @@ namespace Gobchat.UI.Forms
 
             this.Resize += (sender, e) => Browser.Size = new System.Drawing.Size(Width, Height);
 
-
-            browser.StartBrowser(this.Width, this.Height);            
+            browser.StartBrowser(this.Width, this.Height);
         }
-
-
 
         private void DisposeForm(bool disposing)
         {
+            Debug.WriteLine("Disposing Form: " + disposing);
+
             _formEnsureTopmost?.Dispose();
             _formMover?.Dispose();
 
@@ -103,7 +101,7 @@ namespace Gobchat.UI.Forms
 
         public void InvokeUIThread(bool async, Action action)
         {
-            if(async)
+            if (async)
                 this.InvokeAsyncOnUIThread(action);
             else
                 this.InvokeSyncOnUIThread(action);
@@ -203,30 +201,23 @@ namespace Gobchat.UI.Forms
 
         private void OverlayForm_MouseEnter(object sender, EventArgs e)
         {
-           
         }
 
         private void OverlayForm_MouseLeave(object sender, EventArgs e)
         {
-            
         }
 
         private void OverlayForm_MouseHover(object sender, EventArgs e)
         {
-           
         }
 
         private void OverlayForm_Scroll(object sender, ScrollEventArgs e)
         {
-
         }
 
         private void OverlayForm_VisibleChanged(object sender, EventArgs e)
         {
-
         }
-
-
 
         private void OnEvent_Form_KeyUp(object sender, KeyEventArgs e)
         {
@@ -304,7 +295,5 @@ namespace Gobchat.UI.Forms
         {
             // _formEnsureTopmost.Start();
         }
-
-
     }
 }

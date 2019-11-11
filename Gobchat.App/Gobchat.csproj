@@ -11,7 +11,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{493EAF4F-553F-43E1-8D5A-F19EC7B032EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Gobchat.Core</RootNamespace>
+    <RootNamespace>Gobchat</RootNamespace>
     <AssemblyName>Gobchat</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -57,7 +57,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Gobchat.MainEntry</StartupObject>
+    <StartupObject>Gobchat.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -77,6 +77,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="resources\lang\autotranslate_en.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\default_gobconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -113,8 +116,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gobchat\Core\Resource\IResourceProvider.cs" />
-    <Compile Include="Gobchat\Core\Resource\IResourceResolver.cs" />
+    <Compile Include="Core\Config\EnumToStringTransformer.cs" />
+    <Compile Include="Core\Config\StringToEnumTransformer.cs" />
+    <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
+    <Compile Include="Core\Config\GobchatConfig.cs" />
+    <Compile Include="Core\Config\JsonConfigLoader.cs" />
+    <Compile Include="Core\Chat\ChannelEnum.cs" />
+    <Compile Include="Core\Chat\SegmentEnum.cs" />
+    <Compile Include="Core\Config\GobchatConfigManager.cs" />
+    <Compile Include="Core\Config\IJsonTransformer.cs" />
+    <Compile Include="Core\Config\JsonGobchatConfig.cs" />
+    <Compile Include="Core\Config\ConfigExceptions.cs" />
+    <Compile Include="Core\Resource\IResourceProvider.cs" />
+    <Compile Include="Core\Resource\IResourceRepository.cs" />
+    <Compile Include="Core\Resource\IResourceResolver.cs" />
+    <Compile Include="Updater\VersionChecker.cs" />
     <Content Include="resources\gobtray.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -222,26 +238,28 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Compile Include="Gobchat\Core\App.cs" />
-    <Compile Include="Gobchat\Core\AutotranslateProvider.cs" />
-    <Compile Include="Gobchat\Core\Chat\ChatMessageWebEvent.cs" />
-    <Compile Include="Gobchat\Core\Chat\ChatlogParser.cs" />
-    <Compile Include="Gobchat\Core\Chat\ChatMessage.cs" />
-    <Compile Include="Gobchat\Core\Resource\LocalFolderResourceResolver.cs" />
-    <Compile Include="Gobchat\Core\Util\Lookup.cs" />
-    <Compile Include="Gobchat\Core\Resource\ResourceBundle.cs" />
-    <Compile Include="Gobchat\Core\Util\DirectoryTraverser.cs" />
-    <Compile Include="Gobchat\Core\GobchatAPI.cs" />
-    <Compile Include="Gobchat\GobchatApplicationContext.cs" />
-    <Compile Include="Gobchat\GobchatBackgroundWorker.cs" />
-    <Compile Include="Gobchat\MainEntry.cs" />
+    <Compile Include="Core\Chat\AutotranslateProvider.cs" />
+    <Compile Include="Core\Chat\ChatMessageWebEvent.cs" />
+    <Compile Include="Core\Chat\ChatlogParser.cs" />
+    <Compile Include="Core\Chat\ChatMessage.cs" />
+    <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
+    <Compile Include="Core\Util\EnumExtensions.cs" />
+    <Compile Include="Core\Util\EnumUtil.cs" />
+    <Compile Include="Core\Util\Lookup.cs" />
+    <Compile Include="Core\Resource\ResourceBundle.cs" />
+    <Compile Include="Core\Util\DirectoryTraverser.cs" />
+    <Compile Include="Core\GobchatAPI.cs" />
+    <Compile Include="Core\Util\MathUtil.cs" />
+    <Compile Include="GobchatApplicationContext.cs" />
+    <Compile Include="GobchatBackgroundWorker.cs" />
+    <Compile Include="MainEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Gobchat\Core\SomeoneWhoDoesSomeWork.cs" />
+    <Compile Include="Core\SomeoneWhoDoesSomeWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -266,7 +284,9 @@
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Config\ConfigUpgrader\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

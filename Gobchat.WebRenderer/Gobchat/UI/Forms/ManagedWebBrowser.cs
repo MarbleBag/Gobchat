@@ -26,12 +26,15 @@ namespace Gobchat.UI.Forms
         private class BrowserWrapper : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser
         {
             public delegate void OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height);
+
             public delegate void OnCursorChange(IntPtr cursor, CefSharp.Enums.CursorType type, CefSharp.Structs.CursorInfo customCursorInfo);
 
             public OnPaint OnPaintDelegate;
             public OnCursorChange OnCursorChangeDelegate;
 
-            public BrowserWrapper() { }
+            public BrowserWrapper()
+            {
+            }
 
             void CefSharp.Internals.IRenderWebBrowser.OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height)
             {
@@ -54,26 +57,32 @@ namespace Gobchat.UI.Forms
         private List<IBrowserAPI> _availableAPIs = new List<IBrowserAPI>();
 
         public event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
+
         public event EventHandler<BrowserErrorEventArgs> BrowserError;
+
         public event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPage;
+
         public event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
+
         public new event EventHandler<BrowserInitializedEventArgs> BrowserInitialized;
 
         event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.BrowserInitialized
         {
             //someone may register after the original event has already fired
-            add {
+            add
+            {
                 lock (lockObj)
                 {
-                    if (CefBrowser.IsBrowserInitialized)                    
+                    if (CefBrowser.IsBrowserInitialized)
                         value.Invoke(this, new BrowserInitializedEventArgs());
                     else
-                        BrowserInitialized += value;    
+                        BrowserInitialized += value;
                 }
             }
 
-            remove { 
-                BrowserInitialized -= value; 
+            remove
+            {
+                BrowserInitialized -= value;
             }
         }
 
@@ -96,8 +105,6 @@ namespace Gobchat.UI.Forms
         // public event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
         //public event EventHandler<BrowserErrorEventArgs> BrowserError;
 
-
-
         public ManagedWebBrowser(string address = "", BrowserSettings browserSettings = null,
             RequestContext requestContext = null, CefOverlayForm form = null) :
             base(address, browserSettings, requestContext, false)
@@ -116,8 +123,6 @@ namespace Gobchat.UI.Forms
             CefBrowser.LoadError += OnEvent_LoadError;
             CefBrowser.ConsoleMessage += OnEvent_ConsoleMessage;
         }
-
-
 
         #region BrowserEventHandling
 
@@ -159,15 +164,14 @@ namespace Gobchat.UI.Forms
             {
                 if (CefBrowser.IsBrowserInitialized)
                 {
-                    var eventHandler = BrowserInitialized;                    
+                    var eventHandler = BrowserInitialized;
                     eventHandler?.Invoke(this, new BrowserInitializedEventArgs());
                     BrowserInitialized = null;
                 }
             }
         }
 
-        #endregion
-
+        #endregion BrowserEventHandling
 
         void CefSharp.Internals.IRenderWebBrowser.OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height)
         {
@@ -209,6 +213,7 @@ namespace Gobchat.UI.Forms
 
         public new void Dispose()
         {
+            Debug.WriteLine("Disposing Browser");
             base.Dispose();
         }
 
@@ -226,7 +231,7 @@ namespace Gobchat.UI.Forms
 
         public void ExecuteScript(string script)
         {
-            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(script,"injected");
+            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
         }
 
         public void SendMoveOrResizeStartedEvent()
@@ -245,7 +250,6 @@ namespace Gobchat.UI.Forms
             var mouseEvent = mouseEventHelper.GetMouseEvent(x, y, button);
             CefBrowser.GetBrowserHost().SendMouseClickEvent(mouseEvent, button, !isKeyDown, mouseClickCount);
         }
-
 
         public void SendMouseMoveEvent(int x, int y, MouseButtonType button)
         {
@@ -268,16 +272,16 @@ namespace Gobchat.UI.Forms
         }
 
         public void SendKeyEvent(KeyEvent keyEvent)
-        {        
+        {
             if (!IsBrowserInitialized)
                 return;
 
             var sendToBrowser = true;
-            if(keyEvent.Type == KeyEventType.KeyUp)
+            if (keyEvent.Type == KeyEventType.KeyUp)
             {
                 if (keyEvent.Modifiers.HasFlag(CefEventFlags.ControlDown))
                 {
-                    if(keyEvent.WindowsKeyCode == 'C' || keyEvent.WindowsKeyCode == 'c') // ctrl + c
+                    if (keyEvent.WindowsKeyCode == 'C' || keyEvent.WindowsKeyCode == 'c') // ctrl + c
                     {
                         CefBrowser.GetFocusedFrame().Copy();
                         sendToBrowser = false;
@@ -285,10 +289,8 @@ namespace Gobchat.UI.Forms
                 }
             }
 
-            if(sendToBrowser)
+            if (sendToBrowser)
                 CefBrowser.GetBrowserHost().SendKeyEvent(keyEvent);
         }
-
-
     }
 }
