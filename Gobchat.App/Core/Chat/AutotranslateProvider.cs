@@ -15,9 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Gobchat.Core
+namespace Gobchat.Core.Chat
 {
-    internal class AutotranslateProvider : Chat.IAutotranslateProvider
+    internal class AutotranslateProvider : IAutotranslateProvider
     {
         private Resource.ResourceBundle _resourceBundle;
 

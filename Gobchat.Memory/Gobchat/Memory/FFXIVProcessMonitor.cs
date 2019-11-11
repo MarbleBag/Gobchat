@@ -19,6 +19,11 @@ using System.Threading;
 
 namespace Gobchat.Memory
 {
+    public enum GameLanguage
+    {
+        English, French, Japanese, German, Chinese, Korean
+    }
+
     /// <summary>
     /// Checks for an active FFXIV process and sets the process id for Sharlayan
     /// </summary>
@@ -26,6 +31,8 @@ namespace Gobchat.Memory
     {
         public bool FFXIVProcessValid { get; private set; } = false;
         public int FFXIVProcessId { get; private set; } = 0;
+
+        public GameLanguage GameLanguage { get; set; } = GameLanguage.English;
 
         public bool CheckProcess()
         {
@@ -51,7 +58,10 @@ namespace Gobchat.Memory
                 Process = process
             };
 
-            MemoryHandler.Instance.SetProcess(processModel);
+            //var gameLanguage = System.Enum.GetName(typeof(GameLanguage), GameLanguage);
+            //MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true, gameLanguage: gameLanguage);
+
+            MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true);
 
             while (Scanner.Instance.IsScanning)
             {
@@ -72,5 +82,4 @@ namespace Gobchat.Memory
             return false;
         }
     }
-
 }

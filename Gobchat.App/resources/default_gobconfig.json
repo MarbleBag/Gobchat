@@ -1,0 +1,322 @@
+﻿{
+  "version": 1,
+  "behaviour": {
+    "channel": {
+      "roleplay": [
+        "SAY",
+        "EMOTE",
+        "YELL",
+        "SHOUT",
+        "PARTY",
+        "GUILD",
+        "ALLIANCE",
+        "TELL_SEND",
+        "TELL_RECIEVE"
+      ],
+      "mention": [
+        "SAY",
+        "EMOTE",
+        "YELL",
+        "SHOUT",
+        "PARTY",
+        "GUILD",
+        "ALLIANCE",
+        "LINKSHELL_1",
+        "LINKSHELL_2",
+        "LINKSHELL_3",
+        "LINKSHELL_4",
+        "LINKSHELL_5",
+        "LINKSHELL_6",
+        "LINKSHELL_7",
+        "LINKSHELL_8",
+        "WORLD_LINKSHELL_1",
+        "WORLD_LINKSHELL_2",
+        "WORLD_LINKSHELL_3",
+        "WORLD_LINKSHELL_4",
+        "WORLD_LINKSHELL_5",
+        "WORLD_LINKSHELL_6",
+        "WORLD_LINKSHELL_7",
+        "WORLD_LINKSHELL_8"
+      ],
+      "visible": [
+        "SAY",
+        "EMOTE",
+        "YELL",
+        "SHOUT",
+        "TELL_SEND",
+        "TELL_RECIEVE",
+        "PARTY",
+        "GUILD",
+        "ALLIANCE",
+        "NPC_TALK",
+        "NPC_DIALOGUE",
+        "ANIMATED_EMOTE",
+        "ECHO",
+        "ERROR",
+        "RANDOM_OTHER",
+        "RANDOM_PARTY",
+        "RANDOM_SELF",
+        "WORLD_LINKSHELL_1",
+        "WORLD_LINKSHELL_2",
+        "WORLD_LINKSHELL_3",
+        "WORLD_LINKSHELL_4",
+        "WORLD_LINKSHELL_5",
+        "WORLD_LINKSHELL_6",
+        "WORLD_LINKSHELL_7",
+        "WORLD_LINKSHELL_8",
+        "LINKSHELL_1",
+        "LINKSHELL_2",
+        "LINKSHELL_3",
+        "LINKSHELL_4",
+        "LINKSHELL_5",
+        "LINKSHELL_6",
+        "LINKSHELL_7",
+        "LINKSHELL_8"
+      ]
+    },
+    "frame": {
+      "chat": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "width": 400,
+          "height": 400
+        }
+      }
+    },
+    "language": "en",
+    "mentions": [],
+    "autodetectEmoteInSay": true,
+    "playSoundOnMention": false,
+    "datacenter": null,
+    "displayServerType": 0,
+    "groups": {
+      "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],
+      "data": {
+        "group-ff-1": {
+          "name": "\u2605",
+          "active": true,
+          "ffgroup": 1,
+          "id": "group-ff-1",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-2": {
+          "name": "\u25CF",
+          "active": true,
+          "ffgroup": 2,
+          "id": "group-ff-2",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-3": {
+          "name": "\u25B2",
+          "active": true,
+          "ffgroup": 3,
+          "id": "group-ff-3",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-4": {
+          "name": "\u2666",
+          "active": true,
+          "ffgroup": 4,
+          "id": "group-ff-4",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-5": {
+          "name": "\u2665",
+          "active": true,
+          "ffgroup": 5,
+          "id": "group-ff-5",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-6": {
+          "name": "\u2660",
+          "active": true,
+          "ffgroup": 6,
+          "id": "group-ff-6",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        },
+        "group-ff-7": {
+          "name": "\u2663",
+          "active": true,
+          "ffgroup": 7,
+          "id": "group-ff-7",
+          "style": {
+            "body": { "background-color": null },
+            "header": {
+              "background-color": null,
+              "color": null
+            }
+          }
+        }
+      },
+    }
+  },
+  "style": {
+    "chatbox": {
+      "background-color": "rgba(20, 20, 20, 0.95)"
+    },
+    "channel": {
+      "base": {
+        "color": "#DEDEDE",
+        "font-family": "'Times New Roman', Times, sans-serif",
+        "font-size": "medium",
+        "white-space": "pre-wrap"
+      },
+      "say": {
+        "color": "#FFFFFF",
+        "background-color": null
+      },
+      "emote": {
+        "color": "#F19212",
+        "background-color": null
+      },
+      "yell": {
+        "color": "#D1DE09",
+        "background-color": null
+      },
+      "shout": {
+        "color": "#D1DE09",
+        "background-color": null
+      },
+      "party": {
+        "color": "#05f7ff",
+        "background-color": null
+      },
+      "guild": {
+        "color": "#50DE09",
+        "background-color": null
+      },
+      "alliance": {
+        "color": "#ff5005",
+        "background-color": null
+      },
+      "tellrecieve": {
+        "color": "#A118BC"
+      },
+      "tellsend": {
+        "color": "#AA3DC0"
+      },
+      "linkshell-1": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-2": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-3": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-4": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-5": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-6": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-7": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "linkshell-8": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-1": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-2": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-3": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-4": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-5": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-6": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-7": {
+        "color": "#03fc73",
+        "background-color": null
+      },
+      "worldlinkshell-8": {
+        "color": "#03fc73",
+        "background-color": null
+      }
+    },
+    "segment": {
+      "say": {
+        "color": null,
+        "color-fallback": "style.channel.say.color"
+      },
+      "emote": {
+        "color": null,
+        "color-fallback": "style.channel.say.emote"
+      },
+      "ooc": {
+        "color": "#FF5920"
+      },
+      "mention": {
+        "color": "#9358E4"
+      },
+      "link": {
+        "color": "#FF0000"
+      }
+    }
+  }
+}

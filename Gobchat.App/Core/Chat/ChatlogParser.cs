@@ -18,11 +18,6 @@ using System.Text.RegularExpressions;
 
 namespace Gobchat.Core.Chat
 {
-    internal interface IAutotranslateProvider
-    {
-        String GetTranslationFor(string key);
-    }
-
     internal class ChatlogParser
     {
         public IAutotranslateProvider AutotranslateLookup;
@@ -55,15 +50,15 @@ namespace Gobchat.Core.Chat
             StringBuilder builder = new StringBuilder();
             for (int idx = 0; idx < tokens.Count; ++idx)
             {
-                if (tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken)
+                if (tokens[idx] is Memory.Chat.Token.TextToken txtToken)
                 {
                     builder.Append(txtToken.GetText());
                 }
-                else if (tokens[idx] is Gobchat.Memory.Chat.Token.ServerDelimiterToken slToken)
+                else if (tokens[idx] is Memory.Chat.Token.ServerDelimiterToken slToken)
                 {
                     builder.Append(" ");
                     idx += 1;
-                    if (idx < tokens.Count && tokens[idx] is Gobchat.Memory.Chat.Token.TextToken txtToken1)
+                    if (idx < tokens.Count && tokens[idx] is Memory.Chat.Token.TextToken txtToken1)
                     {
                         var txt = txtToken1.GetText();
                         var match = regex.Match(txt);
@@ -79,7 +74,7 @@ namespace Gobchat.Core.Chat
                         }
                     }
                 }
-                else if (tokens[idx] is Gobchat.Memory.Chat.Token.AutotranslateToken atToken)
+                else if (tokens[idx] is Memory.Chat.Token.AutotranslateToken atToken)
                 {
                     var key = atToken.GetKey();
                     var autotranslatetxt = AutotranslateLookup.GetTranslationFor(key);
@@ -88,7 +83,7 @@ namespace Gobchat.Core.Chat
                     else
                         builder.Append($" [AT {key}] ");
                 }
-                else if (tokens[idx] is Gobchat.Memory.Chat.Token.LinkToken linkToken)
+                else if (tokens[idx] is Memory.Chat.Token.LinkToken linkToken)
                 {
                     //skip for now
                 }
@@ -126,7 +121,7 @@ namespace Gobchat.Core.Chat
         {
             var tokens = chatlogItem.Tokens;
             if (tokens.Count == 0) return false;
-            if (tokens[0] is Gobchat.Memory.Chat.Token.TextToken txtToken)
+            if (tokens[0] is Memory.Chat.Token.TextToken txtToken)
             {
                 var txt = txtToken.GetText();
                 if (txt == null || txt.Length == 0)
