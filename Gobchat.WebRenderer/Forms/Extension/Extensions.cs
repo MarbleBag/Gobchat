@@ -16,53 +16,110 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms.Extension
 {
-    public static class ControlExtensions
+    public static class UIExtensions
     {
-        /// <summary>
-        /// Executes the Action asynchronously on the UI thread, does not block execution on the calling thread.
-        /// </summary>
-        /// <param name="control"></param>
-        /// <param name="code"></param>
-        public static void AsyncInvoke(this Control control, Action code)
+        private class AsyncInvokeHandler
         {
-            if (code == null) return;
+            private readonly object objLock = new object();
+            private readonly Action _action;
+            private bool isCompleted;
+
+            private event EventHandler<EventArgs> _onCompletion;
+
+            public event EventHandler<EventArgs> OnCompletion
+            {
+                add
+                {
+                    lock (objLock)
+                    {
+                        if (isCompleted)
+                        {
+                            value.Invoke(this, new EventArgs());
+                        }
+                        else
+                        {
+                            _onCompletion += value;
+                        }
+                    }
+                }
+                remove
+                {
+                    _onCompletion -= value;
+                }
+            }
+
+            public AsyncInvokeHandler(Action action)
+            {
+                this._action = action;
+            }
+
+            public void Invoke()
+            {
+                _action.Invoke();
+                EndInvoke();
+            }
+
+            private void EndInvoke()
+            {
+                lock (objLock)
+                {
+                    isCompleted = true;
+                    _onCompletion?.Invoke(this, new EventArgs());
+                    _onCompletion = null;
+                }
+            }
+        }
+
+        public static TOut InvokeSyncOnUI<TIn, TOut>(this TIn control, Func<TIn, TOut> action) where TIn : Control
+        {
+            if (control == null)
+                throw new ArgumentNullException(nameof(control));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
             if (control.InvokeRequired)
-                control.BeginInvoke(code);
+            {
+                return (TOut)control.Invoke(action, new object[] { control });
+            }
+            else if (!control.IsHandleCreated)
+            {
+                throw new ArgumentException("Handle not created");
+            }
+            else if (control.IsDisposed)
+            {
+                throw new ObjectDisposedException(control.Name);
+            }
             else
-                code.Invoke();
-            
+            {
+                return action.Invoke(control);
+            }
         }
 
-        /// <summary>
-        /// Executes the Action synchronously on the UI thread, does not block execution on the calling thread.
-        /// </summary>
-        /// <param name="control"></param>
-        /// <param name="code"></param>
-        public static void SyncInvoke(this Control control, Action code)
+        public static void InvokeAsyncOnUI<T>(this T control, Action<T> action) where T : Control
         {
-            if (code == null) return;
+            if (control == null)
+                throw new ArgumentNullException(nameof(control));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
             if (control.InvokeRequired)
-                control.Invoke(code);
-            else
-                code.Invoke();
-            
-        }
-    }
-
-    public static class FormExtension
-    {
-        public static void InvokeAsyncOnUIThread(this Form form, Action action)
-        {
-            if (action == null) return;
-            if (form.InvokeRequired) form.BeginInvoke(action);
-            else action.Invoke();
-        }
-
-        public static void InvokeSyncOnUIThread(this Form form, Action action)
-        {
-            if (action == null) return;
-            if (form.InvokeRequired) form.Invoke(action);
-            else action.Invoke();
+            {
+                AsyncInvokeHandler handle = new AsyncInvokeHandler(() => action.Invoke(control));
+                var asyncResult = control.BeginInvoke((Action)(() => handle.Invoke()));
+                handle.OnCompletion += (s, e) => control.EndInvoke(asyncResult);
+            }
+            else if (!control.IsHandleCreated)
+            {
+                throw new ArgumentException("Handle not created");
+            }
+            else if (control.IsDisposed)
+            {
+                throw new ObjectDisposedException(control.Name);
+            }
+            else //already on UI thread
+            {
+                action.Invoke(control);
+            }
         }
     }
 }

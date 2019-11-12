@@ -98,12 +98,14 @@ namespace Gobchat.UI.Forms
             _colorBuffer = null;
         }
 
-        public void InvokeUIThread(bool async, Action action)
+        public void InvokeAsyncOnUI(Action<CefOverlayForm> action)
         {
-            if (async)
-                this.InvokeAsyncOnUIThread(action);
-            else
-                this.InvokeSyncOnUIThread(action);
+            UIExtensions.InvokeAsyncOnUI(this, action);
+        }
+
+        public TOut InvokeSyncOnUI<TOut>(Func<CefOverlayForm, TOut> action)
+        {
+            return UIExtensions.InvokeSyncOnUI(this, action);
         }
 
         protected override void WndProc(ref Message m)
@@ -230,7 +232,7 @@ namespace Gobchat.UI.Forms
                 _formMover.AllowToMove = false;
                 _formResizer.AllowToResize = false;
 
-                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.OverlayStateUpdate(true));
+                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.FormStateUpdate(true));
                 Browser.ExecuteScript(script); //TODO
             }
         }
@@ -242,7 +244,7 @@ namespace Gobchat.UI.Forms
                 _formMover.AllowToMove = true;
                 _formResizer.AllowToResize = true;
 
-                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.OverlayStateUpdate(false));
+                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.FormStateUpdate(false));
                 Browser.ExecuteScript(script); //TODO
             }
         }
@@ -282,8 +284,8 @@ namespace Gobchat.UI.Forms
                 Y = 0
             };
 
-            IntPtr handle = IntPtr.Zero;
-            this.InvokeSyncOnUIThread(() => handle = this.Handle);
+            IntPtr handle = this.InvokeSyncOnUI((f) => f.Handle); //IntPtr.Zero;
+                                                                  // this.InvokeSyncOnUIThread(() => handle = this.Handle);
 
             NativeMethods.UpdateLayeredWindow(
                         handle,

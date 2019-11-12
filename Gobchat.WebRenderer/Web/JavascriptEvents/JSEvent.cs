@@ -11,10 +11,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+
 namespace Gobchat.UI.Web
 {
-    public interface IBrowserAPI
+    namespace JavascriptEvents
     {
-        string APIName { get; }
+        public abstract class JSEvent
+        {
+            [Newtonsoft.Json.JsonIgnore]
+            public string EventName { get; }
+
+            public JSEvent(string name)
+            {
+                this.EventName = name ?? throw new ArgumentNullException(nameof(name));
+            }
+        }
     }
 }

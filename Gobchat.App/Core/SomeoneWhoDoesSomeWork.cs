@@ -67,7 +67,7 @@ namespace Gobchat.Core
             _overlay.Browser.BrowserLoadPageDone += (s, e) =>
             {
                 if (!_overlay.Visible)
-                    _overlay.InvokeUIThread(true, () => _overlay.Visible = true);
+                    _overlay.InvokeAsyncOnUI((_) => _overlay.Visible = true);
             };
 
             if (_configManager.UserConfig.HasProperty("behaviour.frame.chat.position.x") &&
@@ -253,7 +253,7 @@ namespace Gobchat.Core
             _memoryProcessor.Update();
 
             //var messages = GetAndClearPendingRecords();
-            _overlay.InvokeUIThread(true, () =>
+            _overlay.InvokeAsyncOnUI((_) =>
             {
                 if (_overlay.Browser.IsBrowserInitialized)
                 {

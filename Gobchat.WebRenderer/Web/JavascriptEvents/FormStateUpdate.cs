@@ -11,39 +11,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
 namespace Gobchat.UI.Web
 {
     namespace JavascriptEvents
     {
-        public abstract class JSEvent
-        {
-            [Newtonsoft.Json.JsonIgnore]
-            public string EventName { get; }
-
-            public JSEvent(string name)
-            {
-                this.EventName = name ?? throw new ArgumentNullException(nameof(name));
-            }
-        }
-
-        //TODO needs to go
-        public class LoadGobchatConfigEvent : JSEvent
-        {
-            public string data;
-
-            public LoadGobchatConfigEvent(string data) : base("LoadGobchatConfig")
-            {
-                this.data = data;
-            }
-        }
-
-        public class OverlayStateUpdate : JSEvent
+        public class FormStateUpdate : JSEvent
         {
             public bool isLocked;
 
-            public OverlayStateUpdate(bool isLocked) : base("OverlayStateUpdate")
+            public FormStateUpdate(bool isLocked) : base("FormStateUpdate")
             {
                 this.isLocked = isLocked;
             }
