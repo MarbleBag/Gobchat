@@ -14,6 +14,7 @@
 using CefSharp;
 using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
+using Gobchat.UI.Web;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -68,8 +69,6 @@ namespace Gobchat.UI.Forms
 
             var browser = new ManagedWebBrowser(form: this);
             Browser = browser;
-
-            browser.MenuHandler = new CustomContextMenuHandler();
 
             //seems this is still not implemented by CefSharp, no events are fired
             /*
@@ -199,6 +198,11 @@ namespace Gobchat.UI.Forms
             }
         }
 
+        private void OnEvent_Form_Load(object sender, EventArgs e)
+        {
+            // _formEnsureTopmost.Start();
+        }
+
         private void OverlayForm_MouseEnter(object sender, EventArgs e)
         {
         }
@@ -242,6 +246,8 @@ namespace Gobchat.UI.Forms
                 Browser.ExecuteScript(script); //TODO
             }
         }
+
+        #region rendering
 
         internal void OnBrowserRequestsPainting(CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height)
         {
@@ -291,9 +297,6 @@ namespace Gobchat.UI.Forms
                         NativeMethods.ULW_ALPHA);
         }
 
-        private void OnEvent_Form_Load(object sender, EventArgs e)
-        {
-            // _formEnsureTopmost.Start();
-        }
+        #endregion rendering
     }
 }

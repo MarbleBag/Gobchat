@@ -21,10 +21,21 @@ namespace Gobchat
         [STAThread]
         private static void Main(string[] args)
         {
-            //TODO
-            //Updater
-            //Install checker
+            CheckVersion();
+            CheckDependencies();
+            StartApp();
+        }
 
+        private static void CheckVersion()
+        {
+        }
+
+        private static void CheckDependencies()
+        {
+        }
+
+        public static void StartApp()
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GobchatApplicationContext());

@@ -14,6 +14,7 @@
 using CefSharp;
 using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
+using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -117,6 +118,8 @@ namespace Gobchat.UI.Forms
                 OnCursorChangeDelegate = (cursor, t, c) => Form.SyncInvoke(() => Form.Cursor = new Cursor(cursor))
             };*/
 
+            MenuHandler = new CustomContextMenuHandler(); //deactives context menu
+
             CefBrowser.BrowserInitialized += OnEvent_BrowserInitialized;
             CefBrowser.FrameLoadStart += OnEvent_FrameLoadStart;
             CefBrowser.FrameLoadEnd += OnEvent_FrameLoadEnd;
@@ -192,6 +195,8 @@ namespace Gobchat.UI.Forms
 
             var cefBrowserSettings = new CefSharp.BrowserSettings();
             cefBrowserSettings.WindowlessFrameRate = 60;
+            cefBrowserSettings.FileAccessFromFileUrls = CefState.Enabled;
+            cefBrowserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
 
             CefBrowser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
         }

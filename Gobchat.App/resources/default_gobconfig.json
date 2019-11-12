@@ -302,11 +302,11 @@
     "segment": {
       "say": {
         "color": null,
-        "color-fallback": "style.channel.say.color"
+        "$fallback-color": "style.channel.say.color"
       },
       "emote": {
         "color": null,
-        "color-fallback": "style.channel.say.emote"
+        "$fallback-color": "style.channel.emote.color"
       },
       "ooc": {
         "color": "#FF5920"

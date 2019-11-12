@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Chat;
-using Gobchat.UI.Forms;
+using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
