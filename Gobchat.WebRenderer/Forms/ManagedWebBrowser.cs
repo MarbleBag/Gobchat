@@ -183,7 +183,7 @@ namespace Gobchat.UI.Forms
 
         void CefSharp.Internals.IRenderWebBrowser.OnCursorChange(IntPtr cursor, CefSharp.Enums.CursorType type, CefSharp.Structs.CursorInfo customCursorInfo)
         {
-            Form.SyncInvoke(() => Form.Cursor = new Cursor(cursor));
+            Form.InvokeSyncOnUI(f => f.Cursor = new Cursor(cursor));
         }
 
         internal void StartBrowser(int width, int height)

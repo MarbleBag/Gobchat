@@ -19,6 +19,17 @@ using System.Diagnostics;
 
 namespace Gobchat.Core
 {
+    //TODO needs to go
+    public class LoadGobchatConfigEvent : UI.Web.JavascriptEvents.JSEvent
+    {
+        public string data;
+
+        public LoadGobchatConfigEvent(string data) : base("LoadGobchatConfig")
+        {
+            this.data = data;
+        }
+    }
+
     /// <summary>
     /// Each implemented method in this class is accessible from the web ui
     /// </summary>
@@ -38,16 +49,13 @@ namespace Gobchat.Core
         {
             Debug.WriteLine("JSMSG: " + message?.Replace("{", "{{")?.Replace("}", "}}"));
 
-            var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(message));
-            var serializer = new Newtonsoft.Json.JsonSerializer();
-            var obj = serializer.Deserialize<Dictionary<string, string>>(reader);
-
+            var obj = _jsBuilder.Deserialize<Dictionary<string, string>>(message);
             if (obj.ContainsKey("event"))
             {
                 var eventName = obj["event"];
                 if ("LoadGobchatConfig".Equals(eventName))
                 {
-                    var script = _jsBuilder.BuildCustomEventDispatcher(new UI.Web.JavascriptEvents.LoadGobchatConfigEvent(null));
+                    var script = _jsBuilder.BuildCustomEventDispatcher(new LoadGobchatConfigEvent(null));
                     _browser.ExecuteScript(script);
                 }
             }

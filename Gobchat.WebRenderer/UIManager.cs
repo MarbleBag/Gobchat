@@ -46,12 +46,14 @@ namespace Gobchat.UI
             Run();
         }
 
-        public void InvokeOnUIThread(Action action, bool asyncInvoke = true)
+        public void InvokeAsyncOnUI(Action<Form> action)
         {
-            if (asyncInvoke)
-                _form.InvokeAsyncOnUIThread(action);
-            else
-                _form.InvokeSyncOnUIThread(action);
+            UIExtensions.InvokeAsyncOnUI(_form, action);
+        }
+
+        public TOut InvokeSyncOnUI<TOut>(Func<Form, TOut> action)
+        {
+            return UIExtensions.InvokeSyncOnUI(_form, action);
         }
 
         private void Initialize()
@@ -76,6 +78,7 @@ namespace Gobchat.UI
         private class MultiFormContext : ApplicationContext
         {
             private int openForms;
+
             public MultiFormContext(params Form[] forms)
             {
                 openForms = forms.Length;
@@ -84,7 +87,7 @@ namespace Gobchat.UI
                 {
                     form.FormClosed += (s, args) =>
                     {
-                        //When we have closed the last of the "starting" forms, 
+                        //When we have closed the last of the "starting" forms,
                         //end the program.
                         if (Interlocked.Decrement(ref openForms) == 0)
                             ExitThread();

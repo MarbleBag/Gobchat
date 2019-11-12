@@ -37,5 +37,14 @@ namespace Gobchat.UI.Web
             stringbuilder.Clear();
             return result;
         }
+
+        public T Deserialize<T>(string json)
+        {
+            using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
+            {
+                var obj = jsonSerializer.Deserialize<T>(reader);
+                return obj;
+            }
+        }
     }
 }
