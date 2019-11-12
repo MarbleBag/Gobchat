@@ -110,9 +110,9 @@
       <Project>{040dddae-b434-4223-bc0d-284edcff2af5}</Project>
       <Name>Gobchat.Memory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gobchat.WebRenderer\Gobchat.WebUI.csproj">
+    <ProjectReference Include="..\Gobchat.WebRenderer\Gobchat.UI.csproj">
       <Project>{9b4f225d-b0a3-400e-92e0-6f4cd53ac8b5}</Project>
-      <Name>Gobchat.WebUI</Name>
+      <Name>Gobchat.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +138,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\Channels.js">
+    <Content Include="resources\ui\gobchat\DataChannel.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
@@ -146,7 +146,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\Common.js">
+    <Content Include="resources\ui\gobchat\CommonUtilFunctions.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
@@ -154,11 +154,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\DataObjects.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\gobchat\DefaultConfig.js">
+    <Content Include="resources\ui\gobchat\Message.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
@@ -215,10 +211,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\lib\lodash.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\lib\react.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>

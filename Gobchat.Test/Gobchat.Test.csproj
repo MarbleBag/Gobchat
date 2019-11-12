@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Gobchat.App\Gobchat.csproj" />
     <ProjectReference Include="..\Gobchat.Memory\Gobchat.Memory.csproj" />
-    <ProjectReference Include="..\Gobchat.WebRenderer\Gobchat.WebUI.csproj" />
+    <ProjectReference Include="..\Gobchat.WebRenderer\Gobchat.UI.csproj" />
   </ItemGroup>
 
 </Project>

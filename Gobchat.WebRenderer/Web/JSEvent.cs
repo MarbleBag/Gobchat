@@ -19,16 +19,20 @@ namespace Gobchat.UI.Web
     {
         public abstract class JSEvent
         {
+            [Newtonsoft.Json.JsonIgnore]
             public string EventName { get; }
+
             public JSEvent(string name)
             {
                 this.EventName = name ?? throw new ArgumentNullException(nameof(name));
             }
         }
 
+        //TODO needs to go
         public class LoadGobchatConfigEvent : JSEvent
         {
             public string data;
+
             public LoadGobchatConfigEvent(string data) : base("LoadGobchatConfig")
             {
                 this.data = data;
@@ -38,12 +42,11 @@ namespace Gobchat.UI.Web
         public class OverlayStateUpdate : JSEvent
         {
             public bool isLocked;
+
             public OverlayStateUpdate(bool isLocked) : base("OverlayStateUpdate")
             {
                 this.isLocked = isLocked;
             }
         }
-
-
     }
 }

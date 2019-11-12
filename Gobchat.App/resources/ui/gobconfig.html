@@ -1,267 +1,216 @@
-<html>
+﻿<html>
 <head>
-	<meta charset="utf-8" />
-	
-	<script src="lib/jquery-3.4.1.min.js"></script>
-	<link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
-	<script src="lib/jquery-ui-1.12.1.min.js"></script>
-	<script src="lib/lodash.min.js"></script>
-	<link rel="stylesheet" href="lib/spectrum.css">
-	<script src="lib/spectrum.js"></script>
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-	<link rel="stylesheet" href="gobui_default.css">
+    <meta charset="utf-8" />
 
-	<script src="gobchat/Datacenters.js"></script>
-	<script src="gobchat/FFUnicodes.js"></script>
-	<script src="gobchat/Channels.js"></script>
-	<script src="gobchat/DefaultConfig.js"></script>
-	<script src="gobchat/Common.js"></script>
-	
-	<script src="gobchat/GobchatConfig.js"></script>
-	
-	<script src="gobconfig-ui.js"></script>
+    <script src="lib/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
+    <script src="lib/jquery-ui-1.12.1.min.js"></script>
+    <script src="lib/lodash.min.js"></script>
+    <link rel="stylesheet" href="lib/spectrum.css">
+    <script src="lib/spectrum.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="gobui_default.css">
+
+    <!-- <script src="gobchat/CommonUtilFunctions.js"></script>
+     <script src="gobchat/DataChannel.js"></script>
+     <script src="gobchat/FFUnicodes.js"></script>
+
+     <script src="gobchat/GobchatConfig.js"></script>-->
 </head>
 <body>
-	<style>
-		.side-navigation{
-			margin: 0;
-			padding: 0;
-			width: 150px;
-			background-color: #f1f1f1;
-			position: fixed;
-			z-index: 1;
-			height: 100%
-			overflow: auto
-		}
-		
-		.side-navigation > *{
-			display: block;
-			color: black;
-			padding: 16px;
-			text-decoration: none;
-		}
-		
-		.side-navigation > *.active {
-			background-color: #4caf50;
-			color: white;
-		}
-		
-		.side-navigation > *:hover:not(.active){
-			background-color: #555555;
-			color: white;
-		}
-		
-		.content {
-			margin-left: 150px;
-			padding: 1px 16px;
-			height: 100%
-		}
-		
-		.btn-system{
-			background-color: #dcdcdc
-		}
-		
-		.btn-system:hover{
-		
-		}
-	</style>
+    <style>
+        .side-navigation {
+            margin: 0;
+            padding: 0;
+            width: 150px;
+            background-color: #f1f1f1;
+            position: fixed;
+            z-index: 1;
+            height: 100% overflow: auto
+        }
 
-	<div id="mainNavigationBar" class="side-navigation">
-		<a data-nav-target="nav_general" class="active">General</a>
-		<a data-nav-target="nav_channels">Channels</a>
-		<a data-nav-target="nav_roleplay">Roleplay</a>
-		<a data-nav-target="nav_groups">Groups</a>
-		<a data-nav-target="nav_about">About</a>
-		<a class="btn-system" id="save_config"><i class="fa fa-save"></i> Save</a>
-		<a class="btn-system" id="reset_config"><i class="fa fa-exclamation-circle"></i> Defaults</a>
-	</div>
-	
-	<main class="content">
-		<section>
-			<article id="nav_general" >
-				<p>
-					<div>
-						<label>Language (soon)</label>
-						<select id="dropdown_language" disabled="true">
-							<option value="en">English</option>
-							<option value="de">Deutsch</option>
-						</select>
-					</div>
-				</p>
-				<p>
-					<div>
-						<label>Datacenter</label>
-						<select id="dropdown_datacenter">
-						</select>
-					</div>
-				</p>
-				<p>
-					<div>
-						<label>Mentions:</label>
-						<textarea  rows="3" id="txt_mentions" style="width:100%;"></textarea>
-					</div>
-				</p>
-				<p>
-					<div>
-						<label>Autodetect emotes in say channel</label>
-						<input type="checkbox" id="input_autoemote">
-					</div>
-				</p>
-				<p>	
-					<div>
-						<label>Fonts:</label>							
-						<input type="text" id="general_font" style="width:100%;">	
-						<button id="general_font_reset" class="ui-gc-btn"><i class='fa fa-undo'></i></button>							
-					</div>
-				</p>
-				<p>
-					<div>
-						<label>Font size:</label>
-						<select id="general_font_size" >
-							<option value="small">Small</option>
-							<option value="medium">Medium</option>
-							<option value="large">Large</option>
-						</select>
-					</div>
-				</p>
-			</article>
-			<article id="nav_channels">
-				<div>
-					<table id="tbl_channel_config">
-						<thead>
-							<tr>
-								<th>Channel Name</th>
-								<th>Visible</th>
-								<th>Mention</th>
-								<th>Roleplay</th>
-								<th>Text Color</th>
-								<th>Background Color</th>
-							</tr>	
-						</thead>
-						<tbody>							
-						</tbody>
-					</table>
-				</div>
-			</article>
-			<article id="nav_roleplay">
-				<div>
-					<table id="tbl_segment_config">
-						<thead>
-							<tr>
-								<th>Segment Name</th>								
-								<th>Text Color</th>
-							</tr>	
-						</thead>
-						<tbody>							
-						</tbody>
-					</table>
-				</div>
-			</article>
-			<article id="nav_groups">
-			
-				<style>
-				
-				</style>
-			
-				<template id="t_group_entry">
-					<div id="groupelement">
-						<h4 id="groupheader">
-							<span class="ui-gc-group-header">
-								<span>
-									<span id="groupcounter"></span>
-									<span id="groupprefix">. Group: </span>
-									<span id="groupname"></span>
-								</span>
-								<span>
-									<button id="groupdelete" class="ui-gc-btn-delete"><i class="fa fa-trash"></i></button> 
-								</span>
-							</span>
-						</h4><!--&#x274C;-->
-						<div>
-							<div id="groupui">
-							</div>
-						</div>
-					</div>
-				</template>
-			
-				<div>
-					<button id="addchatgroup">Add group <i class="fa fa-folder-open"></i></button>
-				</div>
-				<div id="chatgroups">
-				</div>
-			</article>
-			<article id="nav_about">
-				<label>Test 3</label>
-			</article>
-		</section>
-	</main>
+            .side-navigation > * {
+                display: block;
+                color: black;
+                padding: 16px;
+                text-decoration: none;
+            }
 
+                .side-navigation > *.active {
+                    background-color: #4caf50;
+                    color: white;
+                }
 
-	<script>
-		'use strict';
-		//TODO automat detection of config elements and type
-				
-		jQuery(function ($) {																	
-			$("#save_config").on("click",function(e){
-				window.gobconfig.saveToLocalStore()
-				window.close()
-				window.opener.postMessage("Done",'*')
-			});
-			
-			$("#reset_config").on("click",function(e){
-				if(window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")){
-					window.gobconfig.restoreDefaultConfig()
-					window.gobconfig.saveToLocalStore()
-					window.location.reload(false); 
-				}
-			});
-		});
-	</script>
-	
-	<script type="text/javascript">
-		'use strict';
-		
-		class ColorControl{
-			constructor(options){
-				const defaultOptions = {
-			
-				}
-			
-				options = $.extend({},defaultOptions,options)
-			}
-		}
-		
-		class TableManager{
-			constructor(){
-				this.htmlElement = null
-				this.data = []
-			}
-						
-			buildTable(){
-				buildTable1(this)
-			}
-		}
-		
-		function buildTable1(control){
-			if(!control.htmlElement) return
-			const tblParent = control.htmlElement
-			while (tblParent.firstChild) {
-				tblParent.firstChild.remove();
-			}
-			
-			{
-				const toolbar = document.createElement("div")
-				const btnAddAll = document.createElement("button")
-				const btnRemoveAll = document.createElement("button")
-			}
-			
-			{
-			
-			}
-		}
-		
-	</script>
+                .side-navigation > *:hover:not(.active) {
+                    background-color: #555555;
+                    color: white;
+                }
+
+        .content {
+            margin-left: 150px;
+            padding: 1px 16px;
+            height: 100%
+        }
+
+        .btn-system {
+            background-color: #dcdcdc
+        }
+
+            .btn-system:hover {
+            }
+    </style>
+
+    <div id="mainNavigationBar" class="side-navigation">
+        <a data-nav-target="nav_general" class="active">General</a>
+        <a data-nav-target="nav_channels">Channels</a>
+        <a data-nav-target="nav_roleplay">Roleplay</a>
+        <a data-nav-target="nav_groups">Groups</a>
+        <a data-nav-target="nav_about">About</a>
+        <a class="btn-system" id="save_config"><i class="fa fa-save"></i> Save</a>
+        <a class="btn-system" id="reset_config"><i class="fa fa-exclamation-circle"></i> Defaults</a>
+    </div>
+
+    <main class="content">
+        <section>
+            <article id="nav_general">
+                <p>
+                    <div>
+                        <label>Language (soon)</label>
+                        <select id="dropdown_language" disabled="true">
+                            <option value="en">English</option>
+                            <option value="de">Deutsch</option>
+                        </select>
+                    </div>
+                </p>
+                <p>
+                    <div>
+                        <label>Mentions:</label>
+                        <textarea rows="3" id="txt_mentions" style="width:100%;"></textarea>
+                    </div>
+                </p>
+                <p>
+                    <div>
+                        <label>Autodetect emotes in say channel</label>
+                        <input type="checkbox" id="input_autoemote">
+                    </div>
+                </p>
+                <p>
+                    <div>
+                        <label>Fonts:</label>
+                        <input type="text" id="general_font" style="width:100%;">
+                        <button id="general_font_reset" class="ui-gc-btn"><i class='fa fa-undo'></i></button>
+                    </div>
+                </p>
+                <p>
+                    <div>
+                        <label>Font size:</label>
+                        <select id="general_font_size">
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </p>
+            </article>
+            <article id="nav_channels">
+                <div>
+                    <table id="tbl_channel_config">
+                        <thead>
+                            <tr>
+                                <th>Channel Name</th>
+                                <th>Visible</th>
+                                <th>Mention</th>
+                                <th>Roleplay</th>
+                                <th>Text Color</th>
+                                <th>Background Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article id="nav_roleplay">
+                <div>
+                    <table id="tbl_segment_config">
+                        <thead>
+                            <tr>
+                                <th>Segment Name</th>
+                                <th>Text Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article id="nav_groups">
+
+                <style>
+                </style>
+
+                <template id="t_group_entry">
+                    <div id="groupelement">
+                        <h4 id="groupheader">
+                            <span class="ui-gc-group-header">
+                                <span>
+                                    <span id="groupcounter"></span>
+                                    <span id="groupprefix">. Group: </span>
+                                    <span id="groupname"></span>
+                                </span>
+                                <span>
+                                    <button id="groupdelete" class="ui-gc-btn-delete"><i class="fa fa-trash"></i></button>
+                                </span>
+                            </span>
+                        </h4><!--&#x274C;-->
+                        <div>
+                            <div id="groupui">
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <div>
+                    <button id="addchatgroup">Add group <i class="fa fa-folder-open"></i></button>
+                </div>
+                <div id="chatgroups">
+                </div>
+            </article>
+            <article id="nav_about">
+                <label>Test 3</label>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        'use strict';
+        //TODO automat detection of config elements and type
+        //window.opener.chatManager.config.saveToLocalStore()
+
+        window.Gobchat = window.opener.Gobchat
+
+         window.gobconfig = new Gobchat.GobchatConfig()
+         window.gobconfig.loadFromLocalStore()
+
+        jQuery(function ($) {
+            $("#save_config").on("click", function (e) {
+                window.gobconfig.saveToLocalStore()
+                window.close()
+                window.opener.postMessage("Done", '*')
+            });
+
+            $("#reset_config").on("click", function (e) {
+                if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
+                    window.gobconfig.restoreDefaultConfig()
+                    window.gobconfig.saveToLocalStore()
+                    window.location.reload(false);
+                }
+            });
+        });
+    </script>
+
+    <script src="gobconfig-ui.js"></script>
 </body>
 </html>

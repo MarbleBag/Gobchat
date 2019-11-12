@@ -102,7 +102,7 @@ namespace Gobchat.Core
             _memoryProcessor.ProcessChangeEvent += MemoryProcessor_ProcessChangeEvent;
             _memoryProcessor.ChatlogEvent += MemoryProcessor_ChatlogEvent;
 
-            var resourceFolder = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"resources\sharlayan");
+            var resourceFolder = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"sharlayan");
             System.IO.Directory.CreateDirectory(resourceFolder);
             _memoryProcessor.LocalCacheDirectory = resourceFolder;
 
@@ -154,6 +154,7 @@ namespace Gobchat.Core
             var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _overlay.Browser.Load(uri);
+            //_overlay.Browser.Load("about:blank");
             //_overlay.Browser.Load("www.google.com");
         }
 
@@ -169,14 +170,13 @@ namespace Gobchat.Core
             builder.Append("Gobchat.MessageSegmentEnum = ");
             builder.AppendLine(typeof(Chat.MessageSegmentEnum).EnumToJson());
 
-            builder.Append("Gobchat.DefaultConfig = ");
+            builder.Append("Gobchat.DefaultChatConfig = ");
             builder.AppendLine(_configManager.DefaultConfig.ToJson().ToString());
 
             builder.AppendLine("return Gobchat");
             builder.AppendLine("}(Gobchat || {}));");
 
             var script = builder.ToString();
-            Debug.WriteLine(script);
             _overlay.Browser.ExecuteScript(script);
         }
 

@@ -30,7 +30,7 @@ namespace Gobchat.UI.Web
         {
             if (isInitialized)
                 return;
-            if (isDisposed) 
+            if (isDisposed)
                 throw new NotImplementedException(); //TODO ERROR, was already initialized
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -48,7 +48,6 @@ namespace Gobchat.UI.Web
             string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
                                        Environment.Is64BitProcess ? "x64" : "x86",
                                        assemblyName);
-
 
             return File.Exists(archSpecificPath)
                        ? System.Reflection.Assembly.LoadFile(archSpecificPath)
@@ -74,6 +73,8 @@ namespace Gobchat.UI.Web
             // Allow websites to play sound even if the user never interacted with that site (pretty common for our overlays)
             cefSettings.CefCommandLineArgs["autoplay-policy"] = "no-user-gesture-required";
 
+            cefSettings.CefCommandLineArgs["allow-file-access-from-files"] = "1";
+
             cefSettings.EnableAudio();
 
             // Enables software compositing instead of GPU compositing -> less CPU load but no WebGL
@@ -90,11 +91,8 @@ namespace Gobchat.UI.Web
                 return;
 
             CefSharp.Cef.Shutdown();
-            
+
             isDisposed = true;
         }
-
-
     }
-
 }

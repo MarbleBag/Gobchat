@@ -49,21 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gobchat\Memory\Chat\Token\AutotranslateToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\ChatBuildException.cs" />
-    <Compile Include="Gobchat\Memory\Chat\ChatlogBuilder.cs" />
-    <Compile Include="Gobchat\Memory\Chat\ChatlogEventArgs.cs" />
-    <Compile Include="Gobchat\Memory\Chat\ChatlogItem.cs" />
-    <Compile Include="Gobchat\Memory\Chat\ChatlogReader.cs" />
-    <Compile Include="Gobchat\Memory\Chat\IChatlogToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\Token\LinkToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\Token\ServerDelimiterToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\Token\TextToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\Token\UnknownLinkToken.cs" />
-    <Compile Include="Gobchat\Memory\Chat\Token\UnknownToken.cs" />
-    <Compile Include="Gobchat\Memory\FFXIVProcessMonitor.cs" />
-    <Compile Include="Gobchat\Memory\MemoryProcessor.cs" />
-    <Compile Include="Gobchat\Memory\ProcessChangeEventArgs.cs" />
+    <Compile Include="Chat\Token\AutotranslateToken.cs" />
+    <Compile Include="Chat\ChatBuildException.cs" />
+    <Compile Include="Chat\ChatlogBuilder.cs" />
+    <Compile Include="Chat\ChatlogEventArgs.cs" />
+    <Compile Include="Chat\ChatlogItem.cs" />
+    <Compile Include="Chat\ChatlogReader.cs" />
+    <Compile Include="Chat\IChatlogToken.cs" />
+    <Compile Include="Chat\Token\LinkToken.cs" />
+    <Compile Include="Chat\Token\ServerDelimiterToken.cs" />
+    <Compile Include="Chat\Token\TextToken.cs" />
+    <Compile Include="Chat\Token\UnknownLinkToken.cs" />
+    <Compile Include="Chat\Token\UnknownToken.cs" />
+    <Compile Include="FFXIVProcessMonitor.cs" />
+    <Compile Include="MemoryProcessor.cs" />
+    <Compile Include="ProcessChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
