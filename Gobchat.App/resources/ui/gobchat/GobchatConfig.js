@@ -86,6 +86,18 @@ var Gobchat = (function (Gobchat, undefined) {
         return parts
     }
 
+    function buildPath(key, config) {
+        let _config = config
+        const keySteps = breakKeyDown(key)
+        for (let i = 0; i < keySteps.length - 1; ++i) {
+            const keyStep = keySteps[i]
+            if (!(keyStep in _config)) {
+                _config[keyStep] = {}
+            }
+            _config = _config[keyStep]
+        }
+    }
+
     function resolvePath(key, config, value, remove) {
         let _config = config
         const keySteps = breakKeyDown(key)
@@ -95,7 +107,7 @@ var Gobchat = (function (Gobchat, undefined) {
             if (keyStep in _config) {
                 _config = _config[keyStep]
             } else {
-                throw new InvalidKeyError(`Config error. Key invalid at ${keyStep} - ${key}`);
+                throw new InvalidKeyError(`Config error. Key '${key}' invalid. Unable to ${remove !== undefined ? `set` : `get`} data at '${keyStep}'`);
             }
         }
 
@@ -113,10 +125,11 @@ var Gobchat = (function (Gobchat, undefined) {
         return _config[targetKey]
     }
 
-    function copyValueForKey(source, key, destination, doJsonCopy) {
+    function copyValueForKey(source, key, destination, doNotCopy) {
         let val = resolvePath(key, source)
-        if (doJsonCopy)
+        if (!doNotCopy)
             val = copyByJson(val)
+        buildPath(key, destination)
         resolvePath(key, destination, val)
     }
 
@@ -161,6 +174,8 @@ var Gobchat = (function (Gobchat, undefined) {
         getConfigChanges() {
             const config = copyByJson(this._config)
             retainChangesIterator(config, Gobchat.DefaultChatConfig)
+
+            copyValueForKey(this._config, "behaviour.groups", config, false)
             // copyValueForKey(this._config, "version", config)
             // copyValueForKey(this._config, "userdata", config)
             return config
@@ -182,8 +197,9 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         saveToPlugin() {
-            const config = this.getConfigChanges()
-            const json = JSON.stringify(config)
+            //const config = this.getConfigChanges()
+            // const json = JSON.stringify(config)
+            const json = JSON.stringify(this._config) //TODO Send whole config back for now
             Gobchat.sendMessageToPlugin({ event: "SaveGobchatConfig", detail: json })
         }
 
@@ -191,7 +207,9 @@ var Gobchat = (function (Gobchat, undefined) {
             const self = this
             const onLoad = function (e) {
                 document.removeEventListener("LoadGobchatConfig", onLoad)
+
                 const json = e.detail.data
+
                 if (json === undefined || json === null) {
                     if (callback) callback()
                     return
@@ -204,6 +222,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
                 self.restoreDefaultConfig()
                 self.overwriteConfig(config)
+
                 if (callback) callback()
             }
 

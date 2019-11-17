@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Newtonsoft.Json.Linq;
+
 namespace Gobchat.UI.Web
 {
     public class JavascriptBuilder
@@ -36,6 +38,15 @@ namespace Gobchat.UI.Web
             string result = stringbuilder.ToString();
             stringbuilder.Clear();
             return result;
+        }
+
+        public JToken Deserialize(string json)
+        {
+            using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
+            {
+                JObject obj = (JObject)JToken.ReadFrom(reader);
+                return obj;
+            }
         }
 
         public T Deserialize<T>(string json)

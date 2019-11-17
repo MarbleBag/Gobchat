@@ -119,7 +119,8 @@ namespace Gobchat.UI.Forms
             };*/
 
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
-
+            LifeSpanHandler = new CustomLifeSpanHandler();
+            
             CefBrowser.BrowserInitialized += OnEvent_BrowserInitialized;
             CefBrowser.FrameLoadStart += OnEvent_FrameLoadStart;
             CefBrowser.FrameLoadEnd += OnEvent_FrameLoadEnd;
@@ -197,6 +198,10 @@ namespace Gobchat.UI.Forms
             cefBrowserSettings.WindowlessFrameRate = 60;
             cefBrowserSettings.FileAccessFromFileUrls = CefState.Enabled;
             cefBrowserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+            cefBrowserSettings.WebSecurity = CefState.Enabled;
+            cefBrowserSettings.Javascript = CefState.Enabled;
+            cefBrowserSettings.LocalStorage = CefState.Enabled;
+            cefBrowserSettings.Plugins = CefState.Disabled;
 
             CefBrowser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
         }
@@ -208,7 +213,7 @@ namespace Gobchat.UI.Forms
 
         public new void Load(string url)
         {
-            base.Load(url);
+            CefBrowser.Load(url);
         }
 
         public void Reload()
@@ -219,7 +224,7 @@ namespace Gobchat.UI.Forms
         public new void Dispose()
         {
             Debug.WriteLine("Disposing Browser");
-            base.Dispose();
+            CefBrowser.Dispose();
         }
 
         public bool BindBrowserAPI(IBrowserAPI api, bool isApiAsync)

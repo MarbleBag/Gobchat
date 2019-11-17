@@ -106,13 +106,9 @@ var Gobchat = (function (Gobchat) {
 
     function getMessageSenderName(messageSource) {
         if (messageSource === null || messageSource.sourceId === null) return null;
-        if (messageSource.playerName !== null) {
+        if (messageSource.playerName !== null && messageSource.playerName != undefined) {
             const prefix = messageSource.prefix || ""
-            if (messageSource.serverName !== null) {
-                return `${prefix}${messageSource.playerName} [${messageSource.serverName}]`
-            } else {
-                return `${prefix}${messageSource.playerName}`
-            }
+            return `${prefix}${messageSource.playerName}`
         } else {
             return messageSource.sourceId
         }

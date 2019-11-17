@@ -1,6 +1,7 @@
 ﻿<html>
 <head>
     <meta charset="utf-8" />
+    <title>Gobconfig</title>
 
     <script src="lib/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
@@ -190,9 +191,8 @@
         //window.opener.chatManager.config.saveToLocalStore()
 
         window.Gobchat = window.opener.Gobchat
-
-         window.gobconfig = new Gobchat.GobchatConfig()
-         window.gobconfig.loadFromLocalStore()
+        window.gobconfig = new Gobchat.GobchatConfig()
+        window.gobconfig.loadFromLocalStore()
 
         jQuery(function ($) {
             $("#save_config").on("click", function (e) {

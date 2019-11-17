@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\CustomContextMenuHandler.cs" />
+    <Compile Include="Forms\CustomDisplayHanler.cs" />
+    <Compile Include="Forms\CustomLifeSpanHandler.cs" />
+    <Compile Include="Forms\CustomRequestHandler.cs" />
     <Compile Include="Forms\DeviceIndependentBitmap.cs" />
     <Compile Include="Forms\Extension\Extensions.cs" />
     <Compile Include="Forms\Helper\FormEnsureTopmostHelper.cs" />

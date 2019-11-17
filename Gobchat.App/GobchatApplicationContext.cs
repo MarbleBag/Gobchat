@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace Gobchat
 {
-    internal class GobchatApplicationContext : ApplicationContext
+    internal sealed class GobchatApplicationContext : ApplicationContext
     {
         //TODO not nice
         public static string ResourceFolder;
@@ -28,7 +28,7 @@ namespace Gobchat
 
         public new Form MainForm { get { return _overlayForm; } private set { } }
 
-        private NotifyIcon _notifyIcon;
+        private NotifyIconManager _notifyIconManager;
         private CefOverlayForm _overlayForm;
 
         private GobchatBackgroundWorker _backgroundWorker;
@@ -39,6 +39,17 @@ namespace Gobchat
             UserConfigFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Gobchat\config");
 
             Application.ApplicationExit += (s, e) => OnApplicationExit();
+
+            //TODO
+            // Turn this into the application core
+            // Start other parts of the app as components
+            // Initialize components on start up
+            // Dispose components on shut down
+            // Provide a type of UIManager
+            // UIManager allows access to UI widgets via ID
+            // UIManager allows to run tasks on the UI thread
+            // Look for a simple DI framework which supports a context tree for injection
+
             //   try
             //    {
             OnApplicationStart();
@@ -98,49 +109,36 @@ namespace Gobchat
 
         private void InitializeNotifyIcon()
         {
-            _notifyIcon = new NotifyIcon();
-            _notifyIcon.Icon = new System.Drawing.Icon(@"resources/gobtray.ico");
-            _notifyIcon.Text = "Gobchat";
-            _notifyIcon.Visible = true;
+            _notifyIconManager = new NotifyIconManager();
+            _notifyIconManager.TrayIconVisible = true;
 
-            _notifyIcon.ContextMenu = new ContextMenu();
-
-            var itemHideShowChat = new MenuItem("Hide");
             _overlayForm.VisibleChanged += (s, e) =>
             {
                 if (_overlayForm == null)
                     return;
-
-                if (_overlayForm.Visible)
-                    itemHideShowChat.Text = "Hide";
-                else
-                    itemHideShowChat.Text = "Show";
+                _notifyIconManager.SetHideShowText(_overlayForm.Visible ? NotifyIconManager.HideShowState.Hide : NotifyIconManager.HideShowState.Show);
             };
+            _notifyIconManager.SetHideShowText(_overlayForm.Visible ? NotifyIconManager.HideShowState.Hide : NotifyIconManager.HideShowState.Show);
 
-            EventHandler hideShowAction = (s, e) =>
-                        {
-                            if (_overlayForm == null)
-                                return;
-                            System.Diagnostics.Debug.WriteLine("clicked me!");
-                            _overlayForm.Visible = !_overlayForm.Visible;
-                        };
+            _notifyIconManager.OnMenuClick += (s, e) =>
+                {
+                    switch (e.NotifyMenuItem)
+                    {
+                        case NotifyIconManager.NotifyMenuItem.CloseApplication:
+                            Application.Exit();
+                            break;
 
-            itemHideShowChat.Click += hideShowAction;
-            //   _notifyIcon.Click += hideShowAction;
-            _notifyIcon.ContextMenu.MenuItems.Add(itemHideShowChat);
+                        case NotifyIconManager.NotifyMenuItem.HideShow:
+                            if (_overlayForm != null)
+                                _overlayForm.Visible = !_overlayForm.Visible;
+                            break;
 
-            var itemUnPauseChat = new MenuItem("Pause");
-            itemUnPauseChat.Click += (s, e) =>
-            {
-                //TODO while the chat parsing continues, no new chat messages are sent to the ui
-            };
-            _notifyIcon.ContextMenu.MenuItems.Add(itemUnPauseChat);
-
-            _notifyIcon.ContextMenu.MenuItems.Add("-");
-
-            var itemCloseApplication = new MenuItem("Close");
-            itemCloseApplication.Click += (s, e) => Application.Exit(); //TODO
-            _notifyIcon.ContextMenu.MenuItems.Add(itemCloseApplication);
+                        case NotifyIconManager.NotifyMenuItem.ReloadUI:
+                            if (_overlayForm != null)
+                                _overlayForm.Reload();
+                            break;
+                    }
+                };
         }
 
         private void OnApplicationExit()
@@ -152,8 +150,8 @@ namespace Gobchat
             _backgroundWorker?.Stop(true);
             _backgroundWorker = null;
 
-            _notifyIcon?.Dispose();
-            _notifyIcon = null;
+            _notifyIconManager?.Dispose();
+            _notifyIconManager = null;
 
             _overlayForm?.Close();
             _overlayForm?.Dispose();

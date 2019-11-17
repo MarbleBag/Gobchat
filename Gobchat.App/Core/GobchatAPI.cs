@@ -13,34 +13,28 @@
 
 using Gobchat.Core.Chat;
 using Gobchat.UI.Web;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Gobchat.Core
 {
-    //TODO needs to go
-    public class LoadGobchatConfigEvent : UI.Web.JavascriptEvents.JSEvent
-    {
-        public string data;
-
-        public LoadGobchatConfigEvent(string data) : base("LoadGobchatConfig")
-        {
-            this.data = data;
-        }
-    }
-
     /// <summary>
     /// Each implemented method in this class is accessible from the web ui
     /// </summary>
     internal class GobchatWebAPI : IBrowserAPI
     {
         private IManagedWebBrowser _browser;
+        private OnUIEvent _eventHandler;
         private UI.Web.JavascriptBuilder _jsBuilder = new UI.Web.JavascriptBuilder();
 
-        public GobchatWebAPI(IManagedWebBrowser browser)
+        public delegate UI.Web.JavascriptEvents.JSEvent OnUIEvent(string eventName, string details);
+
+        public GobchatWebAPI(IManagedWebBrowser browser, OnUIEvent eventHandler)
         {
             this._browser = browser;
+            this._eventHandler = eventHandler;
         }
 
         public string APIName => "GobchatAPI";
@@ -50,14 +44,20 @@ namespace Gobchat.Core
             Debug.WriteLine("JSMSG: " + message?.Replace("{", "{{")?.Replace("}", "}}"));
 
             var obj = _jsBuilder.Deserialize<Dictionary<string, string>>(message);
-            if (obj.ContainsKey("event"))
+            if (!obj.ContainsKey("event"))
             {
-                var eventName = obj["event"];
-                if ("LoadGobchatConfig".Equals(eventName))
-                {
-                    var script = _jsBuilder.BuildCustomEventDispatcher(new LoadGobchatConfigEvent(null));
-                    _browser.ExecuteScript(script);
-                }
+                Debug.WriteLine("Error. UI event needs event name"); //TODO
+                return;
+            }
+
+            var eventName = obj["event"];
+            var detail = obj.ContainsKey("detail") ? obj["detail"] : null;
+
+            var response = _eventHandler.Invoke(eventName, detail);
+            if (response != null)
+            {
+                var script = _jsBuilder.BuildCustomEventDispatcher(response);
+                _browser.ExecuteScript(script);
             }
         }
     }
