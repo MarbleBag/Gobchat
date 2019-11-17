@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Updater;
 using System;
 using System.Windows.Forms;
 
@@ -21,17 +22,25 @@ namespace Gobchat
         [STAThread]
         private static void Main(string[] args)
         {
-            CheckVersion();
-            CheckDependencies();
+            if (CheckVersion())
+                return;
+
+            if (CheckDependencies())
+                return;
+
             StartApp();
         }
 
-        private static void CheckVersion()
+        private static bool CheckVersion()
         {
+            var versionChecker = new GobchatVersionChecker();
+            var stopStart = versionChecker.Check();
+            return stopStart;
         }
 
-        private static void CheckDependencies()
+        private static bool CheckDependencies()
         {
+            return false; //TODO
         }
 
         public static void StartApp()

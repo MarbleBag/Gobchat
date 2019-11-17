@@ -189,8 +189,6 @@
                 return null
             }
 
-           
-
             function setColorPalette(input) {
                 let colorPalette = tblConfig.map(e => e.styleId).filter(e => e !== null && e !== undefined)
                     .map(e => e + ".color").map(e => window.gobconfig.get(e)).filter(e => e !== null && e !== undefined)
@@ -202,7 +200,6 @@
 
             if (!window.gobconfig.has(configKey))
                 return null
-            
 
             return buildColorSelector({ configKey: configKey })
         }

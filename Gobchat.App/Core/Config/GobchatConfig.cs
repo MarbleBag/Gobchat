@@ -39,8 +39,10 @@ namespace Gobchat.Core.Config
 
         bool HasProperty(string key);
 
-        void SetProperty(string key, object x);
+        void SetProperty(string key, object value);
 
         JObject ToJson();
+
+        void SetProperties(JObject json);
     }
 }

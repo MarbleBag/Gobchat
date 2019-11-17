@@ -127,9 +127,13 @@
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\JsonGobchatConfig.cs" />
     <Compile Include="Core\Config\ConfigExceptions.cs" />
+    <Compile Include="Core\LoadGobchatConfigEvent.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
+    <Compile Include="Core\Util\Extension\ConcurrentQueueExtension.cs" />
+    <Compile Include="Updater\GobchatVersionChecker.cs" />
+    <Compile Include="NotifyIconManager.cs" />
     <Compile Include="Updater\VersionChecker.cs" />
     <Content Include="resources\gobtray.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -235,7 +239,7 @@
     <Compile Include="Core\Chat\ChatlogParser.cs" />
     <Compile Include="Core\Chat\ChatMessage.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
-    <Compile Include="Core\Util\EnumExtensions.cs" />
+    <Compile Include="Core\Util\Extension\EnumExtensions.cs" />
     <Compile Include="Core\Util\EnumUtil.cs" />
     <Compile Include="Core\Util\Lookup.cs" />
     <Compile Include="Core\Resource\ResourceBundle.cs" />

@@ -26,6 +26,9 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using Gobchat.Core.Chat;
+using Gobchat.UI.Web.JavascriptEvents;
+using System.Collections.Concurrent;
+using Gobchat.Core.Util.Extension.Queue;
 
 namespace Gobchat.Core
 {
@@ -43,8 +46,7 @@ namespace Gobchat.Core
         private KeyboardHook _keyboardHook;
 
         private Chat.ChatlogParser _chatlogParser;
-        private readonly object _lockObj = new object();
-        private IList<Chat.ChatMessage> _pendingChatMessages = new List<Chat.ChatMessage>();
+        private readonly ConcurrentQueue<Chat.ChatMessage> _messageQueue = new ConcurrentQueue<Chat.ChatMessage>();
         private DateTime _lastChatMessageTime;
 
         internal void Initialize(UI.Forms.CefOverlayForm overlay)
@@ -58,7 +60,7 @@ namespace Gobchat.Core
             LoadMemoryParser();
             LoadChatParser();
 
-            _api = new GobchatWebAPI(_overlay.Browser);
+            _api = new GobchatWebAPI(_overlay.Browser, OnEvent_UIMessage);
             _overlay.Browser.BindBrowserAPI(_api, true);
 
             //_overlay.InvokeUIThread(true, () => _overlay.Hide());
@@ -94,6 +96,23 @@ namespace Gobchat.Core
             //_keyboardHook = new KeyboardHook();
             // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.U, () => _overlay.InvokeUIThread(true, () => _overlay.Visible = false));
             // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.M, () => Debug.WriteLine("Yay!"));
+        }
+
+        private JSEvent OnEvent_UIMessage(string eventName, string details)
+        {
+            if ("LoadGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var json = _configManager.UserConfig.ToJson().ToString();
+                return new UIEvents.LoadGobchatConfigEvent(json);
+            }
+
+            if ("SaveGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var configAsJson = _jsBuilder.Deserialize(details);
+                _configManager.UserConfig.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
+            }
+
+            return null;
         }
 
         private void LoadMemoryParser()
@@ -194,9 +213,6 @@ namespace Gobchat.Core
                 .Where((item) =>
                 {
                     var isNew = _lastChatMessageTime <= item.TimeStamp;
-                    if (!isNew)
-                        Debug.WriteLine($"Old Msg: {item}");
-                    Debug.WriteLine($"Preparse: {item}");
                     return isNew;
                 })
                 .Select((item) =>
@@ -217,13 +233,10 @@ namespace Gobchat.Core
 
             _lastChatMessageTime = chatMessages.Select(msg => msg.Timestamp).DefaultIfEmpty(_lastChatMessageTime).Max();
 
-            lock (_lockObj)
+            foreach (var msg in chatMessages)
             {
-                foreach (var msg in chatMessages)
-                {
-                    _pendingChatMessages.Add(msg);
-                    Debug.WriteLine($"{msg}");
-                }
+                _messageQueue.Enqueue(msg);
+                Debug.WriteLine($"{msg}");
             }
 
             // - filter unwanted tokens
@@ -235,31 +248,17 @@ namespace Gobchat.Core
             //TODO process each message
         }
 
-        private IList<Chat.ChatMessage> GetAndClearPendingRecords()
-        {
-            if (_pendingChatMessages.Count == 0)
-                return new List<Chat.ChatMessage>();
-
-            lock (_lockObj)
-            {
-                var tmp = _pendingChatMessages;
-                _pendingChatMessages = new List<Chat.ChatMessage>();
-                return tmp;
-            }
-        }
-
         internal void Update()
         {
             _memoryProcessor.Update();
 
-            //var messages = GetAndClearPendingRecords();
             _overlay.InvokeAsyncOnUI((_) =>
             {
                 if (_overlay.Browser.IsBrowserInitialized)
                 {
-                    foreach (var message in GetAndClearPendingRecords())
+                    foreach (var message in _messageQueue.DequeueMultiple(10))
                     {
-                        //TODO maybe this can be done by directly calling gobchat
+                        //TODO maybe this can be done by calling gobchat directly
                         var script = _jsBuilder.BuildCustomEventDispatcher(new Chat.ChatMessageWebEvent(message));
                         _overlay.Browser.ExecuteScript(script);
                     }
