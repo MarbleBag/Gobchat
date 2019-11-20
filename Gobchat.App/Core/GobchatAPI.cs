@@ -27,9 +27,9 @@ namespace Gobchat.Core
     {
         private IManagedWebBrowser _browser;
         private OnUIEvent _eventHandler;
-        private UI.Web.JavascriptBuilder _jsBuilder = new UI.Web.JavascriptBuilder();
+        private JavascriptBuilder _jsBuilder = new JavascriptBuilder();
 
-        public delegate UI.Web.JavascriptEvents.JSEvent OnUIEvent(string eventName, string details);
+        public delegate global::Gobchat.UI.Web.JavascriptEvents.JSEvent OnUIEvent(string eventName, string details);
 
         public GobchatWebAPI(IManagedWebBrowser browser, OnUIEvent eventHandler)
         {

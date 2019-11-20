@@ -11,21 +11,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-namespace Gobchat.Core.Chat
-{
-    internal class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
-    {
-        public string timestamp;
-        public int type;
-        public string source;
-        public string message;
+using System;
 
-        public ChatMessageWebEvent(ChatMessage message) : base("ChatMessageEvent")
-        {
-            this.timestamp = message.Timestamp.ToString("HH:mm");
-            this.type = message.MessageType;
-            this.source = message.Source;
-            this.message = message.Message;
-        }
+namespace Gobchat.Core.Runtime
+{
+    public interface IUISynchronizer
+    {
+        void RunAsync(Action action);
+
+        void RunAsync(Action action, IUnhandledExceptionHandler handler);
+
+        void RunSync(Action action);
+    }
+
+    public interface IUnhandledExceptionHandler
+    {
+        void Handle(Exception exception);
     }
 }

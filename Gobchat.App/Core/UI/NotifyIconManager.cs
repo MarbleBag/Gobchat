@@ -14,7 +14,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Gobchat
+namespace Gobchat.Core.UI
 {
     public sealed class NotifyIconManager : IDisposable
     {

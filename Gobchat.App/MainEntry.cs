@@ -11,43 +11,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Updater;
-using System;
-using System.Windows.Forms;
-
 namespace Gobchat
 {
     public static class App
     {
-        [STAThread]
+        [System.STAThread]
         private static void Main(string[] args)
         {
-            if (CheckVersion())
-                return;
-
-            if (CheckDependencies())
-                return;
-
-            StartApp();
-        }
-
-        private static bool CheckVersion()
-        {
-            var versionChecker = new GobchatVersionChecker();
-            var stopStart = versionChecker.Check();
-            return stopStart;
-        }
-
-        private static bool CheckDependencies()
-        {
-            return false; //TODO
-        }
-
-        public static void StartApp()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GobchatApplicationContext());
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.Run(new global::Gobchat.Core.Runtime.GobchatApplicationContext());
         }
     }
 }

@@ -42,11 +42,7 @@ namespace Gobchat.UI.Web
 
         public JToken Deserialize(string json)
         {
-            using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
-            {
-                JObject obj = (JObject)JToken.ReadFrom(reader);
-                return obj;
-            }
+            return JToken.Parse(json);
         }
 
         public T Deserialize<T>(string json)

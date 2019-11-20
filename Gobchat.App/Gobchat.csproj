@@ -13,7 +13,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Gobchat</RootNamespace>
     <AssemblyName>Gobchat</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -34,6 +34,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -70,6 +71,10 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="move-cef-redists.bat" />
+    <None Include="move-cef-redists.ps1" />
+    <None Include="pack-cef-redists.bat" />
+    <None Include="pack-cef-redists.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -99,6 +104,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -131,10 +137,30 @@
     <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
+    <Compile Include="Core\Runtime\DIContext.cs" />
+    <Compile Include="Core\Runtime\TinyMessenger.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationNotifyIconComponent.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationCefOverlayComponent.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationConfigComponent.cs" />
+    <Compile Include="Core\Runtime\ApplicationStartupHandler.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationUpdateComponent.cs" />
+    <Compile Include="Core\Runtime\IApplicationComponent.cs" />
+    <Compile Include="Core\Runtime\IDIContext.cs" />
+    <Compile Include="Core\Runtime\IUIManager.cs" />
+    <Compile Include="Core\Runtime\UIManager.cs" />
     <Compile Include="Core\Util\Extension\ConcurrentQueueExtension.cs" />
-    <Compile Include="Updater\GobchatVersionChecker.cs" />
-    <Compile Include="NotifyIconManager.cs" />
-    <Compile Include="Updater\VersionChecker.cs" />
+    <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
+    <Compile Include="Core\Runtime\IUISynchronizer.cs" />
+    <Compile Include="Core\Runtime\TinyIoC.cs" />
+    <Compile Include="Updater\CefDependencyProvider.cs" />
+    <Compile Include="Updater\DependencyAndUpdateManager.cs" />
+    <Compile Include="Updater\DownloadHelper.cs" />
+    <Compile Include="Updater\IDependencyProvider.cs" />
+    <Compile Include="Updater\GobchatUpdateException.cs" />
+    <Compile Include="Updater\GitHubUpdateProvider.cs" />
+    <Compile Include="Core\UI\NotifyIconManager.cs" />
+    <Compile Include="Updater\IUpdateProvider.cs" />
     <Content Include="resources\gobtray.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -246,8 +272,8 @@
     <Compile Include="Core\Util\DirectoryTraverser.cs" />
     <Compile Include="Core\GobchatAPI.cs" />
     <Compile Include="Core\Util\MathUtil.cs" />
-    <Compile Include="GobchatApplicationContext.cs" />
-    <Compile Include="GobchatBackgroundWorker.cs" />
+    <Compile Include="Core\Runtime\GobchatApplicationContext.cs" />
+    <Compile Include="Core\Runtime\IndependendBackgroundWorker.cs" />
     <Compile Include="MainEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -294,4 +320,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
