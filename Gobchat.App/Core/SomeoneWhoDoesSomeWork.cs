@@ -29,19 +29,19 @@ using Gobchat.Core.Chat;
 using Gobchat.UI.Web.JavascriptEvents;
 using System.Collections.Concurrent;
 using Gobchat.Core.Util.Extension.Queue;
+using Gobchat.Core.Runtime;
+using Gobchat.Core.Config;
 
 namespace Gobchat.Core
 {
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
-        private Config.GobchatConfigManager _configManager;
-
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
 
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
 
-        private UI.Web.JavascriptBuilder _jsBuilder = new UI.Web.JavascriptBuilder();
+        private global::Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new global::Gobchat.UI.Web.JavascriptBuilder();
 
         private KeyboardHook _keyboardHook;
 
@@ -49,14 +49,15 @@ namespace Gobchat.Core
         private readonly ConcurrentQueue<Chat.ChatMessage> _messageQueue = new ConcurrentQueue<Chat.ChatMessage>();
         private DateTime _lastChatMessageTime;
 
-        internal void Initialize(UI.Forms.CefOverlayForm overlay)
+        internal void Initialize(global::Gobchat.Core.Runtime.IDIContext container, global::Gobchat.UI.Forms.CefOverlayForm overlay)
         {
             _overlay = overlay;
             _overlay.Visible = false;
 
+            _configManager = container.Resolve<GobchatConfigManager>();
+
             //   Application.ApplicationExit += (s, e) => OnEvent_ApplicationExit();
 
-            LoadConfig();
             LoadMemoryParser();
             LoadChatParser();
 
@@ -72,19 +73,21 @@ namespace Gobchat.Core
                     _overlay.InvokeAsyncOnUI((_) => _overlay.Visible = true);
             };
 
-            if (_configManager.UserConfig.HasProperty("behaviour.frame.chat.position.x") &&
-                _configManager.UserConfig.HasProperty("behaviour.frame.chat.position.y"))
+            var configManager = _configManager;
+
+            if (configManager.UserConfig.HasProperty("behaviour.frame.chat.position.x") &&
+                configManager.UserConfig.HasProperty("behaviour.frame.chat.position.y"))
             {
-                var posX = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.x");
-                var posY = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.y");
+                var posX = configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.x");
+                var posY = configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.y");
                 _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
             }
 
-            if (_configManager.UserConfig.HasProperty("behaviour.frame.chat.size.width") &&
-                _configManager.UserConfig.HasProperty("behaviour.frame.chat.size.height"))
+            if (configManager.UserConfig.HasProperty("behaviour.frame.chat.size.width") &&
+                configManager.UserConfig.HasProperty("behaviour.frame.chat.size.height"))
             {
-                var width = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.width");
-                var height = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.height");
+                var width = configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.width");
+                var height = configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.height");
                 _overlay.Size = new System.Drawing.Size((int)width, (int)height);
             }
 
@@ -121,26 +124,16 @@ namespace Gobchat.Core
             _memoryProcessor.ProcessChangeEvent += MemoryProcessor_ProcessChangeEvent;
             _memoryProcessor.ChatlogEvent += MemoryProcessor_ChatlogEvent;
 
-            var resourceFolder = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"sharlayan");
+            var resourceFolder = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"sharlayan");
             System.IO.Directory.CreateDirectory(resourceFolder);
             _memoryProcessor.LocalCacheDirectory = resourceFolder;
 
             _memoryProcessor.Initialize();
         }
 
-        private void LoadConfig()
-        {
-            var defaultConfigPath = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"default_gobconfig.json");
-            //  var userConfigPath = System.IO.Path.Combine(Application.UserAppDataPath, @"config\gobconfig.json");
-            var userConfigPath = System.IO.Path.Combine(GobchatApplicationContext.UserConfigFolder, @"gobconfig.json");
-
-            _configManager = new Config.GobchatConfigManager(defaultConfigPath, userConfigPath);
-            _configManager.LoadConfig();
-        }
-
         private void LoadChatParser()
         {
-            var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"lang");
+            var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"lang");
             var resourceResolvers = new IResourceResolver[] { new LocalFolderResourceResolver(languagePath) };
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 
@@ -161,15 +154,11 @@ namespace Gobchat.Core
             var chatSize = _overlay.Size;
             _configManager.UserConfig.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
             _configManager.UserConfig.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
-
-            _configManager.SaveConfig();
-
-            //  Debug.WriteLine("TEST");
         }
 
         private void LoadGobchatUI()
         {
-            var htmlpath = System.IO.Path.Combine(GobchatApplicationContext.ResourceFolder, @"ui\gobchat.html");
+            var htmlpath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
             var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _overlay.Browser.Load(uri);
@@ -269,6 +258,7 @@ namespace Gobchat.Core
         #region IDisposable Support
 
         private bool _disposedValue = false; // To detect redundant calls
+        private GobchatConfigManager _configManager;
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~SomeoneWhoDoesSomeWork()

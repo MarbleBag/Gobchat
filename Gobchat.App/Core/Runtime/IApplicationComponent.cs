@@ -11,19 +11,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
-namespace Gobchat.Updater
+namespace Gobchat.Core.Runtime
 {
-    internal class GobchatVersionChecker
+    public interface IApplicationComponent
     {
-        public GobchatVersionChecker()
-        {
-        }
+        //TODO replace methods with attributes and make dependency injection via attributes possible
 
-        internal bool Check()
-        {
-            throw new NotImplementedException();
-        }
+        void Initialize(ApplicationStartupHandler handler, IDIContext container);
+
+        void Dispose(IDIContext container);
     }
 }

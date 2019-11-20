@@ -11,21 +11,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-namespace Gobchat.Core.Chat
+namespace Gobchat.Core.Runtime
 {
-    internal class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
+    public interface IUIManager
     {
-        public string timestamp;
-        public int type;
-        public string source;
-        public string message;
+        T GetUIElement<T>(string id);
 
-        public ChatMessageWebEvent(ChatMessage message) : base("ChatMessageEvent")
-        {
-            this.timestamp = message.Timestamp.ToString("HH:mm");
-            this.type = message.MessageType;
-            this.source = message.Source;
-            this.message = message.Message;
-        }
+        bool TryGetUIElement<T>(string id, out T element);
+
+        bool HasUIElement(string id);
+
+        void StoreUIElement(string id, object element);
+
+        bool RemoveUIElement(string id);
     }
 }

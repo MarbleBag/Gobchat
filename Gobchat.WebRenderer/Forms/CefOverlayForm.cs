@@ -90,7 +90,7 @@ namespace Gobchat.UI.Forms
             _formEnsureTopmost?.Dispose();
             _formMover?.Dispose();
 
-            Browser?.CloseBrowser(true);
+            // Browser?.CloseBrowser(true);
             Browser?.Dispose();
             Browser = null;
 

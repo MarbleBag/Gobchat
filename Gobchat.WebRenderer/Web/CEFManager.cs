@@ -26,6 +26,8 @@ namespace Gobchat.UI.Web
         private static bool isInitialized = false;
         private static bool isDisposed = false;
 
+        public static string CefAssemblyLocation { get; set; } = string.Empty;
+
         public static void Initialize()
         {
             if (isInitialized)
@@ -45,9 +47,27 @@ namespace Gobchat.UI.Web
                 return null;
 
             string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
-            string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                                       Environment.Is64BitProcess ? "x64" : "x86",
-                                       assemblyName);
+
+            var archSpecificPath = AppDomain.CurrentDomain.BaseDirectory; //AppDomain.CurrentDomain.SetupInformation.ApplicationBase
+            if (CefAssemblyLocation != null && CefAssemblyLocation.Length > 0)
+            {
+                if (Path.IsPathRooted(CefAssemblyLocation))
+                {
+                    archSpecificPath = Path.Combine(CefAssemblyLocation, Environment.Is64BitProcess ? "x64" : "x86", assemblyName);
+                }
+                else
+                {
+                    archSpecificPath = Path.Combine(archSpecificPath, CefAssemblyLocation, Environment.Is64BitProcess ? "x64" : "x86", assemblyName);
+                }
+            }
+            else
+            {
+                archSpecificPath = Path.Combine(archSpecificPath, Environment.Is64BitProcess ? "x64" : "x86", assemblyName);
+            }
+
+            /* string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
+                                        Environment.Is64BitProcess ? "x64" : "x86",
+                                        assemblyName);*/
 
             return File.Exists(archSpecificPath)
                        ? System.Reflection.Assembly.LoadFile(archSpecificPath)
