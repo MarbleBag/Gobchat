@@ -20,6 +20,7 @@
 x64/
 x86/
 bld/
+*.7z
 *.zip
 [Bb]in/
 [Oo]bj/
