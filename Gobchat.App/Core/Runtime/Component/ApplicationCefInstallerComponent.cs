@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using Gobchat.Core.Util;
+using NLog;
 using SharpCompress;
 using SharpCompress.Archives;
 
@@ -23,6 +24,8 @@ namespace Gobchat.Core.Runtime
     public sealed class ApplicationCefInstallerComponent : IApplicationComponent
     {
         private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.0.0/Cef-75.1.14-{ARCH}.7z";
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private sealed class CefInstaller
         {
@@ -45,50 +48,67 @@ namespace Gobchat.Core.Runtime
                 _cefPatchArchive = Path.Combine(_cefPatchFolder, filename);
             }
 
-            public void DownloadCef(IProgressMonitor progressMonitor)
+            public string DownloadCef(IProgressMonitor progressMonitor)
             {
                 if (!IsCefArchiveAvailable())
                 {
-                    Directory.CreateDirectory(_cefPatchFolder);
-                    var result = DownloadHelper.DownloadFileFromGithub(_cefDownloadUrl, _cefPatchArchive, progressMonitor);
-                    switch (result)
+                    try
                     {
-                        case DownloadHelper.DownloadResult.Cancelled:
-                            File.Delete(_cefPatchArchive);
-                            return;
+                        Directory.CreateDirectory(_cefPatchFolder);
+                        var result = DownloadHelper.DownloadFileFromGithub(_cefDownloadUrl, _cefPatchArchive, progressMonitor);
+                        switch (result)
+                        {
+                            case DownloadHelper.DownloadResult.Cancelled:
+                                progressMonitor.Log($"Delete partially downloaded cef archive\n{_cefPatchArchive}");
+                                File.Delete(_cefPatchArchive);
+                                throw new OperationCanceledException("Download cancelled");
+                                return null;
+                        }
+                    }
+                    catch (Exception e) //TODO not good
+                    {
+                        progressMonitor.Log($"An error occured: {e.Message}");
+                        File.Delete(_cefPatchArchive);
+                        throw;
                     }
 
                     if (!IsCefArchiveAvailable())
                     {
-                        throw new DownloadFailedException(_cefDownloadUrl);
+                        throw new DirectoryNotFoundException("Downloaded CEF archive not found");
                     }
                 }
+
+                return _cefPatchArchive;
             }
 
             //TODO exception handling
-            public void ExtractCef(IProgressMonitor progressMonitor)
+            public string ExtractCef(IProgressMonitor progressMonitor)
             {
                 if (IsCefAvailable())
-                    return; //Done
+                    return _cefLibFolder; //Done
 
                 Directory.CreateDirectory(_cefLibFolder);
                 var unpackingResults = ArchiveUnpackerHelper.ExtractArchive(_cefPatchArchive, _cefLibFolder, progressMonitor);
                 switch (unpackingResults)
                 {
                     case ArchiveUnpackerHelper.ExtractionResult.Complete:
+                        progressMonitor.Log("Unpacking complete");
                         //TODO delete archive
                         break;
 
                     case ArchiveUnpackerHelper.ExtractionResult.Cancelled:
+                        progressMonitor.Log("Delete partially unpacked CEF archive");
                         Directory.Delete(_cefLibFolder, true);
-                        break;
+                        throw new OperationCanceledException("Unpacking cancelled");
                 }
 
                 if (!IsCefAvailable())
                 {
                     //TODO throw exception
-                    throw new DirectoryNotFoundException(_cefLibFolder);
+                    throw new DirectoryNotFoundException("Unpacked CEF folder not found");
                 }
+
+                return _cefLibFolder;
             }
 
             public bool IsCefAvailable()
@@ -138,15 +158,32 @@ namespace Gobchat.Core.Runtime
 
                 using (var progressMonitor = new global::Gobchat.Updater.ProgressMonitorAdapter(progressDisplay))
                 {
-                    installer.DownloadCef(progressMonitor);
-                    installer.ExtractCef(progressMonitor);
+                    try
+                    {
+                        installer.DownloadCef(progressMonitor);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Log(LogLevel.Fatal, e, () => "CEF download failed");
+                        throw;
+                    }
+                    try
+                    {
+                        installer.ExtractCef(progressMonitor);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Log(LogLevel.Fatal, e, () => "CEF extraction failed");
+                        throw;
+                    }
                 }
             }
             catch (Exception e)
             {
+                var errorMessage = $"CEF installation failed. Reason:\n{e.Message}\n\nRetry or install CEF manually for gobchat.";
                 System.Diagnostics.Debug.WriteLine(e);
                 MessageBox.Show(
-                   $"CEF installation failed. Reason:\n{e.Message}\n\nRetry or install CEF manually for gobchat.",
+                   errorMessage,
                    "Gobchat",
                    MessageBoxButtons.OK,
                    MessageBoxIcon.Error

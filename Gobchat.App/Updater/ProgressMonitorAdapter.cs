@@ -26,7 +26,7 @@ namespace Gobchat.Updater
         {
             _source = new CancellationTokenSource();
             _progressDisplay = progressDisplay;
-            _progressDisplay.Cancel += (s, e) => _source.Cancel();
+            _progressDisplay.Cancel += (s, e) => { try { _source.Cancel(); } catch (Exception) { /*ignore*/ } };
         }
 
         public string StatusText
@@ -65,6 +65,7 @@ namespace Gobchat.Updater
 
         public void Log(string log)
         {
+            global::Gobchat.UI.Forms.Extension.UIExtensions.InvokeAsyncOnUI(_progressDisplay, c => c.AppendLog(log));
         }
     }
 }

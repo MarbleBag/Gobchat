@@ -45,7 +45,8 @@ namespace Gobchat.Core.Util
                 webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion.ToString()}");
 
                 progressMonitor.Progress = 0d;
-                progressMonitor.StatusText = $"Start download";
+                progressMonitor.StatusText = $"Waiting...";
+                progressMonitor.Log("Prepare CEF download");
 
                 void OnDownloadDataCompleted(object s, DownloadDataCompletedEventArgs e)
                 {
@@ -53,15 +54,19 @@ namespace Gobchat.Core.Util
                     downloadResult = e.Cancelled ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfuly;
 
                     progressMonitor.Progress = 1d;
-                    progressMonitor.StatusText = "Downloading finished";
+                    progressMonitor.StatusText = "Download finished";
+                    progressMonitor.Log("Download finished");
                 }
 
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
                     progressMonitor.Progress = e.ProgressPercentage / 100;
-                    progressMonitor.StatusText = $"Downloading {e.BytesReceived} / {e.TotalBytesToReceive}";
+                    progressMonitor.StatusText = $"Downloading: {e.BytesReceived} / {e.TotalBytesToReceive}";
                     if (cancellationToken.IsCancellationRequested)
+                    {
+                        progressMonitor.Log("Download cancelled");
                         webClient.CancelAsync();
+                    }
                 }
 
                 webClient.DownloadDataCompleted += OnDownloadDataCompleted;
@@ -69,6 +74,7 @@ namespace Gobchat.Core.Util
 
                 try
                 {
+                    progressMonitor.Log($"Connecting to {downloadUrl}");
                     var downloadTask = webClient.DownloadFileTaskAsync(downloadUrl, destinationFile);
                     downloadTask.Wait();
                     //  cancellationToken.Register(webClient.CancelAsync);

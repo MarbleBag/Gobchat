@@ -38,13 +38,14 @@ namespace Gobchat.Core.Util
             if (!Directory.Exists(destinationFolder))
                 throw new DirectoryNotFoundException(destinationFolder);
 
+            progressMonitor.StatusText = "Unpacking";
+            progressMonitor.Progress = 0d;
+            progressMonitor.Log($"Unpacking {archivePath}");
+
             using (var archive = SharpCompress.Archives.ArchiveFactory.Open(archivePath))
             {
                 double totalArchiveSize = 0d;
                 double processedBytes = 0d;
-
-                progressMonitor.StatusText = "Unpacking";
-                progressMonitor.Progress = 0d;
 
                 foreach (var entry in archive.Entries)
                 {
@@ -64,6 +65,7 @@ namespace Gobchat.Core.Util
                         if (cancellationToken.IsCancellationRequested)
                         {
                             progressMonitor.StatusText = "Unpacking cancelled";
+                            progressMonitor.Log("Unpacking cancelled");
                             return ExtractionResult.Cancelled;
                         }
 
@@ -71,6 +73,8 @@ namespace Gobchat.Core.Util
                         if (!entry.IsDirectory)
                         {
                             progressMonitor.StatusText = $"Unpacking: {entry.Key}";
+                            progressMonitor.Log($"Unpacking: {entry.Key}");
+
                             reader.WriteEntryToDirectory(destinationFolder, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
                             processedBytes += entry.Size;
                             progressMonitor.Progress = processedBytes / totalArchiveSize;
