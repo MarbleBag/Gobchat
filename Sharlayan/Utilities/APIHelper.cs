@@ -33,7 +33,7 @@ namespace Sharlayan.Utilities
 
         public static void GetActions(ConcurrentDictionary<uint, ActionItem> actions, string patchVersion = "latest")
         {
-            var file = Path.Combine(Directory.GetCurrentDirectory(), "actions.json");
+            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, "actions.json");
             if (File.Exists(file) && MemoryHandler.Instance.UseLocalCache)
             {
                 EnsureDictionaryValues(actions, file);
