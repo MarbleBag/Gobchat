@@ -33,6 +33,7 @@
             this.btnSingle = new System.Windows.Forms.Button();
             this.lblStatusText = new System.Windows.Forms.Label();
             this.pnlProgressBar = new System.Windows.Forms.Panel();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.pnlProgressBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,10 +65,17 @@
             resources.ApplyResources(this.pnlProgressBar, "pnlProgressBar");
             this.pnlProgressBar.Name = "pnlProgressBar";
             // 
+            // txtLog
+            // 
+            resources.ApplyResources(this.txtLog, "txtLog");
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            // 
             // ProgressDisplayForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pnlProgressBar);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -76,6 +84,7 @@
             this.pnlProgressBar.ResumeLayout(false);
             this.pnlProgressBar.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -85,5 +94,6 @@
         private System.Windows.Forms.Button btnSingle;
         private System.Windows.Forms.Label lblStatusText;
         private System.Windows.Forms.Panel pnlProgressBar;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }

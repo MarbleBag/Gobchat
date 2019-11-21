@@ -144,7 +144,9 @@
     <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
     <Compile Include="Core\DownloadFailedException.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
+    <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
+    <Compile Include="Updater\Manager.cs" />
     <Compile Include="Updater\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />
     <Compile Include="Core\Runtime\IProgressMonitor.cs" />
@@ -162,8 +164,6 @@
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
-    <Compile Include="Updater\CefDependencyProvider.cs" />
-    <Compile Include="Updater\DependencyAndUpdateManager.cs" />
     <Compile Include="Updater\IDependencyProvider.cs" />
     <Compile Include="Core\Runtime\GobchatUpdateException.cs" />
     <Compile Include="Updater\GitHubUpdateProvider.cs" />
@@ -175,6 +175,7 @@
     <Compile Include="Updater\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Updater\UpdateManager.cs" />
     <Content Include="resources\gobtray.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

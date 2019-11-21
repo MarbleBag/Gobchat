@@ -126,7 +126,7 @@
     <value>8, 8</value>
   </data>
   <data name="pgbProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 23</value>
+    <value>468, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="pgbProgressBar.TabIndex" type="System.Int32, mscorlib">
@@ -148,7 +148,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btnSingle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>198, 35</value>
+    <value>398, 35</value>
   </data>
   <data name="btnSingle.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -202,7 +202,7 @@
     <value>2</value>
   </data>
   <data name="pnlProgressBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+    <value>Top</value>
   </data>
   <data name="pnlProgressBar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -211,7 +211,7 @@
     <value>8, 8, 8, 8</value>
   </data>
   <data name="pnlProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 62</value>
+    <value>484, 62</value>
   </data>
   <data name="pnlProgressBar.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -226,6 +226,36 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pnlProgressBar.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="txtLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="txtLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 62</value>
+  </data>
+  <data name="txtLog.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txtLog.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="txtLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>484, 181</value>
+  </data>
+  <data name="txtLog.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;txtLog.Name" xml:space="preserve">
+    <value>txtLog</value>
+  </data>
+  <data name="&gt;&gt;txtLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtLog.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;txtLog.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -235,13 +265,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>284, 62</value>
-  </data>
-  <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>600, 100</value>
+    <value>484, 243</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>300, 100</value>
+    <value>500, 200</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

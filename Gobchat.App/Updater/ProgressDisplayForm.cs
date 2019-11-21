@@ -17,7 +17,6 @@ namespace Gobchat.Updater
         public ProgressDisplayForm()
         {
             InitializeComponent();
-            System.Diagnostics.Debug.WriteLine("FORM THREAD: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
         }
 
         public string StatusText
@@ -32,10 +31,18 @@ namespace Gobchat.Updater
             set { pgbProgressBar.Value = Math.Min(pgbProgressBar.Maximum, (int)Math.Round(value * pgbProgressBar.Maximum)); }
         }
 
+        public void AppendLog(string log)
+        {
+            txtLog.AppendText(log + "\n");
+        }
+
+        public void ClearLog()
+        {
+            txtLog.Text = "";
+        }
+
         private void btnSingle_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("BUTTON THREAD: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
-            System.Diagnostics.Debug.WriteLine("Cancel Clicked!");
             Cancel?.Invoke(this, new EventArgs());
         }
     }
