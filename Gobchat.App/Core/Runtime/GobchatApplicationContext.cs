@@ -54,18 +54,10 @@ namespace Gobchat.Core.Runtime
             _applicationDIContext = new DIContext();
             _uiManager = new UIManager();
 
-            /* for later
-            _applicationDIContext.Register<string>((c, p) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
-            _applicationDIContext.Register<string>((c, p) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
-            _applicationDIContext.Register<string>((c, p) => GobchatApplicationContext.ApplicationLocation, nameof(ApplicationLocation));
-            _applicationDIContext.Register<Version>((c, p) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
-            _applicationDIContext.Register<IUISynchronizer>((c, p) => GobchatApplicationContext.UISynchronizer);
-            */
-
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ApplicationLocation, nameof(ApplicationLocation));
-            _applicationDIContext.Register<System.Version>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(GobchatApplicationContext.ApplicationVersion));
+            _applicationDIContext.Register<System.Version>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
 
             _applicationDIContext.Register<IUISynchronizer>((c, _) => GobchatApplicationContext.UISynchronizer);
             _applicationDIContext.Register<IUIManager>((c, _) => _uiManager);
@@ -75,13 +67,15 @@ namespace Gobchat.Core.Runtime
             var applicationComponents = new List<IApplicationComponent>()
             {
                 new ApplicationConfigComponent(),
-               // new ApplicationUpdateComponent(),
+                new ApplicationUpdateComponent(),
+                new ApplicationCefInstallerComponent(),
                 new ApplicationCefOverlayComponent(),
                 new ApplicationNotifyIconComponent(),
                 new ApplicationChatComponent()
             };
 
             System.Diagnostics.Debug.WriteLine("Application initialization");
+            System.Diagnostics.Debug.WriteLine("ON APPLICATION STARTUP: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             var startupHandler = new ApplicationStartupHandler();
             foreach (var component in applicationComponents)

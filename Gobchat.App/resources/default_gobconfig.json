@@ -88,6 +88,7 @@
     },
     "language": "en",
     "mentions": [],
+    "checkForUpdates": true,
     "autodetectEmoteInSay": true,
     "playSoundOnMention": false,
     "datacenter": null,
