@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.UI", "Gobchat.WebRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gobchat.Test", "Gobchat.Test\Gobchat.Test.csproj", "{1B504303-1CFC-4F76-8448-CD8C3396E14A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.Updater", "Gobchat.Updater\Gobchat.Updater.csproj", "{155CCB02-0991-42DF-B577-527EA1A7EBB9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{85BBFA00-DF8A-45AA-9524-773DFA1FCFC6}"
 	ProjectSection(SolutionItems) = preProject
 		Resources\UI\gobchat\Channels.js = Resources\UI\gobchat\Channels.js
@@ -76,10 +74,6 @@ Global
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{155CCB02-0991-42DF-B577-527EA1A7EBB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
