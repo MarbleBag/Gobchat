@@ -27,11 +27,11 @@ By moving the scroll bar back to the bottom of the chat, autoscroll will be re-e
 ### Text formatting
 Enhance your chat experience with colors! They make it easier to follow other people actions.
 
-![Original chat box](screen_unformated.png)
+![Original chat box](screen_unformated.jpg)
 
 Will be turned into this:
 
-![Enhanced chat overlay](screen_formated.png)
+![Enhanced chat overlay](screen_formated.jpg)
 
 #### Roleplay specific formatting
 Gobchat applies specific colors to speech, emote and ooc comments
