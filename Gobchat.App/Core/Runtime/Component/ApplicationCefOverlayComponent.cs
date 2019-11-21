@@ -32,7 +32,7 @@ namespace Gobchat.Core.Runtime
 #if DEBUG
             var cefFolder = GobchatApplicationContext.ApplicationLocation;
 #else
-            var cefFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, @"libs\cef");
+            var cefFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, "libs", "cef");
 #endif
 
             System.IO.Directory.CreateDirectory(cefFolder);

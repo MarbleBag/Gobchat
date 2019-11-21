@@ -42,9 +42,11 @@ namespace Gobchat.Core.Runtime
                     TrayIconVisible = true
                 };
 
-                var overlayForm = _manager.GetUIElement<CefOverlayForm>(ApplicationCefOverlayComponent.OverlayUIId);
-                overlayForm.VisibleChanged += OnEvent_Form_VisibleChanged;
-                _notifyIconManager.SetHideShowText(GetFormHideShowState(overlayForm));
+                if (_manager.TryGetUIElement<Form>(ApplicationCefOverlayComponent.OverlayUIId, out var overlayForm))
+                {
+                    overlayForm.VisibleChanged += OnEvent_Form_VisibleChanged;
+                    _notifyIconManager.SetHideShowText(GetFormHideShowState(overlayForm));
+                }
 
                 _notifyIconManager.OnMenuClick += OnEvent_NotifyIconManager_MenuClick;
 

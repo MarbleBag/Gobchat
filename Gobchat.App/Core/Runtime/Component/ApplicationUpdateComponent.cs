@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Config;
+
 namespace Gobchat.Core.Runtime
 {
     public sealed class ApplicationUpdateComponent : IApplicationComponent
@@ -19,9 +21,15 @@ namespace Gobchat.Core.Runtime
         {
             if (handler == null) throw new System.ArgumentNullException(nameof(handler));
 
-            var updateManager = new Updater.UpdateManager();
-            if (updateManager.CheckForUpdates())
-                handler.StopStartup = true;
+            var configManager = container.Resolve<GobchatConfigManager>();
+            var doUpdate = configManager.UserConfig.GetProperty<bool>("behaviour.checkForUpdates");
+
+            if (doUpdate)
+            {
+                var updateManager = new Updater.UpdateManager();
+                if (updateManager.CheckForUpdates())
+                    handler.StopStartup = true;
+            }
         }
 
         public void Dispose(IDIContext container)

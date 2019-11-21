@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Runtime;
+using Gobchat.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

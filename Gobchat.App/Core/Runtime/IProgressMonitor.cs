@@ -11,22 +11,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
-namespace Gobchat.Updater
+namespace Gobchat.Core.Runtime
 {
-    public class GobchatUpdateException : SystemException
+    public interface IProgressMonitor
     {
-        public GobchatUpdateException(string message) : base(message)
-        {
-        }
+        string StatusText { get; set; }
+        double Progress { get; set; }
 
-        public GobchatUpdateException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        void Log(string log);
 
-        public GobchatUpdateException()
-        {
-        }
+        System.Threading.CancellationToken GetCancellationToken();
     }
 }

@@ -85,12 +85,15 @@ namespace Gobchat.Core.Runtime
             _hiddenMainForm = new Form();
             UISynchronizer = new ContextSpecificSynchronizer(WindowsFormsSynchronizationContext.Current);
 
+            System.Diagnostics.Debug.WriteLine("MAIN THREAD: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+
             _appWorker = new IndependendBackgroundWorker();
             _appWorker.Start((token) => ApplicationStartupProcess(token));
         }
 
         private void OnApplicationExit()
         {
+            System.Diagnostics.Debug.WriteLine("ON APPLICATION EXIT: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
             try
             {
                 _appWorker?.Stop(true);
