@@ -1,23 +1,11 @@
 # Gobchat (FFXIV chat overlay)
-Gobchat is an overlay with the goal to provide a better chat experience for roleplayer.
+Gobchat is an overlay with the goal to provide a better chat experience for roleplayers.
 
-***
-***
-
-## Readme needs to be rewritten for release 1.0.0
-While the features stay, the way the app is installed and run changed significantly.
-
-***
-***
-
-Gobchat in its current version is a plugin for [hibiyasleep's OverlayPlugin](https://github.com/hibiyasleep/OverlayPlugin) which itself is a plugin for
-[Advanced Combat Tracker](http://advancedcombattracker.com/).
-
-This plugin took a lot of inspiration (and some code) from [quisquous cactbot](https://github.com/quisquous/cactbot)
+This plugin took a lot of inspiration from [quisquous cactbot](https://github.com/quisquous/cactbot) 
 
 1. [Features](#features)
    1. [Smart Autoscroll](#smart-autoscroll)
-   1. [Text color encoding](#text-formatting)
+   1. [Text formatting](#text-formatting)
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Groups](#groups)
    1. [Chat Commands](#chat-commands)
@@ -37,26 +25,26 @@ By moving the scroll bar back to the bottom of the chat, autoscroll will be re-e
 ![autoscroll reenables](screen_scroll_bottom.png)
 
 ### Text formatting
-(TODO)
+Enhance your chat experience with colors! They make it easier to follow other people actions.
 
-![(missing) example screen](screen3.png)
+![Original chat box](screen_unformated.png)
 
-becomes
+Will be turned into this:
 
-![(missing) example screen](screen4.png)
+![Enhanced chat overlay](screen_formated.png)
 
-Four different types 
+#### Roleplay specific formatting
+Gobchat applies specific colors to speech, emote and ooc comments
 
 ![Different formats](screen_formats.png)
-
-### Channel settings
-
-### Formatting settings
 
 ### Text-Highlighting for key words - mentions
 Case-insensitive detection for a customizable list of words, which then will be highlighted. This will help you not missing out on important messages.
 
 ![Mentions](screen_mention_highlighting.png)
+
+### Customizable formatting settings
+
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
@@ -119,50 +107,28 @@ Examples:
 
 ### Dependencies
 
-Install [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.7.2 or above
+Install [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.8 or above
 
-Install [Advanced Combat Tracker](http://advancedcombattracker.com/) 64-bit version
-
-Install the most recent version of [ravahn's FFXIV ACT plugin](https://github.com/ravahn/FFXIV_ACT_Plugin/releases/latest) to ACT
-[Guide](https://github.com/ravahn/FFXIV_ACT_Plugin/tree/master)
-
-Install the most recent version of [hibiyasleep OverlayPlugin](https://github.com/hibiyasleep/OverlayPlugin/releases/latest) to ACT
-Download the `-x64-full.zip` file, right click it and go to properties. Click `Unblock` in the bottom right corner, otherwise Windows will remove needed files on unzip.
-
-fflogs has a video [guide](https://www.fflogs.com/help/start/) for setting up ACT
+Visual C++ Redistributable Packages
+Install [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) for 64-bit Windows
+Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) for 32-bit Windows
 
 ### Installing Gobchat
 
-1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest) and download the latest version of Gobchat (zip) (Do not download the source zips, unless you want to build it yourself)
-2. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu. (zip file contains a dll)
-3. Unzip the zip file
-4. Copy the `addons` folder into your OverlayPlugin folder (The OverlayPlugin will load all dlls which are inside of this folder)
-5. Copy the `GobchatUI` folder into your OverlayPlugin folder (The exact position is not important, you just need to find it again)
-
-The end result should look something like that:
-
-    ```code
-    - ...\Advanced Combat Tracker\
-      - Advanced Combat Tracker.exe
-      - OverlayPlugin\
-         - OverlayPlugin.dll
-         - some OverlayPlugin files
-         - addons\
-            - Gobchat.dll
-         - GobchatUI\
-            - some files
-    ```
-
-6. Restart ACT
-7. Open ACT, go to `plugin` -> `OverlayPlugin.dll`
-8. Click on `new`
-9. Enter a name of your choice. Select `Gobchat`under type and click ok
-10. Click the button at the URL field and browse to your GobchatUI folder, select the `gobchat.html`
-11. It should start up!
-12. Check `Activate parsing` and it should start to show any relevant content that's coming up
+1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest)
+2. Download the latest version of Gobchat. The file is named gobchat-{version}.zip
+3. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu
+4. Unzip the zip file to your prefered location. All files are already in a Gobchat folder.
+5. That's it.
+6. Start Gobchat.exe
 
 ### Updating Gobchat
 
-1. Repeat steps 1 to 5 of [installing Gobchat](#installing-gobchat), replace all files.
+For now the update process has to be done manually.
+
+1. Repeat steps 1 to 4 of [installing Gobchat](#installing-gobchat) and replace all files.
+2. Done
 
 ### License
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
+You can find the full license [here](LICENSE.md) or at https://www.gnu.org/licenses/
