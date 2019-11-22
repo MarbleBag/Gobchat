@@ -6,7 +6,7 @@ and uses the great [sharlayan](https://github.com/FFXIVAPP/sharlayan) module fro
 
 The changelog can be found [here.](CHANGELOG.md)
 
-Die deutsche Version dieser Readme can man [hier](README_de.md) finden.
+Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
 
 1. [Features](#features)
    1. [Smart Autoscroll](#smart-autoscroll)
