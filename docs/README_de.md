@@ -1,32 +1,66 @@
-### Installing Gobchat
+# Gobchat (FFXIV chat overlay)
+Gobchat is ein Overlay mit dem Ziel den Chat für Rollenspieler angenehmer zu machen.
 
-1. Gehe zu latest release und lade damit die neueste Version von Gobchat (zip) herunter. (Nicht die source zips, außer du willst es selbst bauen)
-2. Mache einen Rechtsklick auf die Zip Datai und gehe zu „Eigenschaften/Properties“.  Unten rechts in der Ecke des Eigenschaften Menüs auf „Unblock/freigeben“ klicken. Dann auf ok, um das Menü zu schließen. (Die Zip Datei beinhaltet eine dll).
-3. Zip Datei entpacken
-4. Kopiere die Ordner „addons“ Und „GobchatUI“ aus der entpackten Zip Datei in deinen OverlayPlugin Ordner. 
+Die Umsetzung dieser Software wurde inspiriert von [quisquous cactbot](https://github.com/quisquous/cactbot)
 
-Am Ende sollte es etwa so aussehen:
-	```code
-	- ...\Advanced Combat Tracker\
-	  - Advanced Combat Tracker.exe
-	  - OverlayPlugin\
-		 - OverlayPlugin.dll
-		 - some OverlayPlugin files
-		 - addons\
-			- Gobchat.dll
-		 - GobchatUI\
-			- some files
-	```
+Die Patchnotes können [hier](CHANGELOG.md) gefunden werden. (Englisch!)
 
+The english version of this readme can be found [here.](README.md)
 
-5. Starte ACT neu
-6. Öffne ATC und öffne den Tab „Plugin“ -> wähle OverlayPlugin.dll aus
-7. Klicke auf „new“
-8. Gebe einen Namen deiner Wahl ein und wähle unter dem Drop Down Menü „Type“ aus und         bestätige mit „ok“
-9. Klicke auf den Knopf im URL Feld und öffne den Pfad zu deines GobchatUI Ordners, um die Datei gobchat.html auszuwählen
-10. Nun sollte das Gobchat Plugin auftauchen. 
-11. Setzte ein Haken bei „Activate parsing“.  Nun sollte es den relevanten Inhalt deines FF14 Chats wiedergeben. 
+### Info: Die Readme wurde noch nicht vollständig übersetzt.
 
-### Updating Gobchat
+1. [Features](#features)
+   1. ~~[Intelligentes Autoscroll](#smart-autoscroll)~~
+   1. ~~[Text Formatierung](#text-formatting)~~
+   1. ~~[Text-Hervorhebung](#text-highlighting-for-key-words---mentions)~~
+   1. ~~[Gruppen](#groups)~~
+   1. ~~[Chat Kommandos](#chat-commands)~~
+1. [Installation](#installation)
+1. [Gobchat updaten](#gobchat-updaten)
+1. [Gobchat verwenden](#gobchat-verwenden)
+1. [License](#license)
 
-Schritte 1 bis 4 von „Installation“ wiederholen und alle Dateien ersetzen.
+## Installation
+
+### Erforderliche Programme
+
+Installiere [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.8 oder höher
+
+Visual C++ Redistributable Packages
+Installiere [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) für 64-bit Windows
+Installiere [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) für 32-bit Windows
+
+### Installation von Gobchat
+
+1. Besuch die Seite mit der [neusten Version](https://github.com/marblebag/gobchat/releases/latest) von Gobchat
+2. Lade die neuste Version von Gobchat herunter. Die Datei heißt 'gobchat-{version}.zip'
+3. Mache einen Rechtsklick auf die Zip Datai und gehe zu „Eigenschaften/Properties“.  Unten rechts in der Ecke des Eigenschaften Menüs auf „Unblock/freigeben“ klicken. Dann auf ok, um das Menü zu schließen.
+4. Die zip Datei am gewünschten Ort entpacken. Die Datei enthält einen Ordner mit dem Namen Gobchat.
+5. Wechsel in den Ordner Gobchat
+6. Starte die Gobchat.exe
+7. Bei jedem Start prüft Gobchat ob neue Updates verfügbar sind
+8. Beim ersten Start versucht Gobchat CEF herunterzuladen. CEF ist ein eingebetteter Browser und nötig für die UI von Gobchat, die in HTML und Javascript geschrieben ist.
+
+### Gobchat updaten
+
+Aktuell müssen diese Schritte noch von Hand durchgeführt werden.
+
+1. Wiederhole die Schritte 1 bis 4 der [Installation](#installation-von-gobchat) und ersetzte einfach alle Dateien.
+2. Schon fertig!
+
+## Gobchat verwenden
+### Running
+1. Wechsel in deinen Gobchat Ordner
+1. Starte die Gobchat.exe
+1. Bei jedem Start prüft Gobchat ob neue Updates verfügbar sind
+
+In deiner Tray (Icons unten rechts) wird ein neues Icon erscheinen: ![gobchat looks for ffxiv](screen_gobchat_off.png)
+Das bedeutet Gobchat läuft und sucht nach einer aktiven Instanz von FFXIV
+
+Wenn FFXIV läuft und Gobchat findet FFXIV, dann wechselt das Icon zu ![gobchat is ready to rumble](screen_gobchat_on.png)
+Gobchat ist jetzt bereit.
+
+### Lizenz
+Nur auf Englisch verfügbar:
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
+You can find the full license [here](LICENSE.md) or at https://www.gnu.org/licenses/

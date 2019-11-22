@@ -1,7 +1,11 @@
 # Gobchat (FFXIV chat overlay)
 Gobchat is an overlay with the goal to provide a better chat experience for roleplayers.
 
-This plugin took a lot of inspiration from [quisquous cactbot](https://github.com/quisquous/cactbot) 
+This app took a lot of inspiration from [quisquous cactbot](https://github.com/quisquous/cactbot) 
+
+The changelog can be found [here.](CHANGELOG.md)
+
+Die deutsche Version dieser Readme can man [hier](README_de.md) finden.
 
 1. [Features](#features)
    1. [Smart Autoscroll](#smart-autoscroll)
@@ -11,6 +15,7 @@ This plugin took a lot of inspiration from [quisquous cactbot](https://github.co
    1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
 1. [Updating Gobchat](#updating-gobchat)
+1. [How to use Gobchat](#how-to-use-gobchat)
 1. [License](#license)
 
 ## Features
@@ -122,7 +127,7 @@ Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) f
 5. Go into your Gobchat folder
 6. Start Gobchat.exe
 7. On start Gobchat will check for new updates
-8. On the first start of Gobchat it will try to download CEF. CEF is a browser engine and runs Gobchats UI, which is written in html and javascript
+8. On the first start of Gobchat it will try to download CEF. CEF is a browser engine and runs Gobchats UI, which is written in HTML and Javascript
 
 ### Updating Gobchat
 
@@ -132,14 +137,13 @@ For now the update process has to be done manually.
 2. Done
 
 ## How to use Gobchat
-
-## Running
+### Running
 1. Go into your Gobchat folder
 2. Start Gobchat.exe
 3. On start Gobchat checks for new updates
 
 Within your tray a new icon will appear: ![gobchat looks for ffxiv](screen_gobchat_off.png)
-This icon means Gobchat is running and looks for your FFXIV
+This icon means Gobchat is running and looks for a active instance of FFXIV
 
 If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready
 
