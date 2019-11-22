@@ -94,7 +94,7 @@ namespace Gobchat.Core.Chat
 
         private string ExtractSource(string text, out int readIdx)
         {
-            var regex = new Regex(@"^:(.*):");
+            var regex = new Regex(@"^:(.*?):");
             var match = regex.Match(text);
             if (match.Success)
             {
