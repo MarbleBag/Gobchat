@@ -119,8 +119,12 @@ Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) f
 2. Download the latest version of Gobchat. The file is named gobchat-{version}.zip
 3. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu
 4. Unzip the zip file to your prefered location. All files are already in a Gobchat folder.
-5. That's it.
-6. Start Gobchat.exe
+
+### Running Gobchat
+1. Go into your Gobchat folder
+2. Start Gobchat.exe
+
+![gobchat looks for ffxiv](screen_gobchat_off.png)
 
 ### Updating Gobchat
 
