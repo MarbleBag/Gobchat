@@ -119,12 +119,10 @@ Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) f
 2. Download the latest version of Gobchat. The file is named gobchat-{version}.zip
 3. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu
 4. Unzip the zip file to your prefered location. All files are already in a Gobchat folder.
-
-### Running Gobchat
-1. Go into your Gobchat folder
-2. Start Gobchat.exe
-
-![gobchat looks for ffxiv](screen_gobchat_off.png)
+5. Go into your Gobchat folder
+6. Start Gobchat.exe
+7. On start Gobchat will check for new updates
+8. On the first start of Gobchat it will try to download CEF. CEF is a browser engine and runs Gobchats UI, which is written in html and javascript
 
 ### Updating Gobchat
 
@@ -132,6 +130,18 @@ For now the update process has to be done manually.
 
 1. Repeat steps 1 to 4 of [installing Gobchat](#installing-gobchat) and replace all files.
 2. Done
+
+## How to use Gobchat
+
+## Running
+1. Go into your Gobchat folder
+2. Start Gobchat.exe
+3. On start Gobchat checks for new updates
+
+Within your tray a new icon will appear: ![gobchat looks for ffxiv](screen_gobchat_off.png)
+This icon means Gobchat is running and looks for your FFXIV
+
+If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready
 
 ### License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
