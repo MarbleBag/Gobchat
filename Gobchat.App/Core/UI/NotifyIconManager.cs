@@ -24,6 +24,12 @@ namespace Gobchat.Core.UI
             Hide
         }
 
+        public enum IconState
+        {
+            ClientFound,
+            ClientNotFound
+        }
+
         public enum NotifyMenuItem
         {
             HideShow,
@@ -42,6 +48,12 @@ namespace Gobchat.Core.UI
             }
         }
 
+        private const string IconOn = @"resources/GobTrayIconOn.ico";
+        private const string IconOff = @"resources/GobTrayIconOff.ico";
+
+        private readonly System.Drawing.Icon _iconImage_StateOn;
+        private readonly System.Drawing.Icon _iconImage_StateOff;
+
         private readonly NotifyIcon _icon;
         private MenuItem _menuHideShow;
         private MenuItem _menuUnPause;
@@ -54,12 +66,16 @@ namespace Gobchat.Core.UI
 
         public NotifyIconManager()
         {
+            _iconImage_StateOn = new System.Drawing.Icon(IconOn);
+            _iconImage_StateOff = new System.Drawing.Icon(IconOff);
+
             _icon = new NotifyIcon();
-            _icon.Icon = new System.Drawing.Icon(@"resources/gobtray.ico");
+            _icon.Icon = _iconImage_StateOff;
             _icon.Text = "Gobchat";
 
             _menuHideShow = new MenuItem("");
             _menuUnPause = new MenuItem("Pause");
+            _menuUnPause.Enabled = false; //TODO
             _menuReloadUI = new MenuItem("Reload UI");
             _menuCloseApplication = new MenuItem("Close");
 
@@ -96,8 +112,26 @@ namespace Gobchat.Core.UI
             }
         }
 
+        public void SetIconState(IconState state)
+        {
+            if (state == null) throw new ArgumentNullException(nameof(state));
+            switch (state)
+            {
+                case IconState.ClientFound:
+                    _icon.Icon = _iconImage_StateOn;
+                    break;
+
+                case IconState.ClientNotFound:
+                    _icon.Icon = _iconImage_StateOff;
+                    break;
+            }
+        }
+
         public void Dispose()
         {
+            _iconImage_StateOn.Dispose();
+            _iconImage_StateOff.Dispose();
+
             _icon.Dispose();
             _menuHideShow = null;
             _menuUnPause = null;

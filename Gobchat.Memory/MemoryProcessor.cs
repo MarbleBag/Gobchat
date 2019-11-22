@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using NLog;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,8 @@ namespace Gobchat.Memory
 {
     public class FFXIVMemoryProcessor
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly FFXIVProcessFinder processFinder = new FFXIVProcessFinder();
         private readonly Chat.ChatlogReader chatlogProcessor = new Chat.ChatlogReader();
         private readonly Chat.ChatlogBuilder chatlogBuilder = new Chat.ChatlogBuilder();
@@ -70,10 +73,9 @@ namespace Gobchat.Memory
                         catch (Chat.ChatBuildException e)
                         {
                             //TODO handle this
-                            System.Diagnostics.Debug.WriteLine($"ChatBuildException: Caused by {e.InnerException.GetType().Name}");
-                            System.Diagnostics.Debug.WriteLine($"Error on: {item.Line}");
-                            System.Diagnostics.Debug.WriteLine($"{e.InnerException.StackTrace}");
-                            System.Diagnostics.Debug.WriteLine("");
+                            logger.Error(() => "Error in processing chat item");
+                            logger.Error(() => $"Chat Item {item.Line}");
+                            logger.Error(e);
                         }
                     }
                     ChatlogEvent.Invoke(this, new Chat.ChatlogEventArgs(items));

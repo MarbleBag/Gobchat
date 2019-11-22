@@ -4,7 +4,6 @@ var Gobchat = (function (Gobchat) {
     Gobchat.sendMessageToPlugin = function (obj) {
         if (!obj) return
         let sJson = JSON.stringify(obj)
-        console.log(`Send JSON to App:\n${sJson}`)
         GobchatAPI.message(sJson)
     }
 

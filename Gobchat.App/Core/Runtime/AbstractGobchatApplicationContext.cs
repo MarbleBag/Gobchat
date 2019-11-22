@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace Gobchat.Core.Runtime
 {
     public abstract class AbstractGobchatApplicationContext : System.Windows.Forms.ApplicationContext
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private class ContextSpecificSynchronizer : IUISynchronizer
         {
             private class EmptyUnhandledExceptionHandler : IUnhandledExceptionHandler
@@ -85,15 +88,14 @@ namespace Gobchat.Core.Runtime
             _hiddenMainForm = new Form();
             UISynchronizer = new ContextSpecificSynchronizer(WindowsFormsSynchronizationContext.Current);
 
-            System.Diagnostics.Debug.WriteLine("MAIN THREAD: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
-
             _appWorker = new IndependendBackgroundWorker();
             _appWorker.Start((token) => ApplicationStartupProcess(token));
         }
 
         private void OnApplicationExit()
         {
-            System.Diagnostics.Debug.WriteLine("ON APPLICATION EXIT: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+            logger.Info("Start application shutdown");
+
             try
             {
                 _appWorker?.Stop(true);
@@ -112,6 +114,7 @@ namespace Gobchat.Core.Runtime
             {
                 _hiddenMainForm?.Dispose();
                 _hiddenMainForm = null;
+                logger.Info("Shutdown complete");
             }
         }
 

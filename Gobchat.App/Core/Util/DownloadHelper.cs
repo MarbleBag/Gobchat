@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Runtime;
+using NLog;
 using System;
 using System.IO;
 using System.Net;
@@ -21,6 +22,8 @@ namespace Gobchat.Core.Util
 {
     internal static class DownloadHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public enum DownloadResult
         {
             CompletedSuccessfuly,
@@ -82,17 +85,14 @@ namespace Gobchat.Core.Util
                 }
                 catch (WebException ex) when (ex.Message == "The request was aborted: The request was canceled.")
                 {
-                    System.Diagnostics.Debug.WriteLine(ex);
-                    //throw new OperationCanceledException();
                 }
                 catch (AggregateException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(ex);
+                    logger.Warn(ex);
                 }
                 catch (TaskCanceledException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(ex);
-                    //throw new OperationCanceledException();
+                    logger.Warn(ex);
                 }
             }
 

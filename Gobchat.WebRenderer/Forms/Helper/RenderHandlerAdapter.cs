@@ -21,11 +21,11 @@ namespace Gobchat.UI.Forms.Helper
     internal class RenderHandlerAdapter : CefSharp.OffScreen.IRenderHandler
     {
         public event EventHandler<PaintEventArgs> Paint;
+
         public event EventHandler<CursorChangeEventArgs> CursorChange;
 
         public void Dispose()
         {
-
         }
 
         public ScreenInfo? GetScreenInfo()
@@ -47,7 +47,6 @@ namespace Gobchat.UI.Forms.Helper
 
         public void OnAcceleratedPaint(PaintElementType type, Rect dirtyRect, IntPtr sharedHandle)
         {
-
         }
 
         public void OnCursorChange(IntPtr cursor, CursorType type, CursorInfo customCursorInfo)
@@ -57,28 +56,23 @@ namespace Gobchat.UI.Forms.Helper
 
         public void OnImeCompositionRangeChanged(Range selectedRange, Rect[] characterBounds)
         {
-
         }
 
         public void OnPaint(PaintElementType type, Rect dirtyRect, IntPtr buffer, int width, int height)
         {
-            System.Diagnostics.Debug.WriteLine("CALLED!");
             Paint?.Invoke(this, new PaintEventArgs(type, dirtyRect, buffer, width, height));
         }
 
         public void OnPopupShow(bool show)
         {
-
         }
 
         public void OnPopupSize(Rect rect)
         {
-
         }
 
         public void OnVirtualKeyboardRequested(IBrowser browser, TextInputMode inputMode)
         {
-
         }
 
         public bool StartDragging(IDragData dragData, DragOperationsMask mask, int x, int y)
@@ -88,7 +82,6 @@ namespace Gobchat.UI.Forms.Helper
 
         public void UpdateDragCursor(DragOperationsMask operation)
         {
-
         }
 
         public class PaintEventArgs : EventArgs
@@ -124,6 +117,4 @@ namespace Gobchat.UI.Forms.Helper
             }
         }
     }
-
-
 }

@@ -13,18 +13,16 @@
 
 using Gobchat.Core.UI;
 using Gobchat.UI.Forms;
+using NLog;
 using System.Windows.Forms;
 
 namespace Gobchat.Core.Runtime
 {
-    public sealed class EventQueue
-    {
-        private System.Collections.Concurrent.ConcurrentQueue<int> s = new System.Collections.Concurrent.ConcurrentQueue<int>();
-    }
-
     public sealed class ApplicationNotifyIconComponent : IApplicationComponent, System.IDisposable
     {
-        private const string NotifyIconManagerId = "Gobchat.NotifyIconManager";
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        public const string NotifyIconManagerId = "Gobchat.NotifyIconManager";
 
         private NotifyIconManager _notifyIconManager;
         private IUISynchronizer _synchronizer;
@@ -70,6 +68,7 @@ namespace Gobchat.Core.Runtime
             switch (e.NotifyMenuItem)
             {
                 case NotifyIconManager.NotifyMenuItem.CloseApplication:
+                    logger.Info("User requests shutdown");
                     Application.Exit();
                     break;
 
@@ -81,6 +80,10 @@ namespace Gobchat.Core.Runtime
                 case NotifyIconManager.NotifyMenuItem.ReloadUI:
                     if (_manager.TryGetUIElement<CefOverlayForm>(ApplicationCefOverlayComponent.OverlayUIId, out var form2)) //how to fuck with scope, gj!
                         form2.Reload();
+                    break;
+
+                case NotifyIconManager.NotifyMenuItem.UnPause:
+                    //TODO not implemented yet
                     break;
             }
         }

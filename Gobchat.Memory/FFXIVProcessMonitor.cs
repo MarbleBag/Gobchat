@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using NLog;
 using Sharlayan;
 using Sharlayan.Models;
 using System.Diagnostics;
@@ -29,6 +30,8 @@ namespace Gobchat.Memory
     /// </summary>
     internal class FFXIVProcessFinder
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public bool FFXIVProcessValid { get; private set; } = false;
         public int FFXIVProcessId { get; private set; } = 0;
 
@@ -65,8 +68,8 @@ namespace Gobchat.Memory
 
             while (Scanner.Instance.IsScanning)
             {
+                logger.Debug("Scanning for FFXIV signatures...");
                 Thread.Sleep(1000);
-                Debug.WriteLine("Scanning...");
             }
 
             FFXIVProcessValid = true;

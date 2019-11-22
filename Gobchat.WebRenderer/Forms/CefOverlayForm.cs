@@ -15,6 +15,7 @@ using CefSharp;
 using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
+using NLog;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -23,6 +24,8 @@ namespace Gobchat.UI.Forms
 {
     public partial class CefOverlayForm : Form
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         // used in CreateParams
         private const int WS_EX_TOPMOST = 0x00000008;
 
@@ -69,6 +72,8 @@ namespace Gobchat.UI.Forms
 
             var browser = new ManagedWebBrowser(form: this);
             Browser = browser;
+            Browser.BrowserConsoleLog += (s, e) => logger.Info(() => $"Browser Console Log ${e.Line} in ${e.Source}\n=> {e.Message}");
+            Browser.BrowserError += (s, e) => logger.Error(() => $"[{e.ErrorCode}] {e.ErrorText})");
 
             //seems this is still not implemented by CefSharp, no events are fired
             /*
@@ -85,7 +90,7 @@ namespace Gobchat.UI.Forms
 
         private void DisposeForm(bool disposing)
         {
-            Debug.WriteLine("Disposing Form: " + disposing);
+            logger.Debug("Disposing cef overlay");
 
             _formEnsureTopmost?.Dispose();
             _formMover?.Dispose();

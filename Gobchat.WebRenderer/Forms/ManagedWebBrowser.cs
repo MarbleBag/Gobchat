@@ -15,15 +15,17 @@ using CefSharp;
 using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms
 {
     internal class ManagedWebBrowser : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser, IDisposable, IManagedWebBrowser
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private class BrowserWrapper : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser
         {
             public delegate void OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height);
@@ -119,8 +121,8 @@ namespace Gobchat.UI.Forms
             };*/
 
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
-            LifeSpanHandler = new CustomLifeSpanHandler();
-            
+            // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon
+
             CefBrowser.BrowserInitialized += OnEvent_BrowserInitialized;
             CefBrowser.FrameLoadStart += OnEvent_FrameLoadStart;
             CefBrowser.FrameLoadEnd += OnEvent_FrameLoadEnd;
@@ -223,7 +225,7 @@ namespace Gobchat.UI.Forms
 
         public new void Dispose()
         {
-            Debug.WriteLine("Disposing Browser");
+            logger.Debug("Disposing Browser");
             CefBrowser.Dispose();
         }
 

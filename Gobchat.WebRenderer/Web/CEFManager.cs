@@ -11,18 +11,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gobchat.UI.Web
 {
     public static class CEFManager
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private static bool isInitialized = false;
         private static bool isDisposed = false;
 
@@ -96,6 +95,8 @@ namespace Gobchat.UI.Web
             cefSettings.CefCommandLineArgs["allow-file-access-from-files"] = "1";
 
             cefSettings.EnableAudio();
+
+            cefSettings.LogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cef_debug.log");
 
             // Enables software compositing instead of GPU compositing -> less CPU load but no WebGL
             cefSettings.SetOffScreenRenderingBestPerformanceArgs();

@@ -12,31 +12,30 @@
  *******************************************************************************/
 
 using CefSharp;
+using NLog;
 using System.Diagnostics;
 
 namespace Gobchat.UI.Forms
 {
     internal class CustomLifeSpanHandler : ILifeSpanHandler
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public bool DoClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            Debug.WriteLine("DoClose");
             return false;
         }
 
         public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            Debug.WriteLine("OnAfterCreated");
         }
 
         public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            Debug.WriteLine("OnAfterCreated");
         }
 
         public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
-            Debug.WriteLine("OnBeforePopup");
             newBrowser = null;
             return false;
         }

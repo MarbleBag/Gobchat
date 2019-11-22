@@ -20,11 +20,15 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Linq;
 using TinyMessenger;
+using NLog;
+using System;
 
 namespace Gobchat.Core.Runtime
 {
     public sealed class GobchatApplicationContext : AbstractGobchatApplicationContext
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public new Form MainForm { get { return null; } }
 
         //TODO later
@@ -74,8 +78,7 @@ namespace Gobchat.Core.Runtime
                 new ApplicationChatComponent()
             };
 
-            System.Diagnostics.Debug.WriteLine("Application initialization");
-            System.Diagnostics.Debug.WriteLine("ON APPLICATION STARTUP: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+            logger.Info(() => $"Initialize Gobchat v{GobchatApplicationContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");
 
             var startupHandler = new ApplicationStartupHandler();
             foreach (var component in applicationComponents)
@@ -83,28 +86,30 @@ namespace Gobchat.Core.Runtime
                 try
                 {
                     _activeApplicationComponents.Add(component);
+                    logger.Info($"Starting: {component}");
                     component.Initialize(startupHandler, _applicationDIContext);
                 }
                 catch (System.Exception e)
                 {
-                    //TODO logging
-                    Debug.WriteLine($"Initialization error in {component}");
-                    Debug.WriteLine(e);
+                    logger.Fatal($"Initialization error in {component}");
+                    logger.Fatal(e);
                     startupHandler.StopStartup = true;
                 }
 
                 if (startupHandler.StopStartup)
                 {
-                    Debug.WriteLine("Shutdown in initialization phase");
+                    logger.Fatal("Shutdown in initialization phase");
                     Application.Exit();
                     return;
                 }
             }
+
+            logger.Info("Initialization complete");
         }
 
         internal override async void ApplicationShutdownProcess()
         {
-            System.Diagnostics.Debug.WriteLine("Application shutdown");
+            logger.Info("Gobchat shutdown");
 
             //components are deactivated in reverse
             var deactivationSequence = _activeApplicationComponents.Reverse<IApplicationComponent>().ToList();
@@ -112,13 +117,14 @@ namespace Gobchat.Core.Runtime
             {
                 try
                 {
+                    logger.Info($"Shutdown: {component}");
                     component.Dispose(_applicationDIContext);
                 }
                 catch (System.Exception e)
                 {
-                    //TODO log, that's the best it gets
-                    Debug.WriteLine($"Shutdown error in {component}");
-                    Debug.WriteLine(e);
+                    //that's the best you get, no one cares for you - for now.
+                    logger.Warn($"Shutdown error in {component}");
+                    logger.Warn(e);
                 }
             }
             _activeApplicationComponents.Clear();

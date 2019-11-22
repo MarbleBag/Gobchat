@@ -54,7 +54,7 @@ namespace Gobchat.Core.Chat
                 {
                     builder.Append(txtToken.GetText());
                 }
-                else if (tokens[idx] is Memory.Chat.Token.ServerDelimiterToken slToken)
+                else if (tokens[idx] is Memory.Chat.Token.ServerDelimiterToken)
                 {
                     builder.Append(" ");
                     idx += 1;

@@ -62,7 +62,6 @@ namespace Gobchat.Core.Runtime
                                 progressMonitor.Log($"Delete partially downloaded cef archive\n{_cefPatchArchive}");
                                 File.Delete(_cefPatchArchive);
                                 throw new OperationCanceledException("Download cancelled");
-                                return null;
                         }
                     }
                     catch (Exception e) //TODO not good
@@ -135,12 +134,14 @@ namespace Gobchat.Core.Runtime
 
             //TODO message dialog
             {
+                logger.Info("CEF missing");
                 var dialogResult = MessageBox.Show(
                     "CEF not found. Without Gobchat will not work.\nShould it be downloaded and installed for Gobchat?",
                     "Gobchat",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                 );
+
                 if (dialogResult != DialogResult.Yes)
                 {
                     handler.StopStartup = true;
@@ -181,7 +182,9 @@ namespace Gobchat.Core.Runtime
             catch (Exception e)
             {
                 var errorMessage = $"CEF installation failed. Reason:\n{e.Message}\n\nRetry or install CEF manually for gobchat.";
-                System.Diagnostics.Debug.WriteLine(e);
+                logger.Fatal("CEF installation failed");
+                logger.Fatal(e);
+
                 MessageBox.Show(
                    errorMessage,
                    "Gobchat",

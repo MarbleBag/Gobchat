@@ -14,6 +14,7 @@
 using Gobchat.Core.Chat;
 using Gobchat.UI.Web;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,8 @@ namespace Gobchat.Core
     /// </summary>
     internal class GobchatWebAPI : IBrowserAPI
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private IManagedWebBrowser _browser;
         private OnUIEvent _eventHandler;
         private JavascriptBuilder _jsBuilder = new JavascriptBuilder();
@@ -41,12 +44,12 @@ namespace Gobchat.Core
 
         public void Message(string message)
         {
-            Debug.WriteLine("JSMSG: " + message?.Replace("{", "{{")?.Replace("}", "}}"));
+            logger.Debug(() => "UI Event: " + message?.Replace("{", "{{")?.Replace("}", "}}"));
 
             var obj = _jsBuilder.Deserialize<Dictionary<string, string>>(message);
             if (!obj.ContainsKey("event"))
             {
-                Debug.WriteLine("Error. UI event needs event name"); //TODO
+                logger.Warn("Recieved UI event without event name");
                 return;
             }
 

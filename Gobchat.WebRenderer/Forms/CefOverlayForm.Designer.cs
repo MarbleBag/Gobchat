@@ -34,6 +34,7 @@ namespace Gobchat.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CefOverlayForm));
             this.SuspendLayout();
             // 
             // CefOverlayForm
@@ -43,6 +44,7 @@ namespace Gobchat.UI.Forms
             this.BackColor = System.Drawing.Color.Magenta;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(50, 50);

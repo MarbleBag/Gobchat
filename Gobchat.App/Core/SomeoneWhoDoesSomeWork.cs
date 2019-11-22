@@ -31,13 +31,16 @@ using System.Collections.Concurrent;
 using Gobchat.Core.Util.Extension.Queue;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Config;
+using NLog;
 
 namespace Gobchat.Core
 {
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
-        private Memory.FFXIVMemoryProcessor _memoryProcessor;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        private Memory.FFXIVMemoryProcessor _memoryProcessor;
+        private IDIContext _container;
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
 
@@ -51,6 +54,8 @@ namespace Gobchat.Core
 
         internal void Initialize(global::Gobchat.Core.Runtime.IDIContext container, global::Gobchat.UI.Forms.CefOverlayForm overlay)
         {
+            _container = container;
+
             _overlay = overlay;
             _overlay.Visible = false;
 
@@ -105,12 +110,14 @@ namespace Gobchat.Core
         {
             if ("LoadGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
             {
+                logger.Info("Sending config to ui");
                 var json = _configManager.UserConfig.ToJson().ToString();
                 return new UIEvents.LoadGobchatConfigEvent(json);
             }
 
             if ("SaveGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
             {
+                logger.Info("Storing config from ui");
                 var configAsJson = _jsBuilder.Deserialize(details);
                 _configManager.UserConfig.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
             }
@@ -120,6 +127,7 @@ namespace Gobchat.Core
 
         private void LoadMemoryParser()
         {
+            logger.Info("Loading memory parser");
             _memoryProcessor = new Memory.FFXIVMemoryProcessor();
             _memoryProcessor.ProcessChangeEvent += MemoryProcessor_ProcessChangeEvent;
             _memoryProcessor.ChatlogEvent += MemoryProcessor_ChatlogEvent;
@@ -133,6 +141,7 @@ namespace Gobchat.Core
 
         private void LoadChatParser()
         {
+            logger.Info("Loading chat parser");
             var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"lang");
             var resourceResolvers = new IResourceResolver[] { new LocalFolderResourceResolver(languagePath) };
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
@@ -158,6 +167,7 @@ namespace Gobchat.Core
 
         private void LoadGobchatUI()
         {
+            logger.Info("Loading gobchat config");
             var htmlpath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
             var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
@@ -190,10 +200,21 @@ namespace Gobchat.Core
 
         private void MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
         {
+            //TODO
+
+            var uiManager = _container.Resolve<IUIManager>();
+            if (uiManager.TryGetUIElement<UI.NotifyIconManager>(ApplicationNotifyIconComponent.NotifyIconManagerId, out var trayIcon))
+            {
+                if (e.IsProcessValid)
+                    trayIcon.SetIconState(UI.NotifyIconManager.IconState.ClientFound);
+                else
+                    trayIcon.SetIconState(UI.NotifyIconManager.IconState.ClientNotFound);
+            }
+
             if (e.IsProcessValid)
-                Debug.WriteLine($"FFXIV process with id {e.ProcessId} detected!");
+                logger.Info("FFXIV process detected");
             else
-                Debug.WriteLine("No FFXIV process detected.");
+                logger.Info("No FFXIV process detected");
         }
 
         private void MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
@@ -212,9 +233,9 @@ namespace Gobchat.Core
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("Error in process chat log");
-                        Debug.WriteLine($"Log: {item}");
-                        Debug.WriteLine($"Error: {ex}");
+                        logger.Error("Error in process chat log");
+                        logger.Error(() => $"Log: {item}");
+                        logger.Error(ex);
                         return null;
                     }
                 })
@@ -225,7 +246,7 @@ namespace Gobchat.Core
             foreach (var msg in chatMessages)
             {
                 _messageQueue.Enqueue(msg);
-                Debug.WriteLine($"{msg}");
+                logger.Debug(() => msg.ToString());
             }
 
             // - filter unwanted tokens
@@ -273,7 +294,7 @@ namespace Gobchat.Core
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
 
-            Debug.WriteLine("Disposing Worker");
+            logger.Debug("Disposing worker");
 
             OnEvent_ApplicationExit();
 
