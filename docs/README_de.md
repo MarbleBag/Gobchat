@@ -49,7 +49,7 @@ Aktuell müssen diese Schritte noch von Hand durchgeführt werden.
 2. Schon fertig!
 
 ## Gobchat verwenden
-### Running
+### Gobchat starten
 1. Wechsel in deinen Gobchat Ordner
 1. Starte die Gobchat.exe
 1. Bei jedem Start prüft Gobchat ob neue Updates verfügbar sind
