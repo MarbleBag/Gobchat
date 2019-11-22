@@ -64,6 +64,10 @@ namespace Gobchat.Core.Runtime
                                 throw new OperationCanceledException("Download cancelled");
                         }
                     }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
                     catch (Exception e) //TODO not good
                     {
                         progressMonitor.Log($"An error occured: {e.Message}");

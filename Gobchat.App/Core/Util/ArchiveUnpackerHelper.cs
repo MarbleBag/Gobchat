@@ -81,10 +81,10 @@ namespace Gobchat.Core.Util
                         }
                     }
                 }
-
-                progressMonitor.StatusText = "Unpacking finished";
-                progressMonitor.Progress = 1d;
             }
+
+            progressMonitor.StatusText = "Unpacking complete";
+            progressMonitor.Progress = 1d;
 
             return ExtractionResult.Complete;
         }

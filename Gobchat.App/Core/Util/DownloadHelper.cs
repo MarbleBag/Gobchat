@@ -51,19 +51,9 @@ namespace Gobchat.Core.Util
                 progressMonitor.StatusText = $"Waiting...";
                 progressMonitor.Log("Prepare CEF download");
 
-                void OnDownloadDataCompleted(object s, DownloadDataCompletedEventArgs e)
-                {
-                    downloadException = e.Error;
-                    downloadResult = e.Cancelled ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfuly;
-
-                    progressMonitor.Progress = 1d;
-                    progressMonitor.StatusText = "Download finished";
-                    progressMonitor.Log("Download finished");
-                }
-
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
-                    progressMonitor.Progress = e.ProgressPercentage / 100;
+                    progressMonitor.Progress = e.ProgressPercentage / 100d;
                     progressMonitor.StatusText = $"Downloading: {e.BytesReceived} / {e.TotalBytesToReceive}";
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -72,7 +62,6 @@ namespace Gobchat.Core.Util
                     }
                 }
 
-                webClient.DownloadDataCompleted += OnDownloadDataCompleted;
                 webClient.DownloadProgressChanged += OnDownloadProgressChanged;
 
                 try
@@ -80,26 +69,28 @@ namespace Gobchat.Core.Util
                     progressMonitor.Log($"Connecting to {downloadUrl}");
                     var downloadTask = webClient.DownloadFileTaskAsync(downloadUrl, destinationFile);
                     downloadTask.Wait();
-                    //  cancellationToken.Register(webClient.CancelAsync);
-                    //  await downloadTask.ConfigureAwait(false);
-                }
-                catch (WebException ex) when (ex.Message == "The request was aborted: The request was canceled.")
-                {
+
+                    progressMonitor.Progress = 1d;
+                    progressMonitor.StatusText = "Download complete";
+                    progressMonitor.Log("Download complete");
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn(ex);
+                    downloadException = ex.Flatten();
                 }
-                catch (TaskCanceledException ex)
+                catch (Exception ex)
                 {
-                    logger.Warn(ex);
+                    downloadException = ex;
                 }
             }
 
-            if (downloadException != null)
+            if (downloadException != null && !cancellationToken.IsCancellationRequested)
+            {
+                logger.Fatal(downloadException);
                 throw downloadException;
+            }
 
-            return downloadResult;
+            return cancellationToken.IsCancellationRequested ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfuly;
         }
     }
 }
