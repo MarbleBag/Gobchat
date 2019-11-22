@@ -2,6 +2,7 @@
 Gobchat is ein Overlay mit dem Ziel den Chat für Rollenspieler angenehmer zu machen.
 
 Die Umsetzung dieser Software wurde inspiriert von [quisquous cactbot](https://github.com/quisquous/cactbot)
+und verwendet [sharlayan](https://github.com/FFXIVAPP/sharlayan) module von FFXIVAPP um den Speicher von FFXIV zu verarbeiten.
 
 Die Patchnotes können [hier](CHANGELOG.md) gefunden werden. (Englisch!)
 
@@ -58,7 +59,7 @@ In deiner Tray (Icons unten rechts) wird ein neues Icon erscheinen: ![gobchat lo
 Das bedeutet Gobchat läuft und sucht nach einer aktiven Instanz von FFXIV
 
 Wenn FFXIV läuft und Gobchat findet FFXIV, dann wechselt das Icon zu ![gobchat is ready to rumble](screen_gobchat_on.png)
-Gobchat ist jetzt bereit.
+Gobchat ist jetzt bereit. Das kann beim ersten Start von Gobchat eine Weile dauern.
 
 ### Lizenz
 Nur auf Englisch verfügbar:
