@@ -149,6 +149,14 @@ This icon means Gobchat is running and looks for a active instance of FFXIV
 If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready
 This may take a while on your first start of gobchat.
 
+### Tray Icon
+- Left click: Will show or hide the overlay
+- Right click: Will open a context menu
+
+### Closing
+1. Right click the tray icon of Gobchat.
+2. Click 'close'!
+
 ### License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
 You can find the full license [here](LICENSE.md) or at https://www.gnu.org/licenses/

@@ -61,6 +61,14 @@ Das bedeutet Gobchat läuft und sucht nach einer aktiven Instanz von FFXIV
 Wenn FFXIV läuft und Gobchat findet FFXIV, dann wechselt das Icon zu ![gobchat is ready to rumble](screen_gobchat_on.png)
 Gobchat ist jetzt bereit. Das kann beim ersten Start von Gobchat eine Weile dauern.
 
+### Tray Icon
+- Linksklick: Zeigt oder versteckt das Overlay
+- Rechtsklick:  Öffnet ein Kontextmenü
+
+### Gobchat schließen
+1. Rechtsklick das tray icon von Gobchat.
+2. Klicke auf 'close'!
+
 ### Lizenz
 Nur auf Englisch verfügbar:
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
