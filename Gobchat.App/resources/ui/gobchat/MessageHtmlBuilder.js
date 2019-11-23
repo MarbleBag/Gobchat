@@ -54,11 +54,7 @@ var Gobchat = (function (Gobchat) {
             const source = message.source
             let result = source.sourceId
             if (source.playerName !== null) {
-                if (message.source.serverName !== null) {
-                    result = `${source.playerName} [${source.serverName}]`
-                } else {
-                    result = `${source.playerName}`
-                }
+                result = source.playerName
             }
             return result.toLowerCase()
         }
