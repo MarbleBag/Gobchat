@@ -69,6 +69,9 @@ namespace Gobchat.Core.Config
             }
             else
             {
+                var finalizer = new StringToEnumTransformer();
+                userConfig = finalizer.Transform(userConfig);
+
                 clonedDefaultConfig.Merge(userConfig, new JsonMergeSettings()
                 {
                     MergeArrayHandling = MergeArrayHandling.Replace,
@@ -79,8 +82,6 @@ namespace Gobchat.Core.Config
                 userConfig = clonedDefaultConfig;
             }
 
-            var finalizer = new StringToEnumTransformer();
-            userConfig = finalizer.Transform(userConfig);
             UserConfig = new JsonGobchatConfig(userConfig);
         }
 
