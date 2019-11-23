@@ -55,14 +55,11 @@ namespace Gobchat.UI.Forms
             this.Text = "OverlayForm";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.OnEvent_Form_Load);
-            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.OverlayForm_Scroll);
-            this.VisibleChanged += new System.EventHandler(this.OverlayForm_VisibleChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnEvent_Form_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEvent_Form_KeyUp);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnEvent_Form_MouseDown);
             this.MouseEnter += new System.EventHandler(this.OverlayForm_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.OverlayForm_MouseLeave);
-            this.MouseHover += new System.EventHandler(this.OverlayForm_MouseHover);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnEvent_Form_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnEvent_Form_MouseUp);
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.OnEvent_Form_MouseWheel);

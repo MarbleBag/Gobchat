@@ -207,33 +207,23 @@ namespace Gobchat.UI.Forms
 
         private void OnEvent_Form_Load(object sender, EventArgs e)
         {
-            // _formEnsureTopmost.Start();
         }
 
         private void OverlayForm_MouseEnter(object sender, EventArgs e)
         {
+            // logger.Trace("Overlay mouse enter");
         }
 
         private void OverlayForm_MouseLeave(object sender, EventArgs e)
         {
-        }
-
-        private void OverlayForm_MouseHover(object sender, EventArgs e)
-        {
-        }
-
-        private void OverlayForm_Scroll(object sender, ScrollEventArgs e)
-        {
-        }
-
-        private void OverlayForm_VisibleChanged(object sender, EventArgs e)
-        {
+            // logger.Trace("Overlay mouse leave");
         }
 
         private void OnEvent_Form_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Modifiers.HasFlag(Keys.Control) || e.KeyCode == Keys.ControlKey)
             {
+                logger.Trace("Deactivate Overlay move");
                 _formMover.AllowToMove = false;
                 _formResizer.AllowToResize = false;
 
@@ -244,8 +234,9 @@ namespace Gobchat.UI.Forms
 
         private void OnEvent_Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers.HasFlag(Keys.Control) || e.KeyCode == Keys.Control)
+            if ((e.Modifiers.HasFlag(Keys.Control) || e.KeyCode == Keys.Control) && !_formMover.AllowToMove)
             {
+                logger.Trace("Activate Overlay move");
                 _formMover.AllowToMove = true;
                 _formResizer.AllowToResize = true;
 
