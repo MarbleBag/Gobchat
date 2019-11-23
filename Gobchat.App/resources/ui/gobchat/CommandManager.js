@@ -92,7 +92,7 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             const gobconfig = commandManager._config
-            const groupsorting = gobconfig.get("userdata.group.sorting")
+            const groupsorting = gobconfig.get("behaviour.groups.sorting")
             if (groupIdx <= 0 || groupsorting.length < groupIdx) {
                 commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [0,${groupsorting.length - 1}]`)
                 return
@@ -107,7 +107,7 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             if (task === "clear") {
-                gobconfig.set(`userdata.group.data.${groupId}.trigger`, [])
+                gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, [])
                 commandManager.sendInfoMessage(`Removed all players from group [${groupIdx}]${group.name}`)
                 gobconfig.saveToPlugin()
                 return //done
