@@ -14,6 +14,7 @@ The english version of this readme can be found [here.](README.md)
    1. ~~[Intelligentes Autoscroll](#smart-autoscroll)~~
    1. ~~[Text Formatierung](#text-formatting)~~
    1. ~~[Text-Hervorhebung](#text-highlighting-for-key-words---mentions)~~
+   1. ~~[Zieh- and Vergrößerbar](#draggable-and-resizeable)~~
    1. ~~[Gruppen](#groups)~~
    1. ~~[Chat Kommandos](#chat-commands)~~
 1. [Installation](#installation)

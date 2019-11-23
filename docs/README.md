@@ -12,6 +12,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
    1. [Smart Autoscroll](#smart-autoscroll)
    1. [Text formatting](#text-formatting)
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
+   1. [Draggable and Resizeable](#draggable-and-resizeable)
    1. [Groups](#groups)
    1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
@@ -51,6 +52,10 @@ Case-insensitive detection for a customizable list of words, which then will be 
 
 ### Customizable formatting settings
 
+### Draggable and Resizeable
+Click on the overlay to put the focus on it. By pressing and holding left-ctrl the drag- and resize-mode is activated. Indicated by a light, blue hue.
+To drag the overlay, simply press and hold your left mouse button and drag.
+To resize move your mouse to one of the four borders or corners of the overlay. The cursor will change, indicating the type of resizing. Now press and hold the left mouse button and resize.
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
