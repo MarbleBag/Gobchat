@@ -163,9 +163,12 @@
     <Compile Include="Core\Runtime\Component\ApplicationCefInstallerComponent.cs" />
     <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
     <Compile Include="Core\DownloadFailedException.cs" />
+    <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
+    <Compile Include="Core\Runtime\HotkeyManager.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
+    <Compile Include="Core\Runtime\IHotkeyManager.cs" />
     <Compile Include="Updater\Manager.cs" />
     <Compile Include="Updater\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />

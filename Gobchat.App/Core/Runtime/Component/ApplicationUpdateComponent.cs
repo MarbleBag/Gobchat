@@ -22,7 +22,7 @@ namespace Gobchat.Core.Runtime
             if (handler == null) throw new System.ArgumentNullException(nameof(handler));
 
             var configManager = container.Resolve<GobchatConfigManager>();
-            var doUpdate = configManager.UserConfig.GetProperty<bool>("behaviour.checkForUpdates");
+            var doUpdate = configManager.UserConfig.GetProperty<bool>("behaviour.checkForUpdate");
 
             if (doUpdate)
             {

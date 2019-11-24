@@ -78,7 +78,7 @@
             <article id="nav_general">
                 <p>
                     <div>
-                        <label>Language (soon)</label>
+                        <label>Language</label>
                         <select id="dropdown_language" disabled="true">
                             <option value="en">English</option>
                             <option value="de">Deutsch</option>
@@ -94,7 +94,19 @@
                 <p>
                     <div>
                         <label>Autodetect emotes in say channel</label>
-                        <input type="checkbox" id="input_autoemote">
+                        <input type="checkbox" id="input_autoemote" />
+                    </div>
+                    <div>
+                        <label>Hide when FF is in background</label>
+                        <input type="checkbox" id="general_input_autohide" disabled="true" />
+                    </div>
+                    <div>
+                        <label>Make a chat log</label>
+                        <input type="checkbox" id="general_input_chatlog" disabled="true" />
+                    </div>
+                    <div>
+                        <label>Check for updates on start</label>
+                        <input type="checkbox" id="general_input_update" disabled="true" />
                     </div>
                 </p>
                 <p>
@@ -112,6 +124,17 @@
                             <option value="medium">Medium</option>
                             <option value="large">Large</option>
                         </select>
+                    </div>
+                </p>
+                <p>
+                    <div>
+                        <label>Hotkeys:</label>
+                    </div>
+                    <div>
+                        <label>Hide &amp; show chat overlay</label>
+                    </div>
+                    <div>
+                        <input type="text" id="general_hotkey_showhide" />
                     </div>
                 </p>
             </article>

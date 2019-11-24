@@ -125,6 +125,22 @@
             }
             gobconfig.set("style.channel.base.font-size", newSize)
         })
+
+        $("#general_hotkey_showhide").on("keydown", function (event) {
+            if (event.keyCode == 13) // enter
+                return
+
+            //needs a way to transform the stored code into javascript and back
+            //this may create some problems for some very special keys
+
+            let msg = ""
+            if (event.shiftKey) msg += "Shift + "
+            if (event.altKey) msg += "Alt + "
+            if (event.ctrlKey) msg += "Ctrl + "
+            msg += event.keyCode;
+
+            $("#general_hotkey_showhide").val(msg)
+        })
     }
 
     function initializeChannelConfig() {

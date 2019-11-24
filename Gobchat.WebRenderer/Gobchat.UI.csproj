@@ -81,7 +81,6 @@
     <Compile Include="Forms\Helper\RenderHandlerAdapter.cs" />
     <Compile Include="Forms\NativeMethods.cs" />
     <Compile Include="Forms\ManagedWebBrowser.cs" />
-    <Compile Include="KeyboardHook.cs" />
     <Compile Include="UIManager.cs" />
     <Compile Include="Web\JavascriptBuilder.cs" />
     <Compile Include="Web\JavascriptEvents\FormStateUpdate.cs" />

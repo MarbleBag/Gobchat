@@ -88,11 +88,17 @@
     },
     "language": "en",
     "mentions": [],
-    "checkForUpdates": true,
+    "checkForUpdate": true,
     "autodetectEmoteInSay": true,
     "playSoundOnMention": false,
+    "hideOnMinimize": false,
+    "writeChatLog": true,
     "datacenter": null,
-    "displayServerType": 0,
+    "hotkeys": {
+      "showhide": {
+        "keys": null
+      }
+    },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],
       "data": {

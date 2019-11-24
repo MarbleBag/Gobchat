@@ -73,6 +73,7 @@ namespace Gobchat.Core.Runtime
                 new ApplicationConfigComponent(),
                 new ApplicationUpdateComponent(),
                 new ApplicationCefInstallerComponent(),
+                new ApplicationHotkeyComponent(),
                 new ApplicationCefOverlayComponent(),
                 new ApplicationNotifyIconComponent(),
                 new ApplicationChatComponent()

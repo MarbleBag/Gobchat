@@ -39,14 +39,13 @@ namespace Gobchat.Core
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private IDIContext _container;
+
+        private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
 
         private global::Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new global::Gobchat.UI.Web.JavascriptBuilder();
-
-        private KeyboardHook _keyboardHook;
 
         private Chat.ChatlogParser _chatlogParser;
         private readonly ConcurrentQueue<Chat.ChatMessage> _messageQueue = new ConcurrentQueue<Chat.ChatMessage>();
@@ -300,9 +299,6 @@ namespace Gobchat.Core
 
             if (!_disposedValue)
             {
-                _keyboardHook?.Dispose();
-                _keyboardHook = null;
-
                 _memoryProcessor = null;
 
                 _api = null;

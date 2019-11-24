@@ -13,6 +13,7 @@
 
 using Gobchat.UI.Forms;
 using Gobchat.UI.Web;
+using Gobchat.Core.Config;
 
 namespace Gobchat.Core.Runtime
 {
