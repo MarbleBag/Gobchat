@@ -53,7 +53,13 @@ namespace Gobchat.Core.Runtime
                     _context.Post((s) => action.Invoke(), null);
             }
 
-            public void RunSync(Action action) => _context.Send((s) => action.Invoke(), null);
+            public void RunSync(Action action)
+            {
+                _context.Send((s) =>
+                {
+                    action.Invoke();
+                }, null);
+            }
         }
 
         public static string ResourceLocation

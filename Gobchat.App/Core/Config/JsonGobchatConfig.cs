@@ -211,6 +211,9 @@ namespace Gobchat.Core.Config
             if (!(jToken is JValue jValue))
                 throw new InvalidPropertyTypeException(key, typeof(T), jToken.GetType());
 
+            if (jValue.Value == null)
+                return default;
+
             if (!(jValue.Value is T))
                 throw new InvalidPropertyTypeException(key, typeof(T), jValue.Value.GetType());
 

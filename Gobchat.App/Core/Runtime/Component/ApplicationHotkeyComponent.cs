@@ -6,7 +6,7 @@ namespace Gobchat.Core.Runtime
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private IHotkeyManager _hotkeyManager;
+        private HotkeyManager _hotkeyManager;
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {

@@ -18,7 +18,7 @@ using System.Text.RegularExpressions;
 
 namespace Gobchat.Core.Chat
 {
-    internal class ChatlogParser
+    internal sealed class ChatlogParser
     {
         public IAutotranslateProvider AutotranslateLookup;
 

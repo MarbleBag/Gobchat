@@ -16,19 +16,23 @@ using System.Linq;
 
 namespace Gobchat.Core.Util.Extension
 {
-    public static class EnumExtensions
+    public static partial class ExtEnumJson
     {
         public static string EnumToJson(this Type type)
         {
             if (!type.IsEnum)
-                throw new InvalidOperationException("enum expected");
+                throw new ArgumentException("enum type expected", nameof(type));
 
             var results =
                 Enum.GetValues(type).Cast<object>()
                     .ToDictionary(enumValue => enumValue.ToString(), enumValue => (int)enumValue);
 
-            //return string.Format("{{ \"{0}\" : {1} }}", type.Name, Newtonsoft.Json.JsonConvert.SerializeObject(results));
             return Newtonsoft.Json.JsonConvert.SerializeObject(results);
+        }
+
+        public static TEnum? StringToEnum<TEnum>(this string str) where TEnum : struct, IConvertible
+        {
+            return global::Gobchat.Core.Util.EnumUtil.ObjectToEnum<TEnum>(str);
         }
     }
 }

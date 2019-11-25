@@ -126,21 +126,39 @@
             gobconfig.set("style.channel.base.font-size", newSize)
         })
 
-        $("#general_hotkey_showhide").on("keydown", function (event) {
-            if (event.keyCode == 13) // enter
-                return
+        {
+            $("#general_hotkey_showhide").val(gobconfig.get("behaviour.hotkeys.showhide", ""))
+            $("#general_hotkey_showhide").on("keydown", function (event) {
+                //needs a way to transform the stored code into javascript and back
+                //this may create some problems for some very special keys
 
-            //needs a way to transform the stored code into javascript and back
-            //this may create some problems for some very special keys
+                if (event.keyCode == 13) // enter
+                    return
 
-            let msg = ""
-            if (event.shiftKey) msg += "Shift + "
-            if (event.altKey) msg += "Alt + "
-            if (event.ctrlKey) msg += "Ctrl + "
-            msg += event.keyCode;
+                if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18) {
+                    $("#general_hotkey_showhide").val("")
+                    gobconfig.set("behaviour.hotkeys.showhide", "")
+                    return
+                }
 
-            $("#general_hotkey_showhide").val(msg)
-        })
+                event.preventDefault()
+
+                let msg = ""
+                if (event.shiftKey) msg += "Shift + "
+                if (event.altKey) msg += "Alt + "
+                if (event.ctrlKey) msg += "Ctrl + "
+
+                var keyEnum = Gobchat.KeyCodeToKeyEnum(event.keyCode)
+                if (keyEnum === null) {
+                    msg = ""
+                } else {
+                    msg += keyEnum
+                }
+
+                $("#general_hotkey_showhide").val(msg)
+                gobconfig.set("behaviour.hotkeys.showhide", msg)
+            })
+        }
     }
 
     function initializeChannelConfig() {

@@ -151,7 +151,7 @@
     <Compile Include="Core\Config\GobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
     <Compile Include="Core\Chat\ChannelEnum.cs" />
-    <Compile Include="Core\Chat\SegmentEnum.cs" />
+    <Compile Include="Core\Chat\MessageSegmentEnum.cs" />
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\JsonGobchatConfig.cs" />
@@ -300,7 +300,7 @@
     <Compile Include="Core\Chat\ChatlogParser.cs" />
     <Compile Include="Core\Chat\ChatMessage.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
-    <Compile Include="Core\Util\Extension\EnumExtensions.cs" />
+    <Compile Include="Core\Util\Extension\ExtEnumJson.cs" />
     <Compile Include="Core\Util\EnumUtil.cs" />
     <Compile Include="Core\Util\Lookup.cs" />
     <Compile Include="Core\Resource\ResourceBundle.cs" />

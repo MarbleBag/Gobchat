@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Gobchat.Core.Runtime
 {
-    public interface IHotkeyManager : IDisposable
+    public interface IHotkeyManager
     {
         /// <summary>
         ///

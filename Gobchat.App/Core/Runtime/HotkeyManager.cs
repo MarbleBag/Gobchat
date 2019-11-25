@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Gobchat.Core.Runtime
 {
     // https://docs.microsoft.com/de-de/windows/win32/api/winuser/nf-winuser-registerhotkey?redirectedfrom=MSDN
-    public sealed class HotkeyManager : IHotkeyManager
+    public sealed class HotkeyManager : IHotkeyManager, IDisposable
     {
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -53,7 +53,7 @@ namespace Gobchat.Core.Runtime
         {
             public int Id { get; }
 
-            private IList<Action> _callbacks = new List<Action>();
+            private readonly IList<Action> _callbacks = new List<Action>();
 
             public HotkeyCallback(int id)
             {
@@ -112,6 +112,7 @@ namespace Gobchat.Core.Runtime
             // Keys stores modifiers in the upper 16 bits.
             // Instead of overwritting with 0 and shifting our modifiers, shift them away and put our modifier in the lower 16 bit
             var modifier = GetModifierKeys(keys);
+            keys = RemoveModifierKeys(keys);
             uint lookup = ((uint)keys << 16) | ((uint)modifier);
             if (!_hotkeys.ContainsKey(lookup))
             {
@@ -142,15 +143,18 @@ namespace Gobchat.Core.Runtime
             return modifiers;
         }
 
+        private Keys RemoveModifierKeys(Keys keys)
+        {
+            return keys & ~Keys.Modifiers;
+        }
+
         private void RegisterHotKey(int id, ModifierKeys modifier, Keys key)
         {
             int errorCode = 0;
             _synchronizer.RunSync(() =>
             {
                 if (!RegisterHotKey(_hiddenWindow.Handle, id, fsModifiers: ((uint)modifier) | MOD_NOREPEAT, vk: (uint)key))
-                {
                     errorCode = Marshal.GetLastWin32Error();
-                }
             });
 
             if (errorCode != 0)
@@ -173,6 +177,7 @@ namespace Gobchat.Core.Runtime
                 throw new ArgumentNullException(nameof(callback));
 
             var modifier = GetModifierKeys(keys);
+            keys = RemoveModifierKeys(keys);
             uint lookup = ((uint)keys << 16) | ((uint)modifier);
             if (_hotkeys.TryGetValue(lookup, out var hotkey))
             {

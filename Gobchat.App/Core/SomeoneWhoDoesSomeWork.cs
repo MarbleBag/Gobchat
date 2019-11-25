@@ -35,6 +35,7 @@ using NLog;
 
 namespace Gobchat.Core
 {
+    // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -50,6 +51,8 @@ namespace Gobchat.Core
         private Chat.ChatlogParser _chatlogParser;
         private readonly ConcurrentQueue<Chat.ChatMessage> _messageQueue = new ConcurrentQueue<Chat.ChatMessage>();
         private DateTime _lastChatMessageTime;
+
+        private string _hotkey;
 
         internal void Initialize(global::Gobchat.Core.Runtime.IDIContext container, global::Gobchat.UI.Forms.CefOverlayForm overlay)
         {
@@ -95,14 +98,11 @@ namespace Gobchat.Core
                 _overlay.Size = new System.Drawing.Size((int)width, (int)height);
             }
 
+            UpdateHotkeys();
+
             //TODO make sure chat is not outside of display
             //TODO make sure chat is not too small
             //TODO make sure chat is not too big
-
-            //not working
-            //_keyboardHook = new KeyboardHook();
-            // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.U, () => _overlay.InvokeUIThread(true, () => _overlay.Visible = false));
-            // _keyboardHook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.M, () => Debug.WriteLine("Yay!"));
         }
 
         private JSEvent OnEvent_UIMessage(string eventName, string details)
@@ -119,6 +119,10 @@ namespace Gobchat.Core
                 logger.Info("Storing config from ui");
                 var configAsJson = _jsBuilder.Deserialize(details);
                 _configManager.UserConfig.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
+
+                //TODO fire change events / move config to c#
+
+                UpdateHotkeys();
             }
 
             return null;
@@ -177,24 +181,48 @@ namespace Gobchat.Core
 
         private void LoadGobchatNamespace()
         {
+            InjectGobchatJavascript(builder =>
+            {
+                builder.Append("Gobchat.ChannelEnum = ");
+                builder.AppendLine(typeof(Chat.ChannelEnum).EnumToJson());
+
+                builder.Append("Gobchat.MessageSegmentEnum = ");
+                builder.AppendLine(typeof(Chat.MessageSegmentEnum).EnumToJson());
+
+                builder.Append("Gobchat.DefaultChatConfig = ");
+                builder.AppendLine(_configManager.DefaultConfig.ToJson().ToString());
+            });
+
+            InjectGobchatJavascript(builder =>
+            {
+                builder.Append("Gobchat.KeyCodeToKeyEnum = ");
+                builder.AppendLine("function(keyCode){");
+                {
+                    var lookupTable = Enum.GetValues(typeof(System.Windows.Forms.Keys)).Cast<object>()
+                                    .Where(enumValue => (((Keys)enumValue) & Keys.Modifiers) == 0)
+                                    .Distinct()
+                                    .ToDictionary(enumValue => (int)enumValue, enumValue => enumValue.ToString());
+                    var jsonObject = Newtonsoft.Json.JsonConvert.SerializeObject(lookupTable);
+
+                    builder.Append("const lookup = ").AppendLine(jsonObject);
+                    builder.AppendLine("const result = lookup[keyCode]");
+                    builder.AppendLine("return result === undefined ? null : result");
+                }
+                builder.AppendLine("}");
+            });
+        }
+
+        private void InjectGobchatJavascript(Action<System.Text.StringBuilder> content)
+        {
             System.Text.StringBuilder builder = new System.Text.StringBuilder();
             builder.AppendLine("'use strict'");
             builder.AppendLine("var Gobchat = (function(Gobchat){");
-
-            builder.Append("Gobchat.ChannelEnum = ");
-            builder.AppendLine(typeof(Chat.ChannelEnum).EnumToJson());
-
-            builder.Append("Gobchat.MessageSegmentEnum = ");
-            builder.AppendLine(typeof(Chat.MessageSegmentEnum).EnumToJson());
-
-            builder.Append("Gobchat.DefaultChatConfig = ");
-            builder.AppendLine(_configManager.DefaultConfig.ToJson().ToString());
-
+            builder.AppendLine();
+            content(builder);
+            builder.AppendLine();
             builder.AppendLine("return Gobchat");
             builder.AppendLine("}(Gobchat || {}));");
-
-            var script = builder.ToString();
-            _overlay.Browser.ExecuteScript(script);
+            _overlay.Browser.ExecuteScript(builder.ToString());
         }
 
         private void MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
@@ -257,6 +285,87 @@ namespace Gobchat.Core
             //TODO process each message
         }
 
+        private void UpdateHotkeys()
+        {
+            Keys StringToKeys(string keys)
+            {
+                if (keys == null || keys.Length == 0)
+                    return Keys.None;
+
+                var split = keys.Split(new char[] { '+' }).Select(s => s.Trim().ToLower());
+
+                Keys nKeys = new Keys();
+                foreach (var s in split)
+                {
+                    switch (s)
+                    {
+                        case "shift":
+                            nKeys |= Keys.Shift;
+                            break;
+
+                        case "ctrl":
+                            nKeys |= Keys.Control;
+                            break;
+
+                        case "alt":
+                            nKeys |= Keys.Alt;
+                            break;
+
+                        default:
+                            var result = global::Gobchat.Core.Util.EnumUtil.ObjectToEnum<Keys>(s);
+                            if (result.HasValue)
+                                nKeys |= result.Value;
+                            break;
+                    }
+                }
+
+                if ((nKeys & ~Keys.Modifiers) != 0)
+                    return nKeys;
+                return Keys.None;
+            }
+
+            var hotkeyManager = _container.Resolve<IHotkeyManager>();
+            var configHotkey = _configManager.UserConfig.GetProperty<string>("behaviour.hotkeys.showhide");
+
+            var currentHotkey = StringToKeys(_hotkey);
+            var newHotkey = StringToKeys(configHotkey);
+
+            if (currentHotkey == newHotkey)
+                return;
+
+            try
+            {
+                if (currentHotkey == Keys.None)
+                {
+                    hotkeyManager.RegisterHotKey(newHotkey, OnEvent_Hotkey);
+                }
+                else
+                {
+                    hotkeyManager.UnregisterHotKey(currentHotkey, OnEvent_Hotkey);
+                    if (newHotkey != Keys.None)
+                        hotkeyManager.RegisterHotKey(newHotkey, OnEvent_Hotkey);
+                }
+
+                _hotkey = configHotkey;
+            }
+            catch (InvalidHotkeyException e)
+            {
+                _configManager.UserConfig.SetProperty("behaviour.hotkeys.showhide", "");
+                logger.Fatal(e, "Invalid Hotkey");
+
+                var userMsg = new Chat.ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, $"Invalid Hotkey: {e.Message}");
+                _messageQueue.Enqueue(userMsg);
+            }
+        }
+
+        private void OnEvent_Hotkey()
+        {
+            _overlay.InvokeAsyncOnUI((f) =>
+            {
+                f.Visible = !f.Visible;
+            });
+        }
+
         internal void Update()
         {
             _memoryProcessor.Update();
@@ -270,6 +379,8 @@ namespace Gobchat.Core
                         //TODO maybe this can be done by calling gobchat directly
                         var script = _jsBuilder.BuildCustomEventDispatcher(new Chat.ChatMessageWebEvent(message));
                         _overlay.Browser.ExecuteScript(script);
+
+                        //TODO dispatch them also to log
                     }
                 }
             });
