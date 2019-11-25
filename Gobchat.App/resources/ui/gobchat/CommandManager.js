@@ -80,7 +80,7 @@ var Gobchat = (function (Gobchat, undefined) {
             const groupIdx = parseInt(getMatchingGroup(result, 1), 10) 	//a number
             const task = getMatchingGroup(result, 2).toLowerCase() 		//either add, remove or clear
             const playerNameComposite = getMatchingGroup(result, 4) 		//may be null
-            let serverName = getMatchingGroup(result, 5) 				//may be null
+            const serverName = getMatchingGroup(result, 5) 				//may be null
 
             function isAvailable(str) {
                 return str !== null && str !== undefined && str.length > 0
@@ -114,21 +114,13 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             let playerNameAndServer = null
-
             if (serverName !== null) { //server is given in the form of '[server]'
-                serverName = serverName.trim()
-                playerNameAndServer = playerNameComposite + " " + serverName
+                playerNameAndServer = playerNameComposite.trim() + " " + serverName.trim()
             } else {
-                //there may or may not be a server
-                const result = Gobchat.MessageParserHelper.tryAndSeparatePlayerFromServer(playerNameComposite, null) //TODO remember datacenter
-                if (result.found) {
-                    playerNameAndServer = `${result.playerName} [${result.serverName}]`
-                } else {
-                    playerNameAndServer = playerNameComposite
-                }
+                playerNameAndServer = playerNameComposite.trim()
             }
 
-            playerNameAndServer = playerNameAndServer.trim().toLowerCase()
+            playerNameAndServer = playerNameAndServer.toLowerCase().replace(/\s\s+/g, ' ')
 
             if (playerNameAndServer.length === 0) {
                 commandManager.sendErrorMessage(`Command 'group' unable to read player name '${playerNameAndServer}'`)
