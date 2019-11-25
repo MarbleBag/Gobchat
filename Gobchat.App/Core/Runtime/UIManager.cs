@@ -19,6 +19,37 @@ namespace Gobchat.Core.Runtime
     public sealed class UIManager : IUIManager
     {
         private readonly Dictionary<string, object> _map = new Dictionary<string, object>();
+        private readonly IUISynchronizer _synchronizer;
+
+        public UIManager(IUISynchronizer synchronizer)
+        {
+            _synchronizer = synchronizer ?? throw new ArgumentNullException(nameof(synchronizer));
+        }
+
+        public T CreateUIElement<T>(string id, Func<T> generator)
+        {
+            if (_map.ContainsKey(id))
+                throw new UIElementIdAlreadyInUseException(id);
+
+            T result = default;
+            _synchronizer.RunSync(() => result = generator());
+            if (result != null)
+                _map.Add(id, result);
+            return result;
+        }
+
+        public void DisposeUIElement(string id)
+        {
+            _synchronizer.RunSync(() =>
+            {
+                if (TryGetUIElement<object>(id, out var element))
+                {
+                    RemoveUIElement(id);
+                    if (element is IDisposable disposable)
+                        disposable.Dispose();
+                }
+            });
+        }
 
         public T GetUIElement<T>(string id)
         {
@@ -68,45 +99,6 @@ namespace Gobchat.Core.Runtime
             }
 
             return false;
-        }
-    }
-
-    public abstract class UIManagerException : System.Exception
-    {
-        public UIManagerException(string message) : base(message)
-        {
-        }
-
-        public UIManagerException(string message, System.Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public UIManagerException()
-        {
-        }
-    }
-
-    public class UIElementNotFoundException : UIManagerException
-    {
-        public UIElementNotFoundException(string elementId) : base(elementId)
-        {
-        }
-    }
-
-    public class UIElementTypeException : UIManagerException
-    {
-        private const string ERROR_MESSAGE = "Expected type {0} but was {1}";
-
-        public UIElementTypeException(System.Type expected, System.Type actual)
-            : base(String.Format(ERROR_MESSAGE, expected.FullName, actual.FullName))
-        {
-        }
-    }
-
-    public class UIElementIdAlreadyInUseException : UIManagerException
-    {
-        public UIElementIdAlreadyInUseException(String id) : base(id)
-        {
         }
     }
 }

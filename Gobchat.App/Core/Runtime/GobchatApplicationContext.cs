@@ -56,7 +56,7 @@ namespace Gobchat.Core.Runtime
         {
             _activeApplicationComponents = new List<IApplicationComponent>();
             _applicationDIContext = new DIContext();
-            _uiManager = new UIManager();
+            _uiManager = new UIManager(GobchatApplicationContext.UISynchronizer);
 
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
