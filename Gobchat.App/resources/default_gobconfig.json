@@ -92,7 +92,7 @@
     "autodetectEmoteInSay": true,
     "playSoundOnMention": false,
     "hideOnMinimize": false,
-    "writeChatLog": true,
+    "writeChatLog": false,
     "datacenter": null,
     "hotkeys": {
       "showhide": ""

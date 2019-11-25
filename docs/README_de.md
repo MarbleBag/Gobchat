@@ -15,6 +15,7 @@ The english version of this readme can be found [here.](README.md)
    1. ~~[Text Formatierung](#text-formatting)~~
    1. ~~[Text-Hervorhebung](#text-highlighting-for-key-words---mentions)~~
    1. ~~[Zieh- and Vergrößerbar](#draggable-and-resizeable)~~
+   1. ~~[Chat Log](#chat-Log)~~
    1. ~~[Gruppen](#groups)~~
    1. ~~[Chat Kommandos](#chat-commands)~~
 1. [Installation](#installation)
@@ -26,7 +27,7 @@ The english version of this readme can be found [here.](README.md)
 
 ### Erforderliche Programme
 
-Installiere [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.8 oder höher
+Installiere [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.7.2 oder höher
 
 Visual C++ Redistributable Packages
 Installiere [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) für 64-bit Windows

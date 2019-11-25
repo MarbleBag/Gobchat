@@ -13,6 +13,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
    1. [Text formatting](#text-formatting)
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Draggable and Resizeable](#draggable-and-resizeable)
+   1. [Chat Log](#chat-Log)
    1. [Groups](#groups)
    1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
@@ -56,6 +57,13 @@ Case-insensitive detection for a customizable list of words, which then will be 
 Click on the overlay to put the focus on it. By pressing and holding left-ctrl the drag- and resize-mode is activated. Indicated by a light, blue hue.
 To drag the overlay, simply press and hold your left mouse button and drag.
 To resize move your mouse to one of the four borders or corners of the overlay. The cursor will change, indicating the type of resizing. Now press and hold the left mouse button and resize.
+
+### Chat Log
+Gobchat can write your chat history to a file, preserving informations you might want to look up later or just to reread fun moments.
+They can be found under AppData\Roaming\Gobchat. 
+
+Each time Gobchat is started it will create a new file.
+By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings. 
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
@@ -118,7 +126,7 @@ Examples:
 
 ### Dependencies
 
-Install [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.8 or above
+Install [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.7.2 or above
 
 Visual C++ Redistributable Packages
 Install [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) for 64-bit Windows

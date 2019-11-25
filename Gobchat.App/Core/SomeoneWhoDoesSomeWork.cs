@@ -35,6 +35,59 @@ using NLog;
 
 namespace Gobchat.Core
 {
+    internal sealed class ChatLogger : IDisposable
+    {
+        private GobchatConfigManager _configManager;
+        private Queue<Chat.ChatMessage> _pendingMessages = new Queue<ChatMessage>();
+        private string _fileHandle;
+
+        public ChatLogger(GobchatConfigManager configManager)
+        {
+            _configManager = configManager;
+        }
+
+        public void Dispose()
+        {
+            Flush();
+        }
+
+        public void Flush()
+        {
+            if (_pendingMessages.Count < 1)
+                return;
+
+            if (_fileHandle == null)
+            {
+                var logFolder = GobchatApplicationContext.UserLogLocation;
+                Directory.CreateDirectory(logFolder);
+                var timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm");
+                var fileName = $"chatlog_{timestamp}.log";
+                _fileHandle = Path.Combine(logFolder, fileName);
+            }
+
+            var logLines = _pendingMessages.DequeueAll().Select(e =>
+            { // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
+                return $"00|{e.Timestamp.ToString("o")}|{e.MessageType.ToString("x4")}|{e.Source}|{e.Message}|";
+            });
+
+            File.AppendAllLines(_fileHandle, logLines);
+        }
+
+        public void Log(Chat.ChatMessage message)
+        {
+            var doLog = _configManager.UserConfig.GetProperty<bool>("behaviour.writeChatLog");
+            if (!doLog)
+                return;
+
+            var visibleChannels = _configManager.UserConfig.GetProperty<List<long>>("behaviour.channel.visible");
+            var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
+            // visibleChannels.Cast<Newtonsoft.Json.Linq.JValue>().Any(e => e.Value )
+
+            if (visibleChannels.Contains(message.MessageType))//todo
+                _pendingMessages.Enqueue(message);
+        }
+    }
+
     // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
@@ -45,6 +98,8 @@ namespace Gobchat.Core
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
+        private GobchatConfigManager _configManager;
+        private ChatLogger _chatLogger;
 
         private global::Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new global::Gobchat.UI.Web.JavascriptBuilder();
 
@@ -62,6 +117,7 @@ namespace Gobchat.Core
             _overlay.Visible = false;
 
             _configManager = container.Resolve<GobchatConfigManager>();
+            _chatLogger = new ChatLogger(_configManager);
 
             //   Application.ApplicationExit += (s, e) => OnEvent_ApplicationExit();
 
@@ -381,6 +437,22 @@ namespace Gobchat.Core
                         _overlay.Browser.ExecuteScript(script);
 
                         //TODO dispatch them also to log
+                        try
+                        {
+                            _chatLogger.Log(message);
+                        }
+                        catch (Exception e)
+                        {
+                            logger.Fatal(e);
+                        }
+                    }
+                    try
+                    {
+                        _chatLogger.Flush();
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Fatal(e);
                     }
                 }
             });
@@ -389,7 +461,6 @@ namespace Gobchat.Core
         #region IDisposable Support
 
         private bool _disposedValue = false; // To detect redundant calls
-        private GobchatConfigManager _configManager;
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~SomeoneWhoDoesSomeWork()
@@ -415,6 +486,9 @@ namespace Gobchat.Core
                 _api = null;
 
                 _overlay = null;
+
+                _chatLogger?.Dispose();
+                _chatLogger = null;
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
