@@ -53,6 +53,13 @@ namespace Gobchat.Memory
 
         public void Initialize()
         {
+            Sharlayan.MemoryHandler.Instance.ExceptionEvent += (s, e) =>
+            {
+                if (e.LevelIsError)
+                    logger.Fatal(e.Exception, () => $"Memory Error in {e.Sender}");
+                else
+                    logger.Warn(e.Exception, () => $"Memory Error in {e.Sender}");
+            };
         }
 
         public void Update()
