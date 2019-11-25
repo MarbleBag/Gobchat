@@ -24,18 +24,8 @@ namespace Gobchat.Core.Runtime
 {
     public abstract class AbstractGobchatApplicationContext : System.Windows.Forms.ApplicationContext
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
-        private class ContextSpecificSynchronizer : IUISynchronizer
+        private sealed class ContextSpecificSynchronizer : IUISynchronizer
         {
-            private class EmptyUnhandledExceptionHandler : IUnhandledExceptionHandler
-            {
-                public void Handle(Exception exception)
-                {
-                    //TODO do logging
-                }
-            }
-
             private SynchronizationContext _context;
 
             public ContextSpecificSynchronizer(SynchronizationContext uiContext)
@@ -62,14 +52,26 @@ namespace Gobchat.Core.Runtime
             }
         }
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static string ResourceLocation
         {
             get { return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources"); }
         }
 
+        public static string UserDataLocation
+        {
+            get { return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gobchat"); }
+        }
+
+        public static string UserLogLocation
+        {
+            get { return System.IO.Path.Combine(UserDataLocation, "log"); }
+        }
+
         public static string UserConfigLocation
         {
-            get { return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Gobchat\config"); }
+            get { return System.IO.Path.Combine(UserDataLocation, "config"); }
         }
 
         public static string ApplicationLocation
@@ -109,7 +111,7 @@ namespace Gobchat.Core.Runtime
             }
             catch (Exception e)
             {
-                //TODO log
+                logger.Warn(e, "Error in appWorker");
             }
 
             try

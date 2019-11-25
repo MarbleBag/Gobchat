@@ -13,7 +13,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Gobchat</RootNamespace>
     <AssemblyName>Gobchat</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -164,6 +164,7 @@
     <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
     <Compile Include="Core\DownloadFailedException.cs" />
     <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
+    <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Core\Runtime\HotkeyManager.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
