@@ -204,10 +204,10 @@ namespace Gobchat.Core.Config
         private T GetJsonValue<T>(string key, JToken jToken)
         {
             if (jToken is T tValue)
-            {
                 return tValue;
-            }
+            return jToken.ToObject<T>(); //works quite well
 
+            /*
             if (!(jToken is JValue jValue))
                 throw new InvalidPropertyTypeException(key, typeof(T), jToken.GetType());
 
@@ -218,6 +218,7 @@ namespace Gobchat.Core.Config
                 throw new InvalidPropertyTypeException(key, typeof(T), jValue.Value.GetType());
 
             return (T)jValue.Value;
+            */
         }
 
         public void SetProperty(string key, object value)

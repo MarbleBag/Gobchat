@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms
 {
-    internal class ManagedWebBrowser : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser, IDisposable, IManagedWebBrowser
+    internal sealed class ManagedWebBrowser : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser, IDisposable, IManagedWebBrowser
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -225,7 +225,7 @@ namespace Gobchat.UI.Forms
 
         public new void Dispose()
         {
-            logger.Debug("Disposing Browser");
+            logger.Debug($"Disposing {nameof(ManagedWebBrowser)}");
             CefBrowser.Dispose();
         }
 

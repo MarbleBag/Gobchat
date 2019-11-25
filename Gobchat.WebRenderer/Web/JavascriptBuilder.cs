@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.UI.Web
 {
-    public class JavascriptBuilder
+    public sealed class JavascriptBuilder
     {
         private readonly System.Text.StringBuilder stringbuilder;
         private readonly Newtonsoft.Json.JsonSerializer jsonSerializer;

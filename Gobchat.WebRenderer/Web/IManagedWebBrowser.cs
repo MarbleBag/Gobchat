@@ -19,9 +19,6 @@ namespace Gobchat.UI.Web
 {
     public interface IManagedWebBrowser
     {
-        bool IsBrowserInitialized { get; }
-        Size Size { get; set; }
-
         event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
 
         event EventHandler<BrowserErrorEventArgs> BrowserError;
@@ -35,6 +32,9 @@ namespace Gobchat.UI.Web
         event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPage;
 
         event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
+
+        bool IsBrowserInitialized { get; }
+        Size Size { get; set; }
 
         bool BindBrowserAPI(IBrowserAPI api, bool isApiAsync);
 

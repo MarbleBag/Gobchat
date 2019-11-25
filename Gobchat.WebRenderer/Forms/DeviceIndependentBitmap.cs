@@ -60,13 +60,12 @@ namespace Gobchat.UI.Forms
         public void Dispose()
         {
             if (this.Handle != IntPtr.Zero)
-            {
                 NativeMethods.DeleteObject(Handle);
-            }
+            this.Handle = IntPtr.Zero;
+
             if (this.DeviceContext != IntPtr.Zero)
-            {
                 NativeMethods.DeleteDC(DeviceContext);
-            }
+            this.DeviceContext = IntPtr.Zero;
 
             this.IsDisposed = true;
         }
