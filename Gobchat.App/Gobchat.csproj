@@ -74,6 +74,7 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="App.config" />
     <None Include="move-cef-redists.bat" />
     <None Include="move-cef-redists.ps1" />
