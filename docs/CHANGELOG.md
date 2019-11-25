@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Checks for a new version of gobchat on start-up
 - Tray Icon! It even can be clicked. Watch out!
 - Support for ffxiv's autotranslate. (English)
+- Chat History to file
 
 ## [0.2.2] - 2019.11.27
 ### Added
