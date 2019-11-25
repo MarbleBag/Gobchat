@@ -608,9 +608,7 @@
             maxSelectionSize: 6,
             clickoutFiresChange: false,
             hide: function (color) {
-                console.log("Is called: " + color)
                 if (color !== null) {
-                    console.log(`Is called: ${options.configKey} => ${color.toString()}`)
                     window.gobconfig.set(options.configKey, color.toString())
                 } else {
                     window.gobconfig.set(options.configKey, null)
