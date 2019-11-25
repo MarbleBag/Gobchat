@@ -37,7 +37,7 @@ Installiere [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.ex
 
 1. Besuch die Seite mit der [neusten Version](https://github.com/marblebag/gobchat/releases/latest) von Gobchat
 2. Lade die neuste Version von Gobchat herunter. Die Datei heißt 'gobchat-{version}.zip'
-3. Mache einen Rechtsklick auf die Zip Datai und gehe zu „Eigenschaften/Properties“.  Unten rechts in der Ecke des Eigenschaften Menüs auf „Unblock/freigeben“ klicken. Dann auf ok, um das Menü zu schließen.
+3. Mache einen Rechtsklick auf die Zip Datei und gehe zu „Eigenschaften/Properties“.  Unten rechts in der Ecke des Eigenschaften Menüs auf „Unblock/freigeben“ klicken. Dann auf ok, um das Menü zu schließen.
 4. Die zip Datei am gewünschten Ort entpacken. Die Datei enthält einen Ordner mit dem Namen Gobchat.
 5. Wechsel in den Ordner Gobchat
 6. Starte die Gobchat.exe
