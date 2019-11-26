@@ -16,6 +16,136 @@ using System.Windows.Forms;
 
 namespace Gobchat.Core.UI
 {
+    public sealed class NotifyIconManager2 : IDisposable
+    {
+        public sealed class NotifyIconEventArgs : EventArgs
+        {
+            public string Id { get; }
+            public MenuItem MenuItem { get; }
+
+            public NotifyIconEventArgs(string id, MenuItem menuItem)
+            {
+                Id = id;
+                MenuItem = menuItem;
+            }
+        }
+
+        private sealed class ManagedMenuItem
+        {
+            public string Id { get; }
+            public MenuItem MenuItem { get; }
+
+            public event EventHandler OnDispose;
+
+            public event EventHandler<NotifyIconEventArgs> OnClick;
+
+            public ManagedMenuItem(string id, MenuItem menuItem)
+            {
+                Id = id;
+                MenuItem = menuItem;
+                MenuItem.Disposed += MenuItem_Disposed;
+                MenuItem.Click += MenuItem_Click;
+            }
+
+            private void MenuItem_Click(object sender, EventArgs e)
+            {
+                OnClick?.Invoke(this, new NotifyIconEventArgs(Id, MenuItem));
+            }
+
+            private void MenuItem_Disposed(object sender, EventArgs e)
+            {
+                MenuItem.Disposed -= MenuItem_Disposed;
+                MenuItem.Click += MenuItem_Click;
+                OnDispose?.Invoke(this, new EventArgs());
+            }
+        }
+
+        private readonly NotifyIcon _icon;
+        private bool _isDisposed;
+
+        public string DefaultGroup { get; private set; }
+
+        public event EventHandler<EventArgs> OnIconClick;
+
+        public NotifyIconManager2(string name)
+        {
+            _icon = new NotifyIcon();
+            _icon.Text = name;
+            _icon.Click += OnEvent_NotifyIcon_Click;
+        }
+
+        public void SetMenuItem(string id, MenuItem item, string group)
+        {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (group == null) throw new ArgumentNullException(nameof(group));
+
+            ManagedMenuItem managedMenuItem = GetManagedMenuItem(id);
+
+            if (managedMenuItem == null)
+            {
+                managedMenuItem = new ManagedMenuItem(id, item);
+                managedMenuItem.OnDispose += OnEvent_ManagedMenuItem_Dispose;
+            }
+            else if (managedMenuItem.MenuItem != item)
+                throw new ArgumentException(); //TODO
+
+            AddToGroup(group, managedMenuItem);
+        }
+
+        public void SetMenuItem(string id, MenuItem item)
+        {
+            SetMenuItem(id, item, DefaultGroup);
+        }
+
+        public MenuItem GetMenuItem(string id)
+        {
+            ManagedMenuItem managedMenuItem = GetManagedMenuItem(id);
+            return managedMenuItem?.MenuItem;
+        }
+
+        private void OnEvent_ManagedMenuItem_Dispose(object sender, EventArgs e)
+        {
+            RemoveManagedMenuItem((sender as ManagedMenuItem).Id);
+        }
+
+        private void RemoveManagedMenuItem(string id)
+        {
+            //TODO
+        }
+
+        private void AddToGroup(string group, ManagedMenuItem managedMenuItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ManagedMenuItem GetManagedMenuItem(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool HasMenuItem(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+            _isDisposed = true;
+
+            _icon.Dispose();
+        }
+
+        private void OnEvent_NotifyIcon_Click(object sender, EventArgs e)
+        {
+            if (e is MouseEventArgs mouseEventArgs)
+                if (mouseEventArgs.Button == MouseButtons.Left)
+                    OnIconClick?.Invoke(this, new EventArgs());
+        }
+    }
+
     public sealed class NotifyIconManager : IDisposable
     {
         public enum HideShowState

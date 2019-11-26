@@ -167,6 +167,7 @@
     <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Core\Runtime\HotkeyManager.cs" />
+    <Compile Include="Core\UI\TrayIcon.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
