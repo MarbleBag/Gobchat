@@ -19,28 +19,53 @@ namespace Gobchat.Core.Runtime
     public sealed class UIManager : IUIManager
     {
         private readonly Dictionary<string, object> _map = new Dictionary<string, object>();
-        private readonly IUISynchronizer _synchronizer;
+        private readonly object _lock = new object();
+
+        public IUISynchronizer UISynchronizer { get; }
 
         public UIManager(IUISynchronizer synchronizer)
         {
-            _synchronizer = synchronizer ?? throw new ArgumentNullException(nameof(synchronizer));
+            UISynchronizer = synchronizer ?? throw new ArgumentNullException(nameof(synchronizer));
+        }
+
+        private void RegisterUIElement(string id, object element)
+        {
+            _map.Add(id, element);
+            //TODO
+        }
+
+        private bool UnregisterUIElement(string id)
+        {
+            //TODO
+            return _map.Remove(id);
         }
 
         public T CreateUIElement<T>(string id, Func<T> generator)
         {
-            if (_map.ContainsKey(id))
+            if (HasUIElement(id))
                 throw new UIElementIdAlreadyInUseException(id);
-
             T result = default;
-            _synchronizer.RunSync(() => result = generator());
-            if (result != null)
-                _map.Add(id, result);
-            return result;
+            UISynchronizer.RunSync(() => result = generator());
+            if (result == null)
+                return result;
+
+            lock (_lock)
+            {
+                if (HasUIElement(id))
+                {
+                    if (result is IDisposable disposable)
+                        UISynchronizer.RunSync(() => disposable.Dispose());
+                    throw new UIElementIdAlreadyInUseException(id);
+                }
+
+                RegisterUIElement(id, result);
+                return result;
+            }
         }
 
         public void DisposeUIElement(string id)
         {
-            _synchronizer.RunSync(() =>
+            UISynchronizer.RunSync(() =>
             {
                 if (TryGetUIElement<object>(id, out var element))
                 {
@@ -74,14 +99,17 @@ namespace Gobchat.Core.Runtime
 
         public bool RemoveUIElement(string id)
         {
-            return _map.Remove(id);
+            return UnregisterUIElement(id);
         }
 
         public void StoreUIElement(string id, object element)
         {
-            if (_map.ContainsKey(id))
-                throw new UIElementIdAlreadyInUseException(id);
-            _map.Add(id, element);
+            lock (_lock)
+            {
+                if (HasUIElement(id))
+                    throw new UIElementIdAlreadyInUseException(id);
+                RegisterUIElement(id, element);
+            }
         }
 
         public bool TryGetUIElement<T>(string id, out T element)
