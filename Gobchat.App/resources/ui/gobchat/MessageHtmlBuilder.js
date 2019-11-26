@@ -114,33 +114,33 @@ var Gobchat = (function (Gobchat) {
         const sourceName = getMessageSenderName(messageSource)
 
         switch (channelEnum) {
-            case ChannelEnum.ECHO: return "Echo: "
-            case ChannelEnum.EMOTE: return sourceName + " "
-            case ChannelEnum.TELL_SEND: return "&gt;&gt; " + sourceName + ": "
-            case ChannelEnum.TELL_RECIEVE: return sourceName + " &gt;&gt; "
+            case ChannelEnum.ECHO: return "Echo:"
+            case ChannelEnum.EMOTE: return sourceName
+            case ChannelEnum.TELL_SEND: return "&gt;&gt; " + sourceName + ":"
+            case ChannelEnum.TELL_RECIEVE: return sourceName + " &gt;&gt;"
             case ChannelEnum.ANIMATED_EMOTE: return null //source is set, but the animation message already contains the source name
-            case ChannelEnum.GUILD: return "[FC]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.PARTY: return "(" + sourceName + ") "
-            case ChannelEnum.ALLIANCE: return "&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_1: return "[LS1]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_2: return "[LS2]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_3: return "[LS3]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_4: return "[LS4]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_5: return "[LS5]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_6: return "[LS6]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_7: return "[LS7]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.LINKSHELL_8: return "[LS8]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_1: return "[CWLS1]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_2: return "[CWLS2]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_3: return "[CWLS3]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_4: return "[CWLS4]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_5: return "[CWLS5]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_6: return "[CWLS6]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_7: return "[CWLS7]&lt;" + sourceName + "&gt; "
-            case ChannelEnum.WORLD_LINKSHELL_8: return "[CWLS8]&lt;" + sourceName + "&gt; "
+            case ChannelEnum.GUILD: return "[FC]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.PARTY: return "(" + sourceName + ")"
+            case ChannelEnum.ALLIANCE: return "&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_1: return "[LS1]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_2: return "[LS2]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_3: return "[LS3]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_4: return "[LS4]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_5: return "[LS5]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_6: return "[LS6]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_7: return "[LS7]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.LINKSHELL_8: return "[LS8]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_1: return "[CWLS1]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_2: return "[CWLS2]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_3: return "[CWLS3]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_4: return "[CWLS4]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_5: return "[CWLS5]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_6: return "[CWLS6]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_7: return "[CWLS7]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.WORLD_LINKSHELL_8: return "[CWLS8]&lt;" + sourceName + "&gt;"
             default:
                 if (sourceName != null) {
-                    return sourceName + ": "
+                    return sourceName + ":"
                 }
         }
         return null
@@ -160,6 +160,7 @@ var Gobchat = (function (Gobchat) {
 
             const timeElement = document.createElement("span")
             timeElement.innerHTML = "[" + message.timestamp + "] "
+            applyClass(timeElement, "message-timestamp")
             chatEntry.appendChild(timeElement)
 
             const messageContainer = document.createElement("span")
@@ -173,6 +174,10 @@ var Gobchat = (function (Gobchat) {
                 senderElement.innerHTML = senderInnerHtml
                 applyClass(senderElement, getSenderCssClassForPlayerGroup(groupId))
                 messageContainer.appendChild(senderElement)
+
+                const spacerElement = document.createElement("span")
+                spacerElement.innerHTML = " "
+                messageContainer.appendChild(spacerElement)
             }
 
             message.segments.forEach((segment) => {

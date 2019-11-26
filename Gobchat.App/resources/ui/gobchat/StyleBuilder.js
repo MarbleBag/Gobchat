@@ -63,16 +63,22 @@ var Gobchat = (function (Gobchat) {
         generateCssClasses(cssResults, "message-segment-{styleKey}", styles.segment, styles.channel)
     }
 
-    function buildGroupStyles(cssResults, styles) {
-        {
-            const data = styles.data
-            for (let dataKey in data) {
-                const group = data[dataKey]
-                const groupStyle = group.style
+    function buildTimestampStyle(cssResults, showTimestamp) {
+        const attributes = {}
+        if (!showTimestamp) {
+            attributes["display"] = "none"
+        }
+        generateCssClass(cssResults, "message-timestamp", attributes)
+    }
 
-                generateCssClass(cssResults, `message-group-body-${group.id}`, groupStyle.body)
-                generateCssClass(cssResults, `message-group-sender-${group.id}`, groupStyle.header)
-            }
+    function buildGroupStyles(cssResults, styles) {
+        const data = styles.data
+        for (let dataKey in data) {
+            const group = data[dataKey]
+            const groupStyle = group.style
+
+            generateCssClass(cssResults, `message-group-body-${group.id}`, groupStyle.body)
+            generateCssClass(cssResults, `message-group-sender-${group.id}`, groupStyle.header)
         }
     }
 
@@ -80,6 +86,7 @@ var Gobchat = (function (Gobchat) {
         const cssResults = []
 
         buildGeneralStyles(cssResults, gobchatConfig.get("style"))
+        buildTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
         buildGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
 
         return cssResults.join("\n")

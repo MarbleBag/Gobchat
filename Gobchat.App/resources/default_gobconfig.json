@@ -93,6 +93,7 @@
     "playSoundOnMention": false,
     "hideOnMinimize": false,
     "writeChatLog": false,
+    "showTimestamp": true,
     "datacenter": null,
     "hotkeys": {
       "showhide": ""
