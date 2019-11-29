@@ -41,7 +41,7 @@ namespace Gobchat.Updater
             txtLog.Text = "";
         }
 
-        private void btnSingle_Click(object sender, EventArgs e)
+        private void BtnSingle_Click(object sender, EventArgs e)
         {
             Cancel?.Invoke(this, new EventArgs());
         }

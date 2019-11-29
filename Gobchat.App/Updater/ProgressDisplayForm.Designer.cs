@@ -50,7 +50,7 @@
             this.btnSingle.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSingle.Name = "btnSingle";
             this.btnSingle.UseVisualStyleBackColor = true;
-            this.btnSingle.Click += new System.EventHandler(this.btnSingle_Click);
+            this.btnSingle.Click += new System.EventHandler(this.BtnSingle_Click);
             // 
             // lblStatusText
             // 

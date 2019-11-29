@@ -21,14 +21,19 @@ namespace Gobchat.Updater
 {
     public interface IUpdateProvider
     {
-        IUpdateData CheckForUpdate();
+        IUpdateDescription CheckForUpdate();
     }
 
-    public interface IUpdateData
+    public interface IUpdateDescription
     {
-        bool IsUpdateAvailable { get; }
         Version Version { get; }
-        string DownloadDescription { get; }
-        string UserDownloadLink { get; }
+
+        bool IsVersionAvailable { get; }
+
+        string BrowserDownloadLink { get; }
+
+        string UpdateSourceDescription { get; }
+
+        string PatchNotes { get; }
     }
 }

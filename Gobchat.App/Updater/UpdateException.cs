@@ -11,21 +11,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
-namespace Gobchat.Core.Runtime
+namespace Gobchat.Updater
 {
-    public class GobchatUpdateException : SystemException
+    public sealed class UpdateException : System.Exception
     {
-        public GobchatUpdateException(string message) : base(message)
+        public UpdateException(string message) : base(message)
         {
         }
 
-        public GobchatUpdateException(string message, Exception innerException) : base(message, innerException)
+        public UpdateException(string message, System.Exception innerException) : base(message, innerException)
         {
         }
 
-        public GobchatUpdateException()
+        public UpdateException()
         {
         }
     }

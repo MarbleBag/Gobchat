@@ -21,19 +21,19 @@ using Gobchat.Core.Runtime;
 
 namespace Gobchat.Updater
 {
-    public class UpdateManager : Manager
+    public sealed class UpdateManager : Manager
     {
         private IList<IUpdateProvider> _updateProviders = new List<IUpdateProvider>();
 
         public UpdateManager()
         {
             //TODO look up via reflection?
-            _updateProviders.Add(new GitHubUpdateProvider());
+            _updateProviders.Add(new GitHubUpdateProvider(GobchatApplicationContext.ApplicationVersion, userName: "MarbleBag", repoName: "Gobchat"));
         }
 
         public bool CheckForUpdates()
         {
-            var task = Task.Run<List<QueryResult<IUpdateData>>>(async () => await QueryForUpdates().ConfigureAwait(true));
+            var task = Task.Run<List<QueryResult<IUpdateDescription>>>(async () => await QueryForUpdates().ConfigureAwait(true));
             var queryResult = task.Result;
 
             if (queryResult.Count == 0)
@@ -41,7 +41,7 @@ namespace Gobchat.Updater
 
             //TODO
 
-            var successfulQueries = queryResult.Where(e => e.Successful).Select(e => e.Result).Where(e => e.IsUpdateAvailable).OrderByDescending(e => e.Version);
+            var successfulQueries = queryResult.Where(e => e.Successful).Select(e => e.Result).Where(e => e.IsVersionAvailable).OrderByDescending(e => e.Version);
             var newestUpdate = successfulQueries.FirstOrDefault();
 
             if (newestUpdate == null)
@@ -58,15 +58,15 @@ namespace Gobchat.Updater
             }
 
             var currentVersion = GobchatApplicationContext.ApplicationVersion;
-            if (currentVersion >= newestUpdate.Version)
+            if (currentVersion > newestUpdate.Version)
                 return false;
 
-            var dialogTest = $"{newestUpdate.DownloadDescription}\n\nPressing Yes will open a webpage with the newest version and stops Gobchat from starting.";
+            var dialogTest = $"{newestUpdate.UpdateSourceDescription}\n\nPressing Yes will open a webpage with the newest version and stops Gobchat from starting.";
             var dialogResult = MessageBox.Show(dialogTest, "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
             if (DialogResult.Yes == dialogResult)
             {
-                var downloadLink = newestUpdate.UserDownloadLink;
+                var downloadLink = newestUpdate.BrowserDownloadLink;
                 Process downloadProcess = System.Diagnostics.Process.Start(downloadLink);
                 return true;
             }
@@ -74,7 +74,7 @@ namespace Gobchat.Updater
             return false;
         }
 
-        private async Task<List<QueryResult<IUpdateData>>> QueryForUpdates()
+        private async Task<List<QueryResult<IUpdateDescription>>> QueryForUpdates()
         {
             var tasks = _updateProviders.Select(resolver => RunAsync(() => resolver.CheckForUpdate())).ToList();
             var allTasks = Task.WhenAll(tasks);

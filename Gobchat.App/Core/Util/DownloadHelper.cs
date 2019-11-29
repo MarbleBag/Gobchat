@@ -22,11 +22,11 @@ namespace Gobchat.Core.Util
 {
     internal static class DownloadHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public enum DownloadResult
         {
-            CompletedSuccessfuly,
+            CompletedSuccessfully,
             Cancelled
         }
 
@@ -39,7 +39,6 @@ namespace Gobchat.Core.Util
             if (!Directory.Exists(Path.GetDirectoryName(destinationFile)))
                 throw new DirectoryNotFoundException(Path.GetDirectoryName(destinationFile));
 
-            DownloadResult downloadResult = DownloadResult.CompletedSuccessfuly;
             Exception downloadException = null;
 
             using (var webClient = new WebClient())
@@ -49,7 +48,7 @@ namespace Gobchat.Core.Util
 
                 progressMonitor.Progress = 0d;
                 progressMonitor.StatusText = $"Waiting...";
-                progressMonitor.Log("Prepare CEF download");
+                progressMonitor.Log("Prepare download");
 
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
@@ -90,7 +89,7 @@ namespace Gobchat.Core.Util
                 throw downloadException;
             }
 
-            return cancellationToken.IsCancellationRequested ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfuly;
+            return cancellationToken.IsCancellationRequested ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfully;
         }
     }
 }

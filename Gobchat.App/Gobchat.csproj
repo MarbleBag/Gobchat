@@ -17,6 +17,10 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,12 +33,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -116,6 +116,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
@@ -172,6 +173,13 @@
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Core\Runtime\IHotkeyManager.cs" />
     <Compile Include="Updater\Manager.cs" />
+    <Compile Include="Updater\UpdateException.cs" />
+    <Compile Include="Updater\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Updater\UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Updater\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />
     <Compile Include="Core\Runtime\IProgressMonitor.cs" />
@@ -190,8 +198,7 @@
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
     <Compile Include="Updater\IDependencyProvider.cs" />
-    <Compile Include="Core\Runtime\GobchatUpdateException.cs" />
-    <Compile Include="Updater\GitHubUpdateProvider.cs" />
+    <Compile Include="Updater\Provider\GitHubUpdateProvider.cs" />
     <Compile Include="Core\UI\NotifyIconManager.cs" />
     <Compile Include="Updater\IUpdateProvider.cs" />
     <Compile Include="Updater\ProgressDisplayForm.cs">
@@ -347,6 +354,9 @@
     <Folder Include="Core\Config\ConfigUpgrader\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Updater\UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Updater\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
