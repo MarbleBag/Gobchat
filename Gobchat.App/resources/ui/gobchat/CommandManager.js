@@ -94,7 +94,7 @@ var Gobchat = (function (Gobchat, undefined) {
             const gobconfig = commandManager._config
             const groupsorting = gobconfig.get("behaviour.groups.sorting")
             if (groupIdx <= 0 || groupsorting.length < groupIdx) {
-                commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [0,${groupsorting.length - 1}]`)
+                commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [1, ${groupsorting.length}]`)
                 return
             }
 

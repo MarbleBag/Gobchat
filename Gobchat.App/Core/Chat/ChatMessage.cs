@@ -33,7 +33,7 @@ namespace Gobchat.Core.Chat
         public override string ToString()
         {
             var className = nameof(ChatMessage);
-            return $"{className} => time:{Timestamp} | type:{MessageType} | source:{Source}  | msg:{Message}";
+            return $"{className} => time:{Timestamp} | type:{MessageType} | source:'{Source}'  | msg:'{Message}'";
         }
     }
 }

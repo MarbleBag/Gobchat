@@ -80,6 +80,16 @@
             gobconfig.set("behaviour.writeChatLog", event.target.checked)
         })
 
+        $("#general_input_showTimestamp").prop('checked', gobconfig.get("behaviour.showTimestamp"))
+        $("#general_input_showTimestamp").on("change", function (event) {
+            gobconfig.set("behaviour.showTimestamp", event.target.checked)
+        })
+
+        $("#general_input_checkForUpdate").prop('checked', gobconfig.get("behaviour.checkForUpdate"))
+        $("#general_input_checkForUpdate").on("change", function (event) {
+            gobconfig.set("behaviour.checkForUpdate", event.target.checked)
+        })
+
         {
             const dropdown = $("#dropdown_datacenter")
             dropdown.append(new Option("Automatic", "auto"))
