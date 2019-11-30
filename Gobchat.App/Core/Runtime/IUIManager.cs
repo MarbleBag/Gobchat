@@ -11,10 +11,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Runtime;
+using Gobchat.Core.UI;
+
 namespace Gobchat.Core.Runtime
 {
     public interface IUIManager
     {
+        IUISynchronizer UISynchronizer { get; }
+
+        T CreateUIElement<T>(string id, System.Func<T> generator);
+
+        void DisposeUIElement(string id);
+
         /// <summary>
         ///
         /// </summary>
@@ -38,44 +47,5 @@ namespace Gobchat.Core.Runtime
         void StoreUIElement(string id, object element);
 
         bool RemoveUIElement(string id);
-    }
-
-    public abstract class UIManagerException : System.Exception
-    {
-        public UIManagerException(string message) : base(message)
-        {
-        }
-
-        public UIManagerException(string message, System.Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public UIManagerException()
-        {
-        }
-    }
-
-    public class UIElementNotFoundException : UIManagerException
-    {
-        public UIElementNotFoundException(string elementId) : base(elementId)
-        {
-        }
-    }
-
-    public class UIElementTypeException : UIManagerException
-    {
-        private const string ERROR_MESSAGE = "Expected type {0} but was {1}";
-
-        public UIElementTypeException(System.Type expected, System.Type actual)
-            : base(string.Format(System.Globalization.CultureInfo.InvariantCulture, ERROR_MESSAGE, expected.FullName, actual.FullName))
-        {
-        }
-    }
-
-    public class UIElementIdAlreadyInUseException : UIManagerException
-    {
-        public UIElementIdAlreadyInUseException(string id) : base(id)
-        {
-        }
     }
 }

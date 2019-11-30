@@ -11,12 +11,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Gobchat.Core.Runtime
+namespace Gobchat.Core.UI
 {
-    public sealed class UIManager : IUIManager
+    public sealed class UIManager : IUIManager, IDisposable
     {
         private readonly Dictionary<string, object> _map = new Dictionary<string, object>();
         private readonly object _lock = new object();
@@ -73,6 +75,19 @@ namespace Gobchat.Core.Runtime
                     if (element is IDisposable disposable)
                         disposable.Dispose();
                 }
+            });
+        }
+
+        public void Dispose()
+        {
+            UISynchronizer.RunSync(() =>
+            {
+                foreach (var element in _map.Values.ToList())
+                {
+                    if (element is IDisposable disposable)
+                        disposable.Dispose();
+                }
+                _map.Clear();
             });
         }
 

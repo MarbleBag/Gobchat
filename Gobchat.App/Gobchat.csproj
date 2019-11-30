@@ -93,6 +93,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="resources\Gobchat.Main.Icon.ico" />
     <Content Include="resources\GobIcon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -146,6 +147,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ChatLogger.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
     <Compile Include="Core\Config\StringToEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
@@ -167,11 +169,23 @@
     <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Core\Runtime\HotkeyManager.cs" />
-    <Compile Include="Core\UI\TrayIcon.cs" />
+    <Compile Include="Core\UI\IMenu.cs" />
+    <Compile Include="Core\UI\IMenuCollection.cs" />
+    <Compile Include="Core\UI\IMenuGroup.cs" />
+    <Compile Include="Core\UI\NotifyIconManager.cs" />
+    <Compile Include="Core\UI\UIElementIdAlreadyInUseException.cs" />
+    <Compile Include="Core\UI\UIElementNotFoundException.cs" />
+    <Compile Include="Core\UI\UIElementTypeException.cs" />
+    <Compile Include="Core\UI\UIException.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Core\Runtime\IHotkeyManager.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Updater\Manager.cs" />
     <Compile Include="Updater\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />
@@ -185,7 +199,7 @@
     <Compile Include="Core\Runtime\IApplicationComponent.cs" />
     <Compile Include="Core\Runtime\IDIContext.cs" />
     <Compile Include="Core\Runtime\IUIManager.cs" />
-    <Compile Include="Core\Runtime\UIManager.cs" />
+    <Compile Include="Core\UI\UIManager.cs" />
     <Compile Include="Core\Util\Extension\ConcurrentQueueExtension.cs" />
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
@@ -193,7 +207,7 @@
     <Compile Include="Updater\IDependencyProvider.cs" />
     <Compile Include="Core\Runtime\GobchatUpdateException.cs" />
     <Compile Include="Updater\GitHubUpdateProvider.cs" />
-    <Compile Include="Core\UI\NotifyIconManager.cs" />
+    <Compile Include="Core\UI\INotifyIconManager.cs" />
     <Compile Include="Updater\IUpdateProvider.cs" />
     <Compile Include="Updater\ProgressDisplayForm.cs">
       <SubType>Form</SubType>
@@ -348,6 +362,10 @@
     <Folder Include="Core\Config\ConfigUpgrader\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Updater\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </EmbeddedResource>

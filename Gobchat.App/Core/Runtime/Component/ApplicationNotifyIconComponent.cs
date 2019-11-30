@@ -14,78 +14,44 @@
 using Gobchat.Core.UI;
 using Gobchat.UI.Forms;
 using NLog;
+using System;
 using System.Windows.Forms;
 
 namespace Gobchat.Core.Runtime
 {
     public sealed class ApplicationNotifyIconComponent : IApplicationComponent, System.IDisposable
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
         public const string NotifyIconManagerId = "Gobchat.NotifyIconManager";
 
-        private NotifyIconManager _notifyIconManager;
-        private IUISynchronizer _synchronizer;
         private IUIManager _manager;
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
-            _synchronizer = container.Resolve<IUISynchronizer>();
             _manager = container.Resolve<IUIManager>();
 
-            _synchronizer.RunSync(() =>
+            _manager.CreateUIElement(NotifyIconManagerId, () =>
             {
-                _notifyIconManager = new NotifyIconManager
+                var notifyIconManager = new NotifyIconManager(new[] { "app", "close" }, "app")
                 {
-                    TrayIconVisible = true
+                    Text = "Gobchat",
+                    Icon = Gobchat.Resource.GobIcon,
+                    Visible = true
                 };
 
-                if (_manager.TryGetUIElement<Form>(ApplicationCefOverlayComponent.OverlayUIId, out var overlayForm))
-                {
-                    overlayForm.VisibleChanged += OnEvent_Form_VisibleChanged;
-                    _notifyIconManager.SetHideShowText(GetFormHideShowState(overlayForm));
-                }
+                var closeMenu = new ToolStripMenuItem("Close");
+                closeMenu.Click += OnEvent_MenuItem_Close;
+                notifyIconManager.AddMenuToGroup("close", "close", closeMenu);
 
-                _notifyIconManager.OnMenuClick += OnEvent_NotifyIconManager_MenuClick;
-
-                _manager.StoreUIElement(NotifyIconManagerId, _notifyIconManager);
+                return notifyIconManager;
             });
         }
 
-        private NotifyIconManager.HideShowState GetFormHideShowState(Form form)
+        private void OnEvent_MenuItem_Close(object sender, EventArgs e)
         {
-            return form.Visible ? NotifyIconManager.HideShowState.Hide : NotifyIconManager.HideShowState.Show;
-        }
-
-        private void OnEvent_Form_VisibleChanged(object sender, System.EventArgs e)
-        {
-            if (sender is Form form)
-                _notifyIconManager.SetHideShowText(GetFormHideShowState(form));
-        }
-
-        private void OnEvent_NotifyIconManager_MenuClick(object sender, NotifyIconManager.NotifyIconEventArgs e)
-        {
-            switch (e.NotifyMenuItem)
-            {
-                case NotifyIconManager.NotifyMenuItem.CloseApplication:
-                    logger.Info("User requests shutdown");
-                    Application.Exit();
-                    break;
-
-                case NotifyIconManager.NotifyMenuItem.HideShow:
-                    if (_manager.TryGetUIElement<Form>(ApplicationCefOverlayComponent.OverlayUIId, out var form1))
-                        form1.Visible = !form1.Visible;
-                    break;
-
-                case NotifyIconManager.NotifyMenuItem.ReloadUI:
-                    if (_manager.TryGetUIElement<CefOverlayForm>(ApplicationCefOverlayComponent.OverlayUIId, out var form2)) //how to fuck with scope, gj!
-                        form2.Reload();
-                    break;
-
-                case NotifyIconManager.NotifyMenuItem.UnPause:
-                    //TODO not implemented yet
-                    break;
-            }
+            logger.Info("User requests shutdown");
+            Application.Exit();
         }
 
         public void Dispose(IDIContext container)
@@ -97,20 +63,7 @@ namespace Gobchat.Core.Runtime
         {
             if (_manager == null)
                 return;
-
-            if (_manager.TryGetUIElement<Form>(ApplicationCefOverlayComponent.OverlayUIId, out var form))
-                if (!form.IsDisposed)
-                    form.VisibleChanged -= OnEvent_Form_VisibleChanged;
-
-            _manager.RemoveUIElement(NotifyIconManagerId);
-
-            _synchronizer.RunSync(() =>
-            {
-                _notifyIconManager.Dispose();
-                _notifyIconManager = null;
-            });
-
-            _synchronizer = null;
+            _manager.DisposeUIElement(NotifyIconManagerId);
             _manager = null;
         }
     }
