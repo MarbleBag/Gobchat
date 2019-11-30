@@ -16,13 +16,11 @@ using Gobchat.Memory.Chat;
 using Gobchat.UI.Forms;
 using Gobchat.Core.Util.Extension;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using Gobchat.Core.Chat;
@@ -35,59 +33,6 @@ using NLog;
 
 namespace Gobchat.Core
 {
-    internal sealed class ChatLogger : IDisposable
-    {
-        private GobchatConfigManager _configManager;
-        private Queue<Chat.ChatMessage> _pendingMessages = new Queue<ChatMessage>();
-        private string _fileHandle;
-
-        public ChatLogger(GobchatConfigManager configManager)
-        {
-            _configManager = configManager;
-        }
-
-        public void Dispose()
-        {
-            Flush();
-        }
-
-        public void Flush()
-        {
-            if (_pendingMessages.Count < 1)
-                return;
-
-            if (_fileHandle == null)
-            {
-                var logFolder = GobchatApplicationContext.UserLogLocation;
-                Directory.CreateDirectory(logFolder);
-                var timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm");
-                var fileName = $"chatlog_{timestamp}.log";
-                _fileHandle = Path.Combine(logFolder, fileName);
-            }
-
-            var logLines = _pendingMessages.DequeueAll().Select(e =>
-            { // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
-                return $"00|{e.Timestamp.ToString("o")}|{e.MessageType.ToString("x4")}|{e.Source}|{e.Message}|";
-            });
-
-            File.AppendAllLines(_fileHandle, logLines);
-        }
-
-        public void Log(Chat.ChatMessage message)
-        {
-            var doLog = _configManager.UserConfig.GetProperty<bool>("behaviour.writeChatLog");
-            if (!doLog)
-                return;
-
-            var visibleChannels = _configManager.UserConfig.GetProperty<List<long>>("behaviour.channel.visible");
-            var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
-            // visibleChannels.Cast<Newtonsoft.Json.Linq.JValue>().Any(e => e.Value )
-
-            if (visibleChannels.Contains(message.MessageType))//todo
-                _pendingMessages.Enqueue(message);
-        }
-    }
-
     // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
@@ -119,7 +64,23 @@ namespace Gobchat.Core
             _configManager = container.Resolve<GobchatConfigManager>();
             _chatLogger = new ChatLogger(_configManager);
 
-            //   Application.ApplicationExit += (s, e) => OnEvent_ApplicationExit();
+            var uiManager = _container.Resolve<IUIManager>();
+            if (uiManager.TryGetUIElement<UI.NotifyIconManager>(ApplicationNotifyIconComponent.NotifyIconManagerId, out var trayIcon))
+            {
+                trayIcon.Icon = Gobchat.Resource.GobTrayIconOff;
+
+                trayIcon.OnIconClick += (s, e) => _overlay.Visible = !_overlay.Visible;
+
+                var menuItemHideShow = new ToolStripMenuItem();
+                menuItemHideShow.Text = _overlay.Visible ? "Hide" : "Show";
+                menuItemHideShow.Click += (s, e) => _overlay.Visible = !_overlay.Visible;
+                _overlay.VisibleChanged += (s, e) => menuItemHideShow.Text = _overlay.Visible ? "Hide" : "Show";
+                trayIcon.AddMenu("overlay.showhide", menuItemHideShow);
+
+                var menuItemReload = new ToolStripMenuItem("Reload");
+                menuItemReload.Click += (s, e) => _overlay.Reload();
+                trayIcon.AddMenu("overlay.reload", menuItemReload);
+            }
 
             LoadMemoryParser();
             LoadChatParser();
@@ -289,9 +250,9 @@ namespace Gobchat.Core
             if (uiManager.TryGetUIElement<UI.NotifyIconManager>(ApplicationNotifyIconComponent.NotifyIconManagerId, out var trayIcon))
             {
                 if (e.IsProcessValid)
-                    trayIcon.SetIconState(UI.NotifyIconManager.IconState.ClientFound);
+                    trayIcon.Icon = Gobchat.Resource.GobTrayIconOn;
                 else
-                    trayIcon.SetIconState(UI.NotifyIconManager.IconState.ClientNotFound);
+                    trayIcon.Icon = Gobchat.Resource.GobTrayIconOff;
             }
 
             if (e.IsProcessValid)
@@ -331,14 +292,6 @@ namespace Gobchat.Core
                 _messageQueue.Enqueue(msg);
                 logger.Debug(() => msg.ToString());
             }
-
-            // - filter unwanted tokens
-            // - extract source
-            // - pack players and server
-            // - build a useful structure
-            // - send to browser
-
-            //TODO process each message
         }
 
         private void UpdateHotkeys()

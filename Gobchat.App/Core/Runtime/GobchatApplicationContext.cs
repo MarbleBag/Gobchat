@@ -22,6 +22,7 @@ using System.Linq;
 using TinyMessenger;
 using NLog;
 using System;
+using Gobchat.Core.UI;
 
 namespace Gobchat.Core.Runtime
 {
@@ -66,16 +67,14 @@ namespace Gobchat.Core.Runtime
             _applicationDIContext.Register<IUISynchronizer>((c, _) => GobchatApplicationContext.UISynchronizer);
             _applicationDIContext.Register<IUIManager>((c, _) => _uiManager);
 
-            //TODO move all that stuff to a component oriented architecture
-
             var applicationComponents = new List<IApplicationComponent>()
             {
                 new ApplicationConfigComponent(),
                 new ApplicationUpdateComponent(),
                 new ApplicationCefInstallerComponent(),
+                new ApplicationNotifyIconComponent(),
                 new ApplicationHotkeyComponent(),
                 new ApplicationCefOverlayComponent(),
-                new ApplicationNotifyIconComponent(),
                 new ApplicationChatComponent()
             };
 
@@ -130,6 +129,7 @@ namespace Gobchat.Core.Runtime
             }
             _activeApplicationComponents.Clear();
 
+            _uiManager?.Dispose();
             _applicationDIContext?.Dispose();
         }
     }

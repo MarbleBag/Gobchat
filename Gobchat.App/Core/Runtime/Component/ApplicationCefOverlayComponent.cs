@@ -22,12 +22,10 @@ namespace Gobchat.Core.Runtime
         public const string OverlayUIId = "Gobchat.ChatOverlayForm";
 
         private CefOverlayForm _overlayForm;
-        private IUISynchronizer _synchronizer;
         private IUIManager _manager;
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
-            _synchronizer = container.Resolve<IUISynchronizer>();
             _manager = container.Resolve<IUIManager>();
 
 #if DEBUG
@@ -39,34 +37,32 @@ namespace Gobchat.Core.Runtime
             System.IO.Directory.CreateDirectory(cefFolder);
             CEFManager.CefAssemblyLocation = cefFolder;
 
-            _synchronizer.RunSync(() =>
+            var synchronizer = _manager.UISynchronizer;
+            synchronizer.RunSync(() =>
             {
                 global::Gobchat.UI.Web.CEFManager.Initialize();
-                _overlayForm = new CefOverlayForm();
+                _overlayForm = _manager.CreateUIElement(OverlayUIId, () => new CefOverlayForm());
                 _overlayForm.Show();
                 _overlayForm.Visible = false;
             });
-
-            _manager.StoreUIElement(OverlayUIId, _overlayForm);
         }
 
         public void Dispose(IDIContext container)
         {
+            Dispose();
         }
 
         public void Dispose()
         {
             _manager.RemoveUIElement(OverlayUIId);
-            _synchronizer.RunSync(() =>
+            var synchronizer = _manager.UISynchronizer;
+            synchronizer.RunSync(() =>
             {
                 _overlayForm?.Close();
                 _overlayForm?.Dispose();
                 _overlayForm = null;
-
                 global::Gobchat.UI.Web.CEFManager.Dispose();
             });
-
-            _synchronizer = null;
             _manager = null;
         }
     }
