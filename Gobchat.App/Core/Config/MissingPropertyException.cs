@@ -11,12 +11,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Collections.Generic;
+using System;
 
-namespace Gobchat.Core.Resource
+namespace Gobchat.Core.Config
 {
-    public interface IResourceLocator
+    [Serializable]
+    public sealed class MissingPropertyException : PropertyException
     {
-        IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
+        public MissingPropertyException(string propertyPath) : base(propertyPath)
+        {
+        }
+
+        private MissingPropertyException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
+        {
+        }
     }
 }

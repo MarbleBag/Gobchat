@@ -15,8 +15,8 @@ using System.Collections.Generic;
 
 namespace Gobchat.Core.Resource
 {
-    public interface IResourceLocator
+    public interface IResourceLoader
     {
-        IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
+        IEnumerable<KeyValuePair<string, string>> LoadResource(IEnumerable<IResourceLocator> locators, string fileName);
     }
 }

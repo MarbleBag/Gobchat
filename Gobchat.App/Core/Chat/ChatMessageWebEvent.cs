@@ -13,7 +13,7 @@
 
 namespace Gobchat.Core.Chat
 {
-    internal class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
+    public sealed class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
         public string timestamp;
         public int type;

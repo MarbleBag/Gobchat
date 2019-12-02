@@ -11,12 +11,32 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Gobchat.Core.Resource
+namespace Gobchat.Core.Module.Updater
 {
-    public interface IResourceLocator
+    public interface IUpdateProvider
     {
-        IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
+        IUpdateDescription CheckForUpdate();
+    }
+}
+
+namespace Gobchat.Core.Module.Updater
+{
+    public interface IUpdateDescription
+    {
+        Version Version { get; }
+
+        bool IsVersionAvailable { get; }
+
+        string BrowserDownloadLink { get; }
+
+        string UpdateSourceDescription { get; }
+
+        string PatchNotes { get; }
     }
 }

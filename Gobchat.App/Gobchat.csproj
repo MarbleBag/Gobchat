@@ -93,7 +93,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="resources\Gobchat.Main.Icon.ico" />
     <Content Include="resources\GobIcon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -148,8 +147,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ChatLogger.cs" />
+    <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
+    <Compile Include="Core\Config\ConfigLoadException.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
+    <Compile Include="Core\Config\InvalidPropertyPathException.cs" />
+    <Compile Include="Core\Config\InvalidPropertyTypeException.cs" />
+    <Compile Include="Core\Config\MissingPropertyException.cs" />
+    <Compile Include="Core\Config\PropertyException.cs" />
     <Compile Include="Core\Config\StringToEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\GobchatConfig.cs" />
@@ -159,17 +163,21 @@
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\JsonGobchatConfig.cs" />
-    <Compile Include="Core\Config\ConfigExceptions.cs" />
+    <Compile Include="Core\Config\ConfigException.cs" />
     <Compile Include="Core\LoadGobchatConfigEvent.cs" />
+    <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
+    <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Module\Cef\AppModuleCefManager.cs" />
+    <Compile Include="Module\CefInstaller\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationCefInstallerComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
+    <Compile Include="Module\CefInstaller\AppModuleCefInstaller.cs" />
+    <Compile Include="Module\Chat\AppModuleChat.cs" />
     <Compile Include="Core\DownloadFailedException.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
+    <Compile Include="Module\Hotkey\AppModuleHotKeyManager.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
-    <Compile Include="Core\Runtime\HotkeyManager.cs" />
+    <Compile Include="Module\Hotkey\HotkeyManager.cs" />
     <Compile Include="Core\UI\IMenu.cs" />
     <Compile Include="Core\UI\IMenuCollection.cs" />
     <Compile Include="Core\UI\IMenuGroup.cs" />
@@ -187,24 +195,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Updater\Manager.cs" />
-    <Compile Include="Updater\UpdateException.cs" />
-    <Compile Include="Updater\UpdateForm.cs">
+    <Compile Include="Core\Updater\Manager.cs" />
+    <Compile Include="Core\Updater\UpdateException.cs" />
+    <Compile Include="Core\UI\UpdateFormDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Updater\UpdateForm.Designer.cs">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
+    <Compile Include="Core\UI\UpdateFormDialog.Designer.cs">
+      <DependentUpon>UpdateFormDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Updater\ProgressMonitorAdapter.cs" />
+    <Compile Include="Core\UI\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />
     <Compile Include="Core\Runtime\IProgressMonitor.cs" />
     <Compile Include="Core\Runtime\TinyMessenger.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationNotifyIconComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationCefOverlayComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationConfigComponent.cs" />
+    <Compile Include="Module\NotifyIcon\AppModuleNotifyIcon.cs" />
+    <Compile Include="Module\Overlay\AppModuleChatOverlay.cs" />
+    <Compile Include="Module\Config\AppModuleConfig.cs" />
     <Compile Include="Core\Runtime\ApplicationStartupHandler.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationUpdateComponent.cs" />
-    <Compile Include="Core\Runtime\IApplicationComponent.cs" />
+    <Compile Include="Module\Updater\AppModuleUpdater.cs" />
+    <Compile Include="Core\Runtime\IApplicationModule.cs" />
     <Compile Include="Core\Runtime\IDIContext.cs" />
     <Compile Include="Core\Runtime\IUIManager.cs" />
     <Compile Include="Core\UI\UIManager.cs" />
@@ -212,19 +220,17 @@
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
-    <Compile Include="Updater\IDependencyProvider.cs" />
-    <Compile Include="Updater\Provider\GitHubUpdateProvider.cs" />
-    <Compile Include="Core\UI\NotifyIconManager.cs" />
-    <Compile Include="Core\Runtime\GobchatUpdateException.cs" />
+    <Compile Include="Core\Updater\IDependencyProvider.cs" />
+    <Compile Include="Module\Updater\GitHubUpdateProvider.cs" />
     <Compile Include="Core\UI\INotifyIconManager.cs" />
-    <Compile Include="Updater\IUpdateProvider.cs" />
-    <Compile Include="Updater\ProgressDisplayForm.cs">
+    <Compile Include="Module\Updater\IUpdateProvider.cs" />
+    <Compile Include="Core\UI\ProgressDisplayForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Updater\ProgressDisplayForm.Designer.cs">
+    <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Updater\UpdateManager.cs" />
+    <Compile Include="Core\Updater\UpdateManager.cs" />
     <Content Include="resources\ui\gobchat.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -323,7 +329,7 @@
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
     <Compile Include="Core\Chat\ChatMessageWebEvent.cs" />
-    <Compile Include="Core\Chat\ChatlogParser.cs" />
+    <Compile Include="Core\Chat\ChatlogToMessageConverter.cs" />
     <Compile Include="Core\Chat\ChatMessage.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
     <Compile Include="Core\Util\Extension\ExtEnumJson.cs" />
@@ -342,7 +348,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Core\SomeoneWhoDoesSomeWork.cs" />
+    <Compile Include="Module\Chat\SomeoneWhoDoesSomeWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -371,14 +377,14 @@
     <Folder Include="Core\Config\ConfigUpgrader\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Updater\UpdateForm.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-	</EmbeddedResource>
+    <EmbeddedResource Include="Core\UI\UpdateFormDialog.resx">
+      <DependentUpon>UpdateFormDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Updater\ProgressDisplayForm.resx">
+    <EmbeddedResource Include="Core\UI\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

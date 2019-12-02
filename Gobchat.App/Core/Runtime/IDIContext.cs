@@ -31,6 +31,10 @@ namespace Gobchat.Core.Runtime
 
         void Register<RegisterType>() where RegisterType : class;
 
+        void Unregister<RegisterType>(string name) where RegisterType : class;
+
+        void Unregister<RegisterType>() where RegisterType : class;
+
         IDIContext GetParent();
 
         IDIContext CreateChild();

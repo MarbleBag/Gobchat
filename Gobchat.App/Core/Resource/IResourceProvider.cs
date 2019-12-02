@@ -13,7 +13,7 @@
 
 namespace Gobchat.Core.Resource
 {
-    internal interface IResourceProvider
+    public interface IResourceProvider
     {
         string ResourceName { get; }
 

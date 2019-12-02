@@ -12,28 +12,22 @@
  *******************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 
-namespace Gobchat.Core.Chat
+namespace Gobchat.Core.Config
 {
-    public sealed class AutotranslateProvider : IAutotranslateProvider
+    [Serializable]
+    public sealed class ConfigLoadException : ConfigException
     {
-        private Resource.ResourceBundle _resourceBundle;
-
-        public AutotranslateProvider(IList<Resource.IResourceLocator> resourceResolver, string baseName, CultureInfo fallbackCulture)
+        public ConfigLoadException(String message) : base(message)
         {
-            _resourceBundle = new Resource.ResourceBundle(resourceResolver, baseName, fallbackCulture);
         }
 
-        public string GetTranslationFor(string key)
+        public ConfigLoadException(String message, System.Exception innerException) : base(message, innerException)
         {
-            return _resourceBundle[key];
         }
 
-        public void LoadCulture(CultureInfo cultureInfo)
+        private ConfigLoadException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
-            _resourceBundle.LoadCulture(cultureInfo);
         }
     }
 }

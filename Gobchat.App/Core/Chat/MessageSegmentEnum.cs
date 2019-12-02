@@ -13,7 +13,7 @@
 
 namespace Gobchat.Core.Chat
 {
-    internal enum MessageSegmentEnum
+    public enum MessageSegmentEnum
     {
         UNDEFINED = 0,
         SAY = 1,

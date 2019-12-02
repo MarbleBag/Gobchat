@@ -14,29 +14,30 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Gobchat.Core.Resource
 {
-    internal sealed class ResourceBundle
+    public sealed class ResourceBundle
     {
-        private readonly IList<IResourceResolver> _resourceResolver;
+        private readonly IList<IResourceLocator> _resourceResolver;
         private readonly string _baseName;
         private readonly CultureInfo _fallbackCulture;
+        private readonly IResourceLoader _resourceLoader;
+        private readonly IDictionary<string, string> _mapping;
+        private readonly IList<string> _loadedLanguages;
 
-        private IDictionary<string, string> _mapping;
-        private IList<string> _loadedLanguages;
-
-        public ResourceBundle(IList<IResourceResolver> resourceResolver, string baseName, CultureInfo fallbackCulture)
+        public ResourceBundle(IList<IResourceLocator> resourceResolver, string baseName, CultureInfo fallbackCulture)
         {
-            _resourceResolver = new List<IResourceResolver>(resourceResolver);
+            _resourceResolver = new List<IResourceLocator>(resourceResolver);
             _baseName = baseName ?? throw new ArgumentNullException(nameof(baseName));
             _fallbackCulture = fallbackCulture;
+
+            _resourceLoader = new HjsonResourceLoader();
             _mapping = new Dictionary<string, string>();
             _loadedLanguages = new List<string>();
         }
 
-        public ResourceBundle(IList<IResourceResolver> resourceResolver, string baseName) : this(resourceResolver, baseName, null)
+        public ResourceBundle(IList<IResourceLocator> resourceResolver, string baseName) : this(resourceResolver, baseName, null)
         {
         }
 
@@ -93,23 +94,9 @@ namespace Gobchat.Core.Resource
 
         private void LoadFile(string fileName)
         {
-            foreach (var resolver in _resourceResolver)
-            {
-                var resourceProvider = resolver.FindResourcesByName(fileName + ".hjson").FirstOrDefault();
-                if (resourceProvider == null)
-                    continue;
-
-                using (var stream = resourceProvider.OpenStream())
-                {
-                    var json = Hjson.HjsonValue.Load(stream);
-                    var data = json as Hjson.JsonObject;
-                    //TODO
-                    foreach (var key in data.Keys)
-                    {
-                        _mapping.Add(key.ToUpperInvariant(), data[key].ToString());
-                    }
-                }
-            }
+            var data = _resourceLoader.LoadResource(_resourceResolver, fileName);
+            foreach (var entry in data)
+                _mapping.Add(entry);
         }
     }
 }

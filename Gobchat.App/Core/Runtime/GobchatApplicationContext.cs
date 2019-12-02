@@ -23,6 +23,11 @@ using TinyMessenger;
 using NLog;
 using System;
 using Gobchat.Core.UI;
+using Gobchat.Core.Module;
+using Gobchat.Core.Module.CefInstaller;
+using Gobchat.Module.Chat;
+using Gobchat.Core.Module.Hotkey;
+using Gobchat.Core.Module.Updater;
 
 namespace Gobchat.Core.Runtime
 {
@@ -38,7 +43,7 @@ namespace Gobchat.Core.Runtime
 
         private DIContext _applicationDIContext;
         private UIManager _uiManager;
-        private List<IApplicationComponent> _activeApplicationComponents;
+        private List<IApplicationModule> _activeApplicationModules;
 
         public GobchatApplicationContext()
         {
@@ -55,7 +60,7 @@ namespace Gobchat.Core.Runtime
 
         internal override void ApplicationStartupProcess(CancellationToken token)
         {
-            _activeApplicationComponents = new List<IApplicationComponent>();
+            _activeApplicationModules = new List<IApplicationModule>();
             _applicationDIContext = new DIContext();
             _uiManager = new UIManager(GobchatApplicationContext.UISynchronizer);
 
@@ -67,31 +72,35 @@ namespace Gobchat.Core.Runtime
             _applicationDIContext.Register<IUISynchronizer>((c, _) => GobchatApplicationContext.UISynchronizer);
             _applicationDIContext.Register<IUIManager>((c, _) => _uiManager);
 
-            var applicationComponents = new List<IApplicationComponent>()
+            var moduleActivationSequence = new List<IApplicationModule>()
             {
-                new ApplicationConfigComponent(),
-                new ApplicationUpdateComponent(),
-                new ApplicationCefInstallerComponent(),
-                new ApplicationNotifyIconComponent(),
-                new ApplicationHotkeyComponent(),
-                new ApplicationCefOverlayComponent(),
-                new ApplicationChatComponent()
+                new AppModuleConfig(),
+
+                new AppModuleUpdater(),
+                new AppModuleCefInstaller(),
+
+                new AppModuleNotifyIcon(),
+                new AppModuleHotKeyManager(),
+
+                new AppModuleCefManager(),
+                new AppModuleChatOverlay(),
+                new AppModuleChat()
             };
 
             logger.Info(() => $"Initialize Gobchat v{GobchatApplicationContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");
 
             var startupHandler = new ApplicationStartupHandler();
-            foreach (var component in applicationComponents)
+            foreach (var module in moduleActivationSequence)
             {
                 try
                 {
-                    _activeApplicationComponents.Add(component);
-                    logger.Info($"Starting: {component}");
-                    component.Initialize(startupHandler, _applicationDIContext);
+                    _activeApplicationModules.Add(module);
+                    logger.Info($"Starting: {module}");
+                    module.Initialize(startupHandler, _applicationDIContext);
                 }
                 catch (System.Exception e)
                 {
-                    logger.Fatal($"Initialization error in {component}");
+                    logger.Fatal($"Initialization error in {module}");
                     logger.Fatal(e);
                     startupHandler.StopStartup = true;
                 }
@@ -112,22 +121,23 @@ namespace Gobchat.Core.Runtime
             logger.Info("Gobchat shutdown");
 
             //components are deactivated in reverse
-            var deactivationSequence = _activeApplicationComponents.Reverse<IApplicationComponent>().ToList();
-            foreach (var component in deactivationSequence)
+            var moduleDeactivationSequence = _activeApplicationModules.Reverse<IApplicationModule>().ToList();
+            _activeApplicationModules.Clear();
+
+            foreach (var module in moduleDeactivationSequence)
             {
                 try
                 {
-                    logger.Info($"Shutdown: {component}");
-                    component.Dispose(_applicationDIContext);
+                    logger.Info($"Shutdown: {module}");
+                    module.Dispose(_applicationDIContext);
                 }
                 catch (System.Exception e)
                 {
                     //that's the best you get, no one cares for you - for now.
-                    logger.Warn($"Shutdown error in {component}");
+                    logger.Warn($"Shutdown error in {module}");
                     logger.Warn(e);
                 }
             }
-            _activeApplicationComponents.Clear();
 
             _uiManager?.Dispose();
             _applicationDIContext?.Dispose();

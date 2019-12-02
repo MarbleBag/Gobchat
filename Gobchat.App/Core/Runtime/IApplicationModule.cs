@@ -11,12 +11,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Collections.Generic;
-
-namespace Gobchat.Core.Resource
+namespace Gobchat.Core.Runtime
 {
-    public interface IResourceLocator
+    public interface IApplicationModule
     {
-        IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
+        //TODO replace methods with attributes and make dependency injection via attributes possible
+
+        void Initialize(ApplicationStartupHandler handler, IDIContext container);
+
+        void Dispose(IDIContext container);
     }
 }
