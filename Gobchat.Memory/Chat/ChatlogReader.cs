@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using NLog;
 using Sharlayan;
 using Sharlayan.Models.ReadResults;
 using System.Collections.Generic;
@@ -19,23 +20,49 @@ namespace Gobchat.Memory.Chat
 {
     internal class ChatlogReader
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private int previousArrayIndex = 0;
-        private int previousOffset = 0;
+        private int _previousArrayIndex = 0;
+        private int _previousOffset = 0;
+        private bool _chatlogException = false;
 
         public ChatlogReader()
         {
-
         }
 
+        private void Reset()
+        {
+            logger.Info("Reseting ChatLogReader array index");
+            _previousArrayIndex = 0;
+            _previousOffset = 0;
+        }
+
+        // ChatLogReaderException
         public List<Sharlayan.Core.ChatLogItem> Query()
         {
-            ChatLogResult readResult = Reader.GetChatLog(previousArrayIndex, previousOffset);
-            previousArrayIndex = readResult.PreviousArrayIndex;
-            previousOffset = readResult.PreviousOffset;
+            _chatlogException = false;
+
+            Sharlayan.MemoryHandler.Instance.ExceptionEvent += ResetChatlogProcessorOnException;
+            ChatLogResult readResult = Reader.GetChatLog(_previousArrayIndex, _previousOffset);
+            Sharlayan.MemoryHandler.Instance.ExceptionEvent -= ResetChatlogProcessorOnException;
+
+            if (_chatlogException)
+            {
+                Reset();
+            }
+            else
+            {
+                _previousArrayIndex = readResult.PreviousArrayIndex;
+                _previousOffset = readResult.PreviousOffset;
+            }
+
             return readResult.ChatLogItems;
         }
 
+        private void ResetChatlogProcessorOnException(object sender, Sharlayan.Events.ExceptionEvent evt)
+        {
+            if (evt.Exception is Sharlayan.Reader.ChatLogReaderException)
+                _chatlogException = true;
+        }
     }
-
 }

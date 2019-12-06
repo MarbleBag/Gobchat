@@ -56,9 +56,9 @@ namespace Gobchat.Memory
             Sharlayan.MemoryHandler.Instance.ExceptionEvent += (s, e) =>
             {
                 if (e.LevelIsError)
-                    logger.Fatal(e.Exception, () => $"Memory Error in {e.Sender}");
+                    logger.Fatal(e.Exception, () => $"Memory error in {e.Sender}");
                 else
-                    logger.Warn(e.Exception, () => $"Memory Error in {e.Sender}");
+                    logger.Warn(e.Exception, () => $"Memory error in {e.Sender}");
             };
         }
 
