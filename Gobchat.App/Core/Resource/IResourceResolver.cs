@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Gobchat.Core.Resource
 {
-    internal interface IResourceResolver
+    public interface IResourceLocator
     {
         IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
     }

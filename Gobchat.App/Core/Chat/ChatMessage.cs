@@ -15,7 +15,7 @@ using System;
 
 namespace Gobchat.Core.Chat
 {
-    internal class ChatMessage
+    public sealed class ChatMessage
     {
         public DateTime Timestamp { get; }
         public string Source { get; }

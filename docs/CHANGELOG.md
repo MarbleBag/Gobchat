@@ -2,7 +2,19 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.0.0] - Unreleased
+## [1.1.0] - 2019.12.06
+## Added
+- Auto-Updater
+- Field to set the frequency of chat updates in milliseconds (Experimental)
+- Additional sections to the german readme
+
+## Changed
+- Chatlogs names are changed from yyyy_MM_dd_HH_mm to yyyy-MM-dd_HH-mm
+
+## Fixed
+- Lost messages when a high amount of messages from other players are received
+
+## [1.0.0] - 2019.11.27
 ### Changed
 - Gobchat is now a stand-alone application
 
@@ -12,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Support for ffxiv's autotranslate. (English)
 - Chat History to file
 
-## [0.2.2] - 2019.11.27
+## [0.2.2] - 2019.10.27
 ### Added
 - Channel for npc dialogue 
 

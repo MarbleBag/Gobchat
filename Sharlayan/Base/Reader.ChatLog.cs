@@ -21,6 +21,13 @@ namespace Sharlayan
 
     public static partial class Reader
     {
+        public sealed class ChatLogReaderException : System.Exception
+        {
+            public ChatLogReaderException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+        }
+
         public static bool CanGetChatLog()
         {
             var canRead = Scanner.Instance.Locations.ContainsKey(Signatures.ChatLogKey);
@@ -70,7 +77,7 @@ namespace Sharlayan
                 ChatLogReader.EnsureArrayIndexes();
 
                 var currentArrayIndex = (ChatLogReader.ChatLogPointers.OffsetArrayPos - ChatLogReader.ChatLogPointers.OffsetArrayStart) / 4;
-                if (ChatLogReader.ChatLogFirstRun || currentArrayIndex == 0)
+                if (ChatLogReader.ChatLogFirstRun)
                 {
                     ChatLogReader.ChatLogFirstRun = false;
                     ChatLogReader.PreviousOffset = currentArrayIndex > 0 ? ChatLogReader.Indexes[(int)currentArrayIndex - 1] : 0;
@@ -95,7 +102,7 @@ namespace Sharlayan
             }
             catch (Exception ex)
             {
-                MemoryHandler.Instance.RaiseException(Logger, ex, true);
+                MemoryHandler.Instance.RaiseException(Logger, new ChatLogReaderException(ex.Message, ex), true);
             }
 
             foreach (List<byte> bytes in buffered.Where(b => b.Count > 0))

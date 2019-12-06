@@ -95,6 +95,7 @@
     "writeChatLog": false,
     "showTimestamp": true,
     "datacenter": null,
+    "chatUpdateInterval": 1000,
     "hotkeys": {
       "showhide": ""
     },

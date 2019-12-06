@@ -12,44 +12,47 @@
  *******************************************************************************/
 
 using Gobchat.Core.Runtime;
-using NLog;
 using System;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Gobchat.Core.Util
 {
     internal static class DownloadHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
         public enum DownloadResult
         {
-            CompletedSuccessfuly,
-            Cancelled
+            CompletedSuccessfully,
+            Canceled
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="downloadUrl"></param>
+        /// <param name="destinationFile"></param>
+        /// <param name="progressMonitor"></param>
+        /// <returns></returns>
+        /// <exception cref="DownloadFailedException"></exception>
         public static DownloadResult DownloadFileFromGithub(string downloadUrl, string destinationFile, IProgressMonitor progressMonitor)
         {
             var cancellationToken = progressMonitor.GetCancellationToken();
             if (cancellationToken.IsCancellationRequested)
-                return DownloadResult.Cancelled;
+                return DownloadResult.Canceled;
 
             if (!Directory.Exists(Path.GetDirectoryName(destinationFile)))
                 throw new DirectoryNotFoundException(Path.GetDirectoryName(destinationFile));
 
-            DownloadResult downloadResult = DownloadResult.CompletedSuccessfuly;
             Exception downloadException = null;
 
             using (var webClient = new WebClient())
             {
-                var currentVersion = AbstractGobchatApplicationContext.ApplicationVersion;
+                var currentVersion = GobchatApplicationContext.ApplicationVersion;
                 webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion.ToString()}");
 
                 progressMonitor.Progress = 0d;
                 progressMonitor.StatusText = $"Waiting...";
-                progressMonitor.Log("Prepare CEF download");
+                progressMonitor.Log("Prepare download");
 
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
@@ -85,12 +88,9 @@ namespace Gobchat.Core.Util
             }
 
             if (downloadException != null && !cancellationToken.IsCancellationRequested)
-            {
-                logger.Fatal(downloadException);
-                throw downloadException;
-            }
+                throw new DownloadFailedException(downloadException.Message, downloadException);
 
-            return cancellationToken.IsCancellationRequested ? DownloadResult.Cancelled : DownloadResult.CompletedSuccessfuly;
+            return cancellationToken.IsCancellationRequested ? DownloadResult.Canceled : DownloadResult.CompletedSuccessfully;
         }
     }
 }

@@ -12,161 +12,201 @@
  *******************************************************************************/
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Gobchat.Core.UI
 {
-    public sealed class NotifyIconManager : IDisposable
+    public sealed class NotifyIconManager : INotifyIconManager, IDisposable
     {
-        public enum HideShowState
-        {
-            Show,
-            Hide
-        }
+        public bool Visible { get => _icon.Visible; set => _icon.Visible = value; }
 
-        public enum IconState
-        {
-            ClientFound,
-            ClientNotFound
-        }
+        public System.Drawing.Icon Icon { get => _icon.Icon; set => _icon.Icon = value; }
 
-        public enum NotifyMenuItem
-        {
-            HideShow,
-            UnPause,
-            ReloadUI,
-            CloseApplication
-        }
+        public string Text { get => _icon.Text; set => _icon.Text = value; }
 
-        public sealed class NotifyIconEventArgs : EventArgs
+        public string DefaultGroup
         {
-            public NotifyMenuItem NotifyMenuItem { get; }
-
-            public NotifyIconEventArgs(NotifyMenuItem notifyMenuItem)
+            get
             {
-                NotifyMenuItem = notifyMenuItem;
+                return _defaultGroup;
+            }
+            set
+            {
+                if (!_groups.Contains(value))
+                    throw new UIElementNotFoundException(value); //TODO
+                _defaultGroup = value;
             }
         }
 
-        private const string IconOn = @"resources/GobTrayIconOn.ico";
-        private const string IconOff = @"resources/GobTrayIconOff.ico";
+        public event EventHandler OnIconClick;
 
-        private readonly System.Drawing.Icon _iconImage_StateOn;
-        private readonly System.Drawing.Icon _iconImage_StateOff;
+        public event EventHandler<NotifyIconMenuEventArgs> OnMenuClick;
+
+        public event EventHandler OnDispose;
+
+        private string _defaultGroup;
+
+        private readonly List<string> _groups;
+        private readonly IDictionary<string, List<string>> _itemsByGroup;
+        private readonly IDictionary<string, ToolStripMenuItem> _itemsById;
 
         private readonly NotifyIcon _icon;
-        private MenuItem _menuHideShow;
-        private MenuItem _menuUnPause;
-        private MenuItem _menuReloadUI;
-        private MenuItem _menuCloseApplication;
+        private bool _isDisposed;
 
-        public bool TrayIconVisible { get { return _icon.Visible; } set { _icon.Visible = value; } }
-
-        public event EventHandler<NotifyIconEventArgs> OnMenuClick;
-
-        public NotifyIconManager()
+        public NotifyIconManager() : this(null, null)
         {
-            _iconImage_StateOn = new System.Drawing.Icon(IconOn);
-            _iconImage_StateOff = new System.Drawing.Icon(IconOff);
+        }
 
+        public NotifyIconManager(IList<string> definedGroups) : this(definedGroups, null)
+        {
+        }
+
+        public NotifyIconManager(IList<string> definedGroups, string defaultGroup)
+        {
             _icon = new NotifyIcon();
-            _icon.Icon = _iconImage_StateOff;
-            _icon.Text = "Gobchat";
+            _icon.Click += OnEvent_NotifyIcon_Click;
 
-            _menuHideShow = new MenuItem("");
-            _menuUnPause = new MenuItem("Pause");
-            _menuUnPause.Enabled = false; //TODO
-            _menuReloadUI = new MenuItem("Reload UI");
-            _menuCloseApplication = new MenuItem("Close");
+            _groups = definedGroups != null ? new List<string>(definedGroups) : new List<string>();
+            if (_groups.Count == 0)
+                _groups.Add("default");
 
-            _icon.Click += OnEvent_HideShow;
-            _menuHideShow.Click += OnEvent_HideShow;
+            _itemsByGroup = new Dictionary<string, List<string>>(_groups.Count);
+            _groups.ForEach(s => _itemsByGroup[s] = new List<string>());
 
-            _menuUnPause.Click += OnEvent_UnPause;
-            _menuReloadUI.Click += OnEvent_ReloadUI;
-            _menuCloseApplication.Click += OnEvent_CloseApplication;
+            _itemsById = new Dictionary<string, ToolStripMenuItem>();
 
-            var contextMenu = new ContextMenu();
-            contextMenu.MenuItems.Add(_menuHideShow);
-            contextMenu.MenuItems.Add(_menuUnPause);
-            contextMenu.MenuItems.Add(_menuReloadUI);
-            contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add(_menuCloseApplication);
+            DefaultGroup = defaultGroup ?? _groups[0];
 
-            _icon.ContextMenu = contextMenu;
-
-            SetHideShowText(HideShowState.Hide);
+            _icon.ContextMenuStrip = new ContextMenuStrip();
+            _icon.ContextMenuStrip.Opening += OnEvent_ContextMenu_Open;
+            _icon.ContextMenuStrip.Closed += OnEvent_ContextMenu_Close;
         }
 
-        public void SetHideShowText(HideShowState state)
+        public void AddMenu(string id, ToolStripMenuItem menu)
         {
-            switch (state)
-            {
-                case HideShowState.Show:
-                    _menuHideShow.Text = "Show";
-                    break;
-
-                case HideShowState.Hide:
-                    _menuHideShow.Text = "Hide";
-                    break;
-            }
+            AddMenuToGroup(DefaultGroup, id, menu);
         }
 
-        public void SetIconState(IconState state)
+        public void AddMenuToGroup(string groupId, string id, ToolStripMenuItem menu)
         {
-            if (state == null) throw new ArgumentNullException(nameof(state));
-            switch (state)
-            {
-                case IconState.ClientFound:
-                    _icon.Icon = _iconImage_StateOn;
-                    break;
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(NotifyIconManager));
 
-                case IconState.ClientNotFound:
-                    _icon.Icon = _iconImage_StateOff;
-                    break;
+            if (groupId == null) throw new ArgumentNullException(nameof(groupId));
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (menu == null) throw new ArgumentNullException(nameof(menu));
+
+            if (_itemsById.TryGetValue(id, out var storedMenu))
+            {
+                if (storedMenu != menu)
+                    throw new UIElementIdAlreadyInUseException(id);
             }
+            else
+            {
+                _itemsById.Add(id, menu);
+                menu.Name = id;
+                menu.Disposed += OnEvent_MenuItem_Dispose;
+                menu.Click += OnEvent_MenuItem_Click;
+            }
+
+            if (!_itemsByGroup.TryGetValue(groupId, out var group))
+                throw new UIElementNotFoundException(groupId);
+
+            group.Add(id);
+        }
+
+        private void RemoveInnerMenu(string id)
+        {
+            foreach (var group in _itemsByGroup.Values)
+                group.Remove(id);
+            _itemsById.Remove(id);
+        }
+
+        public ToolStripMenuItem GetMenu(string id)
+        {
+            if (_itemsById.TryGetValue(id, out var result))
+                return result;
+            throw new UIElementNotFoundException(id);
         }
 
         public void Dispose()
         {
-            _iconImage_StateOn.Dispose();
-            _iconImage_StateOff.Dispose();
+            if (_isDisposed)
+                return;
+            _isDisposed = true;
+
+            try
+            {
+                OnDispose?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+                //ignored
+            }
+
+            foreach (var item in _itemsById.Values.ToList())
+            {
+                item.Disposed -= OnEvent_MenuItem_Dispose;
+                item.Dispose();
+            }
+
+            _itemsById.Clear();
+            _itemsByGroup.Clear();
+            _groups.Clear();
 
             _icon.Dispose();
-            _menuHideShow = null;
-            _menuUnPause = null;
-            _menuReloadUI = null;
-            _menuCloseApplication = null;
         }
 
-        private void OnEvent_UnPause(object sender, EventArgs e)
+        private void OnEvent_MenuItem_Dispose(object sender, EventArgs e)
         {
-            OnMenuClick?.Invoke(this, new NotifyIconEventArgs(NotifyMenuItem.UnPause));
+            if (!(sender is ToolStripMenuItem item))
+                return;
+            var id = item.Name;
+            RemoveInnerMenu(id);
         }
 
-        private void OnEvent_HideShow(object sender, EventArgs e)
+        private void OnEvent_MenuItem_Click(object sender, EventArgs e)
         {
-            if (sender == _icon)
+            if (!(sender is ToolStripMenuItem item))
+                return;
+            var id = item.Name;
+            OnMenuClick?.Invoke(this, new NotifyIconMenuEventArgs(id));
+        }
+
+        //runs on UI thread
+        private void OnEvent_NotifyIcon_Click(object sender, EventArgs e)
+        {
+            if (e is MouseEventArgs mouseEventArgs)
+                if (mouseEventArgs.Button == MouseButtons.Left)
+                    OnIconClick?.Invoke(this, new EventArgs());
+        }
+
+        //runs on UI thread
+        private void OnEvent_ContextMenu_Open(object sender, CancelEventArgs evt)
+        {
+            foreach (var groupId in _groups)
             {
-                // notifyicon.click raises an event for left and right click. Overall we only care for a left-click
-                if (e is MouseEventArgs mouseEventArgs)
-                    if (mouseEventArgs.Button == MouseButtons.Left)
-                        OnMenuClick?.Invoke(this, new NotifyIconEventArgs(NotifyMenuItem.HideShow));
+                if (_icon.ContextMenuStrip.Items.Count > 0)
+                    _icon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
+                var itemIds = _itemsByGroup[groupId];
+                foreach (var itemId in itemIds)
+                {
+                    var item = _itemsById[itemId];
+                    _icon.ContextMenuStrip.Items.Add(item);
+                }
             }
-            else
-            {
-                OnMenuClick?.Invoke(this, new NotifyIconEventArgs(NotifyMenuItem.HideShow));
-            }
+
+            evt.Cancel = false;
         }
 
-        private void OnEvent_CloseApplication(object sender, EventArgs e)
+        //runs on UI thread
+        private void OnEvent_ContextMenu_Close(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            OnMenuClick?.Invoke(this, new NotifyIconEventArgs(NotifyMenuItem.CloseApplication));
-        }
-
-        private void OnEvent_ReloadUI(object sender, EventArgs e)
-        {
-            OnMenuClick?.Invoke(this, new NotifyIconEventArgs(NotifyMenuItem.ReloadUI));
+            _icon.ContextMenuStrip.Items.Clear();
         }
     }
 }

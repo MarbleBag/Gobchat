@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace Gobchat.Core.Resource
 {
-    internal class LocalFolderResourceResolver : IResourceResolver
+    internal class LocalFolderResourceResolver : IResourceLocator
     {
         internal sealed class LocalResourceProvider : IResourceProvider
         {

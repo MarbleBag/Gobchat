@@ -17,11 +17,11 @@ using System.Globalization;
 
 namespace Gobchat.Core.Chat
 {
-    internal class AutotranslateProvider : IAutotranslateProvider
+    public sealed class AutotranslateProvider : IAutotranslateProvider
     {
         private Resource.ResourceBundle _resourceBundle;
 
-        public AutotranslateProvider(IList<Resource.IResourceResolver> resourceResolver, string baseName, CultureInfo fallbackCulture)
+        public AutotranslateProvider(IList<Resource.IResourceLocator> resourceResolver, string baseName, CultureInfo fallbackCulture)
         {
             _resourceBundle = new Resource.ResourceBundle(resourceResolver, baseName, fallbackCulture);
         }

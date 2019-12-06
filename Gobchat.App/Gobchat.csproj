@@ -17,6 +17,10 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,12 +33,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -114,8 +114,12 @@
       <HintPath>..\packages\Hjson.3.0.0\lib\net40\Hjson.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NAppUpdate.Framework, Version=0.5.1.0, Culture=neutral, PublicKeyToken=d1f1d1f19f9e5a56, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAppUpdate.Framework.0.5.1.0\lib\net40\NAppUpdate.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
@@ -146,7 +150,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
+    <Compile Include="Core\Config\ConfigLoadException.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
+    <Compile Include="Core\Config\InvalidPropertyPathException.cs" />
+    <Compile Include="Core\Config\InvalidPropertyTypeException.cs" />
+    <Compile Include="Core\Config\MissingPropertyException.cs" />
+    <Compile Include="Core\Config\PropertyException.cs" />
     <Compile Include="Core\Config\StringToEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\GobchatConfig.cs" />
@@ -156,51 +166,86 @@
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\JsonGobchatConfig.cs" />
-    <Compile Include="Core\Config\ConfigExceptions.cs" />
+    <Compile Include="Core\Config\ConfigException.cs" />
     <Compile Include="Core\LoadGobchatConfigEvent.cs" />
+    <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
+    <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Core\UI\ManualUpdateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\UI\ManualUpdateDialog.Designer.cs">
+      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Util\ArchiveUnpacker.cs" />
+    <Compile Include="Core\Util\DownloadFailedException.cs" />
+    <Compile Include="Core\Util\Exceptional.cs" />
+    <Compile Include="Core\Util\ExtractionFailedException.cs" />
+    <Compile Include="Core\Util\FileDownloader.cs" />
+    <Compile Include="Module\Cef\AppModuleCefManager.cs" />
+    <Compile Include="Module\CefInstaller\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationCefInstallerComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationChatComponent.cs" />
-    <Compile Include="Core\DownloadFailedException.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationHotkeyComponent.cs" />
+    <Compile Include="Module\CefInstaller\AppModuleCefInstaller.cs" />
+    <Compile Include="Module\Chat\AppModuleChat.cs" />
+    <Compile Include="Module\Hotkey\AppModuleHotKeyManager.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
-    <Compile Include="Core\Runtime\HotkeyManager.cs" />
+    <Compile Include="Module\Hotkey\HotkeyManager.cs" />
+    <Compile Include="Core\UI\IMenu.cs" />
+    <Compile Include="Core\UI\IMenuCollection.cs" />
+    <Compile Include="Core\UI\IMenuGroup.cs" />
+    <Compile Include="Core\UI\NotifyIconManager.cs" />
+    <Compile Include="Core\UI\UIElementIdAlreadyInUseException.cs" />
+    <Compile Include="Core\UI\UIElementNotFoundException.cs" />
+    <Compile Include="Core\UI\UIElementTypeException.cs" />
+    <Compile Include="Core\UI\UIException.cs" />
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Core\Runtime\IHotkeyManager.cs" />
-    <Compile Include="Updater\Manager.cs" />
-    <Compile Include="Updater\ProgressMonitorAdapter.cs" />
+    <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
+    <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Updater\Manager.cs" />
+    <Compile Include="Core\Updater\UpdateException.cs" />
+    <Compile Include="Core\UI\UpdateFormDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\UI\UpdateFormDialog.Designer.cs">
+      <DependentUpon>UpdateFormDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UI\ProgressMonitorAdapter.cs" />
     <Compile Include="Core\Runtime\DIContext.cs" />
     <Compile Include="Core\Runtime\IProgressMonitor.cs" />
     <Compile Include="Core\Runtime\TinyMessenger.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationNotifyIconComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationCefOverlayComponent.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationConfigComponent.cs" />
+    <Compile Include="Module\NotifyIcon\AppModuleNotifyIcon.cs" />
+    <Compile Include="Module\Overlay\AppModuleChatOverlay.cs" />
+    <Compile Include="Module\Config\AppModuleConfig.cs" />
     <Compile Include="Core\Runtime\ApplicationStartupHandler.cs" />
-    <Compile Include="Core\Runtime\Component\ApplicationUpdateComponent.cs" />
-    <Compile Include="Core\Runtime\IApplicationComponent.cs" />
+    <Compile Include="Module\Updater\AppModuleUpdater.cs" />
+    <Compile Include="Core\Runtime\IApplicationModule.cs" />
     <Compile Include="Core\Runtime\IDIContext.cs" />
     <Compile Include="Core\Runtime\IUIManager.cs" />
-    <Compile Include="Core\Runtime\UIManager.cs" />
+    <Compile Include="Core\UI\UIManager.cs" />
     <Compile Include="Core\Util\Extension\ConcurrentQueueExtension.cs" />
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
-    <Compile Include="Updater\IDependencyProvider.cs" />
-    <Compile Include="Core\Runtime\GobchatUpdateException.cs" />
-    <Compile Include="Updater\GitHubUpdateProvider.cs" />
-    <Compile Include="Core\UI\NotifyIconManager.cs" />
-    <Compile Include="Updater\IUpdateProvider.cs" />
-    <Compile Include="Updater\ProgressDisplayForm.cs">
+    <Compile Include="Core\Updater\IDependencyProvider.cs" />
+    <Compile Include="Module\Updater\GitHubUpdateProvider.cs" />
+    <Compile Include="Core\UI\INotifyIconManager.cs" />
+    <Compile Include="Module\Updater\IUpdateProvider.cs" />
+    <Compile Include="Core\UI\ProgressDisplayForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Updater\ProgressDisplayForm.Designer.cs">
+    <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Updater\UpdateManager.cs" />
+    <Compile Include="Core\Updater\UpdateManager.cs" />
     <Content Include="resources\ui\gobchat.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -299,7 +344,7 @@
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
     <Compile Include="Core\Chat\ChatMessageWebEvent.cs" />
-    <Compile Include="Core\Chat\ChatlogParser.cs" />
+    <Compile Include="Core\Chat\ChatlogToMessageConverter.cs" />
     <Compile Include="Core\Chat\ChatMessage.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
     <Compile Include="Core\Util\Extension\ExtEnumJson.cs" />
@@ -318,7 +363,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Core\SomeoneWhoDoesSomeWork.cs" />
+    <Compile Include="Module\Chat\SomeoneWhoDoesSomeWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -347,7 +392,17 @@
     <Folder Include="Core\Config\ConfigUpgrader\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Updater\ProgressDisplayForm.resx">
+    <EmbeddedResource Include="Core\UI\ManualUpdateDialog.resx">
+      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\UI\UpdateFormDialog.resx">
+      <DependentUpon>UpdateFormDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\UI\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

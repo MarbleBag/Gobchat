@@ -75,6 +75,16 @@ namespace Gobchat.Core.Runtime
             return _parent;
         }
 
+        public void Unregister<RegisterType>(string name) where RegisterType : class
+        {
+            _container.Unregister<RegisterType>(name);
+        }
+
+        public void Unregister<RegisterType>() where RegisterType : class
+        {
+            _container.Unregister<RegisterType>();
+        }
+
         public void Register<RegisterType>(Func<IDIContext, object, RegisterType> factory) where RegisterType : class
         {
             _container.Register<RegisterType>((c, p) => factory(this, null));

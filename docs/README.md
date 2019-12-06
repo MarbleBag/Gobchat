@@ -24,7 +24,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
 ## Features
 
 ### Smart autoscroll
-By moving the scroll bar up, autoscroll will be disabled for new messages and you can undisturbed (re)read text from the past.
+By moving the scroll bar up, autoscroll will be disabled for new messages and you can (re)read the text, without any disturbance.
 
 ![no autoscroll](screen_scroll_noautoscroll.png)
 
@@ -91,9 +91,10 @@ Usage:
 This chat command can be used to manipulate a player group without using the config menu, for example via macros.
 To use the group command, type `/e gc group`.
 
-Groupnumber is a number, starting from 1 and references the group you want to manipulate. The assigned number is identical to the position in the config menu..
+Groupnumber is a number, starting from 1 and references the group you want to manipulate. The assigned number is identical to the position in the config menu.
 
 Next is the task which should be performed. Possible values are `add`, `remove` and `clear`
+
 ##### clear
 Doesn't need any additional  arguments. This task will remove all players from a group.
 Example:
@@ -157,9 +158,9 @@ For now the update process has to be done manually.
 3. On start Gobchat checks for new updates
 
 Within your tray a new icon will appear: ![gobchat looks for ffxiv](screen_gobchat_off.png)
-This icon means Gobchat is running and looks for a active instance of FFXIV
+This icon means Gobchat is running and looks for an active instance of FFXIV.
 
-If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready
+If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready.
 This may take a while on your first start of gobchat.
 
 ### Tray Icon

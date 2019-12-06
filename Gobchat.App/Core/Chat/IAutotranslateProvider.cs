@@ -15,7 +15,7 @@ using System;
 
 namespace Gobchat.Core.Chat
 {
-    internal interface IAutotranslateProvider
+    public interface IAutotranslateProvider
     {
         String GetTranslationFor(string key);
     }
