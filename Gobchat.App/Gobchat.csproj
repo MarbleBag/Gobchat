@@ -178,7 +178,7 @@
     </Compile>
     <Compile Include="Core\Util\ArchiveUnpacker.cs" />
     <Compile Include="Core\Util\DownloadFailedException.cs" />
-    <Compile Include="Core\Util\Exceptional.cs" />
+    <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
     <Compile Include="Core\Util\FileDownloader.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
