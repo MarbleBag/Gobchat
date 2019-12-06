@@ -33,6 +33,9 @@ namespace Gobchat.Core.UI
         private void RegisterUIElement(string id, object element)
         {
             _map.Add(id, element);
+            // if (element is System.ComponentModel.Component component)
+            //   {
+            //   }
             //TODO
         }
 
@@ -63,6 +66,13 @@ namespace Gobchat.Core.UI
                 RegisterUIElement(id, result);
                 return result;
             }
+        }
+
+        public string CreateUIElement<T>(Func<T> generator)
+        {
+            var id = Guid.NewGuid().ToString();
+            CreateUIElement<T>(id, generator);
+            return id;
         }
 
         public void DisposeUIElement(string id)

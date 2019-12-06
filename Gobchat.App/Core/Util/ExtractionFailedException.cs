@@ -12,31 +12,27 @@
  *******************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Core.Util
 {
-    public interface IUpdateProvider
+    [Serializable]
+    public sealed class ExtractionFailedException : Exception
     {
-        IUpdateDescription CheckForUpdate();
-    }
-}
+        public ExtractionFailedException()
+        {
+        }
 
-namespace Gobchat.Core.Module.Updater
-{
-    public interface IUpdateDescription
-    {
-        Version Version { get; }
+        public ExtractionFailedException(string message) : base(message)
+        {
+        }
 
-        bool IsVersionAvailable { get; }
+        public ExtractionFailedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
 
-        string DirectDownloadUrl { get; }
-
-        string PageUrl { get; }
-
-        string PatchNotes { get; }
+        private ExtractionFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

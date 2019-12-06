@@ -51,7 +51,7 @@ namespace Gobchat.Core.Module.CefInstaller
                         var result = DownloadHelper.DownloadFileFromGithub(_cefDownloadUrl, _cefPatchArchive, progressMonitor);
                         switch (result)
                         {
-                            case DownloadHelper.DownloadResult.Cancelled:
+                            case DownloadHelper.DownloadResult.Canceled:
                                 progressMonitor.Log($"Delete partially downloaded cef archive\n{_cefPatchArchive}");
                                 File.Delete(_cefPatchArchive);
                                 throw new OperationCanceledException("Download cancelled");
@@ -89,10 +89,10 @@ namespace Gobchat.Core.Module.CefInstaller
                 {
                     case ArchiveUnpackerHelper.ExtractionResult.Complete:
                         progressMonitor.Log("Unpacking complete");
-                        //TODO delete archive
+                        File.Delete(_cefPatchArchive);
                         break;
 
-                    case ArchiveUnpackerHelper.ExtractionResult.Cancelled:
+                    case ArchiveUnpackerHelper.ExtractionResult.Canceled:
                         progressMonitor.Log("Delete partially unpacked CEF archive");
                         Directory.Delete(_cefLibFolder, true);
                         throw new OperationCanceledException("Unpacking cancelled");

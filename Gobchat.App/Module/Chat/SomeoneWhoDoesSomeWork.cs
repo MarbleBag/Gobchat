@@ -37,7 +37,7 @@ namespace Gobchat.Core.Module.Chat
     // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
 
@@ -144,10 +144,13 @@ namespace Gobchat.Core.Module.Chat
 
         private void OnEvent_MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
+            var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(10));
             var chatMessages = e.ChatlogItems
                 .Where((item) =>
                 {
-                    var isNew = _lastChatMessageTime <= item.TimeStamp;
+                    var isNew = timeStamp <= item.TimeStamp;
+                    if (!isNew)
+                        logger.Debug(() => $"Old message removed: {item.TimeStamp}");
                     return isNew;
                 })
                 .Select((item) =>
@@ -334,7 +337,7 @@ namespace Gobchat.Core.Module.Chat
         {
             _memoryProcessor.Update();
 
-            _overlay.InvokeAsyncOnUI((_) =>
+            _overlay.InvokeSyncOnUI((_) =>
             {
                 if (_overlay.Browser.IsBrowserInitialized)
                 {
@@ -363,6 +366,8 @@ namespace Gobchat.Core.Module.Chat
                         logger.Fatal(e);
                     }
                 }
+
+                return true;
             });
         }
 

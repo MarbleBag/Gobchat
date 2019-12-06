@@ -114,6 +114,9 @@
       <HintPath>..\packages\Hjson.3.0.0\lib\net40\Hjson.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NAppUpdate.Framework, Version=0.5.1.0, Culture=neutral, PublicKeyToken=d1f1d1f19f9e5a56, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAppUpdate.Framework.0.5.1.0\lib\net40\NAppUpdate.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -167,6 +170,17 @@
     <Compile Include="Core\LoadGobchatConfigEvent.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
     <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Core\UI\ManualUpdateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\UI\ManualUpdateDialog.Designer.cs">
+      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Util\ArchiveUnpacker.cs" />
+    <Compile Include="Core\Util\DownloadFailedException.cs" />
+    <Compile Include="Core\Util\Exceptional.cs" />
+    <Compile Include="Core\Util\ExtractionFailedException.cs" />
+    <Compile Include="Core\Util\FileDownloader.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\CefInstaller\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
@@ -174,7 +188,6 @@
     <Compile Include="Core\Resource\IResourceResolver.cs" />
     <Compile Include="Module\CefInstaller\AppModuleCefInstaller.cs" />
     <Compile Include="Module\Chat\AppModuleChat.cs" />
-    <Compile Include="Core\DownloadFailedException.cs" />
     <Compile Include="Module\Hotkey\AppModuleHotKeyManager.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Module\Hotkey\HotkeyManager.cs" />
@@ -190,6 +203,8 @@
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Core\Runtime\IHotkeyManager.cs" />
+    <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
+    <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,6 +392,9 @@
     <Folder Include="Core\Config\ConfigUpgrader\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Core\UI\ManualUpdateDialog.resx">
+      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Core\UI\UpdateFormDialog.resx">
       <DependentUpon>UpdateFormDialog.cs</DependentUpon>
     </EmbeddedResource>

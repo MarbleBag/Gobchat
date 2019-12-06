@@ -62,12 +62,12 @@ namespace Gobchat.Updater
             if (currentVersion > newestUpdate.Version)
                 return false;
 
-            var dialogTest = $"{newestUpdate.UpdateSourceDescription}\n\nPressing Yes will open a webpage with the newest version and stops Gobchat from starting.";
+            var dialogTest = $"{newestUpdate.PageUrl}\n\nPressing Yes will open a webpage with the newest version and stops Gobchat from starting.";
             var dialogResult = MessageBox.Show(dialogTest, "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
             if (DialogResult.Yes == dialogResult)
             {
-                var downloadLink = newestUpdate.BrowserDownloadLink;
+                var downloadLink = newestUpdate.DirectDownloadUrl;
                 Process downloadProcess = System.Diagnostics.Process.Start(downloadLink);
                 return true;
             }

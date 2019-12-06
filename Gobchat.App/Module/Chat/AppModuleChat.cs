@@ -16,6 +16,7 @@ using Gobchat.UI.Forms;
 using Gobchat.Core.Module;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Module.Chat;
+using Gobchat.Core.Config;
 
 namespace Gobchat.Module.Chat
 {
@@ -27,6 +28,7 @@ namespace Gobchat.Module.Chat
         {
             var synchronizer = container.Resolve<IUISynchronizer>();
             var manager = container.Resolve<IUIManager>();
+            var config = container.Resolve<GobchatConfigManager>();
 
             var work = new SomeoneWhoDoesSomeWork();
 
@@ -34,12 +36,24 @@ namespace Gobchat.Module.Chat
             {
                 try
                 {
+                    var timer = new System.Diagnostics.Stopwatch();
+
                     while (!token.IsCancellationRequested)
                     {
+                        timer.Restart();
                         work.Update();
+
+                        var updateTimer = config.UserConfig.GetProperty<long>("behaviour.chatUpdateInterval");
+
+                        timer.Stop();
+                        var timeSpend = timer.Elapsed;
+
                         if (token.IsCancellationRequested)
                             break;
-                        System.Threading.Thread.Sleep(1000);
+
+                        int waitTime = (int)Math.Max(0, updateTimer - timeSpend.Milliseconds);
+                        if (waitTime > 0)
+                            System.Threading.Thread.Sleep(waitTime);
                     }
                 }
                 //TODO may need some logging

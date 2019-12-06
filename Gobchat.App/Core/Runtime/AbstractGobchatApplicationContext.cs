@@ -124,6 +124,13 @@ namespace Gobchat.Core.Runtime
                 _hiddenMainForm = null;
                 logger.Info("Shutdown complete");
             }
+
+            var manager = NAppUpdate.Framework.UpdateManager.Instance;
+            if (manager.UpdatesAvailable > 0)
+            {
+                logger.Info("Install updates and restart app");
+                manager.ApplyUpdates(true, true, false);
+            }
         }
 
         internal abstract void ApplicationStartupProcess(CancellationToken token);

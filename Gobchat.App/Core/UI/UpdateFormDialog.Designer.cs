@@ -86,8 +86,8 @@
             // formLayout
             // 
             resources.ApplyResources(this.formLayout, "formLayout");
-            this.formLayout.Controls.Add(this.lblHeader, 0, 0);
             this.formLayout.Controls.Add(this.txtDisplay, 0, 1);
+            this.formLayout.Controls.Add(this.lblHeader, 0, 0);
             this.formLayout.Controls.Add(this.pnlControls, 0, 2);
             this.formLayout.Name = "formLayout";
             // 

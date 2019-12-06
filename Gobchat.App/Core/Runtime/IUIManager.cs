@@ -22,6 +22,8 @@ namespace Gobchat.Core.Runtime
 
         T CreateUIElement<T>(string id, System.Func<T> generator);
 
+        string CreateUIElement<T>(System.Func<T> generator);
+
         void DisposeUIElement(string id);
 
         /// <summary>

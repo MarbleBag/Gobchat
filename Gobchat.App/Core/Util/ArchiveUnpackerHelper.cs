@@ -24,14 +24,24 @@ namespace Gobchat.Core.Util
         public enum ExtractionResult
         {
             Complete,
-            Cancelled
+            Canceled
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="archivePath"></param>
+        /// <param name="destinationFolder"></param>
+        /// <param name="progressMonitor"></param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="ExtractionFailedException"></exception>
         public static ExtractionResult ExtractArchive(string archivePath, string destinationFolder, IProgressMonitor progressMonitor)
         {
             var cancellationToken = progressMonitor.GetCancellationToken();
             if (cancellationToken.IsCancellationRequested)
-                return ExtractionResult.Cancelled;
+                return ExtractionResult.Canceled;
 
             if (!File.Exists(archivePath))
                 throw new FileNotFoundException(archivePath);
@@ -42,45 +52,52 @@ namespace Gobchat.Core.Util
             progressMonitor.Progress = 0d;
             progressMonitor.Log($"Unpacking {archivePath}");
 
-            using (var archive = SharpCompress.Archives.ArchiveFactory.Open(archivePath))
+            try
             {
-                double totalArchiveSize = 0d;
-                double processedBytes = 0d;
-
-                foreach (var entry in archive.Entries)
+                using (var archive = SharpCompress.Archives.ArchiveFactory.Open(archivePath))
                 {
-                    totalArchiveSize += entry.Size;
-                }
-                totalArchiveSize = Math.Max(1, totalArchiveSize);
+                    double totalArchiveSize = 0d;
+                    double processedBytes = 0d;
 
-                using (var reader = archive.ExtractAllEntries())
-                {
-                    reader.EntryExtractionProgress += (sender, e) =>
+                    foreach (var entry in archive.Entries)
                     {
-                        progressMonitor.Progress = (processedBytes + e.ReaderProgress.BytesTransferred) / totalArchiveSize;
-                    };
+                        totalArchiveSize += entry.Size;
+                    }
+                    totalArchiveSize = Math.Max(1, totalArchiveSize);
 
-                    while (reader.MoveToNextEntry())
+                    using (var reader = archive.ExtractAllEntries())
                     {
-                        if (cancellationToken.IsCancellationRequested)
+                        reader.EntryExtractionProgress += (sender, e) =>
                         {
-                            progressMonitor.StatusText = "Unpacking cancelled";
-                            progressMonitor.Log("Unpacking cancelled");
-                            return ExtractionResult.Cancelled;
-                        }
+                            progressMonitor.Progress = (processedBytes + e.ReaderProgress.BytesTransferred) / totalArchiveSize;
+                        };
 
-                        var entry = reader.Entry;
-                        if (!entry.IsDirectory)
+                        while (reader.MoveToNextEntry())
                         {
-                            progressMonitor.StatusText = $"Unpacking: {entry.Key}";
-                            progressMonitor.Log($"Unpacking: {entry.Key}");
+                            if (cancellationToken.IsCancellationRequested)
+                            {
+                                progressMonitor.StatusText = "Unpacking cancelled";
+                                progressMonitor.Log("Unpacking cancelled");
+                                return ExtractionResult.Canceled;
+                            }
 
-                            reader.WriteEntryToDirectory(destinationFolder, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
-                            processedBytes += entry.Size;
-                            progressMonitor.Progress = processedBytes / totalArchiveSize;
+                            var entry = reader.Entry;
+                            if (!entry.IsDirectory)
+                            {
+                                progressMonitor.StatusText = $"Unpacking: {entry.Key}";
+                                progressMonitor.Log($"Unpacking: {entry.Key}");
+
+                                reader.WriteEntryToDirectory(destinationFolder, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+                                processedBytes += entry.Size;
+                                progressMonitor.Progress = processedBytes / totalArchiveSize;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ExtractionFailedException(ex.Message, ex);
             }
 
             progressMonitor.StatusText = "Unpacking complete";

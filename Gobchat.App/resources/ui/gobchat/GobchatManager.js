@@ -21,7 +21,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         init() {
-            const self = this 
+            const self = this
 
             this._chatConfig = new Gobchat.GobchatConfig()
             this._chatConfig.loadFromPlugin(() => self.updateStyle())
@@ -146,7 +146,7 @@ var Gobchat = (function (Gobchat) {
                 const scrollTarget = this._scrollTargetId
                 $(scrollTarget).animate({
                     scrollTop: $(scrollTarget)[0].scrollHeight - $(scrollTarget)[0].clientHeight
-                }, 200);
+                }, 10);
             }
         }
     }

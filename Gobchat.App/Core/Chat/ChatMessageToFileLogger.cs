@@ -46,7 +46,7 @@ namespace Gobchat.Core.Chat
             {
                 var logFolder = AbstractGobchatApplicationContext.UserLogLocation;
                 Directory.CreateDirectory(logFolder);
-                var timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm");
+                var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm");
                 var fileName = $"chatlog_{timestamp}.log";
                 _fileHandle = Path.Combine(logFolder, fileName);
             }

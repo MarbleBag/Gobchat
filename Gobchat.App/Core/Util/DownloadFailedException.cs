@@ -12,11 +12,17 @@
  *******************************************************************************/
 
 using System;
+using System.Runtime.Serialization;
 
-namespace Gobchat.Core
+namespace Gobchat.Core.Util
 {
-    public sealed class DownloadFailedException : System.Exception
+    [Serializable]
+    public sealed class DownloadFailedException : Exception
     {
+        public DownloadFailedException()
+        {
+        }
+
         public DownloadFailedException(string message) : base(message)
         {
         }
@@ -25,7 +31,7 @@ namespace Gobchat.Core
         {
         }
 
-        public DownloadFailedException()
+        private DownloadFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

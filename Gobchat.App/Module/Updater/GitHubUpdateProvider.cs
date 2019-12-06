@@ -25,27 +25,24 @@ namespace Gobchat.Core.Module.Updater
     {
         private sealed class GitHubUpdateDescription : IUpdateDescription
         {
-            private const string DOWNLOAD_DESCRIPTION = "Version {VERSION} is now available on github!\nhttps://github.com/MarbleBag/Gobchat/releases";
-
             public Version Version { get; } = new Version(0, 0);
-            public string BrowserDownloadLink { get; } = string.Empty;
-            public string UpdateSourceDescription { get; } = string.Empty;
+            public string DirectDownloadUrl { get; } = string.Empty;
+            public string PageUrl { get; } = string.Empty;
             public bool IsVersionAvailable { get; } = false;
-
             public string PatchNotes { get; } = string.Empty;
 
             public GitHubUpdateDescription(List<TagPackage> releases)
             {
                 if (releases == null)
                     throw new ArgumentNullException(nameof(releases));
-
                 IsVersionAvailable = releases.Count != 0;
 
                 if (IsVersionAvailable)
                 {
                     Version = releases[0].Version;
-                    BrowserDownloadLink = releases[0].DownloadLink;
-                    UpdateSourceDescription = DOWNLOAD_DESCRIPTION.Replace("{VERSION}", Version.ToString());
+
+                    DirectDownloadUrl = releases[0].DirectDownloadUrl;
+                    PageUrl = releases[0].PageUrl;
 
                     var stringBuilder = new System.Text.StringBuilder();
                     for (int i = 0; i < releases.Count; ++i)
@@ -63,14 +60,18 @@ namespace Gobchat.Core.Module.Updater
         private sealed class TagPackage
         {
             public Version Version { get; }
-            public string DownloadLink { get; }
+            public string DirectDownloadUrl { get; }
+            public string PageUrl { get; }
             public string Name { get; }
             public string Notes { get; }
 
-            public TagPackage(Version version, string downloadLink, string name, string notes)
+            public TagPackage(Version version, string directDownloadUrl, string pageUrl, string name, string notes)
             {
                 Version = version ?? throw new ArgumentNullException(nameof(version));
-                DownloadLink = downloadLink ?? throw new ArgumentNullException(nameof(downloadLink));
+
+                DirectDownloadUrl = directDownloadUrl ?? throw new ArgumentNullException(nameof(directDownloadUrl));
+                PageUrl = pageUrl ?? throw new ArgumentNullException(nameof(pageUrl));
+
                 Name = name ?? throw new ArgumentNullException(nameof(name));
                 Notes = notes ?? throw new ArgumentNullException(nameof(notes));
             }
@@ -79,28 +80,15 @@ namespace Gobchat.Core.Module.Updater
         //     private const string GITHUB_URL = @"https://api.github.com/repos/marblebag/gobchat/releases";
         //     private const string DOWNLOAD_LINK = "https://github.com/MarbleBag/Gobchat/releases/tag/v{VERSION}";
 
-        private const string PROJECT_RELEASES = @"https://api.github.com/repos/{USER}/{REPO}/releases";
-        private const string PROJECT_PAGE = @"https://github.com/{USER}/{REPO}";
-        private const string DOWNLOAD_LINK = @"https://github.com/{USER}/{REPO}/releases/tag/v{VERSION}";
+        private const string GITHUB_API_RELEASES = @"https://api.github.com/repos/{USER}/{REPO}/releases";
 
-        private Version _currentVersion;
-        private string _userName;
-        private string _repoName;
+        private const string PROJECT_PAGE_URL = @"https://github.com/{USER}/{REPO}";
+        private const string DOWNLOAD_PAGE_URL = @"https://github.com/{USER}/{REPO}/releases/tag/v{VERSION}";
+        private const string DIRECT_DOWNLOAD_URL = @"https://github.com/{USER}/{REPO}/releases/download/v{VERSION}/gobchat-{VERSION}.zip";
 
-        private string ProjectReleasesLink
-        {
-            get { return PROJECT_RELEASES.Replace("{USER}", _userName).Replace("{REPO}", _repoName); }
-        }
-
-        private string ProjectPageLink
-        {
-            get { return PROJECT_PAGE.Replace("{USER}", _userName).Replace("{REPO}", _repoName); }
-        }
-
-        private string DownloadLink
-        {
-            get { return DOWNLOAD_LINK.Replace("{USER}", _userName).Replace("{REPO}", _repoName); }
-        }
+        private readonly Version _currentVersion;
+        private readonly string _userName;
+        private readonly string _repoName;
 
         public GitHubUpdateProvider(Version currentVersion, string userName, string repoName)
         {
@@ -138,11 +126,11 @@ namespace Gobchat.Core.Module.Updater
                 try
                 {
                     //returns a json array with all releases. 0 is the newest release
-                    json = await httpClient.GetStringAsync(ProjectReleasesLink).ConfigureAwait(false);
+                    json = await httpClient.GetStringAsync(GetGithubReleaseAPI()).ConfigureAwait(false);
                 }
                 catch (HttpRequestException ex)
                 {
-                    throw new UpdateException($@"Unable to fetch most recent release from github '{ProjectPageLink}'", ex);
+                    throw new UpdateException($@"Unable to fetch most recent release from github '{GetProjectPageLink()}'", ex);
                 }
 
                 var releases = JToken.Parse(json);
@@ -179,8 +167,14 @@ namespace Gobchat.Core.Module.Updater
                     if (releaseVersion <= _currentVersion)
                         break;
 
-                    var downloadLink = DownloadLink.Replace("{VERSION}", releaseVersion.ToString());
-                    relevantReleases.Add(new TagPackage(releaseVersion, downloadLink: downloadLink, name: release["name"].ToString(), notes: release["body"].ToString()));
+                    relevantReleases.Add(
+                        new TagPackage(
+                            releaseVersion,
+                            directDownloadUrl: GetDirectDownloadUrlFor(releaseVersion),
+                            pageUrl: GetDownloadPageUrlFor(releaseVersion),
+                            name: release["name"].ToString(),
+                            notes: release["body"].ToString()
+                        ));
                 }
 
                 return relevantReleases;
@@ -189,6 +183,32 @@ namespace Gobchat.Core.Module.Updater
             {
                 throw new UpdateException(ex.Message, ex);
             }
+        }
+
+        private string GetGithubReleaseAPI()
+        {
+            return GITHUB_API_RELEASES.Replace("{USER}", _userName).Replace("{REPO}", _repoName);
+        }
+
+        private string GetProjectPageLink()
+        {
+            return PROJECT_PAGE_URL.Replace("{USER}", _userName).Replace("{REPO}", _repoName);
+        }
+
+        private string GetDirectDownloadUrlFor(Version version)
+        {
+            return DIRECT_DOWNLOAD_URL
+                .Replace("{USER}", _userName)
+                .Replace("{REPO}", _repoName)
+                .Replace("{VERSION}", version.ToString());
+        }
+
+        private string GetDownloadPageUrlFor(Version version)
+        {
+            return DOWNLOAD_PAGE_URL
+                .Replace("{USER}", _userName)
+                .Replace("{REPO}", _repoName)
+                .Replace("{VERSION}", version.ToString());
         }
     }
 }

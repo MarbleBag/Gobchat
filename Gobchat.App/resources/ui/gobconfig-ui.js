@@ -172,6 +172,20 @@
             $("#general_hotkey_showhide").val(msg)
             gobconfig.set("behaviour.hotkeys.showhide", msg)
         })
+
+        $("#general_input_chatUpdateInterval").attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+        $("#general_input_chatUpdateInterval").val(gobconfig.get("behaviour.chatUpdateInterval", "1000"))
+        $("#general_input_chatUpdateInterval").on("change", function (event) {
+            let newValue = event.target.value || "medium"
+            if (newValue < 0) {
+                newValue = 0
+            } else if (newValue > 5000) {
+                newValue = 5000
+            }
+
+            $("#general_input_chatUpdateInterval").val(newValue)
+            gobconfig.set("behaviour.chatUpdateInterval", newValue)
+        })
     }
 
     function initializeChannelConfig() {
