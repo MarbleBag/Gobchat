@@ -64,6 +64,7 @@ namespace Gobchat.Memory
             //var gameLanguage = System.Enum.GetName(typeof(GameLanguage), GameLanguage);
             //MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true, gameLanguage: gameLanguage);
 
+            MemoryHandler.Instance.SignaturesFoundEvent += OnEvent_SignatureFound;
             MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true);
 
             while (Scanner.Instance.IsScanning)
@@ -72,9 +73,19 @@ namespace Gobchat.Memory
                 Thread.Sleep(1000);
             }
 
+            MemoryHandler.Instance.SignaturesFoundEvent -= OnEvent_SignatureFound;
+
             FFXIVProcessValid = true;
 
             return true;
+        }
+
+        private void OnEvent_SignatureFound(object sender, Sharlayan.Events.SignaturesFoundEvent e)
+        {
+            if (e.Signatures.ContainsKey(Signatures.ChatLogKey))
+                logger.Info("Chatlog signature found");
+            else
+                logger.Info("Chatlog signature not found");
         }
 
         private bool IsActiveProcessValid(Process[] processes)
