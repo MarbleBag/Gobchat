@@ -23,11 +23,11 @@ namespace Gobchat.Core.Chat
 {
     internal sealed class ChatMessageToFileLogger : IDisposable
     {
-        private GobchatConfigManager _configManager;
-        private Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
+        private readonly IGobchatConfigManager _configManager;
+        private readonly Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
         private string _fileHandle;
 
-        public ChatMessageToFileLogger(GobchatConfigManager configManager)
+        public ChatMessageToFileLogger(IGobchatConfigManager configManager)
         {
             _configManager = configManager;
         }
@@ -61,12 +61,12 @@ namespace Gobchat.Core.Chat
 
         public void Log(ChatMessage message)
         {
-            var doLog = _configManager.UserConfig.GetProperty<bool>("behaviour.writeChatLog");
+            var doLog = _configManager.ActiveProfile.GetProperty<bool>("behaviour.writeChatLog");
             if (!doLog)
                 return;
 
-            var visibleChannels = _configManager.UserConfig.GetProperty<List<long>>("behaviour.channel.visible");
-            var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
+            var visibleChannels = _configManager.ActiveProfile.GetProperty<List<long>>("behaviour.channel.visible");
+            //var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
             // visibleChannels.Cast<Newtonsoft.Json.Linq.JValue>().Any(e => e.Value )
 
             if (visibleChannels.Contains(message.MessageType))//todo

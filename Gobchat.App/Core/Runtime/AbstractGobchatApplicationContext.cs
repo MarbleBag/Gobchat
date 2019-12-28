@@ -56,12 +56,16 @@ namespace Gobchat.Core.Runtime
 
         public static string ResourceLocation
         {
-            get { return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources"); }
+            get { return System.IO.Path.Combine(ApplicationLocation, @"resources"); }
         }
 
         public static string UserDataLocation
         {
+#if DEBUG
+            get { return System.IO.Path.Combine(ApplicationLocation, "DebugConfig"); }
+#else
             get { return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gobchat"); }
+#endif
         }
 
         public static string UserLogLocation

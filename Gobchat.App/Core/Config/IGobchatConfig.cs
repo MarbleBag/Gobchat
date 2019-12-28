@@ -12,11 +12,14 @@
  *******************************************************************************/
 
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Gobchat.Core.Config
 {
-    public interface GobchatConfig
+    public interface IGobchatConfig
     {
+        event EventHandler<PropertyChangedEventArgs> OnPropertyChange;
+
         /// <summary>
         ///
         /// </summary>

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Gobconfig</title>
+
+    <script src="../lib/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../lib/jquery-ui-1.12.1.min.css">
+    <script src="../lib/jquery-ui-1.12.1.min.js"></script>
+    <script src="../lib/lodash.min.js"></script>
+    <link rel="stylesheet" href="../lib/spectrum.css">
+    <script src="../lib/spectrum.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="config.css">
+</head>
+<body>
+    <script type="text/javascript">
+        'use strict';
+
+        if (window.opener) {
+            window.Gobchat = window.opener.Gobchat
+            window.gobconfig = new Gobchat.GobchatConfig()
+            window.gobconfig.loadFromLocalStore()
+        }
+    </script>
+
+    <div id="main_navbar" class="ui-side-navigation">
+        <select id="main_profileselect"></select>
+        <a data-nav-target="main_nav_app" class="active">App</a>
+        <a data-nav-target="main_nav_mentions">Mentions</a>
+        <a data-nav-target="main_nav_profiles">Profiles</a>
+        <a data-nav-target="main_nav_channel">Channels</a>
+        <a data-nav-target="main_nav_roleplay">Roleplay</a>
+        <a data-nav-target="main_nav_groups">Groups</a>
+        <a data-nav-target="main_nav_about">About</a>
+        <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
+        <a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>
+    </div>
+
+    <div class="ui-content">
+        <div id="main_nav_app" data-content-src="config_app.html"></div>
+        <div id="main_nav_mentions" data-content-src="config_mentions.html"></div>
+        <div id="main_nav_profiles" data-content-src="config_profiles.html"></div>
+        <div id="main_nav_channel" data-content-src="config_channel.html"></div>
+        <div id="main_nav_roleplay" data-content-src="config_roleplay.html"></div>
+        <div id="main_nav_groups" data-content-src="config_groups.html"></div>
+        <div id="main_nav_about" data-content-src="about.html"></div>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $("#main_saveconfig").on("click", function (e) {
+                window.gobconfig.saveToLocalStore()
+                window.close()
+                window.opener.postMessage("Done", '*')
+            });
+
+            $("#main_resetconfig").on("click", function (e) {
+                if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
+                    window.gobconfig.restoreDefaultConfig()
+                    window.gobconfig.saveToLocalStore()
+                    window.location.reload(false);
+                }
+            });
+        });
+    </script>
+
+    <script src="config.js"></script>
+</body>
+</html>

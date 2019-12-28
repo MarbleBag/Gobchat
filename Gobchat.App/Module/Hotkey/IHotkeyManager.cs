@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace Gobchat.Core.Runtime
+namespace Gobchat.Core.Module.Hotkey
 {
     public interface IHotkeyManager
     {
@@ -20,24 +20,5 @@ namespace Gobchat.Core.Runtime
         void UnregisterHotKey(Keys key, Action callback);
 
         void UnregisterHotKey(Action callback);
-    }
-
-    public sealed class InvalidHotkeyException : System.Exception
-    {
-        public int ErrorCode { get; }
-
-        public InvalidHotkeyException(string message) : base(message)
-        {
-        }
-
-        public InvalidHotkeyException(int errorCode, string hotkey, Exception innerException)
-            : base($"Error [{errorCode}] - {hotkey}", innerException)
-        {
-            ErrorCode = errorCode;
-        }
-
-        public InvalidHotkeyException()
-        {
-        }
     }
 }

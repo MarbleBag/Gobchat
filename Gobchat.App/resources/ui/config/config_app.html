@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <p>
+        <div>
+            <label>Language</label>
+            <select id="be" disabled="true">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Make a chat log</label>
+            <input type="checkbox" id="general_input_chatlog" />
+        </div>
+
+        <div>
+            <label>Autodetect emotes in say channel</label>
+            <input type="checkbox" id="input_autoemote" />
+        </div>
+
+        <div>
+            <label>Show timestamp</label>
+            <input type="checkbox" id="general_input_showTimestamp" />
+        </div>
+
+        <div>
+            <label>Hide when FF is in background</label>
+            <input type="checkbox" id="general_input_autohide" disabled="true" />
+        </div>
+
+        <div>
+            <label>Check for updates on start</label>
+            <input type="checkbox" id="general_input_checkForUpdate" />
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Chat position and size</label>
+            <div>
+                <label>X: </label>
+                <input type="number" />
+                <label>Y: </label>
+                <input type="number" />
+            </div>
+            <div>
+                <label>Hight: </label>
+                <input type="number" />
+                <label>Width: </label>
+                <input type="number" />
+            </div>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Fonts:</label>
+            <input type="text" id="general_font" style="width:100%;">
+            <button id="general_font_reset" class="ui-gc-btn"><i class='fa fa-undo'></i></button>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Font size:</label>
+            <select id="general_font_size">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Hotkeys:</label>
+        </div>
+        <div>
+            <label>Hide &amp; show chat overlay</label>
+        </div>
+        <div>
+            <input type="text" id="general_hotkey_showhide" />
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label>Chat Update Interval (MS)</label>
+            <input type="number" min="0" max="5000" id="general_input_chatUpdateInterval" />
+        </div>
+    </p>
+</body>
+</html>

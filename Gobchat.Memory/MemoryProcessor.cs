@@ -22,6 +22,7 @@ namespace Gobchat.Memory
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly FFXIVProcessFinder processFinder = new FFXIVProcessFinder();
+
         private readonly Chat.ChatlogReader chatlogProcessor = new Chat.ChatlogReader();
         private readonly Chat.ChatlogBuilder chatlogBuilder = new Chat.ChatlogBuilder();
 

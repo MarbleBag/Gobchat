@@ -11,20 +11,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-namespace Gobchat.Updater
+using System;
+
+namespace Gobchat.Core.Config
 {
-    public sealed class UpdateException : System.Exception
+    public sealed class PropertyChangedEventArgs : EventArgs
     {
-        public UpdateException(string message) : base(message)
-        {
-        }
+        public string PropertyKey { get; }
 
-        public UpdateException(string message, System.Exception innerException) : base(message, innerException)
+        public PropertyChangedEventArgs(string propertyKey)
         {
-        }
-
-        public UpdateException()
-        {
+            PropertyKey = propertyKey;
         }
     }
 }

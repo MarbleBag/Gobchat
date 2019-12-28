@@ -159,7 +159,7 @@ var Gobchat = (function (Gobchat) {
             applyClass(chatEntry, getChannelCssClassForPlayerGroup(groupId))
 
             const timeElement = document.createElement("span")
-            timeElement.innerHTML = "[" + message.timestamp + "] "
+            timeElement.innerHTML = `[${message.timestamp}]`
             applyClass(timeElement, "message-timestamp")
             chatEntry.appendChild(timeElement)
 

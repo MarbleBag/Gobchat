@@ -11,22 +11,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gobchat.Updater
+namespace Gobchat.Core.Config
 {
-    public interface IDependencyProvider
+    public interface IGobchatConfigProfile : IGobchatConfig
     {
-        IDependencyData CheckForMissingDependencies();
-    }
-
-    public interface IDependencyData
-    {
-        bool CanBeInstalled { get; }
-        bool HasMissingDependency { get; }
+        string ProfileId { get; }
     }
 }

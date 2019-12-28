@@ -15,7 +15,6 @@ using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
 using Gobchat.Core.Util;
-using Gobchat.Updater;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -23,28 +22,6 @@ using System.Linq;
 
 namespace Gobchat.Core.Module.Updater
 {
-    public sealed class AppModuleUpdater2 : IApplicationModule
-    {
-        public void Initialize(ApplicationStartupHandler handler, IDIContext container)
-        {
-            if (handler == null) throw new System.ArgumentNullException(nameof(handler));
-
-            var configManager = container.Resolve<GobchatConfigManager>();
-            var doUpdate = configManager.UserConfig.GetProperty<bool>("behaviour.checkForUpdate");
-
-            if (doUpdate)
-            {
-                var updateManager = new UpdateManager();
-                if (updateManager.CheckForUpdates())
-                    handler.StopStartup = true;
-            }
-        }
-
-        public void Dispose(IDIContext container)
-        {
-        }
-    }
-
     public sealed class AppModuleUpdater : IApplicationModule
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -58,8 +35,8 @@ namespace Gobchat.Core.Module.Updater
 
             DeleteOldPatchData();
 
-            var configManager = container.Resolve<GobchatConfigManager>();
-            var doUpdate = configManager.UserConfig.GetProperty<bool>("behaviour.checkForUpdate");
+            var configManager = container.Resolve<IGobchatConfigManager>();
+            var doUpdate = configManager.ActiveProfile.GetProperty<bool>("behaviour.checkForUpdate");
 
             if (!doUpdate)
                 return;

@@ -1,0 +1,39 @@
+﻿.ui-side-navigation {
+    margin: 0;
+    padding: 0;
+    width: 150px;
+    background-color: #f1f1f1;
+    position: fixed;
+    z-index: 1;
+    height: 100% overflow: auto
+}
+
+    .ui-side-navigation > * {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+        .ui-side-navigation > *.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .ui-side-navigation > *:hover:not(.active) {
+            background-color: #555555;
+            color: white;
+        }
+
+.ui-content {
+    margin-left: 150px;
+    padding: 1px 16px;
+    height: 100%
+}
+
+.ui-btn-system {
+    background-color: #dcdcdc
+}
+
+    .ui-btn-system:hover {
+    }

@@ -13,6 +13,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -20,13 +21,16 @@ namespace Gobchat.Core.Config
 {
     public sealed class JsonConfigLoader
     {
-        private readonly Dictionary<int, IJsonTransformer> _converters;
+        private readonly Dictionary<int, IJsonTransformer> _converters = new Dictionary<int, IJsonTransformer>();
 
         public JsonConfigLoader()
         {
-            //TODO Add new converters to support old config files
-            _converters = new Dictionary<int, IJsonTransformer>();
-            // _converters.Add("0.2.0", new GobchatLegacyToStandaloneConverter());
+        }
+
+        public void AddConverter(int targetVersion, IJsonTransformer transformer)
+        {
+            if (transformer == null) throw new ArgumentNullException(nameof(transformer));
+            _converters.Add(targetVersion, transformer);
         }
 
         /// <summary>

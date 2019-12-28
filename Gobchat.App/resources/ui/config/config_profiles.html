@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <p>
+        <button id="profile_new">Create new profile</button>
+        <button id="profile_import">Import profile</button>
+    </p>
+
+    <table id="config_profiles">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <template id="template_config_profiles_entry">
+        <tr draggable="true" data-profile-id>
+            <td>
+                <input id="profile_name" type="text" />
+            </td>
+            <td>
+                <button id="profile_activate" title="Activate">Activate profile</button>
+            </td>
+            <td>
+                <button id="profile_export" title="Export">Export profile</button>
+                <button id="profile_clone" title="Clone">Clone profile</button>
+                <button id="profile_copy" title="Copy from">Copy from profile</button>
+                <button id="profile_delete" title="delete">Delete profile</button>
+            </td>
+        </tr>
+    </template>
+
+    <script type="text/javascript">
+        $("#profile_new").on("click", new function (event) {
+
+        })
+
+        $("#profile_import").on("click", new function (event) {
+
+        })
+
+        gobconfig.addEventListener("profile.add", (event) => { })
+        gobconfig.addEventListener("profile.remove", (event) => { })
+        gobconfig.addEventListener("profile.changed", (event) => { })
+
+        const table = $("#config_profiles > tbody")
+        const template = $("#template_config_profiles_entry")
+        gobconfig.profiles.forEach((profile) => {
+            var clonedTemplate = template.clone(true)
+            clonedTemplate.attr("data-profile-id", profile.id)
+            clonedTemplate.find("#profile_name").text(profile.name)
+
+            //TODO
+            clonedTemplate.find("#profile_activate").on("click", null)
+            clonedTemplate.find("#profile_export").on("click", null)
+            clonedTemplate.find("#profile_clone").on("click", null)
+            clonedTemplate.find("#profile_copy").on("click", null)
+            clonedTemplate.find("#profile_delete").on("click", null)
+
+            clonedTemplate.appendTo(table)
+        })
+    </script>
+</body>
+</html>

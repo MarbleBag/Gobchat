@@ -19,7 +19,8 @@ namespace Gobchat.Core.Module
 {
     public sealed class AppModuleConfig : IApplicationModule
     {
-        public GobchatConfigManager ConfigManager { get; private set; }
+        private GobchatConfigManager _manager;
+        public IGobchatConfigManager ConfigManager { get => _manager; }
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
@@ -31,25 +32,21 @@ namespace Gobchat.Core.Module
             if (userLocation == null)
                 throw new ArgumentNullException(nameof(userLocation));
 
-            var defaultConfigPath = System.IO.Path.Combine(resourceLocation, @"default_gobconfig.json");
-            var userConfigPath = System.IO.Path.Combine(userLocation, @"gobconfig.json");
+            var defaultConfigPath = System.IO.Path.Combine(resourceLocation, @"default_profile.json");
 
-            //TODO
-            if (!System.IO.File.Exists(defaultConfigPath))
-                throw new ArgumentNullException(nameof(defaultConfigPath));
-            //  if (!System.IO.File.Exists(userConfigPath))
-            //      throw new ArgumentNullException(nameof(userConfigPath));
+            if (!System.IO.File.Exists(defaultConfigPath)) //TODO
+                throw new ArgumentException(nameof(defaultConfigPath));
 
-            ConfigManager = new GobchatConfigManager(defaultConfigPath, userConfigPath);
-            ConfigManager.LoadConfig();
+            _manager = new GobchatConfigManager(defaultConfigPath, userLocation);
+            _manager.InitializeManager();
 
-            container.Register<GobchatConfigManager>((c, p) => ConfigManager);
+            container.Register<IGobchatConfigManager>((c, p) => ConfigManager);
         }
 
         public void Dispose(IDIContext container)
         {
-            ConfigManager?.SaveConfig();
-            ConfigManager = null;
+            _manager?.SaveProfiles();
+            _manager = null;
         }
     }
 }

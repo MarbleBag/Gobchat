@@ -31,6 +31,7 @@ using Gobchat.Core.Runtime;
 using Gobchat.Core.Config;
 using NLog;
 using Gobchat.Core.Module;
+using Gobchat.Core.Module.Hotkey;
 
 namespace Gobchat.Core.Module.Chat
 {
@@ -44,7 +45,7 @@ namespace Gobchat.Core.Module.Chat
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
-        private GobchatConfigManager _configManager;
+        private IGobchatConfigManager _configManager;
         private ChatMessageToFileLogger _chatLogger;
 
         private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
@@ -61,7 +62,7 @@ namespace Gobchat.Core.Module.Chat
 
             _overlay = overlay;
 
-            _configManager = container.Resolve<GobchatConfigManager>();
+            _configManager = container.Resolve<IGobchatConfigManager>();
             _chatLogger = new ChatMessageToFileLogger(_configManager);
 
             LoadMemoryParser();
@@ -91,7 +92,7 @@ namespace Gobchat.Core.Module.Chat
             if ("LoadGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
             {
                 logger.Info("Sending config to ui");
-                var json = _configManager.UserConfig.ToJson().ToString();
+                var json = _configManager.ActiveProfile.ToJson().ToString();
                 return new UIEvents.LoadGobchatConfigEvent(json);
             }
 
@@ -99,7 +100,7 @@ namespace Gobchat.Core.Module.Chat
             {
                 logger.Info("Storing config from ui");
                 var configAsJson = _jsBuilder.Deserialize(details);
-                _configManager.UserConfig.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
+                _configManager.ActiveProfile.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
 
                 //TODO fire change events / move config to c#
 
@@ -188,7 +189,7 @@ namespace Gobchat.Core.Module.Chat
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 
             //TODO not changeable at the moment
-            var selectedLanguage = _configManager.UserConfig.GetProperty<string>("behaviour.language");
+            var selectedLanguage = _configManager.ActiveProfile.GetProperty<string>("behaviour.language");
             autotranslateProvider.LoadCulture(new CultureInfo(selectedLanguage));
 
             _lastChatMessageTime = DateTime.Now;
@@ -292,7 +293,7 @@ namespace Gobchat.Core.Module.Chat
             }
 
             var hotkeyManager = _container.Resolve<IHotkeyManager>();
-            var configHotkey = _configManager.UserConfig.GetProperty<string>("behaviour.hotkeys.showhide");
+            var configHotkey = _configManager.ActiveProfile.GetProperty<string>("behaviour.hotkeys.showhide");
 
             var currentHotkey = StringToKeys(_hotkey);
             var newHotkey = StringToKeys(configHotkey);
@@ -317,7 +318,7 @@ namespace Gobchat.Core.Module.Chat
             }
             catch (InvalidHotkeyException e)
             {
-                _configManager.UserConfig.SetProperty("behaviour.hotkeys.showhide", "");
+                _configManager.ActiveProfile.SetProperty("behaviour.hotkeys.showhide", "");
                 logger.Fatal(e, "Invalid Hotkey");
 
                 var userMsg = new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, $"Invalid Hotkey: {e.Message}");

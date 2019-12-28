@@ -105,7 +105,10 @@
     <Content Include="resources\lang\autotranslate_en.hjson">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\default_gobconfig.json">
+    <Content Include="resources\default_appconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\default_profile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -151,15 +154,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
+    <Compile Include="Core\Config\ActiveProfileChangedEventArgs.cs" />
     <Compile Include="Core\Config\ConfigLoadException.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
+    <Compile Include="Core\Config\IGobchatConfigManager.cs" />
+    <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
+    <Compile Include="Core\Config\InvalidProfileIdException.cs" />
     <Compile Include="Core\Config\InvalidPropertyPathException.cs" />
     <Compile Include="Core\Config\InvalidPropertyTypeException.cs" />
+    <Compile Include="Core\Config\JsonGobchatConfigProfile.cs" />
+    <Compile Include="Core\Config\JsonUtil.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\LegacyAppConfigTransformer.cs" />
     <Compile Include="Core\Config\MissingPropertyException.cs" />
+    <Compile Include="Core\Config\ProfileChangedEventArgs.cs" />
+    <Compile Include="Core\Config\PropertyChangedEventArgs.cs" />
     <Compile Include="Core\Config\PropertyException.cs" />
+    <Compile Include="Core\Config\PropertyReadOnlyException.cs" />
     <Compile Include="Core\Config\StringToEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
-    <Compile Include="Core\Config\GobchatConfig.cs" />
+    <Compile Include="Core\Config\IGobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
     <Compile Include="Core\Chat\ChannelEnum.cs" />
     <Compile Include="Core\Chat\MessageSegmentEnum.cs" />
@@ -202,8 +215,10 @@
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
-    <Compile Include="Core\Runtime\IHotkeyManager.cs" />
     <Compile Include="Module\Updater\DeleteTask.cs" />
+    <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
+    <Compile Include="Module\Hotkey\InvalidHotkeyException.cs" />
+    <Compile Include="Module\Updater\FolderDeleteTask.cs" />
     <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
     <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -211,8 +226,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Core\Updater\Manager.cs" />
-    <Compile Include="Core\Updater\UpdateException.cs" />
+    <Compile Include="Module\Updater\UpdateException.cs" />
     <Compile Include="Core\UI\UpdateFormDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,7 +250,6 @@
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
-    <Compile Include="Core\Updater\IDependencyProvider.cs" />
     <Compile Include="Module\Updater\GitHubUpdateProvider.cs" />
     <Compile Include="Core\UI\INotifyIconManager.cs" />
     <Compile Include="Module\Updater\IUpdateProvider.cs" />
@@ -246,7 +259,36 @@
     <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Updater\UpdateManager.cs" />
+    <Content Include="resources\ui\config\about.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_channel.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_app.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_groups.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_mentions.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_profiles.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_roleplay.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\gobchat.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -389,9 +431,7 @@
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Config\ConfigUpgrader\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Core\UI\ManualUpdateDialog.resx">
       <DependentUpon>ManualUpdateDialog.cs</DependentUpon>

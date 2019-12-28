@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Updater;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

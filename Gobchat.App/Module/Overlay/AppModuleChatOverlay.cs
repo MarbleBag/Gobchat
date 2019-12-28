@@ -17,6 +17,7 @@ using Gobchat.Core.Runtime;
 using Gobchat.Core.Config;
 using System.Windows.Forms;
 using Gobchat.Core.UI;
+using System;
 
 namespace Gobchat.Core.Module
 {
@@ -24,7 +25,7 @@ namespace Gobchat.Core.Module
     {
         public const string OverlayUIId = "Gobchat.ChatOverlayForm";
 
-        private GobchatConfigManager _configManager;
+        private IGobchatConfigManager _configManager;
         private IUIManager _manager;
 
         private CefOverlayForm _overlay;
@@ -32,7 +33,7 @@ namespace Gobchat.Core.Module
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             _manager = container.Resolve<IUIManager>();
-            _configManager = container.Resolve<GobchatConfigManager>();
+            _configManager = container.Resolve<IGobchatConfigManager>();
 
             var synchronizer = _manager.UISynchronizer;
             synchronizer.RunSync(() => InitializeUI());
@@ -44,25 +45,22 @@ namespace Gobchat.Core.Module
             _overlay.Show(); //initializes all properties
             _overlay.Visible = false;
 
-            if (_configManager.UserConfig.HasProperty("behaviour.frame.chat.position.x") &&
-                _configManager.UserConfig.HasProperty("behaviour.frame.chat.position.y"))
-            {
-                var posX = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.x");
-                var posY = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.position.y");
-                _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
-            }
+            _configManager.OnActiveProfileChange += (s, e) => UpdateFormPosition();
+            UpdateFormPosition();
 
-            if (_configManager.UserConfig.HasProperty("behaviour.frame.chat.size.width") &&
-                _configManager.UserConfig.HasProperty("behaviour.frame.chat.size.height"))
+            _overlay.Move += (s, e) =>
             {
-                var width = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.width");
-                var height = _configManager.UserConfig.GetProperty<long>("behaviour.frame.chat.size.height");
-                _overlay.Size = new System.Drawing.Size((int)width, (int)height);
-            }
+                var chatLocation = _overlay.Location;
+                _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.position.x", chatLocation.X);
+                _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.position.y", chatLocation.Y);
+            };
 
-            //TODO make sure chat is not outside of display
-            //TODO make sure chat is not too small
-            //TODO make sure chat is not too big
+            _overlay.SizeChanged += (s, e) =>
+            {
+                var chatSize = _overlay.Size;
+                _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
+                _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
+            };
 
             if (_manager.TryGetUIElement<INotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
             {
@@ -82,15 +80,38 @@ namespace Gobchat.Core.Module
             }
         }
 
+        private void UpdateFormPosition()
+        {
+            if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.x") &&
+                _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.y"))
+            {
+                var posX = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.x");
+                var posY = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.y");
+                _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
+            }
+
+            if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.width") &&
+                _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.height"))
+            {
+                var width = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.width");
+                var height = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.height");
+                _overlay.Size = new System.Drawing.Size((int)width, (int)height);
+            }
+
+            //TODO make sure chat is not outside of display
+            //TODO make sure chat is not too small
+            //TODO make sure chat is not too big
+        }
+
         private void DisposeUI()
         {
             var chatLocation = _overlay.Location;
-            _configManager.UserConfig.SetProperty("behaviour.frame.chat.position.x", chatLocation.X);
-            _configManager.UserConfig.SetProperty("behaviour.frame.chat.position.y", chatLocation.Y);
+            _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.position.x", chatLocation.X);
+            _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.position.y", chatLocation.Y);
 
             var chatSize = _overlay.Size;
-            _configManager.UserConfig.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
-            _configManager.UserConfig.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
+            _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
+            _configManager.ActiveProfile.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
         }
 
         public void Dispose(IDIContext container)

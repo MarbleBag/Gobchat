@@ -28,7 +28,7 @@ namespace Gobchat.Module.Chat
         {
             var synchronizer = container.Resolve<IUISynchronizer>();
             var manager = container.Resolve<IUIManager>();
-            var config = container.Resolve<GobchatConfigManager>();
+            var config = container.Resolve<IGobchatConfigManager>();
 
             var work = new SomeoneWhoDoesSomeWork();
 
@@ -43,7 +43,7 @@ namespace Gobchat.Module.Chat
                         timer.Restart();
                         work.Update();
 
-                        var updateTimer = config.UserConfig.GetProperty<long>("behaviour.chatUpdateInterval");
+                        var updateTimer = config.ActiveProfile.GetProperty<long>("behaviour.chatUpdateInterval");
 
                         timer.Stop();
                         var timeSpend = timer.Elapsed;

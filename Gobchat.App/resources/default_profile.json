@@ -1,5 +1,9 @@
 ﻿{
-  "version": 1,
+  "version": 2,
+  "profile": {
+    "id": null,
+    "name": null
+  },
   "behaviour": {
     "channel": {
       "roleplay": [
@@ -88,10 +92,10 @@
     },
     "language": "en",
     "mentions": [],
+    "playSoundOnMention": false,
     "checkForUpdate": true,
     "checkForBetaUpdate": false,
     "autodetectEmoteInSay": true,
-    "playSoundOnMention": false,
     "hideOnMinimize": false,
     "writeChatLog": false,
     "showTimestamp": true,

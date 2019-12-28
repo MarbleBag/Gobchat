@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <p>
+        <div>
+            <label>Mentions:</label>
+            <textarea rows="3" id="txt_mentions" style="width:100%;"></textarea>
+        </div>
+        <div>
+            <label>Play sound:</label>
+            <input type="checkbox" />
+        </div>
+        <div>
+            <label>Sound:</label>
+            <input type="text" />
+            <button>...</button>
+        </div>
+
+        <ui-config-mention data-config-path="behaviour.mentions.xyz"></ui-config-mention>
+    </p>
+
+    <script type="text/javascript">
+        console.log("Hello")
+
+        class MentionConfigElement extends HTMLElement {
+            constructor() {
+                super()
+
+                this.attachShadow({ mode: 'open' });
+                //this.shadowRoot
+            }
+        }
+
+        window.customElements.define('ui-config-mention', MentionConfigElement);
+    </script>
+</body>
+</html>

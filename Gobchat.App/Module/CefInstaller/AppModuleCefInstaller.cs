@@ -24,8 +24,6 @@ namespace Gobchat.Core.Module.CefInstaller
 {
     public sealed partial class AppModuleCefInstaller : IApplicationModule
     {
-        private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.0.0/Cef-75.1.14-{ARCH}.7z";
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
@@ -33,8 +31,8 @@ namespace Gobchat.Core.Module.CefInstaller
             var uiSynchronizer = container.Resolve<IUISynchronizer>();
             ProgressDisplayForm progressDisplay = null;
 
-            var cefFolder = Path.Combine(AbstractGobchatApplicationContext.ApplicationLocation, "libs", "cef");
-            var patcherFolder = Path.Combine(AbstractGobchatApplicationContext.ApplicationLocation, "patch");
+            var cefFolder = Path.Combine(GobchatApplicationContext.ApplicationLocation, "libs", "cef");
+            var patcherFolder = Path.Combine(GobchatApplicationContext.ApplicationLocation, "patch");
             var installer = new CefInstaller(cefFolder, patcherFolder);
             if (installer.IsCefAvailable())
                 return;
