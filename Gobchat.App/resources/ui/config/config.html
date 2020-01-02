@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="../lib/spectrum.css">
     <script src="../lib/spectrum.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <script defer src="../fontawesome/js/all.js"></script>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/font-awesome.min.css">-->
+    <!--<link href="../fontawesome/css/all.css" rel="stylesheet">--> <!--load all styles -->
     <link rel="stylesheet" href="config.css">
 </head>
 <body>
@@ -20,6 +23,7 @@
         'use strict';
 
         if (window.opener) {
+            window.GobchatAPI = window.opener.GobchatAPI
             window.Gobchat = window.opener.Gobchat
             window.gobconfig = new Gobchat.GobchatConfig()
             window.gobconfig.loadFromLocalStore()
@@ -36,7 +40,8 @@
         <a data-nav-target="main_nav_groups">Groups</a>
         <a data-nav-target="main_nav_about">About</a>
         <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
-        <a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>
+        <!--<a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>-->
+        <a class="btn-system" id="main_cancelconfig"><i class="fas fa-trash-alt"></i> Cancel</a>
     </div>
 
     <div class="ui-content">
@@ -53,15 +58,24 @@
         jQuery(function ($) {
             $("#main_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
+                window.gobresult = "success"
                 window.close()
                 window.opener.postMessage("Done", '*')
             });
 
             $("#main_resetconfig").on("click", function (e) {
                 if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
-                    window.gobconfig.restoreDefaultConfig()
+                    window.gobconfig.resetProfile()
                     window.gobconfig.saveToLocalStore()
                     window.location.reload(false);
+                }
+            });
+
+            $("#main_cancelconfig").on("click", function (e) {
+                if (window.confirm("Cancel? Any changed settings will be lost.")) {
+                    window.gobresult = "cancel"
+                    window.close()
+                    window.opener.postMessage("Done", '*')
                 }
             });
         });

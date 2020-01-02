@@ -7,11 +7,11 @@
 </head>
 <body>
     <p>
-        <button id="profile_new">Create new profile</button>
-        <button id="profile_import">Import profile</button>
+        <button id="configprofiles_profile_new"><i class="fas fa-file"></i> Create new profile</button>
+        <button id="configprofiles_profile_import" disabled><i class="fas fa-file-import"></i> Import profile</button>
     </p>
 
-    <table id="config_profiles">
+    <table id="configprofiles_profiles">
         <thead>
             <tr>
                 <th>Name</th>
@@ -23,28 +23,35 @@
         </tbody>
     </table>
 
-    <template id="template_config_profiles_entry">
+    <div id="configprofiles_copyprofiledialog" title="Basic dialog">
+        <select id="configprofiles_copyprofiledialog_select"></select>
+    </div>
+
+    <template id="configprofiles_template_profiles_entry">
         <tr draggable="true" data-profile-id>
             <td>
                 <input id="profile_name" type="text" />
             </td>
             <td>
-                <button id="profile_activate" title="Activate">Activate profile</button>
+                <button id="profile_activate" title="Activate"><i class="fas fa-check-square"></i> Activate</button>
             </td>
             <td>
                 <table>
                     <tr>
                         <td>
-                            <button id="profile_export" title="Export">Export profile</button>
+                            <button id="profile_export" disabled type="button" title="Export"><i class="fas fa-file-export"></i> Export</button>
                         </td>
                         <td>
-                            <button id="profile_clone" title="Clone">Clone profile</button>
+                            <button id="profile_clone" title="Clone"><i class="fas fa-copy"></i> Clone</button>
                         </td>
                         <td>
-                            <button id="profile_copy" title="Copy from">Copy from profile</button>
+                            <button id="profile_copy" title="Copy from"><i class="fas fa-clone"></i> Copy from</button>
                         </td>
                         <td>
-                            <button id="profile_delete" title="delete">Delete profile</button>
+                            <button id="profile_default" title="Restore defaults for this profile"><i class="fas fa-redo-alt"></i> Reset</button>
+                        </td>
+                        <td>
+                            <button id="profile_delete" title="delete"><i class="fas fa-eraser"></i> Delete</button>
                         </td>
                     </tr>
                 </table>
@@ -53,6 +60,7 @@
     </template>
 
     <script type="text/javascript">
+        $("#configprofiles_copyprofiledialog").hide();
 
         //setup profile selector
         const profileSelectionDropdown = $("#main_profileselect")
@@ -69,6 +77,7 @@
                 var profile = gobconfig.getProfile(profileId)
                 profileSelectionDropdown.append(new Option(profile.profileName, profileId))
             })
+            profileSelectionDropdown.val(gobconfig.activeProfile)
         }
 
         gobconfig.addProfileEventListener((event) => {
@@ -87,21 +96,24 @@
         populateProfileSelection()
 
         //setup create profile
-        $("#profile_new").on("click", function (event) {
+        $("#configprofiles_profile_new").on("click", function (event) {
             gobconfig.createNewProfile()
         })
 
         //setup import profile
-        $("#profile_import").on("click", function (event) {
-            alert("OwO")
+        $("#configprofiles_profile_import").on("click", function (event) {
+            (async () => {
+                const configJson = await GobchatAPI.importProfile()
+                gobconfig.importProfile(configJson)
+            })()
         })
 
         // gobconfig.addEventListener("profile.add", (event) => { })
         // gobconfig.addEventListener("profile.remove", (event) => { })
         //  gobconfig.addEventListener("profile.changed", (event) => { })
 
-        const profileTable = $("#config_profiles > tbody")
-        const template = $("#template_config_profiles_entry")
+        const profileTable = $("#configprofiles_profiles > tbody")
+        const template = $("#configprofiles_template_profiles_entry")
 
         function populateProfileTable() {
             profileTable.empty()
@@ -117,9 +129,9 @@
                 txtProfileName.on("change", function (event) {
                     profile.profileName = event.target.value || "Unnamed"
                 })
-                profile.addPropertyListener("profile.name", function (event) {
-                    txtProfileName.val(profile.profileName)
-                })
+                // profile.addPropertyListener("profile.name", function (event) {
+                //      txtProfileName.val(profile.profileName)
+                //  })
                 txtProfileName.val(profile.profileName)
 
                 const btnActiveProfile = rowElement.find("#profile_activate")
@@ -131,7 +143,7 @@
 
                 const btnExportProfile = rowElement.find("#profile_export")
                 btnExportProfile.on("click", function (event) {
-                    console.log(event.target.id)
+                    GobchatAPI.exportProfile(JSON.stringify(profile.config))
                 })
 
                 const btnCloneProfile = rowElement.find("#profile_clone")
@@ -142,8 +154,39 @@
 
                 const btnCopyProfile = rowElement.find("#profile_copy")
                 btnCopyProfile.on("click", function (event) {
-                    console.log(event.target.id)
-                    alert("OwO")
+                    const dialog = $('#configprofiles_copyprofiledialog')
+                    const dialogSelection = dialog.find("#configprofiles_copyprofiledialog_select")
+
+                    dialogSelection.empty()
+                    const profiles = _.without(gobconfig.profiles, profile.profileId)
+                    profiles.forEach((profileId) => {
+                        var profile = gobconfig.getProfile(profileId)
+                        dialogSelection.append(new Option(profile.profileName, profileId))
+                    })
+
+                    dialog.show()
+                    dialog.dialog({
+                        modal: true,
+                        buttons: {
+                            "Ok": function () {
+                                const copyFromProfile = dialogSelection.val()
+                                gobconfig.copyProfile(copyFromProfile, profile.profileId)
+                                $(this).dialog("close");
+                            },
+                            "Cancel": function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    })
+                })
+                if (gobconfig.profiles.length <= 1)
+                    btnCopyProfile.attr("disabled", true)
+
+                const btnDefaultProfile = rowElement.find("#profile_default")
+                btnDefaultProfile.on("click", function (event) {
+                    if (window.confirm("Restore all settings for this profile to default?\nEverything will be deleted!\nPress save afterwards.")) {
+                        profile.restoreDefaultConfig()
+                    }
                 })
 
                 const btnDeleteProfile = rowElement.find("#profile_delete")
@@ -154,14 +197,15 @@
                     btnDeleteProfile.attr("disabled", true)
             })
         }
-        populateProfileTable()
 
         gobconfig.addProfileEventListener((event) => {
             populateProfileTable()
         })
+        populateProfileTable()
 
         gobconfig.addPropertyEventListener("profile.name", (event) => {
-            profileTable.find(`tr[data-profile-id='${event.profileId}'] > #profile_name`).val(event.newValue)
+            const profile = gobconfig.getProfile(event.source)
+            profileTable.find(`tr[data-profile-id='${profile.profileId}']`).find("#profile_name").val(profile.get("profile.name"))
         })
     </script>
 </body>

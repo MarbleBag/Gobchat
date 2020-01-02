@@ -191,17 +191,17 @@ namespace Gobchat.Core.Config
                 {
                     path.Push(property.Name);
 
-                    if (ignorePath?.Invoke(string.Join(".", path)) ?? false)
-                        continue;
-
-                    var doOverwrite =
-                        objectB[property.Name] == null ||
-                        JsonUtil.TypeSwitch(objectB[property.Name], property.Value, callbacks);
-
-                    if (doOverwrite)
+                    if (!ignorePath?.Invoke(string.Join(".", path)) ?? false)
                     {
-                        objectB[property.Name] = property.Value.DeepClone();
-                        changed.Add(string.Join(".", path));
+                        var doOverwrite =
+                            objectB[property.Name] == null ||
+                            JsonUtil.TypeSwitch(objectB[property.Name], property.Value, callbacks);
+
+                        if (doOverwrite)
+                        {
+                            objectB[property.Name] = property.Value.DeepClone();
+                            changed.Add(string.Join(".", path));
+                        }
                     }
 
                     path.Pop();

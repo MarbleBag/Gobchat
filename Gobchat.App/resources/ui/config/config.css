@@ -25,6 +25,11 @@
             color: white;
         }
 
+    .ui-side-navigation > select {
+        padding: 6px;
+        width: 100%;
+    }
+
 .ui-content {
     margin-left: 150px;
     padding: 1px 16px;

@@ -33,7 +33,7 @@ var Gobchat = (function (Gobchat, undefined) {
     }
 
     //Will merge every value from extendedData into data
-    function writeObject(source, destination, ignoreFunc) {
+    function writeObject(source, destination, copyOnWrite = false, ignoreFunc = null) {
         var path = [];
         var changes = new Set();
 
@@ -48,16 +48,22 @@ var Gobchat = (function (Gobchat, undefined) {
                 for (let key of Object.keys(source)) {
                     path.push(key)
                     const fullPath = path.join(".")
-                    if (ignoreFunc(fullPath))
-                        continue
 
-                    if (!(key in destination)) {
-                        destination[key] = source[key]
-                        changes.add(fullPath)
-                    } else {
-                        if (objectTreeIteratorHelper(source[key], destination[key], callbacks)) { //merge on true
-                            destination[key] = source[key]
+                    if (!ignoreFunc(fullPath)) {
+                        if (!(key in destination)) {
+                            if (copyOnWrite)
+                                destination[key] = copyByJson(source[key])
+                            else
+                                destination[key] = source[key]
                             changes.add(fullPath)
+                        } else {
+                            if (objectTreeIteratorHelper(source[key], destination[key], callbacks)) { //merge on true
+                                if (copyOnWrite)
+                                    destination[key] = copyByJson(source[key])
+                                else
+                                    destination[key] = source[key]
+                                changes.add(fullPath)
+                            }
                         }
                     }
 
@@ -69,7 +75,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         callbacks.onObject(source, destination)
 
-        return changes
+        return Array.from(changes)
     }
 
     function objectTreeIteratorHelper(objA, objB, callbacks) {
@@ -95,7 +101,7 @@ var Gobchat = (function (Gobchat, undefined) {
     }
 
     function breakKeyDown(key) {
-        if (key == undefined || key == null) return []
+        if (key == undefined || key == null || key.length === 0) return []
         const parts = key.split(".")
         return parts
     }
@@ -174,7 +180,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
             const self = this
             this._OnPropertyChange = function (event) { //used as an event listener, so we need to keep a ref to this around
-                self._eventDispatcher.dispatch(`property:${event.key}`, { key: event.key })
+                const isActiveProfile = event.source === self.activeProfile
+                self._eventDispatcher.dispatch(`property:${event.key}`, { "key": event.key, "source": event.source, "isActive": isActiveProfile })
             }
         }
 
@@ -189,7 +196,7 @@ var Gobchat = (function (Gobchat, undefined) {
                 const profileData = data.profiles[profileId]
 
                 const cleanProfile = copyByJson(this._defaultProfile)
-                writeObject(profileData, cleanProfile, (p) => false)
+                writeObject(profileData, cleanProfile, false, (p) => false)
 
                 const profile = new ConfigProfile(cleanProfile)
                 profile.addPropertyListener("*", this._OnPropertyChange)
@@ -216,7 +223,7 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             Object.keys(this._profiles).forEach((profileId) => {
-                const profile = this._profiles[profileId]
+                const profile = this.getProfile(profileId)
                 data.profiles[profileId] = profile.config
             })
 
@@ -302,18 +309,19 @@ var Gobchat = (function (Gobchat, undefined) {
             this._eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
         }
 
-        copyProfile(srcId, destinationId) {
+        copyProfile(sourceProfileId, destinationProfileId) {
+            const sourceProfile = this.getProfile(sourceProfileId)
+            const destinationProfile = this.getProfile(destinationProfileId)
+            if (!sourceProfile || !destinationProfile)
+                return
+            destinationProfile.copyFrom(sourceProfile, "")
         }
 
         getProfile(profileId) {
             const profile = this._profiles[profileId]
             if (profile === undefined)
-                return profile
+                return null
             return profile
-        }
-
-        copyFrom(gobchatConfig) {
-            //TODO
         }
 
         //TODO remove later
@@ -340,23 +348,39 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         get(key, defaultValue) {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
             return this._activeProfile.get(key, defaultValue)
         }
 
         set(key, value) {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
             return this._activeProfile.set(key, value)
         }
 
         has(key) {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
             return this._activeProfile.has(key)
         }
 
         reset(key) {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
             return this._activeProfile.reset(key)
         }
 
         remove(key) {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
             return this._activeProfile.remove(key)
+        }
+
+        resetActiveProfile() {
+            if (!this._activeProfile)
+                throw new Error("No active profile")
+            this._activeProfile._restoreDefaultConfig()
         }
     }
 
@@ -385,18 +409,38 @@ var Gobchat = (function (Gobchat, undefined) {
             return this._config
         }
 
-        clone() {
-            const clone = new ConfigProfile(copyByJson(this._config))
-            return clone
+        copyFrom(config, rootKey) {
+            const srcRoot = copyByJson(config.get(rootKey))
+            if (!this.has(rootKey)) {
+                this.set(rootKey, srcRoot)
+                return
+            }
+
+            const dstRoot = this.get(rootKey)
+            const changes = writeObject(srcRoot, dstRoot, false, p => p === "profile.id")
+
+            this.set(rootKey, dstRoot)
+            this._firePropertyChanges(changes)
         }
 
-        _restoreDefaultConfig() {
+        restoreDefaultConfig() {
+            this._restoreDefaultConfig(true)
+        }
+
+        _restoreDefaultConfig(fireChanges) {
+            const oldConfig = this._config
             this._config = copyByJson(Gobchat.DefaultProfileConfig)
-            //TODO
+            this._config.profile = copyByJson(oldConfig.profile)
+
+            if (fireChanges) {
+                const changes = writeObject(Gobchat.DefaultProfileConfig, oldConfig, false, p => p === "profile")
+                this._firePropertyChanges(changes)
+            }
         }
 
+        //TODO delete
         _overwriteConfig(configData) {
-            const changes = writeObject(configData, this._config, p => false)
+            const changes = writeObject(configData, this._config, false, p => false)
             this._firePropertyChanges(changes)
         }
 
@@ -404,6 +448,7 @@ var Gobchat = (function (Gobchat, undefined) {
             const config = copyByJson(this._config)
             retainChangesIterator(config, Gobchat.DefaultProfileConfig)
 
+            copyValueForKey(this._config, "profile", config, true)
             copyValueForKey(this._config, "behaviour.groups", config, true)
             // copyValueForKey(this._config, "version", config)
             // copyValueForKey(this._config, "userdata", config)
@@ -473,7 +518,7 @@ var Gobchat = (function (Gobchat, undefined) {
                 if (splitted.has(propertyPath)) return
                 splitted.add(propertyPath)
 
-                const indexOffset = propertyPath.length
+                let indexOffset = propertyPath.length
                 while (true) {
                     indexOffset = propertyPath.lastIndexOf(".", indexOffset)
                     if (indexOffset === -1) break
@@ -484,6 +529,7 @@ var Gobchat = (function (Gobchat, undefined) {
             })
 
             const sorted = Array.from(splitted)
+
             sorted.sort((a, b) => {
                 if (a.startsWith(b))
                     return 1;
@@ -493,10 +539,12 @@ var Gobchat = (function (Gobchat, undefined) {
             })
 
             sorted.forEach((propertyPath) => {
-                this._propertyListener.dispatch(propertyPath, { "key": propertyPath, "source": this.profileId })
+                const data = { "key": propertyPath, "source": this.profileId }
+                this._propertyListener.dispatch(propertyPath, data)
+                this._propertyListener.dispatch("*", data)
             })
 
-            this._propertyListener.dispatch("*", { "key": "*", "source": this.profileId })
+            //this._propertyListener.dispatch("*", { "key": "*", "source": this.profileId })
         }
     }
 

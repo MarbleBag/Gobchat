@@ -87,8 +87,11 @@
                 if (handle.closed) {
                     clearInterval(timer);
 
-                    window.chatManager.loadConfigFromLocalStore()
-                    window.chatManager.updateStyle()
+                    const result = handle.window.gobresult
+                    if (result === "success") {
+                        window.chatManager.loadConfigFromLocalStore()
+                        window.chatManager.updateStyle()
+                    }
                 }
             }, 1000);
         })
