@@ -30,6 +30,8 @@ namespace Gobchat.Core.Config
 
         void RemovePropertyChangeListener(PropertyChangedListener listener);
 
+        IGobchatConfigProfile DefaultProfile { get; }
+
         IGobchatConfigProfile GetProfile(string profileId);
 
         IGobchatConfigProfile ActiveProfile { get; }

@@ -114,39 +114,7 @@ namespace Gobchat.Core.Config
                 throw new ConfigException("Config is read only");
 
             var changes = JsonUtil.Write(json, _data, (path) => UnchangableValues.Contains(path));
-
-            if (OnPropertyChange == null)
-                return;
-
-            var completed = new HashSet<string>();
-            foreach (var change in changes)
-            {
-                if (!completed.Add(change))
-                    continue;
-
-                var split = change.Split('.');
-                for (int i = split.Length - 2; i >= 0; --i)
-                {
-                    var path = string.Join(".", split, 0, i);
-                    if (!completed.Add(path))
-                        break;
-                }
-            }
-
-            var sorted = new List<string>(completed);
-            sorted.Sort((a, b) =>
-            {
-                if (a.StartsWith(b))
-                    return 1;
-                if (b.StartsWith(a))
-                    return -1;
-                return a.CompareTo(b);
-            });
-
-            foreach (var key in sorted)
-            {
-                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(key));
-            }
+            FirePropertyChange(changes);
         }
 
         public void SetProperty(string key, object value)
@@ -174,7 +142,49 @@ namespace Gobchat.Core.Config
             });
 
             if (changed)
-                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(key));
+                FirePropertyChange(key);
+        }
+
+        private void FirePropertyChange(string key)
+        {
+            FirePropertyChange(new List<string>() { key });
+        }
+
+        private void FirePropertyChange(ICollection<string> keys)
+        {
+            if (OnPropertyChange == null) return;
+            foreach (var k in PreparePropertyCallbacks(keys))
+                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(k));
+        }
+
+        private ICollection<string> PreparePropertyCallbacks(ICollection<string> keys)
+        {
+            var completed = new HashSet<string>() { "*" };
+            foreach (var key in keys)
+            {
+                if (!completed.Add(key))
+                    continue;
+
+                var split = key.Split('.');
+                for (int i = split.Length - 2; i >= 0; --i)
+                {
+                    var path = string.Join(".", split, 0, i);
+                    if (!completed.Add(path))
+                        break;
+                }
+            }
+
+            var sorted = new List<string>(completed);
+            sorted.Sort((a, b) =>
+            {
+                if (a.StartsWith(b))
+                    return 1;
+                if (b.StartsWith(a))
+                    return -1;
+                return a.CompareTo(b);
+            });
+
+            return sorted;
         }
 
         public JObject ToJson()

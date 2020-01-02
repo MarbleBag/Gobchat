@@ -28,6 +28,12 @@ namespace Gobchat.Core.Config
         {
             var profileId = _manager.CreateNewProfile();
             var profile = _manager.GetProfile(profileId);
+
+            var loader = new JsonConfigLoader();
+            var finalizer = new StringToEnumTransformer();
+            json = loader.LoadConfig(json);
+            json = finalizer.Transform(json);
+
             profile.SetProperties(json);
             profile.SetProperty("profile.name", "Unnamed");
 

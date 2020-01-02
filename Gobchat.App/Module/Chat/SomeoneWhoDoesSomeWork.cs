@@ -32,6 +32,8 @@ using Gobchat.Core.Config;
 using NLog;
 using Gobchat.Core.Module;
 using Gobchat.Core.Module.Hotkey;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Module.Chat
 {
@@ -68,7 +70,7 @@ namespace Gobchat.Core.Module.Chat
             LoadMemoryParser();
             LoadChatParser();
 
-            _api = new GobchatWebAPI(_overlay.Browser, OnEvent_UIMessage);
+            _api = new GobchatWebAPI(_overlay.Browser, OnEvent_UIMessage, OnEvent_UIRequest);
             _overlay.Browser.BindBrowserAPI(_api, true);
 
             //_overlay.InvokeUIThread(true, () => _overlay.Hide());
@@ -80,11 +82,45 @@ namespace Gobchat.Core.Module.Chat
                     _overlay.InvokeAsyncOnUI((_) => _overlay.Visible = true);
             };
 
+            _configManager.OnActiveProfileChange += Event_Config_ProfileChanged;
+            _configManager.AddPropertyChangeListener("behaviour.hotkeys", Event_Config_HotkeysChanged);
             UpdateHotkeys();
+        }
 
-            //TODO make sure chat is not outside of display
-            //TODO make sure chat is not too small
-            //TODO make sure chat is not too big
+        private void Event_Config_ProfileChanged(object sender, ActiveProfileChangedEventArgs e)
+        {
+            //TODO trigger all stuff that needs to be update on a profile change
+
+            UpdateHotkeys();
+        }
+
+        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, PropertyChangedEventArgs evt)
+        {
+            UpdateHotkeys();
+        }
+
+        private async Task<string> OnEvent_UIRequest(string request, string data)
+        {
+            if (request == "GetConfig")
+            {
+                var root = new JObject();
+                root["activeProfile"] = _configManager.ActiveProfileId;
+                root["profiles"] = new JObject();
+
+                var profiles = _configManager.Profiles;
+                var profileStore = root["profiles"];
+                foreach (var profileId in profiles)
+                {
+                    profileStore[profileId] = _configManager.GetProfile(profileId).ToJson();
+                }
+
+                return root.ToString();
+            }
+            else if (request == "SetConfig")
+            {
+                //TODO
+            }
+            return "";
         }
 
         private JSEvent OnEvent_UIMessage(string eventName, string details)
@@ -104,7 +140,7 @@ namespace Gobchat.Core.Module.Chat
 
                 //TODO fire change events / move config to c#
 
-                UpdateHotkeys();
+                //UpdateHotkeys();
             }
 
             return null;
@@ -184,7 +220,7 @@ namespace Gobchat.Core.Module.Chat
         private void LoadChatParser()
         {
             logger.Info("Loading chat parser");
-            var languagePath = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"lang");
+            var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"lang");
             var resourceResolvers = new IResourceLocator[] { new LocalFolderResourceResolver(languagePath) };
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 
@@ -217,8 +253,8 @@ namespace Gobchat.Core.Module.Chat
                 builder.Append("Gobchat.MessageSegmentEnum = ");
                 builder.AppendLine(typeof(Gobchat.Core.Chat.MessageSegmentEnum).EnumToJson());
 
-                builder.Append("Gobchat.DefaultChatConfig = ");
-                builder.AppendLine(_configManager.DefaultConfig.ToJson().ToString());
+                builder.Append("Gobchat.DefaultProfileConfig = ");
+                builder.AppendLine(_configManager.DefaultProfile.ToJson().ToString());
             });
 
             InjectGobchatJavascript(builder =>

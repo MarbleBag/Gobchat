@@ -77,15 +77,27 @@
         window.chatManager.init()
 
         $("#gobchat_config").on("click", function (e) {
+
             window.chatManager.saveConfigToLocalStore()
+
             const handle = window.open('config/config.html', 'Settings', 'width=900,height=600')
             handle.focus()
+
+            const timer = setInterval(function () {
+                if (handle.closed) {
+                    clearInterval(timer);
+
+                    window.chatManager.loadConfigFromLocalStore()
+                    window.chatManager.updateStyle()
+                }
+            }, 1000);
         })
 
         $(window).on("message", function (e) {
             //TODO somehow check for the correct data
-            window.chatManager.loadConfigFromLocalStore()
-            window.chatManager.updateStyle()
+            console.log(e)
+            // window.chatManager.loadConfigFromLocalStore()
+            // window.chatManager.updateStyle()
         })
 
         // test

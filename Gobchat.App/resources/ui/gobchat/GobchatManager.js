@@ -20,12 +20,14 @@ var Gobchat = (function (Gobchat) {
             this._chatHtmlId = chatHtmlId
         }
 
-        init() {
+        async init() {
             const self = this
 
             this._chatConfig = new Gobchat.GobchatConfig()
-            this._chatConfig.loadFromPlugin(() => self.updateStyle())
+            await this.config.loadConfig()
+            this.updateStyle()
 
+            /*
             this._messageParser = new Gobchat.MessageParser(self._chatConfig)
             this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
 
@@ -35,10 +37,11 @@ var Gobchat = (function (Gobchat) {
             this._scrollbar.init()
 
             document.addEventListener("ChatMessageEvent", (e) => { self.onNewMessageEvent(e) })
+            */
         }
 
         get config() {
-            return this._chatConfig;
+            return this._chatConfig
         }
 
         saveConfigToLocalStore() {
@@ -47,12 +50,12 @@ var Gobchat = (function (Gobchat) {
 
         loadConfigFromLocalStore() {
             this._chatConfig.loadFromLocalStore()
-            this._chatConfig.saveToPlugin()
+            this._chatConfig.saveConfig()
         }
 
         //TODO test
         updateStyle() {
-            Gobchat.StyleBuilder.updateStyle(this._chatConfig, "custome_style_id")
+            Gobchat.StyleBuilder.updateStyle(this.config, "custome_style_id")
         }
 
         sendErrorMessage(msg) {

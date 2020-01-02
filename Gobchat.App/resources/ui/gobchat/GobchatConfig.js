@@ -1,6 +1,6 @@
 'use strict'
 
-//requieres Gobchat.DefaultChatConfig
+//requieres Gobchat.DefaultProfileConfig
 
 var Gobchat = (function (Gobchat, undefined) {
     function removeInvalidKeys(map, allowedKeys) {
@@ -22,7 +22,7 @@ var Gobchat = (function (Gobchat, undefined) {
             onObject: function (data, extendedData, callbackHelper) {
                 removeInvalidKeys(data, Object.keys(extendedData))
                 for (let key of Object.keys(data)) {
-                    if (dataIteratorHelper(data[key], extendedData[key], callbackHelper)) //delete on true
+                    if (objectTreeIteratorHelper(data[key], extendedData[key], callbackHelper)) //delete on true
                         delete data[key]
                 }
                 return Object.keys(data).length == 0 //if data is empty, it can be deleted
@@ -33,32 +33,46 @@ var Gobchat = (function (Gobchat, undefined) {
     }
 
     //Will merge every value from extendedData into data
-    function mergeIterator(data, extendedData) {
-        const callbackHelper = {
-            onArray: function (data, extendedData) {
+    function writeObject(source, destination, ignoreFunc) {
+        var path = [];
+        var changes = new Set();
+
+        const callbacks = {
+            onArray: function (source, destination) {
                 return true //lazy, just merge
             },
-            onCompare: function (data, extendedData) {
+            onCompare: function (source, destination) {
                 return true //lazy, just merge
             },
-            onObject: function (data, extendedData, callbackHelper) {
-                for (let key of Object.keys(extendedData)) {
-                    if (!(key in data)) {
-                        data[key] = extendedData[key]
+            onObject: function (source, destination) {
+                for (let key of Object.keys(source)) {
+                    path.push(key)
+                    const fullPath = path.join(".")
+                    if (ignoreFunc(fullPath))
+                        continue
+
+                    if (!(key in destination)) {
+                        destination[key] = source[key]
+                        changes.add(fullPath)
                     } else {
-                        if (dataIteratorHelper(data[key], extendedData[key], callbackHelper)) { //merge on true
-                            data[key] = extendedData[key]
+                        if (objectTreeIteratorHelper(source[key], destination[key], callbacks)) { //merge on true
+                            destination[key] = source[key]
+                            changes.add(fullPath)
                         }
                     }
+
+                    path.pop()
                 }
                 return false
             }
         }
 
-        callbackHelper.onObject(data, extendedData, callbackHelper)
+        callbacks.onObject(source, destination)
+
+        return changes
     }
 
-    function dataIteratorHelper(objA, objB, callbacks) {
+    function objectTreeIteratorHelper(objA, objB, callbacks) {
         if (Gobchat.isArray(objA)) {
             if (Gobchat.isArray(objB)) {
                 return callbacks.onArray(objA, objB, callbacks)
@@ -125,9 +139,9 @@ var Gobchat = (function (Gobchat, undefined) {
         return _config[targetKey]
     }
 
-    function copyValueForKey(source, key, destination, doNotCopy) {
+    function copyValueForKey(source, key, destination, doCopy) {
         let val = resolvePath(key, source)
-        if (!doNotCopy)
+        if (doCopy)
             val = copyByJson(val)
         buildPath(key, destination)
         resolvePath(key, destination, val)
@@ -149,89 +163,251 @@ var Gobchat = (function (Gobchat, undefined) {
 
     class GobchatConfig {
         constructor() {
-            this._propertyListener = new EventDispatcher()
-            if (Gobchat.DefaultChatConfig === undefined || Gobchat.DefaultChatConfig === null)
-                throw new Error("Gobchat.DefaultChatConfig is null")
-            this._config = copyByJson(Gobchat.DefaultChatConfig)
+            this._eventDispatcher = new EventDispatcher()
+            if (Gobchat.DefaultProfileConfig === undefined || Gobchat.DefaultProfileConfig === null)
+                throw new Error("Gobchat.DefaultProfileConfig is null")
+            this._defaultProfile = copyByJson(Gobchat.DefaultProfileConfig)
+
+            this._activeProfileId = null
+            this._activeProfile = null
+            this._profiles = {}
+
+            const self = this
+            this._OnPropertyChange = function (event) { //used as an event listener, so we need to keep a ref to this around
+                self._eventDispatcher.dispatch(`property:${event.key}`, { key: event.key })
+            }
         }
 
-        clone() {
-            const clone = new GobchatConfig()
-            clone.overwriteConfig(this._config)
-            return clone
+        _loadConfig(json) {
+            const data = JSON.parse(json)
+
+            const oldProfiles = this._profiles
+            this._profiles = {}
+
+            const profileIds = Object.keys(data.profiles)
+            profileIds.forEach((profileId) => {
+                const profileData = data.profiles[profileId]
+
+                const cleanProfile = copyByJson(this._defaultProfile)
+                writeObject(profileData, cleanProfile, (p) => false)
+
+                const profile = new ConfigProfile(cleanProfile)
+                profile.addPropertyListener("*", this._OnPropertyChange)
+                this._profiles[profileId] = profile
+            })
+
+            this.activeProfile = data.activeProfile
+
+            Object.keys(oldProfiles).forEach((profileId) => {
+                if (!(profileId in this._profiles))
+                    this._eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
+            })
+
+            profileIds.forEach((profileId) => {
+                if (!(profileId in oldProfiles))
+                    this._eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
+            })
         }
 
-        restoreDefaultConfig() {
-            this._config = copyByJson(Gobchat.DefaultChatConfig)
+        _saveConfig() {
+            const data = {
+                activeProfile: this._activeProfileId,
+                profiles: {}
+            }
+
+            Object.keys(this._profiles).forEach((profileId) => {
+                const profile = this._profiles[profileId]
+                data.profiles[profileId] = profile.config
+            })
+
+            const json = JSON.stringify(data)
+            return json
         }
 
-        overwriteConfig(config) {
-            //TODO return a set of update flags?
-            mergeIterator(this._config, config)
-            this.firePropertyChange("ALL") //TODO
+        async loadConfig() {
+            const dataJson = await GobchatAPI.getConfig()
+            this._loadConfig(dataJson)
+
+            /*
+            const keys = this.profiles
+
+            keys.forEach((profileId) => {
+                const profile = this._data.profiles[profileId]
+                const cleanProfile = copyByJson(this._defaultProfile)
+
+                retainChangesIterator(profile, cleanProfile)
+                mergeIterator(cleanProfile, profile)
+                this._data.profiles[profileId] = cleanProfile
+            })
+            */
         }
 
-        getConfigChanges() {
-            const config = copyByJson(this._config)
-            retainChangesIterator(config, Gobchat.DefaultChatConfig)
-
-            copyValueForKey(this._config, "behaviour.groups", config, false)
-            // copyValueForKey(this._config, "version", config)
-            // copyValueForKey(this._config, "userdata", config)
-            return config
+        async saveConfig() {
+            const dataJson = this._saveConfig()
+            await GobchatAPI.setConfig(dataJson)
         }
 
+        get activeProfile() {
+            return this._activeProfileId
+        }
+
+        set activeProfile(profileId) {
+            if (this._activeProfileId === profileId)
+                return
+
+            if (!this._profiles[profileId])
+                throw new Error("Invalid profile id: " + profileId)
+
+            const previousId = this._activeProfileId
+            this._activeProfileId = profileId
+            this._activeProfile = this._profiles[this._activeProfileId]
+
+            this._eventDispatcher.dispatch("profile:", { type: "active", detail: { old: previousId, new: this._activeProfileId } })
+        }
+
+        get profiles() {
+            return Object.keys(this._profiles)
+        }
+
+        createNewProfile() {
+            function generateId(ids) {
+                let id = null
+                do {
+                    id = Gobchat.generateId(8)
+                } while (_.includes(ids, id))
+                return id
+            }
+
+            const profile = new ConfigProfile(copyByJson(this._defaultProfile))
+            const profileId = generateId(this.profiles)
+
+            profile.config.profile.id = profileId
+            profile.config.profile.name = `Profile ${this.profiles.length}`
+            profile.addPropertyListener("*", this._OnPropertyChange)
+
+            this._profiles[profileId] = profile
+
+            this._eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
+            return profileId
+        }
+
+        deleteProfile(profileId) {
+            const profiles = this.profiles
+            if (profiles.length <= 1)
+                return //TODO
+            if (!_.includes(profiles, profileId))
+                return
+            delete this._profiles[profileId]
+            this.activeProfile = this.profiles[0]
+            this._eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
+        }
+
+        copyProfile(srcId, destinationId) {
+        }
+
+        getProfile(profileId) {
+            const profile = this._profiles[profileId]
+            if (profile === undefined)
+                return profile
+            return profile
+        }
+
+        copyFrom(gobchatConfig) {
+            //TODO
+        }
+
+        //TODO remove later
         saveToLocalStore() {
-            const json = JSON.stringify(this.getConfigChanges())
+            const json = this._saveConfig()
             window.localStorage.setItem("gobchat-config", json)
         }
 
+        //TODO remove later
         loadFromLocalStore() {
             const json = window.localStorage.getItem("gobchat-config")
             window.localStorage.removeItem("gobchat-config")
             if (json === undefined || json === null)
                 return
-            const config = JSON.parse(json)
-            this.restoreDefaultConfig()
-            this.overwriteConfig(config)
+            this._loadConfig(json)
         }
 
-        saveToPlugin() {
-            //const config = this.getConfigChanges()
-            // const json = JSON.stringify(config)
-            const json = JSON.stringify(this._config) //TODO Send whole config back for now
-            Gobchat.sendMessageToPlugin({ event: "SaveGobchatConfig", detail: json })
+        addProfileEventListener(callback) {
+            this._eventDispatcher.on("profile:", callback)
         }
 
-        loadFromPlugin(callback) { //TODO make this function async
-            const self = this
-            const onLoad = function (e) {
-                document.removeEventListener("LoadGobchatConfig", onLoad)
-
-                const json = e.detail.data
-
-                if (json === undefined || json === null) {
-                    if (callback) callback()
-                    return
-                }
-
-                let config = JSON.parse(json)
-                if (config.version && config.version !== Gobchat.DefaultChatConfig.version) {
-                    alert(`Error: Config version mismatch.\nSome settings are lost. Check options and resave.\nExpected ${Gobchat.DefaultChatConfig.version} but was ${config.version}`)
-                }
-
-                self.restoreDefaultConfig()
-                self.overwriteConfig(config)
-
-                if (callback) callback()
-            }
-
-            document.addEventListener("LoadGobchatConfig", onLoad, false)
-            Gobchat.sendMessageToPlugin({ event: "LoadGobchatConfig" })
+        addPropertyEventListener(topic, callback) {
+            this._eventDispatcher.on("property:" + topic, callback)
         }
 
-        get configStyle() {
-            return this._config.style
+        get(key, defaultValue) {
+            return this._activeProfile.get(key, defaultValue)
+        }
+
+        set(key, value) {
+            return this._activeProfile.set(key, value)
+        }
+
+        has(key) {
+            return this._activeProfile.has(key)
+        }
+
+        reset(key) {
+            return this._activeProfile.reset(key)
+        }
+
+        remove(key) {
+            return this._activeProfile.remove(key)
+        }
+    }
+
+    class ConfigProfile {
+        constructor(config) {
+            if (config === undefined || config === null)
+                throw new Error("config is null")
+
+            this._propertyListener = new EventDispatcher()
+            this._config = config
+        }
+
+        get profileId() {
+            return this._config.profile.id
+        }
+
+        get profileName() {
+            return this._config.profile.name
+        }
+
+        set profileName(name) {
+            this.set("profile.name", name)
+        }
+
+        get config() {
+            return this._config
+        }
+
+        clone() {
+            const clone = new ConfigProfile(copyByJson(this._config))
+            return clone
+        }
+
+        _restoreDefaultConfig() {
+            this._config = copyByJson(Gobchat.DefaultProfileConfig)
+            //TODO
+        }
+
+        _overwriteConfig(configData) {
+            const changes = writeObject(configData, this._config, p => false)
+            this._firePropertyChanges(changes)
+        }
+
+        getConfigDiff() {
+            const config = copyByJson(this._config)
+            retainChangesIterator(config, Gobchat.DefaultProfileConfig)
+
+            copyValueForKey(this._config, "behaviour.groups", config, true)
+            // copyValueForKey(this._config, "version", config)
+            // copyValueForKey(this._config, "userdata", config)
+            return config
         }
 
         get(key, defaultValue) {
@@ -260,33 +436,70 @@ var Gobchat = (function (Gobchat, undefined) {
                 this._config = value
             }
             resolvePath(key, this._config, value)
-            this.firePropertyChange(key)
+            this._firePropertyChange(key)
         }
 
         reset(key) {
             if (key === null || key.length === 0)
                 return
 
-            const original = resolvePath(key, Gobchat.DefaultChatConfig)
+            const original = resolvePath(key, Gobchat.DefaultProfileConfig)
             resolvePath(key, this._config, original)
-            this.firePropertyChange(key)
+            this._firePropertyChange(key)
         }
 
         remove(key) {
             if (key === null || key.length === 0)
                 return
             resolvePath(key, this._config, undefined, true)
-            this.firePropertyChange(key)
+            this._firePropertyChange(key)
         }
 
         addPropertyListener(topic, callback) {
             this._propertyListener.on(topic, callback)
         }
 
-        firePropertyChange(topic) {
-            this._propertyListener.dispatch(topic, { "topic": topic, manager: this })
+        removePropertyListener(topic, callback) {
+            this._propertyListener.off(topic, callback)
+        }
+
+        _firePropertyChange(propertyPath) {
+            this._firePropertyChanges([propertyPath])
+        }
+
+        _firePropertyChanges(propertyPaths) {
+            const splitted = new Set()
+            propertyPaths.forEach(propertyPath => {
+                if (splitted.has(propertyPath)) return
+                splitted.add(propertyPath)
+
+                const indexOffset = propertyPath.length
+                while (true) {
+                    indexOffset = propertyPath.lastIndexOf(".", indexOffset)
+                    if (indexOffset === -1) break
+                    const path = propertyPath.substring(0, indexOffset)
+                    if (splitted.has(path)) break
+                    splitted.add(path)
+                }
+            })
+
+            const sorted = Array.from(splitted)
+            sorted.sort((a, b) => {
+                if (a.startsWith(b))
+                    return 1;
+                if (b.startsWith(a))
+                    return -1;
+                return a.localeCompare(b)
+            })
+
+            sorted.forEach((propertyPath) => {
+                this._propertyListener.dispatch(propertyPath, { "key": propertyPath, "source": this.profileId })
+            })
+
+            this._propertyListener.dispatch("*", { "key": "*", "source": this.profileId })
         }
     }
+
     Gobchat.GobchatConfig = GobchatConfig
 
     class EventDispatcher {
@@ -316,16 +529,6 @@ var Gobchat = (function (Gobchat, undefined) {
                 if (idx > -1) listeners.splice(idx, 1)
                 if (listeners.length === 0) this.listenersByTopic.delete(topic)
             }
-        }
-    }
-
-    class GobchatConfigLoader {
-        constructor(targetVersion) {
-            this._targetVersion = targetVersion
-        }
-
-        load(config) {
-            return config
         }
     }
 

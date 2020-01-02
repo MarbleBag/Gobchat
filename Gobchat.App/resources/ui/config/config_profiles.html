@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th></th>
+                <th>Actions</th>
                 <th></th>
             </tr>
         </thead>
@@ -32,42 +32,136 @@
                 <button id="profile_activate" title="Activate">Activate profile</button>
             </td>
             <td>
-                <button id="profile_export" title="Export">Export profile</button>
-                <button id="profile_clone" title="Clone">Clone profile</button>
-                <button id="profile_copy" title="Copy from">Copy from profile</button>
-                <button id="profile_delete" title="delete">Delete profile</button>
+                <table>
+                    <tr>
+                        <td>
+                            <button id="profile_export" title="Export">Export profile</button>
+                        </td>
+                        <td>
+                            <button id="profile_clone" title="Clone">Clone profile</button>
+                        </td>
+                        <td>
+                            <button id="profile_copy" title="Copy from">Copy from profile</button>
+                        </td>
+                        <td>
+                            <button id="profile_delete" title="delete">Delete profile</button>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </template>
 
     <script type="text/javascript">
-        $("#profile_new").on("click", new function (event) {
 
+        //setup profile selector
+        const profileSelectionDropdown = $("#main_profileselect")
+        profileSelectionDropdown.attr("title", "Set your active profile.")
+
+        profileSelectionDropdown.on("change", function (event) {
+            const profileId = event.target.value
+            gobconfig.activeProfile = profileId
         })
 
-        $("#profile_import").on("click", new function (event) {
+        function populateProfileSelection() {
+            profileSelectionDropdown.empty()
+            gobconfig.profiles.forEach((profileId) => {
+                var profile = gobconfig.getProfile(profileId)
+                profileSelectionDropdown.append(new Option(profile.profileName, profileId))
+            })
+        }
 
+        gobconfig.addProfileEventListener((event) => {
+            if (event.type === "active")
+                profileSelectionDropdown.val(event.detail.new)
+            else
+                populateProfileSelection()
         })
 
-        gobconfig.addEventListener("profile.add", (event) => { })
-        gobconfig.addEventListener("profile.remove", (event) => { })
-        gobconfig.addEventListener("profile.changed", (event) => { })
+        gobconfig.addPropertyEventListener("profile.name", (event) => {
+            const profileId = profileSelectionDropdown.val()
+            populateProfileSelection()
+            profileSelectionDropdown.val(profileId)
+        })
 
-        const table = $("#config_profiles > tbody")
+        populateProfileSelection()
+
+        //setup create profile
+        $("#profile_new").on("click", function (event) {
+            gobconfig.createNewProfile()
+        })
+
+        //setup import profile
+        $("#profile_import").on("click", function (event) {
+            alert("OwO")
+        })
+
+        // gobconfig.addEventListener("profile.add", (event) => { })
+        // gobconfig.addEventListener("profile.remove", (event) => { })
+        //  gobconfig.addEventListener("profile.changed", (event) => { })
+
+        const profileTable = $("#config_profiles > tbody")
         const template = $("#template_config_profiles_entry")
-        gobconfig.profiles.forEach((profile) => {
-            var clonedTemplate = template.clone(true)
-            clonedTemplate.attr("data-profile-id", profile.id)
-            clonedTemplate.find("#profile_name").text(profile.name)
 
-            //TODO
-            clonedTemplate.find("#profile_activate").on("click", null)
-            clonedTemplate.find("#profile_export").on("click", null)
-            clonedTemplate.find("#profile_clone").on("click", null)
-            clonedTemplate.find("#profile_copy").on("click", null)
-            clonedTemplate.find("#profile_delete").on("click", null)
+        function populateProfileTable() {
+            profileTable.empty()
+            gobconfig.profiles.forEach((profileId) => {
+                const profile = gobconfig.getProfile(profileId)
 
-            clonedTemplate.appendTo(table)
+                const rowElement = $(template.html())
+                rowElement.appendTo(profileTable)
+
+                rowElement.attr("data-profile-id", profile.profileId)
+
+                const txtProfileName = rowElement.find("#profile_name")
+                txtProfileName.on("change", function (event) {
+                    profile.profileName = event.target.value || "Unnamed"
+                })
+                profile.addPropertyListener("profile.name", function (event) {
+                    txtProfileName.val(profile.profileName)
+                })
+                txtProfileName.val(profile.profileName)
+
+                const btnActiveProfile = rowElement.find("#profile_activate")
+                btnActiveProfile.on("click", function (event) {
+                    gobconfig.activeProfile = profile.profileId
+                })
+                if (gobconfig.activeProfile === profile.profileId)
+                    btnActiveProfile.attr("disabled", true)
+
+                const btnExportProfile = rowElement.find("#profile_export")
+                btnExportProfile.on("click", function (event) {
+                    console.log(event.target.id)
+                })
+
+                const btnCloneProfile = rowElement.find("#profile_clone")
+                btnCloneProfile.on("click", function (event) {
+                    const newProfileId = gobconfig.createNewProfile()
+                    gobconfig.copyProfile(profile.profileId, newProfileId)
+                })
+
+                const btnCopyProfile = rowElement.find("#profile_copy")
+                btnCopyProfile.on("click", function (event) {
+                    console.log(event.target.id)
+                    alert("OwO")
+                })
+
+                const btnDeleteProfile = rowElement.find("#profile_delete")
+                btnDeleteProfile.on("click", function (event) {
+                    gobconfig.deleteProfile(profile.profileId)
+                })
+                if (gobconfig.profiles.length <= 1)
+                    btnDeleteProfile.attr("disabled", true)
+            })
+        }
+        populateProfileTable()
+
+        gobconfig.addProfileEventListener((event) => {
+            populateProfileTable()
+        })
+
+        gobconfig.addPropertyEventListener("profile.name", (event) => {
+            profileTable.find(`tr[data-profile-id='${event.profileId}'] > #profile_name`).val(event.newValue)
         })
     </script>
 </body>

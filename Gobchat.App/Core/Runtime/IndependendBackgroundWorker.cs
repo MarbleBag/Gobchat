@@ -70,7 +70,6 @@ namespace Gobchat.Core.Runtime
         public void Dispose()
         {
             Stop(true);
-            _cancellationTokenSource = null;
             ActiveTask = null;
         }
     }

@@ -85,6 +85,7 @@ namespace Gobchat.UI.Web
             };
 
             CefSharp.CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
+            CefSharp.CefSharpSettings.ConcurrentTaskExecution = true;
 
             // Necessary to avoid input lag with a framerate limit below 60.
             cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";

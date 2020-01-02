@@ -185,9 +185,9 @@ namespace Gobchat.Core.Config
             {
                 return true; //always overwrite
             };
-            callbacks.OnObject = (objectA, objectB) => // move data from B to A
+            callbacks.OnObject = (objectA, objectB) => // move data from A to B
             {
-                foreach (var property in objectB.Properties())
+                foreach (var property in objectA.Properties())
                 {
                     path.Push(property.Name);
 
@@ -195,12 +195,12 @@ namespace Gobchat.Core.Config
                         continue;
 
                     var doOverwrite =
-                        objectA[property.Name] == null ||
-                        JsonUtil.TypeSwitch(objectA[property.Name], property.Value, callbacks);
+                        objectB[property.Name] == null ||
+                        JsonUtil.TypeSwitch(objectB[property.Name], property.Value, callbacks);
 
                     if (doOverwrite)
                     {
-                        objectA[property.Name] = property.Value.DeepClone();
+                        objectB[property.Name] = property.Value.DeepClone();
                         changed.Add(string.Join(".", path));
                     }
 
@@ -209,7 +209,7 @@ namespace Gobchat.Core.Config
                 return false; //already overwritten
             };
 
-            JsonUtil.TypeSwitch(destination, source, callbacks);
+            JsonUtil.TypeSwitch(source, destination, callbacks);
 
             return changed;
         }

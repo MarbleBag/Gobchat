@@ -45,9 +45,13 @@ namespace Gobchat.Core.Config
                     throw new ArgumentNullException(nameof(ActiveProfileId));
                 if (!_profiles.ContainsKey(value))
                     throw new InvalidProfileIdException(value);
-                OnActiveProfileChange?.Invoke(this, new ActiveProfileChangedEventArgs(_activeProfileId, _activeProfileId = value));
+                var oldProfileId = _activeProfileId;
+                _activeProfileId = value;
+                OnActiveProfileChange?.Invoke(this, new ActiveProfileChangedEventArgs(oldProfileId, _activeProfileId));
             }
         }
+
+        public IGobchatConfigProfile DefaultProfile => _defaultConfig;
 
         private string _defaultProfilePath;
 
@@ -222,6 +226,7 @@ namespace Gobchat.Core.Config
             var profileId = GenerateProfileId();
 
             var newConfig = new JObject();
+            newConfig["version"] = 2;
             newConfig["profile"] = new JObject();
             newConfig["profile"]["id"] = profileId;
             newConfig["profile"]["name"] = "";
