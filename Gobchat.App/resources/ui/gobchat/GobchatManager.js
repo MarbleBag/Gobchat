@@ -27,7 +27,6 @@ var Gobchat = (function (Gobchat) {
             await this.config.loadConfig()
             this.updateStyle()
 
-            /*
             this._messageParser = new Gobchat.MessageParser(self._chatConfig)
             this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
 
@@ -37,7 +36,6 @@ var Gobchat = (function (Gobchat) {
             this._scrollbar.init()
 
             document.addEventListener("ChatMessageEvent", (e) => { self.onNewMessageEvent(e) })
-            */
         }
 
         get config() {

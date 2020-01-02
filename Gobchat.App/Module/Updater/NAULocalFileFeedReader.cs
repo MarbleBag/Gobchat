@@ -40,7 +40,7 @@ namespace Gobchat.Core.Module.Updater
             //         tasks.Add(new DeleteTask(Path.Combine(GobchatApplicationContext.ApplicationLocation, file)));
 
             var files = System.IO.Directory.EnumerateFiles(feed, "*", System.IO.SearchOption.AllDirectories)
-                 .GroupBy(s => System.IO.Path.GetDirectoryName(s));
+             .GroupBy(s => System.IO.Path.GetDirectoryName(s));
 
             foreach (var folder in files)
             {

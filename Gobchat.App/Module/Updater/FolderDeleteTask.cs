@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using NAppUpdate.Framework;
+using NAppUpdate.Framework.Common;
 using NAppUpdate.Framework.Sources;
 using NAppUpdate.Framework.Tasks;
 using NAppUpdate.Framework.Utils;
@@ -21,74 +22,127 @@ using System.IO;
 namespace Gobchat.Core.Module.Updater
 {
     [Serializable]
-    [UpdateTaskAlias("folderDelete")]
-    internal sealed class FolderDeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
+    [UpdateTaskAlias("Delete")]
+    internal sealed class DeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
     {
-        private string _folderPath;
-        private string _backupFolderPath;
+        private readonly string _path;
+        private string _backupPath;
+        private bool isFolder;
+        private bool isFile;
 
-        public FolderDeleteTask(string folderPath)
+        public string TargetPath
         {
-            FolderPath = folderPath;
+            get => _path;
         }
 
-        public string FolderPath
+        public DeleteTask(string targetPath)
         {
-            get => _folderPath;
-            set => _folderPath = value ?? throw new ArgumentNullException(nameof(FolderPath));
+            _path = targetPath;
         }
 
         public override void Prepare(IUpdateSource source)
         {
-            UpdateManager.Instance.Logger.Log($"FolderDeleteTask: Deleting Folder {FolderPath}");
+            if (string.IsNullOrEmpty(TargetPath))
+            {
+                UpdateManager.Instance.Logger.Log(Logger.SeverityLevel.Warning, $"DeleteTask: {nameof(TargetPath)} is empty, task is a noop");
+                return;
+            }
+
+            UpdateManager.Instance.Logger.Log($"DeleteTask: Checking path '{TargetPath}'");
+            isFolder = Directory.Exists(TargetPath);
+            isFile = File.Exists(TargetPath);
         }
 
         public override TaskExecutionStatus Execute(bool coldRun)
         {
-            if (!Directory.Exists(FolderPath))
+            if (!isFolder && !isFile)
                 return TaskExecutionStatus.Successful;
 
             if (!coldRun)
                 return TaskExecutionStatus.RequiresAppRestart;
 
-            if (_backupFolderPath == null)
+            if (_backupPath == null)
             {
-                _backupFolderPath = Path.Combine(UpdateManager.Instance.Config.BackupFolder, FolderPath);
-                CopyDirectory(FolderPath, _backupFolderPath);
+                _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, TargetPath);
+                if (isFolder)
+                    CopyDirectory(TargetPath, _backupPath);
+                else if (isFile)
+                    CopyFile(TargetPath, _backupPath);
             }
 
-            try
+            if (isFolder)
             {
-                FileSystem.DeleteDirectory(FolderPath);
-            }
-            catch (Exception ex)
-            {
-                if (coldRun)
+                try
                 {
-                    ExecutionStatus = TaskExecutionStatus.Failed;
-                    throw new UpdateProcessFailedException($"Unable to delete folder: {FolderPath}", ex);
+                    FileSystem.DeleteDirectory(TargetPath);
                 }
-            }
+                catch (Exception ex)
+                {
+                    if (coldRun)
+                    {
+                        ExecutionStatus = TaskExecutionStatus.Failed;
+                        throw new UpdateProcessFailedException($"Unable to delete folder: {TargetPath}", ex);
+                    }
+                }
 
-            if (Directory.Exists(FolderPath))
-                if (PermissionsCheck.HaveWritePermissionsForFolder(FolderPath))
-                    return TaskExecutionStatus.RequiresAppRestart;
-                else
-                    return TaskExecutionStatus.RequiresPrivilegedAppRestart;
-            return TaskExecutionStatus.Successful;
+                if (Directory.Exists(TargetPath))
+                    if (PermissionsCheck.HaveWritePermissionsForFolder(TargetPath))
+                        return TaskExecutionStatus.RequiresAppRestart;
+                    else
+                        return TaskExecutionStatus.RequiresPrivilegedAppRestart;
+                return TaskExecutionStatus.Successful;
+            }
+            else if (isFile)
+            {
+                if (File.Exists(TargetPath))
+                    FileLockWait();
+
+                try
+                {
+                    File.Delete(TargetPath);
+                }
+                catch (Exception ex)
+                {
+                    if (coldRun)
+                    {
+                        ExecutionStatus = TaskExecutionStatus.Failed;
+                        throw new UpdateProcessFailedException($"Unable to delete fike: {TargetPath}", ex);
+                    }
+                }
+
+                if (File.Exists(TargetPath))
+                    if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(TargetPath))
+                        return TaskExecutionStatus.RequiresAppRestart;
+                    else
+                        return TaskExecutionStatus.RequiresPrivilegedAppRestart;
+                return TaskExecutionStatus.Successful;
+            }
+            else
+            {
+                return TaskExecutionStatus.Successful;
+            }
         }
 
         public override bool Rollback()
         {
-            CopyDirectory(_backupFolderPath, FolderPath);
+            if (isFolder)
+                CopyDirectory(_backupPath, TargetPath);
+            if (isFile)
+                CopyFile(_backupPath, TargetPath);
             return true;
+        }
+
+        private static void CopyFile(string sourceFile, string destinationFile)
+        {
+            string destinationDir = Path.GetDirectoryName(destinationFile);
+            FileSystem.CreateDirectoryStructure(destinationDir, false);
+            File.Move(sourceFile, destinationFile);
         }
 
         private static void CopyDirectory(string sourceDirectory, string targetDirectory)
         {
             var diSource = new DirectoryInfo(sourceDirectory);
             var diTarget = new DirectoryInfo(targetDirectory);
-
             CopyDirectory(diSource, diTarget);
         }
 
@@ -98,13 +152,27 @@ namespace Gobchat.Core.Module.Updater
 
             // Copy each file into the new directory.
             foreach (FileInfo fi in src.GetFiles())
-                fi.CopyTo(Path.Combine(dst.FullName, fi.Name), true);
+                fi.CopyTo(System.IO.Path.Combine(dst.FullName, fi.Name), true);
 
             // Copy each subdirectory using recursion.
             foreach (DirectoryInfo diSourceSubDir in src.GetDirectories())
             {
                 DirectoryInfo nextTargetSubDir = dst.CreateSubdirectory(diSourceSubDir.Name);
                 CopyDirectory(diSourceSubDir, nextTargetSubDir);
+            }
+        }
+
+        private void FileLockWait()
+        {
+            int attempt = 0;
+            while (FileSystem.IsFileLocked(new FileInfo(TargetPath)))
+            {
+                System.Threading.Thread.Sleep(500);
+                attempt++;
+                if (attempt == 10)
+                {
+                    throw new UpdateProcessFailedException("Failed to update, the file is locked: " + TargetPath);
+                }
             }
         }
     }
