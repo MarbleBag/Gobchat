@@ -90,6 +90,11 @@
             gobconfig.set("behaviour.checkForUpdate", event.target.checked)
         })
 
+        $("#capp_checkbetaupdates").prop('checked', gobconfig.get("behaviour.checkForBetaUpdate"))
+        $("#capp_checkbetaupdates").on("change", function (event) {
+            gobconfig.set("behaviour.checkForBetaUpdate", event.target.checked)
+        })
+
         {
             const dropdown = $("#dropdown_datacenter")
             dropdown.append(new Option("Automatic", "auto"))

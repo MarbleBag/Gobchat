@@ -64,7 +64,9 @@ namespace Gobchat.Core.Module.Updater
             if (!doUpdate)
                 return;
 
-            var update = GetUpdate(GobchatApplicationContext.ApplicationVersion);
+            var allowBetaUpdates = configManager.UserConfig.GetProperty<bool>("behaviour.checkForBetaUpdate");
+
+            var update = GetUpdate(GobchatApplicationContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
                 return;
 
@@ -280,9 +282,10 @@ namespace Gobchat.Core.Module.Updater
             }
         }
 
-        private IUpdateDescription GetUpdate(Version appVersion)
+        private IUpdateDescription GetUpdate(Version appVersion, bool allowBetaUpdates = false)
         {
             var provider = new GitHubUpdateProvider(appVersion, userName: "MarbleBag", repoName: "Gobchat");
+            provider.AcceptBetaReleases = allowBetaUpdates;
 
             try
             {

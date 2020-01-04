@@ -12,7 +12,9 @@
  *******************************************************************************/
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Gobchat.Core.Runtime;
 
 namespace Gobchat.Core.Module.Updater
 {
@@ -29,6 +31,13 @@ namespace Gobchat.Core.Module.Updater
             if (!System.IO.Directory.Exists(feed))
                 return tasks;
 
+            var updateContent = GetContent(feed);
+            var appContent = GetContent(GobchatApplicationContext.ApplicationLocation);
+
+            foreach (var file in appContent)
+                if (!updateContent.Contains(file))
+                    tasks.Add(new DeleteTask(Path.Combine(GobchatApplicationContext.ApplicationLocation, file)));
+
             var files = System.IO.Directory.EnumerateFiles(feed, "*", System.IO.SearchOption.AllDirectories)
                  .GroupBy(s => System.IO.Path.GetDirectoryName(s));
 
@@ -44,6 +53,31 @@ namespace Gobchat.Core.Module.Updater
             }
 
             return tasks;
+        }
+
+        private IList<string> GetContent(string location)
+        {
+            var content = new List<string>();
+
+            var xmlFile = Path.Combine(location, "GobFileContent.xml");
+            if (!File.Exists(xmlFile))
+                return content;
+
+            using (var xmlReader = System.Xml.XmlReader.Create(xmlFile))
+            {
+                bool readFile = false;
+                while (xmlReader.Read())
+                {
+                    if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == "File")
+                        readFile = true;
+                    if (readFile && xmlReader.NodeType == System.Xml.XmlNodeType.Text)
+                        content.Add(xmlReader.Value);
+                    if (xmlReader.NodeType == System.Xml.XmlNodeType.EndElement && xmlReader.Name == "File")
+                        readFile = false;
+                }
+            }
+
+            return content;
         }
     }
 }

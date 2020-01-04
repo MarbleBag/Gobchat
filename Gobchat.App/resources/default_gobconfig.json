@@ -89,6 +89,7 @@
     "language": "en",
     "mentions": [],
     "checkForUpdate": true,
+    "checkForBetaUpdate": false,
     "autodetectEmoteInSay": true,
     "playSoundOnMention": false,
     "hideOnMinimize": false,
@@ -193,7 +194,7 @@
             }
           }
         }
-      },
+      }
     }
   },
   "style": {

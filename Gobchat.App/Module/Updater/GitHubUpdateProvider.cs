@@ -60,14 +60,16 @@ namespace Gobchat.Core.Module.Updater
         private sealed class TagPackage
         {
             public Version Version { get; }
+            public bool IsPreRelease { get; }
             public string DirectDownloadUrl { get; }
             public string PageUrl { get; }
             public string Name { get; }
             public string Notes { get; }
 
-            public TagPackage(Version version, string directDownloadUrl, string pageUrl, string name, string notes)
+            public TagPackage(Version version, bool isPreRelease, string directDownloadUrl, string pageUrl, string name, string notes)
             {
                 Version = version ?? throw new ArgumentNullException(nameof(version));
+                IsPreRelease = isPreRelease;
 
                 DirectDownloadUrl = directDownloadUrl ?? throw new ArgumentNullException(nameof(directDownloadUrl));
                 PageUrl = pageUrl ?? throw new ArgumentNullException(nameof(pageUrl));
@@ -89,6 +91,8 @@ namespace Gobchat.Core.Module.Updater
         private readonly Version _currentVersion;
         private readonly string _userName;
         private readonly string _repoName;
+
+        public bool AcceptBetaReleases { get; set; } = false;
 
         public GitHubUpdateProvider(Version currentVersion, string userName, string repoName)
         {
@@ -155,9 +159,8 @@ namespace Gobchat.Core.Module.Updater
                     if (!"master".Equals(branch, StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
-                    //do not accept pre releases
                     var isPreRelease = (bool)release["prerelease"];
-                    if (isPreRelease)
+                    if (isPreRelease && !AcceptBetaReleases)
                         continue;
 
                     if (!Version.TryParse(release["tag_name"].ToString().Substring(1), out var releaseVersion))
@@ -170,6 +173,7 @@ namespace Gobchat.Core.Module.Updater
                     relevantReleases.Add(
                         new TagPackage(
                             releaseVersion,
+                            isPreRelease,
                             directDownloadUrl: GetDirectDownloadUrlFor(releaseVersion),
                             pageUrl: GetDownloadPageUrlFor(releaseVersion),
                             name: release["name"].ToString(),
