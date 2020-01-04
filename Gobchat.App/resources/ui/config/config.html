@@ -16,6 +16,8 @@
     <script defer src="../fontawesome/js/all.js"></script>
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/font-awesome.min.css">-->
     <!--<link href="../fontawesome/css/all.css" rel="stylesheet">--> <!--load all styles -->
+
+    <link rel="stylesheet" href="../gobui_default.css">
     <link rel="stylesheet" href="config.css">
 </head>
 <body>
@@ -54,7 +56,13 @@
         <div id="main_nav_about" data-content-src="about.html"></div>
     </div>
 
+    <div id="config_copyprofiledialog" title="Select a profile" hidden>
+        <select></select>
+    </div>
+
     <script type="text/javascript">
+        'use strict'
+
         jQuery(function ($) {
             $("#main_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
@@ -78,6 +86,8 @@
                     window.opener.postMessage("Done", '*')
                 }
             });
+
+            $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
         });
     </script>
 

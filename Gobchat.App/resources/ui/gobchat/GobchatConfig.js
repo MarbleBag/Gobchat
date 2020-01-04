@@ -73,9 +73,8 @@ var Gobchat = (function (Gobchat, undefined) {
             }
         }
 
-        callbacks.onObject(source, destination)
-
-        return Array.from(changes)
+        const needsToBeReplaced = objectTreeIteratorHelper(source, destination, callbacks)
+        return [Array.from(changes), needsToBeReplaced]
     }
 
     function objectTreeIteratorHelper(objA, objB, callbacks) {
@@ -416,8 +415,10 @@ var Gobchat = (function (Gobchat, undefined) {
                 return
             }
 
-            const dstRoot = this.get(rootKey)
-            const changes = writeObject(srcRoot, dstRoot, false, p => p === "profile.id")
+            let dstRoot = this.get(rootKey)
+            const [changes, replace] = writeObject(srcRoot, dstRoot, false, p => p === "profile")
+            if (replace)
+                dstRoot = srcRoot
 
             this.set(rootKey, dstRoot)
             this._firePropertyChanges(changes)
@@ -433,14 +434,14 @@ var Gobchat = (function (Gobchat, undefined) {
             this._config.profile = copyByJson(oldConfig.profile)
 
             if (fireChanges) {
-                const changes = writeObject(Gobchat.DefaultProfileConfig, oldConfig, false, p => p === "profile")
+                const [changes, ...x] = writeObject(Gobchat.DefaultProfileConfig, oldConfig, false, p => p === "profile")
                 this._firePropertyChanges(changes)
             }
         }
 
         //TODO delete
         _overwriteConfig(configData) {
-            const changes = writeObject(configData, this._config, false, p => false)
+            const [changes, ...x] = writeObject(configData, this._config, false, p => false)
             this._firePropertyChanges(changes)
         }
 
@@ -514,6 +515,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         _firePropertyChanges(propertyPaths) {
             const splitted = new Set()
+
             propertyPaths.forEach(propertyPath => {
                 if (splitted.has(propertyPath)) return
                 splitted.add(propertyPath)

@@ -42,3 +42,16 @@
 
     .ui-btn-system:hover {
     }
+
+.ui-btn-copyprofile {
+    line-height: 24px;
+    width: 28px;
+    margin: 3px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.disabled {
+    color: #ccc;
+}

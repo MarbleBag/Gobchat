@@ -5,10 +5,12 @@
     <meta charset="utf-8" />
 </head>
 <body>
+    <button class="ui-btn-copyprofile" id="capp_copyprofile"><i class="fas fa-clone"></i></button>
+
     <p>
         <div>
             <label>Language</label>
-            <select id="be" disabled="true">
+            <select id="capp_language" data-gob-configkey="behaviour.language" disabled="true">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
@@ -26,7 +28,7 @@
                             <label>Make a chat log</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="general_input_chatlog" />
+                            <input type="checkbox" id="capp_makechatlog" data-gob-configkey="behaviour.writeChatLog" />
                         </td>
                     </tr>
                     <tr>
@@ -34,7 +36,7 @@
                             <label>Autodetect emotes in say channel</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="input_autoemote" />
+                            <input type="checkbox" id="capp_autodetectemote" data-gob-configkey="behaviour.autodetectEmoteInSay" />
                         </td>
                     </tr>
                     <tr>
@@ -42,7 +44,7 @@
                             <label>Show timestamp</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="general_input_showTimestamp" />
+                            <input type="checkbox" id="capp_showTimestamp" data-gob-configkey="behaviour.showTimestamp" />
                         </td>
                     </tr>
                     <tr>
@@ -50,7 +52,7 @@
                             <label>Hide when FF is in background</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="general_input_autohide" disabled="true" />
+                            <input type="checkbox" id="capp_hide" data-gob-configkey="behaviour.hideOnMinimize" disabled="true" />
                         </td>
                     </tr>
                     <tr>
@@ -58,7 +60,15 @@
                             <label>Check for updates on start</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="general_input_checkForUpdate" />
+                            <input type="checkbox" id="capp_checkupdates" data-gob-configkey="behaviour.checkForUpdate" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="capp_checkbetaupdates">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- allow beta updates</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.checkForBetaUpdate" />
                         </td>
                     </tr>
                 </tbody>
@@ -67,28 +77,28 @@
     </p>
 
     <p>
-        <div>
+        <div hidden>
             <label>Chat position and size</label>
             <table>
                 <tbody>
                     <tr>
                         <td>
                             <label>X: </label>
-                            <input type="number" />
+                            <input type="number" data-gob-configkey="behaviour.frame.chat.position.x" />
                         </td>
                         <td>
                             <label>Hight: </label>
-                            <input type="number" />
+                            <input type="number" data-gob-configkey="behaviour.frame.chat.size.height" />
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label>Y: </label>
-                            <input type="number" />
+                            <input type="number" data-gob-configkey="behaviour.frame.chat.position.y" />
                         </td>
                         <td>
                             <label>Width: </label>
-                            <input type="number" />
+                            <input type="number" data-gob-configkey="behaviour.frame.chat.size.width" />
                         </td>
                     </tr>
                 </tbody>
@@ -99,15 +109,15 @@
     <p>
         <div>
             <label>Fonts:</label>
-            <input type="text" id="general_font" style="width:100%;">
-            <button id="general_font_reset" class="ui-gc-btn"><i class='fa fa-undo'></i></button>
+            <input type="text" id="capp_font_family" data-gob-configkey="style.channel.base.font-family" style="width:100%;">
+            <button class="ui-gc-btn" id="capp_font_family_reset"><i class="fas fa-undo-alt"></i></button>
         </div>
     </p>
 
     <p>
         <div>
             <label>Font size:</label>
-            <select id="general_font_size">
+            <select id="capp_font_size" data-gob-configkey="style.channel.base.font-size">
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
                 <option value="large">Large</option>
@@ -123,15 +133,141 @@
             <label>Hide &amp; show chat overlay</label>
         </div>
         <div>
-            <input type="text" id="general_hotkey_showhide" />
+            <input type="text" id="capp_hotkey_show" data-gob-configkey="behaviour.hotkeys.showhide" />
         </div>
     </p>
 
     <p>
         <div>
             <label>Chat Update Interval (MS)</label>
-            <input type="number" min="0" max="5000" id="general_input_chatUpdateInterval" />
+            <input type="number" min="0" max="5000" id="capp_updateInterval" data-gob-configkey="behaviour.chatUpdateInterval" />
         </div>
     </p>
+
+    <script type="text/javascript">
+        'use strict';
+
+        (function () {
+            // setup language
+            const dpdLanguage = $("#capp_language")
+            ConfigHelper.linkDropdownConfig(dpdLanguage, { defaultValue: "en" })
+
+            // setup checkboxes
+            const ckbChatLog = $("#capp_makechatlog")
+            ConfigHelper.linkCheckboxConfig(ckbChatLog)
+
+            const ckbAutodetect = $("#capp_autodetectemote")
+            ConfigHelper.linkCheckboxConfig(ckbAutodetect)
+
+            const ckbTimestamp = $("#capp_showTimestamp")
+            ConfigHelper.linkCheckboxConfig(ckbTimestamp)
+
+            const ckbHide = $("#capp_hide")
+            ConfigHelper.linkCheckboxConfig(ckbHide)
+
+            const ckbUpdate = $("#capp_checkupdates")
+            ConfigHelper.linkCheckboxConfig(ckbUpdate)
+
+            const ckbBetaUpdate = $("#capp_checkbetaupdates")
+            ConfigHelper.linkCheckboxConfig(ckbBetaUpdate)
+            const ckbBetaUpdateLabel = $("[for='capp_checkbetaupdates']")
+            ConfigHelper.setupListener(ckbUpdate.attr(ConfigHelper.ConfigKeyAttribute), value => {
+                ckbBetaUpdate.attr("disabled", !value)
+                ckbBetaUpdateLabel.toggleClass("disabled", !value)
+            })
+            ckbBetaUpdate.attr("disabled", !ckbUpdate.prop("checked"))
+            ckbBetaUpdateLabel.toggleClass("disabled", !ckbUpdate.prop("checked"))
+
+            // setup font group
+            // setup font family
+            const txtFontFamily = $("#capp_font_family")
+            txtFontFamily.attr("title", "Picks the first available font. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
+            ConfigHelper.linkTextConfig(txtFontFamily)
+
+            const btnFontFamilyReset = $("#capp_font_family_reset")
+            btnFontFamilyReset.attr("title", "Resets fonts to its default value")
+            btnFontFamilyReset.on("click", (event) => {
+                const configKey = btnFontFamilyReset.attr(ConfigHelper.ConfigKeyAttribute)
+                if (configKey) gobconfig.reset(configKey)
+            })
+
+            // setup font size
+            const dpdFontSize = $("#capp_font_size")
+            const dpdFonSizeConfigKey = dpdFontSize.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(dpdFonSizeConfigKey, value => dpdFontSize.val(value))
+            dpdFontSize.on("change", function (event) {
+                let newSize = event.target.value || "medium"
+                if (Gobchat.isNumber(newSize))
+                    newSize = Math.round(newSize) + "px"
+                gobconfig.set(dpdFonSizeConfigKey, newSize)
+            })
+
+            // setup hotkey group
+            // setup hotkey field
+            const txtHotkeyShow = $("#capp_hotkey_show")
+            const txtHotkeyShowConfigKey = txtHotkeyShow.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtHotkeyShowConfigKey, value => txtHotkeyShow.val(value), { defValue: "" })
+            txtHotkeyShow.on("keydown", function (event) {
+                //needs a way to transform the stored code into javascript and back
+                //this may create some problems for some very special keys
+
+                if (event.keyCode == 13) // enter
+                    return
+
+                if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18) {
+                    txtHotkeyShow.val("")
+                    gobconfig.set(configKey, "")
+                    return
+                }
+
+                event.preventDefault()
+
+                let msg = ""
+                if (event.shiftKey) msg += "Shift + "
+                if (event.altKey) msg += "Alt + "
+                if (event.ctrlKey) msg += "Ctrl + "
+
+                var keyEnum = Gobchat.KeyCodeToKeyEnum(event.keyCode)
+                if (keyEnum === null) {
+                    msg = ""
+                } else {
+                    msg += keyEnum
+                }
+
+                txtHotkeyShow.val(msg)
+                gobconfig.set(txtHotkeyShowConfigKey, msg)
+            })
+
+            // setup ungrouped
+
+            const txtUpdateInterval = $("#capp_updateInterval")
+            const txtUpdateIntervalConfigKey = txtUpdateInterval.attr(ConfigHelper.ConfigKeyAttribute)
+            txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            ConfigHelper.setupListenerAndInitialize(txtUpdateIntervalConfigKey, value => txtUpdateInterval.val(value), { defValue: "1000" })
+            txtUpdateInterval.on("change", function (event) {
+                let newValue = event.target.value || "medium"
+                if (newValue < 0) newValue = 0
+                else if (newValue > 5000) newValue = 5000
+
+                txtUpdateInterval.val(newValue)
+                gobconfig.set(txtUpdateIntervalConfigKey, newValue)
+            })
+
+            const allFields = [
+                dpdLanguage,
+                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate,
+                txtFontFamily, dpdFontSize,
+                txtHotkeyShow,
+                txtUpdateInterval
+            ]
+
+            const btnCopyProfile = $("#capp_copyprofile")
+            ConfigHelper.makeCopyProfileButton(btnCopyProfile,
+                {
+                    configKeys: _.map(allFields, e => e.attr(ConfigHelper.ConfigKeyAttribute))
+                })
+
+        }());
+    </script>
 </body>
 </html>

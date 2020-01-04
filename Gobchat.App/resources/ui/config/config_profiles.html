@@ -48,7 +48,7 @@
                             <button id="profile_copy" title="Copy from"><i class="fas fa-clone"></i> Copy from</button>
                         </td>
                         <td>
-                            <button id="profile_default" title="Restore defaults for this profile"><i class="fas fa-redo-alt"></i> Reset</button>
+                            <button id="profile_default" title="Restore defaults for this profile"><i class="fas fa-undo-alt"></i> Reset</button>
                         </td>
                         <td>
                             <button id="profile_delete" title="delete"><i class="fas fa-eraser"></i> Delete</button>
@@ -60,153 +60,133 @@
     </template>
 
     <script type="text/javascript">
-        $("#configprofiles_copyprofiledialog").hide();
+        'use strict';
 
-        //setup profile selector
-        const profileSelectionDropdown = $("#main_profileselect")
-        profileSelectionDropdown.attr("title", "Set your active profile.")
+        (function (undefined) {
 
-        profileSelectionDropdown.on("change", function (event) {
-            const profileId = event.target.value
-            gobconfig.activeProfile = profileId
-        })
+            $("#configprofiles_copyprofiledialog").hide();
 
-        function populateProfileSelection() {
-            profileSelectionDropdown.empty()
-            gobconfig.profiles.forEach((profileId) => {
-                var profile = gobconfig.getProfile(profileId)
-                profileSelectionDropdown.append(new Option(profile.profileName, profileId))
+            //setup profile selector
+            const profileSelectionDropdown = $("#main_profileselect")
+            profileSelectionDropdown.attr("title", "Set your active profile.")
+
+            profileSelectionDropdown.on("change", function (event) {
+                const profileId = event.target.value
+                gobconfig.activeProfile = profileId
             })
-            profileSelectionDropdown.val(gobconfig.activeProfile)
-        }
 
-        gobconfig.addProfileEventListener((event) => {
-            if (event.type === "active")
-                profileSelectionDropdown.val(event.detail.new)
-            else
+            function populateProfileSelection() {
+                profileSelectionDropdown.empty()
+                gobconfig.profiles.forEach((profileId) => {
+                    var profile = gobconfig.getProfile(profileId)
+                    profileSelectionDropdown.append(new Option(profile.profileName, profileId))
+                })
+                profileSelectionDropdown.val(gobconfig.activeProfile)
+            }
+
+            gobconfig.addProfileEventListener((event) => {
+                if (event.type === "active")
+                    profileSelectionDropdown.val(event.detail.new)
+                else
+                    populateProfileSelection()
+            })
+
+            gobconfig.addPropertyEventListener("profile.name", (event) => {
+                const profileId = profileSelectionDropdown.val()
                 populateProfileSelection()
-        })
+                profileSelectionDropdown.val(profileId)
+            })
 
-        gobconfig.addPropertyEventListener("profile.name", (event) => {
-            const profileId = profileSelectionDropdown.val()
             populateProfileSelection()
-            profileSelectionDropdown.val(profileId)
-        })
 
-        populateProfileSelection()
+            //setup create profile
+            $("#configprofiles_profile_new").on("click", function (event) {
+                gobconfig.createNewProfile()
+            })
 
-        //setup create profile
-        $("#configprofiles_profile_new").on("click", function (event) {
-            gobconfig.createNewProfile()
-        })
+            //setup import profile
+            $("#configprofiles_profile_import").on("click", function (event) {
+                (async () => {
+                    const configJson = await GobchatAPI.importProfile()
+                    gobconfig.importProfile(configJson)
+                })()
+            })
 
-        //setup import profile
-        $("#configprofiles_profile_import").on("click", function (event) {
-            (async () => {
-                const configJson = await GobchatAPI.importProfile()
-                gobconfig.importProfile(configJson)
-            })()
-        })
+            // gobconfig.addEventListener("profile.add", (event) => { })
+            // gobconfig.addEventListener("profile.remove", (event) => { })
+            //  gobconfig.addEventListener("profile.changed", (event) => { })
 
-        // gobconfig.addEventListener("profile.add", (event) => { })
-        // gobconfig.addEventListener("profile.remove", (event) => { })
-        //  gobconfig.addEventListener("profile.changed", (event) => { })
+            const profileTable = $("#configprofiles_profiles > tbody")
+            const template = $("#configprofiles_template_profiles_entry")
 
-        const profileTable = $("#configprofiles_profiles > tbody")
-        const template = $("#configprofiles_template_profiles_entry")
+            function populateProfileTable() {
+                profileTable.empty()
+                gobconfig.profiles.forEach((profileId) => {
+                    const profile = gobconfig.getProfile(profileId)
 
-        function populateProfileTable() {
-            profileTable.empty()
-            gobconfig.profiles.forEach((profileId) => {
-                const profile = gobconfig.getProfile(profileId)
+                    const rowElement = $(template.html())
+                    rowElement.appendTo(profileTable)
 
-                const rowElement = $(template.html())
-                rowElement.appendTo(profileTable)
+                    rowElement.attr("data-profile-id", profile.profileId)
 
-                rowElement.attr("data-profile-id", profile.profileId)
+                    const txtProfileName = rowElement.find("#profile_name")
+                    txtProfileName.on("change", function (event) {
+                        profile.profileName = event.target.value || "Unnamed"
+                    })
+                    txtProfileName.val(profile.profileName)
 
-                const txtProfileName = rowElement.find("#profile_name")
-                txtProfileName.on("change", function (event) {
-                    profile.profileName = event.target.value || "Unnamed"
-                })
-                // profile.addPropertyListener("profile.name", function (event) {
-                //      txtProfileName.val(profile.profileName)
-                //  })
-                txtProfileName.val(profile.profileName)
+                    const btnActiveProfile = rowElement.find("#profile_activate")
+                    btnActiveProfile.on("click", function (event) {
+                        gobconfig.activeProfile = profile.profileId
+                    })
+                    if (gobconfig.activeProfile === profile.profileId)
+                        btnActiveProfile.attr("disabled", true)
 
-                const btnActiveProfile = rowElement.find("#profile_activate")
-                btnActiveProfile.on("click", function (event) {
-                    gobconfig.activeProfile = profile.profileId
-                })
-                if (gobconfig.activeProfile === profile.profileId)
-                    btnActiveProfile.attr("disabled", true)
-
-                const btnExportProfile = rowElement.find("#profile_export")
-                btnExportProfile.on("click", function (event) {
-                    GobchatAPI.exportProfile(JSON.stringify(profile.config))
-                })
-
-                const btnCloneProfile = rowElement.find("#profile_clone")
-                btnCloneProfile.on("click", function (event) {
-                    const newProfileId = gobconfig.createNewProfile()
-                    gobconfig.copyProfile(profile.profileId, newProfileId)
-                })
-
-                const btnCopyProfile = rowElement.find("#profile_copy")
-                btnCopyProfile.on("click", function (event) {
-                    const dialog = $('#configprofiles_copyprofiledialog')
-                    const dialogSelection = dialog.find("#configprofiles_copyprofiledialog_select")
-
-                    dialogSelection.empty()
-                    const profiles = _.without(gobconfig.profiles, profile.profileId)
-                    profiles.forEach((profileId) => {
-                        var profile = gobconfig.getProfile(profileId)
-                        dialogSelection.append(new Option(profile.profileName, profileId))
+                    const btnExportProfile = rowElement.find("#profile_export")
+                    btnExportProfile.on("click", function (event) {
+                        GobchatAPI.exportProfile(JSON.stringify(profile.config))
                     })
 
-                    dialog.show()
-                    dialog.dialog({
-                        modal: true,
-                        buttons: {
-                            "Ok": function () {
-                                const copyFromProfile = dialogSelection.val()
-                                gobconfig.copyProfile(copyFromProfile, profile.profileId)
-                                $(this).dialog("close");
-                            },
-                            "Cancel": function () {
-                                $(this).dialog("close");
-                            }
+                    const btnCloneProfile = rowElement.find("#profile_clone")
+                    btnCloneProfile.on("click", function (event) {
+                        const newProfileId = gobconfig.createNewProfile()
+                        gobconfig.copyProfile(profile.profileId, newProfileId)
+                    })
+
+                    const btnCopyProfile = rowElement.find("#profile_copy")
+                    btnCopyProfile.on("click", function (event) {
+                        ConfigHelper.ProfileIdSelectionDialog(selectedId => gobconfig.copyProfile(selectedId, profile.profileId), { exclude: profile.profileId })
+                    })
+                    if (gobconfig.profiles.length <= 1)
+                        btnCopyProfile.attr("disabled", true)
+
+                    const btnDefaultProfile = rowElement.find("#profile_default")
+                    btnDefaultProfile.on("click", function (event) {
+                        if (window.confirm("Restore all settings for this profile to default?\nEverything will be deleted!\nPress save afterwards.")) {
+                            profile.restoreDefaultConfig()
                         }
                     })
-                })
-                if (gobconfig.profiles.length <= 1)
-                    btnCopyProfile.attr("disabled", true)
 
-                const btnDefaultProfile = rowElement.find("#profile_default")
-                btnDefaultProfile.on("click", function (event) {
-                    if (window.confirm("Restore all settings for this profile to default?\nEverything will be deleted!\nPress save afterwards.")) {
-                        profile.restoreDefaultConfig()
-                    }
+                    const btnDeleteProfile = rowElement.find("#profile_delete")
+                    btnDeleteProfile.on("click", function (event) {
+                        gobconfig.deleteProfile(profile.profileId)
+                    })
+                    if (gobconfig.profiles.length <= 1)
+                        btnDeleteProfile.attr("disabled", true)
                 })
+            }
 
-                const btnDeleteProfile = rowElement.find("#profile_delete")
-                btnDeleteProfile.on("click", function (event) {
-                    gobconfig.deleteProfile(profile.profileId)
-                })
-                if (gobconfig.profiles.length <= 1)
-                    btnDeleteProfile.attr("disabled", true)
+            gobconfig.addProfileEventListener((event) => {
+                populateProfileTable()
             })
-        }
-
-        gobconfig.addProfileEventListener((event) => {
             populateProfileTable()
-        })
-        populateProfileTable()
 
-        gobconfig.addPropertyEventListener("profile.name", (event) => {
-            const profile = gobconfig.getProfile(event.source)
-            profileTable.find(`tr[data-profile-id='${profile.profileId}']`).find("#profile_name").val(profile.get("profile.name"))
-        })
+            gobconfig.addPropertyEventListener("profile.name", (event) => {
+                const profile = gobconfig.getProfile(event.source)
+                profileTable.find(`tr[data-profile-id='${profile.profileId}']`).find("#profile_name").val(profile.get("profile.name"))
+            })
+
+        }());
     </script>
 </body>
 </html>

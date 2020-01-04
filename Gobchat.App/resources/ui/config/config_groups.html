@@ -6,6 +6,268 @@
     <title></title>
 </head>
 <body>
+    <button class="ui-btn-copyprofile" id="cgroups_copyprofile"><i class="fas fa-clone"></i></button>
 
+    <p>
+        <div></div>
+    </p>
+    <p>
+
+        <div>
+            <button id="cgroups_addgroup">Add group <i class="fa fa-folder-open"></i></button>
+        </div>
+        <div id="cgroups_groups">
+        </div>
+
+        <template id="cgroups_template_groupentry">
+            <div data-gob-groupid>
+                <h4>
+                    <span class="ui-gc-group-header">
+                        <span>
+                            <span class="tmpl-header-index"></span>
+                            <span class="tmpl-header-prefix">. Group: </span>
+                            <span class="tmpl-header-name"></span>
+                        </span>
+                        <span>
+                            <button class="tmpl-delete-group ui-gc-btn-delete" title="Deletes this group"><i class="fa fa-trash"></i></button>
+                        </span>
+                    </span>
+                </h4><!--&#x274C;-->
+                <div>
+                    <div class="group-body">
+                        <table style="width:100%;">
+                            <tr>
+                                <td><label>Group name:</label></td>
+                                <td colspan="3">
+                                    <div>
+                                        <input type="text" class="tmpl-group-name" />
+                                        <button class="tmpl-group-name-reset ui-gc-btn"
+                                                title="Resets the field to its default value">
+                                            <i class='fas fa-undo-alt'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Active:</label></td>
+                                <td>
+                                    <input type="checkbox" class="tmpl-group-active" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Sender Text:</label></td>
+                                <td>
+                                    <div>
+                                        <input type="text" class="tmpl-sender-fgcolor" />
+                                        <button class="tmpl-sender-fgcolor-reset ui-gc-btn"
+                                                title="Resets the field to its default value">
+                                            <i class='fas fa-undo-alt'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td><label>Sender Background:</label></td>
+                                <td>
+                                    <div>
+                                        <input type="text" class="tmpl-sender-bgcolor" />
+                                        <button class="tmpl-sender-bgcolor-reset ui-gc-btn"
+                                                title="Resets the field to its default value">
+                                            <i class='fas fa-undo-alt'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Message Background:</label></td>
+                                <td>
+                                    <div>
+                                        <input type="text" class="tmpl-msg-bgcolor" />
+                                        <button class="tmpl-msg-bgcolor-reset ui-gc-btn"
+                                                title="Resets the field to its default value">
+                                            <i class='fas fa-undo-alt'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><label>Players belonging to this group:</label></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <textarea class="tmpl-group-triggers" rows="5" style="width:100%;" title="Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name."></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <script type="text/javascript">
+            'use strict';
+            (function () {
+                const GroupIdAttribute = "data-gob-groupid"
+                const ConfigKeyGroupSorting = "behaviour.groups.sorting"
+                const ConfigKeyGroups = "behaviour.groups.data"
+
+                const tblGroups = $("#cgroups_groups")
+                function populateGroupTable() {
+                    tblGroups.empty()
+                    const groupIds = gobconfig.get(ConfigKeyGroupSorting)
+                    groupIds.forEach(groupId => addGroupToTable(groupId))
+
+                    tblGroups.sortable("refresh")
+                    tblGroups.accordion("refresh")
+
+                    tblGroups.find(".tmpl-header-index").each(function (idx) {
+                        $(this).text(idx + 1)
+                    })
+                }
+
+                const tmplGroupEntry = $("#cgroups_template_groupentry")
+                function addGroupToTable(groupId) {
+                    const groupConfigKey = `${ConfigKeyGroups}.${groupId}`
+                    const groupData = gobconfig.get(groupConfigKey)
+                    const isFFGroup = "ffgroup" in groupData
+
+                    const groupEntry = $(tmplGroupEntry.html())
+                    groupEntry.attr(GroupIdAttribute, groupId)
+                    groupEntry.appendTo(tblGroups)
+
+                    const lblGroupName = groupEntry.find(".tmpl-header-name")
+                    lblGroupName.text(groupData.name)
+
+                    const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
+                    btnDeleteGroup.on("click", (event) => {
+                        event.stopPropagation()
+                        if (!window.confirm("Group will be deleted. Are you sure?")) return
+                        gobconfig.remove(groupConfigKey)
+                        const groupSorting = gobconfig.get(ConfigKeyGroupSorting)
+                        _.remove(groupSorting, e => e === groupId)
+                        gobconfig.set(ConfigKeyGroupSorting, groupSorting)
+                    })
+                    if (isFFGroup) btnDeleteGroup.attr("disabled", true).hide()
+
+                    const groupNameKey = groupConfigKey + ".name"
+                    const txtGroupName = groupEntry.find(".tmpl-group-name")
+                    txtGroupName.val(gobconfig.get(groupNameKey))
+                    txtGroupName.on("change", (event) => {
+                        gobconfig.set(groupNameKey, event.target.value)
+                        lblGroupName.text(gobconfig.get(groupNameKey))
+                    })
+
+                    const btnGroupName = groupEntry.find(".tmpl-group-name-reset")
+                    btnGroupName.on("click", (event) => {
+                        gobconfig.reset(groupNameKey)
+                        lblGroupName.text(gobconfig.get(groupNameKey))
+                        txtGroupName.val(gobconfig.get(groupNameKey))
+                    })
+                    if (!isFFGroup) btnGroupName.attr("disabled", true).hide()
+
+                    const ckbIsActive = groupEntry.find(".tmpl-group-active")
+                    ckbIsActive.prop('checked', gobconfig.get(groupConfigKey + ".active"))
+                    ckbIsActive.on("change", event => gobconfig.set(groupConfigKey + ".active", event.target.checked))
+
+                    function makeColorSelector(classId, configKey) {
+                        const selectorElement = groupEntry.find(`.${classId}`)
+                        selectorElement.attr(ConfigHelper.ConfigKeyAttribute, configKey)
+                        ConfigHelper.makeColorSelector(selectorElement)
+                        selectorElement.spectrum("set", gobconfig.get(configKey))
+
+                        const resetButton = groupEntry.find(`.${classId}-reset`)
+                        resetButton.on("click", event => {
+                            gobconfig.reset(configKey)
+                            selectorElement.spectrum("set", gobconfig.get(configKey));
+                        })
+                    }
+
+                    makeColorSelector("tmpl-sender-fgcolor", groupConfigKey + ".style.header.color")
+                    makeColorSelector("tmpl-sender-bgcolor", groupConfigKey + ".style.header.background-color")
+                    makeColorSelector("tmpl-msg-bgcolor", groupConfigKey + ".style.body.background-color")
+
+                    const txtTriggers = groupEntry.find(".tmpl-group-triggers")
+                    if (!isFFGroup) {
+                        txtTriggers.val(gobconfig.get(groupConfigKey + ".trigger").join(", "))
+                        txtTriggers.on("change", (event) => {
+                            let words = (event.target.value || "").split(",")
+                            words = words.filter(w => w !== null && w !== undefined).map(w => w.toLowerCase().trim()).filter(w => w.length > 0)
+                            gobconfig.set(groupConfigKey + ".trigger", words)
+                            event.target.value = words.join(", ")
+                        })
+                    } else {
+                        txtTriggers.closest("tr").hide().prev().hide()
+                    }
+                }
+
+                const btnAddGroup = $("#cgroups_addgroup")
+                btnAddGroup.on("click", function () {
+                    function generateId(ids) {
+                        let id = null
+                        do {
+                            id = Gobchat.generateId(6)
+                        } while (_.includes(ids, id))
+                        return id
+                    }
+
+                    const groups = gobconfig.get(ConfigKeyGroups)
+                    const groupId = generateId(Object.keys(groups))
+
+                    groups[groupId] = {
+                        name: "Unnamed",
+                        id: groupId,
+                        active: true,
+                        trigger: [],
+                        style: {
+                            body: { "background-color": null, },
+                            header: { "background-color": null, "color": null, },
+                        },
+                    }
+
+                    gobconfig.set(ConfigKeyGroups, groups)
+
+                    const sorting = gobconfig.get(ConfigKeyGroupSorting)
+                    sorting.push(groupId)
+                    gobconfig.set(ConfigKeyGroupSorting, sorting)
+                })
+
+                tblGroups.accordion({
+                    heightStyle: "content",
+                    header: "> div > h4",
+                })
+                    .sortable({
+                        axis: "y",
+                        handle: "h4",
+                        stop: function (event, ui) {
+                            //update sort order
+                            let order = []
+                            tblGroups.find("div").each(function () {
+                                order.push($(this).attr(GroupIdAttribute))
+                                //order.push($(this).data("groupId"))
+                            })
+
+                            order = order.filter(e => e !== null && e !== undefined && e.length > 0)
+                            gobconfig.set(ConfigKeyGroupSorting, order)
+
+                            // Refresh accordion to handle new order
+                            // updateGroupRenderer()
+                        }
+                    });
+
+                gobconfig.addProfileEventListener((event) => {
+                    if (event.type === "active")
+                        populateGroupTable()
+                })
+                gobconfig.addPropertyEventListener(ConfigKeyGroupSorting, (event) => {
+                    if (event.isActive)
+                        populateGroupTable()
+                })
+
+                populateGroupTable()
+
+                const btnCopyProfile = $("#cgroups_copyprofile")
+                const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
+                ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+            }())
+        </script>
+    </p>
 </body>
 </html>

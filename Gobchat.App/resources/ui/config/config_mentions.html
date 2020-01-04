@@ -9,34 +9,139 @@
     <p>
         <div>
             <label>Mentions:</label>
-            <textarea rows="3" id="txt_mentions" style="width:100%;"></textarea>
+            <textarea rows="3" id="cmentions_mentions" data-gob-configkey="behaviour.mentions" style="width:100%;"></textarea>
         </div>
         <div>
-            <label>Play sound:</label>
-            <input type="checkbox" />
+            <label class="disabled">Play sound:</label>
+            <input type="checkbox" disabled />
         </div>
         <div>
-            <label>Sound:</label>
-            <input type="text" />
-            <button>...</button>
+            <label class="disabled">Sound:</label>
+            <input type="text" disabled />
+            <button disabled>...</button>
         </div>
 
-        <ui-config-mention data-config-path="behaviour.mentions.xyz"></ui-config-mention>
+        <!--<cmention-mention-entry data-gob-configkey="behaviour.mentions.{0}"></cmention-mention-entry>-->
     </p>
 
+    <!--
+    <template>
+        <tr id="cmention_row_{0}">
+            <td>
+                <p>
+                    <div>
+                        <label>Mentions:</label>
+                        <textarea rows="3" id="cmention_row_{0}_mention" style="width:100%;" data-gob-configkey="behaviour.mentions.{0}.trigger"></textarea>
+                    </div>
+                    <div>
+                        <label>Play sound:</label>
+                        <input type="checkbox" id="cmention_row_{0}_playsound" data-gob-configkey="behaviour.mentions.{0}.playsound" />
+                    </div>
+                    <div>
+                        <label>Sound:</label>
+                        <input type="text" id="cmention_row_{0}_soundpath" data-gob-configkey="behaviour.mentions.{0}.sound" />
+                        <button type="button" id="cmention_row_{0}_soundselector">...</button>
+                    </div>
+
+                    <cmention-mention-entry id="cmention_row_{0}_mention" data-gob-configkey="behaviour.mentions.{0}"></cmention-mention-entry>
+                </p>
+            </td>
+        </tr>
+    </template>
+        -->
+
     <script type="text/javascript">
-        console.log("Hello")
+        'use strict';
 
-        class MentionConfigElement extends HTMLElement {
-            constructor() {
-                super()
+        (function () {
 
-                this.attachShadow({ mode: 'open' });
-                //this.shadowRoot
+            const txtMentions = $("#cmentions_mentions")
+            ConfigHelper.linkTextCollectionConfig(txtMentions)
+
+            const template = document.createElement("template");
+            template.innerHTML = `
+                                                                                    <div>
+                                                                                        <div>
+                                                                                            <label>Mentions:</label>
+                                                                                            <textarea id="txtArea" rows="3" style="width:100%;"></textarea>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label>Play sound:</label>
+                                                                                            <input id="playSound" type="checkbox" />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label>Sound:</label>
+                                                                                            <input id="soundPath" type="text" />
+                                                                                            <button id="soundSelector" type="button">...</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                `
+            class MentionConfigElement extends HTMLElement {
+                constructor() {
+                    super()
+                    console.log("hellu!")
+                    this.attachShadow({ mode: 'open' });
+                    this.shadowRoot.appendChild(template.content.cloneNode(true));
+                }
+
+                static get observedAttributes() {
+                    return ['data-gob-configkey', 'open'];
+                }
+
+                _upgradeProperty(prop) {
+                    if (this.hasOwnProperty(prop)) {
+                        console.log("Ding!: " + prop)
+                        let value = this[prop];
+                        delete this[prop];
+                        this[prop] = value;
+                    }
+                }
+
+                //called if inserted into the dom
+                connectedCallback() {
+                    this._upgradeProperty('id');
+                    this._upgradeProperty(ConfigHelper.ConfigKeyAttribute);
+
+                    const configKey = $(this).attr(ConfigHelper.ConfigKeyAttribute)
+
+                    const shadowRoot = $(this.shadowRoot)
+                    const txtArea = shadowRoot.find("#txtArea")
+                    txtArea.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".trigger")
+                    ConfigHelper.linkTextCollectionConfig(txtArea)
+
+                    const chkPlaySound = shadowRoot.find("#playSound")
+                    chkPlaySound.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".playsound")
+
+                    const txtSoundPath = shadowRoot.find("#soundPath")
+                    txtSoundPath.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".sound")
+
+                    const btnSearchSound = shadowRoot.find("#soundSelector")
+                }
+
+                disconnectedCallback() {
+
+                }
+
+                attributeChangedCallback(attrName, oldVal, newVal) {
+                    console.log("Hai!: " + attrName)
+                }
+
+                get ["data-gob-configkey"]() {
+                    console.log("Yo")
+                    return $(this).attr("data-gob-configkey")
+                }
+
+                set ["data-gob-configkey"](value) {
+                    console.log("Hey")
+                    if (value !== undefined)
+                        this.setAttribute("data-gob-configkey", value)
+                    else
+                        this.removeAttribute("data-gob-configkey")
+                }
             }
-        }
 
-        window.customElements.define('ui-config-mention', MentionConfigElement);
+            customElements.define('cmention-mention-entry', MentionConfigElement);
+        }());
     </script>
 </body>
 </html>

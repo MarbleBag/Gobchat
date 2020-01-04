@@ -28,7 +28,7 @@ namespace Gobchat.Memory
     /// <summary>
     /// Checks for an active FFXIV process and sets the process id for Sharlayan
     /// </summary>
-    internal class FFXIVProcessFinder
+    internal sealed class FFXIVProcessFinder
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -36,6 +36,10 @@ namespace Gobchat.Memory
         public int FFXIVProcessId { get; private set; } = 0;
 
         public GameLanguage GameLanguage { get; set; } = GameLanguage.English;
+
+        public FFXIVProcessFinder()
+        {
+        }
 
         public bool CheckProcess()
         {
@@ -63,7 +67,6 @@ namespace Gobchat.Memory
 
             //var gameLanguage = System.Enum.GetName(typeof(GameLanguage), GameLanguage);
             //MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true, gameLanguage: gameLanguage);
-
             MemoryHandler.Instance.SignaturesFoundEvent += OnEvent_SignatureFound;
             MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true);
 
@@ -73,10 +76,8 @@ namespace Gobchat.Memory
                 Thread.Sleep(1000);
             }
 
-            MemoryHandler.Instance.SignaturesFoundEvent -= OnEvent_SignatureFound;
-
             FFXIVProcessValid = true;
-
+            MemoryHandler.Instance.SignaturesFoundEvent -= OnEvent_SignatureFound;
             return true;
         }
 

@@ -41,7 +41,7 @@ namespace Gobchat.Core.Module.Updater
             if (!doUpdate)
                 return;
 
-            var allowBetaUpdates = configManager.UserConfig.GetProperty<bool>("behaviour.checkForBetaUpdate");
+            var allowBetaUpdates = configManager.ActiveProfile.GetProperty<bool>("behaviour.checkForBetaUpdate");
 
             var update = GetUpdate(GobchatApplicationContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
