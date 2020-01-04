@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+## Added
+- A checkbox which allows gobchat to be updated with pre-releases / beta-releases
+
 ## [1.1.0] - 2019.12.06
 ## Added
 - Auto-Updater

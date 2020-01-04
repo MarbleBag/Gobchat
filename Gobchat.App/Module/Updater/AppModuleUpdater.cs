@@ -212,7 +212,11 @@ namespace Gobchat.Core.Module.Updater
         {
             var outputFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
             var unpacker = new ArchiveUnpacker(archivePath, outputFolder);
+#if DEBUG
+            unpacker.DeleteArchiveOnCompletion = false;
+#else
             unpacker.DeleteArchiveOnCompletion = true;
+#endif
             unpacker.DeleteOutputFolderOnFail = true;
 
             try

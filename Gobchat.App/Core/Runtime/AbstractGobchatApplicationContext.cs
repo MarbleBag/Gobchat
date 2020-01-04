@@ -129,7 +129,17 @@ namespace Gobchat.Core.Runtime
             if (manager.UpdatesAvailable > 0)
             {
                 logger.Info("Install updates and restart app");
-                manager.ApplyUpdates(true, true, false);
+                try
+                {
+                    manager.ApplyUpdates(true, true, false);
+                }
+                catch (Exception ex)
+                {
+                    logger.Fatal(ex, ex.Message);
+
+                    var dialogText = $"Unable to perform update. A backup folder was created and can be used to restore any damaged files.\nError:\n{ex.Message}";
+                    System.Windows.Forms.MessageBox.Show(dialogText, "Update error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                }
             }
         }
 
