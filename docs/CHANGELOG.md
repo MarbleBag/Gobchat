@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## Unreleased
+## Bug
+- It's currently necessary to start Gobchat with admin rights, otherwise it can't read FF chatlog.
+
 ## Added
 - A checkbox which allows gobchat to be updated with pre-releases / beta-releases
 
