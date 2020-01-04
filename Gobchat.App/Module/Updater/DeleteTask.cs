@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Runtime;
 using NAppUpdate.Framework;
 using NAppUpdate.Framework.Common;
 using NAppUpdate.Framework.Sources;
@@ -59,16 +58,12 @@ namespace Gobchat.Core.Module.Updater
             if (!isFolder && !isFile)
                 return TaskExecutionStatus.Successful;
 
-            //  if (!coldRun)
-            //      return TaskExecutionStatus.RequiresAppRestart;
+            if (!coldRun)
+                return TaskExecutionStatus.RequiresAppRestart;
 
             if (_backupPath == null)
             {
-                var relativePath = TargetPath;
-                if (relativePath.StartsWith(GobchatApplicationContext.ApplicationLocation))
-                    relativePath = relativePath.Substring(GobchatApplicationContext.ApplicationLocation.Length).TrimStart('\\', ' ');
-
-                _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, relativePath);
+                _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, TargetPath);
                 if (isFolder)
                     CopyDirectory(TargetPath, _backupPath);
                 else if (isFile)

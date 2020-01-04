@@ -50,6 +50,14 @@ namespace Gobchat.Core.Module.Chat
         private IGobchatConfigManager _configManager;
         private ChatMessageToFileLogger _chatLogger;
 
+        private volatile bool _gobchatReady;
+
+        //TODO move that stuff to its own class
+        private bool _errorReportFFNotFound = false;
+
+        private bool _errorReportChatLogAvailable = false;
+        private bool _errorReportRegistered = false;
+
         private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
 
         private Gobchat.Core.Chat.ChatlogToMessageConverter _chatlogParser;
@@ -131,8 +139,7 @@ namespace Gobchat.Core.Module.Chat
                 var json = _configManager.ActiveProfile.ToJson().ToString();
                 return new UIEvents.LoadGobchatConfigEvent(json);
             }
-
-            if ("SaveGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
+            else if ("SaveGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
             {
                 logger.Info("Storing config from ui");
                 var configAsJson = _jsBuilder.Deserialize(details);
@@ -141,6 +148,10 @@ namespace Gobchat.Core.Module.Chat
                 //TODO fire change events / move config to c#
 
                 //UpdateHotkeys();
+            }
+            else if ("GobchatReady".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                _gobchatReady = true;
             }
 
             return null;
@@ -370,13 +381,50 @@ namespace Gobchat.Core.Module.Chat
             });
         }
 
+        private void ValidateProcessAndInformUser()
+        {
+            if (!_memoryProcessor.FFXIVProcessValid)
+            {
+                if (!_errorReportFFNotFound)
+                {
+                    _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, "Gobchat can't find to a running instance of FFXIV"));
+                    _errorReportFFNotFound = true;
+                }
+            }
+            else
+            {
+                _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ECHO, "Gobchat is linked to FFXIV"));
+                _errorReportFFNotFound = false;
+            }
+
+            if (_memoryProcessor.FFXIVProcessValid)
+            {
+                if (_memoryProcessor.ChatLogAvailable)
+                {
+                    _errorReportChatLogAvailable = false;
+                }
+                else if (!_errorReportChatLogAvailable)
+                {
+                    _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, "Gobchat can't access FF chatlog. Restart Gobchat with admin rights."));
+                    _errorReportChatLogAvailable = true;
+                }
+            }
+        }
+
         internal void Update()
         {
             _memoryProcessor.Update();
 
+            if (!_errorReportRegistered)
+            {
+                _errorReportRegistered = true;
+                _memoryProcessor.ProcessChangeEvent += (s, e) => ValidateProcessAndInformUser();
+                ValidateProcessAndInformUser();
+            }
+
             _overlay.InvokeSyncOnUI((_) =>
             {
-                if (_overlay.Browser.IsBrowserInitialized)
+                if (/*_overlay.Browser.IsBrowserInitialized*/ _gobchatReady)
                 {
                     foreach (var message in _messageQueue.DequeueMultiple(10))
                     {

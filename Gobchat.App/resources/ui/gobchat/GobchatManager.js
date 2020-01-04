@@ -36,6 +36,7 @@ var Gobchat = (function (Gobchat) {
             this._scrollbar.init()
 
             document.addEventListener("ChatMessageEvent", (e) => { self.onNewMessageEvent(e) })
+            Gobchat.sendMessageToPlugin({ event: "GobchatReady" })
         }
 
         get config() {

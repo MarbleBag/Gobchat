@@ -30,6 +30,8 @@ namespace Gobchat.Memory
 
         public int FFXIVProcessId { get { return processFinder.FFXIVProcessId; } }
 
+        public bool ChatLogAvailable { get { return Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey); } }
+
         public string LocalCacheDirectory
         {
             get
