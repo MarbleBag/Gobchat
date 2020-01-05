@@ -113,7 +113,7 @@ namespace Gobchat.Core.Config
             if (!_writable)
                 throw new ConfigException("Config is read only");
 
-            var changes = JsonUtil.Write(json, _data, (path) => UnchangableValues.Contains(path));
+            var (changes, _) = JsonUtil.Write(json, _data, (path) => UnchangableValues.Contains(path));
             FirePropertyChange(changes);
         }
 

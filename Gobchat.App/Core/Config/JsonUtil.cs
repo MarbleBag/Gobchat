@@ -166,14 +166,14 @@ namespace Gobchat.Core.Config
             }
         }
 
-        public static ISet<string> Write(JObject source, JObject destination)
+        public static (ISet<string>, bool) Write(JObject source, JObject destination)
         {
             return Write(source, destination, null);
         }
 
-        public static ISet<string> Write(JObject source, JObject destination, Func<string, bool> ignorePath)
+        public static (ISet<string>, bool) Write(JObject source, JObject destination, Func<string, bool> ignorePath)
         {
-            var path = new Stack<string>();
+            var path = new List<string>();
             var changed = new HashSet<string>();
             var callbacks = new JsonUtil.SwitchCallbacks();
 
@@ -189,13 +189,13 @@ namespace Gobchat.Core.Config
             {
                 foreach (var property in objectA.Properties())
                 {
-                    path.Push(property.Name);
+                    path.Add(property.Name);
 
                     if (!ignorePath?.Invoke(string.Join(".", path)) ?? false)
                     {
                         var doOverwrite =
                             objectB[property.Name] == null ||
-                            JsonUtil.TypeSwitch(objectB[property.Name], property.Value, callbacks);
+                            JsonUtil.TypeSwitch(property.Value, objectB[property.Name], callbacks);
 
                         if (doOverwrite)
                         {
@@ -204,14 +204,13 @@ namespace Gobchat.Core.Config
                         }
                     }
 
-                    path.Pop();
+                    path.RemoveAt(path.Count - 1);
                 }
                 return false; //already overwritten
             };
 
-            JsonUtil.TypeSwitch(source, destination, callbacks);
-
-            return changed;
+            var needsToBeReplaced = JsonUtil.TypeSwitch(source, destination, callbacks);
+            return (changed, needsToBeReplaced);
         }
     }
 }
