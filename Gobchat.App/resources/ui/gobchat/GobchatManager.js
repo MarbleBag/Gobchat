@@ -27,12 +27,13 @@ var Gobchat = (function (Gobchat) {
             await this.config.loadConfig()
 
             this._chatConfig.addProfileEventListener(event => {
-                if (event.type === "active")
-                    this.updateStyle()
+                if (event.type === "active") this.updateStyle()
             })
             this._chatConfig.addPropertyEventListener("style", event => {
-                if (event.isActive)
-                    this.updateStyle()
+                if (event.isActive) this.updateStyle()
+            })
+            this._chatConfig.addPropertyEventListener("behaviour", event => {
+                if (event.isActive) this.updateStyle()
             })
 
             this.updateStyle()

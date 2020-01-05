@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.2.1] - 2020.01.05
+## Fixed
+- Changed settings will be applied immediately again, just how it should be!
+
 ## [1.2.0] - 2020.01.05
 ## Bug
 - It's currently necessary to start Gobchat with admin rights, otherwise it can't read FF chatlog.

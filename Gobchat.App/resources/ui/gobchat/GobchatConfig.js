@@ -188,31 +188,30 @@ var Gobchat = (function (Gobchat, undefined) {
         _loadConfig(json) {
             const data = JSON.parse(json)
 
-            const oldProfiles = this._profiles
-            this._profiles = {}
+            const loadedProfileIds = Object.keys(data.profiles)
+            const newProfileIds = loadedProfileIds.filter(e => !_.includes(this.profiles, e))
+            const changedProfileIds = loadedProfileIds.filter(e => _.includes(this.profiles, e))
+            const deletedProfileIds = this.profiles.filter(e => !_.includes(loadedProfileIds, e))
 
-            const profileIds = Object.keys(data.profiles)
-            profileIds.forEach((profileId) => {
+            newProfileIds.forEach(profileId => {
                 const profileData = data.profiles[profileId]
-
                 const cleanProfile = copyByJson(this._defaultProfile)
                 writeObject(profileData, cleanProfile, false, (p) => false)
-
-                const profile = new ConfigProfile(cleanProfile)
-                profile.addPropertyListener("*", this._OnPropertyChange)
-                this._profiles[profileId] = profile
+                this._storeNewProfile(cleanProfile)
             })
 
             this.activeProfile = data.activeProfile
 
-            Object.keys(oldProfiles).forEach((profileId) => {
-                if (!(profileId in this._profiles))
-                    this._eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
+            deletedProfileIds.forEach(profileId => {
+                deleteProfile(profileId)
             })
 
-            profileIds.forEach((profileId) => {
-                if (!(profileId in oldProfiles))
-                    this._eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
+            changedProfileIds.forEach(profileId => {
+                const profileData = data.profiles[profileId]
+                let cleanProfile = copyByJson(this._defaultProfile)
+                writeObject(data.profiles[profileId], cleanProfile, false, (p) => false)
+                cleanProfile = new ConfigProfile(cleanProfile)
+                this.getProfile(profileId).copyFrom(cleanProfile, "")
             })
         }
 
@@ -288,17 +287,21 @@ var Gobchat = (function (Gobchat, undefined) {
                 return id
             }
 
-            const profile = new ConfigProfile(copyByJson(this._defaultProfile))
             const profileId = generateId(this.profiles)
-
-            profile.config.profile.id = profileId
-            profile.config.profile.name = `Profile ${this.profiles.length + 1}`
-            profile.addPropertyListener("*", this._OnPropertyChange)
-
-            this._profiles[profileId] = profile
-
-            this._eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
+            const newProfileData = copyByJson(this._defaultProfile)
+            newProfileData.profile.id = profileId
+            newProfileData.profile.name = `Profile ${this.profiles.length + 1}`
+            this._storeNewProfile(newProfileData)
             return profileId
+        }
+
+        _storeNewProfile(data) {
+            const profile = new ConfigProfile(data)
+            const profileId = profile.profileId
+
+            profile.addPropertyListener("*", this._OnPropertyChange)
+            this._profiles[profileId] = profile
+            this._eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
         }
 
         deleteProfile(profileId) {

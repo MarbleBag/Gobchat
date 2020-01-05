@@ -94,14 +94,7 @@ namespace Gobchat.Core.Module
                     var posY = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.y");
                     _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
                 }
-            }
-            catch (Exception ex)
-            {
-                logger.Warn(ex);
-            }
 
-            try
-            {
                 if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.width") &&
                 _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.height"))
                 {

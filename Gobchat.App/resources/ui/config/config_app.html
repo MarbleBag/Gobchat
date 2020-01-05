@@ -187,7 +187,7 @@
             const btnFontFamilyReset = $("#capp_font_family_reset")
             btnFontFamilyReset.attr("title", "Resets fonts to its default value")
             btnFontFamilyReset.on("click", (event) => {
-                const configKey = btnFontFamilyReset.attr(ConfigHelper.ConfigKeyAttribute)
+                const configKey = txtFontFamily.attr(ConfigHelper.ConfigKeyAttribute)
                 if (configKey) gobconfig.reset(configKey)
             })
 
