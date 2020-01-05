@@ -167,7 +167,7 @@ var Gobchat = (function (Gobchat, undefined) {
     }
 
     class GobchatConfig {
-        constructor() {
+        constructor(isSynced) {
             this._eventDispatcher = new EventDispatcher()
             if (Gobchat.DefaultProfileConfig === undefined || Gobchat.DefaultProfileConfig === null)
                 throw new Error("Gobchat.DefaultProfileConfig is null")
@@ -176,6 +176,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._activeProfileId = null
             this._activeProfile = null
             this._profiles = {}
+            this._isSynced = isSynced || false
 
             const self = this
             this._OnPropertyChange = function (event) { //used as an event listener, so we need to keep a ref to this around
@@ -269,6 +270,9 @@ var Gobchat = (function (Gobchat, undefined) {
             this._activeProfile = this._profiles[this._activeProfileId]
 
             this._eventDispatcher.dispatch("profile:", { type: "active", detail: { old: previousId, new: this._activeProfileId } })
+
+            if (this._isSynced)
+                GobchatAPI.setActiveProfile(this._activeProfileId)
         }
 
         get profiles() {

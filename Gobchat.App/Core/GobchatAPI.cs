@@ -66,6 +66,11 @@ namespace Gobchat.Core
             Request(nameof(SetConfig), json);
         }
 
+        public async void SetActiveProfile(string profileId)
+        {
+            Request(nameof(SetActiveProfile), profileId);
+        }
+
         public void Message(string message)
         {
             logger.Debug(() => "UI Event: " + message?.Replace("{", "{{")?.Replace("}", "}}"));

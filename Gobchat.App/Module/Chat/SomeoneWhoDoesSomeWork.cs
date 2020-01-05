@@ -119,6 +119,10 @@ namespace Gobchat.Core.Module.Chat
                 var configJson = _jsBuilder.Deserialize(data);
                 _configManager.Synchronize(configJson);
             }
+            else if (request == "SetActiveProfile")
+            {
+                _configManager.ActiveProfileId = data;
+            }
             return "";
         }
 

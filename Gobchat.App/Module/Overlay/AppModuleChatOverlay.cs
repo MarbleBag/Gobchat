@@ -18,11 +18,14 @@ using Gobchat.Core.Config;
 using System.Windows.Forms;
 using Gobchat.Core.UI;
 using System;
+using NLog;
 
 namespace Gobchat.Core.Module
 {
     public sealed class AppModuleChatOverlay : IApplicationModule, System.IDisposable
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public const string OverlayUIId = "Gobchat.ChatOverlayForm";
 
         private IGobchatConfigManager _configManager;
@@ -45,7 +48,7 @@ namespace Gobchat.Core.Module
             _overlay.Show(); //initializes all properties
             _overlay.Visible = false;
 
-            _configManager.OnActiveProfileChange += (s, e) => UpdateFormPosition();
+            _configManager.OnActiveProfileChange += (s, e) => _manager.UISynchronizer.RunSync(UpdateFormPosition);
             UpdateFormPosition();
 
             _overlay.Move += (s, e) =>
@@ -82,20 +85,34 @@ namespace Gobchat.Core.Module
 
         private void UpdateFormPosition()
         {
-            if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.x") &&
-                _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.y"))
+            try
             {
-                var posX = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.x");
-                var posY = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.y");
-                _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
+                if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.x") &&
+                    _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.position.y"))
+                {
+                    var posX = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.x");
+                    var posY = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.position.y");
+                    _overlay.Location = new System.Drawing.Point((int)posX, (int)posY);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
             }
 
-            if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.width") &&
-                _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.height"))
+            try
             {
-                var width = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.width");
-                var height = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.height");
-                _overlay.Size = new System.Drawing.Size((int)width, (int)height);
+                if (_configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.width") &&
+                _configManager.ActiveProfile.HasProperty("behaviour.frame.chat.size.height"))
+                {
+                    var width = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.width");
+                    var height = _configManager.ActiveProfile.GetProperty<long>("behaviour.frame.chat.size.height");
+                    _overlay.Size = new System.Drawing.Size((int)width, (int)height);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
             }
 
             //TODO make sure chat is not outside of display

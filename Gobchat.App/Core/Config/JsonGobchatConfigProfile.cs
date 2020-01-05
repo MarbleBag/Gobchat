@@ -20,7 +20,7 @@ namespace Gobchat.Core.Config
 {
     internal sealed class JsonGobchatConfigProfile : IGobchatConfigProfile
     {
-        private readonly ICollection<string> UnchangableValues = new HashSet<string>() { "version", "profile.id" };
+        private readonly ICollection<string> UnchangableValues = new HashSet<string>() { "version", "profile.id", "behaviour.frame.chat" };
 
         private readonly IGobchatConfigProfile _parent;
         private readonly JObject _data;

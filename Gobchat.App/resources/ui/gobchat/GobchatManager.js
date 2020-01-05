@@ -23,7 +23,7 @@ var Gobchat = (function (Gobchat) {
         async init() {
             const self = this
 
-            this._chatConfig = new Gobchat.GobchatConfig()
+            this._chatConfig = new Gobchat.GobchatConfig(true)
             await this.config.loadConfig()
 
             this._chatConfig.addProfileEventListener(event => {
