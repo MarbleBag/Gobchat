@@ -157,10 +157,9 @@ Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) f
 
 ### Updating Gobchat
 
-For now the update process has to be done manually.
-
-1. Repeat steps 1 to 4 of [installing Gobchat](#installing-gobchat) and replace all files.
-2. Done
+On startup Gobchat will check for new updates. The installation can be done either manually or automatically.
+To do it manually repeat steps 1 to 4 of [installing Gobchat](#installing-gobchat) and replace all files.
+To do it automatically hit the automatic install button on the patch-note screen. Done.
 
 ## How to use Gobchat
 ### Running
