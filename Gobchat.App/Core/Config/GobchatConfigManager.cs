@@ -163,12 +163,14 @@ namespace Gobchat.Core.Config
 
         private void OnEvent_Config_OnPropertyChange(object sender, PropertyChangedEventArgs e)
         {
-            var propertyKey = e.PropertyKey;
-            if (!_propertyChangedListener.TryGetValue(propertyKey, out var listeners))
+            if (!_propertyChangedListener.TryGetValue(e.PropertyKey, out var listeners))
                 return;
 
+            var profileId = (sender as IGobchatConfigProfile).ProfileId;
+            var evt = new ProfilePropertyChangedEventArgs(e.PropertyKey, profileId, profileId == ActiveProfileId);
+
             foreach (var listener in listeners.ToArray())
-                listener.Invoke(this, e);
+                listener.Invoke(this, evt);
         }
 
         private string GenerateProfileId()
@@ -229,19 +231,63 @@ namespace Gobchat.Core.Config
             newConfig["version"] = 2;
             newConfig["profile"] = new JObject();
             newConfig["profile"]["id"] = profileId;
-            newConfig["profile"]["name"] = "";
+            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
 
-            var config = new JsonGobchatConfigProfile(newConfig, true, _defaultConfig);
-            config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
-
-            _profiles.Add(profileId, config);
-            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(profileId, ProfileChangedEventArgs.Type.New));
+            StoreNewProfile(newConfig);
             return profileId;
+        }
+
+        private void StoreNewProfile(JObject profile)
+        {
+            var config = new JsonGobchatConfigProfile(profile, true, _defaultConfig);
+            config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
+            _profiles.Add(config.ProfileId, config);
+            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New));
         }
 
         public void CopyProfile(string srcProfileId, string dstProfileId)
         {
-            throw new NotImplementedException();
+            var srcProfile = GetProfile(srcProfileId);
+            var dstProfile = GetProfile(dstProfileId);
+            dstProfile.SetProperties(srcProfile.ToJson());
+        }
+
+        public JToken AsJson()
+        {
+            var root = new JObject();
+            root["activeProfile"] = this.ActiveProfileId;
+            root["profiles"] = new JObject();
+
+            var profiles = this.Profiles;
+            var profileStore = root["profiles"];
+            foreach (var profileId in profiles)
+            {
+                profileStore[profileId] = this.GetProfile(profileId).ToJson();
+            }
+
+            return root;
+        }
+
+        public void Synchronize(JToken configJson)
+        {
+            var activeProfile = configJson["activeProfile"].ToString();
+            var profileIds = (configJson["profiles"] as JObject).Properties().Select(p => p.Name);
+
+            var storedProfiles = this.Profiles;
+            var availableProfiles = profileIds.Where(p => storedProfiles.Contains(p));
+            var newProfiles = profileIds.Where(p => !storedProfiles.Contains(p));
+            var removedProfiles = storedProfiles.Where(p => !profileIds.Contains(p));
+
+            foreach (var profileId in newProfiles)
+                StoreNewProfile(configJson["profiles"][profileId] as JObject);
+
+            this.ActiveProfileId = activeProfile;
+
+            foreach (var profileId in removedProfiles)
+                DeleteProfile(profileId);
+
+            foreach (var profileId in availableProfiles)
+                GetProfile(profileId).SetProperties(configJson["profiles"][profileId] as JObject);
         }
 
         public void SaveProfiles()
@@ -343,102 +389,6 @@ namespace Gobchat.Core.Config
                 listeners.Remove(listener);
                 if (listeners.Count == 0)
                     _propertyChangedListener.Remove(key);
-            }
-        }
-    }
-
-    public class GobchatConfigManager2
-    {
-        public string DefaultConfigPath { get; set; }
-        public string UserConfigPath { get; set; }
-
-        public IGobchatConfig DefaultConfig { get; private set; }
-
-        public IGobchatConfig UserConfig { get; private set; }
-
-        public GobchatConfigManager2(string defaultConfigPath, string userConfigPath)
-        {
-            DefaultConfigPath = defaultConfigPath;
-            UserConfigPath = userConfigPath;
-        }
-
-        public void LoadConfig()
-        {
-            LoadDefaultConfig();
-            LoadUserConfig();
-        }
-
-        public void LoadDefaultConfig()
-        {
-            var loader = new JsonConfigLoader();
-            var defaultConfig = loader.LoadConfig(DefaultConfigPath);
-
-            var finalizer = new StringToEnumTransformer();
-            defaultConfig = finalizer.Transform(defaultConfig);
-            DefaultConfig = new JsonGobchatConfig(defaultConfig);
-        }
-
-        public void LoadUserConfig()
-        {
-            JObject userConfig = null;
-            if (File.Exists(UserConfigPath))
-            {
-                var loader = new JsonConfigLoader();
-                userConfig = loader.LoadConfig(UserConfigPath);
-            }
-
-            JObject clonedDefaultConfig = DefaultConfig.ToJson();
-
-            if (userConfig == null) //easy to solve
-            {
-                userConfig = clonedDefaultConfig;
-            }
-            else
-            {
-                var finalizer = new StringToEnumTransformer();
-                userConfig = finalizer.Transform(userConfig);
-
-                clonedDefaultConfig.Merge(userConfig, new JsonMergeSettings()
-                {
-                    MergeArrayHandling = MergeArrayHandling.Replace,
-                    MergeNullValueHandling = MergeNullValueHandling.Merge,
-                    PropertyNameComparison = StringComparison.OrdinalIgnoreCase,
-                });
-
-                userConfig = clonedDefaultConfig;
-            }
-
-            UserConfig = new JsonGobchatConfig(userConfig);
-        }
-
-        public void SaveConfig()
-        {
-            if (UserConfigPath == null)
-                return;
-
-            var directoryPath = Path.GetDirectoryName(UserConfigPath);
-            Directory.CreateDirectory(directoryPath);
-
-            //TODO calculate diff to default config
-            //TODO only save diff
-            var jsonDiff = UserConfig.ToJson();
-
-            var finalizer = new EnumToStringTransformer();
-            jsonDiff = finalizer.Transform(jsonDiff);
-
-            try
-            {
-                using (StreamWriter file = File.CreateText(UserConfigPath))
-                using (JsonTextWriter writer = new JsonTextWriter(file))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    jsonDiff.WriteTo(writer);
-                }
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                //TODO
-                throw;
             }
         }
     }

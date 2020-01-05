@@ -43,6 +43,8 @@
         "WORLD_LINKSHELL_8"
       ],
       "visible": [
+        "GOBCHAT_INFO",
+        "GOBCHAT_ERROR",
         "SAY",
         "EMOTE",
         "YELL",
@@ -211,6 +213,20 @@
         "font-family": "'Times New Roman', Times, sans-serif",
         "font-size": "medium",
         "white-space": "pre-wrap"
+      },
+      "gobchatinfo": {
+        "color": "#3660ff",
+        "background-color": null
+      },
+      "gobchaterror": {
+        "color": "#cb0101",
+        "background-color": null
+      },
+      "echo": {
+        "color": null
+      },
+      "error": {
+        "color": "#d40420"
       },
       "say": {
         "color": "#FFFFFF",

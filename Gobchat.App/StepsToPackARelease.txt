@@ -1,0 +1,14 @@
+1. Write a script to do that stuff
+until then:
+
+2.Build release version
+3.Delete all folders except for 'resources'
+3a. If 'resources' contains a folder named 'sharlayan' delete that one
+4. create a docs folder
+4a. Add readme, changelog and any licenses to that folder
+5. The releases version should only contain two folders: docs and resources
+6. Delete any log files
+7. Set nlog.config  file to info and console to off
+8. Run generate-content-list
+
+9. Really, write a script for that stuff!

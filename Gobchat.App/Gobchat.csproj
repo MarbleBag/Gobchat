@@ -167,6 +167,7 @@
     <Compile Include="Core\Config\ConfigUpgrader\LegacyAppConfigTransformer.cs" />
     <Compile Include="Core\Config\MissingPropertyException.cs" />
     <Compile Include="Core\Config\ProfileChangedEventArgs.cs" />
+    <Compile Include="Core\Config\ProfilePropertyChangedEventArgs.cs" />
     <Compile Include="Core\Config\PropertyChangedEventArgs.cs" />
     <Compile Include="Core\Config\PropertyException.cs" />
     <Compile Include="Core\Config\PropertyReadOnlyException.cs" />
@@ -289,10 +290,10 @@
     <Content Include="resources\ui\config\config_roleplay.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\fontawesome\js\all.js">
+    <Content Include="resources\ui\lib\fontawesome\js\all.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\fontawesome\LICENSE.txt">
+    <Content Include="resources\ui\lib\fontawesome\LICENSE.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat.html">
@@ -340,14 +341,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\StyleBuilder.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\gobconfig-ui.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\gobconfig.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>

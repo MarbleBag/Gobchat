@@ -7,6 +7,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._config = config
             this._cmdMap = new Map()
             this.registerCmdHandler(new PlayerGroupCommandHandler())
+            this.registerCmdHandler(new ProfileCommandHandler())
         }
 
         processCommand(message) {
@@ -24,7 +25,11 @@ var Gobchat = (function (Gobchat, undefined) {
             if (cmdHandle) {
                 cmdHandle.execute(this, cmd, args)
             } else {
-                this.sendErrorMessage(`'${cmd}' is not an available command`)
+                if (cmd.length > 0)
+                    this.sendErrorMessage(`'${cmd}' is not an available command`)
+
+                const availableCmds = Array.from(this._cmdMap.keys()).join(", ")
+                this.sendInfoMessage(`Available commands: ${availableCmds}`)
             }
         }
 
@@ -146,6 +151,37 @@ var Gobchat = (function (Gobchat, undefined) {
                     commandManager.sendInfoMessage(`${playerNameAndServer} is not in group [${groupIdx}]${group.name}`)
                 }
             }
+        }
+    }
+
+    class ProfileCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["profile"]
+        }
+
+        execute(commandManager, commandName, args) {
+            const gobconfig = commandManager._config
+            const profileIds = gobconfig.profiles
+
+            if (!Gobchat.isString(args) || args.length == 0) {
+                const sprofiles = profileIds.map(e => gobconfig.getProfile(e)).map(e => e.profileName).join(", ")
+                commandManager.sendErrorMessage(`Profile command needs a valid profile name. Available profiles are: ${sprofiles}`)
+                return
+            }
+
+            args = args.toUpperCase()
+            const profileNames = []
+            for (var profileId of profileIds) {
+                const profile = gobconfig.getProfile(profileId)
+                if (args === profile.profileName.toUpperCase()) {
+                    gobconfig.activeProfile = profile.profileId
+                    commandManager.sendInfoMessage(`Activate profile ${profile.profileName}`)
+                    return
+                }
+                profileNames.push(profile.profileName)
+            }
+
+            commandManager.sendErrorMessage(`Profile command needs a valid profile name. Available profiles are: ${profileNames.join(", ")}`)
         }
     }
 

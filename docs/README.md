@@ -80,11 +80,12 @@ Example:
 - `/e gc `
 
 Gobchat supports the following chat commands:
-- [group](#group)
+- [group](#chat-command-group)
+- [profile] (#chat-command-profile)
 
 ***
 
-#### group
+#### Chat command Group
 Usage:
 - `/e gc group groupnumber add/remove/clear playername`
 
@@ -121,6 +122,16 @@ Examples:
 - `/e gc group 1 remove M'aka Ghin[ultros]` 	/ `/e gc group 1 remove firstname lastname[servername]`
 - `/e gc group 1 remove M'aka Ghin [ultros]` 	/ `/e gc group 1 remove firstname lastname [servername]`
 - `/e gc group 1 remove <t>`
+
+
+#### Chat command Profile
+Usage:
+- `/e gc profile profilename
+
+This chat command can be used to change the active profile and can be easily embedded in a macro, especially useful if you already use a macro to activate your rp flag!
+
+Examples:
+- `/e gc profile Favorite Profile` this will activate the profile with the name `Favorite Profile`
 
 
 ## Installation

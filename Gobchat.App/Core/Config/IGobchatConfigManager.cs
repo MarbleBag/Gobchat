@@ -13,10 +13,11 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    public delegate void PropertyChangedListener(IGobchatConfigManager sender, PropertyChangedEventArgs evt);
+    public delegate void PropertyChangedListener(IGobchatConfigManager sender, ProfilePropertyChangedEventArgs evt);
 
     public interface IGobchatConfigManager
     {
@@ -45,5 +46,9 @@ namespace Gobchat.Core.Config
         string CreateNewProfile();
 
         void CopyProfile(string srcProfileId, string dstProfileId);
+
+        JToken AsJson();
+
+        void Synchronize(JToken configJson);
     }
 }

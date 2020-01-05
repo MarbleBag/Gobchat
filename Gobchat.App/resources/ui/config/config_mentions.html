@@ -6,6 +6,13 @@
     <title></title>
 </head>
 <body>
+    <button class="ui-btn-copyprofile" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
+
+    <p>
+        <div></div>
+    </p>
+    <p>
+
     <p>
         <div>
             <label>Mentions:</label>
@@ -58,28 +65,32 @@
             const txtMentions = $("#cmentions_mentions")
             ConfigHelper.linkTextCollectionConfig(txtMentions)
 
+            const btnCopyProfile = $("#cmentions_copyprofile")
+            const copyKeys = ["behaviour.mentions"]
+            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+
+            /*
             const template = document.createElement("template");
             template.innerHTML = `
-                                                                                    <div>
-                                                                                        <div>
-                                                                                            <label>Mentions:</label>
-                                                                                            <textarea id="txtArea" rows="3" style="width:100%;"></textarea>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <label>Play sound:</label>
-                                                                                            <input id="playSound" type="checkbox" />
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <label>Sound:</label>
-                                                                                            <input id="soundPath" type="text" />
-                                                                                            <button id="soundSelector" type="button">...</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                `
+                                                                                                <div>
+                                                                                                    <div>
+                                                                                                        <label>Mentions:</label>
+                                                                                                        <textarea id="txtArea" rows="3" style="width:100%;"></textarea>
+                                                                                                    </div>
+                                                                                                    <div>
+                                                                                                        <label>Play sound:</label>
+                                                                                                        <input id="playSound" type="checkbox" />
+                                                                                                    </div>
+                                                                                                    <div>
+                                                                                                        <label>Sound:</label>
+                                                                                                        <input id="soundPath" type="text" />
+                                                                                                        <button id="soundSelector" type="button">...</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            `
             class MentionConfigElement extends HTMLElement {
                 constructor() {
                     super()
-                    console.log("hellu!")
                     this.attachShadow({ mode: 'open' });
                     this.shadowRoot.appendChild(template.content.cloneNode(true));
                 }
@@ -90,7 +101,7 @@
 
                 _upgradeProperty(prop) {
                     if (this.hasOwnProperty(prop)) {
-                        console.log("Ding!: " + prop)
+                        console.log("_upgradeProperty: " + prop)
                         let value = this[prop];
                         delete this[prop];
                         this[prop] = value;
@@ -123,16 +134,14 @@
                 }
 
                 attributeChangedCallback(attrName, oldVal, newVal) {
-                    console.log("Hai!: " + attrName)
+                    console.log("attributeChangedCallback: " + attrName)
                 }
 
                 get ["data-gob-configkey"]() {
-                    console.log("Yo")
                     return $(this).attr("data-gob-configkey")
                 }
 
                 set ["data-gob-configkey"](value) {
-                    console.log("Hey")
                     if (value !== undefined)
                         this.setAttribute("data-gob-configkey", value)
                     else
@@ -141,6 +150,7 @@
             }
 
             customElements.define('cmention-mention-entry', MentionConfigElement);
+            */
         }());
     </script>
 </body>

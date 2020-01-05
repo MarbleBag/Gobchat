@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="resize_handle.css">
     <script src="resize_handle.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer src="lib/fontawesome/js/all.js"></script>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
 
     <link rel="stylesheet" href="gobui_default.css">
     <link rel="stylesheet" href="gobui_chat.css">
@@ -48,7 +49,7 @@
         <div id="chatbox" class="chatbox">
             <div id="toolbar" class="chatbox-topbar">
                 <div class="chatbox-toolbar">
-                    <button id="gobchat_config"><i class="fa fa-gear"></i></button>
+                    <button id="gobchat_config"><i class="fas fa-cog"></i></button>
                 </div>
                 <div id="toolbarTabs" class="chatbox-tabs">
                 </div>
@@ -98,7 +99,7 @@
 
         $(window).on("message", function (e) {
             //TODO somehow check for the correct data
-            console.log(e)
+            //console.log(e)
             // window.chatManager.loadConfigFromLocalStore()
             // window.chatManager.updateStyle()
         })

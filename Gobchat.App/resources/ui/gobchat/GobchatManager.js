@@ -25,6 +25,16 @@ var Gobchat = (function (Gobchat) {
 
             this._chatConfig = new Gobchat.GobchatConfig()
             await this.config.loadConfig()
+
+            this._chatConfig.addProfileEventListener(event => {
+                if (event.type === "active")
+                    this.updateStyle()
+            })
+            this._chatConfig.addPropertyEventListener("style", event => {
+                if (event.isActive)
+                    this.updateStyle()
+            })
+
             this.updateStyle()
 
             this._messageParser = new Gobchat.MessageParser(self._chatConfig)
@@ -62,7 +72,7 @@ var Gobchat = (function (Gobchat) {
                 new Gobchat.Message(
                     getHourAndMinutes(),
                     new Gobchat.MessageSource("Gobchat"),
-                    Gobchat.ChannelEnum.ERROR,
+                    Gobchat.ChannelEnum.GOBCHAT_ERROR,
                     [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, msg)]
                 )
             )
@@ -73,7 +83,7 @@ var Gobchat = (function (Gobchat) {
                 new Gobchat.Message(
                     getHourAndMinutes(),
                     new Gobchat.MessageSource("Gobchat"),
-                    Gobchat.ChannelEnum.ECHO,
+                    Gobchat.ChannelEnum.GOBCHAT_INFO,
                     [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, "&lt;Gobchat&gt; " + msg)]
                 )
             )

@@ -8,9 +8,12 @@ var Gobchat = (function (Gobchat) {
         if (cssClass) element.classList.add(cssClass)
     }
 
+    //TODO automate this
     function getChannelCssClassForChannel(channelEnum) {
         switch (channelEnum) {
             case ChannelEnum.SAY: return "message-body-say"
+            case ChannelEnum.GOBCHAT_INFO: return "message-body-gobchatinfo"
+            case ChannelEnum.GOBCHAT_ERROR: return "message-body-gobchaterror"
             case ChannelEnum.EMOTE: return "message-body-emote"
             case ChannelEnum.TELL_SEND: return "message-body-tellsend"
             case ChannelEnum.TELL_RECIEVE: return "message-body-tellrecieve"
@@ -114,6 +117,8 @@ var Gobchat = (function (Gobchat) {
         const sourceName = getMessageSenderName(messageSource)
 
         switch (channelEnum) {
+            case ChannelEnum.GOBCHAT_INFO:
+            case ChannelEnum.GOBCHAT_ERROR: return "[" + sourceName + "]"
             case ChannelEnum.ECHO: return "Echo:"
             case ChannelEnum.EMOTE: return sourceName
             case ChannelEnum.TELL_SEND: return "&gt;&gt; " + sourceName + ":"
@@ -159,7 +164,7 @@ var Gobchat = (function (Gobchat) {
             applyClass(chatEntry, getChannelCssClassForPlayerGroup(groupId))
 
             const timeElement = document.createElement("span")
-            timeElement.innerHTML = `[${message.timestamp}]`
+            timeElement.innerHTML = `[${message.timestamp}] `
             applyClass(timeElement, "message-timestamp")
             chatEntry.appendChild(timeElement)
 

@@ -288,7 +288,7 @@ var Gobchat = (function (Gobchat, undefined) {
             const profileId = generateId(this.profiles)
 
             profile.config.profile.id = profileId
-            profile.config.profile.name = `Profile ${this.profiles.length}`
+            profile.config.profile.name = `Profile ${this.profiles.length + 1}`
             profile.addPropertyListener("*", this._OnPropertyChange)
 
             this._profiles[profileId] = profile

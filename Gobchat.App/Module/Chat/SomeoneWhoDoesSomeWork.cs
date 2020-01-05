@@ -53,10 +53,10 @@ namespace Gobchat.Core.Module.Chat
         private volatile bool _gobchatReady;
 
         //TODO move that stuff to its own class
-        private bool _errorReportFFNotFound = false;
 
         private bool _errorReportChatLogAvailable = false;
         private bool _errorReportRegistered = false;
+        private bool _errorReportFFNotFound = false;
 
         private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
 
@@ -97,12 +97,12 @@ namespace Gobchat.Core.Module.Chat
 
         private void Event_Config_ProfileChanged(object sender, ActiveProfileChangedEventArgs e)
         {
-            //TODO trigger all stuff that needs to be update on a profile change
+            //TODO trigger all stuff that needs to be updated on a profile change
 
             UpdateHotkeys();
         }
 
-        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, PropertyChangedEventArgs evt)
+        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, ProfilePropertyChangedEventArgs evt)
         {
             UpdateHotkeys();
         }
@@ -111,22 +111,13 @@ namespace Gobchat.Core.Module.Chat
         {
             if (request == "GetConfig")
             {
-                var root = new JObject();
-                root["activeProfile"] = _configManager.ActiveProfileId;
-                root["profiles"] = new JObject();
-
-                var profiles = _configManager.Profiles;
-                var profileStore = root["profiles"];
-                foreach (var profileId in profiles)
-                {
-                    profileStore[profileId] = _configManager.GetProfile(profileId).ToJson();
-                }
-
-                return root.ToString();
+                var configJson = _configManager.AsJson();
+                return configJson.ToString();
             }
             else if (request == "SetConfig")
             {
-                //TODO
+                var configJson = _jsBuilder.Deserialize(data);
+                _configManager.Synchronize(configJson);
             }
             return "";
         }
@@ -387,13 +378,13 @@ namespace Gobchat.Core.Module.Chat
             {
                 if (!_errorReportFFNotFound)
                 {
-                    _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, "Gobchat can't find to a running instance of FFXIV"));
+                    SendErrorMessageToUI("Can't find to a running instance of FFXIV.");
                     _errorReportFFNotFound = true;
                 }
             }
             else
             {
-                _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ECHO, "Gobchat is linked to FFXIV"));
+                SendInfoMessageToUI("FFXVI detected.");
                 _errorReportFFNotFound = false;
             }
 
@@ -405,10 +396,20 @@ namespace Gobchat.Core.Module.Chat
                 }
                 else if (!_errorReportChatLogAvailable)
                 {
-                    _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, "Gobchat can't access FF chatlog. Restart Gobchat with admin rights."));
+                    SendErrorMessageToUI("Can't access FF chatlog. Restart Gobchat with admin rights.");
                     _errorReportChatLogAvailable = true;
                 }
             }
+        }
+
+        private void SendInfoMessageToUI(string msg)
+        {
+            _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.GOBCHAT_INFO, msg));
+        }
+
+        private void SendErrorMessageToUI(string msg)
+        {
+            _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.GOBCHAT_ERROR, msg));
         }
 
         internal void Update()

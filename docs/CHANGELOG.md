@@ -2,12 +2,18 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## Unreleased
+## [1.2.0] - 2020.01.XX
 ## Bug
 - It's currently necessary to start Gobchat with admin rights, otherwise it can't read FF chatlog.
 
 ## Added
+- Profiles! It's now possible to have more settings per settings, so you can twink your twink
+- Chat command to switch between profiles without open the settings. Try /e gc profile
 - A checkbox which allows gobchat to be updated with pre-releases / beta-releases
+- Gobchat will now communicate some of its problems with the user. Be nice
+- Two new channels for Gobchat to report errors and inform the user about stuff
+- Color selector for FFXIV ECHO and ERROR channel
+- On using '/e gc' gobchat will now tell you which commands are available
 
 ## [1.1.0] - 2019.12.06
 ## Added
