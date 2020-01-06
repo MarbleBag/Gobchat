@@ -10,6 +10,7 @@ if(-Not (Test-Path $releaseFolder)){
 
 #do a clean build
 
+#Not the best
 Write-Host "Deleting all the stuff no one cares about ..."
 $allowedFolders = @("resources")
 Get-ChildItem -Path $releaseFolder | 
@@ -19,6 +20,8 @@ Get-ChildItem -Path $releaseFolder |
 			Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue
 		}
 	}
+
+Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
 
 Get-ChildItem -Path $releaseFolder -Filter  *.log | 
 	ForEach-Object {
