@@ -99,9 +99,9 @@
           "id": "base",
           "trigger": [],
           "playSound": false,
-          "soundPath": null,
+          "soundPath": "../sounds/FFXIV_Linkshell_Transmission.mp3",
           "soundInterval": 5000,
-          "volume": 1.0
+          "volume": 0.2
         }
       },
       "order": [ "base" ]

@@ -158,7 +158,7 @@ namespace Gobchat.Core.Config
                 if (appConfig["activeProfile"] != null)
                 {
                     activeProfile = appConfig["activeProfile"].Value<string>();
-                    if (activeProfile != null && activeProfile.Length > 0 && _profiles.ContainsKey(activeProfile))
+                    if (activeProfile != null && _profiles.ContainsKey(activeProfile))
                     {
                         ActiveProfileId = activeProfile;
                         return;
