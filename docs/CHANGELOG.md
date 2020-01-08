@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.3.0]
+## Added
+- Sound on mention! The mention tab was extended and now includes settings to play a sound file
+
+## Fixed
+- On profile delete the profile file will also be deleted from the filesystem
+
 ## [1.2.1] - 2020.01.05
 ## Fixed
 - Changed settings will be applied immediately again, just how it should be!

@@ -50,6 +50,16 @@ namespace Gobchat.Core.Runtime
                     action.Invoke();
                 }, null);
             }
+
+            public TOut RunSync<TOut>(Func<TOut> action)
+            {
+                TOut result = default;
+                _context.Send((s) =>
+                {
+                    result = action.Invoke();
+                }, null);
+                return result;
+            }
         }
 
         private static Logger logger = LogManager.GetCurrentClassLogger();

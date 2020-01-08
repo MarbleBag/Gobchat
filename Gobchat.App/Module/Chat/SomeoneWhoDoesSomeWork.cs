@@ -123,6 +123,25 @@ namespace Gobchat.Core.Module.Chat
             {
                 _configManager.ActiveProfileId = data;
             }
+            else if (request == "OpenFileDialog")
+            {
+                var uiManager = _container.Resolve<IUIManager>();
+
+                string fileName = "";
+
+                uiManager.UISynchronizer.RunSync(() =>
+                {
+                    using (var openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                    {
+                        openFileDialog.InitialDirectory = GobchatApplicationContext.ResourceLocation;
+                        openFileDialog.RestoreDirectory = true;
+                        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            fileName = openFileDialog.FileName;
+                    }
+                });
+
+                return fileName;
+            }
             return "";
         }
 

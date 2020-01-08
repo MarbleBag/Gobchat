@@ -1,5 +1,5 @@
 ﻿{
-  "version": 2,
+  "version": 3,
   "profile": {
     "id": null,
     "name": null
@@ -93,8 +93,19 @@
       }
     },
     "language": "en",
-    "mentions": [],
-    "playSoundOnMention": false,
+    "mentions": {
+      "data": {
+        "base": {
+          "id": "base",
+          "trigger": [],
+          "playSound": false,
+          "soundPath": null,
+          "soundInterval": 5000,
+          "volume": 1.0
+        }
+      },
+      "order": [ "base" ]
+    },
     "checkForUpdate": true,
     "checkForBetaUpdate": false,
     "autodetectEmoteInSay": true,
@@ -336,11 +347,11 @@
         "color": null,
         "$fallback-color": "style.channel.emote.color"
       },
-      "ooc": {
-        "color": "#FF5920"
-      },
       "mention": {
         "color": "#9358E4"
+      },
+      "ooc": {
+        "color": "#FF5920"
       },
       "link": {
         "color": "#FF0000"

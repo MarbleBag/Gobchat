@@ -39,6 +39,8 @@ namespace Gobchat.Core.Config
 
         public string ProfileId => _data["profile"]["id"].Value<string>();
 
+        public int ProfileVersion => _data["version"].Value<int>();
+
         public event EventHandler<PropertyChangedEventArgs> OnPropertyChange;
 
         public T GetProperty<T>(string key)

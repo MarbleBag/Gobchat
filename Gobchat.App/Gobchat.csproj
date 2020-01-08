@@ -112,6 +112,12 @@
     <Content Include="resources\default_profile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="resources\sounds\Alarm.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\sounds\D.Va_-_Boosters_engaged.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -157,6 +163,7 @@
     <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
     <Compile Include="Core\Config\ActiveProfileChangedEventArgs.cs" />
     <Compile Include="Core\Config\ConfigLoadException.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\Transforme_v2_to_v3.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
     <Compile Include="Core\Config\IGobchatConfigManager.cs" />
     <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
@@ -196,6 +203,7 @@
     <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
     <Compile Include="Core\Util\FileDownloader.cs" />
+    <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\CefInstaller\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
@@ -289,6 +297,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_roleplay.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\fontawesome\js\all.js">

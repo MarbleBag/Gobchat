@@ -19,11 +19,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using NLog;
 
 namespace Gobchat.Core.Config
 {
     public sealed class GobchatConfigManager : IGobchatConfigManager
     {
+        private readonly static Logger logger = LogManager.GetCurrentClassLogger();
+
         public string ConfigFolderPath { get; set; }
 
         public event EventHandler<ProfileChangedEventArgs> OnProfileChange;
@@ -56,6 +59,7 @@ namespace Gobchat.Core.Config
         private string _defaultProfilePath;
 
         private Dictionary<string, IGobchatConfigProfile> _profiles;
+        private IList<string> _profilesLoadedFromFile;
         private JsonGobchatConfigProfile _defaultConfig;
 
         private string _activeProfileId;
@@ -67,6 +71,7 @@ namespace Gobchat.Core.Config
             ConfigFolderPath = configFolderPath ?? throw new ArgumentNullException(nameof(configFolderPath));
 
             _profiles = new Dictionary<string, IGobchatConfigProfile>();
+            _profilesLoadedFromFile = new List<string>();
             _propertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
         }
 
@@ -77,16 +82,17 @@ namespace Gobchat.Core.Config
             LoadAppConfig();
         }
 
-        private JsonConfigLoader GetConfigLoader()
+        private JsonConfigLoader GetProfileLoader()
         {
             var loader = new JsonConfigLoader();
+            loader.AddConverter(2, new Transforme_v2_to_v3(_defaultConfig));
             //TODO add converters
             return loader;
         }
 
         private void LoadDefaultProfile()
         {
-            var loader = GetConfigLoader();
+            var loader = new JsonConfigLoader();
             var defaultConfig = loader.LoadConfig(_defaultProfilePath);
 
             var finalizer = new StringToEnumTransformer();
@@ -104,7 +110,7 @@ namespace Gobchat.Core.Config
 
             var userProfileFiles = Directory.EnumerateFiles(userProfileFolderPath, "profile_*.json", SearchOption.TopDirectoryOnly);
 
-            var loader = GetConfigLoader();
+            var loader = GetProfileLoader();
             var finalizer = new StringToEnumTransformer();
 
             foreach (var userProfileFile in userProfileFiles)
@@ -121,8 +127,19 @@ namespace Gobchat.Core.Config
                 }
 
                 var config = new JsonGobchatConfigProfile(userProfile, true, _defaultConfig);
+
+                var configVersion = config.ProfileVersion;
+                var defaultVersion = _defaultConfig.ProfileVersion;
+
+                if (configVersion < defaultVersion)
+                {
+                    logger.Warn($"Profile {config.ProfileId} is outdated with version {configVersion}. Expected is version {defaultVersion}");
+                    return;
+                }
+
                 config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
                 _profiles.Add(profileId, config);
+                _profilesLoadedFromFile.Add(profileId);
             }
         }
 
@@ -175,27 +192,7 @@ namespace Gobchat.Core.Config
 
         private string GenerateProfileId()
         {
-            string GenerateId(int lenght)
-            {
-                var builder = new System.Text.StringBuilder();
-                while (lenght > 0)
-                {
-                    var path = Path.GetRandomFileName().Replace(".", "");
-                    if (path.Length > lenght)
-                        builder.Append(path.Substring(0, lenght));
-                    else
-                        builder.Append(path);
-                    lenght -= path.Length;
-                }
-                return builder.ToString();
-            }
-
-            do
-            {
-                var id = GenerateId(8);
-                if (!_profiles.ContainsKey(id))
-                    return id;
-            } while (true);
+            return Util.IdGenerator.GenerateNewId(8, _profiles.Keys);
         }
 
         public IGobchatConfigProfile GetProfile(string profileId)
@@ -227,8 +224,9 @@ namespace Gobchat.Core.Config
         {
             var profileId = GenerateProfileId();
 
+            //TODO that's not good. Versioning needs to be done automatically.
             var newConfig = new JObject();
-            newConfig["version"] = 2;
+            newConfig["version"] = 3;
             newConfig["profile"] = new JObject();
             newConfig["profile"]["id"] = profileId;
             newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
@@ -321,7 +319,23 @@ namespace Gobchat.Core.Config
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    //TODO
+                    logger.Fatal(ex);
+                }
+            }
+
+            foreach (var profileId in _profilesLoadedFromFile)
+            {
+                if (_profiles.ContainsKey(profileId))
+                    continue;
+
+                try
+                {
+                    var file = Path.Combine(outputFolder, $"profile_{profileId}.json");
+                    File.Delete(file);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    logger.Warn(ex);
                 }
             }
         }
@@ -346,7 +360,7 @@ namespace Gobchat.Core.Config
             }
             catch (UnauthorizedAccessException ex)
             {
-                //TODO
+                logger.Fatal(ex);
             }
         }
 

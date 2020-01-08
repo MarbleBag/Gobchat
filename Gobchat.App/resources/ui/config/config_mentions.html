@@ -9,148 +9,316 @@
     <button class="ui-btn-copyprofile" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
 
     <p>
-        <div></div>
-    </p>
-    <p>
-
-    <p>
         <div>
-            <label>Mentions:</label>
-            <textarea rows="3" id="cmentions_mentions" data-gob-configkey="behaviour.mentions" style="width:100%;"></textarea>
+            <button disabled hidden id="cmentions_add_new_mention1"><i style="color:green;" class="fas fa-plus-circle"></i></button>
         </div>
-        <div>
-            <label class="disabled">Play sound:</label>
-            <input type="checkbox" disabled />
-        </div>
-        <div>
-            <label class="disabled">Sound:</label>
-            <input type="text" disabled />
-            <button disabled>...</button>
-        </div>
-
-        <!--<cmention-mention-entry data-gob-configkey="behaviour.mentions.{0}"></cmention-mention-entry>-->
     </p>
 
-    <!--
-    <template>
-        <tr id="cmention_row_{0}">
-            <td>
-                <p>
-                    <div>
-                        <label>Mentions:</label>
-                        <textarea rows="3" id="cmention_row_{0}_mention" style="width:100%;" data-gob-configkey="behaviour.mentions.{0}.trigger"></textarea>
-                    </div>
-                    <div>
+    <p>
+        <div>
+            <div id="cmentions_mention_table">
+            </div>
+            <div>
+            </div>
+            <div>
+                <button disabled hidden id="cmentions_add_new_mention2"><i style="color:green;" class="fas fa-plus-circle"></i></button>
+            </div>
+        </div>
+    </p>
+
+    <template id="cmention_template_mention">
+        <div data-gob-entryid>
+            <div>
+                <label>Mentions</label>
+                <span>
+                    <button hidden class="tmpl-delete-entry ui-gc-btn-delete" title="Deletes this entry"><i class="fa fa-trash"></i></button>
+                </span>
+            </div>
+            <div>
+                <div>
+                    <textarea rows="3" class="tmpl-trigger" style="width:100%;" data-gob-configkey="behaviour.mentions.{0}.trigger"></textarea>
+                </div>
+                <!-- deactivated til multiple mentions are really needed
+                <div>
+                    <label>Color:</label>
+                    <input class="tmpl-color-forground" type="text" />
+                    <button class="tmpl-color-forground-reset ui-gc-btn"
+                            title="Resets the field to its default value">
+                        <i class='fas fa-undo-alt'></i>
+                    </button>
+                </div>
+                -->
+                <div>
+                    <span>
                         <label>Play sound:</label>
-                        <input type="checkbox" id="cmention_row_{0}_playsound" data-gob-configkey="behaviour.mentions.{0}.playsound" />
+                        <input type="checkbox" class="tmpl-play-sound" data-gob-configkey="behaviour.mentions.{0}.playsound" />
+                    </span>
+                </div>
+                <div class="tmp-sound-options" hidden>
+                    <div>
+                        <input type="text" class="tmpl-sound-path" data-gob-configkey="behaviour.mentions.{0}.sound" />
+                        <button class="tmpl-sound-selector"><i class="fas fa-file-audio"></i></button>
+                        <button class="tmpl-test-sound"><i class="fas fa-play"></i></button>
+                        <input class="tmpl-sound-volume" type="range" min="0" max="100" />
                     </div>
                     <div>
-                        <label>Sound:</label>
-                        <input type="text" id="cmention_row_{0}_soundpath" data-gob-configkey="behaviour.mentions.{0}.sound" />
-                        <button type="button" id="cmention_row_{0}_soundselector">...</button>
+                        <label>Time between plays</label>
+                        <input class="tmpl-sound-rest" type="number" min="1" />
                     </div>
-
-                    <cmention-mention-entry id="cmention_row_{0}_mention" data-gob-configkey="behaviour.mentions.{0}"></cmention-mention-entry>
-                </p>
-            </td>
-        </tr>
+                </div>
+            </div>
+        </div>
     </template>
-        -->
 
     <script type="text/javascript">
         'use strict';
 
         (function () {
 
+            const ConfigKeyData = "behaviour.mentions.data"
+            const ConfigKeyOrder = "behaviour.mentions.order"
+            const EntryIdAttribute = "data-gob-entryid"
+
             const txtMentions = $("#cmentions_mentions")
             ConfigHelper.linkTextCollectionConfig(txtMentions)
 
-            const btnCopyProfile = $("#cmentions_copyprofile")
-            const copyKeys = ["behaviour.mentions"]
-            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+            const template = $("#cmention_template_mention")
+            const mentionTable = $("#cmentions_mention_table")
 
-            /*
-            const template = document.createElement("template");
-            template.innerHTML = `
-                                                                                                <div>
-                                                                                                    <div>
-                                                                                                        <label>Mentions:</label>
-                                                                                                        <textarea id="txtArea" rows="3" style="width:100%;"></textarea>
-                                                                                                    </div>
-                                                                                                    <div>
-                                                                                                        <label>Play sound:</label>
-                                                                                                        <input id="playSound" type="checkbox" />
-                                                                                                    </div>
-                                                                                                    <div>
-                                                                                                        <label>Sound:</label>
-                                                                                                        <input id="soundPath" type="text" />
-                                                                                                        <button id="soundSelector" type="button">...</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            `
-            class MentionConfigElement extends HTMLElement {
-                constructor() {
-                    super()
-                    this.attachShadow({ mode: 'open' });
-                    this.shadowRoot.appendChild(template.content.cloneNode(true));
+            function addEntryToTable(entryId) {
+                if (entryId === null || entryId === undefined || entryId.length === 0)
+                    throw new Error("Invalid entry id")
+
+                const entry = $(template.html())
+                entry.attr(EntryIdAttribute, entryId)
+                entry.appendTo(mentionTable)
+
+                const configKey = ConfigKeyData + "." + entryId
+
+                const btnDelete = entry.find(".tmpl-delete-entry")
+                btnDelete.on("click", event => {
+                    event.stopPropagation()
+                    if (!window.confirm("Entry will be deleted. Are you sure?")) return
+                    gobconfig.remove(configKey)
+                    const order = gobconfig.get(ConfigKeyOrder)
+                    _.remove(order, e => e === entryId)
+                    gobconfig.set(ConfigKeyOrder, order)
+                })
+                btnDelete.attr("disabled", gobconfig.get(ConfigKeyOrder).length <= 1)
+
+                const txtTrigger = entry.find(".tmpl-trigger")
+                txtTrigger.val(gobconfig.get(configKey + ".trigger").join(", "))
+                txtTrigger.on("change", (event) => {
+                    let words = (event.target.value || "").split(",")
+                    words = words.filter(w => w !== null && w !== undefined).map(w => w.toLowerCase().trim()).filter(w => w.length > 0)
+                    gobconfig.set(configKey + ".trigger", words)
+                    txtTrigger.val(words.join(", "))
+                })
+
+                /* deactivated til multiple mentions are really needed
+                function makeColorSelector(classId, configKey) {
+                    const selectorElement = entry.find(`.${classId}`)
+                    selectorElement.attr(ConfigHelper.ConfigKeyAttribute, configKey)
+                    ConfigHelper.makeColorSelector(selectorElement)
+                    selectorElement.spectrum("set", gobconfig.get(configKey))
+
+                    const resetButton = entry.find(`.${classId}-reset`)
+                    resetButton.on("click", event => {
+                        gobconfig.set(configKey, "#9358E4")
+                        selectorElement.spectrum("set", gobconfig.get(configKey));
+                    })
                 }
 
-                static get observedAttributes() {
-                    return ['data-gob-configkey', 'open'];
+                makeColorSelector("tmpl-color-forground", configKey + ".style.color")
+                */
+
+                const ckbPlaySound = entry.find(".tmpl-play-sound")
+                ckbPlaySound.prop("checked", gobconfig.get(configKey + ".playSound"))
+                ckbPlaySound.on("change", (event) => {
+                    gobconfig.set(configKey + ".playSound", event.target.checked)
+                    entry.find(".tmp-sound-options").toggle(event.target.checked)
+                })
+                entry.find(".tmp-sound-options").toggle(ckbPlaySound.prop("checked"))
+
+                function isSoundFileValid(path) {
+                    const isValid = Gobchat.isString(path) && path.length > 0
+                    return isValid
                 }
 
-                _upgradeProperty(prop) {
-                    if (this.hasOwnProperty(prop)) {
-                        console.log("_upgradeProperty: " + prop)
-                        let value = this[prop];
-                        delete this[prop];
-                        this[prop] = value;
+                const txtSoundPath = entry.find(".tmpl-sound-path")
+                txtSoundPath.attr("title", "The sound file needs to be located within the sound folder of gobchat")
+                txtSoundPath.val(gobconfig.get(configKey + ".soundPath") || "")
+                txtSoundPath.on("change", (event) => {
+                    const soundFile = event.target.value
+                    const isValid = isSoundFileValid(soundFile)
+                    btnCheckSound.attr("disabled", !isValid)
+                    gobconfig.set(configKey + ".soundPath", isValid ? soundFile : "")
+                })
+
+                const btnSoundSelector = entry.find(".tmpl-sound-selector")
+                btnSoundSelector.on("click", (event) => {
+                    const fileSelector = document.createElement("input")
+                    fileSelector.type = "file"
+                    fileSelector.onchange = (event) => {
+                        const file = event.target.files[0];
+                        if (file)
+                            txtSoundPath.val(`../sounds/${file.name}`)
+                        else
+                            txtSoundPath.val("")
+                        txtSoundPath.change()
+                        checkPlayability(file.type || "")
                     }
+                    fileSelector.click();
+                    /*
+                    (async function () {
+                        const selectedFile = await GobchatAPI.openFileDialog()
+                        txtSoundPath.val(selectedFile)
+                        txtSoundPath.change()
+                    }())
+                    */
+                })
+
+                const btnCheckSound = entry.find(".tmpl-test-sound")
+                btnCheckSound.attr("disabled", !isSoundFileValid(txtSoundPath.val()))
+                btnCheckSound.on("click", (event) => {
+                    const soundPath = gobconfig.get(configKey + ".soundPath")
+                    const audio = new Audio("../" + soundPath);
+                    audio.volume = gobconfig.get(configKey + ".volume")
+
+                    const playPromise = audio.play()
+                    playPromise.catch(error => {
+                        $("#config_dialog_error_text").empty()
+                        $("#config_dialog_error_text").append($(
+                            `<span>
+                                Audiofile can't be played.<br>
+                                Either the format is not supported or the file can't be found!<br>
+                                Make sure to place any sound files you want to use in gobchat under resources/sounds
+                            </span>
+                            `
+                        ))
+                        $("#config_dialog_error").dialog({
+                            resizable: false,
+                            height: "auto",
+                            width: 600,
+                            modal: true,
+                            buttons: {
+                                "Ok": function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+
+                })
+
+                const sldSoundVolume = entry.find(".tmpl-sound-volume")
+                const normalize = (value) => { return (value - 0) / (100 - 0) }
+                const denormalize = (value) => { return value * (100 - 0) + 0 }
+                sldSoundVolume.val(denormalize(gobconfig.get(configKey + ".volume")))
+                sldSoundVolume.on("change", (event) => {
+                    gobconfig.set(configKey + ".volume", normalize(event.target.value))
+                })
+
+                function checkPlayability(format) {
+                    const audio = new Audio();
+                    const canPlay = audio.canPlayType(format)
+                    const result = canPlay === "probably" ? 2 : canPlay === "maybe" ? 1 : 0
+
+                    entry.find(".tmpl-canplay-0, .tmpl-canplay-1, .tmpl-canplay-2").hide()
+
+                    if (result === 0) entry.find(".tmpl-canplay-0").show()
+                    if (result === 1) entry.find(".tmpl-canplay-1").show()
+                    if (result === 2) entry.find(".tmpl-canplay-2").show()
                 }
 
-                //called if inserted into the dom
-                connectedCallback() {
-                    this._upgradeProperty('id');
-                    this._upgradeProperty(ConfigHelper.ConfigKeyAttribute);
+                const txtSoundRest = entry.find(".tmpl-sound-rest")
+                txtSoundRest.attr("title", "Amount of seconds which need to pass before a sound will be played again.")
+                txtSoundRest.val(gobconfig.get(configKey + ".soundInterval") / 1000)
+                txtSoundRest.on("change", function (event) {
+                    gobconfig.set(configKey + ".soundInterval", (event.target.value || 0) * 1000)
+                })
 
-                    const configKey = $(this).attr(ConfigHelper.ConfigKeyAttribute)
-
-                    const shadowRoot = $(this.shadowRoot)
-                    const txtArea = shadowRoot.find("#txtArea")
-                    txtArea.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".trigger")
-                    ConfigHelper.linkTextCollectionConfig(txtArea)
-
-                    const chkPlaySound = shadowRoot.find("#playSound")
-                    chkPlaySound.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".playsound")
-
-                    const txtSoundPath = shadowRoot.find("#soundPath")
-                    txtSoundPath.attr(ConfigHelper.ConfigKeyAttribute, configKey + ".sound")
-
-                    const btnSearchSound = shadowRoot.find("#soundSelector")
-                }
-
-                disconnectedCallback() {
-
-                }
-
-                attributeChangedCallback(attrName, oldVal, newVal) {
-                    console.log("attributeChangedCallback: " + attrName)
-                }
-
-                get ["data-gob-configkey"]() {
-                    return $(this).attr("data-gob-configkey")
-                }
-
-                set ["data-gob-configkey"](value) {
-                    if (value !== undefined)
-                        this.setAttribute("data-gob-configkey", value)
-                    else
-                        this.removeAttribute("data-gob-configkey")
-                }
             }
 
-            customElements.define('cmention-mention-entry', MentionConfigElement);
+            function populateTable() {
+                mentionTable.empty()
+                const ids = gobconfig.get(ConfigKeyOrder)
+                ids.forEach(id => addEntryToTable(id))
+                /* deactivated til multiple mentions are really needed
+                mentionTable.sortable("refresh")
+                mentionTable.accordion("refresh")
+                */
+            }
+
+            function addNewEntry() {
+                function generateId(ids) {
+                    let id = null
+                    do {
+                        id = Gobchat.generateId(6)
+                    } while (_.includes(ids, id))
+                    return id
+                }
+
+                const data = gobconfig.get(ConfigKeyData)
+                const id = generateId(Object.keys(data))
+
+                data[id] = {
+                    id: id,
+                    trigger: [],
+                    playSound: false,
+                    soundPath: null,
+                    volume: 1.0,
+                    /* deactivated til multiple mentions are really needed
+                    style: {
+                        "color": "#9358E4"
+                    }
+                    */
+                }
+
+                gobconfig.set(ConfigKeyData, data)
+
+                const order = gobconfig.get(ConfigKeyOrder)
+                order.push(id)
+                gobconfig.set(ConfigKeyOrder, order)
+            }
+
+            /* deactivated til multiple mentions are really needed
+            mentionTable.accordion({
+                heightStyle: "content",
+                header: "> div > h4",
+            })
+                .sortable({
+                    axis: "y",
+                    handle: "div",
+                    stop: function (event, ui) {
+                        let order = []
+                        mentionTable.find("div[data-gob-entryid]").each(function () {
+                            order.push($(this).attr(EntryIdAttribute))
+                        })
+
+                        order = order.filter(e => e !== null && e !== undefined && e.length > 0)
+                        gobconfig.set(ConfigKeyOrder, order)
+                    }
+                });
             */
+
+            gobconfig.addProfileEventListener((event) => {
+                if (event.type === "active")
+                    populateTable()
+            })
+            gobconfig.addPropertyEventListener(ConfigKeyOrder, (event) => {
+                if (event.isActive)
+                    populateTable()
+            })
+            populateTable()
+
+            const btnAddMentionBox = $("#cmentions_add_new_mention1, #cmentions_add_new_mention2")
+            btnAddMentionBox.attr("title", "Adds a new box for mentions")
+            btnAddMentionBox.on("click", (event) => addNewEntry())
+
+            const btnCopyProfile = $("#cmentions_copyprofile")
+            const copyKeys = ["behaviour.mentions.data", "behaviour.mentions.order"]
+            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
         }());
     </script>
 </body>

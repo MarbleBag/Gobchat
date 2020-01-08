@@ -40,6 +40,7 @@ var Gobchat = (function (Gobchat) {
 
             this._messageParser = new Gobchat.MessageParser(self._chatConfig)
             this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
+            this._messageSound = new Gobchat.MessageSoundPlayer(self._chatConfig)
 
             this._cmdManager = new Gobchat.CommandManager(this, self._chatConfig)
 
@@ -103,6 +104,7 @@ var Gobchat = (function (Gobchat) {
             const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
             $("#" + this._chatHtmlId).append(messageHtmlElement)
             this._scrollbar.scrollToBottomIfNeeded()
+            this._messageSound.checkForSound(message)
         }
     }
     Gobchat.GobchatManager = GobchatManager

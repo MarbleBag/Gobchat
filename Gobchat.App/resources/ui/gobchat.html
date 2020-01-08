@@ -30,6 +30,7 @@
 
     <script src="gobchat/Message.js"></script>
     <script src="gobchat/MessageParser.js"></script>
+    <script src="gobchat/MessageSoundPlayer.js"></script>
     <script src="gobchat/MessageHtmlBuilder.js"></script>
     <script src="gobchat/GobchatManager.js"></script>
 </head>
@@ -106,14 +107,14 @@
 
         // test
         function runTest() {
-            const fillMe = Array.from({ length: 1 }, (v, k) => ` | oof | \uE0BB Say, *emote* and ((ooc)) - ${k + 1} <text>`).map(e => { return { message: e, source: "Di'e I'of'oOdin" } })
+            const fillMe = Array.from({ length: 1 }, (v, k) => ` | oof | \uE0BB Say, *emote* and ((ooc)) - ${k + 1} <text> Lyren`).map(e => { return { message: e, source: "Di'e I'of'oOdin" } })
             fillMe.forEach((e) => {
                 const msg = { detail: { type: e.channel || Gobchat.ChannelEnum.SAY, timestamp: "HH:mm", source: e.source || "Browser", message: e.message || "Empty" } }
                 window.chatManager.onNewMessageEvent(msg)
             })
         }
 
-        //window.setTimeout( runTest, 5000 );
+        window.setTimeout(runTest, 5000);
 
     })
 </script>
