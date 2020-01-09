@@ -92,7 +92,7 @@ namespace Gobchat.Memory
             if (!FFXIVProcessValid || e.ProcessId != FFXIVProcessId)
                 return;
 
-            System.Diagnostics.Debug.WriteLine(e);
+            logger.Debug(() => e.ToString());
 
             switch (e.EventType)
             {

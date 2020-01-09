@@ -88,6 +88,7 @@ namespace Gobchat.Memory.Window
 
         public WindowObserver()
         {
+            // set & unset need to be called by the same thread, prefareable any thread with a running message pump
             _initializedThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
         }
 
@@ -126,41 +127,20 @@ namespace Gobchat.Memory.Window
 
             if (IntPtr.Zero != _foregroundHook)
             {
-                if (UnhookWinEvent(_foregroundHook))
-                {
-                    _foregroundHook = IntPtr.Zero;
-                }
-                else
-                {
-                    var exception = new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
-                    logger.Fatal("Unable to remove foreground hook", exception);
-                }
+                UnhookWinEvent(_foregroundHook);
+                _foregroundHook = IntPtr.Zero;
             }
 
             if (IntPtr.Zero != _minimizeHook)
             {
-                if (UnhookWinEvent(_minimizeHook))
-                {
-                    _minimizeHook = IntPtr.Zero;
-                }
-                else
-                {
-                    var exception = new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
-                    logger.Fatal("Unable to remove minimize hook", exception);
-                }
+                UnhookWinEvent(_minimizeHook);
+                _minimizeHook = IntPtr.Zero;
             }
 
             if (IntPtr.Zero != _locationChangeHook)
             {
-                if (UnhookWinEvent(_locationChangeHook))
-                {
-                    _locationChangeHook = IntPtr.Zero;
-                }
-                else
-                {
-                    var exception = new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
-                    logger.Fatal("Unable to remove location change hook", exception);
-                }
+                UnhookWinEvent(_locationChangeHook);
+                _locationChangeHook = IntPtr.Zero;
             }
 
             Enabled = false;
