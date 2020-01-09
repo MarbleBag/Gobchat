@@ -219,6 +219,7 @@ namespace Gobchat.Core.Module.Chat
                 {
                     try
                     {
+                        logger.Trace(() => "Message: " + item.ToString());
                         return _chatlogParser.Convert(item);
                     }
                     catch (Exception ex)
