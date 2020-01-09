@@ -432,7 +432,7 @@ namespace Gobchat.Core.Module.Chat
             }
             else
             {
-                SendInfoMessageToUI("FFXVI detected.");
+                SendInfoMessageToUI("FFXIX detected.");
                 _errorReportFFNotFound = false;
             }
 
