@@ -154,6 +154,7 @@
 
             // setup checkboxes
             const ckbChatLog = $("#capp_makechatlog")
+            ckbChatLog.attr("title","Gobchat creates a chatlog which will be saved under AppData\\Roaming\\Gobchat\\log")
             ConfigHelper.linkCheckboxConfig(ckbChatLog)
 
             const ckbAutodetect = $("#capp_autodetectemote")
@@ -182,7 +183,7 @@
             // setup font group
             // setup font family
             const txtFontFamily = $("#capp_font_family")
-            txtFontFamily.attr("title", "Picks the first available font. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
+            txtFontFamily.attr("title", "Picks the first available font, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
             ConfigHelper.linkTextConfig(txtFontFamily)
 
             const btnFontFamilyReset = $("#capp_font_family_reset")
@@ -206,6 +207,7 @@
             // setup hotkey group
             // setup hotkey field
             const txtHotkeyShow = $("#capp_hotkey_show")
+            txtHotkeyShow.attr("title", "Hides or shows gobchat on keypress")
             const txtHotkeyShowConfigKey = txtHotkeyShow.attr(ConfigHelper.ConfigKeyAttribute)
             ConfigHelper.setupListenerAndInitialize(txtHotkeyShowConfigKey, value => txtHotkeyShow.val(value), { defValue: "" })
             txtHotkeyShow.on("keydown", function (event) {
