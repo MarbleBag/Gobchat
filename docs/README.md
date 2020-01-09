@@ -51,6 +51,8 @@ Case-insensitive detection for a customizable list of words, which then will be 
 
 ![Mentions](screen_mention_highlighting.png)
 
+This feature can be enhanced further by playing a customizable sound.
+
 ### Customizable formatting settings
 
 ### Draggable and Resizeable

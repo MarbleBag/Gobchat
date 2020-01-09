@@ -75,7 +75,7 @@ var Gobchat = (function (Gobchat) {
             if (this.isMentionChannel(channel)) {
                 const mentions = this.getMentions()
                 if (mentions && mentions.length !== 0) {
-                    processMessageSegmentMention(message, mentions)
+                    processMessageSegmentAllMentions(message, mentions)
                 }
             }
 
@@ -274,7 +274,7 @@ var Gobchat = (function (Gobchat) {
             if (marker.count === 1) marker.clear()
         }
 
-        processMessage(message, ignoreFunction, parseFunction)
+        return processMessage(message, ignoreFunction, parseFunction)
     }
 
     function processMessageSegmentSayAndEmote(message) {
@@ -305,7 +305,7 @@ var Gobchat = (function (Gobchat) {
             marker.mark.end = txtLength
             if (marker.count === 1) marker.clear()
         }
-        processMessage(message, ignoreFunction, parseFunction)
+        return processMessage(message, ignoreFunction, parseFunction)
     }
 
     function processMessageSegmentMention(message, mentions) {
@@ -321,13 +321,28 @@ var Gobchat = (function (Gobchat) {
             }
             marker.mark.end = txt.length
         }
-        processMessage(message, ignoreFunction, parseFunction)
+        return processMessage(message, ignoreFunction, parseFunction)
+    }
+
+    function processMessageSegmentAllMentions(message, mentions) {
+        const order = mentions.order
+        const data = mentions.data
+        order.forEach(id => {
+            const changes = processMessageSegmentMention(message, data[id].trigger)
+            changes.forEach(idx => {
+                const segment = message.segments[idx]
+                if (segment.segmentType === MessageSegmentEnum.MENTION && !segment.segmentDetails)
+                    segment.segmentDetails = { id: id }
+            })
+        })
     }
 
     // ignoreFunction(segmentType)
-    // parseFunction(marker,segmentType,segmentText)
+    // parseFunction(marker, segmentType, segmentText)
     function processMessage(message, ignoreFunction, parseFunction) { //a general solution for message parsing
         const messageSegments = message.segments
+        const addedSegments = []
+
         for (let i = 0; i < messageSegments.length; ++i) {
             const messageSegment = messageSegments[i]
             const segmentType = messageSegment.segmentType
@@ -345,9 +360,12 @@ var Gobchat = (function (Gobchat) {
 
             if (newSegments.length > 0) {
                 messageSegments.splice.apply(messageSegments, [i, 1].concat(newSegments)) //deletes the old segment and adds the new segments at it's position
+                for (let n = 0; n < newSegments.length; ++n) addedSegments.push(n + i);
                 i += newSegments.length - 1 //so an already newly added segment doesn't get processed in the next step
             }
         }
+
+        return addedSegments
     }
 
     function findAllWordMatches(words, textLine) {

@@ -157,6 +157,7 @@
     <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
     <Compile Include="Core\Config\ActiveProfileChangedEventArgs.cs" />
     <Compile Include="Core\Config\ConfigLoadException.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\Transforme_v2_to_v3.cs" />
     <Compile Include="Core\Config\EnumToStringTransformer.cs" />
     <Compile Include="Core\Config\IGobchatConfigManager.cs" />
     <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
@@ -195,7 +196,8 @@
     <Compile Include="Core\Util\DownloadFailedException.cs" />
     <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
-    <Compile Include="Core\Util\FileDownloader.cs" />
+    <Compile Include="Module\Updater\GitHubFileDownloader.cs" />
+    <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\CefInstaller\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
@@ -219,7 +221,7 @@
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
     <Compile Include="Module\Hotkey\InvalidHotkeyException.cs" />
-    <Compile Include="Module\Updater\DeleteTask.cs" />
+    <Compile Include="Module\Updater\NAUDeleteTask.cs" />
     <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
     <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -260,6 +262,30 @@
     <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
+    <Content Include="resources\sounds\FFXIV_Aggro.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Enter_Chat.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Error.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Incoming_Tell_1.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Incoming_Tell_2.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Incoming_Tell_3.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Linkshell_Transmission.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\sounds\FFXIV_Notification.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\config\about.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -289,6 +315,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_roleplay.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\fontawesome\js\all.js">

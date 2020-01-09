@@ -50,5 +50,15 @@ namespace Gobchat.Core.Config
         JToken AsJson();
 
         void Synchronize(JToken configJson);
+
+        T GetProperty<T>(string key);
+
+        T GetProperty<T>(string key, T defaultValue);
+
+        bool HasProperty(string key);
+
+        void SetProperties(JObject json);
+
+        void SetProperty(string key, object value);
     }
 }

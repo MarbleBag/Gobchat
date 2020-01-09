@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Chat;
+using Gobchat.Core.Runtime;
 using Gobchat.UI.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,7 +29,7 @@ namespace Gobchat.Core
     /// </summary>
     internal class GobchatWebAPI : IBrowserAPI
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
         private IManagedWebBrowser _browser;
 
@@ -59,6 +60,11 @@ namespace Gobchat.Core
         public async Task<string> GetConfig()
         {
             return await Request(nameof(GetConfig), null);
+        }
+
+        public async Task<string> OpenFileDialog()
+        {
+            return await Request(nameof(OpenFileDialog), "");
         }
 
         public async void SetConfig(string json)

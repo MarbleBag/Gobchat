@@ -5,6 +5,7 @@ var Gobchat = (function (Gobchat) {
         constructor(messageSegmentEnum, messageText) {
             this.segmentType = messageSegmentEnum
             this.messageText = messageText
+            this.segmentDetails = null
         }
     }
     Gobchat.MessageSegment = MessageSegment

@@ -15,8 +15,9 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using Gobchat.Core.Runtime;
+using Gobchat.Core.Util;
 
-namespace Gobchat.Core.Util
+namespace Gobchat.Core.Module.Updater
 {
     public sealed class GitHubFileDownloader
     {

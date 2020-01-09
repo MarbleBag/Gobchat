@@ -45,6 +45,7 @@ $ccc |
 		Copy-Item $_.src $_.dst
 	}
 
+& "$scriptPath\generate-content-list.ps1" $releaseFolder
 
 $text = [System.IO.File]::ReadAllText("$PWD\Properties\AssemblyInfo.cs");
 $hasMatch = $text -match '\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)'

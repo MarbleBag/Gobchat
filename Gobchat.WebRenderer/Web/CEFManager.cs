@@ -87,19 +87,14 @@ namespace Gobchat.UI.Web
             CefSharp.CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
             CefSharp.CefSharpSettings.ConcurrentTaskExecution = true;
 
-            // Necessary to avoid input lag with a framerate limit below 60.
             cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";
-
-            // Allow websites to play sound even if the user never interacted with that site (pretty common for our overlays)
-            cefSettings.CefCommandLineArgs["autoplay-policy"] = "no-user-gesture-required";
-
             cefSettings.CefCommandLineArgs["allow-file-access-from-files"] = "1";
+            cefSettings.CefCommandLineArgs["autoplay-policy"] = "no-user-gesture-required";
 
             cefSettings.EnableAudio();
 
             cefSettings.LogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cef_debug.log");
 
-            // Enables software compositing instead of GPU compositing -> less CPU load but no WebGL
             cefSettings.SetOffScreenRenderingBestPerformanceArgs();
 
             CefSharp.Cef.Initialize(cefSettings, performDependencyCheck: true, browserProcessHandler: null);

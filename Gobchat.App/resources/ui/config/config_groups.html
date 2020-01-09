@@ -178,11 +178,14 @@
                             gobconfig.reset(configKey)
                             selectorElement.spectrum("set", gobconfig.get(configKey));
                         })
+                        if (!isFFGroup)
+                            resetButton.hide()
                     }
 
                     makeColorSelector("tmpl-sender-fgcolor", groupConfigKey + ".style.header.color")
                     makeColorSelector("tmpl-sender-bgcolor", groupConfigKey + ".style.header.background-color")
                     makeColorSelector("tmpl-msg-bgcolor", groupConfigKey + ".style.body.background-color")
+
 
                     const txtTriggers = groupEntry.find(".tmpl-group-triggers")
                     if (!isFFGroup) {
@@ -239,7 +242,7 @@
                         stop: function (event, ui) {
                             //update sort order
                             let order = []
-                            tblGroups.find("div").each(function () {
+                            tblGroups.find("div[data-gob-groupid]").each(function () {
                                 order.push($(this).attr(GroupIdAttribute))
                                 //order.push($(this).data("groupId"))
                             })

@@ -203,7 +203,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this.activeProfile = data.activeProfile
 
             deletedProfileIds.forEach(profileId => {
-                deleteProfile(profileId)
+                this.deleteProfile(profileId)
             })
 
             changedProfileIds.forEach(profileId => {

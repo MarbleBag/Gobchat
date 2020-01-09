@@ -34,6 +34,7 @@ using Gobchat.Core.Module;
 using Gobchat.Core.Module.Hotkey;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Gobchat.Memory;
 
 namespace Gobchat.Core.Module.Chat
 {
@@ -123,6 +124,25 @@ namespace Gobchat.Core.Module.Chat
             {
                 _configManager.ActiveProfileId = data;
             }
+            else if (request == "OpenFileDialog")
+            {
+                var uiManager = _container.Resolve<IUIManager>();
+
+                string fileName = "";
+
+                uiManager.UISynchronizer.RunSync(() =>
+                {
+                    using (var openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                    {
+                        openFileDialog.InitialDirectory = GobchatApplicationContext.ResourceLocation;
+                        openFileDialog.RestoreDirectory = true;
+                        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            fileName = openFileDialog.FileName;
+                    }
+                });
+
+                return fileName;
+            }
             return "";
         }
 
@@ -160,12 +180,27 @@ namespace Gobchat.Core.Module.Chat
             _memoryProcessor = new Memory.FFXIVMemoryProcessor();
             _memoryProcessor.ProcessChangeEvent += OnEvent_MemoryProcessor_ProcessChangeEvent;
             _memoryProcessor.ChatlogEvent += OnEvent_MemoryProcessor_ChatlogEvent;
+            _memoryProcessor.WindowFocusChangedEvent += OnEvent_MemoryProcessor_WindowFocusChanged;
 
             var resourceFolder = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"sharlayan");
             System.IO.Directory.CreateDirectory(resourceFolder);
             _memoryProcessor.LocalCacheDirectory = resourceFolder;
 
             _memoryProcessor.Initialize();
+
+            void updateObserveGameWindow()
+            {
+                var synchronizer = _container.Resolve<IUISynchronizer>();
+                synchronizer.RunSync(() =>
+                {
+                    var hideOnMinimize = _configManager.GetProperty<bool>("behaviour.hideOnMinimize");
+                    _memoryProcessor.ObserveGameWindow = hideOnMinimize;
+                });
+            }
+
+            _configManager.AddPropertyChangeListener("behaviour.hideOnMinimize", (s, e) => { if (e.IsActiveProfile) updateObserveGameWindow(); });
+            _configManager.OnActiveProfileChange += (s, e) => updateObserveGameWindow();
+            updateObserveGameWindow();
         }
 
         private void OnEvent_MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
@@ -200,6 +235,7 @@ namespace Gobchat.Core.Module.Chat
                 {
                     try
                     {
+                        logger.Trace(() => "Message: " + item.ToString());
                         return _chatlogParser.Convert(item);
                     }
                     catch (Exception ex)
@@ -219,6 +255,14 @@ namespace Gobchat.Core.Module.Chat
                 _messageQueue.Enqueue(msg);
                 logger.Debug(() => msg.ToString());
             }
+        }
+
+        private void OnEvent_MemoryProcessor_WindowFocusChanged(object sender, WindowFocusChangedEventArgs e)
+        {
+            //   var hideOnMinimize = _configManager.ActiveProfile.GetProperty<bool>("behaviour.hideOnMinimize");
+            //   if (!hideOnMinimize)
+            //        return;
+            _overlay.InvokeAsyncOnUI(overlay => overlay.Visible = e.IsInForeground);
         }
 
         #endregion memory parser

@@ -52,7 +52,7 @@ namespace Gobchat.UI.Forms
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "OverlayForm";
+            this.Text = "GobOverlayForm";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.OnEvent_Form_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnEvent_Form_KeyDown);
