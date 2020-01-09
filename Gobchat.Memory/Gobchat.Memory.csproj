@@ -67,6 +67,8 @@
     <Compile Include="MemoryProcessor.cs" />
     <Compile Include="ProcessChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowFocusChangedEventArgs.cs" />
+    <Compile Include="Window\WindowObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sharlayan\Sharlayan.csproj">
@@ -76,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actor\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

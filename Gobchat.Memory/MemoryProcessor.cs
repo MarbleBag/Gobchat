@@ -21,14 +21,16 @@ namespace Gobchat.Memory
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly FFXIVProcessFinder processFinder = new FFXIVProcessFinder();
+        private readonly FFXIVProcessFinder _processFinder = new FFXIVProcessFinder();
 
-        private readonly Chat.ChatlogReader chatlogProcessor = new Chat.ChatlogReader();
-        private readonly Chat.ChatlogBuilder chatlogBuilder = new Chat.ChatlogBuilder();
+        private readonly Chat.ChatlogReader _chatlogProcessor = new Chat.ChatlogReader();
+        private readonly Chat.ChatlogBuilder _chatlogBuilder = new Chat.ChatlogBuilder();
 
-        public bool FFXIVProcessValid { get { return processFinder.FFXIVProcessValid; } }
+        private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
 
-        public int FFXIVProcessId { get { return processFinder.FFXIVProcessId; } }
+        public bool FFXIVProcessValid { get { return _processFinder.FFXIVProcessValid; } }
+
+        public int FFXIVProcessId { get { return _processFinder.FFXIVProcessId; } }
 
         public bool ChatLogAvailable { get { return Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey); } }
 
@@ -50,6 +52,11 @@ namespace Gobchat.Memory
         public event EventHandler<ProcessChangeEventArgs> ProcessChangeEvent;
 
         /// <summary>
+        /// Fired when the currently tracked FFXIV window is moved into the foreground or into the background
+        /// </summary>
+        public event EventHandler<WindowFocusChangedEventArgs> WindowFocusChangedEvent;
+
+        /// <summary>
         /// Fired when new FFXIV chatlog entries are read
         /// </summary>
         public event EventHandler<Chat.ChatlogEventArgs> ChatlogEvent;
@@ -63,6 +70,15 @@ namespace Gobchat.Memory
                 else
                     logger.Warn(e.Exception, () => $"Memory error in {e.Sender}");
             };
+
+            _windowScanner.ActiveWindowChangedEvent += OnEvent_ActiveWindowChangedEvent;
+        }
+
+        private void OnEvent_ActiveWindowChangedEvent(object sender, Window.WindowObserver.ActiveWindowChangedEventArgs e)
+        {
+            if (!FFXIVProcessValid)
+                return;
+            WindowFocusChangedEvent?.Invoke(this, new WindowFocusChangedEventArgs(e.ProcessId == FFXIVProcessId));
         }
 
         public void Update()
@@ -70,7 +86,7 @@ namespace Gobchat.Memory
             CheckProcess();
             if (FFXIVProcessValid)
             {
-                var logs = chatlogProcessor.Query();
+                var logs = _chatlogProcessor.Query();
                 if (logs.Count > 0 && ChatlogEvent != null)
                 {
                     List<Chat.ChatlogItem> items = new List<Chat.ChatlogItem>();
@@ -78,7 +94,7 @@ namespace Gobchat.Memory
                     {
                         try
                         {
-                            items.Add(chatlogBuilder.Process(item));
+                            items.Add(_chatlogBuilder.Process(item));
                         }
                         catch (Chat.ChatBuildException e)
                         {
@@ -100,7 +116,7 @@ namespace Gobchat.Memory
         private void CheckProcess()
         {
             //TODO MUTEX
-            var processChanged = processFinder.CheckProcess();
+            var processChanged = _processFinder.CheckProcess();
             if (!processChanged)
                 return; //nothing to do
 
