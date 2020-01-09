@@ -49,7 +49,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Hide when FF is in background (Beta)</label>
+                            <label>Hide when FF is minimized (Beta)</label>
                         </td>
                         <td>
                             <input type="checkbox" id="capp_hide" data-gob-configkey="behaviour.hideOnMinimize" />
@@ -163,6 +163,7 @@
             ConfigHelper.linkCheckboxConfig(ckbTimestamp)
 
             const ckbHide = $("#capp_hide")
+            ckbHide.attr("title", "Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized")
             ConfigHelper.linkCheckboxConfig(ckbHide)
 
             const ckbUpdate = $("#capp_checkupdates")
