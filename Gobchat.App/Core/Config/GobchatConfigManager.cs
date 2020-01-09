@@ -364,6 +364,31 @@ namespace Gobchat.Core.Config
             }
         }
 
+        public T GetProperty<T>(string key)
+        {
+            return ActiveProfile.GetProperty<T>(key);
+        }
+
+        public T GetProperty<T>(string key, T defaultValue)
+        {
+            return ActiveProfile.GetProperty<T>(key, defaultValue);
+        }
+
+        public bool HasProperty(string key)
+        {
+            return ActiveProfile.HasProperty(key);
+        }
+
+        public void SetProperties(JObject json)
+        {
+            ActiveProfile.SetProperties(json);
+        }
+
+        public void SetProperty(string key, object value)
+        {
+            ActiveProfile.SetProperty(key, value);
+        }
+
         public void AddPropertyChangeListener(string path, PropertyChangedListener listener)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));

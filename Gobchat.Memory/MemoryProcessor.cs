@@ -27,12 +27,25 @@ namespace Gobchat.Memory
         private readonly Chat.ChatlogBuilder _chatlogBuilder = new Chat.ChatlogBuilder();
 
         private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
+        private bool _windowVisible = true;
 
         public bool FFXIVProcessValid { get { return _processFinder.FFXIVProcessValid; } }
 
         public int FFXIVProcessId { get { return _processFinder.FFXIVProcessId; } }
 
         public bool ChatLogAvailable { get { return Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey); } }
+
+        public bool ObserveGameWindow
+        {
+            get { return _windowScanner.Enabled; }
+            set
+            {
+                if (value)
+                    _windowScanner.StartObserving();
+                else
+                    _windowScanner.StopObserving();
+            }
+        }
 
         public string LocalCacheDirectory
         {
@@ -76,9 +89,23 @@ namespace Gobchat.Memory
 
         private void OnEvent_ActiveWindowChangedEvent(object sender, Window.WindowObserver.ActiveWindowChangedEventArgs e)
         {
-            if (!FFXIVProcessValid)
+            if (!FFXIVProcessValid || e.ProcessId != FFXIVProcessId)
                 return;
-            WindowFocusChangedEvent?.Invoke(this, new WindowFocusChangedEventArgs(e.ProcessId == FFXIVProcessId));
+
+            System.Diagnostics.Debug.WriteLine(e);
+
+            switch (e.EventType)
+            {
+                case Window.WindowObserver.EventTypeEnum.Maximizeed:
+                case Window.WindowObserver.EventTypeEnum.Minimizeed:
+                    var isVisible = e.EventType == Window.WindowObserver.EventTypeEnum.Maximizeed;
+                    if (isVisible != _windowVisible)
+                    {
+                        _windowVisible = !_windowVisible;
+                        WindowFocusChangedEvent?.Invoke(this, new WindowFocusChangedEventArgs(_windowVisible));
+                    }
+                    break;
+            }
         }
 
         public void Update()
