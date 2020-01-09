@@ -141,9 +141,9 @@ namespace Gobchat.UI.Forms
             {
                 builder.Append("await CefSharp.BindObjectAsync('");
                 builder.Append(boundAPI.APIName);
-                builder.AppendLine("')");
+                builder.Append("')");
             }
-            builder.Append("})();");
+            builder.AppendLine("})();");
             var awaitAPIScript = builder.ToString();
             e.Frame.ExecuteJavaScriptAsync(awaitAPIScript, "Initialize");
 
