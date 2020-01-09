@@ -23,7 +23,7 @@ namespace Gobchat.Core.Module.Updater
 {
     [Serializable]
     [UpdateTaskAlias("Delete")]
-    internal sealed class DeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
+    internal sealed class NAUDeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
     {
         private readonly string _path;
         private string _backupPath;
@@ -35,7 +35,7 @@ namespace Gobchat.Core.Module.Updater
             get => _path;
         }
 
-        public DeleteTask(string targetPath)
+        public NAUDeleteTask(string targetPath)
         {
             _path = targetPath;
         }
@@ -72,55 +72,65 @@ namespace Gobchat.Core.Module.Updater
 
             if (isFolder)
             {
-                try
-                {
-                    FileSystem.DeleteDirectory(TargetPath);
-                }
-                catch (Exception ex)
-                {
-                    if (coldRun)
-                    {
-                        ExecutionStatus = TaskExecutionStatus.Failed;
-                        throw new UpdateProcessFailedException($"Unable to delete folder: {TargetPath}", ex);
-                    }
-                }
-
-                if (Directory.Exists(TargetPath))
-                    if (PermissionsCheck.HaveWritePermissionsForFolder(TargetPath))
-                        return TaskExecutionStatus.RequiresAppRestart;
-                    else
-                        return TaskExecutionStatus.RequiresPrivilegedAppRestart;
-                return TaskExecutionStatus.Successful;
+                return DeleteFolder(coldRun);
             }
             else if (isFile)
             {
-                if (File.Exists(TargetPath))
-                    FileLockWait();
-
-                try
-                {
-                    File.Delete(TargetPath);
-                }
-                catch (Exception ex)
-                {
-                    if (coldRun)
-                    {
-                        ExecutionStatus = TaskExecutionStatus.Failed;
-                        throw new UpdateProcessFailedException($"Unable to delete fike: {TargetPath}", ex);
-                    }
-                }
-
-                if (File.Exists(TargetPath))
-                    if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(TargetPath))
-                        return TaskExecutionStatus.RequiresAppRestart;
-                    else
-                        return TaskExecutionStatus.RequiresPrivilegedAppRestart;
-                return TaskExecutionStatus.Successful;
+                return DeleteFile(coldRun);
             }
             else
             {
                 return TaskExecutionStatus.Successful;
             }
+        }
+
+        private TaskExecutionStatus DeleteFile(bool coldRun)
+        {
+            if (File.Exists(TargetPath))
+                FileLockWait();
+
+            try
+            {
+                File.Delete(TargetPath);
+            }
+            catch (Exception ex)
+            {
+                if (coldRun)
+                {
+                    ExecutionStatus = TaskExecutionStatus.Failed;
+                    throw new UpdateProcessFailedException($"Unable to delete fike: {TargetPath}", ex);
+                }
+            }
+
+            if (File.Exists(TargetPath))
+                if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(TargetPath))
+                    return TaskExecutionStatus.RequiresAppRestart;
+                else
+                    return TaskExecutionStatus.RequiresPrivilegedAppRestart;
+            return TaskExecutionStatus.Successful;
+        }
+
+        private TaskExecutionStatus DeleteFolder(bool coldRun)
+        {
+            try
+            {
+                FileSystem.DeleteDirectory(TargetPath);
+            }
+            catch (Exception ex)
+            {
+                if (coldRun)
+                {
+                    ExecutionStatus = TaskExecutionStatus.Failed;
+                    throw new UpdateProcessFailedException($"Unable to delete folder: {TargetPath}", ex);
+                }
+            }
+
+            if (Directory.Exists(TargetPath))
+                if (PermissionsCheck.HaveWritePermissionsForFolder(TargetPath))
+                    return TaskExecutionStatus.RequiresAppRestart;
+                else
+                    return TaskExecutionStatus.RequiresPrivilegedAppRestart;
+            return TaskExecutionStatus.Successful;
         }
 
         public override bool Rollback()

@@ -196,7 +196,7 @@
     <Compile Include="Core\Util\DownloadFailedException.cs" />
     <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
-    <Compile Include="Core\Util\FileDownloader.cs" />
+    <Compile Include="Module\Updater\GitHubFileDownloader.cs" />
     <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\CefInstaller\CefInstaller.cs" />
@@ -221,7 +221,7 @@
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
     <Compile Include="Module\Hotkey\InvalidHotkeyException.cs" />
-    <Compile Include="Module\Updater\DeleteTask.cs" />
+    <Compile Include="Module\Updater\NAUDeleteTask.cs" />
     <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
     <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
     <Compile Include="Resource.Designer.cs">
