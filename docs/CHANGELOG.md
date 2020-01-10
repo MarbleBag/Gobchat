@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## Fixed
 - On profile delete the profile file will also be deleted from the filesystem, so it won't be loaded again
+- Profile names can be changed
 
 ## [1.2.1] - 2020.01.05
 ## Fixed
