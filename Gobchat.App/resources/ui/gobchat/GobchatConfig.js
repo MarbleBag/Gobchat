@@ -189,9 +189,10 @@ var Gobchat = (function (Gobchat, undefined) {
             const data = JSON.parse(json)
 
             const loadedProfileIds = Object.keys(data.profiles)
-            const newProfileIds = loadedProfileIds.filter(e => !_.includes(this.profiles, e))
-            const changedProfileIds = loadedProfileIds.filter(e => _.includes(this.profiles, e))
-            const deletedProfileIds = this.profiles.filter(e => !_.includes(loadedProfileIds, e))
+            const availableProfileIds = this.profiles
+            const newProfileIds = loadedProfileIds.filter(e => !_.includes(availableProfileIds, e))
+            const changedProfileIds = loadedProfileIds.filter(e => _.includes(availableProfileIds, e))
+            const deletedProfileIds = availableProfileIds.filter(e => !_.includes(loadedProfileIds, e))
 
             newProfileIds.forEach(profileId => {
                 const profileData = data.profiles[profileId]
@@ -206,12 +207,12 @@ var Gobchat = (function (Gobchat, undefined) {
                 this.deleteProfile(profileId)
             })
 
-            changedProfileIds.forEach(profileId => {
-                const profileData = data.profiles[profileId]
+            changedProfileIds.forEach(profileId => {                
                 let cleanProfile = copyByJson(this._defaultProfile)
-                writeObject(data.profiles[profileId], cleanProfile, false, (p) => false)
+                const profileData = data.profiles[profileId]
+                writeObject(profileData, cleanProfile, false, (p) => false)
                 cleanProfile = new ConfigProfile(cleanProfile)
-                this.getProfile(profileId).copyFrom(cleanProfile, "")
+                this.getProfile(profileId).copyFrom(cleanProfile, "", true)
             })
         }
 
@@ -415,7 +416,7 @@ var Gobchat = (function (Gobchat, undefined) {
             return this._config
         }
 
-        copyFrom(config, rootKey) {
+        copyFrom(config, rootKey, copyAll) {
             const srcRoot = copyByJson(config.get(rootKey))
             if (!this.has(rootKey)) {
                 this.set(rootKey, srcRoot)
@@ -423,7 +424,7 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             let dstRoot = this.get(rootKey)
-            const [changes, replace] = writeObject(srcRoot, dstRoot, false, p => p === "profile")
+            const [changes, replace] = copyAll ? writeObject(srcRoot, dstRoot, false, p => false) : writeObject(srcRoot, dstRoot, false, p => p === "profile")
             if (replace)
                 dstRoot = srcRoot
 
