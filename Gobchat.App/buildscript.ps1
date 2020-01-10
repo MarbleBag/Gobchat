@@ -60,14 +60,14 @@ Write-Host "Updating version number in about.html to $appVersion ..."
 $aboutFile = "$releaseFolder\resources\ui\config\about.html"
 (Get-Content $aboutFile) `
     -replace '\$\${appversion}', $appVersion |
-  Out-File $aboutFile
+  Out-File $aboutFile -encoding utf8
 
 Write-Host "Setting log level in nlog.config to info ..."
 $nlogFile = "$releaseFolder\NLog.config"
 (Get-Content $nlogFile) `
     -replace '<logger name="\*" minlevel=".+" writeTo="console" />', '<logger name="*" minlevel="off" writeTo="console" />'  `
 	-replace '<logger name="\*" minlevel=".+" writeTo="file" />', '<logger name="*" minlevel="info" writeTo="file" />' |
-	Out-File $nlogFile
+	Out-File $nlogFile -encoding utf8
   
 Write-Host "Renaming release folder ..."
 $gobFolder = Join-Path (Split-Path -parent $releaseFolder) "Gobchat"
