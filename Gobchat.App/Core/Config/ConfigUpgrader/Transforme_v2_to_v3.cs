@@ -21,12 +21,31 @@ namespace Gobchat.Core.Config
             var result = json.DeepClone();
             result["version"] = 3;
 
-            result["behaviour"]["mentions"] = defaultConfig.GetProperty<JObject>("behaviour.mentions").DeepClone();
+            if (result["behaviour"] == null)
+                result["behaviour"] = new JObject();
 
-            result["behaviour"]["playSoundOnMention"].Parent.Remove();
-            //  result["style"]["segment"]["mention"].Parent.Remove();
+            var jsonTemplate = //default values
+$@"{{
+    ""data"": {{
+        ""base"": {{
+            ""id"": ""base"",
+            ""trigger"": [],
+            ""playSound"": false,
+            ""soundPath"": ""../sounds/FFXIV_Linkshell_Transmission.mp3"",
+            ""soundInterval"": 5000,
+            ""volume"": 0.2
+        }}
+    }},
+    ""order"": [ ""base"" ]
+}}";
 
-            result["behaviour"]["mentions"]["data"]["base"]["trigger"] = json["behaviour"]["mentions"].DeepClone();
+            result["behaviour"]["mentions"] = JToken.Parse(jsonTemplate);
+
+            if (json["behaviour"]["mentions"] is JArray)
+                result["behaviour"]["mentions"]["data"]["base"]["trigger"] = json["behaviour"]["mentions"].DeepClone();
+
+            if (result["behaviour"]["playSoundOnMention"] != null) //remove old values
+                result["behaviour"]["playSoundOnMention"].Parent.Remove();
 
             //  var jMentions = json["behaviour"]["mentions"];
             //   if (jMentions != null && jMentions is JArray)

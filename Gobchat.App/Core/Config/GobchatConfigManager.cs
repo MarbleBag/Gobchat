@@ -115,8 +115,17 @@ namespace Gobchat.Core.Config
 
             foreach (var userProfileFile in userProfileFiles)
             {
-                var userProfile = loader.LoadConfig(userProfileFile);
-                userProfile = finalizer.Transform(userProfile);
+                JObject userProfile;
+                try
+                {
+                    userProfile = loader.LoadConfig(userProfileFile);
+                    userProfile = finalizer.Transform(userProfile);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Unable to load profile");
+                    continue;
+                }
 
                 var profileId = userProfile["profile"]["id"].Value<string>();
 
