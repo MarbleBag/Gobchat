@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.3.1] - Unreleased
+## Fixed
+- Some typos
+- Command group add / remove will now tell the user the result of the command
+
+
 ## [1.3.0] - 2020.01.10
 ## Added
 - Sound on mention! The mention tab was extended and now includes settings to play a sound file

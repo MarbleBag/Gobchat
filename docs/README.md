@@ -165,6 +165,9 @@ To do it automatically hit the automatic install button on the patch-note screen
 
 ## How to use Gobchat
 ### Running
+1. Gobchat's Overlay will not be visible in front of FFXIV, when FFXIV runs in full screen mode.  
+2. Gobchat was written for FFXIV 64bit - DirectX 11 version
+
 1. Go into your Gobchat folder
 2. Start Gobchat.exe
 3. On start Gobchat checks for new updates
@@ -174,6 +177,8 @@ This icon means Gobchat is running and looks for an active instance of FFXIV.
 
 If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready.
 This may take a while on your first start of gobchat.
+
+
 
 ### Tray Icon
 - Left click: Will show or hide the overlay

@@ -114,7 +114,7 @@ var Gobchat = (function (Gobchat, undefined) {
             if (task === "clear") {
                 gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, [])
                 commandManager.sendInfoMessage(`Removed all players from group [${groupIdx}]${group.name}`)
-                gobconfig.saveToPlugin()
+                gobconfig.saveConfig()
                 return //done
             }
 
@@ -135,18 +135,18 @@ var Gobchat = (function (Gobchat, undefined) {
             if (task === "add") {
                 if (!_.includes(group.trigger, playerNameAndServer)) {
                     group.trigger.push(playerNameAndServer)
-                    gobconfig.firePropertyChange(`behaviour.groups.data.${groupId}.trigger`)
+                    gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, group.trigger)
                     commandManager.sendInfoMessage(`Added ${playerNameAndServer} to group [${groupIdx}]${group.name}`)
-                    gobconfig.saveToPlugin()
+                    gobconfig.saveConfig()
                 } else {
                     commandManager.sendInfoMessage(`${playerNameAndServer} is already in group [${groupIdx}]${group.name}`)
                 }
             } else if (task === "remove") {
                 if (_.includes(group.trigger, playerNameAndServer)) {
                     _.remove(group.trigger, (i) => { return i === playerNameAndServer })
-                    gobconfig.firePropertyChange(`behaviour.groups.data.${groupId}.trigger`)
+                    gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, group.trigger)
                     commandManager.sendInfoMessage(`Removed ${playerNameAndServer} from group [${groupIdx}]${group.name}`)
-                    gobconfig.saveToPlugin()
+                    gobconfig.saveConfig()
                 } else {
                     commandManager.sendInfoMessage(`${playerNameAndServer} is not in group [${groupIdx}]${group.name}`)
                 }

@@ -426,13 +426,13 @@ namespace Gobchat.Core.Module.Chat
             {
                 if (!_errorReportFFNotFound)
                 {
-                    SendErrorMessageToUI("Can't find to a running instance of FFXIV.");
+                    SendErrorMessageToUI("Can't find a running instance of FFXIV.");
                     _errorReportFFNotFound = true;
                 }
             }
             else
             {
-                SendInfoMessageToUI("FFXIX detected.");
+                SendInfoMessageToUI("FFXIV detected.");
                 _errorReportFFNotFound = false;
             }
 
@@ -444,7 +444,7 @@ namespace Gobchat.Core.Module.Chat
                 }
                 else if (!_errorReportChatLogAvailable)
                 {
-                    SendErrorMessageToUI("Can't access FF chatlog. Restart Gobchat with admin rights.");
+                    SendErrorMessageToUI("Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
                     _errorReportChatLogAvailable = true;
                 }
             }

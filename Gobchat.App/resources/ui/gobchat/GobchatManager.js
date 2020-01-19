@@ -86,7 +86,7 @@ var Gobchat = (function (Gobchat) {
                     getHourAndMinutes(),
                     new Gobchat.MessageSource("Gobchat"),
                     Gobchat.ChannelEnum.GOBCHAT_INFO,
-                    [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, "&lt;Gobchat&gt; " + msg)]
+                    [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, msg)]
                 )
             )
         }
