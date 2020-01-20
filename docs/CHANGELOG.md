@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.3.1] - Unreleased
+## [1.3.1] - 2020.01.20
 ## Fixed
 - Some typos
 - Command group add / remove will now tell the user the result of the command
