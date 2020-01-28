@@ -142,7 +142,7 @@ namespace Gobchat.Core.Runtime
             var manager = NAppUpdate.Framework.UpdateManager.Instance;
             if (manager.UpdatesAvailable > 0)
             {
-                logger.Info("Install updates and restart app");
+                logger.Info("Install updates app");
                 try
                 {
                     manager.ApplyUpdates(true, true, false);

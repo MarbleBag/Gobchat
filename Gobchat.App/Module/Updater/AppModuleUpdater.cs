@@ -246,7 +246,7 @@ namespace Gobchat.Core.Module.Updater
             if (manager.UpdatesAvailable > 0)
                 manager.PrepareUpdates();
 
-            progressMonitor.StatusText = "Waiting for restart";
+            progressMonitor.StatusText = "Waiting for shutdown";
             progressMonitor.Progress = 1d;
 
             logger.Info($"{manager.UpdatesAvailable} updates prepared.");
