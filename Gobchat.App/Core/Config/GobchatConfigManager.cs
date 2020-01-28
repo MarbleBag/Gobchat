@@ -80,6 +80,7 @@ namespace Gobchat.Core.Config
             LoadDefaultProfile();
             LoadUserProfiles();
             LoadAppConfig();
+            logger.Info("Config manager loaded");
         }
 
         private JsonConfigLoader GetProfileLoader()
@@ -295,12 +296,16 @@ namespace Gobchat.Core.Config
 
             foreach (var profileId in availableProfiles)
                 GetProfile(profileId).SetProperties(configJson["profiles"][profileId] as JObject);
+
+            logger.Info("Config manager synchronized");
         }
 
         public void SaveProfiles()
         {
             SaveUserProfiles();
             SaveAppConfig();
+
+            logger.Info("Config manager saved");
         }
 
         private void SaveUserProfiles()
