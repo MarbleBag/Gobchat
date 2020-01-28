@@ -280,19 +280,27 @@ namespace Gobchat.UI.Forms
                 Y = 0
             };
 
-            IntPtr handle = this.InvokeSyncOnUI((f) => f.Handle); //IntPtr.Zero;
-                                                                  // this.InvokeSyncOnUIThread(() => handle = this.Handle);
+            try
+            {
+                IntPtr handle = this.InvokeSyncOnUI((f) => f.Handle); //IntPtr.Zero;
+                                                                      // this.InvokeSyncOnUIThread(() => handle = this.Handle);
 
-            NativeMethods.UpdateLayeredWindow(
-                        handle,
-                        IntPtr.Zero,
-                        ref windowPosition,
-                        ref surfaceSize,
-                        _colorBuffer.DeviceContext,
-                        ref surfacePosition,
-                        0,
-                        ref blend,
-                        NativeMethods.ULW_ALPHA);
+                NativeMethods.UpdateLayeredWindow(
+                            handle,
+                            IntPtr.Zero,
+                            ref windowPosition,
+                            ref surfaceSize,
+                            _colorBuffer.DeviceContext,
+                            ref surfacePosition,
+                            0,
+                            ref blend,
+                            NativeMethods.ULW_ALPHA);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                //can happen, when the form gets killed by the ui thread while we try to render CEF stuff on it
+                _colorBuffer?.Dispose();
+            }
         }
 
         #endregion rendering

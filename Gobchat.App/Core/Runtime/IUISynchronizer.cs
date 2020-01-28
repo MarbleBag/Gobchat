@@ -22,6 +22,8 @@ namespace Gobchat.Core.Runtime
         void RunAsync(Action action, IUnhandledExceptionHandler handler);
 
         void RunSync(Action action);
+
+        TOut RunSync<TOut>(Func<TOut> action);
     }
 
     public interface IUnhandledExceptionHandler
