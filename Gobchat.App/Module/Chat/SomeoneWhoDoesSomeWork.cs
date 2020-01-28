@@ -35,6 +35,7 @@ using Gobchat.Core.Module.Hotkey;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Gobchat.Memory;
+using System.Collections.Generic;
 
 namespace Gobchat.Core.Module.Chat
 {
@@ -44,6 +45,7 @@ namespace Gobchat.Core.Module.Chat
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
+        private IUISynchronizer _synchronizer;
 
         private Memory.FFXIVMemoryProcessor _memoryProcessor;
         private CefOverlayForm _overlay;
@@ -70,6 +72,7 @@ namespace Gobchat.Core.Module.Chat
         internal void Initialize(IDIContext container, CefOverlayForm overlay)
         {
             _container = container;
+            _synchronizer = container.Resolve<IUISynchronizer>();
 
             _overlay = overlay;
 
@@ -88,7 +91,7 @@ namespace Gobchat.Core.Module.Chat
             _overlay.Browser.BrowserLoadPageDone += (s, e) =>
             {
                 if (!_overlay.Visible)
-                    _overlay.InvokeAsyncOnUI((_) => _overlay.Visible = true);
+                    _synchronizer.RunSync(() => _overlay.Visible = true);
             };
 
             _configManager.OnActiveProfileChange += Event_Config_ProfileChanged;
@@ -112,11 +115,13 @@ namespace Gobchat.Core.Module.Chat
         {
             if (request == "GetConfig")
             {
+                logger.Info("Sending config to ui");
                 var configJson = _configManager.AsJson();
                 return configJson.ToString();
             }
             else if (request == "SetConfig")
             {
+                logger.Info("Storing config from ui");
                 var configJson = _jsBuilder.Deserialize(data);
                 _configManager.Synchronize(configJson);
             }
@@ -148,23 +153,7 @@ namespace Gobchat.Core.Module.Chat
 
         private JSEvent OnEvent_UIMessage(string eventName, string details)
         {
-            if ("LoadGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
-            {
-                logger.Info("Sending config to ui");
-                var json = _configManager.ActiveProfile.ToJson().ToString();
-                return new UIEvents.LoadGobchatConfigEvent(json);
-            }
-            else if ("SaveGobchatConfig".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
-            {
-                logger.Info("Storing config from ui");
-                var configAsJson = _jsBuilder.Deserialize(details);
-                _configManager.ActiveProfile.SetProperties((Newtonsoft.Json.Linq.JObject)configAsJson);
-
-                //TODO fire change events / move config to c#
-
-                //UpdateHotkeys();
-            }
-            else if ("GobchatReady".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
+            if ("GobchatReady".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
             {
                 _gobchatReady = true;
             }
@@ -262,7 +251,7 @@ namespace Gobchat.Core.Module.Chat
             //   var hideOnMinimize = _configManager.ActiveProfile.GetProperty<bool>("behaviour.hideOnMinimize");
             //   if (!hideOnMinimize)
             //        return;
-            _overlay.InvokeAsyncOnUI(overlay => overlay.Visible = e.IsInForeground);
+            _synchronizer.RunSync(() => _overlay.Visible = e.IsInForeground);
         }
 
         #endregion memory parser
@@ -284,7 +273,7 @@ namespace Gobchat.Core.Module.Chat
 
         private void LoadGobchatUI()
         {
-            logger.Info("Loading gobchat config");
+            logger.Info("Loading gobchat ui");
             var htmlpath = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
             var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
@@ -414,9 +403,9 @@ namespace Gobchat.Core.Module.Chat
 
         private void OnEvent_Hotkey()
         {
-            _overlay.InvokeAsyncOnUI((f) =>
+            _synchronizer.RunSync(() =>
             {
-                f.Visible = !f.Visible;
+                _overlay.Visible = !_overlay.Visible;
             });
         }
 
@@ -471,7 +460,7 @@ namespace Gobchat.Core.Module.Chat
                 ValidateProcessAndInformUser();
             }
 
-            _overlay.InvokeSyncOnUI((_) =>
+            _synchronizer.RunSync(() =>
             {
                 if (/*_overlay.Browser.IsBrowserInitialized*/ _gobchatReady)
                 {
