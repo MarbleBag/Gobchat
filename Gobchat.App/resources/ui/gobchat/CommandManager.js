@@ -8,6 +8,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._cmdMap = new Map()
             this.registerCmdHandler(new PlayerGroupCommandHandler())
             this.registerCmdHandler(new ProfileCommandHandler())
+            this.registerCmdHandler(new CloseCommandHandler())
         }
 
         processCommand(message) {
@@ -182,6 +183,16 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             commandManager.sendErrorMessage(`Profile command needs a valid profile name. Available profiles are: ${profileNames.join(", ")}`)
+        }
+    }
+
+    class CloseCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["close"]
+        }
+
+        execute(commandManager, commandName, args) {
+            GobchatAPI.closeGobchat()
         }
     }
 

@@ -129,6 +129,12 @@ namespace Gobchat.Core.Module.Chat
             {
                 _configManager.ActiveProfileId = data;
             }
+            else if (request == "CloseGobchat")
+            {
+                // async request to kill the app immediately. This means other stuff may be happening at the same time that depends on the ui. Maybe not the best way.
+                logger.Info("User requests shutdown");
+                Application.Exit();
+            }
             else if (request == "OpenFileDialog")
             {
                 var uiManager = _container.Resolve<IUIManager>();
