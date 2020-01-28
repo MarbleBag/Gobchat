@@ -212,30 +212,31 @@ namespace Gobchat.Core.Module.Chat
         private void OnEvent_MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
             var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(10));
-            var chatMessages = e.ChatlogItems
-                .Where((item) =>
+            var chatMessages = new List<ChatMessage>();
+
+            foreach (var item in e.ChatlogItems)
+            {
+                var isNew = timeStamp <= item.TimeStamp;
+                if (!isNew)
                 {
-                    var isNew = timeStamp <= item.TimeStamp;
-                    if (!isNew)
-                        logger.Debug(() => $"Old message removed: {item.TimeStamp}");
-                    return isNew;
-                })
-                .Select((item) =>
+                    logger.Debug(() => $"Old message removed: {item.TimeStamp}");
+                    continue;
+                }
+
+                try
                 {
-                    try
-                    {
-                        logger.Trace(() => "Message: " + item.ToString());
-                        return _chatlogParser.Convert(item);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error("Error in process chat log");
-                        logger.Error(() => $"Log: {item}");
-                        logger.Error(ex);
-                        return null;
-                    }
-                })
-                .Where(item => item != null);
+                    logger.Debug(() => "Raw Message: " + item.ToString());
+                    var message = _chatlogParser.Convert(item);
+                    chatMessages.Add(message);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error("Error in process chat log");
+                    logger.Error(() => $"Log: {item}");
+                    logger.Error(ex);
+                    continue;
+                }
+            }
 
             _lastChatMessageTime = chatMessages.Select(msg => msg.Timestamp).DefaultIfEmpty(_lastChatMessageTime).Max();
 
