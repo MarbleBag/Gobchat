@@ -124,6 +124,17 @@ namespace Gobchat.Core.Module.Chat
                 logger.Info("Storing config from ui");
                 var configJson = _jsBuilder.Deserialize(data);
                 _configManager.Synchronize(configJson);
+
+                try
+                { //try to do a early save
+                    _configManager.SaveProfiles();
+                    this.SendInfoMessageToUI("Profiles saved");
+                }
+                catch (Exception e)
+                {
+                    logger.Warn(e, "Error on profile save");
+                    this.SendErrorMessageToUI("Unable to save profiles to disk. See debug log for more informations");
+                }
             }
             else if (request == "SetActiveProfile")
             {
@@ -220,12 +231,15 @@ namespace Gobchat.Core.Module.Chat
             var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(10));
             var chatMessages = new List<ChatMessage>();
 
+            var numberOfOutdatedMessages = 0;
+
             foreach (var item in e.ChatlogItems)
             {
-                var isNew = timeStamp <= item.TimeStamp;
+                var isNew = true; // timeStamp <= item.TimeStamp;
                 if (!isNew)
                 {
-                    logger.Debug(() => $"Old message removed: {item.TimeStamp}");
+                    numberOfOutdatedMessages += 1;
+                    logger.Debug(() => $"Outdated message removed: {item.TimeStamp}");
                     continue;
                 }
 
@@ -250,6 +264,11 @@ namespace Gobchat.Core.Module.Chat
             {
                 _messageQueue.Enqueue(msg);
                 logger.Debug(() => msg.ToString());
+            }
+
+            if (numberOfOutdatedMessages > 0) //TODO only do this if checkbox is set
+            {
+                this.SendInfoMessageToUI($"Ignored {numberOfOutdatedMessages} outdated messages.");
             }
         }
 

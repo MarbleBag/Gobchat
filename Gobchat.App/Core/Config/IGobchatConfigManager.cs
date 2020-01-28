@@ -60,5 +60,7 @@ namespace Gobchat.Core.Config
         void SetProperties(JObject json);
 
         void SetProperty(string key, object value);
+
+        void SaveProfiles();
     }
 }
