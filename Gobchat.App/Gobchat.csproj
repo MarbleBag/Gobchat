@@ -79,6 +79,9 @@
     <None Include="App.config" />
     <None Include="move-cef-redists.bat" />
     <None Include="move-cef-redists.ps1" />
+    <None Include="NLog-Release.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
