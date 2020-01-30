@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ## Added
 - Chat command to close gobchat. Use: /e gc close 
 
+## Fixed
+- Hotkeys were not applied on change, only after restarting Gobchat
+
 ## [1.3.1] - 2020.01.20
 ## Fixed
 - Some typos

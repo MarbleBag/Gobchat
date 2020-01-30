@@ -168,7 +168,7 @@ namespace Gobchat.Core.Config
                     continue;
 
                 var split = key.Split('.');
-                for (int i = split.Length - 2; i >= 0; --i)
+                for (int i = split.Length - 1; i >= 0; --i)
                 {
                     var path = string.Join(".", split, 0, i);
                     if (!completed.Add(path))
