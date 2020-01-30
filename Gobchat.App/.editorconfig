@@ -1,7 +1,29 @@
-﻿[*.cs]
+﻿
+[*.TinyIoC.cs]
+generated_code  = true
+
+[*.cs]
 
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
 
 # CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = none
+
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = suggestion
+
+# CA1822: Member does not access instance data and can be marked as static
+dotnet_diagnostic.CA1822.severity = suggestion
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = suggestion
+
+# CA1720: Identifier contains type name
+dotnet_diagnostic.CA1720.severity = none
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = none
+
+# CA1715: Prefix generic type parameter name with 'T'
+dotnet_diagnostic.CA1715.severity = none
