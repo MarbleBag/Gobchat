@@ -63,11 +63,13 @@ $aboutFile = "$releaseFolder\resources\ui\config\about.html"
   Out-File $aboutFile -encoding utf8
 
 Write-Host "Setting log level in nlog.config to info ..."
-$nlogFile = "$releaseFolder\NLog.config"
-(Get-Content $nlogFile) `
-    -replace '<logger name="\*" minlevel=".+" writeTo="console" />', '<logger name="*" minlevel="off" writeTo="console" />'  `
-	-replace '<logger name="\*" minlevel=".+" writeTo="file" />', '<logger name="*" minlevel="info" writeTo="file" />' |
-	Out-File $nlogFile -encoding utf8
+Remove-Item -Force "$releaseFolder\NLog.config" -ErrorAction SilentlyContinue
+Rename-Item -Path "$releaseFolder\NLog-Release.config" -NewName "NLog.config"
+
+#(Get-Content $nlogFile) `
+#    -replace '<logger name="\*" minlevel=".+" writeTo="console" />', '<logger name="*" minlevel="off" writeTo="console" />'  `
+#	-replace '<logger name="\*" minlevel=".+" writeTo="file" />', '<logger name="*" minlevel="info" writeTo="file" />' |
+#	Out-File $nlogFile -encoding utf8
   
 Write-Host "Renaming release folder ..."
 $gobFolder = Join-Path (Split-Path -parent $releaseFolder) "Gobchat"
