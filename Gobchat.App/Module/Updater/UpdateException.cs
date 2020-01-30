@@ -11,8 +11,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+using System.Runtime.Serialization;
+
 namespace Gobchat.Core.Module.Updater
 {
+    [Serializable]
     public sealed class UpdateException : System.Exception
     {
         public UpdateException(string message) : base(message)
@@ -24,6 +28,10 @@ namespace Gobchat.Core.Module.Updater
         }
 
         public UpdateException()
+        {
+        }
+
+        private UpdateException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

@@ -18,6 +18,7 @@ using System.IO;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Config;
 using Gobchat.Core.Util.Extension.Queue;
+using System.Globalization;
 
 namespace Gobchat.Core.Chat
 {
@@ -46,14 +47,14 @@ namespace Gobchat.Core.Chat
             {
                 var logFolder = AbstractGobchatApplicationContext.UserLogLocation;
                 Directory.CreateDirectory(logFolder);
-                var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm");
+                var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
                 var fileName = $"chatlog_{timestamp}.log";
                 _fileHandle = Path.Combine(logFolder, fileName);
             }
 
             var logLines = _pendingMessages.DequeueAll().Select(e =>
             { // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
-                return $"00|{e.Timestamp.ToString("o")}|{e.MessageType.ToString("x4")}|{e.Source}|{e.Message}|";
+                return $"00|{e.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{e.MessageType.ToString("x4", CultureInfo.InvariantCulture)}|{e.Source}|{e.Message}|";
             });
 
             File.AppendAllLines(_fileHandle, logLines);

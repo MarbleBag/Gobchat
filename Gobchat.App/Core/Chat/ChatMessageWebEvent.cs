@@ -11,18 +11,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System.Globalization;
+
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
-        public string timestamp;
-        public int type;
-        public string source;
-        public string message;
+        public readonly string timestamp;
+        public readonly int type;
+        public readonly string source;
+        public readonly string message;
 
         public ChatMessageWebEvent(ChatMessage message) : base("ChatMessageEvent")
         {
-            this.timestamp = message.Timestamp.ToString("HH:mm");
+            if (message == null)
+                throw new System.ArgumentNullException(nameof(message));
+
+            this.timestamp = message.Timestamp.ToString("HH:mm", CultureInfo.InvariantCulture);
             this.type = message.MessageType;
             this.source = message.Source;
             this.message = message.Message;

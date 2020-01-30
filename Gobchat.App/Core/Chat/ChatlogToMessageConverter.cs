@@ -29,6 +29,9 @@ namespace Gobchat.Core.Chat
 
         public ChatMessage Convert(ChatlogItem item)
         {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
             if (!IsChatlogItemValid(item))
                 return null;
 

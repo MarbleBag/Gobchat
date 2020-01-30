@@ -366,22 +366,22 @@ namespace Gobchat.Core.Module.Chat
                 if (keys == null || keys.Length == 0)
                     return Keys.None;
 
-                var split = keys.Split(new char[] { '+' }).Select(s => s.Trim().ToLower());
+                var split = keys.Split(new char[] { '+' }).Select(s => s.Trim().ToUpper(CultureInfo.InvariantCulture));
 
                 Keys nKeys = new Keys();
                 foreach (var s in split)
                 {
                     switch (s)
                     {
-                        case "shift":
+                        case "SHIFT":
                             nKeys |= Keys.Shift;
                             break;
 
-                        case "ctrl":
+                        case "CTRL":
                             nKeys |= Keys.Control;
                             break;
 
-                        case "alt":
+                        case "ALT":
                             nKeys |= Keys.Alt;
                             break;
 
