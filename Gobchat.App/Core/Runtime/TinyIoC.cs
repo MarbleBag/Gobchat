@@ -13,6 +13,31 @@
 // FITNESS FOR A PARTICULAR PURPOSE.
 //===============================================================================
 
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable CA1044 // Properties should not be write only
+#pragma warning disable CA1305 // Specify IFormatProvider
+#pragma warning disable CA1062 // Validate arguments of public methods
+#pragma warning disable CA1710 // Identifiers should have correct suffix
+#pragma warning disable CA2237 // Mark ISerializable types with serializable
+#pragma warning disable IDE0069 // Disposable fields should be disposed
+#pragma warning disable IDE0019 // Use pattern matching
+#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0034 // Simplify 'default' expression
+#pragma warning disable IDE0016 // Use 'throw' expression
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable CA1829 // Use Length/Count property instead of Count() when available
+#pragma warning disable CA1507 // Use nameof to express symbol names
+#pragma warning disable CA1063 // Implement IDisposable Correctly
+#pragma warning disable CA1717 // Only FlagsAttribute enums should have plural names
+#pragma warning disable CA1825 // Avoid zero-length array allocations.
+#pragma warning disable CA1810 // Initialize reference type static fields inline
+#pragma warning disable CA1034 // Nested types should not be visible
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+#pragma warning disable CA2000 // Dispose objects before losing scope
+#pragma warning disable CA1820 // Test for empty strings using string length
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+
 #region Preprocessor Directives
 
 // Uncomment this line if you want the container to automatically
@@ -966,6 +991,7 @@ namespace TinyIoC
 
     public
 #endif
+
     sealed class NamedParameterOverloads : Dictionary<string, object>
     {
         public static NamedParameterOverloads FromIDictionary(IDictionary<string, object> data)
