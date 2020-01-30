@@ -52,6 +52,7 @@ Case-insensitive detection for a customizable list of words, which then will be 
 ![Mentions](screen_mention_highlighting.png)
 
 This feature can be enhanced further by playing a customizable sound.
+Soundfiles need to be placed under `Gobchat\resources\sounds`.
 
 ### Customizable formatting settings
 
@@ -62,7 +63,7 @@ To resize move your mouse to one of the four borders or corners of the overlay. 
 
 ### Chat Log
 Gobchat can write your chat history to a file, preserving informations you might want to look up later or just to reread fun moments.
-They can be found under AppData\Roaming\Gobchat. 
+They can be found under `AppData\Roaming\Gobchat`. 
 
 Each time Gobchat is started it will create a new file.
 By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings. 
@@ -84,6 +85,7 @@ Example:
 Gobchat supports the following chat commands:
 - [group](#chat-command-group)
 - [profile](#chat-command-profile)
+- [close] (#chat-command-close)
 
 ***
 
@@ -128,12 +130,19 @@ Examples:
 
 #### Chat command Profile
 Usage:
-- `/e gc profile profilename
+- `/e gc profile profilename`
 
 This chat command can be used to change the active profile and can be easily embedded in a macro, especially useful if you already use a macro to activate your rp flag!
 
 Examples:
 - `/e gc profile Favorite Profile` this will activate the profile with the name `Favorite Profile`
+
+#### Chat command Close
+Usage:
+- `/e gc close`
+
+This chat command will close Gobchat and provides an alternative way to right-clicking the Gobchat Icon in the tray-icon bar and clicking close.
+
 
 
 ## Installation
