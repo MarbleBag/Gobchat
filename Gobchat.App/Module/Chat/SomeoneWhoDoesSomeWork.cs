@@ -61,7 +61,7 @@ namespace Gobchat.Core.Module.Chat
         private bool _errorReportRegistered = false;
         private bool _errorReportFFNotFound = false;
 
-        private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
+        private readonly Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
 
         private Gobchat.Core.Chat.ChatlogToMessageConverter _chatlogParser;
         private readonly ConcurrentQueue<ChatMessage> _messageQueue = new ConcurrentQueue<ChatMessage>();
@@ -228,19 +228,25 @@ namespace Gobchat.Core.Module.Chat
 
         private void OnEvent_MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
-            var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(10));
             var chatMessages = new List<ChatMessage>();
+
+            var removeOutdatedMessages = true; // _configManager.GetProperty<bool>("behaviour.outdatedMessages.ignore");
+            var outdatedTimelimit = 10; // _configManager.GetProperty<int>("behaviour.outdatedMessages.timelimit");
+            var showOutdatedToUser = true; // _configManager.GetProperty<bool>("behaviour.outdatedMessages.showUser");
+            var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(outdatedTimelimit));
 
             var numberOfOutdatedMessages = 0;
 
             foreach (var item in e.ChatlogItems)
             {
-                var isNew = true; // timeStamp <= item.TimeStamp;
-                if (!isNew)
+                if (removeOutdatedMessages)
                 {
-                    numberOfOutdatedMessages += 1;
-                    logger.Debug(() => $"Outdated message removed: {item.TimeStamp}");
-                    continue;
+                    if (item.TimeStamp < timeStamp)
+                    {
+                        numberOfOutdatedMessages += 1;
+                        logger.Debug(() => $"Outdated message removed: {item.TimeStamp}");
+                        continue;
+                    }
                 }
 
                 try
@@ -266,7 +272,7 @@ namespace Gobchat.Core.Module.Chat
                 logger.Debug(() => msg.ToString());
             }
 
-            if (numberOfOutdatedMessages > 0) //TODO only do this if checkbox is set
+            if (showOutdatedToUser && numberOfOutdatedMessages > 0)
             {
                 this.SendInfoMessageToUI($"Ignored {numberOfOutdatedMessages} outdated messages.");
             }
@@ -301,7 +307,6 @@ namespace Gobchat.Core.Module.Chat
         {
             logger.Info("Loading gobchat ui");
             var htmlpath = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
-            var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _overlay.Browser.Load(uri);
             //_overlay.Browser.Load("about:blank");
