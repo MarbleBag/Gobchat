@@ -53,6 +53,14 @@ initializeNavigationBar("main_navbar")
 var ConfigHelper = (function (ConfigHelper, undefined) {
     ConfigHelper.ConfigKeyAttribute = "data-gob-configkey"
 
+    ConfigHelper.generateId = function (length, ids) {
+        let id = null
+        do {
+            id = Gobchat.generateId(length)
+        } while (_.includes(ids, id))
+        return id
+    }
+
     ConfigHelper.ProfileIdSelectionDialog = function (callback, options) {
         let defOptions = { exclude: undefined }
         defOptions = $.extend(defOptions, options)
