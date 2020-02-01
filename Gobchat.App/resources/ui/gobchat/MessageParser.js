@@ -58,15 +58,14 @@ var Gobchat = (function (Gobchat) {
                 return
             }
 
-            const messageText = replaceHtmlControlElements(messageEventDetail.message)
+            const messageText = messageEventDetail.message
             const timestamp = messageEventDetail.timestamp
             const source = this.createMessageSource(channel, messageEventDetail.source)
             const messageSegments = [new MessageSegment(MessageSegmentEnum.UNDEFINED, messageText)]
             const message = new Message(timestamp, source, channel, messageSegments)
 
             if (this.isRoleplayChannel(channel)) {
-                processMessageSegmentOOC(message)
-                processMessageSegmentSayAndEmote(message)
+                processMessageSegments(message, this._config.get("behaviour.segment"))
                 if (this.isAutodetectEmoteInSay(channel)) {
                     searchMessageSegmentsForEmoteInSay(message)
                 }
@@ -249,62 +248,72 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
-    function processMessageSegmentOOC(message) {
-        const ignoreFunction = (_) => { return false }
-        const parseFunction = (marker, type, txt) => {
-            const txtLength = txt.length
-
-            marker.newMark(type, 0, 0)
-            for (let i = 1; i < txtLength; ++i) {
-                const c1 = txt.charAt(i - 1)
-                const c2 = txt.charAt(i)
-
-                if (c1 === "(" && c2 === "(") {
-                    if (marker.mark.type === MessageSegmentEnum.OOC) continue
-                    marker.mark.end = i - 1
-                    marker.newMark(MessageSegmentEnum.OOC, i - 1, i)
-                } else if (c1 === ")" && c2 === ")") {
-                    if (marker.mark.type !== MessageSegmentEnum.OOC) continue
-                    marker.mark.end = i + 1
-                    marker.newMark(type, i + 1, i + 1)
-                }
-            }
-            marker.mark.end = txtLength
-
-            if (marker.count === 1) marker.clear()
-        }
-
-        return processMessage(message, ignoreFunction, parseFunction)
+    function processMessageSegments(message, segments) {
+        segments.order.forEach(segmentId => {
+            const segmentData = segments.data[segmentId]
+            if (segmentData.active)
+                processMessageSegment(message, segmentData)
+        })
     }
 
-    function processMessageSegmentSayAndEmote(message) {
-        const ignoreFunction = (type) => { return type === MessageSegmentEnum.OOC }
+    function processMessageSegment(message, segmentData) {
+        const segmentType = segmentData.type
+        const startTokens = segmentData.startTokens
+        const endTokens = (segmentData.endTokens && segmentData.endTokens.length !== 0) ? segmentData.endTokens : startTokens
+
+        if (startTokens.length === 0) return
+
+        function matchesToken(text, textOffset, tokens) {
+            for (let token of tokens) {
+                let match = true
+                for (let n = 0; n < token.length && match; ++n) {
+                    match = match & token.charAt(n) === text.charAt(textOffset + n)
+                }
+                if (match)
+                    return token.length
+            }
+            return 0;
+        }
+
+        let lastSegmentClosed = true
+
+        const ignoreFunction = (type) => { return type !== MessageSegmentEnum.UNDEFINED }
         const parseFunction = (marker, type, txt) => {
             const txtLength = txt.length
-            marker.newMark(type, 0, 0)
+
+            if (lastSegmentClosed)
+                marker.newMark(type, 0, 0) //start mark, needs to be removed if no other mark is found
+            else
+                marker.newMark(segmentType, 0, 0) //this should not be deleted, even if no more marks are found
+
+            let match = !lastSegmentClosed
+
             for (let i = 0; i < txtLength; ++i) {
-                const c = txt.charAt(i)
-                if (c === '"') {
-                    if (marker.mark.type === MessageSegmentEnum.SAY) {
-                        marker.mark.end = i + 1
-                        marker.newMark(type, i + 1, i + 1)
-                    } else {
-                        marker.mark.end = i
-                        marker.newMark(MessageSegmentEnum.SAY, i, i)
+                if (match) {
+                    const tokenLength = matchesToken(txt, i, endTokens)
+                    if (0 < tokenLength) { // closing marker found
+                        match = false
+                        marker.mark.end = i + tokenLength
+                        marker.newMark(type, i + tokenLength, i + tokenLength)
+                        i = i + tokenLength - 1
                     }
-                } else if (c === '*') {
-                    if (marker.mark.type === MessageSegmentEnum.EMOTE) {
-                        marker.mark.end = i + 1
-                        marker.newMark(type, i + 1, i + 1)
-                    } else {
+                } else {
+                    const tokenLength = matchesToken(txt, i, startTokens)
+                    if (0 < tokenLength) { // opening marker found
+                        match = true
                         marker.mark.end = i
-                        marker.newMark(MessageSegmentEnum.EMOTE, i, i)
+                        marker.newMark(segmentType, i, i + tokenLength)
+                        i = i + tokenLength - 1
                     }
                 }
             }
+
             marker.mark.end = txtLength
-            if (marker.count === 1) marker.clear()
+            if (lastSegmentClosed) //no matches found, clear all marks and continue
+                if (marker.count === 1) marker.clear()
+            lastSegmentClosed = !match
         }
+
         return processMessage(message, ignoreFunction, parseFunction)
     }
 
@@ -410,13 +419,6 @@ var Gobchat = (function (Gobchat) {
         }
 
         return merged
-    }
-
-    function replaceHtmlControlElements(txt) {
-        txt = txt.replace(/</g, "&lt;")
-        txt = txt.replace(/>/g, "&gt;")
-        txt = txt.replace(/\|/g, "&vert;")
-        return txt
     }
 
     Gobchat.MessageParserHelper = Object.freeze({
