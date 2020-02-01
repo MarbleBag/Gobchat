@@ -241,7 +241,6 @@ var Gobchat = (function (Gobchat, undefined) {
                 const profileData = data.profiles[profileId]
                 const cleanProfile = copyByJson(this._defaultProfile)
                 writeObject(profileData, cleanProfile, false, (p) => false)
-                console.log(JSON.stringify(cleanProfile, null, 2))
                 this._storeNewProfile(cleanProfile)
             })
 
