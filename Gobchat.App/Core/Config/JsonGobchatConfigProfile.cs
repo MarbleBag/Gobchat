@@ -13,6 +13,7 @@
 
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using static Gobchat.Core.Config.JsonUtil;
 
@@ -116,6 +117,18 @@ namespace Gobchat.Core.Config
                 throw new ConfigException("Config is read only");
 
             var (changes, _) = JsonUtil.Write(json, _data, (path) => UnchangableValues.Contains(path));
+            FirePropertyChange(changes);
+        }
+
+        public void Synchronize(JObject root)
+        {
+            if (!_writable)
+                throw new ConfigException("Config is read only");
+
+            var (changes, _) = JsonUtil.RemoveUnused(root, _data, (path) => UnchangableValues.Contains(path));
+            var (writeChanges, _) = JsonUtil.Write(root, _data, (path) => UnchangableValues.Contains(path));
+
+            changes.UnionWith(writeChanges);
             FirePropertyChange(changes);
         }
 

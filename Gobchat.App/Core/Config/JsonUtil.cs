@@ -212,5 +212,55 @@ namespace Gobchat.Core.Config
             var needsToBeReplaced = JsonUtil.TypeSwitch(source, destination, callbacks);
             return (changed, needsToBeReplaced);
         }
+
+        public static (ISet<string>, bool) RemoveUnused(JObject source, JObject destination, Func<string, bool> ignorePath)
+        {
+            var path = new List<string>();
+            var changed = new HashSet<string>();
+            var callbacks = new JsonUtil.SwitchCallbacks();
+
+            callbacks.OnArray = (arrayA, arrayB) =>
+            {
+                return false;
+            };
+            callbacks.OnValue = (valueA, valueB) =>
+            {
+                return false;
+            };
+            callbacks.OnObject = (objectA, objectB) => // move data from A to B
+            {
+                var availableKeys = objectB.Properties().Select(p => p.Name).ToList();
+                var allowedKeys = objectA.Properties().Select(p => p.Name).ToList();
+                var keysToRemove = availableKeys.Where(p => !allowedKeys.Contains(p)).ToList();
+
+                foreach (var property in keysToRemove)
+                {
+                    path.Add(property);
+                    var fullPath = string.Join(".", path);
+                    if (!ignorePath?.Invoke(fullPath) ?? false)
+                    {
+                        objectB.Remove(property);
+                        changed.Add(fullPath);
+                    }
+                    path.RemoveAt(path.Count - 1);
+                }
+
+                foreach (var property in objectB.Properties())
+                {
+                    path.Add(property.Name);
+                    var fullPath = string.Join(".", path);
+                    if (!ignorePath?.Invoke(fullPath) ?? false)
+                    {
+                        JsonUtil.TypeSwitch(objectA[property.Name], objectB[property.Name], callbacks);
+                    }
+                    path.RemoveAt(path.Count - 1);
+                }
+
+                return false;
+            };
+
+            var needsToBeReplaced = JsonUtil.TypeSwitch(source, destination, callbacks);
+            return (changed, needsToBeReplaced);
+        }
     }
 }

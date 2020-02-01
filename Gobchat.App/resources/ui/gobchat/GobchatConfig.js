@@ -32,6 +32,49 @@ var Gobchat = (function (Gobchat, undefined) {
         dataIteratorHelper(data, extendedData, callbackHelper)
     }
 
+    function removeMissingObjects(source, destination, ignoreFunc = null) {
+        var path = [];
+        var changes = new Set();
+
+        const callbacks = {
+            onArray: function (source, destination) {
+                return false
+            },
+            onCompare: function (source, destination) {
+                return false
+            },
+            onObject: function (source, destination) {
+                const availableKeys = Object.keys(destination)
+                const allowedKeys = Object.keys(source)
+                const keysToRemove = availableKeys.filter((k) => { return !_.includes(allowedKeys, k) })
+
+                for (let key of keysToRemove) {
+                    path.push(key)
+                    const fullPath = path.join(".")
+                    if (!ignoreFunc(fullPath)) {
+                        delete destination[key]
+                        changes.add(fullPath)
+                    }
+                    path.pop()
+                }
+
+                for (let key of Object.keys(destination)) {
+                    path.push(key)
+                    const fullPath = path.join(".")
+                    if (!ignoreFunc(fullPath)) {
+                        objectTreeIteratorHelper(source[key], destination[key], callbacks)
+                    }
+                    path.pop()
+                }
+
+                return false
+            }
+        }
+
+        const needsToBeReplaced = objectTreeIteratorHelper(source, destination, callbacks)
+        return [Array.from(changes), needsToBeReplaced]
+    }
+
     //Will merge every value from extendedData into data
     function writeObject(source, destination, copyOnWrite = false, ignoreFunc = null) {
         var path = [];
@@ -198,6 +241,7 @@ var Gobchat = (function (Gobchat, undefined) {
                 const profileData = data.profiles[profileId]
                 const cleanProfile = copyByJson(this._defaultProfile)
                 writeObject(profileData, cleanProfile, false, (p) => false)
+                console.log(JSON.stringify(cleanProfile, null, 2))
                 this._storeNewProfile(cleanProfile)
             })
 
@@ -207,7 +251,7 @@ var Gobchat = (function (Gobchat, undefined) {
                 this.deleteProfile(profileId)
             })
 
-            changedProfileIds.forEach(profileId => {                
+            changedProfileIds.forEach(profileId => {
                 let cleanProfile = copyByJson(this._defaultProfile)
                 const profileData = data.profiles[profileId]
                 writeObject(profileData, cleanProfile, false, (p) => false)
@@ -424,9 +468,12 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             let dstRoot = this.get(rootKey)
-            const [changes, replace] = copyAll ? writeObject(srcRoot, dstRoot, false, p => false) : writeObject(srcRoot, dstRoot, false, p => p === "profile")
+            const [removedKeys, _] = copyAll ? removeMissingObjects(srcRoot, dstRoot, p => false) : writeObject(srcRoot, dstRoot, false, p => p === "profile")
+            const [writtenKeys, replace] = copyAll ? writeObject(srcRoot, dstRoot, false, p => false) : writeObject(srcRoot, dstRoot, false, p => p === "profile")
             if (replace)
                 dstRoot = srcRoot
+
+            const changes = removedKeys.concat(writtenKeys)
 
             this.set(rootKey, dstRoot)
             this._firePropertyChanges(changes)
