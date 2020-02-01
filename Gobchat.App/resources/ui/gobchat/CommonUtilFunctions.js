@@ -48,5 +48,34 @@ var Gobchat = (function (Gobchat) {
         return str
     }
 
+    Gobchat.encodeHtmlEntities = function (str) {
+        return str.replace(/[\u00A0-\u9999<>&](?!#)/gim, function (i) {
+            return '&#' + i.charCodeAt(0) + ';';
+        });
+    }
+
+    Gobchat.decodeHtmlEntities = function (str) {
+        return str.replace(/&#([0-9]{1,3});/gi, function (match, num) {
+            return String.fromCharCode(parseInt(num));
+        });
+    }
+
+    Gobchat.decodeUnicode = function (str) {
+        return str.replace(/[uU]\+([\da-fA-F]{4})/g,
+            function (match, num) {
+                return String.fromCharCode(parseInt(num, 16));
+            });
+    }
+
+    Gobchat.encodeUnicode = function (str) {
+        return Array.from(str)
+            .map((v) => v.codePointAt(0).toString(16))
+            .map((hex) => "U+" + "0000".substring(0, 4 - hex.length) + hex)
+            .join("")
+    }
+
+    function unicodeToChar(text) {
+    }
+
     return Gobchat
 }(Gobchat || {}));
