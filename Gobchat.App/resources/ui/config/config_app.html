@@ -142,6 +142,31 @@
             <label>Chat Update Interval (MS)</label>
             <input type="number" min="0" max="5000" id="capp_updateInterval" data-gob-configkey="behaviour.chatUpdateInterval" />
         </div>
+        <div hidden>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label>Ignore outdated messages (In seconds)</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_" data-gob-configkey="behaviour.outdatedMessages.ignore" title="" />
+                        </td>
+                        <td>
+                            <input type="number" id="capp_" min="5" data-gob-configkey="behaviour.outdatedMessages.timelimit" title="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Show number of outdated messages</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" title="" id="capp_" data-gob-configkey="behaviour.outdatedMessages.showUser" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </p>
 
     <script type="text/javascript">
@@ -154,7 +179,7 @@
 
             // setup checkboxes
             const ckbChatLog = $("#capp_makechatlog")
-            ckbChatLog.attr("title","Gobchat creates a chatlog which will be saved under AppData\\Roaming\\Gobchat\\log")
+            ckbChatLog.attr("title", "Gobchat creates a chatlog which will be saved under AppData\\Roaming\\Gobchat\\log")
             ConfigHelper.linkCheckboxConfig(ckbChatLog)
 
             const ckbAutodetect = $("#capp_autodetectemote")
@@ -219,7 +244,7 @@
 
                 if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18) {
                     txtHotkeyShow.val("")
-                    gobconfig.set(configKey, "")
+                    gobconfig.set(txtHotkeyShowConfigKey, "")
                     return
                 }
 
@@ -248,7 +273,7 @@
             txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
             ConfigHelper.setupListenerAndInitialize(txtUpdateIntervalConfigKey, value => txtUpdateInterval.val(value), { defValue: "1000" })
             txtUpdateInterval.on("change", function (event) {
-                let newValue = event.target.value || "medium"
+                let newValue = event.target.value || 100
                 if (newValue < 0) newValue = 0
                 else if (newValue > 5000) newValue = 5000
 
