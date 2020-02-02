@@ -546,7 +546,7 @@ namespace Gobchat.Core.Module.Chat
 
             if (!_disposedValue)
             {
-                _memoryProcessor?.Dispose();
+                _synchronizer?.RunSync(() => _memoryProcessor?.Dispose());
                 _memoryProcessor = null;
 
                 _api = null;
