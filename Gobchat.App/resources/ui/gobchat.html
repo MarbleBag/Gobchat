@@ -37,10 +37,7 @@
 <body>
     <!--
         TODO:
-        - transparency needs to be done via background-image, this version of Xilium does not support rgba
         - transparency can be done by using rgba(r,g,b,a) in CSS
-        -  Scrollbar which stays at its current position, except if its all the way down, where it will follow the chat
-        - (saveable) Settings
         - Maybe let parsing be done im c# plugin for performance?
         - Store some MB of chat history im plugin for retrieval on reload
         - clear command
@@ -132,8 +129,8 @@
                 { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
                 { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
                 { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the enclosing character* was forgotten.' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types of«, of symbols, »to see if they work«' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types of», of symbols, «to see if they work»' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types«, of symbols, »to see if they work«' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types», of symbols, «to see if they work»' },
             ]
 
             textMessages.forEach(e => fireMessageEvent(e))
@@ -142,7 +139,7 @@
             fillMe.forEach(e => fireMessageEvent(e))
         }
 
-        // window.setTimeout(runTest, 10000);
+        //window.setTimeout(runTest, 10000);
 
     })
 </script>
