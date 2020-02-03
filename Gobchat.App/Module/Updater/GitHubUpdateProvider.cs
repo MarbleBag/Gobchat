@@ -117,7 +117,7 @@ namespace Gobchat.Module.Updater
             var releases = BuildGitHubReleases(jReleases);
 
             releases.Sort((a, b) => a.Version.CompareTo(b.Version));
-            
+
             if (!AcceptBetaReleases)
                 return releases.Where(p => !p.Version.IsPreRelease).ToList();
 
@@ -187,8 +187,8 @@ namespace Gobchat.Module.Updater
                         continue;
 
                     // they are sorted from newest to oldest, so it can stop if it reaches a version which is older or equal to this one
-                    //                 if (version <= _currentVersion)
-                    //                     break;
+                    if (version <= _currentVersion)
+                        break;
 
                     releases.Add(
                         new TagPackage(
