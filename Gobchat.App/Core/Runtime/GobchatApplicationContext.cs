@@ -27,7 +27,7 @@ using Gobchat.Core.Module;
 using Gobchat.Core.Module.CefInstaller;
 using Gobchat.Module.Chat;
 using Gobchat.Core.Module.Hotkey;
-using Gobchat.Core.Module.Updater;
+using Gobchat.Module.Updater;
 
 namespace Gobchat.Core.Runtime
 {

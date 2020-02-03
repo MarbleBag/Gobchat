@@ -13,7 +13,7 @@
 
 using System;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public sealed class NAULocalFileUpdateSource : NAppUpdate.Framework.Sources.IUpdateSource
     {

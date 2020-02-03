@@ -19,7 +19,7 @@ using NAppUpdate.Framework.Utils;
 using System;
 using System.IO;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     [Serializable]
     [UpdateTaskAlias("Delete")]
