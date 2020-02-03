@@ -14,7 +14,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     [Serializable]
     public sealed class UpdateException : System.Exception

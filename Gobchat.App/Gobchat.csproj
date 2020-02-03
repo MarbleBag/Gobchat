@@ -224,6 +224,7 @@
     <Compile Include="Core\Util\DownloadHelper.cs" />
     <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
     <Compile Include="Module\Hotkey\InvalidHotkeyException.cs" />
+    <Compile Include="Module\Updater\GobVersion.cs" />
     <Compile Include="Module\Updater\NAUDeleteTask.cs" />
     <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
     <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
