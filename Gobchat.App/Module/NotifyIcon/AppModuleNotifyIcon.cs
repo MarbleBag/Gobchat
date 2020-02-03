@@ -52,7 +52,7 @@ namespace Gobchat.Core.Module
         private void OnEvent_MenuItem_Close(object sender, EventArgs e)
         {
             logger.Info("User requests shutdown");
-            Application.Exit();
+            GobchatApplicationContext.ExitGobchat();
         }
 
         public void Dispose(IDIContext container)

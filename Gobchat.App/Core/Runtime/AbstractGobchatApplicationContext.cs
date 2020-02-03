@@ -26,7 +26,7 @@ namespace Gobchat.Core.Runtime
     {
         private sealed class ContextSpecificSynchronizer : IUISynchronizer
         {
-            private SynchronizationContext _context;
+            private readonly SynchronizationContext _context;
 
             public ContextSpecificSynchronizer(SynchronizationContext uiContext)
             {
@@ -100,11 +100,24 @@ namespace Gobchat.Core.Runtime
 
         public static IUISynchronizer UISynchronizer { get; private set; }
 
+        public static event EventHandler<GobchatExitEventArgs> GobchatExit;
+
         private Form _hiddenMainForm;
         private IndependendBackgroundWorker _appWorker;
 
+        public static void ExitGobchat()
+        {
+            //make sure this does not run on the UI-thread, otherwise we may run into deadlocks, while we 'wait' for the shutdown, but stuff needs to be done on the ui-thread to do said shutdown
+            Task.Run(() =>
+            {
+                GobchatExit?.Invoke(null, new GobchatExitEventArgs());
+                Application.Exit();
+            });
+        }
+
         public AbstractGobchatApplicationContext()
         {
+            AbstractGobchatApplicationContext.GobchatExit += (s, e) => OnGobchatExit();
             Application.ApplicationExit += (s, e) => OnApplicationExit();
 
             _hiddenMainForm = new Form();
@@ -114,7 +127,7 @@ namespace Gobchat.Core.Runtime
             _appWorker.Start((token) => ApplicationStartupProcess(token));
         }
 
-        private void OnApplicationExit()
+        private void OnGobchatExit()
         {
             logger.Info("Start application shutdown");
 
@@ -138,7 +151,10 @@ namespace Gobchat.Core.Runtime
                 _hiddenMainForm = null;
                 logger.Info("Shutdown complete");
             }
+        }
 
+        private void OnApplicationExit()
+        {
             var manager = NAppUpdate.Framework.UpdateManager.Instance;
             if (manager.UpdatesAvailable > 0)
             {
@@ -160,5 +176,9 @@ namespace Gobchat.Core.Runtime
         internal abstract void ApplicationStartupProcess(CancellationToken token);
 
         internal abstract void ApplicationShutdownProcess();
+    }
+
+    public sealed class GobchatExitEventArgs : EventArgs
+    {
     }
 }

@@ -108,7 +108,7 @@ namespace Gobchat.Core.Runtime
                 if (startupHandler.StopStartup)
                 {
                     logger.Fatal("Shutdown in initialization phase");
-                    Application.Exit();
+                    GobchatApplicationContext.ExitGobchat();
                     return;
                 }
             }

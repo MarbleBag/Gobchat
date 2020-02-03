@@ -144,7 +144,7 @@ namespace Gobchat.Core.Module.Chat
             {
                 // async request to kill the app immediately. This means other stuff may be happening at the same time that depends on the ui. Maybe not the best way.
                 logger.Info("User requests shutdown");
-                Application.Exit();
+                GobchatApplicationContext.ExitGobchat();
             }
             else if (request == "OpenFileDialog")
             {
