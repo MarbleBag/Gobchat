@@ -77,6 +77,11 @@ namespace Gobchat.Core
             Request(nameof(SetActiveProfile), profileId);
         }
 
+        public async void CloseGobchat()
+        {
+            Request(nameof(CloseGobchat), "");
+        }
+
         public void Message(string message)
         {
             logger.Debug(() => "UI Event: " + message?.Replace("{", "{{")?.Replace("}", "}}"));

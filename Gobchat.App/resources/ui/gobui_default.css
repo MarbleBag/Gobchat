@@ -1,56 +1,59 @@
 body, html {
-  margin: 0;
+    margin: 0;
 }
 
 button > * {
-	pointer-events: none;
+    pointer-events: none;
 }
 
 .hide {
-  display: none !important;
+    display: none !important;
 }
 
-.ui-gc-reset{
-	
+.ui-gc-reset {
 }
 
 .ui-gc-btn {
-	border: 1px solid #444444;
-	transition: all 0.4s ease 0s;
+    border: 1px solid #444444;
+    transition: all 0.4s ease 0s;
 }
 
-.ui-gc-btn:hover {
-	background: #f6b93b;
-	border-color: #f6b93b; 
-	transition: all 0.4s ease 0s;
-}
+    .ui-gc-btn:hover {
+        background: #f6b93b;
+        border-color: #f6b93b;
+        transition: all 0.4s ease 0s;
+    }
 
 .ui-gc-btn-delete {
-	border: 1px solid #444444;
-	transition: all 0.4s ease 0s;
+    border: 1px solid #444444;
+    transition: all 0.4s ease 0s;
 }
 
-.ui-gc-btn-delete:hover {
-	background: #f6b93b;
-	border-color: #f6b93b; 
-	transition: all 0.4s ease 0s;
+    .ui-gc-btn-delete:hover {
+        background: #f6b93b;
+        border-color: #f6b93b;
+        transition: all 0.4s ease 0s;
+    }
+
+.ui-gc-group-header {
+    padding: 0px;
+    margin: 0px;
 }
 
-.ui-gc-group-header{
-	padding: 0px;
-	margin: 0px;
-}
+    .ui-gc-group-header > *:first-child {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
-.ui-gc-group-header > *:first-child {
-	position:absolute;
-	left:10px;
-	top:50%;
-	transform:translateY(-50%);
-}
+    .ui-gc-group-header > *:last-child {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
-.ui-gc-group-header > *:last-child{
-	position:absolute;
-	right:10px;
-	top:50%;
-	transform:translateY(-50%);
+.ui-gc-highlight {
+    background: #f6b93b;
 }

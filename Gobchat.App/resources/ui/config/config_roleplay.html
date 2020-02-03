@@ -22,40 +22,109 @@
             <tbody>
             </tbody>
         </table>
-    </p>
 
-    <template id="croleplay_template_segmententry">
-        <tr>
-            <td>
-                <label class="entry-label"></label>
-            </td>
-            <td>
+        <template id="croleplay_template_roleplayentry">
+            <tr>
+                <td>
+                    <label class="entry-label"></label>
+                </td>
+                <td>
+                    <div>
+                        <input class="entry-color-forground" type="text" />
+                        <button class="entry-color-forground-reset ui-gc-btn"
+                                title="Resets the field to its default value">
+                            <i class='fas fa-undo-alt'></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </template>
+    </p>
+    <p>
+
+        <div>
+            <button id="croleplay_segments_add">Add entry <i class="fa fa-folder-open"></i></button>
+            <button id="croleplay_segments_reset">Reset entries <i class="fas fa-undo-alt"></i></button>
+        </div>
+        <div id="croleplay_segments_table">
+        </div>
+
+        <template id="croleplay_template_segmentsentry">
+            <div data-gob-entryid>
+                <h4>
+                    <span class="ui-gc-group-header">
+                        <span>
+                            <span class="tmpl-header-index"></span>
+                            <span>. </span>
+                            <span class="tmpl-header-name-type"></span>
+                            <span> starts with </span>
+                            <span class="tmpl-header-name-start"></span>
+                            <span> and ends with </span>
+                            <span class="tmpl-header-name-end"></span>
+                        </span>
+                        <span>
+                            <button class="tmpl-delete-entry ui-gc-btn-delete" title="Deletes this entry"><i class="fa fa-trash"></i></button>
+                        </span>
+                    </span>
+                </h4>
                 <div>
-                    <input class="entry-color-forground" type="text" />
-                    <button class="entry-color-forground-reset ui-gc-btn"
-                            title="Resets the field to its default value">
-                        <i class='fas fa-undo-alt'></i>
-                    </button>
+                    <span>They will be processed from top to down. To reorder them drag and drop the header.</span>
+                    <div>
+                        <label>Active:</label>
+                        <input type="checkbox" class="tmpl-entry-active" />
+                    </div>
+                    <div>
+                        <label>
+                            Test
+                        </label>
+                        <select class="tmpl-segment-selector">
+                            <option value=1>SAY</option>
+                            <option value=2>EMOTE</option>
+                            <option value=3>OOC</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>
+                            Test
+                        </label>
+                        <input type="text" class="tmpl-startTokens" />
+                        <label>
+                            Unicode:
+                        </label>
+                        <label class="tmpl-startTokens-unicode">
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Test
+                        </label>
+                        <input type="text" class="tmpl-endTokens" />
+                        <label>
+                            Unicode:
+                        </label>
+                        <label class="tmpl-endTokens-unicode">
+                        </label>
+                    </div>
                 </div>
-            </td>
-        </tr>
-    </template>
+            </div>
+        </template>
+    </p>
 
     <script type="text/javascript">
         'use strict';
 
         (function () {
-            const segments = [
+            const tblRoleplayContent = [
                 { label: "Say", styleId: "style.segment.say" },
                 { label: "Emote", styleId: "style.segment.emote" },
                 { label: "Mention", styleId: "style.segment.mention" },
                 { label: "OoC", styleId: "style.segment.ooc" },
             ]
 
-            const table = $("#croleplay_roleplay > tbody")
-            const rowTemplate = $('#croleplay_template_segmententry')
-            segments.forEach((entry) => {
-                const rowEntry = $(rowTemplate.html()).appendTo(table)
+            const tblRoleplay = $("#croleplay_roleplay > tbody")
+            const rowTemplate = $('#croleplay_template_roleplayentry')
+            tblRoleplayContent.forEach((entry) => {
+                const rowEntry = $(rowTemplate.html()).appendTo(tblRoleplay)
 
                 const lblName = rowEntry.find(".entry-label")
                 const clrSelectorFG = rowEntry.find(".entry-color-forground")
@@ -68,9 +137,169 @@
                 btnResetFG.on("click", event => gobconfig.reset(clrSelectorFG.attr(ConfigHelper.ConfigKeyAttribute)))
             })
 
+            const segmentsEntryTmpl = $("#croleplay_template_segmentsentry")
+            const tblSegments = $("#croleplay_segments_table")
+            const ConfigKeyData = "behaviour.segment.data"
+            const ConfigKeyOrder = "behaviour.segment.order"
+
+            function buildSegmentsTableEntry(entryId) {
+                if (entryId === null || entryId === undefined || entryId.length === 0)
+                    throw new Error("Invalid entry id")
+
+                const entry = $(segmentsEntryTmpl.html())
+                entry.attr("data-gob-entryid", entryId)
+                entry.appendTo(tblSegments)
+
+                const configKey = ConfigKeyData + "." + entryId
+
+                const btnDelete = entry.find(".tmpl-delete-entry")
+                btnDelete.on("click", event => {
+                    event.stopPropagation()
+                    if (!window.confirm("Entry will be deleted. Are you sure?")) return
+                    gobconfig.remove(configKey)
+                    const order = gobconfig.get(ConfigKeyOrder)
+                    _.remove(order, e => e === entryId)
+                    gobconfig.set(ConfigKeyOrder, order)
+                })
+
+                const ckbIsActive = entry.find(".tmpl-entry-active")
+                ckbIsActive.prop("checked", gobconfig.get(configKey + ".active"))
+                ckbIsActive.on("change", event => gobconfig.set(configKey + ".active", event.target.checked))
+
+                const dpdSegmentType = entry.find(".tmpl-segment-selector")
+                dpdSegmentType.val(gobconfig.get(configKey + ".type"))
+                dpdSegmentType.on("change", function (event) {
+                    const newType = parseInt(event.target.value || 1)
+                    gobconfig.set(configKey + ".type", newType)
+
+                    const text = dpdSegmentType.find("option:selected").text()
+                    entry.find(".tmpl-header-name-type").text(text)
+                })
+                entry.find(".tmpl-header-name-type").text(dpdSegmentType.find("option:selected").text())
+
+                function convertTokenInput(str) {
+                    const text = str.trim()
+                    const split = text.split(" ")
+                    const data = []
+                    for (let s of split) {
+                        if (s.length === 0) continue
+                        s = Gobchat.decodeUnicode(s)
+                        data.push(s)
+                    }
+                    return data;
+                }
+
+                function toUnicodeString(arr) {
+                    let f = arr.map(s => Gobchat.encodeUnicode(s)).join(" | ")
+                    return f
+                }
+
+                const txtStartTokens = entry.find(".tmpl-startTokens")
+                const strStartTokens = gobconfig.get(configKey + ".startTokens")
+                txtStartTokens.val(strStartTokens.join(" "))
+                txtStartTokens.on("change", function (event) {
+                    const data = convertTokenInput(txtStartTokens.val())
+                    gobconfig.set(configKey + ".startTokens", data)
+
+                    lblStartTokenUnicode.text(toUnicodeString(data))
+
+                    txtStartTokens.val(data.join(" "))
+                    entry.find(".tmpl-header-name-start").text(data.join(" or "))
+                })
+
+                const lblStartTokenUnicode = entry.find(".tmpl-startTokens-unicode")
+                lblStartTokenUnicode.text(toUnicodeString(strStartTokens))
+                entry.find(".tmpl-header-name-start").text(strStartTokens.join(" or "))
+
+                const txtEndTokens = entry.find(".tmpl-endTokens")
+                const strEndTokens = gobconfig.get(configKey + ".endTokens")
+                txtEndTokens.val(strEndTokens.join(" "))
+                txtEndTokens.on("change", function (event) {
+                    const data = convertTokenInput(txtEndTokens.val())
+                    gobconfig.set(configKey + ".endTokens", data)
+
+                    lblEndTokenUnicode.text(toUnicodeString(data))
+
+                    txtEndTokens.val(data.join(" "))
+                    entry.find(".tmpl-header-name-end").text(data.join(" or "))
+                })
+
+                const lblEndTokenUnicode = entry.find(".tmpl-endTokens-unicode")
+                lblEndTokenUnicode.text(toUnicodeString(strEndTokens))
+                entry.find(".tmpl-header-name-end").text(strEndTokens.join(" or "))
+            }
+
+            function addNewEntrySegmentsTable() {
+                const data = gobconfig.get(ConfigKeyData)
+                const id = ConfigHelper.generateId(6, Object.keys(data))
+
+                data[id] = {
+                    type: 1,
+                    startTokens: [],
+                    endTokens: [],
+                }
+
+                gobconfig.set(ConfigKeyData, data)
+                const order = gobconfig.get(ConfigKeyOrder)
+                order.push(id)
+                gobconfig.set(ConfigKeyOrder, order)
+            }
+            const btnAddSegment = $("#croleplay_segments_add")
+            btnAddSegment.attr("title", "Adds a new box for roleplay formatting")
+            btnAddSegment.on("click", (event) => addNewEntrySegmentsTable())
+
+            const btnTblSegmentsReset = $("#croleplay_segments_reset")
+            btnTblSegmentsReset.on("click", (event) => {
+                gobconfig.reset(ConfigKeyData)
+                gobconfig.reset(ConfigKeyOrder)
+            })
+
+            function populateSegmentsTable() {
+                tblSegments.empty()
+                const ids = gobconfig.get(ConfigKeyOrder)
+                ids.forEach(id => buildSegmentsTableEntry(id))
+
+                tblSegments.sortable("refresh")
+                tblSegments.accordion("refresh")
+
+                tblSegments.find(".tmpl-header-index").each(function (idx) {
+                    $(this).text(idx + 1)
+                })
+            }
+
+            tblSegments.accordion({
+                heightStyle: "content",
+                header: "> div > h4",
+            })
+                .sortable({
+                    axis: "y",
+                    handle: "h4",
+                    stop: function (event, ui) {
+                        //update sort order
+                        let order = []
+                        tblSegments.find("div[data-gob-entryid]").each(function () {
+                            order.push($(this).attr("data-gob-entryid"))
+                            //order.push($(this).data("groupId"))
+                        })
+
+                        order = order.filter(e => e !== null && e !== undefined && e.length > 0)
+                        gobconfig.set(ConfigKeyOrder, order)
+                    }
+                });
+
+            gobconfig.addProfileEventListener((event) => {
+                if (event.type === "active")
+                    populateSegmentsTable()
+            })
+            gobconfig.addPropertyEventListener(ConfigKeyOrder, (event) => {
+                if (event.isActive)
+                    populateSegmentsTable()
+            })
+            populateSegmentsTable()
+
             const btnCopyProfile = $("#croleplay_copyprofile")
-            const copyKeys = []
-            segments.forEach(entry => {
+            const copyKeys = ["behaviour.segment"]
+            tblRoleplayContent.forEach(entry => {
                 if (entry.styleId === undefined || entry.styleId === null) return
                 copyKeys.push(entry.styleId + ".color")
             })

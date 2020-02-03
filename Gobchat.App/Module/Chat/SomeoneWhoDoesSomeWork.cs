@@ -61,7 +61,7 @@ namespace Gobchat.Core.Module.Chat
         private bool _errorReportRegistered = false;
         private bool _errorReportFFNotFound = false;
 
-        private Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
+        private readonly Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
 
         private Gobchat.Core.Chat.ChatlogToMessageConverter _chatlogParser;
         private readonly ConcurrentQueue<ChatMessage> _messageQueue = new ConcurrentQueue<ChatMessage>();
@@ -124,10 +124,27 @@ namespace Gobchat.Core.Module.Chat
                 logger.Info("Storing config from ui");
                 var configJson = _jsBuilder.Deserialize(data);
                 _configManager.Synchronize(configJson);
+
+                try
+                { //try to do a early save
+                    _configManager.SaveProfiles();
+                    this.SendInfoMessageToUI("Profiles saved");
+                }
+                catch (Exception e)
+                {
+                    logger.Warn(e, "Error on profile save");
+                    this.SendErrorMessageToUI("Unable to save profiles to disk. See debug log for more informations");
+                }
             }
             else if (request == "SetActiveProfile")
             {
                 _configManager.ActiveProfileId = data;
+            }
+            else if (request == "CloseGobchat")
+            {
+                // async request to kill the app immediately. This means other stuff may be happening at the same time that depends on the ui. Maybe not the best way.
+                logger.Info("User requests shutdown");
+                Application.Exit();
             }
             else if (request == "OpenFileDialog")
             {
@@ -211,16 +228,25 @@ namespace Gobchat.Core.Module.Chat
 
         private void OnEvent_MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
-            var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(10));
             var chatMessages = new List<ChatMessage>();
+
+            var removeOutdatedMessages = true; // _configManager.GetProperty<bool>("behaviour.outdatedMessages.ignore");
+            var outdatedTimelimit = 10; // _configManager.GetProperty<int>("behaviour.outdatedMessages.timelimit");
+            var showOutdatedToUser = true; // _configManager.GetProperty<bool>("behaviour.outdatedMessages.showUser");
+            var timeStamp = _lastChatMessageTime.Subtract(TimeSpan.FromSeconds(outdatedTimelimit));
+
+            var numberOfOutdatedMessages = 0;
 
             foreach (var item in e.ChatlogItems)
             {
-                var isNew = timeStamp <= item.TimeStamp;
-                if (!isNew)
+                if (removeOutdatedMessages)
                 {
-                    logger.Debug(() => $"Old message removed: {item.TimeStamp}");
-                    continue;
+                    if (item.TimeStamp < timeStamp)
+                    {
+                        numberOfOutdatedMessages += 1;
+                        logger.Debug(() => $"Outdated message removed: {item.TimeStamp}");
+                        continue;
+                    }
                 }
 
                 try
@@ -244,6 +270,11 @@ namespace Gobchat.Core.Module.Chat
             {
                 _messageQueue.Enqueue(msg);
                 logger.Debug(() => msg.ToString());
+            }
+
+            if (showOutdatedToUser && numberOfOutdatedMessages > 0)
+            {
+                this.SendInfoMessageToUI($"Ignored {numberOfOutdatedMessages} outdated messages.");
             }
         }
 
@@ -276,7 +307,6 @@ namespace Gobchat.Core.Module.Chat
         {
             logger.Info("Loading gobchat ui");
             var htmlpath = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
-            var ok = System.IO.File.Exists(htmlpath); //TODO
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _overlay.Browser.Load(uri);
             //_overlay.Browser.Load("about:blank");
@@ -336,22 +366,22 @@ namespace Gobchat.Core.Module.Chat
                 if (keys == null || keys.Length == 0)
                     return Keys.None;
 
-                var split = keys.Split(new char[] { '+' }).Select(s => s.Trim().ToLower());
+                var split = keys.Split(new char[] { '+' }).Select(s => s.Trim().ToUpper(CultureInfo.InvariantCulture));
 
                 Keys nKeys = new Keys();
                 foreach (var s in split)
                 {
                     switch (s)
                     {
-                        case "shift":
+                        case "SHIFT":
                             nKeys |= Keys.Shift;
                             break;
 
-                        case "ctrl":
+                        case "CTRL":
                             nKeys |= Keys.Control;
                             break;
 
-                        case "alt":
+                        case "ALT":
                             nKeys |= Keys.Alt;
                             break;
 
@@ -516,6 +546,7 @@ namespace Gobchat.Core.Module.Chat
 
             if (!_disposedValue)
             {
+                _synchronizer?.RunSync(() => _memoryProcessor?.Dispose());
                 _memoryProcessor = null;
 
                 _api = null;

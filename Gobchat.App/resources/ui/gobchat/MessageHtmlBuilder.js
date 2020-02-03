@@ -188,9 +188,10 @@ var Gobchat = (function (Gobchat) {
             message.segments.forEach((segment) => {
                 const segmentType = segment.segmentType
                 const segmentText = segment.messageText
+                const htmlEncoded = Gobchat.encodeHtmlEntities(segmentText)
 
                 const segmentElement = document.createElement("span")
-                segmentElement.innerHTML = segmentText
+                segmentElement.innerHTML = htmlEncoded
                 applyClass(segmentElement, "message-segment-base")
                 applyClass(segmentElement, getCssClassForMessageSegmentType(segmentType))
                 messageContainer.appendChild(segmentElement)

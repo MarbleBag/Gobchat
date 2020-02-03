@@ -47,5 +47,7 @@ namespace Gobchat.Core.Config
         JObject ToJson();
 
         void SetProperties(JObject json);
+
+        void Synchronize(JObject root);
     }
 }

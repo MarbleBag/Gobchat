@@ -17,9 +17,9 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory
 {
-    public class FFXIVMemoryProcessor
+    public sealed class FFXIVMemoryProcessor : IDisposable
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly FFXIVProcessFinder _processFinder = new FFXIVProcessFinder();
 
@@ -85,6 +85,11 @@ namespace Gobchat.Memory
             };
 
             _windowScanner.ActiveWindowChangedEvent += OnEvent_ActiveWindowChangedEvent;
+        }
+
+        public void Dispose()
+        {
+            _windowScanner.Dispose();
         }
 
         private void OnEvent_ActiveWindowChangedEvent(object sender, Window.WindowObserver.ActiveWindowChangedEventArgs e)

@@ -20,15 +20,18 @@ namespace Gobchat.Core.Chat
 {
     public sealed class ChatlogToMessageConverter
     {
-        public IAutotranslateProvider AutotranslateLookup;
+        private readonly IAutotranslateProvider _autotranslateLookup;
 
         public ChatlogToMessageConverter(IAutotranslateProvider autotranslateLookup)
         {
-            AutotranslateLookup = autotranslateLookup ?? throw new ArgumentNullException(nameof(autotranslateLookup));
+            _autotranslateLookup = autotranslateLookup ?? throw new ArgumentNullException(nameof(autotranslateLookup));
         }
 
         public ChatMessage Convert(ChatlogItem item)
         {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
             if (!IsChatlogItemValid(item))
                 return null;
 
@@ -77,7 +80,7 @@ namespace Gobchat.Core.Chat
                 else if (tokens[idx] is Memory.Chat.Token.AutotranslateToken atToken)
                 {
                     var key = atToken.GetKey();
-                    var autotranslatetxt = AutotranslateLookup.GetTranslationFor(key);
+                    var autotranslatetxt = _autotranslateLookup.GetTranslationFor(key);
                     if (autotranslatetxt != null)
                         builder.Append($" {autotranslatetxt} ");
                     else

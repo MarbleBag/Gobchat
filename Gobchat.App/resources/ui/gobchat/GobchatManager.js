@@ -162,6 +162,13 @@ var Gobchat = (function (Gobchat) {
                 $(scrollTarget).animate({
                     scrollTop: $(scrollTarget)[0].scrollHeight - $(scrollTarget)[0].clientHeight
                 }, 10);
+
+                /*
+                const target = $(this._scrollTargetId).first()
+                target.animate({
+                scrollTop: target.prop("scrollHeight") - target.prop("clientHeight")
+                }, 10)
+                */
             }
         }
     }

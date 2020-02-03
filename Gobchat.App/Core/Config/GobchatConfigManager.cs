@@ -234,9 +234,8 @@ namespace Gobchat.Core.Config
         {
             var profileId = GenerateProfileId();
 
-            //TODO that's not good. Versioning needs to be done automatically.
             var newConfig = new JObject();
-            newConfig["version"] = 3;
+            newConfig["version"] = _defaultConfig.ProfileVersion;
             newConfig["profile"] = new JObject();
             newConfig["profile"]["id"] = profileId;
             newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
@@ -295,7 +294,11 @@ namespace Gobchat.Core.Config
                 DeleteProfile(profileId);
 
             foreach (var profileId in availableProfiles)
-                GetProfile(profileId).SetProperties(configJson["profiles"][profileId] as JObject);
+            {
+                var profileData = configJson["profiles"][profileId] as JObject;
+                var profile = GetProfile(profileId);
+                profile.Synchronize(profileData);
+            }
 
             logger.Info("Config manager synchronized");
         }

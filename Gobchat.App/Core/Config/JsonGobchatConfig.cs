@@ -15,6 +15,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using static Gobchat.Core.Config.JsonUtil;
 
+// Deprecated
+
 namespace Gobchat.Core.Config
 {
     internal sealed class JsonGobchatConfig : IGobchatConfig

@@ -38,6 +38,18 @@ namespace Gobchat.Core.Config
                     if (channel["visible"] is JArray visible)
                         ConvertStringToEnumAndReplace<Chat.ChannelEnum>(visible);
                 }
+
+                if (behaviour["segment"] is JObject segments)
+                {
+                    if (segments["data"] is JObject data)
+                    {
+                        foreach (var segment in data.Values())
+                        {
+                            if (TryConvertStringToEnum<Chat.MessageSegmentEnum>(segment["type"], out var eValue))
+                                segment["type"] = new JValue(eValue);
+                        }
+                    }
+                }
             }
 
             return json;
@@ -59,26 +71,38 @@ namespace Gobchat.Core.Config
             List<TEnum> enumResult = new List<TEnum>();
             foreach (var element in list)
             {
-                if (!(element is JValue jValue))
-                    continue;
-                if (jValue.Value == null)
-                    continue;
-
-                if (jValue.Value is string)
-                {
-                    if (Enum.TryParse<TEnum>((string)jValue.Value, out var enumValue))
-                        enumResult.Add(enumValue);
-                    continue;
-                }
-
-                if (MathUtil.IsNumber(jValue.Value))
-                {
-                    //why you do dis c#
-                    enumResult.Add((TEnum)(object)(int)(long)jValue.Value);
-                    continue;
-                }
+                if (TryConvertStringToEnum(element, out TEnum enumValue))
+                    enumResult.Add(enumValue);
             }
+
             return enumResult;
+        }
+
+        private bool TryConvertStringToEnum<TEnum>(JToken value, out TEnum e) where TEnum : struct, IConvertible
+        {
+            e = default;
+
+            if (!(value is JValue jValue))
+                return false;
+
+            if (jValue.Value == null)
+                return false;
+
+            if (jValue.Value is string)
+            {
+                if (Enum.TryParse<TEnum>((string)jValue.Value, out e))
+                    return true;
+                return false;
+            }
+
+            if (MathUtil.IsNumber(jValue.Value))
+            {
+                //why you do dis c#
+                e = (TEnum)(object)(int)(long)jValue.Value;
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -37,10 +37,7 @@
 <body>
     <!--
         TODO:
-        - transparency needs to be done via background-image, this version of Xilium does not support rgba
         - transparency can be done by using rgba(r,g,b,a) in CSS
-        -  Scrollbar which stays at its current position, except if its all the way down, where it will follow the chat
-        - (saveable) Settings
         - Maybe let parsing be done im c# plugin for performance?
         - Store some MB of chat history im plugin for retrieval on reload
         - clear command
@@ -80,15 +77,22 @@
 
         $("#gobchat_config").on("click", function (e) {
 
+            const isConfigOpen = localStorage.getItem("gobchat-config-open") || "false"
+
+            if (isConfigOpen === "true")
+                return
+
+            localStorage.setItem("gobchat-config-open", "true")
+
             window.chatManager.saveConfigToLocalStore()
 
-            const handle = window.open('config/config.html', 'Settings', 'width=900,height=600')
+            const handle = window.open("config/config.html", 'Settings', 'width=900,height=600')
             handle.focus()
 
             const timer = setInterval(function () {
                 if (handle.closed) {
                     clearInterval(timer);
-
+                    localStorage.removeItem("gobchat-config-open")
                     const result = handle.window.gobresult
                     if (result === "success") {
                         window.chatManager.loadConfigFromLocalStore()
@@ -107,11 +111,32 @@
 
         // test
         function runTest() {
-            const fillMe = Array.from({ length: 1 }, (v, k) => ` | oof | \uE0BB Say, *emote* and ((ooc)) - ${k + 1} <text> Lyren`).map(e => { return { message: e, source: "Di'e I'of'oOdin" } })
-            fillMe.forEach((e) => {
-                const msg = { detail: { type: e.channel || Gobchat.ChannelEnum.SAY, timestamp: "HH:mm", source: e.source || "Browser", message: e.message || "Empty" } }
+            function fireMessageEvent(e) {
+                const msg = { detail: { type: e.channel || Gobchat.ChannelEnum.PARTY, timestamp: "HH:mm", source: e.source || "Browser", message: e.message || "Empty" } }
                 window.chatManager.onNewMessageEvent(msg)
-            })
+            }
+
+            const textMessages = [
+                { channel: Gobchat.ChannelEnum.PARTY, message: '"Say" ((ooc)) *emote* mention' }, //base test
+                { channel: Gobchat.ChannelEnum.PARTY, message: '"Mention contained in say"' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '((Mention contained in ooc))' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '*Mention contained in emote*' },
+                { channel: Gobchat.ChannelEnum.SAY, message: '"Some speech", followed by an emote, "and some more speech."' },
+                { channel: Gobchat.ChannelEnum.SAY, message: 'Display of some special html characters: < > | <<  ≫ « »' },
+                { channel: Gobchat.ChannelEnum.EMOTE, message: 'Display of some special ffxiv characters: \uE0BB' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '"Say that\'s divided by some *emote characters* but should still be displayed correctly."' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '*An emote mixed with "for some important stuff" but contained in an emote*' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the enclosing character* was forgotten.' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types«, of symbols, »to see if they work«' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types», of symbols, «to see if they work»' },
+            ]
+
+            textMessages.forEach(e => fireMessageEvent(e))
+
+            const fillMe = Array.from({ length: 1 }, (v, k) => `|Text1 | <Text 2> "Say" ((ooc)) *emote*   | oof |  Say, *emote* and ((ooc)) - ${k + 1} <emote> \u226Btext long\u226A`).map(e => { return { message: e, source: "Di'e I'of-oOdin" } })
+            fillMe.forEach(e => fireMessageEvent(e))
         }
 
         //window.setTimeout(runTest, 10000);

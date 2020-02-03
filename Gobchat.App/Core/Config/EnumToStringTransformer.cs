@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Util;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,20 @@ namespace Gobchat.Core.Config
                     if (channel["visible"] is JArray visible)
                         ConvertEnumToStringAndReplace<Chat.ChannelEnum>(visible);
                 }
+
+                if (behaviour["segment"] is JObject segments)
+                {
+                    if (segments["data"] is JObject data)
+                    {
+                        foreach (var segment in data.Values())
+                        {
+                            if (TryConvertEnumToString<Chat.MessageSegmentEnum>(segment["type"], out var name))
+                                segment["type"] = name;
+                            else
+                                segment["type"] = "SAY";
+                        }
+                    }
+                }
             }
 
             return json;
@@ -58,10 +73,52 @@ namespace Gobchat.Core.Config
             List<string> result = new List<string>();
             foreach (var element in list)
             {
-                var name = Enum.GetName(typeT, (int)(long)element);
-                result.Add(name);
+                if (TryConvertEnumToString<TEnum>(element, out var name))
+                    result.Add(name);
             }
             return result;
+        }
+
+        private string ConvertEnumToString<TEnum>(JToken value) where TEnum : struct, IConvertible
+        {
+            var typeT = typeof(TEnum);
+            return Enum.GetName(typeT, (int)(long)value);
+        }
+
+        private bool TryConvertEnumToString<TEnum>(JToken value, out string enumName) where TEnum : struct, IConvertible
+        {
+            enumName = null;
+
+            if (!(value is JValue jValue))
+                return false;
+
+            if (jValue.Value == null)
+                return false;
+
+            var eType = typeof(TEnum);
+
+            if (jValue.Type == JTokenType.Integer || jValue.Type == JTokenType.Bytes)
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (Enum.IsDefined(eType, jValue.Value))
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (jValue.Type == JTokenType.String)
+            {
+                if (int.TryParse((string)jValue, out var iValue))
+                {
+                    enumName = Enum.GetName(eType, iValue);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

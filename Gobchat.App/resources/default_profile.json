@@ -80,6 +80,59 @@
         "LINKSHELL_8"
       ]
     },
+    "segment": {
+      "order": [ "ooc", "emote1", "emote2", "say1", "say2", "say3", "say4", "say5" ],
+      "data": {
+        "ooc": {
+          "active": true,
+          "type": "OOC",
+          "startTokens": [ "((" ],
+          "endTokens": [ "))" ]
+        },
+        "emote1": {
+          "active": true,
+          "type": "EMOTE",
+          "startTokens": [ "*" ],
+          "endTokens": [ "*" ]
+        },
+        "emote2": {
+          "active": true,
+          "type": "EMOTE",
+          "startTokens": [ "<" ],
+          "endTokens": [ ">" ]
+        },
+        "say1": {
+          "active": true,
+          "type": "SAY",
+          "startTokens": [ "\u0022" ],
+          "endTokens": [ "\u0022" ]
+        },
+        "say2": {
+          "active": true,
+          "type": "SAY",
+          "startTokens": [ "\u201E" ],
+          "endTokens": [ "\u201C" ]
+        },
+        "say3": {
+          "active": true,
+          "type": "SAY",
+          "startTokens": [ "\u201E" ],
+          "endTokens": [ "\u201D" ]
+        },
+        "say4": {
+          "active": true,
+          "type": "SAY",
+          "startTokens": [ "\u201C" ],
+          "endTokens": [ "\u201D" ]
+        },
+        "say5": {
+          "active": true,
+          "type": "SAY",
+          "startTokens": [ "\u00BB", "\u00AB" ],
+          "endTokens": [ "\u00AB", "\u00BB" ]
+        }
+      }
+    },
     "frame": {
       "chat": {
         "position": {
