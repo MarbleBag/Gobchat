@@ -85,7 +85,7 @@ Example:
 Gobchat supports the following chat commands:
 - [group](#chat-command-group)
 - [profile](#chat-command-profile)
-- [close] (#chat-command-close)
+- [close](#chat-command-close)
 
 ***
 
