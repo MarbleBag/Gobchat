@@ -2,12 +2,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.4.0]
+## [1.4.0] - 2020.02.03
 ## Added
-- Chat command to close gobchat. Use: /e gc close 
+- Chat command to close gobchat. Use: /e gc close
 - Message on config save
 - Profiles will be saved directly to disk on save now
-- Gobchat now uses a wider array of characters to detect say and emote, they can be configurated in the roleplay tab
+- Gobchat now uses a wider array of characters to detect say and emote, they can be configured in the roleplay tab
 
 ## Fixed
 - Hotkeys were not applied on change, only after restarting Gobchat
