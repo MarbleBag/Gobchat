@@ -17,10 +17,8 @@ using System.Windows.Forms;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
 using NLog;
-using SharpCompress;
-using SharpCompress.Archives;
 
-namespace Gobchat.Core.Module.CefInstaller
+namespace Gobchat.Module.CefInstaller
 {
     public sealed partial class AppModuleCefInstaller : IApplicationModule
     {

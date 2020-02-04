@@ -11,23 +11,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core;
-using Gobchat.Core.Config;
-using Gobchat.UI.Forms;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using System.Linq;
-using TinyMessenger;
 using NLog;
 using System;
 using Gobchat.Core.UI;
-using Gobchat.Core.Module;
-using Gobchat.Core.Module.CefInstaller;
-using Gobchat.Module.Chat;
-using Gobchat.Core.Module.Hotkey;
-using Gobchat.Module.Updater;
 
 namespace Gobchat.Core.Runtime
 {
@@ -74,17 +64,17 @@ namespace Gobchat.Core.Runtime
 
             var moduleActivationSequence = new List<IApplicationModule>()
             {
-                new AppModuleConfig(),
+                new Module.Config.AppModuleConfig(),
 
-                new AppModuleUpdater(),
-                new AppModuleCefInstaller(),
+                new Module.Updater.AppModuleUpdater(),
+                new Module.CefInstaller.AppModuleCefInstaller(),
 
-                new AppModuleNotifyIcon(),
-                new AppModuleHotKeyManager(),
+                new Module.NotifyIcon.AppModuleNotifyIcon(),
+                new Module.Hotkey.AppModuleHotKeyManager(),
 
-                new AppModuleCefManager(),
-                new AppModuleChatOverlay(),
-                new AppModuleChat()
+                new Module.Cef.AppModuleCefManager(),
+                new Module.Overlay.AppModuleChatOverlay(),
+                new Module.Chat.AppModuleChat()
             };
 
             logger.Info(() => $"Initialize Gobchat v{GobchatApplicationContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");

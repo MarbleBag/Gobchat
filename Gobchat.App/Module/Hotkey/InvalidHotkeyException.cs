@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gobchat.Core.Module.Hotkey
+namespace Gobchat.Module.Hotkey
 {
     [Serializable]
     public sealed class InvalidHotkeyException : Exception

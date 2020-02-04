@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Gobchat.Core.Module.Hotkey
+namespace Gobchat.Module.Hotkey
 {
     // https://docs.microsoft.com/de-de/windows/win32/api/winuser/nf-winuser-registerhotkey?redirectedfrom=MSDN
     public sealed class HotkeyManager : IHotkeyManager, IDisposable

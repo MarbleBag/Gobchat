@@ -15,7 +15,7 @@ using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using System;
 
-namespace Gobchat.Core.Module
+namespace Gobchat.Module.Config
 {
     public sealed class AppModuleConfig : IApplicationModule
     {

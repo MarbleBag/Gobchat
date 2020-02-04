@@ -12,15 +12,15 @@
  *******************************************************************************/
 
 using Gobchat.UI.Forms;
-using Gobchat.UI.Web;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Config;
 using System.Windows.Forms;
 using Gobchat.Core.UI;
 using System;
 using NLog;
+using Gobchat.Module.NotifyIcon;
 
-namespace Gobchat.Core.Module
+namespace Gobchat.Module.Overlay
 {
     public sealed class AppModuleChatOverlay : IApplicationModule, System.IDisposable
     {

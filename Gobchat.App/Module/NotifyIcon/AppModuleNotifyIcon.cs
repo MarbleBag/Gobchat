@@ -13,12 +13,11 @@
 
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
-using Gobchat.UI.Forms;
 using NLog;
 using System;
 using System.Windows.Forms;
 
-namespace Gobchat.Core.Module
+namespace Gobchat.Module.NotifyIcon
 {
     public sealed class AppModuleNotifyIcon : IApplicationModule, System.IDisposable
     {

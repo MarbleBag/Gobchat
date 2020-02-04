@@ -11,33 +11,30 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Resource;
-using Gobchat.Memory.Chat;
-using Gobchat.UI.Forms;
-using Gobchat.Core.Util.Extension;
+using NLog;
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using System.Xml;
-using Gobchat.Core.Chat;
-using Gobchat.UI.Web.JavascriptEvents;
-using System.Collections.Concurrent;
-using Gobchat.Core.Util.Extension.Queue;
-using Gobchat.Core.Runtime;
-using Gobchat.Core.Config;
-using NLog;
-using Gobchat.Core.Module;
-using Gobchat.Core.Module.Hotkey;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Gobchat.Memory;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
-namespace Gobchat.Core.Module.Chat
+using Gobchat.Memory;
+using Gobchat.Core;
+using Gobchat.Core.Config;
+using Gobchat.Core.Runtime;
+using Gobchat.Core.Resource;
+using Gobchat.Core.Chat;
+using Gobchat.Core.Util.Extension;
+using Gobchat.Core.Util.Extension.Queue;
+using Gobchat.Memory.Chat;
+using Gobchat.UI.Forms;
+using Gobchat.UI.Web.JavascriptEvents;
+using Gobchat.Module.NotifyIcon;
+using Gobchat.Module.Hotkey;
+
+namespace Gobchat.Module.Chat
 {
     // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
@@ -212,7 +209,7 @@ namespace Gobchat.Core.Module.Chat
         private void OnEvent_MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
         {
             var uiManager = _container.Resolve<IUIManager>();
-            if (uiManager.TryGetUIElement<UI.NotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
+            if (uiManager.TryGetUIElement<Gobchat.Core.UI.NotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
             {
                 if (e.IsProcessValid)
                     trayIcon.Icon = Gobchat.Resource.GobTrayIconOn;
@@ -386,7 +383,7 @@ namespace Gobchat.Core.Module.Chat
                             break;
 
                         default:
-                            var result = Util.EnumUtil.ObjectToEnum<Keys>(s);
+                            var result = Core.Util.EnumUtil.ObjectToEnum<Keys>(s);
                             if (result.HasValue)
                                 nKeys |= result.Value;
                             break;
