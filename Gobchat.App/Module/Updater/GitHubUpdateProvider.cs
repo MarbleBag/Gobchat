@@ -116,7 +116,7 @@ namespace Gobchat.Module.Updater
                 return new List<TagPackage>();
             var releases = BuildGitHubReleases(jReleases);
 
-            releases.Sort((a, b) => a.Version.CompareTo(b.Version));
+            //releases.Sort((a, b) => a.Version.CompareTo(b.Version));
 
             if (!AcceptBetaReleases)
                 return releases.Where(p => !p.Version.IsPreRelease).ToList();
@@ -229,10 +229,11 @@ namespace Gobchat.Module.Updater
 
         private string GetDownloadPageUrlFor(GobVersion version)
         {
+            var sVersion = version.IsPreRelease ? $"{version.Major}.{version.Minor}.{version.Patch}-{version.PreRelease}" : $"{version.Major}.{version.Minor}.{version.Patch}";
             return DOWNLOAD_PAGE_URL
                 .Replace("{USER}", _userName)
                 .Replace("{REPO}", _repoName)
-                .Replace("{VERSION}", $"{version.Major}.{version.Minor}.{version.Patch}");
+                .Replace("{VERSION}", sVersion);
         }
     }
 }

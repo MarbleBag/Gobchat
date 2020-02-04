@@ -1,10 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*******************************************************************************
+ * Copyright (C) 2019 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Gobchat.Module.Updater
 {
@@ -22,7 +31,7 @@ namespace Gobchat.Module.Updater
         {
         }
 
-        public GobVersion(Version version) : this((uint)Math.Max(0, version.Major), (uint)Math.Max(0, version.Minor), (uint)Math.Max(0, version.Build))
+        public GobVersion(Version version) : this((uint)Math.Max(0, version.Major), (uint)Math.Max(0, version.Minor), (uint)Math.Max(0, version.Build), (uint)Math.Max(0, version.Revision))
         {
         }
 
