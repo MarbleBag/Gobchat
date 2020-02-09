@@ -4,7 +4,7 @@ $7zipPath = "F:\Program Files\7-Zip\7z.exe"
 
 $releaseFolder = Join-Path $scriptPath (Join-Path  "bin" "Release")
 if(-Not (Test-Path $releaseFolder)){
-	Write-Host "No release found"
+	Write-Error "No release found"
 	exit 1
 }
 
@@ -28,29 +28,35 @@ Get-ChildItem -Path $releaseFolder -Filter  *.log |
 		Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue	
 	}
 
+try{
 
-Write-Host "Filling docs with important stuff ..."
-$rld = "$releaseFolder\docs"
-$ccc = @(
-(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.md";		dst="$rld\CHANGELOG.md"}),
-(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$rld\LICENSE.md"}),
-(New-Object PSObject -Property @{src="$PWD\..\docs\README.md";			dst="$rld\README.md"})
-(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.md";		dst="$rld\README_de.md"})
-(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$rld\SHARLAYAN_LICENSE.md"})
-)
+	Write-Host "Filling docs with important stuff ..."
+	$rld = "$releaseFolder\docs"
+	$ccc = @(
+	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.md";		dst="$rld\CHANGELOG.md"}),
+	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$rld\LICENSE.md"}),
+	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$rld\README.pdf"})
+	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$rld\README_de.pdf"})
+	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$rld\SHARLAYAN_LICENSE.md"})
+	)
 
-New-Item -ItemType directory -Path $rld
-$ccc |
-	ForEach-Object {
-		Copy-Item $_.src $_.dst
-	}
+	New-Item -ItemType directory -Path $rld
+	$ccc |
+		ForEach-Object {
+			Copy-Item $_.src $_.dst -errorAction stop
+		}
+		
+}catch{
+	Write-Error $_
+	exit 1
+}
 
 & "$scriptPath\generate-content-list.ps1" $releaseFolder
 
 $text = [System.IO.File]::ReadAllText("$PWD\Properties\AssemblyInfo.cs");
 $hasMatch = $text -match '\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)'
 if(-Not $hasMatch){
-	Write-Host "Unable to find app version"
+	Write-Error "Unable to find app version"
 	exit 1
 }
 
