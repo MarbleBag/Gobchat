@@ -174,9 +174,9 @@ namespace Gobchat.Module.Updater
                 {
                     var jRelease = jReleases[releaseIndex];
 
-                    //only accept released versions on master
+                    //only accept released versions from master or (hotfixes) from production
                     var branch = (string)jRelease["target_commitish"];
-                    if (!"master".Equals(branch, StringComparison.InvariantCultureIgnoreCase))
+                    if (!("master".Equals(branch, StringComparison.InvariantCultureIgnoreCase) || "production".Equals(branch, StringComparison.InvariantCultureIgnoreCase)))
                         continue;
 
                     var isMarkedPreRelease = (bool)jRelease["prerelease"];
