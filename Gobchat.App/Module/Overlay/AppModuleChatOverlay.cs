@@ -80,6 +80,12 @@ namespace Gobchat.Module.Overlay
                 var menuItemReload = new ToolStripMenuItem("Reload");
                 menuItemReload.Click += (s, e) => _overlay.Reload();
                 trayIcon.AddMenu("overlay.reload", menuItemReload);
+
+#if DEBUG
+                var menuItemDevTool = new ToolStripMenuItem("DevTool");
+                menuItemDevTool.Click += (s, e) => _overlay.Browser.ShowDevTools();
+                trayIcon.AddMenuToGroup("debug", "overlay.devtool", menuItemDevTool);
+#endif
             }
         }
 

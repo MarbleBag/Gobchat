@@ -33,7 +33,7 @@ namespace Gobchat.Module.NotifyIcon
 
             _manager.CreateUIElement(NotifyIconManagerId, () =>
             {
-                var notifyIconManager = new NotifyIconManager(new[] { "app", "close" }, "app")
+                var notifyIconManager = new NotifyIconManager(new[] { "app", "debug", "close" }, "app")
                 {
                     Text = "Gobchat",
                     Icon = Gobchat.Resource.GobIcon,
