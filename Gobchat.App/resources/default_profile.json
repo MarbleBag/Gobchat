@@ -168,7 +168,8 @@
     "datacenter": null,
     "chatUpdateInterval": 1000,
     "hotkeys": {
-      "showhide": ""
+      "showhide": "",
+      "search": "CTRL + F"
     },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],

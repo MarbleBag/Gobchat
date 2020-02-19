@@ -135,6 +135,12 @@
         <div>
             <input type="text" id="capp_hotkey_show" data-gob-configkey="behaviour.hotkeys.showhide" />
         </div>
+        <div>
+            <label>Text Search</label>
+        </div>
+        <div>
+            <input type="text" id="capp_hotkey_search" data-gob-configkey="behaviour.hotkeys.search" />
+        </div>
     </p>
 
     <p>
@@ -239,31 +245,25 @@
                 //needs a way to transform the stored code into javascript and back
                 //this may create some problems for some very special keys
 
-                if (event.keyCode == 13) // enter
+                const keyMsg = ConfigHelper.decodeHotkey(event, true);
+                if (keyMsg === null)
                     return
 
-                if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18) {
-                    txtHotkeyShow.val("")
-                    gobconfig.set(txtHotkeyShowConfigKey, "")
+                txtHotkeyShow.val(keyMsg)
+                gobconfig.set(txtHotkeyShowConfigKey, keyMsg)
+            })
+
+            const txtHotkeySearch = $("#capp_hotkey_search")
+            txtHotkeySearch.attr("title", "Hides or shows a text search field")
+            const txtHotkeySearchConfigKey = txtHotkeySearch.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtHotkeySearchConfigKey, value => txtHotkeySearch.val(value), { defValue: "" })
+            txtHotkeySearch.on("keydown", function (event) {
+                const keyMsg = ConfigHelper.decodeHotkey(event, true);
+                if (keyMsg === null)
                     return
-                }
 
-                event.preventDefault()
-
-                let msg = ""
-                if (event.shiftKey) msg += "Shift + "
-                if (event.altKey) msg += "Alt + "
-                if (event.ctrlKey) msg += "Ctrl + "
-
-                var keyEnum = Gobchat.KeyCodeToKeyEnum(event.keyCode)
-                if (keyEnum === null) {
-                    msg = ""
-                } else {
-                    msg += keyEnum
-                }
-
-                txtHotkeyShow.val(msg)
-                gobconfig.set(txtHotkeyShowConfigKey, msg)
+                txtHotkeySearch.val(keyMsg)
+                gobconfig.set(txtHotkeySearchConfigKey, keyMsg)
             })
 
             // setup ungrouped
