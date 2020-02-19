@@ -157,7 +157,7 @@ namespace Gobchat.Module.Updater
         private (bool, string) PerformAutoUpdateDownload(IUpdateDescription update, string targetFolder, IProgressMonitor progressMonitor)
         {
             var fileDownloader = new GitHubFileDownloader(update.DirectDownloadUrl, targetFolder);
-            fileDownloader.FileName = $"gobchat-{update.Version.Major}.{update.Version.Minor}.{update.Version.Patch}.zip";
+            fileDownloader.FileName = $"gobchat-{update.Version.Major}.{update.Version.Minor}.{update.Version.Patch}-{update.Version.PreRelease}.zip";
 
             try
             {
