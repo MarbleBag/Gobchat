@@ -1,16 +1,8 @@
-﻿.chatbox-search-msg-found > * {
-    background-color: rgba(239, 140, 11, 0.15);
-}
-
-.chatbox-search-msg-active > * {
-    background: yellow;
-}
-
 .chatbox {
     display: flex;
     flex: auto;
     flex-direction: column;
-    height: 100%;
+    max-height: 100%;
 }
 
 .chatbox-topbar {
@@ -19,7 +11,43 @@
 .chatbox-bottombar {
 }
 
+.chatbox-content {
+    display: flex;
+    flex: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    flex-direction: column;
+}
+
+.chatframe {
+    height: 100%;
+    overflow: hidden;
+}
+
+.chatbox {
+    /*background-color: rgba(20, 20, 20, 0.95);	*/
+}
+
+.chatbox-topbar {
+    display: table;
+    width: 100%;
+    z-index: 1;
+    padding-bottom: 0px;
+}
+
+    .chatbox-topbar > div {
+        display: table-cell;
+    }
+
+.chatbox-tabs {
+    text-align: right;
+}
+
+    .chatbox-tabs > button {
+    }
+
 .chatbox-toolbar {
+    text-align: left;
 }
 
     .chatbox-toolbar > button {
@@ -38,12 +66,18 @@
             background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
         }
 
+.chatbox-content-container {
+    height: 100%;
+}
+
 .chatbox-content {
-    display: flex;
-    flex: auto;
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 4;
+    bottom: 0;
     overflow-x: hidden;
     overflow-y: scroll;
-    flex-direction: column;
 }
 
     .chatbox-content::-webkit-scrollbar {
@@ -87,3 +121,11 @@
     .chatbox-content::-webkit-scrollbar-corner {
         background: transparent;
     }
+
+.chatbox-search-msg-found > * {
+    background-color: rgba(239, 140, 11, 0.15);
+}
+
+.chatbox-search-msg-active > * {
+    background: yellow;
+}
