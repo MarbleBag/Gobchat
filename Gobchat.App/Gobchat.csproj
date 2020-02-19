@@ -321,7 +321,11 @@
     <Content Include="resources\ui\config\config_roleplay.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\gobchat\ChatTabHtmlElement.js" />
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobui_chat.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\fontawesome\js\all.js">
@@ -378,8 +382,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobui_chat.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobui_chat_old.css">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobui_default.css">
