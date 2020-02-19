@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.4.1] - 2020.02.19
+## Fixed
+- Gobchat should work again - FFXIV uses new control characters since patch 5.2
+
 ## [1.4.0] - 2020.02.03
 ## Added
 - Chat command to close gobchat. Use: /e gc close

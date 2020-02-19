@@ -33,7 +33,7 @@ try{
 	Write-Host "Filling docs with important stuff ..."
 	$rld = "$releaseFolder\docs"
 	$ccc = @(
-	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.md";		dst="$rld\CHANGELOG.md"}),
+	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.pdf";		dst="$rld\CHANGELOG.pdf"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$rld\LICENSE.md"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$rld\README.pdf"})
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$rld\README_de.pdf"})
