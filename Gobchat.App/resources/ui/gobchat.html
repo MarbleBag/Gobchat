@@ -45,15 +45,18 @@
 
     <div id="container">
         <div id="chatbox" class="chatbox">
-            <div id="toolbar" class="chatbox-topbar">
-                <div class="chatbox-toolbar">
-                    <button id="gobchat_config"><i class="fas fa-cog"></i></button>
-                </div>
-                <div id="toolbarTabs" class="chatbox-tabs">
-                </div>
+            <div id="chatbox_toolba_top" class="chatbox-topbar chatbox-toolbar">
+                <button id="gobchat_config"><i class="fas fa-cog"></i></button>
             </div>
-            <div class="chatbox-content-container chatbox-gen">
-                <div id="chatboxcontent" class="chatbox-content">
+            <div id="chatbox_content" class="chatbox-content chatbox-gen">
+            </div>
+            <div id="chatbox_toolba_bot" class="chatbox-bottombar">
+                <div>
+                    <input id="chatbox_search" />
+                    <button id="chatbox_search_go"><i class="fas fa-check"></i></button>
+                    <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>
+                    <button id="chatbox_search_backward"><i class="fas fa-caret-left"></i></button>
+                    <button id="chatbox_search_forward"><i class="fas fa-caret-right"></i></button>
                 </div>
             </div>
         </div>
@@ -72,7 +75,7 @@
     //})
 
     jQuery(function ($) {
-        window.chatManager = new Gobchat.GobchatManager("chatboxcontent")
+        window.chatManager = new Gobchat.GobchatManager("chatbox_content")
         window.chatManager.init()
 
         $("#gobchat_config").on("click", function (e) {
@@ -100,6 +103,92 @@
                     }
                 }
             }, 1000);
+        })
+
+        function clearChatSearch() {
+            $(".chatbox-search-msg-found").removeClass("chatbox-search-msg-found")
+            $(".chatbox-search-msg-active").removeClass("chatbox-search-msg-active")
+        }
+
+        function startChatSearch() {
+            clearChatSearch()
+
+            let searchParam = $("#chatbox_search").val()
+            if (searchParam === null || searchParam === undefined) return
+            searchParam = searchParam.trim().toUpperCase()
+            if (searchParam.length === 0) return
+
+            $(".message-body-base").each(function (i, e) {
+                const found = $(this).text().toUpperCase().indexOf(searchParam) >= 0;
+                if (found) {
+                    $(this).addClass("chatbox-search-msg-found")
+                }
+            })
+
+            $('.chatbox-search-msg-found').last().addClass("chatbox-search-msg-active")
+
+            scrollChatSearch()
+        }
+
+        function scrollChatSearch() {
+
+            const target = $(".chatbox-search-msg-active")[0]
+            if (!target)
+                return
+
+            const frame = $("#chatbox_content")[0]
+
+            const containerTop = frame.scrollTop
+            const containerBot = frame.clientHeight + containerTop
+            const elementTop = target.offsetTop - frame.offsetTop
+            const elementBot = target.clientHeight + elementTop
+            const isVisible = containerTop <= elementTop && elementBot <= containerBot
+            console.log("Stuff: " + containerTop + " | " + containerBot + " | " + elementTop + " | " + elementBot)
+            if (isVisible)
+                return
+
+            const position = elementTop;
+
+            $(frame).animate({
+                scrollTop: position /// $(".chatbox-search-msg-active").first().offset().top // $("chatboxcontent")[0].scrollHeight - $("chatboxcontent")[0].clientHeight
+            }, 100)
+        }
+
+        $("#chatbox_search").on("keyup", function (e) {
+            if (event.keyCode !== 13) // enter
+                return
+
+            startChatSearch()
+        })
+
+        $("#chatbox_search_delete").on("click", function (e) {
+            clearChatSearch()
+        })
+
+        $("#chatbox_search_backward").on("click", function (e) {
+            const currentSearch = $(".chatbox-search-msg-active")
+            currentSearch.removeClass("chatbox-search-msg-active")
+            const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-found").addBack().last().next(".chatbox-search-msg-found")
+            if (prevSearch.length !== 0) {
+                prevSearch.addClass("chatbox-search-msg-active")
+            } else {
+                $(".chatbox-search-msg-found").first().addClass("chatbox-search-msg-active")
+            }
+
+            scrollChatSearch()
+        })
+
+        $("#chatbox_search_forward").on("click", function (e) {
+            const currentSearch = $(".chatbox-search-msg-active")
+            currentSearch.removeClass("chatbox-search-msg-active")
+            const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-found").addBack().first().prev(".chatbox-search-msg-found")
+            if (prevSearch.length !== 0) {
+                prevSearch.addClass("chatbox-search-msg-active")
+            } else {
+                $(".chatbox-search-msg-found").last().addClass("chatbox-search-msg-active")
+            }
+
+            scrollChatSearch()
         })
 
         $(window).on("message", function (e) {
@@ -135,11 +224,11 @@
 
             textMessages.forEach(e => fireMessageEvent(e))
 
-            const fillMe = Array.from({ length: 1 }, (v, k) => `|Text1 | <Text 2> "Say" ((ooc)) *emote*   | oof |  Say, *emote* and ((ooc)) - ${k + 1} <emote> \u226Btext long\u226A`).map(e => { return { message: e, source: "Di'e I'of-oOdin" } })
+            const fillMe = Array.from({ length: 20 }, (v, k) => `|Text1 | <Text 2> "Say" ((ooc)) *emote*   | oof |  Say, *emote* and ((ooc)) - ${k + 1} <emote> \u226Btext long\u226A`).map(e => { return { message: e, source: "Di'e I'of-oOdin" } })
             fillMe.forEach(e => fireMessageEvent(e))
         }
 
-        //window.setTimeout(runTest, 10000);
+        window.setTimeout(runTest, 10000);
 
     })
 </script>
