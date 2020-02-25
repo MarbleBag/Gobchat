@@ -42,7 +42,7 @@ namespace Gobchat.Module.Chat
                         timer.Restart();
                         work.Update();
 
-                        var updateTimer = config.ActiveProfile.GetProperty<long>("behaviour.chatUpdateInterval");
+                        var updateTimer = config.GetProperty<long>("behaviour.chatUpdateInterval");
 
                         timer.Stop();
                         var timeSpend = timer.Elapsed;
