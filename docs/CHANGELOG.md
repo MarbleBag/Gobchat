@@ -2,45 +2,58 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Added
+- Added another button `Add new group` to `Config / Groups` at the bottom, which will attach a new group at the end
+- `Textsearch`, it's now possible to search through the chat. Gobchat will highlight all entries which fit the search term and allow to step through them.
+- A new button to the top of the chat to open the `textsearch`
+- Added fields to set position and size of the chat frame to `Config / App`
+
+### Changed
+- `Add new group` under `Config / Groups` will now insert a new group at the beginning
+
+### Fixed
+- Gobchat can now distinguish between different beta releases by parsing the pre-release version
+
 ## [1.4.1] - 2020.02.19
-## Fixed
+### Fixed
 - Gobchat should work again - FFXIV uses new control characters since patch 5.2
 
 ## [1.4.0] - 2020.02.03
-## Added
+### Added
 - Chat command to close gobchat. Use: /e gc close
 - Message on config save
 - Profiles will be saved directly to disk on save now
 - Gobchat now uses a wider array of characters to detect say and emote, they can be configured in the roleplay tab
 
-## Fixed
+### Fixed
 - Hotkeys were not applied on change, only after restarting Gobchat
 - Config dialog can only be opened once at the same time
 
 ## [1.3.1] - 2020.01.20
-## Fixed
+### Fixed
 - Some typos
 - Command group add / remove will now tell the user the result of the command
 
 
 ## [1.3.0] - 2020.01.10
-## Added
+### Added
 - Sound on mention! The mention tab was extended and now includes settings to play a sound file
 - Gobchat can now hide itself when FFXIV gets minimized
 
-## Fixed
+### Fixed
 - On profile delete the profile file will also be deleted from the filesystem, so it won't be loaded again
 - Profile names can be changed
 
 ## [1.2.1] - 2020.01.05
-## Fixed
+### Fixed
 - Changed settings will be applied immediately again, just how it should be!
 
 ## [1.2.0] - 2020.01.05
-## Bug
+### Bug
 - It's currently necessary to start Gobchat with admin rights, otherwise it can't read FF chatlog.
 
-## Added
+### Added
 - Profiles! It's now possible to have more settings per settings, so you can twink your twink
 - Chat command to switch between profiles without open the settings. Try /e gc profile
 - A checkbox which allows gobchat to be updated with pre-releases / beta-releases
@@ -50,15 +63,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - On using '/e gc' gobchat will now tell you which commands are available
 
 ## [1.1.0] - 2019.12.06
-## Added
+### Added
 - Auto-Updater
 - Field to set the frequency of chat updates in milliseconds (Experimental)
 - Additional sections to the german readme
 
-## Changed
+### Changed
 - Chatlogs names are changed from yyyy_MM_dd_HH_mm to yyyy-MM-dd_HH-mm
 
-## Fixed
+### Fixed
 - Lost messages when a high amount of messages from other players are received
 
 ## [1.0.0] - 2019.11.27
@@ -73,7 +86,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## [0.2.2] - 2019.10.27
 ### Added
-- Channel for npc dialogue 
+- Channel for npc dialogue
 
 ### Fixed
 - Players didn't show up, when their last name contained an apostrophe/additional uppercase letter and gobchat didn't know the datacenter yet
@@ -95,7 +108,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Player groups are sorted. Only the first group that matches will be applied.
 - Server name. If someone comes from another server, the overlay tries to display their server separate from their last name
 - A chat command manager. To start a chat command use '/e gc'
-- chat command 'group'. Allows to add, remove and clear player groups. Example: /e gc group 1 add firstname lastname [server] (Server is only needed if the player comes from a different server than you!) 
+- chat command 'group'. Allows to add, remove and clear player groups. Example: /e gc group 1 add firstname lastname [server] (Server is only needed if the player comes from a different server than you!)
 
 ### Fixed
 - Checkboxes on the plugin control form have now the correct size
@@ -143,7 +156,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ## [0.1.0] - 2019.09.25
 ### Added
 - A fixed roleplay format which will be applied to roleplay channels
-- A fixed set of roleplay channels: Say (/s), Emote (/em), Yell (/y) 
+- A fixed set of roleplay channels: Say (/s), Emote (/em), Yell (/y)
 - A fixed color encoding for channels
 - A scrollbar to overlay
 - Ability to resize overlay
