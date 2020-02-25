@@ -21,12 +21,12 @@
     <script type="text/javascript">
         'use strict';
 
-        if (window.opener) {
-            window.GobchatAPI = window.opener.GobchatAPI
-            window.Gobchat = window.opener.Gobchat
-            window.gobconfig = new Gobchat.GobchatConfig()
-            window.gobconfig.loadFromLocalStore()
-        }
+        //if (window.opener) {
+        window.GobchatAPI = window.opener.GobchatAPI
+        window.Gobchat = window.opener.Gobchat
+        window.gobconfig = new Gobchat.GobchatConfig()
+        window.gobconfig.loadFromLocalStore()
+        //}
     </script>
 
     <div id="main_navbar" class="ui-side-navigation">
@@ -39,6 +39,7 @@
         <a data-nav-target="main_nav_groups">Groups</a>
         <a data-nav-target="main_nav_about">About</a>
         <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
+        <a class="btn-system" id="main_saveandexitconfig"><i class="fa fa-save"></i> Save &amp; Exit</a>
         <!--<a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>-->
         <a class="btn-system" id="main_cancelconfig"><i class="fas fa-trash-alt"></i> Cancel</a>
     </div>
@@ -70,9 +71,17 @@
         jQuery(function ($) {
             $("#main_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
-                window.gobresult = "success"
+                window.saveConfig()                
+                //window.close()
+                //window.opener.postMessage("Done", '*')
+            });
+
+            $("#main_saveandexitconfig").on("click", function (e) {
+                window.gobconfig.saveToLocalStore()
+                window.saveConfig()
+                //window.gobresult = "save"
                 window.close()
-                window.opener.postMessage("Done", '*')
+                //window.opener.postMessage("Done", '*')
             });
 
             $("#main_resetconfig").on("click", function (e) {
@@ -84,10 +93,10 @@
             });
 
             $("#main_cancelconfig").on("click", function (e) {
-                if (window.confirm("Cancel? Any changed settings will be lost.")) {
-                    window.gobresult = "cancel"
+                if (window.confirm("Cancel? Any unsaved changes will be lost.")) {
+                    //window.gobresult = "cancel"
                     window.close()
-                    window.opener.postMessage("Done", '*')
+                    //window.opener.postMessage("Done", '*')
                 }
             });
 

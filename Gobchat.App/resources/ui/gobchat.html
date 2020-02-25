@@ -25,7 +25,6 @@
     <script src="gobchat/GobchatConfig.js"></script>
 
     <script src="gobchat/CommandManager.js"></script>
-
     <script src="gobchat/StyleBuilder.js"></script>
 
     <script src="gobchat/Message.js"></script>
@@ -46,18 +45,20 @@
     <div id="container">
         <div id="chatbox" class="chatbox">
             <div id="chatbox_toolba_top" class="chatbox-topbar chatbox-toolbar">
-                <button id="gobchat_config"><i class="fas fa-cog"></i></button>
+                <button id="gobchat_showconfig"><i class="fas fa-cog"></i></button>
+                <button id="gobchat_togglechatsearch"><i class="fas fa-search"></i></button>
             </div>
             <div id="chatbox_content" class="chatbox-content chatbox-gen">
             </div>
             <div id="chatbox_toolba_bot" class="chatbox-bottombar">
-                <div>
-                    <input id="chatbox_search" />
-                    <button id="chatbox_search_go"><i class="fas fa-check"></i></button>
+                <div id="chatbox_search">
+                    <input id="chatbox_search_txt" />
+                    <button id="chatbox_search_hits">0 / 0</button>
+                    <button id="chatbox_search_forward"><i class="fas fa-caret-left"></i></button>
+                    <button id="chatbox_search_backward"><i class="fas fa-caret-right"></i></button>
                     <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>
-                    <button id="chatbox_search_backward"><i class="fas fa-caret-left"></i></button>
-                    <button id="chatbox_search_forward"><i class="fas fa-caret-right"></i></button>
                 </div>
+                <!--<gobchat-chatsearch id="chatbox_search"></gobchat-chatsearch>-->
             </div>
         </div>
     </div>
@@ -78,8 +79,7 @@
         window.chatManager = new Gobchat.GobchatManager("chatbox_content")
         window.chatManager.init()
 
-        $("#gobchat_config").on("click", function (e) {
-
+        $("#gobchat_showconfig").on("click", function (e) {
             const isConfigOpen = localStorage.getItem("gobchat-config-open") || "false"
 
             if (isConfigOpen === "true")
@@ -90,49 +90,119 @@
             window.chatManager.saveConfigToLocalStore()
 
             const handle = window.open("config/config.html", 'Settings', 'width=900,height=600')
+            handle.saveConfig = function () {
+                window.chatManager.loadConfigFromLocalStore()
+                window.chatManager.updateStyle()
+            }
+
             handle.focus()
 
             const timer = setInterval(function () {
                 if (handle.closed) {
                     clearInterval(timer);
                     localStorage.removeItem("gobchat-config-open")
-                    const result = handle.window.gobresult
-                    if (result === "success") {
-                        window.chatManager.loadConfigFromLocalStore()
-                        window.chatManager.updateStyle()
-                    }
                 }
             }, 1000);
         })
 
-        function clearChatSearch() {
-            $(".chatbox-search-msg-found").removeClass("chatbox-search-msg-found")
-            $(".chatbox-search-msg-active").removeClass("chatbox-search-msg-active")
+        function toggleChatSearch() {
+            $("#chatbox_search").toggle()
+            if ($("#chatbox_search").is(":visible"))
+                $("#chatbox_search_txt").focus()
         }
+
+        $("#chatbox_search").hide()
+        $("#gobchat_togglechatsearch").on("click", (e) => { toggleChatSearch() })
+        document.addEventListener("ToggleSearchEvent", (e) => { toggleChatSearch() })
+
+        $("#chatbox_search").on("keyup", function (e) {
+            if (event.keyCode !== 13) // enter
+                return
+            startChatSearch()
+        })
+
+        $("#chatbox_search_delete").on("click", function (e) {
+            clearChatSearch()
+        })
+
+        function chatSearchProcessCounter(fun) {
+            const $counter = $("#chatbox_search_hits")
+            const txt = $counter.text()
+            const split = txt.split("/")
+            let total = 0
+            let current = 0
+            if (split.length == 2) {
+                total = parseInt(split[0])
+                current = parseInt(split[1])
+            }
+            const [nTotal, nCurrent] = fun(total, current)
+            $counter.text(`${nTotal} / ${nCurrent}`)
+        }
+
+        $("#chatbox_search_backward").on("click", function (e) {
+            const currentSearch = $(".chatbox-search-msg-selected")
+            currentSearch.removeClass("chatbox-search-msg-selected")
+            const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-found").addBack().last().next(".chatbox-search-msg-found")
+            if (prevSearch.length !== 0) {
+                prevSearch.addClass("chatbox-search-msg-selected")
+                chatSearchProcessCounter((t, c) => [t, c - 1])
+            } else {
+                $(".chatbox-search-msg-found").first().addClass("chatbox-search-msg-selected")
+                chatSearchProcessCounter((t, c) => [t, t])
+            }
+            scrollChatSearch()
+        })
+
+        $("#chatbox_search_forward").on("click", function (e) {
+            const currentSearch = $(".chatbox-search-msg-selected")
+            currentSearch.removeClass("chatbox-search-msg-selected")
+            const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-found").addBack().first().prev(".chatbox-search-msg-found")
+            if (prevSearch.length !== 0) {
+                prevSearch.addClass("chatbox-search-msg-selected")
+                chatSearchProcessCounter((t, c) => [t, c + 1])
+            } else {
+                $(".chatbox-search-msg-found").last().addClass("chatbox-search-msg-selected")
+                chatSearchProcessCounter((t, c) => [t, 1])
+            }
+            scrollChatSearch()
+        })
+
+        $("#chatbox_search_hits").on("click", function (e) {
+            scrollChatSearch()
+        })
 
         function startChatSearch() {
             clearChatSearch()
 
-            let searchParam = $("#chatbox_search").val()
-            if (searchParam === null || searchParam === undefined) return
-            searchParam = searchParam.trim().toUpperCase()
-            if (searchParam.length === 0) return
+            let searchText = $("#chatbox_search_txt").val()
+            if (searchText === null || searchText === undefined) return
+            searchText = searchText.trim().toUpperCase()
+            if (searchText.length === 0) return
 
-            $(".message-body-base").each(function (i, e) {
-                const found = $(this).text().toUpperCase().indexOf(searchParam) >= 0;
-                if (found) {
+            $("#chatbox_content").find(".message-body-base").each(function (i, e) {
+                if ($(this).text().toUpperCase().indexOf(searchText) >= 0)
                     $(this).addClass("chatbox-search-msg-found")
-                }
             })
 
-            $('.chatbox-search-msg-found').last().addClass("chatbox-search-msg-active")
+            const allHits = $(".chatbox-search-msg-found")
+            allHits.last().addClass("chatbox-search-msg-selected")
+            chatSearchProcessCounter((t, c) => [allHits.length, 1])
 
             scrollChatSearch()
         }
 
-        function scrollChatSearch() {
+        function buildSearchFunction(txt, advanced) {
 
-            const target = $(".chatbox-search-msg-active")[0]
+        }
+
+        function clearChatSearch() {
+            $("#chatbox_content").find(".chatbox-search-msg-selected").removeClass("chatbox-search-msg-selected")
+            $("#chatbox_content").find(".chatbox-search-msg-found").removeClass("chatbox-search-msg-found")
+            chatSearchProcessCounter((t, c) => [0, 0])
+        }
+
+        function scrollChatSearch() {
+            const target = $("#chatbox_content").find(".chatbox-search-msg-selected")[0]
             if (!target)
                 return
 
@@ -143,7 +213,7 @@
             const elementTop = target.offsetTop - frame.offsetTop
             const elementBot = target.clientHeight + elementTop
             const isVisible = containerTop <= elementTop && elementBot <= containerBot
-            console.log("Stuff: " + containerTop + " | " + containerBot + " | " + elementTop + " | " + elementBot)
+
             if (isVisible)
                 return
 
@@ -153,50 +223,6 @@
                 scrollTop: position /// $(".chatbox-search-msg-active").first().offset().top // $("chatboxcontent")[0].scrollHeight - $("chatboxcontent")[0].clientHeight
             }, 100)
         }
-
-        $("#chatbox_search").on("keyup", function (e) {
-            if (event.keyCode !== 13) // enter
-                return
-
-            startChatSearch()
-        })
-
-        $("#chatbox_search_delete").on("click", function (e) {
-            clearChatSearch()
-        })
-
-        $("#chatbox_search_backward").on("click", function (e) {
-            const currentSearch = $(".chatbox-search-msg-active")
-            currentSearch.removeClass("chatbox-search-msg-active")
-            const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-found").addBack().last().next(".chatbox-search-msg-found")
-            if (prevSearch.length !== 0) {
-                prevSearch.addClass("chatbox-search-msg-active")
-            } else {
-                $(".chatbox-search-msg-found").first().addClass("chatbox-search-msg-active")
-            }
-
-            scrollChatSearch()
-        })
-
-        $("#chatbox_search_forward").on("click", function (e) {
-            const currentSearch = $(".chatbox-search-msg-active")
-            currentSearch.removeClass("chatbox-search-msg-active")
-            const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-found").addBack().first().prev(".chatbox-search-msg-found")
-            if (prevSearch.length !== 0) {
-                prevSearch.addClass("chatbox-search-msg-active")
-            } else {
-                $(".chatbox-search-msg-found").last().addClass("chatbox-search-msg-active")
-            }
-
-            scrollChatSearch()
-        })
-
-        $(window).on("message", function (e) {
-            //TODO somehow check for the correct data
-            //console.log(e)
-            // window.chatManager.loadConfigFromLocalStore()
-            // window.chatManager.updateStyle()
-        })
 
         // test
         function runTest() {

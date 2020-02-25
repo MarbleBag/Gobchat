@@ -2,7 +2,7 @@
     background-color: rgba(239, 140, 11, 0.15);
 }
 
-.chatbox-search-msg-active > * {
+.chatbox-search-msg-selected > * {
     background: yellow;
 }
 
