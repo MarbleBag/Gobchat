@@ -179,11 +179,33 @@ namespace Gobchat.Core.Config
 
             callbacks.OnArray = (arrayA, arrayB) =>
             {
-                return true; //always overwrite
+                if (arrayA == null && arrayB == null)
+                    return false;
+
+                if (arrayA == null && arrayB != null || arrayA != null && arrayB == null)
+                    return true;
+
+                if (arrayA.Count != arrayB.Count)
+                    return true;
+
+                var listA = arrayA.ToObject<List<object>>();
+                var listB = arrayB.ToObject<List<object>>();
+                listA.Sort();
+                listB.Sort();
+
+                var overwrite = !listA.SequenceEqual(listB);
+                return overwrite;
             };
             callbacks.OnValue = (valueA, valueB) =>
             {
-                return true; //always overwrite
+                if (valueA == null && valueB == null)
+                    return false;
+
+                if (valueA == null && valueB != null || valueA != null && valueB == null)
+                    return true;
+
+                var overwrite = !valueA.Equals(valueB);
+                return overwrite;
             };
             callbacks.OnObject = (objectA, objectB) => // move data from A to B
             {
