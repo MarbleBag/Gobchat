@@ -30,69 +30,72 @@ var Gobchat = (function (Gobchat) {
         return buildAttributeList(Object.keys(source), source, fallback)
     }
 
-    function buildCssClass(className, classAttributes, classAttributesFallback) {
+    function buildCssStyleElement(cssSelector, classAttributes, classAttributesFallback) {
         const attributes = getAttributes(classAttributes, classAttributesFallback)
             .map((attribute) => { return `${attribute[0]}: ${attribute[1]};` })
 
         const style = `
-				.${className}{
+				${cssSelector}{
 					${attributes.join("")}
 				}
 			`
         return style
     }
 
-    function generateCssClass(cssResults, cssClassName, styleData, styleFallbackData) {
-        const css = buildCssClass(cssClassName, styleData, styleFallbackData)
+    function generateCssStyleElement(cssResults, styleSelector, styleData, styleFallbackData) {
+        const css = buildCssStyleElement(styleSelector, styleData, styleFallbackData)
         cssResults.push(css)
     }
 
-    function generateCssClasses(cssResults, cssClassNameTemplate, styleData, styleFallbackData) {
+    function generateCssStyleElementsFromMap(cssResults, cssStyleSelectorTemplate, styleData, styleFallbackData) {
         for (let styleKey in styleData) {
             const cssAttributes = styleData[styleKey]
             const fallbackAttributes = (styleFallbackData && styleKey in styleFallbackData) ? styleFallbackData[styleKey] : undefined
-            const cssClassName = Gobchat.formatString(cssClassNameTemplate, { styleKey: styleKey })
-            const css = buildCssClass(cssClassName, cssAttributes, fallbackAttributes)
-            cssResults.push(css)
+            const cssStyleSelector = Gobchat.formatString(cssStyleSelectorTemplate, { styleKey: styleKey })
+            generateCssStyleElement(cssResults, cssStyleSelector, cssAttributes, fallbackAttributes)
         }
     }
 
-    function buildGeneralStyles(cssResults, styles) {
-        generateCssClass(cssResults, "chatbox-gen", styles.chatbox)
-        generateCssClasses(cssResults, "message-body-{styleKey}", styles.channel)
-        generateCssClasses(cssResults, "message-segment-{styleKey}", styles.segment, styles.channel)
+    function generateStyleSheet(cssResults, styles) {
+        generateCssStyleElement(cssResults, ".chatbox-gen", styles.chatbox)
+
+        generateCssStyleElementsFromMap(cssResults, ".message-body-{styleKey}", styles.channel)
+        generateCssStyleElementsFromMap(cssResults, ".message-segment-{styleKey}", styles.segment, styles.channel)
+
+        generateCssStyleElement(cssResults, ".chatbox-search-msg-found:not(.chatbox-search-msg-selected)", styles.chatsearch.found)
+        generateCssStyleElement(cssResults, ".chatbox-search-msg-selected", styles.chatsearch.selected)
     }
 
-    function buildTimestampStyle(cssResults, showTimestamp) {
+    function generateTimestampStyle(cssResults, showTimestamp) {
         const attributes = {}
         if (!showTimestamp) {
             attributes["display"] = "none"
         }
-        generateCssClass(cssResults, "message-timestamp", attributes)
+        generateCssStyleElement(cssResults, ".message-timestamp", attributes)
     }
 
-    function buildGroupStyles(cssResults, styles) {
+    function generateGroupStyles(cssResults, styles) {
         const data = styles.data
         for (let dataKey in data) {
             const group = data[dataKey]
             const groupStyle = group.style
 
-            generateCssClass(cssResults, `message-group-body-${group.id}`, groupStyle.body)
-            generateCssClass(cssResults, `message-group-sender-${group.id}`, groupStyle.header)
+            generateCssStyleElement(cssResults, `.message-group-body-${group.id}`, groupStyle.body)
+            generateCssStyleElement(cssResults, `.message-group-sender-${group.id}`, groupStyle.header)
         }
     }
 
     function buildStyle(gobchatConfig) {
         const cssResults = []
 
-        buildGeneralStyles(cssResults, gobchatConfig.get("style"))
-        buildTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
-        buildGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
+        generateStyleSheet(cssResults, gobchatConfig.get("style"))
+        generateTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
+        generateGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
 
         return cssResults.join("\n")
     }
 
-    function setStyle(styleId, styleCssText) {
+    function setDocumentStyle(styleId, styleCssText) {
         let styleElement = document.getElementById(styleId)
         if (!styleElement) {
             styleElement = document.createElement("style")
@@ -108,7 +111,7 @@ var Gobchat = (function (Gobchat) {
     Gobchat.StyleBuilder = {
         updateStyle: function (styleConfig, styleId) {
             const css = buildStyle(styleConfig)
-            setStyle(styleId, css)
+            setDocumentStyle(styleId, css)
         }
     }
 
