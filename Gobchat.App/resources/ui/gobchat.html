@@ -34,14 +34,6 @@
     <script src="gobchat/GobchatManager.js"></script>
 </head>
 <body>
-    <!--
-        TODO:
-        - transparency can be done by using rgba(r,g,b,a) in CSS
-        - Maybe let parsing be done im c# plugin for performance?
-        - Store some MB of chat history im plugin for retrieval on reload
-        - clear command
-    -->
-
     <div id="container">
         <div id="chatbox" class="chatbox">
             <div id="chatbox_toolba_top" class="chatbox-topbar chatbox-toolbar">
@@ -50,13 +42,14 @@
             </div>
             <div id="chatbox_content" class="chatbox-content chatbox-gen">
             </div>
-            <div id="chatbox_toolba_bot" class="chatbox-bottombar">
+            <div id="chatbox_toolba_bot" class="chatbox-bottombar chatbox-gen">
                 <div id="chatbox_search">
                     <input id="chatbox_search_txt" />
                     <button id="chatbox_search_hits">0 / 0</button>
-                    <button id="chatbox_search_forward"><i class="fas fa-caret-left"></i></button>
-                    <button id="chatbox_search_backward"><i class="fas fa-caret-right"></i></button>
+                    <button id="chatbox_search_up"><i class="fas fa-angle-up"></i></button>
+                    <button id="chatbox_search_down"><i class="fas fa-angle-down"></i></button>
                     <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>
+                    <!--<input id="chatbox_search_advanced" type="checkbox" />-->
                 </div>
                 <!--<gobchat-chatsearch id="chatbox_search"></gobchat-chatsearch>-->
             </div>
@@ -109,6 +102,17 @@
             $("#chatbox_search").toggle()
             if ($("#chatbox_search").is(":visible"))
                 $("#chatbox_search_txt").focus()
+            else
+                clearChatSearch()
+
+            window.chatManager.scrollToBottomIfNeeded()
+
+            //Trigger reflow, needed because flex does not recalculate column height after content changes
+            //What a nasty bug
+            const chatFrame = $("#chatbox_content")[0]
+            chatFrame.style.display = "none"
+            chatFrame.offsetHeight
+            chatFrame.style.display = "flex"
         }
 
         $("#chatbox_search").hide()
@@ -132,37 +136,37 @@
             let total = 0
             let current = 0
             if (split.length == 2) {
-                total = parseInt(split[0])
-                current = parseInt(split[1])
+                current = parseInt(split[0])
+                total = parseInt(split[1])
             }
-            const [nTotal, nCurrent] = fun(total, current)
-            $counter.text(`${nTotal} / ${nCurrent}`)
+            const [nCurrent, nTotal] = fun(current, total)
+            $counter.text(`${nCurrent} / ${nTotal}`)
         }
 
-        $("#chatbox_search_backward").on("click", function (e) {
+        $("#chatbox_search_down").on("click", function (e) {
             const currentSearch = $(".chatbox-search-msg-selected")
             currentSearch.removeClass("chatbox-search-msg-selected")
             const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-found").addBack().last().next(".chatbox-search-msg-found")
             if (prevSearch.length !== 0) {
                 prevSearch.addClass("chatbox-search-msg-selected")
-                chatSearchProcessCounter((t, c) => [t, c - 1])
+                chatSearchProcessCounter((c, t) => [c - 1, t])
             } else {
                 $(".chatbox-search-msg-found").first().addClass("chatbox-search-msg-selected")
-                chatSearchProcessCounter((t, c) => [t, t])
+                chatSearchProcessCounter((c, t) => [t, t])
             }
             scrollChatSearch()
         })
 
-        $("#chatbox_search_forward").on("click", function (e) {
+        $("#chatbox_search_up").on("click", function (e) {
             const currentSearch = $(".chatbox-search-msg-selected")
             currentSearch.removeClass("chatbox-search-msg-selected")
             const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-found").addBack().first().prev(".chatbox-search-msg-found")
             if (prevSearch.length !== 0) {
                 prevSearch.addClass("chatbox-search-msg-selected")
-                chatSearchProcessCounter((t, c) => [t, c + 1])
+                chatSearchProcessCounter((c, t) => [c + 1, t])
             } else {
                 $(".chatbox-search-msg-found").last().addClass("chatbox-search-msg-selected")
-                chatSearchProcessCounter((t, c) => [t, 1])
+                chatSearchProcessCounter((c, t) => [1, t])
             }
             scrollChatSearch()
         })
@@ -186,7 +190,7 @@
 
             const allHits = $(".chatbox-search-msg-found")
             allHits.last().addClass("chatbox-search-msg-selected")
-            chatSearchProcessCounter((t, c) => [allHits.length, 1])
+            chatSearchProcessCounter((c, t) => [Math.min(1, allHits.length), allHits.length])
 
             scrollChatSearch()
         }
@@ -198,7 +202,7 @@
         function clearChatSearch() {
             $("#chatbox_content").find(".chatbox-search-msg-selected").removeClass("chatbox-search-msg-selected")
             $("#chatbox_content").find(".chatbox-search-msg-found").removeClass("chatbox-search-msg-found")
-            chatSearchProcessCounter((t, c) => [0, 0])
+            chatSearchProcessCounter((c, t) => [0, 0])
         }
 
         function scrollChatSearch() {
