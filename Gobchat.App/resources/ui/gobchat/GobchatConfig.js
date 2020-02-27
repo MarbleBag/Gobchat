@@ -226,6 +226,10 @@ var Gobchat = (function (Gobchat, undefined) {
                 const isActiveProfile = event.source === self.activeProfile
                 self._eventDispatcher.dispatch(`property:${event.key}`, { "key": event.key, "source": event.source, "isActive": isActiveProfile })
             }
+
+            if (this._isSynced) {
+                document.addEventListener("SynchronizeConfigEvent", (e) => { self.loadConfig() })
+            }
         }
 
         _loadConfig(json) {
