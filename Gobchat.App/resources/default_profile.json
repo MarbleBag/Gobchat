@@ -409,6 +409,16 @@
       "link": {
         "color": "#FF0000"
       }
+    },
+    "chatsearch": {
+      "selected": {
+        "border-style": "solid",
+        "border-width": "2px",
+        "border-color": "yellow"
+      },
+      "found": {
+        "background-color": "rgba(239, 140, 11, 0.15) !important"
+      }
     }
   }
 }
