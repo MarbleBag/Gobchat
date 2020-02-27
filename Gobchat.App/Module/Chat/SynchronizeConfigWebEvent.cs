@@ -13,9 +13,9 @@
 
 namespace Gobchat.Module.Chat
 {
-    public sealed class ToggleSearchWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
+    public sealed class SynchronizeConfigWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
-        public ToggleSearchWebEvent() : base("ToggleSearchEvent")
+        public SynchronizeConfigWebEvent() : base("SynchronizeConfigEvent")
         {
         }
     }

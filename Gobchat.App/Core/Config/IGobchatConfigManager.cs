@@ -17,25 +17,33 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    public delegate void PropertyChangedListener(IGobchatConfigManager sender, ProfilePropertyChangedEventArgs evt);
+    public delegate void PropertyChangedListener(IGobchatConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt);
 
     public interface IGobchatConfigManager
     {
+        #region event handling
+
         event EventHandler<ActiveProfileChangedEventArgs> OnActiveProfileChange;
 
         event EventHandler<ProfileChangedEventArgs> OnProfileChange;
 
         void AddPropertyChangeListener(string path, PropertyChangedListener listener);
 
+        void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
+
         void RemovePropertyChangeListener(string path, PropertyChangedListener listener);
 
+        void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
+
         void RemovePropertyChangeListener(PropertyChangedListener listener);
+
+        #endregion event handling
 
         IGobchatConfigProfile DefaultProfile { get; }
 
         IGobchatConfigProfile GetProfile(string profileId);
 
-        IGobchatConfigProfile ActiveProfile { get; }
+        // IGobchatConfigProfile ActiveProfile { get; }
 
         string ActiveProfileId { get; set; }
 
@@ -45,11 +53,11 @@ namespace Gobchat.Core.Config
 
         string CreateNewProfile();
 
+        void SaveProfiles();
+
         void CopyProfile(string srcProfileId, string dstProfileId);
 
-        JToken AsJson();
-
-        void Synchronize(JToken configJson);
+        #region property handling
 
         T GetProperty<T>(string key);
 
@@ -57,10 +65,14 @@ namespace Gobchat.Core.Config
 
         bool HasProperty(string key);
 
-        void SetProperties(JObject json);
-
         void SetProperty(string key, object value);
 
-        void SaveProfiles();
+        void DispatchChangeEvents();
+
+        #endregion property handling
+
+        JToken AsJson();
+
+        void Synchronize(JToken json);
     }
 }

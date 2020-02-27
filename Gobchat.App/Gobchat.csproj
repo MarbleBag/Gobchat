@@ -167,7 +167,7 @@
     <Compile Include="Core\Config\InvalidProfileIdException.cs" />
     <Compile Include="Core\Config\InvalidPropertyPathException.cs" />
     <Compile Include="Core\Config\InvalidPropertyTypeException.cs" />
-    <Compile Include="Core\Config\JsonGobchatConfigProfile.cs" />
+    <Compile Include="Core\Config\GobchatConfigProfile.cs" />
     <Compile Include="Core\Config\JsonUtil.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\LegacyAppConfigTransformer.cs" />
     <Compile Include="Core\Config\MissingPropertyException.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="Core\Config\PropertyChangedEventArgs.cs" />
     <Compile Include="Core\Config\PropertyException.cs" />
     <Compile Include="Core\Config\PropertyReadOnlyException.cs" />
-    <Compile Include="Core\Config\StringToEnumTransformer.cs" />
+    <Compile Include="Core\Config\ValueAndEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\IGobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="Core\Chat\MessageSegmentEnum.cs" />
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
-    <None Include="Core\Config\JsonGobchatConfig.cs" />
     <Compile Include="Core\Config\ConfigException.cs" />
     <Compile Include="Core\LoadGobchatConfigEvent.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
@@ -199,7 +198,10 @@
     <Compile Include="Core\Util\DownloadFailedException.cs" />
     <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
+    <Compile Include="Module\Chat\GobchatHotkeyManager.cs" />
+    <Compile Include="Module\Chat\SynchronizeConfigWebEvent.cs" />
     <Compile Include="Module\Chat\ToggleSearchWebEvent.cs" />
+    <Compile Include="Core\Util\DelayedCallback.cs" />
     <Compile Include="Module\Updater\GitHubFileDownloader.cs" />
     <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
