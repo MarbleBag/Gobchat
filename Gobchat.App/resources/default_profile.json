@@ -416,7 +416,7 @@
         "border-width": "2px",
         "border-color": "yellow"
       },
-      "found": {
+      "marked": {
         "background-color": "rgba(239, 140, 11, 0.15) !important"
       }
     }

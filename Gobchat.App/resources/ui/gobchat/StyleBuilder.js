@@ -62,7 +62,7 @@ var Gobchat = (function (Gobchat) {
         generateCssStyleElementsFromMap(cssResults, ".message-body-{styleKey}", styles.channel)
         generateCssStyleElementsFromMap(cssResults, ".message-segment-{styleKey}", styles.segment, styles.channel)
 
-        generateCssStyleElement(cssResults, ".chatbox-search-msg-found:not(.chatbox-search-msg-selected)", styles.chatsearch.found)
+        generateCssStyleElement(cssResults, ".chatbox-search-msg-marked:not(.chatbox-search-msg-selected)", styles.chatsearch.marked)
         generateCssStyleElement(cssResults, ".chatbox-search-msg-selected", styles.chatsearch.selected)
     }
 

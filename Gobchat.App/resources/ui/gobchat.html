@@ -146,12 +146,12 @@
         $("#chatbox_search_down").on("click", function (e) {
             const currentSearch = $(".chatbox-search-msg-selected")
             currentSearch.removeClass("chatbox-search-msg-selected")
-            const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-found").addBack().last().next(".chatbox-search-msg-found")
+            const prevSearch = currentSearch.nextUntil(".chatbox-search-msg-marked").addBack().last().next(".chatbox-search-msg-marked")
             if (prevSearch.length !== 0) {
                 prevSearch.addClass("chatbox-search-msg-selected")
                 chatSearchProcessCounter((c, t) => [c - 1, t])
             } else {
-                $(".chatbox-search-msg-found").first().addClass("chatbox-search-msg-selected")
+                $(".chatbox-search-msg-marked").first().addClass("chatbox-search-msg-selected")
                 chatSearchProcessCounter((c, t) => [t, t])
             }
             scrollChatSearch()
@@ -160,12 +160,12 @@
         $("#chatbox_search_up").on("click", function (e) {
             const currentSearch = $(".chatbox-search-msg-selected")
             currentSearch.removeClass("chatbox-search-msg-selected")
-            const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-found").addBack().first().prev(".chatbox-search-msg-found")
+            const prevSearch = currentSearch.prevUntil(".chatbox-search-msg-marked").addBack().first().prev(".chatbox-search-msg-marked")
             if (prevSearch.length !== 0) {
                 prevSearch.addClass("chatbox-search-msg-selected")
                 chatSearchProcessCounter((c, t) => [c + 1, t])
             } else {
-                $(".chatbox-search-msg-found").last().addClass("chatbox-search-msg-selected")
+                $(".chatbox-search-msg-marked").last().addClass("chatbox-search-msg-selected")
                 chatSearchProcessCounter((c, t) => [1, t])
             }
             scrollChatSearch()
@@ -185,10 +185,10 @@
 
             $("#chatbox_content").find(".message-body-base").each(function (i, e) {
                 if ($(this).text().toUpperCase().indexOf(searchText) >= 0)
-                    $(this).addClass("chatbox-search-msg-found")
+                    $(this).addClass("chatbox-search-msg-marked")
             })
 
-            const allHits = $(".chatbox-search-msg-found")
+            const allHits = $(".chatbox-search-msg-marked")
             allHits.last().addClass("chatbox-search-msg-selected")
             chatSearchProcessCounter((c, t) => [Math.min(1, allHits.length), allHits.length])
 
@@ -201,7 +201,7 @@
 
         function clearChatSearch() {
             $("#chatbox_content").find(".chatbox-search-msg-selected").removeClass("chatbox-search-msg-selected")
-            $("#chatbox_content").find(".chatbox-search-msg-found").removeClass("chatbox-search-msg-found")
+            $("#chatbox_content").find(".chatbox-search-msg-marked").removeClass("chatbox-search-msg-marked")
             chatSearchProcessCounter((c, t) => [0, 0])
         }
 

@@ -121,7 +121,7 @@
 
     <p>
         <div>
-            <label>Fonts:</label>
+            <label><b>Fonts:</b></label>
             <input type="text" id="capp_font_family" data-gob-configkey="style.channel.base.font-family" style="width:100%;">
             <button class="ui-gc-btn" id="capp_font_family_reset"><i class="fas fa-undo-alt"></i></button>
         </div>
@@ -135,6 +135,40 @@
                 <option value="medium">Medium</option>
                 <option value="large">Large</option>
             </select>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <label><b>Search:</b></label>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Search results:</td>
+                        <td>
+                            <div>
+                                <input id="capp_search_marked" type="text" data-gob-configkey="style.chatsearch.marked.background-color" />
+                                <button id="capp_search_marked_reset" class="ui-gc-btn"
+                                        title="Resets the field to its default value">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Search border color:</td>
+                        <td>
+                            <div>
+                                <input id="capp_search_selected" class="" type="text" data-gob-configkey="style.chatsearch.selected.border-color" />
+                                <button id="capp_search_selected_reset" class="ui-gc-btn"
+                                        title="Resets the field to its default value">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </p>
 
@@ -293,6 +327,16 @@
                     newSize = Math.round(newSize) + "px"
                 gobconfig.set(dpdFonSizeConfigKey, newSize)
             })
+
+            const clrSearchMarked = $("#capp_search_marked")
+            const btnSearchMarkedReset = $("#capp_search_marked_reset")
+            ConfigHelper.makeAndBindColorSelector(clrSearchMarked)
+            btnSearchMarkedReset.on("click", e => gobconfig.reset(clrSearchMarked.attr(ConfigHelper.ConfigKeyAttribute)))
+
+            const clrSearchSelected = $("#capp_search_selected")
+            const btnSearchSelectedReset = $("#capp_search_selected_reset")
+            ConfigHelper.makeAndBindColorSelector(clrSearchSelected)
+            btnSearchSelectedReset.on("click", e => gobconfig.reset(clrSearchSelected.attr(ConfigHelper.ConfigKeyAttribute)))
 
             // setup hotkey group
             // setup hotkey field
