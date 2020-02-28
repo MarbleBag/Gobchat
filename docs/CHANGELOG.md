@@ -2,13 +2,14 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## Unreleased
+## [1.5.0-1] Beta Unreleased
 ### Added
 - Another button `Add new group` to `Config / Groups` at the bottom, which will attach a new group at the end
 - `Textsearch`, it's now possible to search through the chat. Gobchat will highlight all entries which fit the search term and allow to step through them.
 - A new button to the top of the chat to open the `textsearch`
 - Fields to set position and size of the chat frame to `Config / App`
 - A `Save & Exit` button to `Config`
+- Color picker for `textsearch` under `Config / App`
 
 ### Changed
 - `Add new group` under `Config / Groups` will now insert a new group at the beginning
