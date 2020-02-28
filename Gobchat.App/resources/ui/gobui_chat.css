@@ -1,12 +1,4 @@
-﻿.chatbox-search-msg-found > * {
-    background-color: rgba(239, 140, 11, 0.15);
-}
-
-.chatbox-search-msg-selected > * {
-    background: yellow;
-}
-
-.chatbox {
+﻿.chatbox {
     display: flex;
     flex: auto;
     flex-direction: column;
