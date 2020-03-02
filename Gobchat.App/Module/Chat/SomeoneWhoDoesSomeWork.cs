@@ -11,33 +11,30 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Resource;
-using Gobchat.Memory.Chat;
-using Gobchat.UI.Forms;
-using Gobchat.Core.Util.Extension;
+using NLog;
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using System.Xml;
-using Gobchat.Core.Chat;
-using Gobchat.UI.Web.JavascriptEvents;
-using System.Collections.Concurrent;
-using Gobchat.Core.Util.Extension.Queue;
-using Gobchat.Core.Runtime;
-using Gobchat.Core.Config;
-using NLog;
-using Gobchat.Core.Module;
-using Gobchat.Core.Module.Hotkey;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Gobchat.Memory;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
-namespace Gobchat.Core.Module.Chat
+using Gobchat.Memory;
+using Gobchat.Core;
+using Gobchat.Core.Config;
+using Gobchat.Core.Runtime;
+using Gobchat.Core.Resource;
+using Gobchat.Core.Chat;
+using Gobchat.Core.Util.Extension;
+using Gobchat.Core.Util.Extension.Queue;
+using Gobchat.Memory.Chat;
+using Gobchat.UI.Forms;
+using Gobchat.UI.Web.JavascriptEvents;
+using Gobchat.Module.NotifyIcon;
+using Gobchat.Module.Hotkey;
+
+namespace Gobchat.Module.Chat
 {
     // TODO This is chaos
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
@@ -67,7 +64,20 @@ namespace Gobchat.Core.Module.Chat
         private readonly ConcurrentQueue<ChatMessage> _messageQueue = new ConcurrentQueue<ChatMessage>();
         private DateTime _lastChatMessageTime;
 
-        private string _hotkey;
+        private sealed class HotkeyData
+        {
+            public string Name { get; }
+            public string Hotkey { get; set; }
+            public Action Callback { get; }
+
+            public HotkeyData(string name, Action callback)
+            {
+                Name = name ?? throw new ArgumentNullException(nameof(name));
+                Callback = callback ?? throw new ArgumentNullException(nameof(callback));
+            }
+        }
+
+        private Dictionary<string, HotkeyData> _hotkeys = new Dictionary<string, HotkeyData>();
 
         internal void Initialize(IDIContext container, CefOverlayForm overlay)
         {
@@ -94,19 +104,40 @@ namespace Gobchat.Core.Module.Chat
                     _synchronizer.RunSync(() => _overlay.Visible = true);
             };
 
+            //TODO Some hotkeys should only work, if the overlay is visible
+            _hotkeys.Add("behaviour.hotkeys.showhide", new HotkeyData("Show & Hide", OnEvent_Hotkey_ShowHide));
+            //_hotkeys.Add("behaviour.hotkeys.search", new HotkeyData("Search", OnEvent_Hotkey_Search));
+
             _configManager.OnActiveProfileChange += Event_Config_ProfileChanged;
             _configManager.AddPropertyChangeListener("behaviour.hotkeys", Event_Config_HotkeysChanged);
             UpdateHotkeys();
+
+            _configManager.AddPropertyChangeListener("*", (s, e) =>
+            {
+                if (e.Synchronizing)
+                    return;
+                //Only care for non synchronizing events, because those need to be synchronized back to the UI
+                var script = BuildCustomEventDispatcher(new SynchronizeConfigWebEvent());
+                _overlay.Browser.ExecuteScript(script);
+            });
+        }
+
+        private string BuildCustomEventDispatcher(JSEvent evt)
+        {
+            lock (_jsBuilder)
+            {
+                var script = _jsBuilder.BuildCustomEventDispatcher(evt);
+                return script;
+            }
         }
 
         private void Event_Config_ProfileChanged(object sender, ActiveProfileChangedEventArgs e)
         {
             //TODO trigger all stuff that needs to be updated on a profile change
-
             UpdateHotkeys();
         }
 
-        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, ProfilePropertyChangedEventArgs evt)
+        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
             UpdateHotkeys();
         }
@@ -122,7 +153,11 @@ namespace Gobchat.Core.Module.Chat
             else if (request == "SetConfig")
             {
                 logger.Info("Storing config from ui");
-                var configJson = _jsBuilder.Deserialize(data);
+                Newtonsoft.Json.Linq.JToken configJson;
+                lock (_jsBuilder)
+                {
+                    configJson = _jsBuilder.Deserialize(data);
+                }
                 _configManager.Synchronize(configJson);
 
                 try
@@ -204,7 +239,7 @@ namespace Gobchat.Core.Module.Chat
                 });
             }
 
-            _configManager.AddPropertyChangeListener("behaviour.hideOnMinimize", (s, e) => { if (e.IsActiveProfile) updateObserveGameWindow(); });
+            _configManager.AddPropertyChangeListener("behaviour.hideOnMinimize", (s, e) => { if (e.IsAnyActiveProfile) updateObserveGameWindow(); });
             _configManager.OnActiveProfileChange += (s, e) => updateObserveGameWindow();
             updateObserveGameWindow();
         }
@@ -212,7 +247,7 @@ namespace Gobchat.Core.Module.Chat
         private void OnEvent_MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
         {
             var uiManager = _container.Resolve<IUIManager>();
-            if (uiManager.TryGetUIElement<UI.NotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
+            if (uiManager.TryGetUIElement<Gobchat.Core.UI.NotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
             {
                 if (e.IsProcessValid)
                     trayIcon.Icon = Gobchat.Resource.GobTrayIconOn;
@@ -253,7 +288,10 @@ namespace Gobchat.Core.Module.Chat
                 {
                     logger.Debug(() => "Raw Message: " + item.ToString());
                     var message = _chatlogParser.Convert(item);
-                    chatMessages.Add(message);
+                    if (message != null)
+                        chatMessages.Add(message);
+                    else
+                        logger.Info(() => "Invalid Message: " + item.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -296,7 +334,7 @@ namespace Gobchat.Core.Module.Chat
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 
             //TODO not changeable at the moment
-            var selectedLanguage = _configManager.ActiveProfile.GetProperty<string>("behaviour.language");
+            var selectedLanguage = _configManager.GetProperty<string>("behaviour.language");
             autotranslateProvider.LoadCulture(new CultureInfo(selectedLanguage));
 
             _lastChatMessageTime = DateTime.Now;
@@ -386,7 +424,7 @@ namespace Gobchat.Core.Module.Chat
                             break;
 
                         default:
-                            var result = Util.EnumUtil.ObjectToEnum<Keys>(s);
+                            var result = Core.Util.EnumUtil.ObjectToEnum<Keys>(s);
                             if (result.HasValue)
                                 nKeys |= result.Value;
                             break;
@@ -399,45 +437,66 @@ namespace Gobchat.Core.Module.Chat
             }
 
             var hotkeyManager = _container.Resolve<IHotkeyManager>();
-            var configHotkey = _configManager.ActiveProfile.GetProperty<string>("behaviour.hotkeys.showhide");
 
-            var currentHotkey = StringToKeys(_hotkey);
-            var newHotkey = StringToKeys(configHotkey);
-
-            if (currentHotkey == newHotkey)
-                return;
-
-            try
+            void UpdateHotkey(string propertyKey)
             {
-                if (currentHotkey == Keys.None)
-                {
-                    hotkeyManager.RegisterHotKey(newHotkey, OnEvent_Hotkey);
-                }
-                else
-                {
-                    hotkeyManager.UnregisterHotKey(currentHotkey, OnEvent_Hotkey);
-                    if (newHotkey != Keys.None)
-                        hotkeyManager.RegisterHotKey(newHotkey, OnEvent_Hotkey);
-                }
+                var hotkeyData = _hotkeys[propertyKey];
 
-                _hotkey = configHotkey;
+                var configHotkey = _configManager.GetProperty<string>(propertyKey);
+                var currentHotkey = StringToKeys(hotkeyData.Hotkey);
+                var newHotkey = StringToKeys(configHotkey);
+                if (currentHotkey == newHotkey)
+                    return;
+
+                try
+                {
+                    var hotkeyAction = hotkeyData.Callback;
+
+                    if (currentHotkey == Keys.None)
+                    {
+                        hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
+                    }
+                    else
+                    {
+                        hotkeyManager.UnregisterHotKey(currentHotkey, hotkeyAction);
+                        if (newHotkey != Keys.None)
+                            hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
+                    }
+
+                    hotkeyData.Hotkey = configHotkey;
+                }
+                catch (InvalidHotkeyException e)
+                {
+                    _configManager.SetProperty(propertyKey, "");
+                    _configManager.DispatchChangeEvents();
+
+                    logger.Fatal(e, $"Invalid Hotkey for {hotkeyData.Name}");
+                    var userMsg = new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, $"Invalid Hotkey for {hotkeyData.Name}: {e.Message}");
+                    _messageQueue.Enqueue(userMsg);
+                }
             }
-            catch (InvalidHotkeyException e)
-            {
-                _configManager.ActiveProfile.SetProperty("behaviour.hotkeys.showhide", "");
-                logger.Fatal(e, "Invalid Hotkey");
 
-                var userMsg = new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, $"Invalid Hotkey: {e.Message}");
-                _messageQueue.Enqueue(userMsg);
+            foreach (var hotkey in _hotkeys.Keys.ToList())
+            {
+                UpdateHotkey(hotkey);
             }
         }
 
-        private void OnEvent_Hotkey()
+        private void OnEvent_Hotkey_ShowHide()
         {
             _synchronizer.RunSync(() =>
             {
                 _overlay.Visible = !_overlay.Visible;
             });
+        }
+
+        private void OnEvent_Hotkey_Search()
+        {
+            if (!_gobchatReady)
+                return;
+
+            var script = BuildCustomEventDispatcher(new ToggleSearchWebEvent());
+            _overlay.Browser.ExecuteScript(script);
         }
 
         private void ValidateProcessAndInformUser()
@@ -498,7 +557,7 @@ namespace Gobchat.Core.Module.Chat
                     foreach (var message in _messageQueue.DequeueMultiple(10))
                     {
                         //TODO maybe this can be done by calling gobchat directly
-                        var script = _jsBuilder.BuildCustomEventDispatcher(new ChatMessageWebEvent(message));
+                        var script = BuildCustomEventDispatcher(new ChatMessageWebEvent(message));
                         _overlay.Browser.ExecuteScript(script);
 
                         //TODO dispatch them also to log

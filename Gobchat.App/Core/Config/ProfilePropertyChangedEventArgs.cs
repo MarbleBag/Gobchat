@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using System;
+using System.Linq;
 
 namespace Gobchat.Core.Config
 {
@@ -20,12 +21,35 @@ namespace Gobchat.Core.Config
         public string PropertyKey { get; }
         public string ProfileId { get; }
         public bool IsActiveProfile { get; }
+        public bool Synchronizing { get; }
 
-        public ProfilePropertyChangedEventArgs(string propertyKey, string profileId, bool isActiveProfile)
+        public ProfilePropertyChangedEventArgs(string propertyKey, string profileId, bool isActiveProfile, bool synchronizing)
         {
             PropertyKey = propertyKey;
             ProfileId = profileId;
             IsActiveProfile = isActiveProfile;
+            Synchronizing = synchronizing;
+        }
+    }
+
+    public sealed class ProfilePropertyChangedCollectionEventArgs : EventArgs
+    {
+        public System.Collections.Generic.IEnumerable<ProfilePropertyChangedEventArgs> Changed { get; }
+
+        public bool Synchronizing { get; }
+
+        public bool IsAnyActiveProfile
+        {
+            get
+            {
+                return Changed.Any(e => e.IsActiveProfile);
+            }
+        }
+
+        public ProfilePropertyChangedCollectionEventArgs(System.Collections.Generic.IEnumerable<ProfilePropertyChangedEventArgs> changed, bool synchronizing)
+        {
+            Changed = changed ?? throw new ArgumentNullException(nameof(changed));
+            Synchronizing = synchronizing;
         }
     }
 }

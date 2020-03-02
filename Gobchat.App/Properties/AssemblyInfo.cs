@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 //      Major Version
 //      Minor Version
 //      Build Number
-//      Revision
+//      Pre-Release (Used for betas)
 //
-[assembly: AssemblyVersion("1.4.1.0")]
-[assembly: AssemblyFileVersion("1.4.1.0")]
+[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyFileVersion("1.5.0.0")]

@@ -38,6 +38,8 @@ namespace Gobchat.UI.Web
 
         bool BindBrowserAPI(IBrowserAPI api, bool isApiAsync);
 
+        void ShowDevTools();
+
         void CloseBrowser(bool forceClose);
 
         void Dispose();

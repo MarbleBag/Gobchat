@@ -209,6 +209,12 @@ namespace Gobchat.UI.Forms
             CefBrowser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
         }
 
+        public void ShowDevTools()
+        {
+            if (IsBrowserInitialized)
+                CefBrowser.ShowDevTools();
+        }
+
         public void CloseBrowser(bool forceClose)
         {
             CefBrowser.GetBrowser().CloseBrowser(forceClose);

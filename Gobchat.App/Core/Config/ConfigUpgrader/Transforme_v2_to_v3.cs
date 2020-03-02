@@ -9,9 +9,9 @@ namespace Gobchat.Core.Config
 {
     internal sealed class Transforme_v2_to_v3 : IJsonTransformer
     {
-        private JsonGobchatConfigProfile defaultConfig;
+        private GobchatConfigProfile defaultConfig;
 
-        public Transforme_v2_to_v3(JsonGobchatConfigProfile defaultConfig)
+        public Transforme_v2_to_v3(GobchatConfigProfile defaultConfig)
         {
             this.defaultConfig = defaultConfig;
         }

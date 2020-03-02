@@ -19,19 +19,19 @@ using static Gobchat.Core.Config.JsonUtil;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class JsonGobchatConfigProfile : IGobchatConfigProfile
+    internal sealed class GobchatConfigProfile : IGobchatConfigProfile
     {
-        private readonly ICollection<string> UnchangableValues = new HashSet<string>() { "version", "profile.id", "behaviour.frame.chat" };
+        private readonly ICollection<string> UnchangableValues = new HashSet<string>() { "version", "profile.id"/*, "behaviour.frame.chat"*/ };
 
         private readonly IGobchatConfigProfile _parent;
         private readonly JObject _data;
         private readonly bool _writable;
 
-        public JsonGobchatConfigProfile(JObject data, bool writable) : this(data, writable, null)
+        public GobchatConfigProfile(JObject data, bool writable) : this(data, writable, null)
         {
         }
 
-        public JsonGobchatConfigProfile(JObject data, bool writable, IGobchatConfigProfile parent)
+        public GobchatConfigProfile(JObject data, bool writable, IGobchatConfigProfile parent)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _writable = writable;
@@ -125,11 +125,14 @@ namespace Gobchat.Core.Config
             if (!_writable)
                 throw new ConfigException("Config is read only");
 
+            var enumTransformer = new ValueToEnumTransformer();
+            root = enumTransformer.Transform(root);
+
             var (changes, _) = JsonUtil.RemoveUnused(root, _data, (path) => UnchangableValues.Contains(path));
             var (writeChanges, _) = JsonUtil.Write(root, _data, (path) => UnchangableValues.Contains(path));
 
             changes.UnionWith(writeChanges);
-            FirePropertyChange(changes);
+            FirePropertyChange(changes, true);
         }
 
         public void SetProperty(string key, object value)
@@ -165,11 +168,11 @@ namespace Gobchat.Core.Config
             FirePropertyChange(new List<string>() { key });
         }
 
-        private void FirePropertyChange(ICollection<string> keys)
+        private void FirePropertyChange(ICollection<string> keys, bool synchronize = false)
         {
             if (OnPropertyChange == null) return;
             foreach (var k in PreparePropertyCallbacks(keys))
-                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(k));
+                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(k, synchronize));
         }
 
         private ICollection<string> PreparePropertyCallbacks(ICollection<string> keys)
@@ -198,6 +201,9 @@ namespace Gobchat.Core.Config
                     return -1;
                 return a.CompareTo(b);
             });
+
+            if (sorted.Count == 1)
+                sorted.Clear();
 
             return sorted;
         }

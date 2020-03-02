@@ -14,9 +14,12 @@
     <p>
 
         <div>
-            <button id="cgroups_addgroup">Add group <i class="fa fa-folder-open"></i></button>
+            <button id="cgroups_addnewgrouptop">Add new group <i class="fa fa-folder-open"></i></button>
         </div>
         <div id="cgroups_groups">
+        </div>
+        <div>
+            <button id="cgroups_addnewgroupbot">Add new group <i class="fa fa-folder-open"></i></button>
         </div>
 
         <template id="cgroups_template_groupentry">
@@ -186,7 +189,6 @@
                     makeColorSelector("tmpl-sender-bgcolor", groupConfigKey + ".style.header.background-color")
                     makeColorSelector("tmpl-msg-bgcolor", groupConfigKey + ".style.body.background-color")
 
-
                     const txtTriggers = groupEntry.find(".tmpl-group-triggers")
                     if (!isFFGroup) {
                         txtTriggers.val(gobconfig.get(groupConfigKey + ".trigger").join(", "))
@@ -201,18 +203,9 @@
                     }
                 }
 
-                const btnAddGroup = $("#cgroups_addgroup")
-                btnAddGroup.on("click", function () {
-                    function generateId(ids) {
-                        let id = null
-                        do {
-                            id = Gobchat.generateId(6)
-                        } while (_.includes(ids, id))
-                        return id
-                    }
-
+                function makeNewGroup(addFront) {
                     const groups = gobconfig.get(ConfigKeyGroups)
-                    const groupId = generateId(Object.keys(groups))
+                    const groupId = ConfigHelper.generateId(6, Object.keys(groups))
 
                     groups[groupId] = {
                         name: "Unnamed",
@@ -226,10 +219,23 @@
                     }
 
                     gobconfig.set(ConfigKeyGroups, groups)
-
                     const sorting = gobconfig.get(ConfigKeyGroupSorting)
-                    sorting.push(groupId)
+                    if (addFront) {
+                        sorting.unshift(groupId)
+                    } else {
+                        sorting.push(groupId)
+                    }
                     gobconfig.set(ConfigKeyGroupSorting, sorting)
+                }
+
+                const btnAddNewGroupTop = $("#cgroups_addnewgrouptop")
+                btnAddNewGroupTop.on("click", function () {
+                    makeNewGroup(true)
+                })
+
+                const btnAddNewGroupBottom = $("#cgroups_addnewgroupbot")
+                btnAddNewGroupBottom.on("click", function () {
+                    makeNewGroup(false)
                 })
 
                 tblGroups.accordion({

@@ -91,6 +91,10 @@ var Gobchat = (function (Gobchat) {
             )
         }
 
+        scrollToBottomIfNeeded() {
+            this._scrollbar.scrollToBottomIfNeeded()
+        }
+
         onNewMessageEvent(messageEvent) {
             const message = this._messageParser.parseMessageEvent(messageEvent)
             if (!message) return

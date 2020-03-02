@@ -32,7 +32,7 @@ namespace Gobchat.Core.Config
             var profile = _manager.GetProfile(profileId);
 
             var loader = new JsonConfigLoader();
-            var finalizer = new StringToEnumTransformer();
+            var finalizer = new ValueToEnumTransformer();
             json = loader.LoadConfig(json);
             json = finalizer.Transform(json);
 

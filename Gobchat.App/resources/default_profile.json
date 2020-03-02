@@ -168,7 +168,7 @@
     "datacenter": null,
     "chatUpdateInterval": 1000,
     "hotkeys": {
-      "showhide": ""
+      "showhide": "",
     },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],
@@ -408,6 +408,16 @@
       },
       "link": {
         "color": "#FF0000"
+      }
+    },
+    "chatsearch": {
+      "selected": {
+        "border-style": "solid",
+        "border-width": "2px",
+        "border-color": "yellow"
+      },
+      "marked": {
+        "background-color": "rgba(239, 140, 11, 0.15) !important"
       }
     }
   }

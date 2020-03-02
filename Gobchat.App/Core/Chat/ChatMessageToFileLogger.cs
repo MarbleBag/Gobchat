@@ -62,11 +62,11 @@ namespace Gobchat.Core.Chat
 
         public void Log(ChatMessage message)
         {
-            var doLog = _configManager.ActiveProfile.GetProperty<bool>("behaviour.writeChatLog");
+            var doLog = _configManager.GetProperty<bool>("behaviour.writeChatLog");
             if (!doLog)
                 return;
 
-            var visibleChannels = _configManager.ActiveProfile.GetProperty<List<long>>("behaviour.channel.visible");
+            var visibleChannels = _configManager.GetProperty<List<long>>("behaviour.channel.visible");
             //var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
             // visibleChannels.Cast<Newtonsoft.Json.Linq.JValue>().Any(e => e.Value )
 

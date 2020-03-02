@@ -16,7 +16,7 @@ using System.IO;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Util;
 
-namespace Gobchat.Core.Module.CefInstaller
+namespace Gobchat.Module.CefInstaller
 {
     internal sealed class CefInstaller
     {

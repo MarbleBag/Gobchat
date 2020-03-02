@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using Gobchat.Core.Runtime;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public sealed class NAULocalFileFeedReader : NAppUpdate.Framework.FeedReaders.IUpdateFeedReader
     {
@@ -47,7 +47,6 @@ namespace Gobchat.Core.Module.Updater
                 tasks.Add(updateTask);
             }
             */
-
 
             var files = System.IO.Directory.EnumerateFiles(feed, "*", System.IO.SearchOption.AllDirectories)
              .GroupBy(s => System.IO.Path.GetDirectoryName(s));

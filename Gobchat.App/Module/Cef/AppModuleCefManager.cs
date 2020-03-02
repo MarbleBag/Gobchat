@@ -14,7 +14,7 @@
 using Gobchat.UI.Web;
 using Gobchat.Core.Runtime;
 
-namespace Gobchat.Core.Module
+namespace Gobchat.Module.Cef
 {
     public sealed class AppModuleCefManager : IApplicationModule, System.IDisposable
     {

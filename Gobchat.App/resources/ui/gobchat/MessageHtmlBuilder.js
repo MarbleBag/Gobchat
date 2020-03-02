@@ -86,11 +86,15 @@ var Gobchat = (function (Gobchat) {
     }
 
     function getChannelCssClassForPlayerGroup(groupId) {
-        return `message-group-body-${groupId}`
+        if (groupId != null && groupId != undefined)
+            return `message-group-body-${groupId}`
+        return null
     }
 
     function getSenderCssClassForPlayerGroup(groupId) {
-        return `message-group-sender-${groupId}`
+        if (groupId != null && groupId != undefined)
+            return `message-group-sender-${groupId}`
+        return null
     }
 
     function getCssClassForMessageSegmentType(messageSegmentEnum) {

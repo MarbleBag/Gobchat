@@ -20,10 +20,13 @@ namespace Gobchat.Core.Config
         public string PreviousProfileId { get; }
         public string NextProfileId { get; }
 
-        public ActiveProfileChangedEventArgs(string previousProfileId, string nextProfileId)
+        public bool Synchronizing { get; }
+
+        public ActiveProfileChangedEventArgs(string previousProfileId, string nextProfileId, bool synchronizing)
         {
             PreviousProfileId = previousProfileId;
             NextProfileId = nextProfileId;
+            Synchronizing = synchronizing;
         }
     }
 }

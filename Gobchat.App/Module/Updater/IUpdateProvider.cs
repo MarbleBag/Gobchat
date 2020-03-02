@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public interface IUpdateProvider
     {
@@ -25,11 +25,11 @@ namespace Gobchat.Core.Module.Updater
     }
 }
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public interface IUpdateDescription
     {
-        Version Version { get; }
+        GobVersion Version { get; }
 
         bool IsVersionAvailable { get; }
 

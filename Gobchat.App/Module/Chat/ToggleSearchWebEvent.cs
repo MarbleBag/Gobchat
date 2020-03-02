@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,27 +11,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-using System.Runtime.Serialization;
-
-namespace Gobchat.Module.Updater
+namespace Gobchat.Module.Chat
 {
-    [Serializable]
-    public sealed class UpdateException : System.Exception
+    public sealed class ToggleSearchWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
-        public UpdateException(string message) : base(message)
-        {
-        }
-
-        public UpdateException(string message, System.Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public UpdateException()
-        {
-        }
-
-        private UpdateException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public ToggleSearchWebEvent() : base("ToggleSearchEvent")
         {
         }
     }

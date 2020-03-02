@@ -370,5 +370,28 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return changed
     }
 
+    ConfigHelper.decodeHotkey = function (keyEvent, ignoreEnter) {
+        if (ignoreEnter && event.keyCode == 13) // enter
+            return null
+
+        if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18)
+            return ""
+
+        keyEvent.preventDefault()
+
+        let msg = ""
+        if (keyEvent.shiftKey) msg += "Shift + "
+        if (keyEvent.altKey) msg += "Alt + "
+        if (keyEvent.ctrlKey) msg += "Ctrl + "
+
+        var keyEnum = Gobchat.KeyCodeToKeyEnum(keyEvent.keyCode)
+        if (keyEnum === null) {
+            msg = ""
+        } else {
+            msg += keyEnum
+        }
+        return msg
+    }
+
     return ConfigHelper
 }(ConfigHelper || {}));

@@ -18,10 +18,12 @@ namespace Gobchat.Core.Config
     public sealed class PropertyChangedEventArgs : EventArgs
     {
         public string PropertyKey { get; }
+        public bool Synchronizing { get; }
 
-        public PropertyChangedEventArgs(string propertyKey)
+        public PropertyChangedEventArgs(string propertyKey, bool synchronizing)
         {
             PropertyKey = propertyKey;
+            Synchronizing = synchronizing;
         }
     }
 }

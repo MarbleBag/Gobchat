@@ -84,7 +84,7 @@ namespace Gobchat.UI.Forms
             */
 
             this.Resize += (sender, e) => Browser.Size = new System.Drawing.Size(Width, Height);
-
+            this.MinimumSize = new System.Drawing.Size(200, 200);
             browser.StartBrowser(this.Width, this.Height);
         }
 

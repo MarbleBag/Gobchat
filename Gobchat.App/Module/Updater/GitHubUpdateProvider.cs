@@ -13,18 +13,19 @@
 
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public sealed class GitHubUpdateProvider : IUpdateProvider
     {
         private sealed class GitHubUpdateDescription : IUpdateDescription
         {
-            public Version Version { get; } = new Version(0, 0);
+            public GobVersion Version { get; } = new GobVersion();
             public string DirectDownloadUrl { get; } = string.Empty;
             public string PageUrl { get; } = string.Empty;
             public bool IsVersionAvailable { get; } = false;
@@ -48,6 +49,8 @@ namespace Gobchat.Core.Module.Updater
                     {
                         if (i != 0)
                             stringBuilder.AppendLine("");
+                        if (releases[i].Version.IsPreRelease)
+                            stringBuilder.Append("Beta: ");
                         stringBuilder.AppendLine(releases[i].Name);
                         stringBuilder.AppendLine(releases[i].Notes);
                     }
@@ -58,17 +61,17 @@ namespace Gobchat.Core.Module.Updater
 
         private sealed class TagPackage
         {
-            public Version Version { get; }
-            public bool IsPreRelease { get; }
+            public GobVersion Version { get; }
+            public bool IsMarkedPreRelease { get; }
             public string DirectDownloadUrl { get; }
             public string PageUrl { get; }
             public string Name { get; }
             public string Notes { get; }
 
-            public TagPackage(Version version, bool isPreRelease, string directDownloadUrl, string pageUrl, string name, string notes)
+            public TagPackage(GobVersion version, bool isMarkedPreRelease, string directDownloadUrl, string pageUrl, string name, string notes)
             {
                 Version = version ?? throw new ArgumentNullException(nameof(version));
-                IsPreRelease = isPreRelease;
+                IsMarkedPreRelease = isMarkedPreRelease;
 
                 DirectDownloadUrl = directDownloadUrl ?? throw new ArgumentNullException(nameof(directDownloadUrl));
                 PageUrl = pageUrl ?? throw new ArgumentNullException(nameof(pageUrl));
@@ -87,13 +90,13 @@ namespace Gobchat.Core.Module.Updater
         private const string DOWNLOAD_PAGE_URL = @"https://github.com/{USER}/{REPO}/releases/tag/v{VERSION}";
         private const string DIRECT_DOWNLOAD_URL = @"https://github.com/{USER}/{REPO}/releases/download/v{VERSION}/gobchat-{VERSION}.zip";
 
-        private readonly Version _currentVersion;
+        private readonly GobVersion _currentVersion;
         private readonly string _userName;
         private readonly string _repoName;
 
         public bool AcceptBetaReleases { get; set; } = false;
 
-        public GitHubUpdateProvider(Version currentVersion, string userName, string repoName)
+        public GitHubUpdateProvider(GobVersion currentVersion, string userName, string repoName)
         {
             _currentVersion = currentVersion ?? throw new ArgumentNullException(nameof(currentVersion));
             _userName = userName ?? throw new ArgumentNullException(nameof(userName));
@@ -108,10 +111,28 @@ namespace Gobchat.Core.Module.Updater
 
         private async Task<List<TagPackage>> GetRelevantGitHubReleases()
         {
-            var releases = await FetchGitHubReleases().ConfigureAwait(false);
-            if (releases == null)
+            var jReleases = await FetchGitHubReleases().ConfigureAwait(false);
+            if (jReleases == null)
                 return new List<TagPackage>();
-            return FilterGitHubReleases(releases);
+            var releases = BuildGitHubReleases(jReleases);
+
+            //releases.Sort((a, b) => a.Version.CompareTo(b.Version));
+
+            if (!AcceptBetaReleases)
+                return releases.Where(p => !p.Version.IsPreRelease).ToList();
+
+            //only keep the 'last' betas round
+            var firstNonBetaRelease = releases.Count - 1;
+            for (; 0 <= firstNonBetaRelease; --firstNonBetaRelease)
+                if (!releases[firstNonBetaRelease].Version.IsPreRelease)
+                    break;
+
+            if (firstNonBetaRelease <= 0)
+                return releases;
+
+            var cleanedReleases = releases.Take(firstNonBetaRelease).Where(p => !p.Version.IsPreRelease).ToList();
+            cleanedReleases.AddRange(releases.Skip(firstNonBetaRelease));
+            return cleanedReleases;
         }
 
         private async Task<JArray> FetchGitHubReleases()
@@ -144,43 +165,43 @@ namespace Gobchat.Core.Module.Updater
             }
         }
 
-        private List<TagPackage> FilterGitHubReleases(JArray releases)
+        private List<TagPackage> BuildGitHubReleases(JArray jReleases)
         {
             try
             {
-                var relevantReleases = new List<TagPackage>();
-                for (int releaseIndex = 0; releaseIndex < releases.Count; ++releaseIndex)
+                var releases = new List<TagPackage>();
+                for (int releaseIndex = 0; releaseIndex < jReleases.Count; ++releaseIndex)
                 {
-                    var release = releases[releaseIndex];
+                    var jRelease = jReleases[releaseIndex];
 
-                    //only accept released versions on master
-                    var branch = (string)release["target_commitish"];
-                    if (!"master".Equals(branch, StringComparison.InvariantCultureIgnoreCase))
-                        continue;
+                    //only accept released versions from master or (hotfixes) from production
+                    //var branch = (string)jRelease["target_commitish"];
+                    //if (!("master".Equals(branch, StringComparison.InvariantCultureIgnoreCase) || "production".Equals(branch, StringComparison.InvariantCultureIgnoreCase)))
+                    //    continue;
 
-                    var isPreRelease = (bool)release["prerelease"];
-                    if (isPreRelease && !AcceptBetaReleases)
-                        continue;
+                    var isMarkedPreRelease = (bool)jRelease["prerelease"];
+                    //if (isMarkedPreRelease) //TODO remove comment later
+                    //    continue;
 
-                    if (!Version.TryParse(release["tag_name"].ToString().Substring(1), out var releaseVersion))
+                    if (!GobVersion.TryParse(jRelease["tag_name"].ToString(), out var version))
                         continue;
 
                     // they are sorted from newest to oldest, so it can stop if it reaches a version which is older or equal to this one
-                    if (releaseVersion <= _currentVersion)
+                    if (version <= _currentVersion)
                         break;
 
-                    relevantReleases.Add(
+                    releases.Add(
                         new TagPackage(
-                            releaseVersion,
-                            isPreRelease,
-                            directDownloadUrl: GetDirectDownloadUrlFor(releaseVersion),
-                            pageUrl: GetDownloadPageUrlFor(releaseVersion),
-                            name: release["name"].ToString(),
-                            notes: release["body"].ToString()
+                            version,
+                            isMarkedPreRelease,
+                            directDownloadUrl: GetDirectDownloadUrlFor(version),
+                            pageUrl: GetDownloadPageUrlFor(version),
+                            name: jRelease["name"].ToString(),
+                            notes: jRelease["body"].ToString()
                         ));
                 }
 
-                return relevantReleases;
+                return releases;
             }
             catch (Exception ex)
             {
@@ -198,20 +219,21 @@ namespace Gobchat.Core.Module.Updater
             return PROJECT_PAGE_URL.Replace("{USER}", _userName).Replace("{REPO}", _repoName);
         }
 
-        private string GetDirectDownloadUrlFor(Version version)
+        private string GetDirectDownloadUrlFor(GobVersion version)
         {
             return DIRECT_DOWNLOAD_URL
                 .Replace("{USER}", _userName)
                 .Replace("{REPO}", _repoName)
-                .Replace("{VERSION}", version.ToString());
+                .Replace("{VERSION}", $"{version.Major}.{version.Minor}.{version.Patch}");
         }
 
-        private string GetDownloadPageUrlFor(Version version)
+        private string GetDownloadPageUrlFor(GobVersion version)
         {
+            var sVersion = version.IsPreRelease ? $"{version.Major}.{version.Minor}.{version.Patch}-{version.PreRelease}" : $"{version.Major}.{version.Minor}.{version.Patch}";
             return DOWNLOAD_PAGE_URL
                 .Replace("{USER}", _userName)
                 .Replace("{REPO}", _repoName)
-                .Replace("{VERSION}", version.ToString());
+                .Replace("{VERSION}", sVersion);
         }
     }
 }

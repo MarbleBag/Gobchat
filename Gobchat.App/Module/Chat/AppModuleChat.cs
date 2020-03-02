@@ -13,10 +13,9 @@
 
 using System;
 using Gobchat.UI.Forms;
-using Gobchat.Core.Module;
 using Gobchat.Core.Runtime;
-using Gobchat.Core.Module.Chat;
 using Gobchat.Core.Config;
+using Gobchat.Module.Overlay;
 
 namespace Gobchat.Module.Chat
 {
@@ -43,7 +42,7 @@ namespace Gobchat.Module.Chat
                         timer.Restart();
                         work.Update();
 
-                        var updateTimer = config.ActiveProfile.GetProperty<long>("behaviour.chatUpdateInterval");
+                        var updateTimer = config.GetProperty<long>("behaviour.chatUpdateInterval");
 
                         timer.Stop();
                         var timeSpend = timer.Elapsed;

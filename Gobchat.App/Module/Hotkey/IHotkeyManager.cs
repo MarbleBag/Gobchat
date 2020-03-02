@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace Gobchat.Core.Module.Hotkey
+namespace Gobchat.Module.Hotkey
 {
     public interface IHotkeyManager
     {

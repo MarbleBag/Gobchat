@@ -1,7 +1,7 @@
 # Gobchat (FFXIV chat overlay)
 Gobchat is an overlay with the goal to provide a better chat experience for roleplayers.
 
-This app took a lot of inspiration from [quisquous cactbot](https://github.com/quisquous/cactbot) 
+This app took a lot of inspiration from [quisquous cactbot](https://github.com/quisquous/cactbot)
 and uses the great [sharlayan](https://github.com/FFXIVAPP/sharlayan) module from FFXIVAPP to process FFXIV's memory.
 
 The changelog can be found [here.](CHANGELOG.md)
@@ -52,21 +52,21 @@ Case-insensitive detection for a customizable list of words, which then will be 
 ![Mentions](screen_mention_highlighting.png)
 
 This feature can be enhanced further by playing a customizable sound.
-Soundfiles need to be placed under `Gobchat\resources\sounds`.
+Soundfiles must be placed in `Gobchat\resources\sounds`.
 
 ### Customizable formatting settings
 
 ### Draggable and Resizeable
 Click on the overlay to put the focus on it. By pressing and holding left-ctrl the drag- and resize-mode is activated. Indicated by a light, blue hue.
 To drag the overlay, simply press and hold your left mouse button and drag.
-To resize move your mouse to one of the four borders or corners of the overlay. The cursor will change, indicating the type of resizing. Now press and hold the left mouse button and resize.
+To resize, move your mouse to one of the four borders or corners of the overlay. The cursor will change, indicating the type of resizing. Now press and hold the left mouse button and resize.
 
 ### Chat Log
 Gobchat can write your chat history to a file, preserving informations you might want to look up later or just to reread fun moments.
-They can be found under `AppData\Roaming\Gobchat`. 
+They can be found under `AppData\Roaming\Gobchat`.
 
 Each time Gobchat is started it will create a new file.
-By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings. 
+By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings.
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
@@ -107,7 +107,7 @@ Example:
 
 ##### add
 Needs the full name of a player, which will be added to the group. Names are case-insensitive!
-When a player comes from a different server, it is also necessary to specify the server name in brackets. 
+When a player comes from a different server, it is also necessary to specify the server name in brackets.
 Placeholders like <t> are an exception to this rule and will always be accepted.
 
 Examples:
@@ -118,7 +118,7 @@ Examples:
 
 ##### remove
 Needs the full name of a player, which will be removed to the group. Names are case-insensitive!
-When a player comes from a different server, it is also necessary to specify the server name in brackets. 
+When a player comes from a different server, it is also necessary to specify the server name in brackets.
 Placeholders like <t> are an exception to this rule and will always be accepted.
 
 Examples:
@@ -188,7 +188,6 @@ If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat
 This may take a while on your first start of gobchat.
 
 
-
 ### Tray Icon
 - Left click: Will show or hide the overlay
 - Right click: Will open a context menu
@@ -196,6 +195,10 @@ This may take a while on your first start of gobchat.
 ### Closing
 1. Right click the tray icon of Gobchat.
 2. Click 'close'!
+
+
+1. Use a chat command in FFXIV
+1. enter `/e gc close` in the ingame chat
 
 ### License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.

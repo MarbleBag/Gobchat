@@ -1,7 +1,7 @@
 ﻿using Gobchat.Core.Runtime;
 using NLog;
 
-namespace Gobchat.Core.Module.Hotkey
+namespace Gobchat.Module.Hotkey
 {
     public sealed class AppModuleHotKeyManager : IApplicationModule, System.IDisposable
     {

@@ -27,11 +27,22 @@ namespace Gobchat.Core.Config
     {
         private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly object _synchronizationLock = new object();
+
+        private string _defaultProfilePath;
+
+        private Dictionary<string, IGobchatConfigProfile> _profiles;
+        private IList<string> _profilesLoadedFromFile;
+        private GobchatConfigProfile _defaultConfig;
+
+        private string _activeProfileId;
+
+        private Dictionary<string, IList<PropertyChangedListener>> _propertyChangedListener;
+        private Dictionary<string, ISet<string>> _pendingPropertyChanges;
+
+        #region public properties
+
         public string ConfigFolderPath { get; set; }
-
-        public event EventHandler<ProfileChangedEventArgs> OnProfileChange;
-
-        public event EventHandler<ActiveProfileChangedEventArgs> OnActiveProfileChange;
 
         public IGobchatConfigProfile ActiveProfile => GetProfile(ActiveProfileId);
 
@@ -42,28 +53,30 @@ namespace Gobchat.Core.Config
             get => _activeProfileId;
             set
             {
-                if (_activeProfileId == value)
-                    return;
                 if (value == null || value.Length == 0)
                     throw new ArgumentNullException(nameof(ActiveProfileId));
                 if (!_profiles.ContainsKey(value))
                     throw new InvalidProfileIdException(value);
-                var oldProfileId = _activeProfileId;
-                _activeProfileId = value;
-                OnActiveProfileChange?.Invoke(this, new ActiveProfileChangedEventArgs(oldProfileId, _activeProfileId));
+                if (_activeProfileId == value)
+                    return;
+
+                if (_activeProfileId == value)
+                    return;
+
+                string oldProfileId;
+                lock (_synchronizationLock)
+                {
+                    oldProfileId = _activeProfileId;
+                    _activeProfileId = value;
+                }
+
+                OnActiveProfileChange?.Invoke(this, new ActiveProfileChangedEventArgs(oldProfileId, _activeProfileId, false));
             }
         }
 
         public IGobchatConfigProfile DefaultProfile => _defaultConfig;
 
-        private string _defaultProfilePath;
-
-        private Dictionary<string, IGobchatConfigProfile> _profiles;
-        private IList<string> _profilesLoadedFromFile;
-        private JsonGobchatConfigProfile _defaultConfig;
-
-        private string _activeProfileId;
-        private Dictionary<string, IList<PropertyChangedListener>> _propertyChangedListener;
+        #endregion public properties
 
         public GobchatConfigManager(string defaultProfilePath, string configFolderPath)
         {
@@ -72,8 +85,12 @@ namespace Gobchat.Core.Config
 
             _profiles = new Dictionary<string, IGobchatConfigProfile>();
             _profilesLoadedFromFile = new List<string>();
+
             _propertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+            _pendingPropertyChanges = new Dictionary<string, ISet<string>>();
         }
+
+        #region load
 
         public void InitializeManager()
         {
@@ -96,11 +113,11 @@ namespace Gobchat.Core.Config
             var loader = new JsonConfigLoader();
             var defaultConfig = loader.LoadConfig(_defaultProfilePath);
 
-            var finalizer = new StringToEnumTransformer();
+            var finalizer = new ValueToEnumTransformer();
             defaultConfig = finalizer.Transform(defaultConfig);
             defaultConfig["profile"]["id"] = null;
 
-            _defaultConfig = new JsonGobchatConfigProfile(defaultConfig, false);
+            _defaultConfig = new GobchatConfigProfile(defaultConfig, false);
         }
 
         private void LoadUserProfiles()
@@ -112,7 +129,7 @@ namespace Gobchat.Core.Config
             var userProfileFiles = Directory.EnumerateFiles(userProfileFolderPath, "profile_*.json", SearchOption.TopDirectoryOnly);
 
             var loader = GetProfileLoader();
-            var finalizer = new StringToEnumTransformer();
+            var finalizer = new ValueToEnumTransformer();
 
             foreach (var userProfileFile in userProfileFiles)
             {
@@ -136,7 +153,7 @@ namespace Gobchat.Core.Config
                     userProfile["profile"]["id"] = profileId;
                 }
 
-                var config = new JsonGobchatConfigProfile(userProfile, true, _defaultConfig);
+                var config = new GobchatConfigProfile(userProfile, true, _defaultConfig);
 
                 var configVersion = config.ProfileVersion;
                 var defaultVersion = _defaultConfig.ProfileVersion;
@@ -188,120 +205,9 @@ namespace Gobchat.Core.Config
             ActiveProfileId = CreateNewProfile();
         }
 
-        private void OnEvent_Config_OnPropertyChange(object sender, PropertyChangedEventArgs e)
-        {
-            if (!_propertyChangedListener.TryGetValue(e.PropertyKey, out var listeners))
-                return;
+        #endregion load
 
-            var profileId = (sender as IGobchatConfigProfile).ProfileId;
-            var evt = new ProfilePropertyChangedEventArgs(e.PropertyKey, profileId, profileId == ActiveProfileId);
-
-            foreach (var listener in listeners.ToArray())
-                listener.Invoke(this, evt);
-        }
-
-        private string GenerateProfileId()
-        {
-            return Util.IdGenerator.GenerateNewId(8, _profiles.Keys);
-        }
-
-        public IGobchatConfigProfile GetProfile(string profileId)
-        {
-            if (_profiles.TryGetValue(profileId, out var profile))
-                return profile;
-            throw new InvalidProfileIdException(profileId);
-        }
-
-        public void DeleteProfile(string profileId)
-        {
-            if (!_profiles.ContainsKey(profileId))
-                return;
-
-            if (_profiles.Count == 1)
-                throw new ConfigException("Unable to delete last profile");
-
-            var config = _profiles[profileId];
-            config.OnPropertyChange -= OnEvent_Config_OnPropertyChange;
-
-            _profiles.Remove(profileId);
-            if (ActiveProfileId == profileId)
-                ActiveProfileId = _profiles.Keys.First();
-
-            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(profileId, ProfileChangedEventArgs.Type.Delete));
-        }
-
-        public string CreateNewProfile()
-        {
-            var profileId = GenerateProfileId();
-
-            var newConfig = new JObject();
-            newConfig["version"] = _defaultConfig.ProfileVersion;
-            newConfig["profile"] = new JObject();
-            newConfig["profile"]["id"] = profileId;
-            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
-
-            StoreNewProfile(newConfig);
-            return profileId;
-        }
-
-        private void StoreNewProfile(JObject profile)
-        {
-            var config = new JsonGobchatConfigProfile(profile, true, _defaultConfig);
-            config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
-            _profiles.Add(config.ProfileId, config);
-            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New));
-        }
-
-        public void CopyProfile(string srcProfileId, string dstProfileId)
-        {
-            var srcProfile = GetProfile(srcProfileId);
-            var dstProfile = GetProfile(dstProfileId);
-            dstProfile.SetProperties(srcProfile.ToJson());
-        }
-
-        public JToken AsJson()
-        {
-            var root = new JObject();
-            root["activeProfile"] = this.ActiveProfileId;
-            root["profiles"] = new JObject();
-
-            var profiles = this.Profiles;
-            var profileStore = root["profiles"];
-            foreach (var profileId in profiles)
-            {
-                profileStore[profileId] = this.GetProfile(profileId).ToJson();
-            }
-
-            return root;
-        }
-
-        public void Synchronize(JToken configJson)
-        {
-            var activeProfile = configJson["activeProfile"].ToString();
-            var profileIds = (configJson["profiles"] as JObject).Properties().Select(p => p.Name);
-
-            var storedProfiles = this.Profiles;
-            var availableProfiles = profileIds.Where(p => storedProfiles.Contains(p));
-            var newProfiles = profileIds.Where(p => !storedProfiles.Contains(p));
-            var removedProfiles = storedProfiles.Where(p => !profileIds.Contains(p));
-
-            foreach (var profileId in newProfiles)
-                StoreNewProfile(configJson["profiles"][profileId] as JObject);
-
-            this.ActiveProfileId = activeProfile;
-
-            foreach (var profileId in removedProfiles)
-                DeleteProfile(profileId);
-
-            foreach (var profileId in availableProfiles)
-            {
-                var profileData = configJson["profiles"][profileId] as JObject;
-                var profile = GetProfile(profileId);
-                profile.Synchronize(profileData);
-            }
-
-            logger.Info("Config manager synchronized");
-        }
+        #region save
 
         public void SaveProfiles()
         {
@@ -381,6 +287,137 @@ namespace Gobchat.Core.Config
             }
         }
 
+        #endregion save
+
+        #region profile managment
+
+        private string GenerateProfileId()
+        {
+            return Util.IdGenerator.GenerateNewId(8, _profiles.Keys);
+        }
+
+        public IGobchatConfigProfile GetProfile(string profileId)
+        {
+            if (_profiles.TryGetValue(profileId, out var profile))
+                return profile;
+            throw new InvalidProfileIdException(profileId);
+        }
+
+        public void DeleteProfile(string profileId)
+        {
+            if (!_profiles.ContainsKey(profileId))
+                return;
+
+            if (_profiles.Count == 1)
+                throw new ConfigException("Unable to delete last profile");
+
+            var config = _profiles[profileId];
+            config.OnPropertyChange -= OnEvent_Config_OnPropertyChange;
+
+            _profiles.Remove(profileId);
+            if (ActiveProfileId == profileId)
+                ActiveProfileId = _profiles.Keys.First();
+
+            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(profileId, ProfileChangedEventArgs.Type.Delete));
+        }
+
+        public string CreateNewProfile()
+        {
+            var profileId = GenerateProfileId();
+
+            var newConfig = new JObject();
+            newConfig["version"] = _defaultConfig.ProfileVersion;
+            newConfig["profile"] = new JObject();
+            newConfig["profile"]["id"] = profileId;
+            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
+
+            StoreNewProfile(newConfig);
+            return profileId;
+        }
+
+        private void StoreNewProfile(JObject profile)
+        {
+            var config = new GobchatConfigProfile(profile, true, _defaultConfig);
+            config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
+            _profiles.Add(config.ProfileId, config);
+            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New));
+        }
+
+        public void CopyProfile(string srcProfileId, string dstProfileId)
+        {
+            var srcProfile = GetProfile(srcProfileId);
+            var dstProfile = GetProfile(dstProfileId);
+            dstProfile.SetProperties(srcProfile.ToJson());
+        }
+
+        #endregion profile managment
+
+        public JToken AsJson()
+        {
+            var root = new JObject();
+            root["activeProfile"] = this.ActiveProfileId;
+            root["profiles"] = new JObject();
+
+            var profiles = this.Profiles;
+            var profileStore = root["profiles"];
+            foreach (var profileId in profiles)
+            {
+                profileStore[profileId] = this.GetProfile(profileId).ToJson();
+            }
+
+            return root;
+        }
+
+        public void Synchronize(JToken configJson)
+        {
+            var activeProfile = configJson["activeProfile"].ToString();
+            var profileIds = (configJson["profiles"] as JObject).Properties().Select(p => p.Name);
+
+            lock (_synchronizationLock)
+            {
+                var pendingEvents = GetPendingEvents();
+                System.Threading.Tasks.Task.Run(() => DispatchEvents(pendingEvents, false));
+
+                var storedProfiles = this.Profiles;
+                var availableProfiles = profileIds.Where(p => storedProfiles.Contains(p));
+                var newProfiles = profileIds.Where(p => !storedProfiles.Contains(p));
+                var removedProfiles = storedProfiles.Where(p => !profileIds.Contains(p));
+
+                foreach (var profileId in newProfiles)
+                    StoreNewProfile(configJson["profiles"][profileId] as JObject);
+
+                foreach (var profileId in availableProfiles)
+                {
+                    var profileData = configJson["profiles"][profileId] as JObject;
+                    var profile = GetProfile(profileId);
+                    profile.Synchronize(profileData);
+                }
+
+                ActiveProfileChangedEventArgs profileEvent = null;
+                if (_activeProfileId != activeProfile && activeProfile != null && _profiles.ContainsKey(activeProfile))
+                {
+                    var oldProfileId = _activeProfileId;
+                    _activeProfileId = activeProfile;
+                    profileEvent = new ActiveProfileChangedEventArgs(oldProfileId, _activeProfileId, true);
+                }
+
+                foreach (var profileId in removedProfiles)
+                    DeleteProfile(profileId);
+
+                pendingEvents = GetPendingEvents();
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    if (profileEvent != null)
+                        OnActiveProfileChange?.Invoke(this, profileEvent);
+                    DispatchEvents(pendingEvents, true);
+                });
+            }
+
+            logger.Info("Config manager synchronized");
+        }
+
+        #region properties
+
         public T GetProperty<T>(string key)
         {
             return ActiveProfile.GetProperty<T>(key);
@@ -398,13 +435,39 @@ namespace Gobchat.Core.Config
 
         public void SetProperties(JObject json)
         {
-            ActiveProfile.SetProperties(json);
+            lock (_synchronizationLock)
+            {
+                ActiveProfile.SetProperties(json);
+            }
         }
 
         public void SetProperty(string key, object value)
         {
-            ActiveProfile.SetProperty(key, value);
+            lock (_synchronizationLock)
+            {
+                ActiveProfile.SetProperty(key, value);
+            }
         }
+
+        #endregion properties
+
+        #region event handling
+
+        private void OnEvent_Config_OnPropertyChange(object sender, PropertyChangedEventArgs e)
+        {
+            lock (_synchronizationLock)
+            {
+                var profileId = (sender as IGobchatConfigProfile).ProfileId;
+                if (_pendingPropertyChanges.TryGetValue(e.PropertyKey, out var profiles))
+                    profiles.Add(profileId);
+                else
+                    _pendingPropertyChanges.Add(e.PropertyKey, new HashSet<string>() { profileId });
+            }
+        }
+
+        public event EventHandler<ProfileChangedEventArgs> OnProfileChange;
+
+        public event EventHandler<ActiveProfileChangedEventArgs> OnActiveProfileChange;
 
         public void AddPropertyChangeListener(string path, PropertyChangedListener listener)
         {
@@ -447,5 +510,67 @@ namespace Gobchat.Core.Config
                     _propertyChangedListener.Remove(key);
             }
         }
+
+        public void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
+        {
+            foreach (var path in paths)
+                AddPropertyChangeListener(path, listener);
+        }
+
+        public void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
+        {
+            foreach (var path in paths)
+                RemovePropertyChangeListener(path, listener);
+        }
+
+        private IDictionary<string, ISet<string>> GetPendingEvents()
+        {
+            lock (_synchronizationLock)
+            {
+                var pendingPropertyChanges = new Dictionary<string, ISet<string>>(_pendingPropertyChanges);
+                _pendingPropertyChanges.Clear();
+                return pendingPropertyChanges;
+            }
+        }
+
+        private void DispatchEvents(IDictionary<string, ISet<string>> events, bool synchronizeEvents)
+        {
+            var activeProfileId = this.ActiveProfileId;
+            var dispatchableChanges = new Dictionary<PropertyChangedListener, List<ProfilePropertyChangedEventArgs>>();
+            foreach (var entry in events)
+            {
+                if (_propertyChangedListener.TryGetValue(entry.Key, out var listeners))
+                {
+                    var eventArgs = new List<ProfilePropertyChangedEventArgs>();
+                    foreach (var profileId in entry.Value)
+                        eventArgs.Add(new ProfilePropertyChangedEventArgs(entry.Key, profileId, profileId == activeProfileId, synchronizeEvents));
+
+                    foreach (var listener in listeners.ToArray())
+                    {
+                        if (dispatchableChanges.TryGetValue(listener, out var pendingEvents))
+                        {
+                            pendingEvents.AddRange(eventArgs);
+                        }
+                        else
+                        {
+                            pendingEvents = new List<ProfilePropertyChangedEventArgs>();
+                            pendingEvents.AddRange(eventArgs);
+                            dispatchableChanges.Add(listener, pendingEvents);
+                        }
+                    }
+                }
+            }
+
+            foreach (var entry in dispatchableChanges)
+                entry.Key.Invoke(this, new ProfilePropertyChangedCollectionEventArgs(entry.Value, synchronizeEvents));
+        }
+
+        public void DispatchChangeEvents()
+        {
+            var events = GetPendingEvents();
+            DispatchEvents(events, false);
+        }
+
+        #endregion event handling
     }
 }

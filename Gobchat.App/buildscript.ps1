@@ -54,13 +54,17 @@ try{
 & "$scriptPath\generate-content-list.ps1" $releaseFolder
 
 $text = [System.IO.File]::ReadAllText("$PWD\Properties\AssemblyInfo.cs");
-$hasMatch = $text -match '\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)'
+$hasMatch = $text -match '\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)"\)'
 if(-Not $hasMatch){
 	Write-Error "Unable to find app version"
 	exit 1
 }
 
 $appVersion = $Matches[1]
+$appPrerelease = $Matches[2]
+if( [int]::Parse($appPrerelease) -gt 0 ){
+	$appVersion = "$appVersion-$appPrerelease"
+}
 
 Write-Host "Updating version number in about.html to $appVersion ..."
 $aboutFile = "$releaseFolder\resources\ui\config\about.html"

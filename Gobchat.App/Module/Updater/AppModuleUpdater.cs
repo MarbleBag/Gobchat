@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gobchat.Core.Module.Updater
+namespace Gobchat.Module.Updater
 {
     public sealed class AppModuleUpdater : IApplicationModule
     {
@@ -36,14 +36,14 @@ namespace Gobchat.Core.Module.Updater
             DeleteOldPatchData();
 
             var configManager = container.Resolve<IGobchatConfigManager>();
-            var doUpdate = configManager.ActiveProfile.GetProperty<bool>("behaviour.checkForUpdate");
+            var doUpdate = configManager.GetProperty<bool>("behaviour.checkForUpdate");
 
             if (!doUpdate)
                 return;
 
-            var allowBetaUpdates = configManager.ActiveProfile.GetProperty<bool>("behaviour.checkForBetaUpdate");
+            var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.checkForBetaUpdate");
 
-            var update = GetUpdate(GobchatApplicationContext.ApplicationVersion, allowBetaUpdates);
+            var update = GetUpdate(new GobVersion(GobchatApplicationContext.ApplicationVersion), allowBetaUpdates);
             if (update == null)
                 return;
 
@@ -157,7 +157,7 @@ namespace Gobchat.Core.Module.Updater
         private (bool, string) PerformAutoUpdateDownload(IUpdateDescription update, string targetFolder, IProgressMonitor progressMonitor)
         {
             var fileDownloader = new GitHubFileDownloader(update.DirectDownloadUrl, targetFolder);
-            fileDownloader.FileName = $"gobchat-{update.Version}.zip";
+            fileDownloader.FileName = $"gobchat-{update.Version.Major}.{update.Version.Minor}.{update.Version.Patch}-{update.Version.PreRelease}.zip";
 
             try
             {
@@ -263,7 +263,7 @@ namespace Gobchat.Core.Module.Updater
             }
         }
 
-        private IUpdateDescription GetUpdate(Version appVersion, bool allowBetaUpdates = false)
+        private IUpdateDescription GetUpdate(GobVersion appVersion, bool allowBetaUpdates = false)
         {
             var provider = new GitHubUpdateProvider(appVersion, userName: "MarbleBag", repoName: "Gobchat");
             provider.AcceptBetaReleases = allowBetaUpdates;

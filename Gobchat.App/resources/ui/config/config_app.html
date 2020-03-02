@@ -77,28 +77,41 @@
     </p>
 
     <p>
-        <div hidden>
-            <label>Chat position and size</label>
+        <div>
+            <div>
+                <label><b>Chat position and size</b></label>
+            </div>
+            <div>
+                <label>Does not update while the config is opened</label>
+            </div>
             <table>
                 <tbody>
                     <tr>
                         <td>
                             <label>X: </label>
-                            <input type="number" data-gob-configkey="behaviour.frame.chat.position.x" />
+                        </td>
+                        <td>
+                            <input type="number" min="0" id="capp_frame_x" data-gob-configkey="behaviour.frame.chat.position.x" />
                         </td>
                         <td>
                             <label>Hight: </label>
-                            <input type="number" data-gob-configkey="behaviour.frame.chat.size.height" />
+                        </td>
+                        <td>
+                            <input type="number" min="200" id="capp_frame_height" data-gob-configkey="behaviour.frame.chat.size.height" />
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label>Y: </label>
-                            <input type="number" data-gob-configkey="behaviour.frame.chat.position.y" />
+                        </td>
+                        <td>
+                            <input type="number" min="0" id="capp_frame_y" data-gob-configkey="behaviour.frame.chat.position.y" />
                         </td>
                         <td>
                             <label>Width: </label>
-                            <input type="number" data-gob-configkey="behaviour.frame.chat.size.width" />
+                        </td>
+                        <td>
+                            <input type="number" min="200" id="capp_frame_width" data-gob-configkey="behaviour.frame.chat.size.width" />
                         </td>
                     </tr>
                 </tbody>
@@ -108,7 +121,7 @@
 
     <p>
         <div>
-            <label>Fonts:</label>
+            <label><b>Fonts:</b></label>
             <input type="text" id="capp_font_family" data-gob-configkey="style.channel.base.font-family" style="width:100%;">
             <button class="ui-gc-btn" id="capp_font_family_reset"><i class="fas fa-undo-alt"></i></button>
         </div>
@@ -127,14 +140,64 @@
 
     <p>
         <div>
-            <label>Hotkeys:</label>
+            <label><b>Search:</b></label>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Search results:</td>
+                        <td>
+                            <div>
+                                <input id="capp_search_marked" type="text" data-gob-configkey="style.chatsearch.marked.background-color" />
+                                <button id="capp_search_marked_reset" class="ui-gc-btn"
+                                        title="Resets the field to its default value">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Search border color:</td>
+                        <td>
+                            <div>
+                                <input id="capp_search_selected" class="" type="text" data-gob-configkey="style.chatsearch.selected.border-color" />
+                                <button id="capp_search_selected_reset" class="ui-gc-btn"
+                                        title="Resets the field to its default value">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </p>
+
+    <p>
         <div>
-            <label>Hide &amp; show chat overlay</label>
+            <label><b>Hotkeys:</b></label>
         </div>
-        <div>
-            <input type="text" id="capp_hotkey_show" data-gob-configkey="behaviour.hotkeys.showhide" />
-        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label>Hide &amp; show chat overlay</label>
+                    </td>
+                    <td>
+                        <input type="text" id="capp_hotkey_show" data-gob-configkey="behaviour.hotkeys.showhide" />
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td>
+                        <label>Text Search</label>
+                    </td>
+                    <td>
+                        <input type="text" id="capp_hotkey_search" data-gob-configkey="behaviour.hotkeys.search" />
+                    </td>
+                </tr>
+                -->
+            </tbody>
+        </table>
     </p>
 
     <p>
@@ -218,6 +281,42 @@
                 if (configKey) gobconfig.reset(configKey)
             })
 
+            const txtFrameX = $("#capp_frame_x")
+            const txtFrameXConfigKey = txtFrameX.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtFrameXConfigKey, value => txtFrameX.val(value))
+            txtFrameX.on("change", function (e) {
+                const value = parseInt(e.target.value)
+                if (Gobchat.isNumber(value) && value > 0)
+                    gobconfig.set(txtFrameXConfigKey, value)
+            })
+
+            const txtFrameY = $("#capp_frame_y")
+            const txtFrameYConfigKey = txtFrameY.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtFrameYConfigKey, value => txtFrameY.val(value))
+            txtFrameY.on("change", function (e) {
+                const value = parseInt(e.target.value)
+                if (Gobchat.isNumber(value) && value > 0)
+                    gobconfig.set(txtFrameYConfigKey, value)
+            })
+
+            const txtFrameHeight = $("#capp_frame_height")
+            const txtFrameHeightConfigKey = txtFrameHeight.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtFrameHeightConfigKey, value => txtFrameHeight.val(value))
+            txtFrameHeight.on("change", function (e) {
+                const value = parseInt(e.target.value)
+                if (Gobchat.isNumber(value) && value > 0)
+                    gobconfig.set(txtFrameHeightConfigKey, value)
+            })
+
+            const txtFrameWidth = $("#capp_frame_width")
+            const txtFrameWidthConfigKey = txtFrameWidth.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtFrameWidthConfigKey, value => txtFrameWidth.val(value))
+            txtFrameWidth.on("change", function (e) {
+                const value = parseInt(e.target.value)
+                if (Gobchat.isNumber(value) && value > 0)
+                    gobconfig.set(txtFrameWidthConfigKey, value)
+            })
+
             // setup font size
             const dpdFontSize = $("#capp_font_size")
             const dpdFonSizeConfigKey = dpdFontSize.attr(ConfigHelper.ConfigKeyAttribute)
@@ -229,6 +328,16 @@
                 gobconfig.set(dpdFonSizeConfigKey, newSize)
             })
 
+            const clrSearchMarked = $("#capp_search_marked")
+            const btnSearchMarkedReset = $("#capp_search_marked_reset")
+            ConfigHelper.makeAndBindColorSelector(clrSearchMarked)
+            btnSearchMarkedReset.on("click", e => gobconfig.reset(clrSearchMarked.attr(ConfigHelper.ConfigKeyAttribute)))
+
+            const clrSearchSelected = $("#capp_search_selected")
+            const btnSearchSelectedReset = $("#capp_search_selected_reset")
+            ConfigHelper.makeAndBindColorSelector(clrSearchSelected)
+            btnSearchSelectedReset.on("click", e => gobconfig.reset(clrSearchSelected.attr(ConfigHelper.ConfigKeyAttribute)))
+
             // setup hotkey group
             // setup hotkey field
             const txtHotkeyShow = $("#capp_hotkey_show")
@@ -239,32 +348,28 @@
                 //needs a way to transform the stored code into javascript and back
                 //this may create some problems for some very special keys
 
-                if (event.keyCode == 13) // enter
+                const keyMsg = ConfigHelper.decodeHotkey(event, true);
+                if (keyMsg === null)
                     return
 
-                if (event.keyCode === 16 || event.keyCode === 17 || event.keyCode === 18) {
-                    txtHotkeyShow.val("")
-                    gobconfig.set(txtHotkeyShowConfigKey, "")
-                    return
-                }
-
-                event.preventDefault()
-
-                let msg = ""
-                if (event.shiftKey) msg += "Shift + "
-                if (event.altKey) msg += "Alt + "
-                if (event.ctrlKey) msg += "Ctrl + "
-
-                var keyEnum = Gobchat.KeyCodeToKeyEnum(event.keyCode)
-                if (keyEnum === null) {
-                    msg = ""
-                } else {
-                    msg += keyEnum
-                }
-
-                txtHotkeyShow.val(msg)
-                gobconfig.set(txtHotkeyShowConfigKey, msg)
+                txtHotkeyShow.val(keyMsg)
+                gobconfig.set(txtHotkeyShowConfigKey, keyMsg)
             })
+
+            /*
+            const txtHotkeySearch = $("#capp_hotkey_search")
+            txtHotkeySearch.attr("title", "Hides or shows a text search field")
+            const txtHotkeySearchConfigKey = txtHotkeySearch.attr(ConfigHelper.ConfigKeyAttribute)
+            ConfigHelper.setupListenerAndInitialize(txtHotkeySearchConfigKey, value => txtHotkeySearch.val(value), { defValue: "" })
+            txtHotkeySearch.on("keydown", function (event) {
+                const keyMsg = ConfigHelper.decodeHotkey(event, true);
+                if (keyMsg === null)
+                    return
+
+                txtHotkeySearch.val(keyMsg)
+                gobconfig.set(txtHotkeySearchConfigKey, keyMsg)
+            })
+            */
 
             // setup ungrouped
 
@@ -284,9 +389,10 @@
             const allFields = [
                 dpdLanguage,
                 ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate,
+                txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
                 txtHotkeyShow,
-                txtUpdateInterval
+                txtUpdateInterval,
             ]
 
             const btnCopyProfile = $("#capp_copyprofile")
