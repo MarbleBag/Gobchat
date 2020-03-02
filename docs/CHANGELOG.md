@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.5.0] - 2020.03.02
+## [1.5.1] - 2020.03.02
 ### Added
 - Another button `Add new group` in `Config / Groups` at the bottom, which will attach a new group at the end
 - `Textsearch`, it's now possible to search through the chat. Gobchat will highlight all entries which fit the search term and allows stepping through them.
