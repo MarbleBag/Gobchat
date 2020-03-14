@@ -36,6 +36,9 @@
     overflow-x: hidden;
     overflow-y: scroll;
     flex-direction: column;
+    padding-top: 1px;
+    padding-left: 3px;
+    padding-right: 4px;
 }
 
     .chatbox-content::-webkit-scrollbar {

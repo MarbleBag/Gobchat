@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## [1.5.2] - Unreleased
+### Added
+- A small border to the left side of the chat
+
 ### Fixed
 - Some grammatical errors in labels and tooltips
 - Command 'group': A Name containing '-' will now be saved correctly
