@@ -145,28 +145,40 @@ namespace Gobchat.Core.Config
                     continue;
                 }
 
-                var profileId = userProfile["profile"]["id"].Value<string>();
-
-                if (profileId == null || profileId.Length == 0)
-                {
-                    profileId = GenerateProfileId();
-                    userProfile["profile"]["id"] = profileId;
-                }
-
-                var config = new GobchatConfigProfile(userProfile, true, _defaultConfig);
-
-                var configVersion = config.ProfileVersion;
-                var defaultVersion = _defaultConfig.ProfileVersion;
-
-                if (configVersion < defaultVersion)
-                {
-                    logger.Warn($"Profile {config.ProfileId} is outdated with version {configVersion}. Expected is version {defaultVersion}");
-                    return;
-                }
-
-                config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
-                _profiles.Add(profileId, config);
+                var profileId = EnsureProfileId(userProfile);
+                StoreNewProfile(userProfile, false);
                 _profilesLoadedFromFile.Add(profileId);
+            }
+        }
+
+        private string EnsureProfileId(JObject profile)
+        {
+            var profileId = profile["profile"]["id"].Value<string>();
+            if (profileId == null || profileId.Length == 0 || _profiles.ContainsKey(profileId))
+            {
+                profileId = GenerateProfileId();
+                profile["profile"]["id"] = profileId;
+            }
+            return profileId;
+        }
+
+        public JToken ParseProfile(string path)
+        {
+            var loader = GetProfileLoader();
+            var finalizer = new ValueToEnumTransformer();
+
+            JObject userProfile;
+            try
+            {
+                userProfile = loader.LoadConfig(path);
+                userProfile = finalizer.Transform(userProfile);
+                var profileId = EnsureProfileId(userProfile);
+                return userProfile;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"Invalid profile");
+                return null;
             }
         }
 
@@ -305,6 +317,11 @@ namespace Gobchat.Core.Config
 
         public void DeleteProfile(string profileId)
         {
+            DeleteProfile(profileId, false);
+        }
+
+        private void DeleteProfile(string profileId, bool synchronizing)
+        {
             if (!_profiles.ContainsKey(profileId))
                 return;
 
@@ -318,7 +335,7 @@ namespace Gobchat.Core.Config
             if (ActiveProfileId == profileId)
                 ActiveProfileId = _profiles.Keys.First();
 
-            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(profileId, ProfileChangedEventArgs.Type.Delete));
+            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(profileId, ProfileChangedEventArgs.Type.Delete, synchronizing));
         }
 
         public string CreateNewProfile()
@@ -331,16 +348,25 @@ namespace Gobchat.Core.Config
             newConfig["profile"]["id"] = profileId;
             newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
 
-            StoreNewProfile(newConfig);
+            StoreNewProfile(newConfig, false);
             return profileId;
         }
 
-        private void StoreNewProfile(JObject profile)
+        private void StoreNewProfile(JObject profile, bool synchronizing)
         {
             var config = new GobchatConfigProfile(profile, true, _defaultConfig);
+
+            var configVersion = config.ProfileVersion;
+            var defaultVersion = _defaultConfig.ProfileVersion;
+            if (configVersion < defaultVersion)
+            {
+                logger.Warn($"Profile {config.ProfileId} is outdated with version {configVersion}. Expected is version {defaultVersion}. Profile not stored.");
+                return;
+            }
+
             config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
             _profiles.Add(config.ProfileId, config);
-            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New));
+            OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New, synchronizing));
         }
 
         public void CopyProfile(string srcProfileId, string dstProfileId)
@@ -384,7 +410,7 @@ namespace Gobchat.Core.Config
                 var removedProfiles = storedProfiles.Where(p => !profileIds.Contains(p));
 
                 foreach (var profileId in newProfiles)
-                    StoreNewProfile(configJson["profiles"][profileId] as JObject);
+                    StoreNewProfile(configJson["profiles"][profileId] as JObject, true);
 
                 foreach (var profileId in availableProfiles)
                 {
@@ -402,7 +428,7 @@ namespace Gobchat.Core.Config
                 }
 
                 foreach (var profileId in removedProfiles)
-                    DeleteProfile(profileId);
+                    DeleteProfile(profileId, true);
 
                 pendingEvents = GetPendingEvents();
                 System.Threading.Tasks.Task.Run(() =>
