@@ -325,6 +325,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\ChatTabHtmlElement.js" />
+    <Content Include="resources\ui\gobchat\DataBinding.js" />
     <Content Include="resources\ui\gobchat\GobchatSearch.js" />
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -55,7 +55,9 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         }
     }
 
-    function buildProfileListener(profileId, delegate) {
+    //Wraps the given delegate inside a profile listener, which only propagates the call if active profile changes.
+    //
+    function buildProfileListener(delegate, profileId) {
         if (Gobchat.isString(profileId)) { //triggers only if the given profile is active
             return (event) => {
                 if (event.type === "active" && event.detail.new === profileId)
@@ -69,7 +71,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         }
     }
 
-    function buildPropertyListener(profileId, onlyOnActive, delegate) {
+    function buildPropertyListener(delegate, profileId, onlyOnActive) {
         if (Gobchat.isString(profileId)) {
             if (onlyOnActive) {
                 return (event) => {
@@ -96,12 +98,12 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         }
     }
 
-    ConfigHelper.createConfigListener = function (options, delegate) {
+    ConfigHelper.createConfigListener = function (delegate, options, ) {
         const defOptions = { onProfileId: undefined, onActiveProfile: true }
         options = $.extend(defOptions, options)
 
-        const profileListener = buildProfileListener(options.onProfileId, delegate)
-        const propertyListener = buildPropertyListener(options.onProfileId, options.onActiveProfile, delegate)
+        const profileListener = buildProfileListener(delegate, options.onProfileId)
+        const propertyListener = buildPropertyListener(delegate, options.onProfileId, options.onActiveProfile)
 
         return [profileListener, propertyListener]
     }
