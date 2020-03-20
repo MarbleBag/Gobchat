@@ -40,7 +40,7 @@ namespace Gobchat.Core
 
         public delegate global::Gobchat.UI.Web.JavascriptEvents.JSEvent MessageHandler(string eventName, string details);
 
-        public delegate Task<string> RequestHandler(string request, string data);
+        public delegate Task<string> RequestHandler(string request, string[] data);
 
         public GobchatWebAPI(IManagedWebBrowser browser, MessageHandler eventHandler, RequestHandler requestHandler)
         {
@@ -51,8 +51,10 @@ namespace Gobchat.Core
 
         public string APIName => "GobchatAPI";
 
-        public async Task<string> Request(string message, string data)
+        public async Task<string> Request(string message, params string[] data)
         {
+            if (data == null)
+                data = Array.Empty<string>();
             var answere = _requestHandler(message, data);
             return await answere;
         }
@@ -64,7 +66,27 @@ namespace Gobchat.Core
 
         public async Task<string> OpenFileDialog()
         {
-            return await Request(nameof(OpenFileDialog), "");
+            return await Request(nameof(OpenFileDialog), null);
+        }
+
+        public async Task<string> SaveFileDialog(string fileName)
+        {
+            return await Request(nameof(SaveFileDialog), fileName);
+        }
+
+        public async Task<string> ImportProfile()
+        {
+            return await Request(nameof(ImportProfile), null);
+        }
+
+        public async Task<string> ReadFileAsText(string path)
+        {
+            return await Request(nameof(ReadFileAsText), path);
+        }
+
+        public async Task<string> WriteTextToFile(string fileName, string fileContent)
+        {
+            return await Request(nameof(WriteTextToFile), fileName, fileContent);
         }
 
         public async void SetConfig(string json)

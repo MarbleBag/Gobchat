@@ -7,11 +7,11 @@
 </head>
 <body>
     <p>
-        <button id="configprofiles_profile_new"><i class="fas fa-file"></i> Create new profile</button>
-        <button id="configprofiles_profile_import" disabled title="(Soon (TM)) Imports a profile file"><i class="fas fa-file-import"></i> Import profile</button>
+        <button id="cprofiles_profile_new"><i class="fas fa-file"></i> Create new profile</button>
+        <button id="cprofiles_profile_import" title="(Soon (TM)) Imports a profile file"><i class="fas fa-file-import"></i> Import profile</button>
     </p>
 
-    <table id="configprofiles_profiles">
+    <table id="cprofiles_profiles">
         <thead>
             <tr>
                 <th>Name</th>
@@ -23,11 +23,11 @@
         </tbody>
     </table>
 
-    <div id="configprofiles_copyprofiledialog" title="Basic dialog">
-        <select id="configprofiles_copyprofiledialog_select"></select>
+    <div id="cprofiles_copyprofiledialog" title="Basic dialog">
+        <select id="cprofiles_copyprofiledialog_select"></select>
     </div>
 
-    <template id="configprofiles_template_profiles_entry">
+    <template id="cprofiles_template_profiles_entry">
         <tr draggable="true" data-profile-id>
             <td>
                 <input id="profile_name" type="text" />
@@ -39,7 +39,7 @@
                 <table>
                     <tr>
                         <td>
-                            <button id="profile_export" disabled type="button" title="(Soon (TM)) Exports a profile as a file"><i class="fas fa-file-export"></i> Export</button>
+                            <button id="profile_export" type="button" title="(Soon (TM)) Exports a profile as a file"><i class="fas fa-file-export"></i> Export</button>
                         </td>
                         <td>
                             <button id="profile_clone" title="Creates a copy of this profile"><i class="fas fa-copy"></i> Clone</button>
@@ -64,7 +64,7 @@
 
         (function (undefined) {
 
-            $("#configprofiles_copyprofiledialog").hide();
+            $("#cprofiles_copyprofiledialog").hide();
 
             //setup profile selector
             const profileSelectionDropdown = $("#main_profileselect")
@@ -100,15 +100,40 @@
             populateProfileSelection()
 
             //setup create profile
-            $("#configprofiles_profile_new").on("click", function (event) {
+            $("#cprofiles_profile_new").on("click", function (event) {
                 gobconfig.createNewProfile()
             })
 
             //setup import profile
-            $("#configprofiles_profile_import").on("click", function (event) {
+            $("#cprofiles_profile_import").on("click", function (event) {
                 (async () => {
-                    const configJson = await GobchatAPI.importProfile()
-                    gobconfig.importProfile(configJson)
+                    let newProfile = await GobchatAPI.importProfile()
+
+                    if (newProfile === undefined || newProfile === null || newProfile.length == 0) {
+                        $("#config_dialog_error_text").empty()
+                        $("#config_dialog_error_text").append($(
+                            `<span>
+                                                    Profile can't be loaded.<br>
+                                                    Either the format is not supported or the file can't be found/read!<
+                                                </span>
+                                                `
+                        ))
+                        $("#config_dialog_error").dialog({
+                            resizable: false,
+                            height: "auto",
+                            width: 600,
+                            modal: true,
+                            buttons: {
+                                "Ok": function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        })
+                        return
+                    }
+
+                    newProfile = JSON.parse(newProfile)
+                    gobconfig.importProfile(newProfile)
                 })()
             })
 
@@ -116,8 +141,8 @@
             // gobconfig.addEventListener("profile.remove", (event) => { })
             //  gobconfig.addEventListener("profile.changed", (event) => { })
 
-            const profileTable = $("#configprofiles_profiles > tbody")
-            const template = $("#configprofiles_template_profiles_entry")
+            const profileTable = $("#cprofiles_profiles > tbody")
+            const template = $("#cprofiles_template_profiles_entry")
 
             function populateProfileTable() {
                 profileTable.empty()
@@ -144,7 +169,10 @@
 
                     const btnExportProfile = rowElement.find("#profile_export")
                     btnExportProfile.on("click", function (event) {
-                        GobchatAPI.exportProfile(JSON.stringify(profile.config))
+                        (async () => {
+                            const selection = await GobchatAPI.saveFileDialog(`profile_${profile.profileId}.json`)
+                            await GobchatAPI.writeTextToFile(selection, JSON.stringify(profile.config))
+                        })()
                     })
 
                     const btnCloneProfile = rowElement.find("#profile_clone")

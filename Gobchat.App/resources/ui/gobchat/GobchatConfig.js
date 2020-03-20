@@ -263,6 +263,15 @@ var Gobchat = (function (Gobchat, undefined) {
             })
         }
 
+        _generateId() {
+            const ids = this.profiles
+            let id = null
+            do {
+                id = Gobchat.generateId(8)
+            } while (_.includes(ids, id))
+            return id
+        }
+
         _saveConfig() {
             const data = {
                 activeProfile: this._activeProfileId,
@@ -326,16 +335,17 @@ var Gobchat = (function (Gobchat, undefined) {
             return Object.keys(this._profiles)
         }
 
-        createNewProfile() {
-            function generateId(ids) {
-                let id = null
-                do {
-                    id = Gobchat.generateId(8)
-                } while (_.includes(ids, id))
-                return id
-            }
+        importProfile(profileJson) {
+            const cleanProfile = copyByJson(this._defaultProfile)
+            writeObject(profileJson, cleanProfile, false, (p) => false)
+            const profileId = this._generateId()
+            cleanProfile.profile.id = profileId
+            this._storeNewProfile(cleanProfile)
+            return profileId
+        }
 
-            const profileId = generateId(this.profiles)
+        createNewProfile() {
+            const profileId = this._generateId()
             const newProfileData = copyByJson(this._defaultProfile)
             newProfileData.profile.id = profileId
             newProfileData.profile.name = `Profile ${this.profiles.length + 1}`
