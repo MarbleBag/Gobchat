@@ -57,6 +57,8 @@ namespace Gobchat.Core.Config
 
         void CopyProfile(string srcProfileId, string dstProfileId);
 
+        JToken ParseProfile(string path);
+
         #region property handling
 
         T GetProperty<T>(string key);

@@ -75,12 +75,14 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnSingle;
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pnlProgressBar);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProgressDisplayForm";
             this.TopMost = true;
+            this.FormClosing += this.Form_FormClosing;
             this.pnlProgressBar.ResumeLayout(false);
             this.pnlProgressBar.PerformLayout();
             this.ResumeLayout(false);

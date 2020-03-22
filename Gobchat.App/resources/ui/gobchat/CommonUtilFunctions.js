@@ -29,7 +29,8 @@ var Gobchat = (function (Gobchat) {
     }
 
     Gobchat.isObject = function (value) {
-        return value && typeof value === 'object' && value.constructor === Object;
+        return Object.prototype.toString.call(value) === "[object Object]" //only cross-window reliable solution
+        //return value && typeof value === 'object' && value.constructor === Object;
     }
 
     Gobchat.generateId = function (length) {

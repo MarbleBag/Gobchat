@@ -26,10 +26,13 @@ namespace Gobchat.Core.Config
         public string ProfileId { get; }
         public Type Action { get; }
 
-        public ProfileChangedEventArgs(string profileId, Type action)
+        public bool Synchronizing { get; }
+
+        public ProfileChangedEventArgs(string profileId, Type action, bool synchronizing)
         {
             ProfileId = profileId;
             Action = action;
+            Synchronizing = synchronizing;
         }
     }
 }

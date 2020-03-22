@@ -45,5 +45,11 @@ namespace Gobchat.Core.UI
         {
             Cancel?.Invoke(this, new EventArgs());
         }
+
+        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+                Cancel?.Invoke(this, new EventArgs());
+        }
     }
 }

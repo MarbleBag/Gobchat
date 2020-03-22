@@ -65,7 +65,7 @@ var Gobchat = (function (Gobchat, undefined) {
         return { txt: str.substring(startIdx, idx), idx: idx }
     }
 
-    const playerGroupRegEx = /(\d+)\b\s+\b(add|remove|clear)\b\s*.*?\b(([ \w'`´]+)(\s*\[\w+\])?)?/i
+    const playerGroupRegEx = /(\d+)\b\s+\b(add|remove|clear)\b\s*.*?\b(([ \w'`´-]+)(\s*\[\w+\])?)?/i
     class PlayerGroupCommandHandler extends CommandHandler {
         get acceptedCommandNames() {
             return ["group", "g"]

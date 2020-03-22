@@ -19,7 +19,7 @@ namespace Gobchat.Core.UI
             Skip
         }
 
-        public UpdateType UpdateRequest { get; private set; }
+        public UpdateType UpdateRequest { get; private set; } = UpdateType.Skip;
 
         public UpdateFormDialog()
         {

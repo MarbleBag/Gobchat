@@ -112,6 +112,14 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.hotkeys", Event_Config_HotkeysChanged);
             UpdateHotkeys();
 
+            _configManager.OnProfileChange += (s, e) =>
+            {
+                if (e.Synchronizing)
+                    return;
+                //Only care for non synchronizing events, because those need to be synchronized back to the UI
+                var script = BuildCustomEventDispatcher(new SynchronizeConfigWebEvent());
+                _overlay.Browser.ExecuteScript(script);
+            };
             _configManager.AddPropertyChangeListener("*", (s, e) =>
             {
                 if (e.Synchronizing)
@@ -142,7 +150,7 @@ namespace Gobchat.Module.Chat
             UpdateHotkeys();
         }
 
-        private async Task<string> OnEvent_UIRequest(string request, string data)
+        private async Task<string> OnEvent_UIRequest(string request, string[] data)
         {
             if (request == "GetConfig")
             {
@@ -156,7 +164,7 @@ namespace Gobchat.Module.Chat
                 Newtonsoft.Json.Linq.JToken configJson;
                 lock (_jsBuilder)
                 {
-                    configJson = _jsBuilder.Deserialize(data);
+                    configJson = _jsBuilder.Deserialize(data[0]);
                 }
                 _configManager.Synchronize(configJson);
 
@@ -173,7 +181,7 @@ namespace Gobchat.Module.Chat
             }
             else if (request == "SetActiveProfile")
             {
-                _configManager.ActiveProfileId = data;
+                _configManager.ActiveProfileId = data[0];
             }
             else if (request == "CloseGobchat")
             {
@@ -184,7 +192,6 @@ namespace Gobchat.Module.Chat
             else if (request == "OpenFileDialog")
             {
                 var uiManager = _container.Resolve<IUIManager>();
-
                 string fileName = "";
 
                 uiManager.UISynchronizer.RunSync(() =>
@@ -193,6 +200,7 @@ namespace Gobchat.Module.Chat
                     {
                         openFileDialog.InitialDirectory = GobchatApplicationContext.ResourceLocation;
                         openFileDialog.RestoreDirectory = true;
+                        openFileDialog.Filter = "Json files (*.json)|*.json"; //TODO
                         if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                             fileName = openFileDialog.FileName;
                     }
@@ -200,6 +208,47 @@ namespace Gobchat.Module.Chat
 
                 return fileName;
             }
+            else if (request == "SaveFileDialog")
+            {
+                var uiManager = _container.Resolve<IUIManager>();
+                string fileName = "";
+
+                uiManager.UISynchronizer.RunSync(() =>
+                {
+                    using (var fileDialog = new System.Windows.Forms.SaveFileDialog())
+                    {
+                        fileDialog.InitialDirectory = GobchatApplicationContext.ResourceLocation;
+                        fileDialog.RestoreDirectory = true;
+                        fileDialog.Filter = "Json files (*.json)|*.json"; //TODO
+                        fileDialog.FileName = data[0];
+                        if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            fileName = fileDialog.FileName;
+                    }
+                });
+
+                return fileName;
+            }
+            else if (request == "ReadFileAsText")
+            {
+                var txt = System.IO.File.ReadAllText(data[0]);
+                return txt;
+            }
+            else if (request == "WriteTextToFile")
+            {
+                var file = data[0];
+                var content = data[1];
+                System.IO.File.WriteAllText(file, content);
+            }
+            else if (request == "ImportProfile")
+            {
+                var selection = await OnEvent_UIRequest("OpenFileDialog", null).ConfigureAwait(true);
+                if (selection.Length != 0 && selection.Trim().Length != 0)
+                {
+                    var profileData = _configManager.ParseProfile(selection);
+                    return profileData != null ? profileData.ToString() : "";
+                }
+            }
+
             return "";
         }
 
