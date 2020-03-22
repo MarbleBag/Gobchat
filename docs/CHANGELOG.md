@@ -2,13 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.5.2] - Unreleased
+## [1.5.2] - 2020.03.22
 ### Added
 - A small border to the left side of the chat
+- Profile import & export
 
 ### Fixed
-- Some grammatical errors in labels and tooltips
+- Some grammatical errors in labels and tool-tips
 - Command 'group': A Name containing '-' will now be saved correctly
+- Error on download of beta versions
 
 ## [1.5.1] - 2020.03.02
 ### Added

@@ -122,7 +122,7 @@ namespace Gobchat.Module.Updater
                 return releases.Where(p => !p.Version.IsPreRelease).ToList();
 
             //only keep the 'last' betas round
-            var firstNonBetaRelease = releases.Count - 1;
+            var firstNonBetaRelease = releases.Count - 2;
             for (; 0 <= firstNonBetaRelease; --firstNonBetaRelease)
                 if (!releases[firstNonBetaRelease].Version.IsPreRelease)
                     break;
@@ -221,10 +221,11 @@ namespace Gobchat.Module.Updater
 
         private string GetDirectDownloadUrlFor(GobVersion version)
         {
+            var sVersion = version.IsPreRelease ? $"{version.Major}.{version.Minor}.{version.Patch}-{version.PreRelease}" : $"{version.Major}.{version.Minor}.{version.Patch}";
             return DIRECT_DOWNLOAD_URL
                 .Replace("{USER}", _userName)
                 .Replace("{REPO}", _repoName)
-                .Replace("{VERSION}", $"{version.Major}.{version.Minor}.{version.Patch}");
+                .Replace("{VERSION}", sVersion);
         }
 
         private string GetDownloadPageUrlFor(GobVersion version)
