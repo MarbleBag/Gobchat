@@ -236,6 +236,8 @@
         'use strict';
 
         (function () {
+            const configBindingCtx = ConfigHelper.createDatabinding(gobconfig)
+
             // setup language
             const dpdLanguage = $("#capp_language")
             ConfigHelper.linkDropdownConfig(dpdLanguage, { defaultValue: "en" })
@@ -243,149 +245,99 @@
             // setup checkboxes
             const ckbChatLog = $("#capp_makechatlog")
             ckbChatLog.attr("title", "Gobchat creates a chatlog which will be saved under AppData\\Roaming\\Gobchat\\log")
-            ConfigHelper.linkCheckboxConfig(ckbChatLog)
+            configBindingCtx.bindCheckbox(ckbChatLog)
 
             const ckbAutodetect = $("#capp_autodetectemote")
-            ConfigHelper.linkCheckboxConfig(ckbAutodetect)
+            configBindingCtx.bindCheckbox(ckbAutodetect)
 
             const ckbTimestamp = $("#capp_showTimestamp")
-            ConfigHelper.linkCheckboxConfig(ckbTimestamp)
+            configBindingCtx.bindCheckbox(ckbTimestamp)
 
             const ckbHide = $("#capp_hide")
             ckbHide.attr("title", "Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized")
-            ConfigHelper.linkCheckboxConfig(ckbHide)
+            configBindingCtx.bindCheckbox(ckbHide)
 
             const ckbUpdate = $("#capp_checkupdates")
-            ConfigHelper.linkCheckboxConfig(ckbUpdate)
+            configBindingCtx.bindCheckbox(ckbUpdate)
 
             const ckbBetaUpdate = $("#capp_checkbetaupdates")
-            ConfigHelper.linkCheckboxConfig(ckbBetaUpdate)
+            configBindingCtx.bindCheckbox(ckbBetaUpdate)
+
             const ckbBetaUpdateLabel = $("[for='capp_checkbetaupdates']")
-            ConfigHelper.setupListener(ckbUpdate.attr(ConfigHelper.ConfigKeyAttribute), value => {
+            configBindingCtx.bindConfigListener(ckbUpdate.attr(ConfigHelper.ConfigKeyAttribute), value => {
                 ckbBetaUpdate.attr("disabled", !value)
                 ckbBetaUpdateLabel.toggleClass("disabled", !value)
             })
-            ckbBetaUpdate.attr("disabled", !ckbUpdate.prop("checked"))
-            ckbBetaUpdateLabel.toggleClass("disabled", !ckbUpdate.prop("checked"))
 
             // setup font group
             // setup font family
             const txtFontFamily = $("#capp_font_family")
             txtFontFamily.attr("title", "Picks the first available font, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
-            ConfigHelper.linkTextConfig(txtFontFamily)
+            configBindingCtx.bindElement(txtFontFamily)
 
             const btnFontFamilyReset = $("#capp_font_family_reset")
             btnFontFamilyReset.attr("title", "Resets fonts to its default value")
-            btnFontFamilyReset.on("click", (event) => {
-                const configKey = txtFontFamily.attr(ConfigHelper.ConfigKeyAttribute)
-                if (configKey) gobconfig.reset(configKey)
-            })
+            btnFontFamilyReset.on("click", () => gobconfig.reset(txtFontFamily.attr(ConfigHelper.ConfigKeyAttribute)))
+
+            const parseNumber = ($element) => {
+                const value = parseInt($element.val())
+                return Gobchat.isNumber(value) && value > 0 ? value : undefined
+            }
 
             const txtFrameX = $("#capp_frame_x")
-            const txtFrameXConfigKey = txtFrameX.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameXConfigKey, value => txtFrameX.val(value))
-            txtFrameX.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameXConfigKey, value)
-            })
-
             const txtFrameY = $("#capp_frame_y")
-            const txtFrameYConfigKey = txtFrameY.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameYConfigKey, value => txtFrameY.val(value))
-            txtFrameY.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameYConfigKey, value)
-            })
-
             const txtFrameHeight = $("#capp_frame_height")
-            const txtFrameHeightConfigKey = txtFrameHeight.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameHeightConfigKey, value => txtFrameHeight.val(value))
-            txtFrameHeight.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameHeightConfigKey, value)
-            })
-
             const txtFrameWidth = $("#capp_frame_width")
-            const txtFrameWidthConfigKey = txtFrameWidth.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameWidthConfigKey, value => txtFrameWidth.val(value))
-            txtFrameWidth.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameWidthConfigKey, value)
-            })
+
+            configBindingCtx.bindElement(txtFrameX, { elementGetAccessor: parseNumber })
+            configBindingCtx.bindElement(txtFrameY, { elementGetAccessor: parseNumber })
+            configBindingCtx.bindElement(txtFrameHeight, { elementGetAccessor: parseNumber })
+            configBindingCtx.bindElement(txtFrameWidth, { elementGetAccessor: parseNumber })
 
             // setup font size
             const dpdFontSize = $("#capp_font_size")
-            const dpdFonSizeConfigKey = dpdFontSize.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(dpdFonSizeConfigKey, value => dpdFontSize.val(value))
-            dpdFontSize.on("change", function (event) {
-                let newSize = event.target.value || "medium"
-                if (Gobchat.isNumber(newSize))
-                    newSize = Math.round(newSize) + "px"
-                gobconfig.set(dpdFonSizeConfigKey, newSize)
+            configBindingCtx.bindElement(dpdFontSize, {
+                elementGetAccessor: ($element) => Gobchat.isNumber($element.val()) ? Math.round($element.val()) + "px" : ($element.val() || "medium")
             })
 
             const clrSearchMarked = $("#capp_search_marked")
+            ConfigHelper.makeColorSelector(clrSearchMarked)
+            configBindingCtx.bindColorSelector(clrSearchMarked)
+
             const btnSearchMarkedReset = $("#capp_search_marked_reset")
-            ConfigHelper.makeAndBindColorSelector(clrSearchMarked)
-            btnSearchMarkedReset.on("click", e => gobconfig.reset(clrSearchMarked.attr(ConfigHelper.ConfigKeyAttribute)))
+            btnSearchMarkedReset.on("click", () => gobconfig.reset(ConfigHelper.getConfigKey(clrSearchMarked)))
 
             const clrSearchSelected = $("#capp_search_selected")
+            ConfigHelper.makeColorSelector(clrSearchSelected)
+            configBindingCtx.bindColorSelector(clrSearchSelected)
+
             const btnSearchSelectedReset = $("#capp_search_selected_reset")
-            ConfigHelper.makeAndBindColorSelector(clrSearchSelected)
-            btnSearchSelectedReset.on("click", e => gobconfig.reset(clrSearchSelected.attr(ConfigHelper.ConfigKeyAttribute)))
+            btnSearchSelectedReset.on("click", () => gobconfig.reset(ConfigHelper.getConfigKey(clrSearchSelected)))
 
             // setup hotkey group
             // setup hotkey field
             const txtHotkeyShow = $("#capp_hotkey_show")
             txtHotkeyShow.attr("title", "Hides or shows gobchat on keypress")
-            const txtHotkeyShowConfigKey = txtHotkeyShow.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtHotkeyShowConfigKey, value => txtHotkeyShow.val(value), { defValue: "" })
-            txtHotkeyShow.on("keydown", function (event) {
-                //needs a way to transform the stored code into javascript and back
-                //this may create some problems for some very special keys
 
-                const keyMsg = ConfigHelper.decodeHotkey(event, true);
-                if (keyMsg === null)
-                    return
-
-                txtHotkeyShow.val(keyMsg)
-                gobconfig.set(txtHotkeyShowConfigKey, keyMsg)
-            })
-
-            /*
-            const txtHotkeySearch = $("#capp_hotkey_search")
-            txtHotkeySearch.attr("title", "Hides or shows a text search field")
-            const txtHotkeySearchConfigKey = txtHotkeySearch.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtHotkeySearchConfigKey, value => txtHotkeySearch.val(value), { defValue: "" })
-            txtHotkeySearch.on("keydown", function (event) {
-                const keyMsg = ConfigHelper.decodeHotkey(event, true);
-                if (keyMsg === null)
-                    return
-
-                txtHotkeySearch.val(keyMsg)
-                gobconfig.set(txtHotkeySearchConfigKey, keyMsg)
-            })
-            */
+            const getHotkey = ($element, event) => ConfigHelper.decodeHotkey(event, true)
+            configBindingCtx.bindElement(txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
 
             // setup ungrouped
-
             const txtUpdateInterval = $("#capp_updateInterval")
-            const txtUpdateIntervalConfigKey = txtUpdateInterval.attr(ConfigHelper.ConfigKeyAttribute)
             txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
-            ConfigHelper.setupListenerAndInitialize(txtUpdateIntervalConfigKey, value => txtUpdateInterval.val(value), { defValue: "1000" })
-            txtUpdateInterval.on("change", function (event) {
-                let newValue = event.target.value || 100
-                if (newValue < 0) newValue = 0
-                else if (newValue > 5000) newValue = 5000
 
-                txtUpdateInterval.val(newValue)
-                gobconfig.set(txtUpdateIntervalConfigKey, newValue)
+            configBindingCtx.bindElement(txtUpdateInterval, {
+                elementGetAccessor: ($element) => {
+                    const value = parseInt($element.val()) || 100
+                    return value < 0 ? 0 : value > 5000 ? 5000 : value
+                }
             })
 
+            // activate bindings
+            configBindingCtx.initializeValues()
+            configBindingCtx.activateBinding()
+
+            // setup profile copy
             const allFields = [
                 dpdLanguage,
                 ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate,
