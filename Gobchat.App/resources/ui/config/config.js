@@ -1,55 +1,5 @@
 ﻿'use strict';
 
-function initializeNavigationBar(navigationBarId) {
-    const navAttribute = "data-nav-target"
-
-    function hideNavigationContent(navigationId) {
-        $(`#${navigationId} > a`).each(function () {
-            const target = $(this).attr(navAttribute)
-            if (target)
-                $(`#${target}`).hide()
-        })
-    }
-
-    function showActiveNavigationContent(navigationId) {
-        $(`#${navigationId} > .active`).each(function () {
-            const target = $(this).attr(navAttribute)
-            if (target)
-                $(`#${target}`).show()
-        })
-    }
-
-    function importNavigationContent(navigationId) {
-        $(`#${navigationId} > a`).each(function () {
-            const targetId = $(this).attr(navAttribute)
-            if (!targetId) return
-            const target = $(`#${targetId}`)
-            const contentSrc = target.attr("data-content-src")
-            if (!contentSrc) return
-            target.load(contentSrc)
-        })
-    }
-
-    function hasNavigationAttribute(element) {
-        const target = $(element).attr(navAttribute)
-        return target !== null && target !== undefined
-    }
-
-    hideNavigationContent(navigationBarId)
-    importNavigationContent(navigationBarId)
-    showActiveNavigationContent(navigationBarId)
-
-    $(`#${navigationBarId}`).on("click", function (event) {
-        if (!hasNavigationAttribute(event.target)) return
-        hideNavigationContent(navigationBarId)
-        $(`#${navigationBarId} > .active`).removeClass("active")
-        $(event.target).addClass("active")
-        showActiveNavigationContent(navigationBarId)
-    })
-}
-
-initializeNavigationBar("main_navbar")
-
 var ConfigHelper = (function (ConfigHelper, undefined) {
     ConfigHelper.ConfigKeyAttribute = "data-gob-configkey"
 
@@ -61,7 +11,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return id
     }
 
-    ConfigHelper.ProfileIdSelectionDialog = function (callback, options) {
+    ConfigHelper.showProfileIdSelectionDialog = function (callback, options) {
         let defOptions = { exclude: undefined }
         defOptions = $.extend(defOptions, options)
 
@@ -94,72 +44,11 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
-    /*
-    ConfigHelper.createDatabindContext = function () {
-        return {
-            addHook: function (hook) {
-            }
-
-            dispose: function () {
-            }
-        }
+    ConfigHelper.showErrorDialog = function () {
+        //TODO
     }
 
-    ConfigHelper.bindConfigListener = function (dbContext, callback, options) {
-        let defOptions = { "defValue": undefined, "onlyActive": true }
-        defOptions = $.extend(defOptions, options)
-
-        const profileListener = function (event) {
-            if (defOptions.onlyActive) {
-                if (event.type === "active")
-                    callback(gobconfig.get(dbContext.configKey, defOptions.defValue))
-            } else {
-                callback(gobconfig.get(dbContext.configKey, defOptions.defValue))
-            }
-        }
-
-        const propertyListener = function (event) {
-            if (defOptions.onlyActive) {
-                if (event.isActive)
-                    callback(gobconfig.get(dbContext.configKey, defOptions.defValue))
-            } else {
-                callback(gobconfig.get(dbContext.configKey, defOptions.defValue))
-            }
-        }
-
-        let hooked = false;
-
-        const configHook = {
-            isHooked: function () { return hooked },
-            hook: function () {
-                gobconfig.addProfileEventListener(profileListener)
-                gobconfig.addPropertyEventListener(configKey, propertyListener)
-                hooked = true
-            },
-            unhook: function () {
-                gobconfig.removeProfileEventListener(profileListener)
-                gobconfig.removePropertyEventListener(configKey, propertyListener)
-                hooked = false
-            }
-        }
-
-        configHook.hook();
-        dbContext.addHook(configHook)
-    }
-
-    ConfigHelper.bindConfigListenerAndInitialize = function (dbContext, callback, options) {
-        let defOptions = { defValue: undefined }
-        defOptions = $.extend(defOptions, options)
-
-        ConfigHelper.bindConfigListener(dbContext, callback, options)
-        callback(gobconfig.get(configKey, defOptions.defValue))
-    }
-    */
-
-    //TODO
-    //Implement a type of databinding context, so it's easier (even possible) to detach any listener on gobconfig when they are no longer needed
-    //This is especially needed for elements which are not persistent
-
+    //deprecated
     ConfigHelper.setupListener = function (configKey, callback, options) {
         let defOptions = { defValue: undefined }
         defOptions = $.extend(defOptions, options)
@@ -174,6 +63,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
+    //deprecated
     ConfigHelper.setupListenerAndInitialize = function (configKey, callback, options) {
         let defOptions = { defValue: undefined }
         defOptions = $.extend(defOptions, options)
@@ -182,6 +72,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         callback(gobconfig.get(configKey, defOptions.defValue))
     }
 
+    //deprecated
     ConfigHelper.linkDropdownConfig = function (element, options) {
         let defOptions = { defValue: undefined }
         defOptions = $.extend(defOptions, options)
@@ -197,6 +88,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
+    //deprecated
     ConfigHelper.linkCheckboxConfig = function (element) {
         const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null) {
@@ -208,6 +100,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         element.on("change", event => gobconfig.set(configKey, event.target.checked))
     }
 
+    //deprecated
     ConfigHelper.linkCheckboxValueConfig = function (element, checkValue, uncheckValue) {
         const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null) {
@@ -219,6 +112,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         element.on("change", event => gobconfig.set(configKey, event.target.checked ? checkValue : uncheckValue))
     }
 
+    //deprecated
     ConfigHelper.linkCheckboxArrayConfig = function (element, values) {
         const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null || values.length == 0) {
@@ -237,6 +131,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
+    //deprecated
     ConfigHelper.linkTextConfig = function (element) {
         const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null) return
@@ -248,6 +143,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
+    //deprecated
     ConfigHelper.linkTextCollectionConfig = function (element, options) {
         const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null) {
@@ -318,6 +214,11 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
+    ConfigHelper.getConfigKey = function (element) {
+        return $(element).attr(ConfigHelper.ConfigKeyAttribute)
+    }
+
+    //deprecated
     ConfigHelper.makeAndBindColorSelector = function (element, options) {
         ConfigHelper.makeColorSelector(element, options)
 
@@ -341,7 +242,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
             options.configKeys.forEach(key => dstProfile.copyFrom(srcProfile, key))
         }
 
-        element.on("click", event => ConfigHelper.ProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
+        element.on("click", event => ConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
 
         const checkCopyProfileState = () => element.attr("disabled", (gobconfig.profiles.length <= 1))
         gobconfig.addProfileEventListener(event => checkCopyProfileState())
