@@ -109,6 +109,8 @@
                 { label: "Cross-world Linkshell 8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
             ]
 
+            const binding = ConfigHelper.makeDatabinding(gobconfig)
+
             const table = $("#cchannel_channels > tbody")
             const rowTemplate = $('#cchannel_template_channelentry')
             channels.forEach((entry) => {
@@ -124,32 +126,42 @@
                 const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
                 lblName.text(entry.label)
-                chkVisible.attr(ConfigHelper.ConfigKeyAttribute, "behaviour.channel.visible")
-                chkMention.attr(ConfigHelper.ConfigKeyAttribute, "behaviour.channel.mention")
-                chkRoleplay.attr(ConfigHelper.ConfigKeyAttribute, "behaviour.channel.roleplay")
+                ConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
+                ConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
+                ConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
 
                 const channelEnums = [].concat(entry.channelEnum || []).map(e => Gobchat.ChannelEnum[e])
-                ConfigHelper.linkCheckboxArrayConfig(chkVisible, channelEnums)
-                ConfigHelper.linkCheckboxArrayConfig(chkMention, channelEnums)
-                ConfigHelper.linkCheckboxArrayConfig(chkRoleplay, channelEnums)
+                if (channelEnums.length === 0) {
+                    chkVisible.hide()
+                    chkMention.hide()
+                    chkRoleplay.hide()
+                } else {
+                    ConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
+                    ConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
+                    ConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
+                }
 
                 if (entry.styleId === undefined || entry.styleId === null) {
                     clrSelectorFG.parent().hide()
                     clrSelectorBG.parent().hide()
                 } else {
-                    clrSelectorFG.attr(ConfigHelper.ConfigKeyAttribute, entry.styleId + ".color")
-                    clrSelectorBG.attr(ConfigHelper.ConfigKeyAttribute, entry.styleId + ".background-color")
+                    ConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
+                    ConfigHelper.setConfigKey(clrSelectorBG, entry.styleId + ".background-color")
 
-                    ConfigHelper.makeAndBindColorSelector(clrSelectorFG)
-                    ConfigHelper.makeAndBindColorSelector(clrSelectorBG)
+                    ConfigHelper.makeColorSelector(clrSelectorFG)
+                    ConfigHelper.makeColorSelector(clrSelectorBG)
+
+                    ConfigHelper.bindColorSelector(binding, clrSelectorFG)
+                    ConfigHelper.bindColorSelector(binding, clrSelectorBG)
 
                     btnResetFG.attr("disabled", clrSelectorFG.attr("disabled"))
                     btnResetBG.attr("disabled", clrSelectorBG.attr("disabled"))
-                    btnResetFG.on("click", event => gobconfig.reset(clrSelectorFG.attr(ConfigHelper.ConfigKeyAttribute)))
-                    btnResetBG.on("click", event => gobconfig.reset(clrSelectorBG.attr(ConfigHelper.ConfigKeyAttribute)))
+                    btnResetFG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorFG)))
+                    btnResetBG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorBG)))
                 }
-
             })
+
+            binding.initialize()
 
             const btnCopyProfile = $("#cchannel_copyprofile")
             const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay"]
@@ -159,27 +171,6 @@
                 copyKeys.push(entry.styleId + ".background-color")
             })
             ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
-
-            /*
-            btnCopyProfile.on("click", (event) => {
-                function copyProfile(profileId) {
-                    const srcProfile = gobconfig.getProfile(profileId)
-                    const dstProfile = gobconfig.getProfile(gobconfig.activeProfile)
-
-                    dstProfile.copyFrom(srcProfile, "behaviour.channel.visible")
-                    dstProfile.copyFrom(srcProfile, "behaviour.channel.mention")
-                    dstProfile.copyFrom(srcProfile, "behaviour.channel.roleplay")
-
-                    //TODO
-                }
-
-                ConfigHelper.ProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile })
-            })
-
-            const checkCopyProfileState = () => btnCopyProfile.attr("disabled", (gobconfig.profiles.length <= 1))
-            gobconfig.addProfileEventListener(event => checkCopyProfileState())
-            checkCopyProfileState()
-            */
 
         }());
     </script>

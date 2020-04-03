@@ -16,8 +16,10 @@
         <div>
             <button id="cgroups_addnewgrouptop">Add new group <i class="fa fa-folder-open"></i></button>
         </div>
+
         <div id="cgroups_groups">
         </div>
+
         <div>
             <button id="cgroups_addnewgroupbot">Add new group <i class="fa fa-folder-open"></i></button>
         </div>
@@ -114,7 +116,8 @@
 
                 const tblGroups = $("#cgroups_groups")
                 function populateGroupTable() {
-                    tblGroups.empty()
+                    clearGroupTable()
+
                     const groupIds = gobconfig.get(ConfigKeyGroupSorting)
                     groupIds.forEach(groupId => addGroupToTable(groupId))
 
@@ -126,18 +129,29 @@
                     })
                 }
 
+                function clearGroupTable() {
+                    tblGroups.find("div[data-gob-groupid]").each(function (idx) {
+                        $(this).data("configbinding").clear()
+                    })
+                    tblGroups.empty()
+                }
+
                 const tmplGroupEntry = $("#cgroups_template_groupentry")
                 function addGroupToTable(groupId) {
+                    const binding = ConfigHelper.makeDatabinding(gobconfig)
+
                     const groupConfigKey = `${ConfigKeyGroups}.${groupId}`
                     const groupData = gobconfig.get(groupConfigKey)
-                    const isFFGroup = "ffgroup" in groupData
 
                     const groupEntry = $(tmplGroupEntry.html())
-                    groupEntry.attr(GroupIdAttribute, groupId)
                     groupEntry.appendTo(tblGroups)
 
+                    groupEntry.attr(GroupIdAttribute, groupId)
+                    groupEntry.data("configbinding", binding)
+
                     const lblGroupName = groupEntry.find(".tmpl-header-name")
-                    lblGroupName.text(groupData.name)
+                    ConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
+                    ConfigHelper.bindText(binding, lblGroupName)
 
                     const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
                     btnDeleteGroup.on("click", (event) => {
@@ -148,39 +162,33 @@
                         _.remove(groupSorting, e => e === groupId)
                         gobconfig.set(ConfigKeyGroupSorting, groupSorting)
                     })
+
+                    const isFFGroup = "ffgroup" in groupData
                     if (isFFGroup) btnDeleteGroup.attr("disabled", true).hide()
 
-                    const groupNameKey = groupConfigKey + ".name"
                     const txtGroupName = groupEntry.find(".tmpl-group-name")
-                    txtGroupName.val(gobconfig.get(groupNameKey))
-                    txtGroupName.on("change", (event) => {
-                        gobconfig.set(groupNameKey, event.target.value)
-                        lblGroupName.text(gobconfig.get(groupNameKey))
-                    })
+                    ConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
+                    ConfigHelper.bindElement(binding, txtGroupName)
 
                     const btnGroupName = groupEntry.find(".tmpl-group-name-reset")
-                    btnGroupName.on("click", (event) => {
-                        gobconfig.reset(groupNameKey)
-                        lblGroupName.text(gobconfig.get(groupNameKey))
-                        txtGroupName.val(gobconfig.get(groupNameKey))
-                    })
+                    ConfigHelper.setConfigKey(btnGroupName, ConfigHelper.getConfigKey(txtGroupName))
+                    ConfigHelper.makeResetButton(btnGroupName)
                     if (!isFFGroup) btnGroupName.attr("disabled", true).hide()
 
                     const ckbIsActive = groupEntry.find(".tmpl-group-active")
-                    ckbIsActive.prop('checked', gobconfig.get(groupConfigKey + ".active"))
-                    ckbIsActive.on("change", event => gobconfig.set(groupConfigKey + ".active", event.target.checked))
+                    ConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
+                    ConfigHelper.bindCheckbox(binding, ckbIsActive)
 
                     function makeColorSelector(classId, configKey) {
-                        const selectorElement = groupEntry.find(`.${classId}`)
-                        selectorElement.attr(ConfigHelper.ConfigKeyAttribute, configKey)
-                        ConfigHelper.makeColorSelector(selectorElement)
-                        selectorElement.spectrum("set", gobconfig.get(configKey))
+                        const colorSelector = groupEntry.find(`.${classId}`)
+                        ConfigHelper.setConfigKey(colorSelector, configKey)
+                        ConfigHelper.makeColorSelector(colorSelector)
+                        ConfigHelper.bindColorSelector(binding, colorSelector)
 
                         const resetButton = groupEntry.find(`.${classId}-reset`)
-                        resetButton.on("click", event => {
-                            gobconfig.reset(configKey)
-                            selectorElement.spectrum("set", gobconfig.get(configKey));
-                        })
+                        ConfigHelper.setConfigKey(resetButton, configKey)
+                        ConfigHelper.makeResetButton(btnGroupName)
+
                         if (!isFFGroup)
                             resetButton.hide()
                     }
@@ -201,6 +209,8 @@
                     } else {
                         txtTriggers.closest("tr").hide().prev().hide()
                     }
+
+                    binding.initialize()
                 }
 
                 function makeNewGroup(addFront) {

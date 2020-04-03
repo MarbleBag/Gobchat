@@ -121,6 +121,8 @@
                 { label: "OoC", styleId: "style.segment.ooc" },
             ]
 
+            const binding = ConfigHelper.makeDatabinding(gobconfig)
+
             const tblRoleplay = $("#croleplay_roleplay > tbody")
             const rowTemplate = $('#croleplay_template_roleplayentry')
             tblRoleplayContent.forEach((entry) => {
@@ -132,10 +134,13 @@
 
                 lblName.text(entry.label)
 
-                clrSelectorFG.attr(ConfigHelper.ConfigKeyAttribute, entry.styleId + ".color")
-                ConfigHelper.makeAndBindColorSelector(clrSelectorFG)
-                btnResetFG.on("click", event => gobconfig.reset(clrSelectorFG.attr(ConfigHelper.ConfigKeyAttribute)))
+                ConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
+                ConfigHelper.makeColorSelector(clrSelectorFG)
+                ConfigHelper.bindColorSelector(binding, clrSelectorFG)
+                btnResetFG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorFG)))
             })
+
+            binding.initialize()
 
             const segmentsEntryTmpl = $("#croleplay_template_segmentsentry")
             const tblSegments = $("#croleplay_segments_table")
