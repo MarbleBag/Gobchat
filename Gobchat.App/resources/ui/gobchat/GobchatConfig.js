@@ -404,11 +404,19 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         addProfileEventListener(callback) {
-            this._eventDispatcher.on("profile:", callback)
+            return this._eventDispatcher.on("profile:", callback)
+        }
+
+        removeProfileEventListener(callback) {
+            return this._eventDispatcher.off("profile:", callback)
         }
 
         addPropertyEventListener(topic, callback) {
-            this._eventDispatcher.on("property:" + topic, callback)
+            return this._eventDispatcher.on("property:" + topic, callback)
+        }
+
+        removePropertyEventListener(topic, callback) {
+            return this._eventDispatcher.off("property:" + topic, callback)
         }
 
         get(key, defaultValue) {
@@ -513,6 +521,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._firePropertyChanges(changes)
         }
 
+        //TODO delete
         getConfigDiff() {
             const config = copyByJson(this._config)
             retainChangesIterator(config, Gobchat.DefaultProfileConfig)
@@ -632,13 +641,14 @@ var Gobchat = (function (Gobchat, undefined) {
             }
         }
         on(topic, callback) {
-            if (!callback) return
+            if (!callback) return false
             let listeners = this.listenersByTopic.get(topic)
             if (!listeners) {
                 listeners = []
                 this.listenersByTopic.set(topic, listeners)
             }
             listeners.push(callback)
+            return true
         }
         off(topic, callback) {
             let listeners = this.listenersByTopic.get(topic)
@@ -646,7 +656,9 @@ var Gobchat = (function (Gobchat, undefined) {
                 const idx = listeners.indexOf(callback)
                 if (idx > -1) listeners.splice(idx, 1)
                 if (listeners.length === 0) this.listenersByTopic.delete(topic)
+                return idx > -1
             }
+            return false
         }
     }
 
