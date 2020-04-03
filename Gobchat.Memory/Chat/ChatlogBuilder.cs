@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace Gobchat.Memory.Chat
 {
-    internal class ChatlogBuilder
+    internal sealed class ChatlogBuilder
     {
         public bool DebugMode { get; set; }
 

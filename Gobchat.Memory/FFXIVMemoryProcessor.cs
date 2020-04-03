@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -23,8 +23,8 @@ namespace Gobchat.Memory
 
         private readonly FFXIVProcessFinder _processFinder = new FFXIVProcessFinder();
 
-        private readonly Chat.ChatlogReader _chatlogProcessor = new Chat.ChatlogReader();
-        private readonly Chat.ChatlogBuilder _chatlogBuilder = new Chat.ChatlogBuilder();
+        private readonly Chat.ChatlogProcessor _chatlogProcessor = new Chat.ChatlogProcessor();
+        private readonly Actor.PlayerLocationProcessor _locationProcessor = new Actor.PlayerLocationProcessor();
 
         private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
         private bool _windowVisible = true;
@@ -33,7 +33,7 @@ namespace Gobchat.Memory
 
         public int FFXIVProcessId { get { return _processFinder.FFXIVProcessId; } }
 
-        public bool ChatLogAvailable { get { return Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey); } }
+        public bool ChatLogAvailable { get { return _chatlogProcessor.ChatLogAvailable; } }
 
         public bool ObserveGameWindow
         {
@@ -72,7 +72,17 @@ namespace Gobchat.Memory
         /// <summary>
         /// Fired when new FFXIV chatlog entries are read
         /// </summary>
-        public event EventHandler<Chat.ChatlogEventArgs> ChatlogEvent;
+        public event EventHandler<Chat.ChatlogEventArgs> ChatlogEvent
+        {
+            add => _chatlogProcessor.ChatlogEvent += value;
+            remove => _chatlogProcessor.ChatlogEvent -= value;
+        }
+
+        public event EventHandler<Actor.PlayerEventArgs> ActorEvent
+        {
+            add => _locationProcessor.PlayerEvent += value;
+            remove => _locationProcessor.PlayerEvent -= value;
+        }
 
         public void Initialize()
         {
@@ -118,31 +128,9 @@ namespace Gobchat.Memory
             CheckProcess();
             if (FFXIVProcessValid)
             {
-                var logs = _chatlogProcessor.Query();
-                if (logs.Count > 0 && ChatlogEvent != null)
-                {
-                    List<Chat.ChatlogItem> items = new List<Chat.ChatlogItem>();
-                    foreach (var item in logs)
-                    {
-                        try
-                        {
-                            items.Add(_chatlogBuilder.Process(item));
-                        }
-                        catch (Chat.ChatBuildException e)
-                        {
-                            //TODO handle this
-                            logger.Error(() => "Error in processing chat item");
-                            logger.Error(() => $"Chat Item {item.Line}");
-                            logger.Error(e);
-                        }
-                    }
-                    ChatlogEvent.Invoke(this, new Chat.ChatlogEventArgs(items));
-                }
+                _chatlogProcessor.Update();
+                _locationProcessor.Update();
             }
-
-            // List<ChatlogItem> items = new List<ChatlogItem>();
-            // items.Add(chatlogBuilder.Build());
-            // ChatlogEvent?.Invoke(this, new ChatlogEvent(items));
         }
 
         private void CheckProcess()

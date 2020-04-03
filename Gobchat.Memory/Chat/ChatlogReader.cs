@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -18,13 +18,15 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory.Chat
 {
-    internal class ChatlogReader
+    internal sealed class ChatlogReader
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private int _previousArrayIndex = 0;
         private int _previousOffset = 0;
         private bool _chatlogException = false;
+
+        public bool ChatLogAvailable { get { return Sharlayan.Reader.CanGetChatLog(); /*Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey);*/ } }
 
         public ChatlogReader()
         {
