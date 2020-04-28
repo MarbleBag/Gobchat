@@ -17,27 +17,30 @@ namespace Gobchat.UI.Web
 {
     public sealed class JavascriptBuilder
     {
-        private readonly System.Text.StringBuilder stringbuilder;
-        private readonly Newtonsoft.Json.JsonSerializer jsonSerializer;
-        private readonly Newtonsoft.Json.JsonTextWriter jsonWriter;
+        private readonly System.Text.StringBuilder _stringbuilder;
+        private readonly Newtonsoft.Json.JsonSerializer _jsonSerializer;
+        private readonly Newtonsoft.Json.JsonTextWriter _jsonWriter;
 
         public JavascriptBuilder()
         {
-            stringbuilder = new System.Text.StringBuilder(1000);
-            jsonSerializer = new Newtonsoft.Json.JsonSerializer();
-            jsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(stringbuilder));
+            _stringbuilder = new System.Text.StringBuilder(1000);
+            _jsonSerializer = new Newtonsoft.Json.JsonSerializer();
+            _jsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(_stringbuilder));
         }
 
         public string BuildCustomEventDispatcher(JavascriptEvents.JSEvent evt)
         {
-            stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
-            stringbuilder.Append(evt.EventName);
-            stringbuilder.Append("', { detail: ");
-            jsonSerializer.Serialize(jsonWriter, evt);
-            stringbuilder.Append(" }));");
-            string result = stringbuilder.ToString();
-            stringbuilder.Clear();
-            return result;
+            lock (_stringbuilder)
+            {
+                _stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
+                _stringbuilder.Append(evt.EventName);
+                _stringbuilder.Append("', { detail: ");
+                _jsonSerializer.Serialize(_jsonWriter, evt);
+                _stringbuilder.Append(" }));");
+                string result = _stringbuilder.ToString();
+                _stringbuilder.Clear();
+                return result;
+            }
         }
 
         public JToken Deserialize(string json)
@@ -49,7 +52,7 @@ namespace Gobchat.UI.Web
         {
             using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
             {
-                var obj = jsonSerializer.Deserialize<T>(reader);
+                var obj = _jsonSerializer.Deserialize<T>(reader);
                 return obj;
             }
         }
