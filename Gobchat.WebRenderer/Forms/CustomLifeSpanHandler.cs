@@ -17,7 +17,7 @@ using System.Diagnostics;
 
 namespace Gobchat.UI.Forms
 {
-    internal class CustomLifeSpanHandler : ILifeSpanHandler
+    internal sealed class CustomLifeSpanHandler : ILifeSpanHandler
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

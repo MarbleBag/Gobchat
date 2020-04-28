@@ -16,7 +16,7 @@ using CefSharp;
 namespace Gobchat.UI.Forms
 {
     // Context menu does not work correctly and doesn't show up at the position of the right click. For now, it will be disabled.
-    internal class CustomContextMenuHandler : IContextMenuHandler
+    internal sealed class CustomContextMenuHandler : IContextMenuHandler
     {
         // howto: https://github.com/cefsharp/CefSharp/blob/935d3900ba2147f4786386596b62339087ff61b0/CefSharp.WinForms.Example/Handlers/MenuHandler.cs#L15
         void IContextMenuHandler.OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
@@ -32,7 +32,6 @@ namespace Gobchat.UI.Forms
 
         void IContextMenuHandler.OnContextMenuDismissed(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame)
         {
-            
         }
 
         bool IContextMenuHandler.RunContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)

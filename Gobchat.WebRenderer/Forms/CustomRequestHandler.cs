@@ -16,7 +16,7 @@ using CefSharp;
 
 namespace Gobchat.UI.Forms
 {
-    internal class CustomRequestHandler : IRequestHandler
+    internal sealed class CustomRequestHandler : IRequestHandler
     {
         public bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
         {

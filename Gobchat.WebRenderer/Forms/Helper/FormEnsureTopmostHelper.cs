@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,12 +16,11 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class FormEnsureTopmostHelper : IDisposable
+    internal sealed class FormEnsureTopmostHelper : IDisposable
     {
-        public Form TargetForm;
-        public bool Active = false;
-        public int UpdateInterval;
-
+        public Form TargetForm { get; set; }
+        public bool Active { get; private set; } = false;
+        public int UpdateInterval { get; set; }
 
         private System.Threading.Timer timer;
 
@@ -61,7 +60,7 @@ namespace Gobchat.UI.Forms.Helper
         public void Dispose()
         {
             Stop();
+            TargetForm = null;
         }
     }
-
 }

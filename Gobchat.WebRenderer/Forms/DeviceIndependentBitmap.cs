@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 
 namespace Gobchat.UI.Forms
 {
-    internal class DeviceIndependentBitmap : IDisposable
+    internal sealed class DeviceIndependentBitmap : IDisposable
     {
         public int Width { get; private set; }
         public int Height { get; private set; }

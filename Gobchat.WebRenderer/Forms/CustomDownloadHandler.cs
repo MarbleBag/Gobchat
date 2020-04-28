@@ -16,7 +16,7 @@ using System;
 
 namespace Gobchat.UI.Forms
 {
-    internal class CustomDownloadHandler : IDownloadHandler
+    internal sealed class CustomDownloadHandler : IDownloadHandler
     {
         public event EventHandler<DownloadItem> OnBeforeDownloadFired;
 

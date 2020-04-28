@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class FormResizeHelper
+    internal sealed class FormResizeHelper
     {
         public Form TargetForm { get; set; }
         public bool AllowToResize { get; set; }
@@ -101,6 +101,5 @@ namespace Gobchat.UI.Forms.Helper
 
             return false;
         }
-
     }
 }

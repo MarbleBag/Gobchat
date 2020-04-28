@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,7 +16,7 @@ using System;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class MouseEventHelper
+    internal sealed class MouseEventHelper
     {
         private int _lastMouseClickPositionX;
         private int _lastMouseClickPositionY;

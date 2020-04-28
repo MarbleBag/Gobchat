@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -18,7 +18,7 @@ using System;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class RenderHandlerAdapter : CefSharp.OffScreen.IRenderHandler
+    internal sealed class RenderHandlerAdapter : CefSharp.OffScreen.IRenderHandler
     {
         public event EventHandler<PaintEventArgs> Paint;
 
@@ -84,7 +84,7 @@ namespace Gobchat.UI.Forms.Helper
         {
         }
 
-        public class PaintEventArgs : EventArgs
+        public sealed class PaintEventArgs : EventArgs
         {
             public PaintElementType Type { get; }
             public Rect DirtyRect { get; }
@@ -103,7 +103,7 @@ namespace Gobchat.UI.Forms.Helper
             }
         }
 
-        public class CursorChangeEventArgs : EventArgs
+        public sealed class CursorChangeEventArgs : EventArgs
         {
             public IntPtr Cursor { get; }
             public CursorType Type { get; }
