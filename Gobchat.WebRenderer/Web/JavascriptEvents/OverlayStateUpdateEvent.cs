@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -15,11 +15,11 @@ namespace Gobchat.UI.Web
 {
     namespace JavascriptEvents
     {
-        public class FormStateUpdate : JSEvent
+        public sealed class OverlayStateUpdateEvent : JSEvent
         {
             public bool isLocked;
 
-            public FormStateUpdate(bool isLocked) : base("FormStateUpdate")
+            public OverlayStateUpdateEvent(bool isLocked) : base("OverlayStateUpdate")
             {
                 this.isLocked = isLocked;
             }

@@ -83,7 +83,7 @@
     <Compile Include="Forms\NativeMethods.cs" />
     <Compile Include="Forms\ManagedWebBrowser.cs" />
     <Compile Include="Web\JavascriptBuilder.cs" />
-    <Compile Include="Web\JavascriptEvents\FormStateUpdate.cs" />
+    <Compile Include="Web\JavascriptEvents\OverlayStateUpdateEvent.cs" />
     <Compile Include="Web\JavascriptEvents\JSEvent.cs" />
     <Compile Include="Forms\CefOverlayForm.cs">
       <SubType>Form</SubType>
