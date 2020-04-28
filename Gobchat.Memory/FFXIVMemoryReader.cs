@@ -17,14 +17,14 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory
 {
-    public sealed class FFXIVMemoryProcessor : IDisposable
+    public sealed class FFXIVMemoryReader : IDisposable
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly FFXIVProcessFinder _processFinder = new FFXIVProcessFinder();
 
-        private readonly Chat.ChatlogProcessor _chatlogProcessor = new Chat.ChatlogProcessor();
-        private readonly Actor.PlayerLocationProcessor _locationProcessor = new Actor.PlayerLocationProcessor();
+        private readonly Chat.ChatlogMemoryReader _chatlogProcessor = new Chat.ChatlogMemoryReader();
+        private readonly Actor.PlayerLocationMemoryReader _locationProcessor = new Actor.PlayerLocationMemoryReader();
 
         private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
         private bool _windowVisible = true;
@@ -62,27 +62,21 @@ namespace Gobchat.Memory
         /// <summary>
         /// Fired when the currently tracked FFXIV process changes
         /// </summary>
-        public event EventHandler<ProcessChangeEventArgs> ProcessChangeEvent;
+        public event EventHandler<ProcessChangeEventArgs> OnProcessChanged;
 
         /// <summary>
         /// Fired when the currently tracked FFXIV window is moved into the foreground or into the background
         /// </summary>
-        public event EventHandler<WindowFocusChangedEventArgs> WindowFocusChangedEvent;
+        public event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
 
+        [Obsolete]
         /// <summary>
         /// Fired when new FFXIV chatlog entries are read
         /// </summary>
-        public event EventHandler<Chat.ChatlogEventArgs> ChatlogEvent
-        {
-            add => _chatlogProcessor.ChatlogEvent += value;
-            remove => _chatlogProcessor.ChatlogEvent -= value;
-        }
+        public event EventHandler<Chat.ChatlogEventArgs> OnChatlog;
 
-        public event EventHandler<Actor.PlayerEventArgs> ActorEvent
-        {
-            add => _locationProcessor.PlayerEvent += value;
-            remove => _locationProcessor.PlayerEvent -= value;
-        }
+        [Obsolete]
+        public event EventHandler<Actor.PlayerEventArgs> OnActor;
 
         public void Initialize()
         {
@@ -117,30 +111,55 @@ namespace Gobchat.Memory
                     if (isVisible != _windowVisible)
                     {
                         _windowVisible = !_windowVisible;
-                        WindowFocusChangedEvent?.Invoke(this, new WindowFocusChangedEventArgs(_windowVisible));
+                        OnWindowFocusChanged?.Invoke(this, new WindowFocusChangedEventArgs(_windowVisible));
                     }
                     break;
             }
         }
 
+        [Obsolete]
         public void Update()
         {
-            CheckProcess();
+            CheckFFXIVProcess();
             if (FFXIVProcessValid)
             {
-                _chatlogProcessor.Update();
-                _locationProcessor.Update();
+                if (OnActor != null)
+                {
+                    var result = _locationProcessor.GetPlayerData();
+                    if (result.Count > 0)
+                        OnActor?.Invoke(this, new Actor.PlayerEventArgs(result));
+                }
+
+                if (OnChatlog != null)
+                {
+                    var result = _chatlogProcessor.GetNewestChatlog();
+                    if (result.Count > 0)
+                        OnChatlog?.Invoke(this, new Chat.ChatlogEventArgs(result));
+                }
             }
         }
 
-        private void CheckProcess()
+        public void CheckFFXIVProcess()
         {
-            //TODO MUTEX
             var processChanged = _processFinder.CheckProcess();
             if (!processChanged)
                 return; //nothing to do
 
-            ProcessChangeEvent?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+            OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+        }
+
+        public List<Chat.ChatlogItem> GetNewestChatlog()
+        {
+            if (!FFXIVProcessValid)
+                return new List<Chat.ChatlogItem>();
+            return _chatlogProcessor.GetNewestChatlog();
+        }
+
+        public List<Actor.PlayerData> GetPlayerData()
+        {
+            if (!FFXIVProcessValid)
+                return new List<Actor.PlayerData>();
+            return _locationProcessor.GetPlayerData();
         }
     }
 }

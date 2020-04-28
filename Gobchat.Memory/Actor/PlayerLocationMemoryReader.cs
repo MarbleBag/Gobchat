@@ -16,13 +16,9 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory.Actor
 {
-    internal sealed class PlayerLocationProcessor
+    internal sealed class PlayerLocationMemoryReader
     {
-        public bool Enabled;
-
         public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors(); } }
-
-        public event EventHandler<PlayerEventArgs> PlayerEvent;
 
         private bool TryProcess(Sharlayan.Core.ActorItem actor, PlayerData.UpdateFlag flag, out PlayerData data)
         {
@@ -49,11 +45,8 @@ namespace Gobchat.Memory.Actor
                     results.Add(data);
         }
 
-        public void Update()
+        public List<PlayerData> GetPlayerData()
         {
-            if (!Enabled && PlayerEvent != null)
-                return;
-
             var result = new List<PlayerData>();
             var memoryResult = Sharlayan.Reader.GetActors();
 
@@ -61,7 +54,7 @@ namespace Gobchat.Memory.Actor
             Process(memoryResult.RemovedPCs.Values, PlayerData.UpdateFlag.Remove, result);
             Process(memoryResult.NewPCs.Values, PlayerData.UpdateFlag.New, result);
 
-            PlayerEvent?.Invoke(this, new PlayerEventArgs(result));
+            return result;
         }
     }
 }

@@ -87,6 +87,11 @@ namespace Gobchat.Memory
                 logger.Info("Chatlog signature found");
             else
                 logger.Info("Chatlog signature not found");
+
+            if (e.Signatures.ContainsKey(Signatures.CharacterMapKey))
+                logger.Info("Actors signature found");
+            else
+                logger.Info("Actors signature not found");
         }
 
         private bool IsActiveProcessValid(Process[] processes)

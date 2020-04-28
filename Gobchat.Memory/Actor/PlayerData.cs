@@ -24,7 +24,7 @@ namespace Gobchat.Memory.Actor
 
         // public ActorPosition Position { get; }
 
-        public int Distance { get; }
+        public int DistanceToPlayer { get; }
 
         public string Name { get; }
 
@@ -39,7 +39,7 @@ namespace Gobchat.Memory.Actor
             Name = name;
             Id = id.ToString();
             UId = uid;
-            Distance = distance;
+            DistanceToPlayer = distance;
             Flag = flag;
         }
     }

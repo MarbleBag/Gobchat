@@ -17,42 +17,36 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory.Chat
 {
-    internal sealed class ChatlogProcessor
+    internal sealed class ChatlogMemoryReader
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly Chat.ChatlogReader _reader = new Chat.ChatlogReader();
         private readonly Chat.ChatlogBuilder _builder = new Chat.ChatlogBuilder();
 
-        /// <summary>
-        /// Fired when new FFXIV chatlog entries are read
-        /// </summary>
-        public event EventHandler<Chat.ChatlogEventArgs> ChatlogEvent;
-
         public bool ChatLogAvailable => _reader.ChatLogAvailable;
 
-        public void Update()
+        public List<Chat.ChatlogItem> GetNewestChatlog()
         {
-            var logs = _reader.Query();
-            if (logs.Count > 0 && ChatlogEvent != null)
+            var rawLogs = _reader.Query();
+            var result = new List<Chat.ChatlogItem>();
+
+            foreach (var rawLog in rawLogs)
             {
-                var items = new List<Chat.ChatlogItem>();
-                foreach (var item in logs)
+                try
                 {
-                    try
-                    {
-                        items.Add(_builder.Process(item));
-                    }
-                    catch (Chat.ChatBuildException e)
-                    {
-                        //TODO handle this
-                        logger.Error(() => "Error in processing chat item");
-                        logger.Error(() => $"Chat Item {item.Line}");
-                        logger.Error(e);
-                    }
+                    result.Add(_builder.Process(rawLog));
                 }
-                ChatlogEvent?.Invoke(this, new Chat.ChatlogEventArgs(items));
+                catch (Chat.ChatBuildException e)
+                {
+                    //TODO handle this
+                    logger.Error(() => "Error in processing chat item");
+                    logger.Error(() => $"Chat Item {rawLog.Line}");
+                    logger.Error(e);
+                }
             }
+
+            return result;
         }
     }
 }

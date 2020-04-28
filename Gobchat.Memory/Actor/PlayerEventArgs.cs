@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory.Actor
 {
+    [ObsoleteAttribute]
     public sealed class PlayerEventArgs : EventArgs
     {
         public List<PlayerData> PlayerData { get; }

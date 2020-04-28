@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace Gobchat.Memory.Chat
 {
+    [ObsoleteAttribute]
     public class ChatlogEventArgs : System.EventArgs
     {
         public List<ChatlogItem> ChatlogItems { get; }
