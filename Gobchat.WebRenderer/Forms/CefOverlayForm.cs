@@ -227,7 +227,7 @@ namespace Gobchat.UI.Forms
                 _formMover.AllowToMove = false;
                 _formResizer.AllowToResize = false;
 
-                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.FormStateUpdate(true));
+                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.OverlayStateUpdateEvent(true));
                 Browser.ExecuteScript(script); //TODO
             }
         }
@@ -240,7 +240,7 @@ namespace Gobchat.UI.Forms
                 _formMover.AllowToMove = true;
                 _formResizer.AllowToResize = true;
 
-                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.FormStateUpdate(false));
+                var script = _jsBuilder.BuildCustomEventDispatcher(new Web.JavascriptEvents.OverlayStateUpdateEvent(false));
                 Browser.ExecuteScript(script); //TODO
             }
         }
