@@ -12,8 +12,10 @@
  *******************************************************************************/
 
 using NLog;
+using Sharlayan.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gobchat.Memory
 {
@@ -21,7 +23,7 @@ namespace Gobchat.Memory
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly FFXIVProcessFinder _processFinder = new FFXIVProcessFinder();
+        private readonly FFXIVProcessConnector _processConnector = new FFXIVProcessConnector();
 
         private readonly Chat.ChatlogMemoryReader _chatlogProcessor = new Chat.ChatlogMemoryReader();
         private readonly Actor.PlayerLocationMemoryReader _locationProcessor = new Actor.PlayerLocationMemoryReader();
@@ -29,11 +31,12 @@ namespace Gobchat.Memory
         private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
         private bool _windowVisible = true;
 
-        public bool FFXIVProcessValid { get { return _processFinder.FFXIVProcessValid; } }
+        public bool FFXIVProcessValid { get { return _processConnector.FFXIVProcessValid; } }
 
-        public int FFXIVProcessId { get { return _processFinder.FFXIVProcessId; } }
+        public int FFXIVProcessId { get { return _processConnector.FFXIVProcessId; } }
 
         public bool ChatLogAvailable { get { return _chatlogProcessor.ChatLogAvailable; } }
+        public bool PlayerCharactersAvailable { get { return _locationProcessor.LocationAvailable; } }
 
         public bool ObserveGameWindow
         {
@@ -78,21 +81,33 @@ namespace Gobchat.Memory
         [Obsolete]
         public event EventHandler<Actor.PlayerEventArgs> OnActor;
 
+        /// <summary>
+        /// Needs to be disposed on the same thread it was created
+        /// </summary>
+        public FFXIVMemoryReader()
+        {
+            _processConnector.OnConnectionLost += ProcessConnector_OnConnectionLost;
+        }
+
         public void Initialize()
         {
-            Sharlayan.MemoryHandler.Instance.ExceptionEvent += (s, e) =>
-            {
-                if (e.LevelIsError)
-                    logger.Fatal(e.Exception, () => $"Memory error in {e.Sender}");
-                else
-                    logger.Warn(e.Exception, () => $"Memory error in {e.Sender}");
-            };
-
+            Sharlayan.MemoryHandler.Instance.ExceptionEvent += Sharlayan_ExceptionEvent;
             _windowScanner.ActiveWindowChangedEvent += OnEvent_ActiveWindowChangedEvent;
+        }
+
+        private void Sharlayan_ExceptionEvent(object sender, Sharlayan.Events.ExceptionEvent e)
+        {
+            if (e.LevelIsError)
+                logger.Fatal(e.Exception, () => $"Memory error in {e.Sender}");
+            else
+                logger.Warn(e.Exception, () => $"Memory error in {e.Sender}");
         }
 
         public void Dispose()
         {
+            _processConnector.Unconnect();
+            Sharlayan.MemoryHandler.Instance.ExceptionEvent -= Sharlayan_ExceptionEvent;
+            _windowScanner.ActiveWindowChangedEvent -= OnEvent_ActiveWindowChangedEvent;
             _windowScanner.Dispose();
         }
 
@@ -141,10 +156,26 @@ namespace Gobchat.Memory
 
         public void CheckFFXIVProcess()
         {
-            var processChanged = _processFinder.CheckProcess();
-            if (!processChanged)
+            if (_processConnector.FFXIVProcessValid)
                 return; //nothing to do
 
+            var connected = _processConnector.ConnectToFFXIV();
+            if (connected)
+                logger.Info("FFXIV process detected");
+            else
+                logger.Info("No FFXIV process detected");
+
+            var signaturesOfInterest = new string[] { Sharlayan.Signatures.ChatLogKey, Sharlayan.Signatures.CharacterMapKey };
+            var availableSignatures = Sharlayan.Scanner.Instance.Locations.Values.Select(e => e.Key).ToArray();
+            var foundSignatures = Array.FindAll(availableSignatures, (e) => signaturesOfInterest.Contains(e));
+            logger.Info($"Signatures found: {string.Join(", ", foundSignatures)}");
+
+            OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+        }
+
+        private void ProcessConnector_OnConnectionLost(object sender, EventArgs e)
+        {
+            logger.Info("No FFXIV process detected");
             OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
         }
 
@@ -155,10 +186,10 @@ namespace Gobchat.Memory
             return _chatlogProcessor.GetNewestChatlog();
         }
 
-        public List<Actor.PlayerData> GetPlayerData()
+        public List<Actor.PlayerCharacter> GetPlayerCharacters()
         {
             if (!FFXIVProcessValid)
-                return new List<Actor.PlayerData>();
+                return new List<Actor.PlayerCharacter>();
             return _locationProcessor.GetPlayerData();
         }
     }

@@ -69,8 +69,8 @@
     <Compile Include="Chat\Token\TextToken.cs" />
     <Compile Include="Chat\Token\UnknownLinkToken.cs" />
     <Compile Include="Chat\Token\UnknownToken.cs" />
-    <Compile Include="FFXIVProcessFinder.cs" />
     <Compile Include="FFXIVMemoryReader.cs" />
+    <Compile Include="FXIVProcessConnector.cs" />
     <Compile Include="ProcessChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowFocusChangedEventArgs.cs" />

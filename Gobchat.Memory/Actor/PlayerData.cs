@@ -13,7 +13,7 @@
 
 namespace Gobchat.Memory.Actor
 {
-    public sealed class PlayerData
+    public sealed class PlayerCharacter
     {
         public enum UpdateFlag
         {
@@ -34,7 +34,7 @@ namespace Gobchat.Memory.Actor
 
         public UpdateFlag Flag { get; }
 
-        public PlayerData(string name, uint id, string uid, int distance, UpdateFlag flag)
+        public PlayerCharacter(string name, uint id, string uid, int distance, UpdateFlag flag)
         {
             Name = name;
             Id = id.ToString();

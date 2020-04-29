@@ -20,7 +20,7 @@ namespace Gobchat.Memory.Actor
     {
         public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors(); } }
 
-        private bool TryProcess(Sharlayan.Core.ActorItem actor, PlayerData.UpdateFlag flag, out PlayerData data)
+        private bool TryProcess(Sharlayan.Core.ActorItem actor, PlayerCharacter.UpdateFlag flag, out PlayerCharacter data)
         {
             data = null;
 
@@ -33,26 +33,26 @@ namespace Gobchat.Memory.Actor
             // var pos = new ActorPosition(entry.X, entry.Y, entry.Z);
             var distance = (int)actor.Distance;
 
-            data = new PlayerData(name, id, uid, distance, flag);
+            data = new PlayerCharacter(name, id, uid, distance, flag);
 
             return true;
         }
 
-        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerData.UpdateFlag flag, ICollection<PlayerData> results)
+        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, ICollection<PlayerCharacter> results)
         {
             foreach (var entry in actors)
                 if (TryProcess(entry, flag, out var data))
                     results.Add(data);
         }
 
-        public List<PlayerData> GetPlayerData()
+        public List<PlayerCharacter> GetPlayerData()
         {
-            var result = new List<PlayerData>();
+            var result = new List<PlayerCharacter>();
             var memoryResult = Sharlayan.Reader.GetActors();
 
-            Process(memoryResult.CurrentPCs.Values, PlayerData.UpdateFlag.Update, result);
-            Process(memoryResult.RemovedPCs.Values, PlayerData.UpdateFlag.Remove, result);
-            Process(memoryResult.NewPCs.Values, PlayerData.UpdateFlag.New, result);
+            Process(memoryResult.CurrentPCs.Values, PlayerCharacter.UpdateFlag.Update, result);
+            Process(memoryResult.RemovedPCs.Values, PlayerCharacter.UpdateFlag.Remove, result);
+            Process(memoryResult.NewPCs.Values, PlayerCharacter.UpdateFlag.New, result);
 
             return result;
         }

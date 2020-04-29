@@ -19,9 +19,9 @@ namespace Gobchat.Memory.Actor
     [ObsoleteAttribute]
     public sealed class PlayerEventArgs : EventArgs
     {
-        public List<PlayerData> PlayerData { get; }
+        public List<PlayerCharacter> PlayerData { get; }
 
-        public PlayerEventArgs(List<PlayerData> playerData)
+        public PlayerEventArgs(List<PlayerCharacter> playerData)
         {
             PlayerData = playerData ?? throw new ArgumentNullException(nameof(playerData));
         }
