@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,29 +11,49 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessage
     {
-        public DateTime Timestamp { get; }
-        public string Source { get; }
-        public int MessageType { get; }
-        public string Message { get; }
+        public ChatMessageSource Source { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public ChatChannel Channel { get; set; }
+        public System.Collections.Generic.List<MessageSegment> Message { get; }
 
-        public ChatMessage(DateTime timestamp, string source, int messageType, string message)
+        public ChatMessage()
         {
-            Timestamp = timestamp;
-            Source = source;
-            MessageType = messageType;
-            Message = message ?? throw new ArgumentNullException(nameof(message));
+            Source = null;
+            Channel = (int)ChatChannel.NONE;
+            Message = new System.Collections.Generic.List<MessageSegment>();
         }
+    }
 
-        public override string ToString()
+    public sealed class ChatMessageSource
+    {
+        public string Source { get; }
+        public string Prefix { get; set; } = null;
+
+        public string CharacterName { get; set; } = null;
+
+        public int FFGroup { get; set; } = -1;
+        public int Party { get; set; } = -1;
+        public int Alliance { get; set; } = -1;
+
+        public ChatMessageSource(string source)
         {
-            var className = nameof(ChatMessage);
-            return $"{className} => time:{Timestamp} | type:{MessageType} | source:'{Source}'  | msg:'{Message}'";
+            Source = source;
+        }
+    }
+
+    public sealed class MessageSegment
+    {
+        public MessageSegmentType Type { get; set; }
+        public string Content { get; set; }
+
+        public MessageSegment(MessageSegmentType type, string message)
+        {
+            this.Type = type;
+            this.Content = message;
         }
     }
 }

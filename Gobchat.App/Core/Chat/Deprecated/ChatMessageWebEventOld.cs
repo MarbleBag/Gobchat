@@ -15,14 +15,15 @@ using System.Globalization;
 
 namespace Gobchat.Core.Chat
 {
-    public sealed class ChatMessageWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
+    [System.Obsolete]
+    public sealed class ChatMessageWebEventOld : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
         public readonly string timestamp;
         public readonly int type;
         public readonly string source;
         public readonly string message;
 
-        public ChatMessageWebEvent(ChatMessage message) : base("ChatMessageEvent")
+        public ChatMessageWebEventOld(ChatMessageOld message) : base("ChatMessageEvent")
         {
             if (message == null)
                 throw new System.ArgumentNullException(nameof(message));

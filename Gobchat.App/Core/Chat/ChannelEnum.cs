@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Gobchat.Core.Chat
 {
-    public enum ChannelEnum
+    public enum ChatChannel : int
     {
         NONE = 0x0000,
         SAY = 0x000a,

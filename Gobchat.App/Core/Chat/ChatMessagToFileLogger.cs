@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019.2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,21 +16,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Gobchat.Core.Runtime;
-using Gobchat.Core.Config;
-using Gobchat.Core.Util.Extension.Queue;
 using System.Globalization;
+using Gobchat.Core.Util.Extension;
+using Gobchat.Core.Util.Extension.Queue;
 
 namespace Gobchat.Core.Chat
 {
-    internal sealed class ChatMessageToFileLogger : IDisposable
+    public sealed class ChatMessageToFileLogger : IDisposable
     {
-        private readonly IGobchatConfigManager _configManager;
         private readonly Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
+        private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();
         private string _fileHandle;
 
-        public ChatMessageToFileLogger(IGobchatConfigManager configManager)
+        public List<ChatChannel> LogChannels
         {
-            _configManager = configManager;
+            get => _logChannels.ToList();
+            set => _logChannels = value.ToArrayOrEmpty();
+        }
+
+        public bool Active { get; set; }
+
+        public ChatMessageToFileLogger()
+        {
         }
 
         public void Dispose()
@@ -54,7 +61,7 @@ namespace Gobchat.Core.Chat
 
             var logLines = _pendingMessages.DequeueAll().Select(e =>
             { // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
-                return $"00|{e.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{e.MessageType.ToString("x4", CultureInfo.InvariantCulture)}|{e.Source}|{e.Message}|";
+                return $"00|{e.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{((int)(e.Channel)).ToString("x4", CultureInfo.InvariantCulture)}|{e.Source}|{e.Message}|";
             });
 
             File.AppendAllLines(_fileHandle, logLines);
@@ -62,15 +69,7 @@ namespace Gobchat.Core.Chat
 
         public void Log(ChatMessage message)
         {
-            var doLog = _configManager.GetProperty<bool>("behaviour.writeChatLog");
-            if (!doLog)
-                return;
-
-            var visibleChannels = _configManager.GetProperty<List<long>>("behaviour.channel.visible");
-            //var checkForValue = new Newtonsoft.Json.Linq.JValue((ChannelEnum)message.MessageType);
-            // visibleChannels.Cast<Newtonsoft.Json.Linq.JValue>().Any(e => e.Value )
-
-            if (visibleChannels.Contains(message.MessageType))//todo
+            if (Active && _logChannels.Contains(message.Channel))
                 _pendingMessages.Enqueue(message);
         }
     }

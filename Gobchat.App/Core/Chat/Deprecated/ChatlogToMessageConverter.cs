@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 
 namespace Gobchat.Core.Chat
 {
+    [System.Obsolete]
     public sealed class ChatlogToMessageConverter
     {
         private static string InformationSeperator = "\u001f"; //FF14 now uses \u001f since 5.2 instead of '\u003a' to separate source from message
@@ -30,7 +31,7 @@ namespace Gobchat.Core.Chat
             _autotranslateLookup = autotranslateLookup ?? throw new ArgumentNullException(nameof(autotranslateLookup));
         }
 
-        public ChatMessage Convert(ChatlogItem item)
+        public ChatMessageOld Convert(ChatlogItem item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -44,7 +45,7 @@ namespace Gobchat.Core.Chat
 
             //TODO check for errors /exception handling
 
-            return new ChatMessage(item.TimeStamp, source, item.Channel, message);
+            return new ChatMessageOld(item.TimeStamp, source, item.Channel, message);
         }
 
         //Not the best solution, but works by simplifying the task

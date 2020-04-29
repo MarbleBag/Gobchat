@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -13,13 +13,12 @@
 
 namespace Gobchat.Core.Chat
 {
-    public enum MessageSegmentEnum
+    public interface IReplacer
     {
-        UNDEFINED = 0,
-        SAY = 1,
-        EMOTE = 2,
-        OOC = 3,
-        MENTION = 4,
-        WEB_LINK = 5,
+        bool StartReplace(ChatMessage message);
+
+        void EndReplace();
+
+        void Segment(SegmentMarker marker, MessageSegmentType segmentType, string segmentContent);
     }
 }
