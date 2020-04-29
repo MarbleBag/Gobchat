@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using CefSharp;
+using CefSharp.Event;
 using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
@@ -68,6 +69,8 @@ namespace Gobchat.UI.Forms
         public event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
 
         public new event EventHandler<BrowserInitializedEventArgs> BrowserInitialized;
+
+        public event EventHandler<BrowserAPIBindingEventArgs> ResolveBrowserAPI;
 
         event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.BrowserInitialized
         {
@@ -129,24 +132,14 @@ namespace Gobchat.UI.Forms
             CefBrowser.FrameLoadEnd += OnEvent_FrameLoadEnd;
             CefBrowser.LoadError += OnEvent_LoadError;
             CefBrowser.ConsoleMessage += OnEvent_ConsoleMessage;
+            CefBrowser.JavascriptObjectRepository.ResolveObject += OnEvent_JavascriptResolveObject;
         }
 
         #region BrowserEventHandling
 
         private void OnEvent_FrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
-            builder.Append("(async () => {");
-            foreach (var boundAPI in _availableAPIs)
-            {
-                builder.Append("await CefSharp.BindObjectAsync('");
-                builder.Append(boundAPI.APIName);
-                builder.Append("')");
-            }
-            builder.AppendLine("})();");
-            var awaitAPIScript = builder.ToString();
-            e.Frame.ExecuteJavaScriptAsync(awaitAPIScript, "Initialize");
-
+            JSAwaitAPIBinding(e.Frame, _availableAPIs.ToArray());
             BrowserLoadPage?.Invoke(this, new BrowserLoadPageEventArgs(0, e.Url));
         }
 
@@ -176,6 +169,11 @@ namespace Gobchat.UI.Forms
                     BrowserInitialized = null;
                 }
             }
+        }
+
+        private void OnEvent_JavascriptResolveObject(object sender, JavascriptBindingEventArgs e)
+        {
+            ResolveBrowserAPI?.Invoke(sender, new BrowserAPIBindingEventArgs(e.ObjectName, this));
         }
 
         #endregion BrowserEventHandling
@@ -243,9 +241,50 @@ namespace Gobchat.UI.Forms
                 if (boundAPI.APIName.Equals(api.APIName))
                     return false;
             }
+
             _availableAPIs.Add(api);
             CefBrowser.JavascriptObjectRepository.Register(api.APIName, api, isAsync: isApiAsync, options: CefSharp.BindingOptions.DefaultBinder);
+
+            if (this.CefBrowser.IsBrowserInitialized && this.GetMainFrame() != null)
+                AwaitAPIBinding(api);
+
             return true;
+        }
+
+        public bool UnbindBrowserAPI(IBrowserAPI api)
+        {
+            var removed = _availableAPIs.RemoveAll(e => e.APIName.Equals(api.APIName) && e == api);
+            if (removed == 0)
+                return false;
+
+            if (!CefBrowser.JavascriptObjectRepository.IsBound(api.APIName))
+                return false;
+
+            var script = $"(async ()=>{{ return await CefCharp.DeleteBoundObject({api.APIName}) }})();";
+            var promise = this.GetMainFrame().EvaluateScriptAsync(script, "Gobchat");
+            var result = promise.GetAwaiter().GetResult();
+
+            return CefBrowser.JavascriptObjectRepository.UnRegister(api.APIName);
+        }
+
+        private void AwaitAPIBinding(params IBrowserAPI[] apis)
+        {
+            JSAwaitAPIBinding(this.GetMainFrame(), apis);
+        }
+
+        private void JSAwaitAPIBinding(IFrame frame, IEnumerable<IBrowserAPI> apis)
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            builder.Append("(async () => {");
+            foreach (var boundAPI in apis)
+            {
+                builder.Append("await CefSharp.BindObjectAsync('");
+                builder.Append(boundAPI.APIName);
+                builder.Append("')");
+            }
+            builder.AppendLine("})();");
+            var awaitAPIScript = builder.ToString();
+            frame.ExecuteJavaScriptAsync(awaitAPIScript, "Initialize");
         }
 
         public void ExecuteScript(string script)

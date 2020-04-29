@@ -33,6 +33,8 @@ namespace Gobchat.UI.Web
 
         event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
 
+        event EventHandler<BrowserAPIBindingEventArgs> ResolveBrowserAPI;
+
         bool IsBrowserInitialized { get; }
         Size Size { get; set; }
 
@@ -104,6 +106,18 @@ namespace Gobchat.UI.Web
             Message = message;
             Source = source;
             Line = line;
+        }
+    }
+
+    public sealed class BrowserAPIBindingEventArgs : System.EventArgs
+    {
+        public string APIName { get; }
+        public IManagedWebBrowser Browser { get; }
+
+        public BrowserAPIBindingEventArgs(string apiName, IManagedWebBrowser browser)
+        {
+            APIName = apiName ?? throw new ArgumentNullException(nameof(apiName));
+            Browser = browser ?? throw new ArgumentNullException(nameof(browser));
         }
     }
 
