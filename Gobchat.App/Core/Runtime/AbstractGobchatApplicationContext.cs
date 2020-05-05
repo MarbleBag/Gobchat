@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -13,9 +13,6 @@
 
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,45 +21,9 @@ namespace Gobchat.Core.Runtime
 {
     public abstract class AbstractGobchatApplicationContext : System.Windows.Forms.ApplicationContext
     {
-        private sealed class ContextSpecificSynchronizer : IUISynchronizer
-        {
-            private readonly SynchronizationContext _context;
-
-            public ContextSpecificSynchronizer(SynchronizationContext uiContext)
-            {
-                this._context = uiContext;
-            }
-
-            public void RunAsync(Action action) => RunAsync(action, null);
-
-            public void RunAsync(Action action, IUnhandledExceptionHandler handler)
-            {
-                if (handler != null)
-                    _context.Post((s) => { try { action.Invoke(); } catch (Exception e) { handler.Handle(e); } }, null);
-                else
-                    _context.Post((s) => action.Invoke(), null);
-            }
-
-            public void RunSync(Action action)
-            {
-                _context.Send((s) =>
-                {
-                    action.Invoke();
-                }, null);
-            }
-
-            public TOut RunSync<TOut>(Func<TOut> action)
-            {
-                TOut result = default;
-                _context.Send((s) =>
-                {
-                    result = action.Invoke();
-                }, null);
-                return result;
-            }
-        }
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        #region static functions
 
         public static string ResourceLocation
         {
@@ -93,41 +54,48 @@ namespace Gobchat.Core.Runtime
             get { return AppDomain.CurrentDomain.BaseDirectory; }
         }
 
-        public static Version ApplicationVersion
+        public static GobVersion ApplicationVersion
+        {
+            get { return new GobVersion(InnerApplicationVersion); }
+        }
+
+        private static Version InnerApplicationVersion
         {
             get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public static IUISynchronizer UISynchronizer { get; private set; }
 
-        public static event EventHandler<GobchatExitEventArgs> GobchatExit;
-
-        private Form _hiddenMainForm;
-        private IndependendBackgroundWorker _appWorker;
+        public static event EventHandler<GobchatExitEventArgs> OnGobchatExit;
 
         public static void ExitGobchat()
         {
             //make sure this does not run on the UI-thread, otherwise we may run into deadlocks, while we 'wait' for the shutdown, but stuff needs to be done on the ui-thread to do said shutdown
-            Task.Run(() =>
+            Task.Run((Action)(() =>
             {
-                GobchatExit?.Invoke(null, new GobchatExitEventArgs());
+                OnGobchatExit?.Invoke((object)null, new GobchatExitEventArgs());
                 Application.Exit();
-            });
+            }));
         }
+
+        #endregion static functions
+
+        private Form _hiddenMainForm;
+        private IndependendBackgroundWorker _appWorker;
 
         public AbstractGobchatApplicationContext()
         {
-            AbstractGobchatApplicationContext.GobchatExit += (s, e) => OnGobchatExit();
+            AbstractGobchatApplicationContext.OnGobchatExit += (s, e) => Context_OnGobchatExit();
             Application.ApplicationExit += (s, e) => OnApplicationExit();
 
             _hiddenMainForm = new Form();
-            UISynchronizer = new ContextSpecificSynchronizer(WindowsFormsSynchronizationContext.Current);
+            UISynchronizer = new ContextSpecificUISynchronizer(WindowsFormsSynchronizationContext.Current);
 
             _appWorker = new IndependendBackgroundWorker();
             _appWorker.Start((token) => ApplicationStartupProcess(token));
         }
 
-        private void OnGobchatExit()
+        private void Context_OnGobchatExit()
         {
             logger.Info("Start application shutdown");
 
@@ -155,21 +123,26 @@ namespace Gobchat.Core.Runtime
 
         private void OnApplicationExit()
         {
-            var manager = NAppUpdate.Framework.UpdateManager.Instance;
-            if (manager.UpdatesAvailable > 0)
-            {
-                logger.Info("Install updates app");
-                try
-                {
-                    manager.ApplyUpdates(true, true, false);
-                }
-                catch (Exception ex)
-                {
-                    logger.Fatal(ex, ex.Message);
+            PerformApplicationUpdate();
+        }
 
-                    var dialogText = $"Unable to perform update. A backup folder was created and can be used to restore any damaged files.\nError:\n{ex.Message}";
-                    System.Windows.Forms.MessageBox.Show(dialogText, "Update error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                }
+        private static void PerformApplicationUpdate()
+        {
+            var manager = NAppUpdate.Framework.UpdateManager.Instance;
+            if (manager.UpdatesAvailable == 0)
+                return; //nothing to do
+
+            logger.Info("Install updates app");
+            try
+            {
+                manager.ApplyUpdates(true, true, false);
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex, ex.Message);
+
+                var dialogText = $"Unable to perform update. A backup folder was created and can be used to restore any damaged files.\nError:\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(dialogText, "Update error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
 
