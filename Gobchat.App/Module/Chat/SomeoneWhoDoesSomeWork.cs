@@ -33,10 +33,12 @@ using Gobchat.UI.Forms;
 using Gobchat.UI.Web.JavascriptEvents;
 using Gobchat.Module.NotifyIcon;
 using Gobchat.Module.Hotkey;
+using Gobchat.Module.UI;
 
 namespace Gobchat.Module.Chat
 {
     // TODO This is chaos
+    [Obsolete]
     public sealed class SomeoneWhoDoesSomeWork : IDisposable
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -44,11 +46,11 @@ namespace Gobchat.Module.Chat
         private IDIContext _container;
         private IUISynchronizer _synchronizer;
 
-        private Memory.FFXIVMemoryProcessor _memoryProcessor;
+        private Memory.FFXIVMemoryReader _memoryProcessor;
         private CefOverlayForm _overlay;
         private GobchatWebAPI _api;
-        private IGobchatConfigManager _configManager;
-        private ChatMessageToFileLogger _chatLogger;
+        private IConfigManager _configManager;
+        private ChatMessageToFileLoggerOld _chatLogger;
 
         private volatile bool _gobchatReady;
 
@@ -61,7 +63,7 @@ namespace Gobchat.Module.Chat
         private readonly Gobchat.UI.Web.JavascriptBuilder _jsBuilder = new Gobchat.UI.Web.JavascriptBuilder();
 
         private Gobchat.Core.Chat.ChatlogToMessageConverter _chatlogParser;
-        private readonly ConcurrentQueue<ChatMessage> _messageQueue = new ConcurrentQueue<ChatMessage>();
+        private readonly ConcurrentQueue<ChatMessageOld> _messageQueue = new ConcurrentQueue<ChatMessageOld>();
         private DateTime _lastChatMessageTime;
 
         private sealed class HotkeyData
@@ -79,6 +81,7 @@ namespace Gobchat.Module.Chat
 
         private Dictionary<string, HotkeyData> _hotkeys = new Dictionary<string, HotkeyData>();
 
+        //DONE
         internal void Initialize(IDIContext container, CefOverlayForm overlay)
         {
             _container = container;
@@ -86,32 +89,36 @@ namespace Gobchat.Module.Chat
 
             _overlay = overlay;
 
-            _configManager = container.Resolve<IGobchatConfigManager>();
-            _chatLogger = new ChatMessageToFileLogger(_configManager);
+            _configManager = container.Resolve<IConfigManager>();
+            _chatLogger = new ChatMessageToFileLoggerOld(_configManager);
 
+            //DONE
             LoadMemoryParser();
             LoadChatParser();
 
+            //DONE
             _api = new GobchatWebAPI(_overlay.Browser, OnEvent_UIMessage, OnEvent_UIRequest);
             _overlay.Browser.BindBrowserAPI(_api, true);
 
+            //DONE
             //_overlay.InvokeUIThread(true, () => _overlay.Hide());
-            _overlay.Browser.BrowserInitialized += (s, e) => LoadGobchatUI();
-            _overlay.Browser.BrowserLoadPage += (s, e) => LoadGobchatNamespace();
-            _overlay.Browser.BrowserLoadPageDone += (s, e) =>
+            _overlay.Browser.OnBrowserInitialized += (s, e) => LoadGobchatUI();
+            _overlay.Browser.OnBrowserLoadPage += (s, e) => LoadGobchatNamespace();
+            _overlay.Browser.OnBrowserLoadPageDone += (s, e) =>
             {
                 if (!_overlay.Visible)
                     _synchronizer.RunSync(() => _overlay.Visible = true);
             };
-
+            //DONE
             //TODO Some hotkeys should only work, if the overlay is visible
             _hotkeys.Add("behaviour.hotkeys.showhide", new HotkeyData("Show & Hide", OnEvent_Hotkey_ShowHide));
             //_hotkeys.Add("behaviour.hotkeys.search", new HotkeyData("Search", OnEvent_Hotkey_Search));
-
+            //DONE
             _configManager.OnActiveProfileChange += Event_Config_ProfileChanged;
             _configManager.AddPropertyChangeListener("behaviour.hotkeys", Event_Config_HotkeysChanged);
             UpdateHotkeys();
 
+            //DONE
             _configManager.OnProfileChange += (s, e) =>
             {
                 if (e.Synchronizing)
@@ -120,6 +127,8 @@ namespace Gobchat.Module.Chat
                 var script = BuildCustomEventDispatcher(new SynchronizeConfigWebEvent());
                 _overlay.Browser.ExecuteScript(script);
             };
+
+            //DONE
             _configManager.AddPropertyChangeListener("*", (s, e) =>
             {
                 if (e.Synchronizing)
@@ -130,6 +139,8 @@ namespace Gobchat.Module.Chat
             });
         }
 
+        //DONE
+        //DONE
         private string BuildCustomEventDispatcher(JSEvent evt)
         {
             lock (_jsBuilder)
@@ -139,17 +150,20 @@ namespace Gobchat.Module.Chat
             }
         }
 
+        //DONE
         private void Event_Config_ProfileChanged(object sender, ActiveProfileChangedEventArgs e)
         {
             //TODO trigger all stuff that needs to be updated on a profile change
             UpdateHotkeys();
         }
 
-        private void Event_Config_HotkeysChanged(IGobchatConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
+        //DONE
+        private void Event_Config_HotkeysChanged(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
             UpdateHotkeys();
         }
 
+        //DONE
         private async Task<string> OnEvent_UIRequest(string request, string[] data)
         {
             if (request == "GetConfig")
@@ -252,6 +266,7 @@ namespace Gobchat.Module.Chat
             return "";
         }
 
+        //DONE
         private JSEvent OnEvent_UIMessage(string eventName, string details)
         {
             if ("GobchatReady".Equals(eventName, StringComparison.InvariantCultureIgnoreCase))
@@ -264,13 +279,14 @@ namespace Gobchat.Module.Chat
 
         #region memory parser
 
+        //DONE
         private void LoadMemoryParser()
         {
             logger.Info("Loading memory parser");
-            _memoryProcessor = new Memory.FFXIVMemoryProcessor();
-            _memoryProcessor.ProcessChangeEvent += OnEvent_MemoryProcessor_ProcessChangeEvent;
-            _memoryProcessor.ChatlogEvent += OnEvent_MemoryProcessor_ChatlogEvent;
-            _memoryProcessor.WindowFocusChangedEvent += OnEvent_MemoryProcessor_WindowFocusChanged;
+            _memoryProcessor = new Memory.FFXIVMemoryReader();
+            _memoryProcessor.OnProcessChanged += OnEvent_MemoryProcessor_ProcessChangeEvent;
+            _memoryProcessor.OnChatlog += OnEvent_MemoryProcessor_ChatlogEvent;
+            _memoryProcessor.OnWindowFocusChanged += OnEvent_MemoryProcessor_WindowFocusChanged;
 
             var resourceFolder = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"sharlayan");
             System.IO.Directory.CreateDirectory(resourceFolder);
@@ -293,6 +309,7 @@ namespace Gobchat.Module.Chat
             updateObserveGameWindow();
         }
 
+        //DONE
         private void OnEvent_MemoryProcessor_ProcessChangeEvent(object sender, Memory.ProcessChangeEventArgs e)
         {
             var uiManager = _container.Resolve<IUIManager>();
@@ -310,9 +327,10 @@ namespace Gobchat.Module.Chat
                 logger.Info("No FFXIV process detected");
         }
 
+        //DONE
         private void OnEvent_MemoryProcessor_ChatlogEvent(object sender, ChatlogEventArgs e)
         {
-            var chatMessages = new List<ChatMessage>();
+            var chatMessages = new List<ChatMessageOld>();
 
             var removeOutdatedMessages = true; // _configManager.GetProperty<bool>("behaviour.outdatedMessages.ignore");
             var outdatedTimelimit = 10; // _configManager.GetProperty<int>("behaviour.outdatedMessages.timelimit");
@@ -365,6 +383,7 @@ namespace Gobchat.Module.Chat
             }
         }
 
+        //DONE
         private void OnEvent_MemoryProcessor_WindowFocusChanged(object sender, WindowFocusChangedEventArgs e)
         {
             //   var hideOnMinimize = _configManager.ActiveProfile.GetProperty<bool>("behaviour.hideOnMinimize");
@@ -375,6 +394,7 @@ namespace Gobchat.Module.Chat
 
         #endregion memory parser
 
+        //DONE
         private void LoadChatParser()
         {
             logger.Info("Loading chat parser");
@@ -390,6 +410,7 @@ namespace Gobchat.Module.Chat
             _chatlogParser = new Gobchat.Core.Chat.ChatlogToMessageConverter(autotranslateProvider);
         }
 
+        //DONE
         private void LoadGobchatUI()
         {
             logger.Info("Loading gobchat ui");
@@ -400,15 +421,16 @@ namespace Gobchat.Module.Chat
             //_overlay.Browser.Load("www.google.com");
         }
 
+        //DONE
         private void LoadGobchatNamespace()
         {
             InjectGobchatJavascript(builder =>
             {
                 builder.Append("Gobchat.ChannelEnum = ");
-                builder.AppendLine(typeof(Gobchat.Core.Chat.ChannelEnum).EnumToJson());
+                builder.AppendLine(typeof(Gobchat.Core.Chat.ChatChannel).EnumToJson());
 
                 builder.Append("Gobchat.MessageSegmentEnum = ");
-                builder.AppendLine(typeof(Gobchat.Core.Chat.MessageSegmentEnum).EnumToJson());
+                builder.AppendLine(typeof(Gobchat.Core.Chat.MessageSegmentType).EnumToJson());
 
                 builder.Append("Gobchat.DefaultProfileConfig = ");
                 builder.AppendLine(_configManager.DefaultProfile.ToJson().ToString());
@@ -433,6 +455,7 @@ namespace Gobchat.Module.Chat
             });
         }
 
+        //DONE
         private void InjectGobchatJavascript(Action<System.Text.StringBuilder> content)
         {
             System.Text.StringBuilder builder = new System.Text.StringBuilder();
@@ -446,6 +469,7 @@ namespace Gobchat.Module.Chat
             _overlay.Browser.ExecuteScript(builder.ToString());
         }
 
+        //DONE
         private void UpdateHotkeys()
         {
             Keys StringToKeys(string keys)
@@ -485,52 +509,53 @@ namespace Gobchat.Module.Chat
                 return Keys.None;
             }
 
-            var hotkeyManager = _container.Resolve<IHotkeyManager>();
+            /* var hotkeyManager = null; // _container.Resolve<INativeHotkeyManager>();
 
-            void UpdateHotkey(string propertyKey)
-            {
-                var hotkeyData = _hotkeys[propertyKey];
+             void UpdateHotkey(string propertyKey)
+             {
+                 var hotkeyData = _hotkeys[propertyKey];
 
-                var configHotkey = _configManager.GetProperty<string>(propertyKey);
-                var currentHotkey = StringToKeys(hotkeyData.Hotkey);
-                var newHotkey = StringToKeys(configHotkey);
-                if (currentHotkey == newHotkey)
-                    return;
+                 var configHotkey = _configManager.GetProperty<string>(propertyKey);
+                 var currentHotkey = StringToKeys(hotkeyData.Hotkey);
+                 var newHotkey = StringToKeys(configHotkey);
+                 if (currentHotkey == newHotkey)
+                     return;
 
-                try
-                {
-                    var hotkeyAction = hotkeyData.Callback;
+                 try
+                 {
+                     var hotkeyAction = hotkeyData.Callback;
 
-                    if (currentHotkey == Keys.None)
-                    {
-                        hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
-                    }
-                    else
-                    {
-                        hotkeyManager.UnregisterHotKey(currentHotkey, hotkeyAction);
-                        if (newHotkey != Keys.None)
-                            hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
-                    }
+                     if (currentHotkey == Keys.None)
+                     {
+                         hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
+                     }
+                     else
+                     {
+                         hotkeyManager.UnregisterHotKey(currentHotkey, hotkeyAction);
+                         if (newHotkey != Keys.None)
+                             hotkeyManager.RegisterHotKey(newHotkey, hotkeyAction);
+                     }
 
-                    hotkeyData.Hotkey = configHotkey;
-                }
-                catch (InvalidHotkeyException e)
-                {
-                    _configManager.SetProperty(propertyKey, "");
-                    _configManager.DispatchChangeEvents();
+                     hotkeyData.Hotkey = configHotkey;
+                 }
+                 catch (HotkeyRegisterException e)
+                 {
+                     _configManager.SetProperty(propertyKey, "");
+                     _configManager.DispatchChangeEvents();
 
-                    logger.Fatal(e, $"Invalid Hotkey for {hotkeyData.Name}");
-                    var userMsg = new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.ERROR, $"Invalid Hotkey for {hotkeyData.Name}: {e.Message}");
-                    _messageQueue.Enqueue(userMsg);
-                }
-            }
+                     logger.Fatal(e, $"Invalid Hotkey for {hotkeyData.Name}");
+                     var userMsg = new ChatMessageOld(DateTime.Now, "Gobchat", (int)ChatChannel.ERROR, $"Invalid Hotkey for {hotkeyData.Name}: {e.Message}");
+                     _messageQueue.Enqueue(userMsg);
+                 }
+             }
 
-            foreach (var hotkey in _hotkeys.Keys.ToList())
-            {
-                UpdateHotkey(hotkey);
-            }
+             foreach (var hotkey in _hotkeys.Keys.ToList())
+             {
+                 UpdateHotkey(hotkey);
+             }*/
         }
 
+        //DONE
         private void OnEvent_Hotkey_ShowHide()
         {
             _synchronizer.RunSync(() =>
@@ -539,6 +564,7 @@ namespace Gobchat.Module.Chat
             });
         }
 
+        //DONE
         private void OnEvent_Hotkey_Search()
         {
             if (!_gobchatReady)
@@ -548,6 +574,7 @@ namespace Gobchat.Module.Chat
             _overlay.Browser.ExecuteScript(script);
         }
 
+        //DONE
         private void ValidateProcessAndInformUser()
         {
             if (!_memoryProcessor.FFXIVProcessValid)
@@ -578,16 +605,19 @@ namespace Gobchat.Module.Chat
             }
         }
 
+        //DONE
         private void SendInfoMessageToUI(string msg)
         {
-            _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.GOBCHAT_INFO, msg));
+            _messageQueue.Enqueue(new ChatMessageOld(DateTime.Now, "Gobchat", (int)ChatChannel.GOBCHAT_INFO, msg));
         }
 
+        //DONE
         private void SendErrorMessageToUI(string msg)
         {
-            _messageQueue.Enqueue(new ChatMessage(DateTime.Now, "Gobchat", (int)ChannelEnum.GOBCHAT_ERROR, msg));
+            _messageQueue.Enqueue(new ChatMessageOld(DateTime.Now, "Gobchat", (int)ChatChannel.GOBCHAT_ERROR, msg));
         }
 
+        //DONE
         internal void Update()
         {
             _memoryProcessor.Update();
@@ -595,7 +625,7 @@ namespace Gobchat.Module.Chat
             if (!_errorReportRegistered)
             {
                 _errorReportRegistered = true;
-                _memoryProcessor.ProcessChangeEvent += (s, e) => ValidateProcessAndInformUser();
+                _memoryProcessor.OnProcessChanged += (s, e) => ValidateProcessAndInformUser();
                 ValidateProcessAndInformUser();
             }
 
@@ -606,7 +636,7 @@ namespace Gobchat.Module.Chat
                     foreach (var message in _messageQueue.DequeueMultiple(10))
                     {
                         //TODO maybe this can be done by calling gobchat directly
-                        var script = BuildCustomEventDispatcher(new ChatMessageWebEvent(message));
+                        var script = BuildCustomEventDispatcher(new ChatMessageWebEventOld(message));
                         _overlay.Browser.ExecuteScript(script);
 
                         //TODO dispatch them also to log
