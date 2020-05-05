@@ -67,19 +67,12 @@ namespace Gobchat.Memory
         /// </summary>
         public event EventHandler<ProcessChangeEventArgs> OnProcessChanged;
 
+        public event EventHandler OnProcessScanned;
+
         /// <summary>
         /// Fired when the currently tracked FFXIV window is moved into the foreground or into the background
         /// </summary>
         public event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
-
-        [Obsolete]
-        /// <summary>
-        /// Fired when new FFXIV chatlog entries are read
-        /// </summary>
-        public event EventHandler<Chat.ChatlogEventArgs> OnChatlog;
-
-        [Obsolete]
-        public event EventHandler<Actor.PlayerEventArgs> OnActor;
 
         /// <summary>
         /// Needs to be disposed on the same thread it was created
@@ -132,50 +125,32 @@ namespace Gobchat.Memory
             }
         }
 
-        [Obsolete]
-        public void Update()
-        {
-            CheckFFXIVProcess();
-            if (FFXIVProcessValid)
-            {
-                if (OnActor != null)
-                {
-                    var result = _locationProcessor.GetPlayerData();
-                    if (result.Count > 0)
-                        OnActor?.Invoke(this, new Actor.PlayerEventArgs(result));
-                }
-
-                if (OnChatlog != null)
-                {
-                    var result = _chatlogProcessor.GetNewestChatlog();
-                    if (result.Count > 0)
-                        OnChatlog?.Invoke(this, new Chat.ChatlogEventArgs(result));
-                }
-            }
-        }
-
         public void CheckFFXIVProcess()
         {
             if (_processConnector.FFXIVProcessValid)
                 return; //nothing to do
 
-            var connected = _processConnector.ConnectToFFXIV();
+            var connected = ConnectToFFXIV();
+            OnProcessScanned?.Invoke(this, new EventArgs());
             if (connected)
-                logger.Info("FFXIV process detected");
-            else
-                logger.Info("No FFXIV process detected");
+                OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+        }
+
+        private bool ConnectToFFXIV()
+        {
+            if (!_processConnector.ConnectToFFXIV())
+                return false;
 
             var signaturesOfInterest = new string[] { Sharlayan.Signatures.ChatLogKey, Sharlayan.Signatures.CharacterMapKey };
             var availableSignatures = Sharlayan.Scanner.Instance.Locations.Values.Select(e => e.Key).ToArray();
             var foundSignatures = Array.FindAll(availableSignatures, (e) => signaturesOfInterest.Contains(e));
             logger.Info($"Signatures found: {string.Join(", ", foundSignatures)}");
 
-            OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+            return true;
         }
 
         private void ProcessConnector_OnConnectionLost(object sender, EventArgs e)
         {
-            logger.Info("No FFXIV process detected");
             OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
         }
 
