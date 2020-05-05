@@ -82,7 +82,7 @@ namespace Gobchat.Memory.Window
         private IntPtr _minimizeHook;
         private IntPtr _locationChangeHook;
 
-        private int _initializedThread;
+        private readonly int _initializedThread;
 
         public bool Enabled { get; private set; }
 
@@ -222,7 +222,7 @@ namespace Gobchat.Memory.Window
                     processName = process.ProcessName;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //already dead
             }

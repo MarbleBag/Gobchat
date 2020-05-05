@@ -20,7 +20,7 @@ namespace Gobchat.UI.Web
 {
     public static class CEFManager
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static bool isInitialized = false;
         private static bool isDisposed = false;

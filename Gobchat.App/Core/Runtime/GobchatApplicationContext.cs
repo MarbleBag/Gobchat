@@ -119,7 +119,7 @@ namespace Gobchat.Core.Runtime
                     {
                         MessageBox.Show($"An error prevents Gobchat from starting. For more details please check gobchat_debug.log.\nError:\n{ex1.Message}", "Error on start", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    catch (System.Exception ex2)
+                    catch (System.Exception)
                     {
                     }
                 }

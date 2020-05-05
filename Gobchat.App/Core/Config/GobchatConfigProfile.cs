@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using static Gobchat.Core.Config.JsonUtil;
+using System.Globalization;
 
 namespace Gobchat.Core.Config
 {
@@ -195,11 +196,11 @@ namespace Gobchat.Core.Config
             var sorted = new List<string>(completed);
             sorted.Sort((a, b) =>
             {
-                if (a.StartsWith(b))
+                if (a.StartsWith(b, true, CultureInfo.InvariantCulture))
                     return 1;
-                if (b.StartsWith(a))
+                if (b.StartsWith(a, true, CultureInfo.InvariantCulture))
                     return -1;
-                return a.CompareTo(b);
+                return string.Compare(a, b, true, CultureInfo.InvariantCulture);
             });
 
             if (sorted.Count == 1)

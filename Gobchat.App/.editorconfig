@@ -7,6 +7,9 @@ generated_code  = true
 # IDE0069: Disposable fields should be disposed
 dotnet_diagnostic.IDE0069.severity = suggestion
 
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = suggestion
+
 [*.cs]
 
 # CA1062: Validate arguments of public methods

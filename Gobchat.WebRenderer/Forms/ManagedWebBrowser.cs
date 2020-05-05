@@ -13,10 +13,8 @@
 
 using CefSharp;
 using CefSharp.Event;
-using Gobchat.UI.Forms.Extension;
 using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,8 +24,9 @@ namespace Gobchat.UI.Forms
 {
     internal sealed class ManagedWebBrowser : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser, IDisposable, IManagedWebBrowser
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        //unused - yet
         private class BrowserWrapper : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser
         {
             public delegate void OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height);
@@ -59,7 +58,7 @@ namespace Gobchat.UI.Forms
         private CefSharp.OffScreen.ChromiumWebBrowser CefBrowser { get { return this; } }
 
         private readonly MouseEventHelper mouseEventHelper = new MouseEventHelper();
-        private List<IBrowserAPI> _availableAPIs = new List<IBrowserAPI>();
+        private readonly List<IBrowserAPI> _availableAPIs = new List<IBrowserAPI>();
 
         public event EventHandler<BrowserConsoleLogEventArgs> OnBrowserConsoleLog;
 

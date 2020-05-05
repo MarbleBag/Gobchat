@@ -27,12 +27,6 @@ namespace Gobchat.Core.Config
 
         event EventHandler<ProfileChangedEventArgs> OnProfileChange;
 
-        [Obsolete]
-        void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
-
-        [Obsolete]
-        void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
-
         bool AddPropertyChangeListener(string path, PropertyChangedListener listener);
 
         bool AddPropertyChangeListener(string path, bool onActiveProfile, PropertyChangedListener listener);

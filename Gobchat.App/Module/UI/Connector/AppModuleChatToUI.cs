@@ -27,7 +27,6 @@ namespace Gobchat.Module.UI
         private IDIContext _container;
         private IChatManager _chatManager;
         private IBrowserAPIManager _browserAPIManager;
-        private GobchatBrowserChatAPI _providedAPI;
 
         /// <summary>
         /// Requires: <see cref="IBrowserAPIManager"/> <br></br>

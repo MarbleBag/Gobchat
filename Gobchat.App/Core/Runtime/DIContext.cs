@@ -14,6 +14,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Globalization;
 
 namespace Gobchat.Core.Runtime
 {
@@ -140,18 +141,23 @@ namespace Gobchat.Core.Runtime
         }
     }
 
+    [Serializable]
     public sealed class DIException : System.Exception
     {
         private const string TYPE_ERROR = "Unable to resolve type '{0}'";
         private const string NAMED_TYPE_ERROR = "Unable to resolve type '{0}' with name '{1}'";
 
         public DIException(Type type, Exception innerException)
-            : base(String.Format(TYPE_ERROR, type.FullName), innerException)
+            : base(string.Format(CultureInfo.InvariantCulture, TYPE_ERROR, type.FullName), innerException)
         {
         }
 
         public DIException(Type type, string name, Exception innerException)
-            : base(String.Format(NAMED_TYPE_ERROR, type.FullName, name), innerException)
+            : base(string.Format(CultureInfo.InvariantCulture, NAMED_TYPE_ERROR, type.FullName, name), innerException)
+        {
+        }
+
+        private DIException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }

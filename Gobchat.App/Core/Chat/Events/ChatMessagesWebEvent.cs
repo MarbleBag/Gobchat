@@ -11,13 +11,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Newtonsoft.Json;
 using System.Linq;
 
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessagesWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
-        public readonly ChatMessage[] messages;
+        [JsonProperty]
+        private readonly ChatMessage[] messages;
 
         public ChatMessagesWebEvent(ChatMessage message) : base("ChatMessagesEvent")
         {

@@ -29,7 +29,7 @@ namespace Gobchat.Core.Config
 
         private readonly string _defaultProfilePath;
 
-        private Dictionary<string, IGobchatConfigProfile> _profiles;
+        private readonly Dictionary<string, IGobchatConfigProfile> _profiles;
         private readonly IList<string> _profilesLoadedFromFile;
         private GobchatConfigProfile _defaultConfig;
 
@@ -350,7 +350,7 @@ namespace Gobchat.Core.Config
             newConfig["version"] = _defaultConfig.ProfileVersion;
             newConfig["profile"] = new JObject();
             newConfig["profile"]["id"] = profileId;
-            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count() + 1}";
+            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count + 1}";
 
             StoreNewProfile(newConfig, false);
             return profileId;
@@ -591,20 +591,6 @@ namespace Gobchat.Core.Config
 
             if (!RemoveListener(_allPropertyChangedListener))
                 RemoveListener(_activePropertyChangedListener);
-        }
-
-        [Obsolete]
-        public void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
-        {
-            foreach (var path in paths)
-                AddPropertyChangeListener(path, listener);
-        }
-
-        [Obsolete]
-        public void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
-        {
-            foreach (var path in paths)
-                RemovePropertyChangeListener(path, listener);
         }
 
         private IDictionary<string, ISet<string>> GetPendingEvents()
