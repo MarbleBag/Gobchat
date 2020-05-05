@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,19 +11,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Chat;
-using Gobchat.Core.Runtime;
 using Gobchat.UI.Web;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Gobchat.Core
 {
+    [Obsolete]
     /// <summary>
     /// Each implemented method in this class is accessible from the web ui
     /// </summary>
