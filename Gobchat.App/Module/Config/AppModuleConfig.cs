@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -19,18 +19,22 @@ namespace Gobchat.Module.Config
 {
     public sealed class AppModuleConfig : IApplicationModule
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private GobchatConfigManager _manager;
-        public IGobchatConfigManager ConfigManager { get => _manager; }
+        public IConfigManager ConfigManager { get => _manager; }
+
+        /// <summary>
+        /// Provides: <see cref="IConfigManager"/> <br></br>
+        /// </summary>
+        public AppModuleConfig()
+        {
+        }
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
-            var resourceLocation = container.Resolve<string>("ResourceLocation");
-            var userLocation = container.Resolve<string>("UserConfigLocation");
-
-            if (resourceLocation == null)
-                throw new ArgumentNullException(nameof(resourceLocation));
-            if (userLocation == null)
-                throw new ArgumentNullException(nameof(userLocation));
+            var resourceLocation = GobchatApplicationContext.ResourceLocation;
+            var userLocation = GobchatApplicationContext.UserConfigLocation;
 
             var defaultConfigPath = System.IO.Path.Combine(resourceLocation, @"default_profile.json");
 
@@ -40,10 +44,10 @@ namespace Gobchat.Module.Config
             _manager = new GobchatConfigManager(defaultConfigPath, userLocation);
             _manager.InitializeManager();
 
-            container.Register<IGobchatConfigManager>((c, p) => ConfigManager);
+            container.Register<IConfigManager>((c, p) => ConfigManager);
         }
 
-        public void Dispose(IDIContext container)
+        public void Dispose()
         {
             _manager?.SaveProfiles();
             _manager = null;
