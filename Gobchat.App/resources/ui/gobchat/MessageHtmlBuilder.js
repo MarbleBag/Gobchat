@@ -1,8 +1,26 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 'use strict'
 
 var Gobchat = (function (Gobchat) {
     const ChannelEnum = Gobchat.ChannelEnum
     const MessageSegmentEnum = Gobchat.MessageSegmentEnum
+
+    const FFGroupUnicodes = Object.freeze([
+        Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
+        Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
+    ])
 
     function applyClass(element, cssClass) {
         if (cssClass) element.classList.add(cssClass)
@@ -44,7 +62,7 @@ var Gobchat = (function (Gobchat) {
     }
 
     function findFirstMatchingGroup(config, message) {
-        if (message.source === null || message.source.sourceId === null) return null
+        if (message.source === null || message.source.original === null) return null
         switch (message.channel) {
             case ChannelEnum.TELL_SEND: return null
             case ChannelEnum.TELL_RECIEVE: return null
@@ -55,9 +73,9 @@ var Gobchat = (function (Gobchat) {
 
         function createSearchTerm() {
             const source = message.source
-            let result = source.sourceId
-            if (source.playerName !== null) {
-                result = source.playerName
+            let result = source.original
+            if (source.characterName !== null) {
+                result = source.characterName
             }
             return result.toLowerCase()
         }
@@ -68,8 +86,9 @@ var Gobchat = (function (Gobchat) {
             const group = groups.data[groupId]
             if (!group.active)
                 return
-            if ("ffgroup" in group) {
-                if (message.source.ffGroupId === group.ffgroup) {
+
+            if (message.source.ffGroup > 0 && "ffgroup" in group) {
+                if (message.source.ffGroup === group.ffgroup) {
                     resultId = groupId
                     return false
                 }
@@ -103,17 +122,21 @@ var Gobchat = (function (Gobchat) {
             case MessageSegmentEnum.EMOTE: return "message-segment-emote"
             case MessageSegmentEnum.OOC: return "message-segment-ooc"
             case MessageSegmentEnum.MENTION: return "message-segment-mention"
+            case MessageSegmentEnum.LINK: return "message-segment-link"
             default: return null
         }
     }
 
-    function getMessageSenderName(messageSource) {
-        if (messageSource === null || messageSource.sourceId === null) return null;
-        if (messageSource.playerName !== null && messageSource.playerName != undefined) {
-            const prefix = messageSource.prefix || ""
-            return `${prefix}${messageSource.playerName}`
+    function getMessageSenderName(source) {
+        if (source === null || source.original === null) return null;
+        if (source.characterName !== null && source.characterName != undefined) {
+            let prefix = ""
+            if (source.party >= 0) prefix = prefix + `[${source.ffGroup + 1}]`
+            if (source.alliance >= 0) prefix = prefix + `[${String.fromCharCode('A' + source.alliance)}]`
+            if (source.ffGroup >= 0) prefix = prefix + FFGroupUnicodes[source.ffGroup].char
+            return `${prefix}${source.characterName}`
         } else {
-            return messageSource.sourceId
+            return source.original
         }
     }
 
@@ -155,6 +178,22 @@ var Gobchat = (function (Gobchat) {
         return null
     }
 
+    function getMessageTime(message) {
+        const timestamp = message.timestamp
+        const date = new Date(timestamp)
+
+        function getHourAndMinutes(date) {
+            function twoDigits(t) {
+                return t < 10 ? '0' + t : t;
+            }
+            const hours = twoDigits(date.getHours())
+            const minutes = twoDigits(date.getMinutes())
+            return `${hours}:${minutes}`
+        }
+
+        return getHourAndMinutes(date);
+    }
+
     class MessageHtmlBuilder {
         constructor(config) {
             this._config = config
@@ -168,7 +207,7 @@ var Gobchat = (function (Gobchat) {
             applyClass(chatEntry, getChannelCssClassForPlayerGroup(groupId))
 
             const timeElement = document.createElement("span")
-            timeElement.innerHTML = `[${message.timestamp}] `
+            timeElement.innerHTML = `[${getMessageTime(message)}] `
             applyClass(timeElement, "message-timestamp")
             chatEntry.appendChild(timeElement)
 
@@ -189,9 +228,9 @@ var Gobchat = (function (Gobchat) {
                 messageContainer.appendChild(spacerElement)
             }
 
-            message.segments.forEach((segment) => {
-                const segmentType = segment.segmentType
-                const segmentText = segment.messageText
+            message.content.forEach((segment) => {
+                const segmentType = segment.type
+                const segmentText = segment.text
                 const htmlEncoded = Gobchat.encodeHtmlEntities(segmentText)
 
                 const segmentElement = document.createElement("span")

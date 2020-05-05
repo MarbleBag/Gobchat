@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 'use strict'
 
 //requieres Gobchat.DefaultProfileConfig
@@ -288,7 +301,7 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         async loadConfig() {
-            const dataJson = await GobchatAPI.getConfig()
+            const dataJson = await GobchatAPI.getConfigAsJson()
             this._loadConfig(dataJson)
 
             /*
@@ -307,7 +320,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async saveConfig() {
             const dataJson = this._saveConfig()
-            await GobchatAPI.setConfig(dataJson)
+            await GobchatAPI.synchronizeConfig(dataJson)
         }
 
         get activeProfile() {
@@ -328,7 +341,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._eventDispatcher.dispatch("profile:", { type: "active", detail: { old: previousId, new: this._activeProfileId } })
 
             if (this._isSynced)
-                GobchatAPI.setActiveProfile(this._activeProfileId)
+                GobchatAPI.setConfigActiveProfile(this._activeProfileId)
         }
 
         get profiles() {

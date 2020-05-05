@@ -113,10 +113,10 @@
                         $("#config_dialog_error_text").empty()
                         $("#config_dialog_error_text").append($(
                             `<span>
-                                                        Profile can't be loaded.<br>
-                                                        Either the format is not supported or the file can't be found/read!<
-                                                    </span>
-                                                    `
+                                                                    Profile can't be loaded.<br>
+                                                                    Either the format is not supported or the file can't be found/read!<
+                                                                </span>
+                                                                `
                         ))
                         $("#config_dialog_error").dialog({
                             resizable: false,
@@ -170,7 +170,9 @@
                     const btnExportProfile = rowElement.find("#profile_export")
                     btnExportProfile.on("click", function (event) {
                         (async () => {
-                            const selection = await GobchatAPI.saveFileDialog(`profile_${profile.profileId}.json`)
+                            const selection = await GobchatAPI.saveFileDialog("Json files (*.json)|*.json", `profile_${profile.profileId}.json`)
+                            if (selection === null || selection === undefined || selection.length === 0)
+                                return
                             await GobchatAPI.writeTextToFile(selection, JSON.stringify(profile.config))
                         })()
                     })

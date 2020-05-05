@@ -231,8 +231,8 @@
         // test
         function runTest() {
             function fireMessageEvent(e) {
-                const msg = { detail: { type: e.channel || Gobchat.ChannelEnum.PARTY, timestamp: "HH:mm", source: e.source || "Browser", message: e.message || "Empty" } }
-                window.chatManager.onNewMessageEvent(msg)
+                const msg = { channel: e.channel || Gobchat.ChannelEnum.PARTY, source: e.source || "Browser", message: e.message || "Empty" }
+                GobchatAPI.sendChatMessage(msg.channel, msg.source, msg.message)
             }
 
             const textMessages = [
@@ -258,8 +258,9 @@
             fillMe.forEach(e => fireMessageEvent(e))
         }
 
-        //window.setTimeout(runTest, 10000);
+        window.setTimeout(runTest, 10000);
 
+        GobchatAPI.setUIReady(true)
     })
 </script>
 </html>

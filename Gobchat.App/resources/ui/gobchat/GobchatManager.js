@@ -1,20 +1,22 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 'use strict'
 
 //requieres Gobchat.MessageParser
 //requieres Gobchat.MessageHtmlBuilder
 
 var Gobchat = (function (Gobchat) {
-    function getHourAndMinutes() {
-        function twoDigits(t) {
-            return t < 10 ? '0' + t : t;
-        }
-
-        const d = new Date()
-        const hours = twoDigits(d.getHours())
-        const minutes = twoDigits(d.getMinutes())
-        return `${hours}:${minutes}`
-    }
-
     class GobchatManager {
         constructor(chatHtmlId) {
             this._chatHtmlId = chatHtmlId
@@ -24,6 +26,7 @@ var Gobchat = (function (Gobchat) {
             const self = this
 
             this._chatConfig = new Gobchat.GobchatConfig(true)
+
             await this.config.loadConfig()
 
             this._chatConfig.addProfileEventListener(event => {
@@ -38,7 +41,6 @@ var Gobchat = (function (Gobchat) {
 
             this.updateStyle()
 
-            this._messageParser = new Gobchat.MessageParser(self._chatConfig)
             this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
             this._messageSound = new Gobchat.MessageSoundPlayer(self._chatConfig)
 
@@ -47,8 +49,7 @@ var Gobchat = (function (Gobchat) {
             this._scrollbar = new ScrollbarControl(this._chatHtmlId)
             this._scrollbar.init()
 
-            document.addEventListener("ChatMessageEvent", (e) => { self.onNewMessageEvent(e) })
-            Gobchat.sendMessageToPlugin({ event: "GobchatReady" })
+            document.addEventListener("ChatMessagesEvent", (e) => { self.onNewMessageEvent(e) })
         }
 
         get config() {
@@ -69,39 +70,25 @@ var Gobchat = (function (Gobchat) {
             Gobchat.StyleBuilder.updateStyle(this.config, "custome_style_id")
         }
 
-        sendErrorMessage(msg) {
-            this.onNewMessage(
-                new Gobchat.Message(
-                    getHourAndMinutes(),
-                    new Gobchat.MessageSource("Gobchat"),
-                    Gobchat.ChannelEnum.GOBCHAT_ERROR,
-                    [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, msg)]
-                )
-            )
-        }
-
-        sendInfoMessage(msg) {
-            this.onNewMessage(
-                new Gobchat.Message(
-                    getHourAndMinutes(),
-                    new Gobchat.MessageSource("Gobchat"),
-                    Gobchat.ChannelEnum.GOBCHAT_INFO,
-                    [new Gobchat.MessageSegment(Gobchat.MessageSegmentEnum.UNDEFINED, msg)]
-                )
-            )
-        }
-
         scrollToBottomIfNeeded() {
             this._scrollbar.scrollToBottomIfNeeded()
         }
 
-        onNewMessageEvent(messageEvent) {
+        onNewMessageEvent(messagesEvent) {
+            const messageCollection = messagesEvent.detail
+            if (!messageCollection) return
+            for (let message of messageCollection.messages) {
+                this.onNewMessage(message)
+            }
+
+            /*
             const message = this._messageParser.parseMessageEvent(messageEvent)
             if (!message) return
             this.onNewMessage(message)
             if (message.channel === Gobchat.ChannelEnum.ECHO) {
                 this._cmdManager.processCommand(messageEvent.detail.message)
             }
+            */
         }
 
         onNewMessage(message) {
@@ -109,6 +96,11 @@ var Gobchat = (function (Gobchat) {
             $("#" + this._chatHtmlId).append(messageHtmlElement)
             this._scrollbar.scrollToBottomIfNeeded()
             this._messageSound.checkForSound(message)
+
+            if (message.channel === Gobchat.ChannelEnum.ECHO) {
+                const msgComplete = message.content.map(e => e.text).join()
+                this._cmdManager.processCommand(msgComplete)
+            }
         }
     }
     Gobchat.GobchatManager = GobchatManager
