@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,9 +16,18 @@ using Gobchat.Core.Runtime;
 
 namespace Gobchat.Module.Cef
 {
-    public sealed class AppModuleCefManager : IApplicationModule, System.IDisposable
+    public sealed class AppModuleCefManager : IApplicationModule
     {
         private IUISynchronizer _synchronizer;
+
+        /// <summary>
+        /// Requires: <see cref="IUISynchronizer"/> <br></br>
+        /// <br></br>
+        /// Controls lifetime of <see cref="CEFManager"/>
+        /// </summary>
+        public AppModuleCefManager()
+        {
+        }
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
@@ -33,11 +42,6 @@ namespace Gobchat.Module.Cef
 
             _synchronizer = container.Resolve<IUISynchronizer>();
             _synchronizer.RunSync(() => global::Gobchat.UI.Web.CEFManager.Initialize());
-        }
-
-        public void Dispose(IDIContext container)
-        {
-            Dispose();
         }
 
         public void Dispose()

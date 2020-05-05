@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,21 +16,31 @@ using System.IO;
 using System.Windows.Forms;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
+using Gobchat.Module.Cef.Internal;
 using NLog;
 
-namespace Gobchat.Module.CefInstaller
+namespace Gobchat.Module.Cef
 {
     public sealed partial class AppModuleCefInstaller : IApplicationModule
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        ///
+        /// Requires: <see cref="IUISynchronizer"/> <br></br>
+        /// <br></br>
+        /// </summary>
+        public AppModuleCefInstaller()
+        {
+        }
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             var uiSynchronizer = container.Resolve<IUISynchronizer>();
             ProgressDisplayForm progressDisplay = null;
 
-            var cefFolder = Path.Combine(GobchatApplicationContext.ApplicationLocation, "libs", "cef");
-            var patcherFolder = Path.Combine(GobchatApplicationContext.ApplicationLocation, "patch");
+            var cefFolder = Path.Combine(AbstractGobchatApplicationContext.ApplicationLocation, "libs", "cef");
+            var patcherFolder = Path.Combine(AbstractGobchatApplicationContext.ApplicationLocation, "patch");
             var installer = new CefInstaller(cefFolder, patcherFolder);
             if (installer.IsCefAvailable())
                 return;
@@ -102,7 +112,7 @@ namespace Gobchat.Module.CefInstaller
             }
         }
 
-        public void Dispose(IDIContext container)
+        public void Dispose()
         {
         }
     }
