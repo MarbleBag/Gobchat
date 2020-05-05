@@ -30,7 +30,8 @@ namespace Gobchat.Core.Chat
         public FFXIVUnicode(string unicodeString)
         {
             Symbol = unicodeString;
-            Value = int.Parse(string.Join(string.Empty, unicodeString.Select(char.GetNumericValue)), CultureInfo.InvariantCulture);
+            Value = char.ConvertToUtf32(unicodeString, 0);
+            //Value = int.Parse(string.Join(string.Empty, unicodeString.Select(e=>(int)e)), CultureInfo.InvariantCulture);
         }
     }
 }
