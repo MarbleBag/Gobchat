@@ -78,6 +78,7 @@
     <Compile Include="Forms\Helper\FormKeyToCefKeyEventConverter.cs" />
     <Compile Include="Forms\Helper\MouseEventHelper.cs" />
     <Compile Include="Web\IBrowserAPI.cs" />
+    <Compile Include="Web\IJavascriptResponse.cs" />
     <Compile Include="Web\IManagedWebBrowser.cs" />
     <Compile Include="Forms\Helper\RenderHandlerAdapter.cs" />
     <Compile Include="Forms\NativeMethods.cs" />
@@ -93,6 +94,7 @@
     </Compile>
     <Compile Include="Web\CEFManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\JavascriptResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

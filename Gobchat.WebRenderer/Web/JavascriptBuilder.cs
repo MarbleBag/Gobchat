@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,21 +11,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using CefSharp;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Gobchat.UI.Web
 {
     public sealed class JavascriptBuilder
     {
         private readonly System.Text.StringBuilder _stringbuilder;
-        private readonly Newtonsoft.Json.JsonSerializer _jsonSerializer;
-        private readonly Newtonsoft.Json.JsonTextWriter _jsonWriter;
+        public Newtonsoft.Json.JsonSerializer JsonSerializer { get; }
+        public Newtonsoft.Json.JsonTextWriter JsonWriter { get; }
 
         public JavascriptBuilder()
         {
             _stringbuilder = new System.Text.StringBuilder(1000);
-            _jsonSerializer = new Newtonsoft.Json.JsonSerializer();
-            _jsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(_stringbuilder));
+            JsonSerializer = new Newtonsoft.Json.JsonSerializer();
+            JsonSerializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            JsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(_stringbuilder));
+            JsonWriter.QuoteName = true;
         }
 
         public string BuildCustomEventDispatcher(JavascriptEvents.JSEvent evt)
@@ -35,7 +40,7 @@ namespace Gobchat.UI.Web
                 _stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
                 _stringbuilder.Append(evt.EventName);
                 _stringbuilder.Append("', { detail: ");
-                _jsonSerializer.Serialize(_jsonWriter, evt);
+                JsonSerializer.Serialize(JsonWriter, evt);
                 _stringbuilder.Append(" }));");
                 string result = _stringbuilder.ToString();
                 _stringbuilder.Clear();
@@ -52,7 +57,7 @@ namespace Gobchat.UI.Web
         {
             using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
             {
-                var obj = _jsonSerializer.Deserialize<T>(reader);
+                var obj = JsonSerializer.Deserialize<T>(reader);
                 return obj;
             }
         }

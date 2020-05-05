@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -72,8 +72,8 @@ namespace Gobchat.UI.Forms
 
             var browser = new ManagedWebBrowser(form: this);
             Browser = browser;
-            Browser.BrowserConsoleLog += (s, e) => logger.Info(() => $"Browser Console Log ${e.Line} in ${e.Source}\n=> {e.Message}");
-            Browser.BrowserError += (s, e) => logger.Error(() => $"[{e.ErrorCode}] {e.ErrorText})");
+            Browser.OnBrowserConsoleLog += (s, e) => logger.Info(() => $"Browser Console Log ${e.Line} in ${e.Source}\n=> {e.Message}");
+            Browser.OnBrowserError += (s, e) => logger.Error(() => $"[{e.ErrorCode}] {e.ErrorText})");
 
             //seems this is still not implemented by CefSharp, no events are fired
             /*
