@@ -12,38 +12,21 @@
  *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Gobchat.Module.Hotkey
 {
-    public interface IHotkeyManager
+    public interface IHotkeyAction
     {
-        void RegisterHotkey(string id, Action callback);
+        string Id { get; }
 
-        void UnregisterHotkey(string id);
+        Keys Keys { get; set; }
 
-        void AddKey(string id, Keys key);
+        List<Action> Actions { get; }
 
-        void RemoveKey(string id, Keys key);
+        bool IsActive { get; set; }
 
-        void RemoveAllKeys(string id);
-
-        void ActivateHotkey(string id);
-
-        void DeactivateHotkey(string id);
-
-        void ToggleHotkey(string id, bool active);
-
-        bool IsHotkeyActive(string id);
-
-        void DeactivateAllHotkeys();
-
-        string[] GetActiveHotkeys();
-
-        string[] GetHotkeysForKey(Keys key);
-
-        string[] GetAllHotkeys();
-
-        Keys[] GetKeysForId(string id);
+        void UpdateHotkey();
     }
 }
