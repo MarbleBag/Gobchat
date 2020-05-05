@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019.2020 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -22,27 +22,30 @@ using Gobchat.Core.Util.Extension.Queue;
 
 namespace Gobchat.Core.Chat
 {
-    public sealed class ChatMessageToFileLogger : IDisposable
+    public abstract class ChatLoggerBase : IChatLogger
     {
         private readonly Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
         private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();
         private string _fileHandle;
 
-        public List<ChatChannel> LogChannels
+        abstract protected string LoggerId { get; }
+
+        public IEnumerable<ChatChannel> LogChannels
         {
-            get => _logChannels.ToList();
+            get => _logChannels.ToArray();
             set => _logChannels = value.ToArrayOrEmpty();
         }
 
         public bool Active { get; set; }
 
-        public ChatMessageToFileLogger()
+        public ChatLoggerBase()
         {
         }
 
-        public void Dispose()
+        public void Log(ChatMessage message)
         {
-            Flush();
+            if (Active && _logChannels.Contains(message.Channel))
+                _pendingMessages.Enqueue(message);
         }
 
         public void Flush()
@@ -57,20 +60,26 @@ namespace Gobchat.Core.Chat
                 var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
                 var fileName = $"chatlog_{timestamp}.log";
                 _fileHandle = Path.Combine(logFolder, fileName);
+
+                if (!File.Exists(_fileHandle))
+                    File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" });
             }
 
-            var logLines = _pendingMessages.DequeueAll().Select(e =>
-            { // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
-                return $"00|{e.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{((int)(e.Channel)).ToString("x4", CultureInfo.InvariantCulture)}|{e.Source}|{e.Message}|";
-            });
-
+            var logLines = _pendingMessages.DequeueAll().Select(e => FormatLine(e));
             File.AppendAllLines(_fileHandle, logLines);
         }
 
-        public void Log(ChatMessage message)
+        abstract protected string FormatLine(ChatMessage msg);
+
+        public void Dispose()
         {
-            if (Active && _logChannels.Contains(message.Channel))
-                _pendingMessages.Enqueue(message);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool v)
+        {
+            Flush();
         }
     }
 }
