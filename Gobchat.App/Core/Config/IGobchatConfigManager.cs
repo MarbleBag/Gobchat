@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,9 +17,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    public delegate void PropertyChangedListener(IGobchatConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt);
+    public delegate void PropertyChangedListener(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt);
 
-    public interface IGobchatConfigManager
+    public interface IConfigManager
     {
         #region event handling
 
@@ -27,13 +27,19 @@ namespace Gobchat.Core.Config
 
         event EventHandler<ProfileChangedEventArgs> OnProfileChange;
 
-        void AddPropertyChangeListener(string path, PropertyChangedListener listener);
-
+        [Obsolete]
         void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
 
-        void RemovePropertyChangeListener(string path, PropertyChangedListener listener);
-
+        [Obsolete]
         void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener);
+
+        bool AddPropertyChangeListener(string path, PropertyChangedListener listener);
+
+        bool AddPropertyChangeListener(string path, bool onActiveProfile, PropertyChangedListener listener);
+
+        bool AddPropertyChangeListener(string path, bool onActiveProfile, bool initialize, PropertyChangedListener listener);
+
+        void RemovePropertyChangeListener(string path, PropertyChangedListener listener);
 
         void RemovePropertyChangeListener(PropertyChangedListener listener);
 

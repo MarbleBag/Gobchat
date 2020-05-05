@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -22,9 +22,9 @@ namespace Gobchat.Core.Config
     {
         public enum MissingElementHandling
         {
-            Throw,
-            Create,
-            Stop
+            Throw, // throw an exception, if the element can't be found
+            Create, // create an object, if the element can't be found
+            Stop // stop and retur, if the element can't be found
         }
 
         public delegate void Action(JObject node, string propertyName);
@@ -37,9 +37,9 @@ namespace Gobchat.Core.Config
             for (int i = 0; i < path.Length - 1; ++i)
             {
                 var step = path[i];
-                var nextNode = node[step];
+                var nextNode = node[step] as JObject;
 
-                if (nextNode == null)
+                if (nextNode == null )
                 {
                     switch (missingElementHandling)
                     {
@@ -57,7 +57,7 @@ namespace Gobchat.Core.Config
                     }
                 }
 
-                node = (JObject)nextNode;
+                node = nextNode;
             }
 
             var lastStep = path[path.Length - 1];
@@ -77,6 +77,7 @@ namespace Gobchat.Core.Config
             public ValueCallback OnValue { get; set; }
         }
 
+        [Obsolete]
         public class SwitchResult
         {
             public bool Value { get; }
@@ -97,10 +98,12 @@ namespace Gobchat.Core.Config
             }
         }
 
+        [Obsolete]
         public abstract class SwitchError
         {
         }
 
+        [Obsolete]
         public sealed class TypeSwitchError : SwitchError
         {
             public Type Expected { get; }

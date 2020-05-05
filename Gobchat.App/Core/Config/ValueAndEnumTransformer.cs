@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Gobchat.Core.Config
 {
-    public sealed class ValueToEnumTransformer : IJsonTransformer
+    internal sealed class ValueToEnumTransformer : IJsonTransformer
     {
         public JObject Transform(JObject json)
         {
@@ -30,13 +30,13 @@ namespace Gobchat.Core.Config
                 if (behaviour["channel"] is JObject channel)
                 {
                     if (channel["roleplay"] is JArray roleplay)
-                        ConvertValueToEnumAndReplace<Chat.ChannelEnum>(roleplay);
+                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(roleplay);
 
                     if (channel["mention"] is JArray mention)
-                        ConvertValueToEnumAndReplace<Chat.ChannelEnum>(mention);
+                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(mention);
 
                     if (channel["visible"] is JArray visible)
-                        ConvertValueToEnumAndReplace<Chat.ChannelEnum>(visible);
+                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(visible);
                 }
 
                 if (behaviour["segment"] is JObject segments)
@@ -45,7 +45,7 @@ namespace Gobchat.Core.Config
                     {
                         foreach (var segment in data.Values())
                         {
-                            if (TryConvertValueToEnum<Chat.MessageSegmentEnum>(segment["type"], out var eValue))
+                            if (TryConvertValueToEnum<Chat.MessageSegmentType>(segment["type"], out var eValue))
                                 segment["type"] = new JValue(eValue);
                         }
                     }
@@ -57,7 +57,7 @@ namespace Gobchat.Core.Config
 
         private void ConvertValueToEnumAndReplace<TEnum>(JArray list) where TEnum : struct, IConvertible
         {
-            var enums = ConvertValueToEnum<Chat.ChannelEnum>(list);
+            var enums = ConvertValueToEnum<Chat.ChatChannel>(list);
             list.Clear();
             enums.ForEach(e => list.Add(e));
         }
@@ -106,7 +106,7 @@ namespace Gobchat.Core.Config
         }
     }
 
-    public sealed class EnumToStringTransformer : IJsonTransformer
+    internal sealed class EnumToStringTransformer : IJsonTransformer
     {
         public JObject Transform(JObject json)
         {
@@ -118,13 +118,13 @@ namespace Gobchat.Core.Config
                 if (behaviour["channel"] is JObject channel)
                 {
                     if (channel["roleplay"] is JArray roleplay)
-                        ConvertEnumToStringAndReplace<Chat.ChannelEnum>(roleplay);
+                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(roleplay);
 
                     if (channel["mention"] is JArray mention)
-                        ConvertEnumToStringAndReplace<Chat.ChannelEnum>(mention);
+                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(mention);
 
                     if (channel["visible"] is JArray visible)
-                        ConvertEnumToStringAndReplace<Chat.ChannelEnum>(visible);
+                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(visible);
                 }
 
                 if (behaviour["segment"] is JObject segments)
@@ -133,7 +133,7 @@ namespace Gobchat.Core.Config
                     {
                         foreach (var segment in data.Values())
                         {
-                            if (TryConvertEnumToString<Chat.MessageSegmentEnum>(segment["type"], out var name))
+                            if (TryConvertEnumToString<Chat.MessageSegmentType>(segment["type"], out var name))
                                 segment["type"] = name;
                             else
                                 segment["type"] = "SAY";
@@ -147,7 +147,7 @@ namespace Gobchat.Core.Config
 
         private void ConvertEnumToStringAndReplace<TEnum>(JArray list) where TEnum : struct, IConvertible
         {
-            var enums = ConvertEnumToString<Chat.ChannelEnum>(list);
+            var enums = ConvertEnumToString<Chat.ChatChannel>(list);
             list.Clear();
             enums.ForEach(e => list.Add(e));
         }

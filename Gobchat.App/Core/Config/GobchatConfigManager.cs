@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,29 +16,29 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 using NLog;
 
 namespace Gobchat.Core.Config
 {
-    public sealed class GobchatConfigManager : IGobchatConfigManager
+    public sealed class GobchatConfigManager : IConfigManager
     {
         private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly object _synchronizationLock = new object();
 
-        private string _defaultProfilePath;
+        private readonly string _defaultProfilePath;
 
         private Dictionary<string, IGobchatConfigProfile> _profiles;
-        private IList<string> _profilesLoadedFromFile;
+        private readonly IList<string> _profilesLoadedFromFile;
         private GobchatConfigProfile _defaultConfig;
 
         private string _activeProfileId;
 
-        private Dictionary<string, IList<PropertyChangedListener>> _propertyChangedListener;
-        private Dictionary<string, ISet<string>> _pendingPropertyChanges;
+        private readonly Dictionary<string, IList<PropertyChangedListener>> _allPropertyChangedListener;
+        private readonly Dictionary<string, IList<PropertyChangedListener>> _activePropertyChangedListener;
+
+        private readonly Dictionary<string, ISet<string>> _pendingPropertyChanges;
 
         #region public properties
 
@@ -86,8 +86,12 @@ namespace Gobchat.Core.Config
             _profiles = new Dictionary<string, IGobchatConfigProfile>();
             _profilesLoadedFromFile = new List<string>();
 
-            _propertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+            _allPropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+            _activePropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+
             _pendingPropertyChanges = new Dictionary<string, ISet<string>>();
+
+            OnActiveProfileChange += UpdateActiveListenerOnActiveProfileChange;
         }
 
         #region load
@@ -495,21 +499,56 @@ namespace Gobchat.Core.Config
 
         public event EventHandler<ActiveProfileChangedEventArgs> OnActiveProfileChange;
 
-        public void AddPropertyChangeListener(string path, PropertyChangedListener listener)
+        public bool AddPropertyChangeListener(string path, PropertyChangedListener listener)
+        {
+            return AddPropertyChangeListener(path, false, false, listener);
+        }
+
+        public bool AddPropertyChangeListener(string path, bool activeProfile, PropertyChangedListener listener)
+        {
+            return AddPropertyChangeListener(path, activeProfile, false, listener);
+        }
+
+        public bool AddPropertyChangeListener(string path, bool activeProfile, bool initialize, PropertyChangedListener listener)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (listener == null) throw new ArgumentNullException(nameof(listener));
 
-            if (_propertyChangedListener.TryGetValue(path, out var listeners))
+            //ensure listener is not already registered
+
+            if (_activePropertyChangedListener.TryGetValue(path, out var activeListeners))
+                if (activeListeners.Contains(listener))
+                    return false;
+
+            if (_allPropertyChangedListener.TryGetValue(path, out var passiveListeners))
+                if (passiveListeners.Contains(listener))
+                    return false;
+
+            //put them in the correct bucket
+
+            if (activeProfile)
             {
-                if (!listeners.Contains(listener))
-                    listeners.Add(listener);
+                if (activeListeners != null)
+                    activeListeners.Add(listener);
+                else
+                    _activePropertyChangedListener.Add(path, new List<PropertyChangedListener>() { listener });
             }
             else
             {
-                listeners = new List<PropertyChangedListener>() { listener };
-                _propertyChangedListener.Add(path, listeners);
+                if (passiveListeners != null)
+                    passiveListeners.Add(listener);
+                else
+                    _allPropertyChangedListener.Add(path, new List<PropertyChangedListener>() { listener });
             }
+
+            if (initialize)
+            {
+                var activeEvent = new ProfilePropertyChangedEventArgs(path, ActiveProfileId, true, false);
+                var collection = new List<ProfilePropertyChangedEventArgs>(1) { activeEvent };
+                listener.Invoke(this, new ProfilePropertyChangedCollectionEventArgs(collection));
+            }
+
+            return true;
         }
 
         public void RemovePropertyChangeListener(string path, PropertyChangedListener listener)
@@ -517,32 +556,51 @@ namespace Gobchat.Core.Config
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (listener == null) return;
 
-            if (_propertyChangedListener.TryGetValue(path, out var listeners))
+            bool RemoveListener(Dictionary<string, IList<PropertyChangedListener>> store)
             {
-                listeners.Remove(listener);
-                if (listeners.Count == 0)
-                    _propertyChangedListener.Remove(path);
+                var removed = false;
+                if (store.TryGetValue(path, out var listeners))
+                {
+                    removed = listeners.Remove(listener);
+                    if (listeners.Count == 0)
+                        store.Remove(path);
+                }
+                return removed;
             }
+
+            if (!RemoveListener(_allPropertyChangedListener))
+                RemoveListener(_activePropertyChangedListener);
         }
 
         public void RemovePropertyChangeListener(PropertyChangedListener listener)
         {
             if (listener == null) return;
-            foreach (var key in _propertyChangedListener.Keys.ToArray())
+
+            bool RemoveListener(Dictionary<string, IList<PropertyChangedListener>> store)
             {
-                var listeners = _propertyChangedListener[key];
-                listeners.Remove(listener);
-                if (listeners.Count == 0)
-                    _propertyChangedListener.Remove(key);
+                var removed = false;
+                foreach (var key in store.Keys.ToArray())
+                {
+                    var listeners = store[key];
+                    removed = listeners.Remove(listener);
+                    if (listeners.Count == 0)
+                        store.Remove(key);
+                }
+                return removed;
             }
+
+            if (!RemoveListener(_allPropertyChangedListener))
+                RemoveListener(_activePropertyChangedListener);
         }
 
+        [Obsolete]
         public void AddPropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
         {
             foreach (var path in paths)
                 AddPropertyChangeListener(path, listener);
         }
 
+        [Obsolete]
         public void RemovePropertyChangeListener(IEnumerable<string> paths, PropertyChangedListener listener)
         {
             foreach (var path in paths)
@@ -559,36 +617,73 @@ namespace Gobchat.Core.Config
             }
         }
 
+        private IList<PropertyChangedListener> GetListenersFor(string path)
+        {
+            var result = new List<PropertyChangedListener>();
+            if (_allPropertyChangedListener.TryGetValue(path, out var passiveListeners))
+                result.AddRange(passiveListeners);
+
+            if (_activePropertyChangedListener.TryGetValue(path, out var activeListeners))
+                result.AddRange(activeListeners);
+
+            return result;
+        }
+
         private void DispatchEvents(IDictionary<string, ISet<string>> events, bool synchronizeEvents)
         {
             var activeProfileId = this.ActiveProfileId;
             var dispatchableChanges = new Dictionary<PropertyChangedListener, List<ProfilePropertyChangedEventArgs>>();
             foreach (var entry in events)
             {
-                if (_propertyChangedListener.TryGetValue(entry.Key, out var listeners))
-                {
-                    var eventArgs = new List<ProfilePropertyChangedEventArgs>();
-                    foreach (var profileId in entry.Value)
-                        eventArgs.Add(new ProfilePropertyChangedEventArgs(entry.Key, profileId, profileId == activeProfileId, synchronizeEvents));
+                var listeners = GetListenersFor(entry.Key);
+                if (listeners.Count == 0)
+                    continue;
 
-                    foreach (var listener in listeners.ToArray())
+                var eventArgs = new List<ProfilePropertyChangedEventArgs>();
+                foreach (var profileId in entry.Value)
+                    eventArgs.Add(new ProfilePropertyChangedEventArgs(entry.Key, profileId, profileId == activeProfileId, synchronizeEvents));
+
+                foreach (var listener in listeners)
+                {
+                    if (dispatchableChanges.TryGetValue(listener, out var pendingEvents))
                     {
-                        if (dispatchableChanges.TryGetValue(listener, out var pendingEvents))
-                        {
-                            pendingEvents.AddRange(eventArgs);
-                        }
-                        else
-                        {
-                            pendingEvents = new List<ProfilePropertyChangedEventArgs>();
-                            pendingEvents.AddRange(eventArgs);
-                            dispatchableChanges.Add(listener, pendingEvents);
-                        }
+                        pendingEvents.AddRange(eventArgs);
+                    }
+                    else
+                    {
+                        pendingEvents = new List<ProfilePropertyChangedEventArgs>();
+                        pendingEvents.AddRange(eventArgs);
+                        dispatchableChanges.Add(listener, pendingEvents);
                     }
                 }
             }
 
             foreach (var entry in dispatchableChanges)
-                entry.Key.Invoke(this, new ProfilePropertyChangedCollectionEventArgs(entry.Value, synchronizeEvents));
+                entry.Key.Invoke(this, new ProfilePropertyChangedCollectionEventArgs(entry.Value));
+        }
+
+        private void UpdateActiveListenerOnActiveProfileChange(object sender, ActiveProfileChangedEventArgs e)
+        {
+            var activeProfileId = this.ActiveProfileId;
+            var dispatchableChanges = new Dictionary<PropertyChangedListener, List<ProfilePropertyChangedEventArgs>>();
+
+            foreach (var path in _activePropertyChangedListener.Keys.ToArray())
+            {
+                if (_activePropertyChangedListener.TryGetValue(path, out var listeners))
+                {
+                    var activeEvent = new ProfilePropertyChangedEventArgs(path, activeProfileId, true, e.Synchronizing);
+                    foreach (var listener in listeners.ToArray())
+                    {
+                        if (dispatchableChanges.TryGetValue(listener, out var list))
+                            list.Add(activeEvent);
+                        else
+                            dispatchableChanges.Add(listener, new List<ProfilePropertyChangedEventArgs>() { activeEvent });
+                    }
+                }
+            }
+
+            foreach (var entry in dispatchableChanges)
+                entry.Key.Invoke(this, new ProfilePropertyChangedCollectionEventArgs(entry.Value));
         }
 
         public void DispatchChangeEvents()
