@@ -166,7 +166,6 @@
     <Compile Include="Core\Chat\ChatMessage.cs" />
     <Compile Include="Module\Chat\Logger\Internal\ChatLoggerACTType.cs" />
     <Compile Include="Core\Chat\Events\ChatMessagesWebEvent.cs" />
-    <Compile Include="Core\Chat\Deprecated\ChatMessageToFileLoggerOld.cs" />
     <Compile Include="Core\Chat\Formater\ChatMessageSegmentFormatter.cs" />
     <Compile Include="Core\Chat\Formater\FormatConfig.cs" />
     <Compile Include="Core\Chat\Formater\IReplacer.cs" />
@@ -198,7 +197,6 @@
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigException.cs" />
-    <Compile Include="Core\LoadGobchatConfigEvent.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
     <Compile Include="Core\Resource\IResourceLoader.cs" />
     <Compile Include="Core\Runtime\ContextSpecificUISynchronizer.cs" />
@@ -213,7 +211,6 @@
     <Compile Include="Core\Util\Either.cs" />
     <Compile Include="Core\Util\Extension\DictionaryExtension.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
-    <Compile Include="Module\Chat\AppModuleChat2.cs" />
     <Compile Include="Core\Chat\FFXIVUnicode.cs" />
     <Compile Include="Core\Chat\FFXIVUnicodes.cs" />
     <Compile Include="Core\Chat\ChatMessageBuilder.cs" />
@@ -229,7 +226,6 @@
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
     <Compile Include="Module\Chat\Manager\Internal\ChatManager.cs" />
     <Compile Include="Module\Chat\Logger\AppModuleChatLogger.cs" />
-    <Compile Include="Module\Chat\GobchatHotkeyManager.cs" />
     <Compile Include="Core\Util\Extension\ToArrayOrEmptyExtension.cs" />
     <Compile Include="Module\Chat\Manager\IChatMessageManager.cs" />
     <Compile Include="Core\Chat\IChatLogger.cs" />
@@ -260,7 +256,6 @@
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
     <Compile Include="Module\Cef\AppModuleCefInstaller.cs" />
-    <Compile Include="Module\Chat\AppModuleChat.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Module\Hotkey\Internal\OSLevelHotkeyRegister.cs" />
     <Compile Include="Core\UI\IMenu.cs" />
@@ -476,16 +471,12 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
-    <Compile Include="Core\Chat\Deprecated\ChatMessageWebEventOld.cs" />
-    <Compile Include="Core\Chat\Deprecated\ChatlogToMessageConverter.cs" />
-    <Compile Include="Core\Chat\Deprecated\ChatMessageOld.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
     <Compile Include="Core\Util\Extension\EnumJsonExtension.cs" />
     <Compile Include="Core\Util\EnumUtil.cs" />
     <Compile Include="Core\Util\Lookup.cs" />
     <Compile Include="Core\Resource\ResourceBundle.cs" />
     <Compile Include="Core\Util\DirectoryTraverser.cs" />
-    <Compile Include="Core\GobchatAPI.cs" />
     <Compile Include="Core\Util\MathUtil.cs" />
     <Compile Include="Core\Runtime\GobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IndependendBackgroundWorker.cs" />
@@ -496,7 +487,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Module\Chat\SomeoneWhoDoesSomeWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
