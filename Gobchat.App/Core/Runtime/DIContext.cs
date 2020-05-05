@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace Gobchat.Core.Runtime
 {
-    public sealed class DIContext : IDIContext
+    internal sealed class DIContext : IDIContext
     {
         private readonly TinyIoC.TinyIoCContainer _container = new TinyIoC.TinyIoCContainer();
         private readonly DIContext _parent;

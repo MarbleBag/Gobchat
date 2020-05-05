@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -13,12 +13,20 @@
 
 namespace Gobchat.Core.Runtime
 {
-    public interface IApplicationModule
+    public interface IApplicationModule : System.IDisposable
     {
         //TODO replace methods with attributes and make dependency injection via attributes possible
 
+        /// <summary>
+        /// It is not guranteed that "Initialize" and "Dispose" will be executed on the same thread
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="container"></param>
         void Initialize(ApplicationStartupHandler handler, IDIContext container);
 
-        void Dispose(IDIContext container);
+        /// <summary>
+        /// It is not guranteed that "Initialize" and "Dispose" will be executed on the same thread
+        /// </summary>
+        new void Dispose();
     }
 }

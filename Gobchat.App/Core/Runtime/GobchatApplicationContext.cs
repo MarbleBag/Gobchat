@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -23,7 +23,7 @@ namespace Gobchat.Core.Runtime
 {
     public sealed class GobchatApplicationContext : AbstractGobchatApplicationContext
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public new Form MainForm { get { return null; } }
 
@@ -57,24 +57,45 @@ namespace Gobchat.Core.Runtime
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
             _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ApplicationLocation, nameof(ApplicationLocation));
-            _applicationDIContext.Register<System.Version>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
+            _applicationDIContext.Register<GobVersion>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
 
             _applicationDIContext.Register<IUISynchronizer>((c, _) => GobchatApplicationContext.UISynchronizer);
             _applicationDIContext.Register<IUIManager>((c, _) => _uiManager);
 
             var moduleActivationSequence = new List<IApplicationModule>()
             {
-                new Module.Config.AppModuleConfig(),
+                //config
+                new global::Gobchat.Module.Config.AppModuleConfig(),
 
-                new Module.Updater.AppModuleUpdater(),
-                new Module.CefInstaller.AppModuleCefInstaller(),
+                //updater and downloadable dependencies
+                new global::Gobchat.Module.Updater.AppModuleUpdater(),
+                new global::Gobchat.Module.Cef.AppModuleCefDependencyChecker(),
+                new global::Gobchat.Module.Cef.AppModuleCefInstaller(),
 
-                new Module.NotifyIcon.AppModuleNotifyIcon(),
-                new Module.Hotkey.AppModuleHotKeyManager(),
+                //base managers
+                new global::Gobchat.Module.NotifyIcon.AppModuleNotifyIcon(),
+                new global::Gobchat.Module.Hotkey.AppModuleHotkeyManager(),
+                new global::Gobchat.Module.MemoryReader.AppModuleMemoryReader(),
+                new global::Gobchat.Module.Chat.AppModuleChatManager(),
 
-                new Module.Cef.AppModuleCefManager(),
-                new Module.Overlay.AppModuleChatOverlay(),
-                new Module.Chat.AppModuleChat()
+                // CEF overlay and javascript api
+                new global::Gobchat.Module.Cef.AppModuleCefManager(),
+                new global::Gobchat.Module.Overlay.AppModuleChatOverlay(),
+                new global::Gobchat.Module.UI.AppModuleBrowserAPIManager(),
+
+                // Misc
+                new global::Gobchat.Module.MemoryReader.AppModuleShowConnectionOnTrayIcon(),
+                new global::Gobchat.Module.Overlay.AppModuleHideOnMinimize(),
+                new global::Gobchat.Module.Chat.AppModuleChatLogger(),
+                new global::Gobchat.Module.Misc.AppModuleInformUserAboutMemoryState(),
+                new global::Gobchat.Module.Misc.AppModuleShowHideHotkey(),
+
+                //UI Adapter
+                new global::Gobchat.Module.UI.AppModuleChatToUI(),
+                new global::Gobchat.Module.UI.AppModuleConfigToUI(),
+
+                //Start UI
+                new global::Gobchat.Module.UI.AppModuleLoadUI(),
             };
 
             logger.Info(() => $"Initialize Gobchat v{GobchatApplicationContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");
@@ -88,11 +109,19 @@ namespace Gobchat.Core.Runtime
                     logger.Info($"Starting: {module}");
                     module.Initialize(startupHandler, _applicationDIContext);
                 }
-                catch (System.Exception e)
+                catch (System.Exception ex1)
                 {
                     logger.Fatal($"Initialization error in {module}");
-                    logger.Fatal(e);
+                    logger.Fatal(ex1);
                     startupHandler.StopStartup = true;
+
+                    try
+                    {
+                        MessageBox.Show($"An error prevents Gobchat from starting. For more details please check gobchat_debug.log.\nError:\n{ex1.Message}", "Error on start", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (System.Exception ex2)
+                    {
+                    }
                 }
 
                 if (startupHandler.StopStartup)
@@ -106,7 +135,7 @@ namespace Gobchat.Core.Runtime
             logger.Info("Initialization complete");
         }
 
-        internal override async void ApplicationShutdownProcess()
+        internal override void ApplicationShutdownProcess()
         {
             logger.Info("Gobchat shutdown");
 
@@ -119,13 +148,12 @@ namespace Gobchat.Core.Runtime
                 try
                 {
                     logger.Info($"Shutdown: {module}");
-                    module.Dispose(_applicationDIContext);
+                    module.Dispose();
                 }
                 catch (System.Exception e)
                 {
                     //that's the best you get, no one cares for you - for now.
-                    logger.Warn($"Shutdown error in {module}");
-                    logger.Warn(e);
+                    logger.Warn(e, $"Shutdown error in {module}");
                 }
             }
 

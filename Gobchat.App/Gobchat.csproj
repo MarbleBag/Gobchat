@@ -157,37 +157,51 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Chat\ChatMessageToFileLogger.cs" />
-    <Compile Include="Core\Config\ActiveProfileChangedEventArgs.cs" />
-    <Compile Include="Core\Config\ConfigLoadException.cs" />
+    <Compile Include="Core\Chat\ChatLoggerBase.cs" />
+    <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
+    <Compile Include="Module\Chat\Logger\Internal\ChatLoggerFormated.cs" />
+    <Compile Include="Core\Chat\Formater\ChatMessageMentionFinder.cs" />
+    <Compile Include="Core\Chat\Formater\ChatMessageSegmentFormater.cs" />
+    <Compile Include="Core\Chat\ChatlogCleaner.cs" />
+    <Compile Include="Core\Chat\ChatMessage.cs" />
+    <Compile Include="Module\Chat\Logger\Internal\ChatLoggerACTType.cs" />
+    <Compile Include="Core\Chat\Events\ChatMessagesWebEvent.cs" />
+    <Compile Include="Core\Chat\Deprecated\ChatMessageToFileLoggerOld.cs" />
+    <Compile Include="Core\Chat\Formater\ChatMessageSegmentFormatter.cs" />
+    <Compile Include="Core\Chat\Formater\FormatConfig.cs" />
+    <Compile Include="Core\Chat\Formater\IReplacer.cs" />
+    <Compile Include="Core\Chat\Formater\ReplaceTypeByText.cs" />
+    <Compile Include="Core\Chat\Formater\ReplaceTypeByToken.cs" />
+    <Compile Include="Core\Config\Events\ActiveProfileChangedEventArgs.cs" />
+    <Compile Include="Core\Config\Exceptions\ConfigLoadException.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\Transforme_v2_to_v3.cs" />
-    <Compile Include="Core\Config\EnumToStringTransformer.cs" />
     <Compile Include="Core\Config\IGobchatConfigManager.cs" />
     <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
-    <Compile Include="Core\Config\InvalidProfileIdException.cs" />
-    <Compile Include="Core\Config\InvalidPropertyPathException.cs" />
-    <Compile Include="Core\Config\InvalidPropertyTypeException.cs" />
+    <Compile Include="Core\Config\Exceptions\InvalidProfileIdException.cs" />
+    <Compile Include="Core\Config\Exceptions\InvalidPropertyPathException.cs" />
+    <Compile Include="Core\Config\Exceptions\InvalidPropertyTypeException.cs" />
     <Compile Include="Core\Config\GobchatConfigProfile.cs" />
     <Compile Include="Core\Config\JsonUtil.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\LegacyAppConfigTransformer.cs" />
-    <Compile Include="Core\Config\MissingPropertyException.cs" />
-    <Compile Include="Core\Config\ProfileChangedEventArgs.cs" />
-    <Compile Include="Core\Config\ProfilePropertyChangedEventArgs.cs" />
-    <Compile Include="Core\Config\PropertyChangedEventArgs.cs" />
-    <Compile Include="Core\Config\PropertyException.cs" />
-    <Compile Include="Core\Config\PropertyReadOnlyException.cs" />
+    <Compile Include="Core\Config\Exceptions\MissingPropertyException.cs" />
+    <Compile Include="Core\Config\Events\ProfileChangedEventArgs.cs" />
+    <Compile Include="Core\Config\Events\ProfilePropertyChangedEventArgs.cs" />
+    <Compile Include="Core\Config\Events\PropertyChangedEventArgs.cs" />
+    <Compile Include="Core\Config\Exceptions\PropertyException.cs" />
+    <Compile Include="Core\Config\Exceptions\PropertyReadOnlyException.cs" />
     <Compile Include="Core\Config\ValueAndEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\IGobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
     <Compile Include="Core\Chat\ChannelEnum.cs" />
-    <Compile Include="Core\Chat\MessageSegmentEnum.cs" />
+    <Compile Include="Core\Chat\MessageSegmentType.cs" />
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />
-    <Compile Include="Core\Config\ConfigException.cs" />
+    <Compile Include="Core\Config\Exceptions\ConfigException.cs" />
     <Compile Include="Core\LoadGobchatConfigEvent.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
     <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Core\Runtime\ContextSpecificUISynchronizer.cs" />
     <Compile Include="Core\UI\ManualUpdateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,23 +211,58 @@
     <Compile Include="Core\Util\ArchiveUnpacker.cs" />
     <Compile Include="Core\Util\DownloadFailedException.cs" />
     <Compile Include="Core\Util\Either.cs" />
+    <Compile Include="Core\Util\Extension\DictionaryExtension.cs" />
     <Compile Include="Core\Util\ExtractionFailedException.cs" />
+    <Compile Include="Module\Chat\AppModuleChat2.cs" />
+    <Compile Include="Core\Chat\FFXIVUnicode.cs" />
+    <Compile Include="Core\Chat\FFXIVUnicodes.cs" />
+    <Compile Include="Core\Chat\ChatMessageBuilder.cs" />
+    <Compile Include="Core\Chat\Events\ChatMessageEventArgs.cs" />
+    <Compile Include="Module\Chat\Manager\AppModuleChatManager.cs" />
+    <Compile Include="Module\Hotkey\ConfigHotkeyUpdater.cs" />
+    <Compile Include="Module\Hotkey\HotkeyException.cs" />
+    <Compile Include="Module\Hotkey\IHotkeyAction.cs" />
+    <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
+    <Compile Include="Module\Hotkey\Internal\HotkeyData.cs" />
+    <Compile Include="Module\Hotkey\Internal\HotkeyManager.cs" />
+    <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
+    <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
+    <Compile Include="Module\Chat\Manager\Internal\ChatManager.cs" />
+    <Compile Include="Module\Chat\Logger\AppModuleChatLogger.cs" />
     <Compile Include="Module\Chat\GobchatHotkeyManager.cs" />
-    <Compile Include="Module\Chat\SynchronizeConfigWebEvent.cs" />
-    <Compile Include="Module\Chat\ToggleSearchWebEvent.cs" />
+    <Compile Include="Core\Util\Extension\ToArrayOrEmptyExtension.cs" />
+    <Compile Include="Module\Chat\Manager\IChatMessageManager.cs" />
+    <Compile Include="Core\Chat\IChatLogger.cs" />
+    <Compile Include="Module\Misc\AppModuleInformUserAboutMemoryState.cs" />
+    <Compile Include="Module\Hotkey\AppModuleHotkeyManager.cs" />
+    <Compile Include="Module\Overlay\AppModuleHideOnMinimize.cs" />
+    <Compile Include="Module\UI\Connector\AppModuleConfigToUI.cs" />
+    <Compile Include="Module\UI\IBrowserAPIManager3.cs" />
+    <Compile Include="Module\UI\Initialize\AppModuleLoadUI.cs" />
+    <Compile Include="Module\Misc\AppModuleShowHideHotkey.cs" />
+    <Compile Include="Module\UI\SynchronizeConfigWebEvent.cs" />
+    <Compile Include="Core\Chat\SystemMessageType.cs" />
+    <Compile Include="Module\UI\ToggleSearchWebEvent.cs" />
     <Compile Include="Core\Util\DelayedCallback.cs" />
-    <Compile Include="Module\Updater\GitHubFileDownloader.cs" />
+    <Compile Include="Module\MemoryReader\AppModuleMemoryReader.cs" />
+    <Compile Include="Module\MemoryReader\AppModuleShowConnectionOnTrayIcon.cs" />
+    <Compile Include="Module\UI\BrowserAPI\AppModuleBrowserAPIManager.cs" />
+    <Compile Include="Core\Util\EventHandlerManager.cs" />
+    <Compile Include="Core\Util\EventHandlerConfigManager.cs" />
+    <Compile Include="Module\UI\BrowserAPI\Internal\GobchatBrowserAPI.cs" />
+    <Compile Include="Module\UI\IBrowserAPIManager.cs" />
+    <Compile Include="Module\UI\UIReadChangedEventArgs.cs" />
+    <Compile Include="Module\Updater\Internal\GitHubFileDownloader.cs" />
     <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
-    <Compile Include="Module\CefInstaller\CefInstaller.cs" />
+    <Compile Include="Module\Cef\Internal\CefInstaller.cs" />
     <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
     <Compile Include="Core\Resource\IResourceResolver.cs" />
-    <Compile Include="Module\CefInstaller\AppModuleCefInstaller.cs" />
+    <Compile Include="Module\Cef\AppModuleCefInstaller.cs" />
     <Compile Include="Module\Chat\AppModuleChat.cs" />
-    <Compile Include="Module\Hotkey\AppModuleHotKeyManager.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
-    <Compile Include="Module\Hotkey\HotkeyManager.cs" />
+    <Compile Include="Module\Hotkey\Internal\OSLevelHotkeyRegister.cs" />
     <Compile Include="Core\UI\IMenu.cs" />
     <Compile Include="Core\UI\IMenuCollection.cs" />
     <Compile Include="Core\UI\IMenuGroup.cs" />
@@ -225,12 +274,11 @@
     <Compile Include="Core\Util\ArchiveUnpackerHelper.cs" />
     <Compile Include="Core\Util\ButtonClassThingy.cs" />
     <Compile Include="Core\Util\DownloadHelper.cs" />
-    <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
-    <Compile Include="Module\Hotkey\InvalidHotkeyException.cs" />
-    <Compile Include="Module\Updater\GobVersion.cs" />
-    <Compile Include="Module\Updater\NAUDeleteTask.cs" />
-    <Compile Include="Module\Updater\NAULocalFileFeedReader.cs" />
-    <Compile Include="Module\Updater\NAULocalFileUpdateSource.cs" />
+    <Compile Include="Module\Hotkey\HotkeyRegisterException.cs" />
+    <Compile Include="Core\Runtime\GobVersion.cs" />
+    <Compile Include="Module\Updater\Internal\NAUDeleteTask.cs" />
+    <Compile Include="Module\Updater\Internal\NAULocalFileFeedReader.cs" />
+    <Compile Include="Module\Updater\Internal\NAULocalFileUpdateSource.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -260,9 +308,9 @@
     <Compile Include="Core\Runtime\AbstractGobchatApplicationContext.cs" />
     <Compile Include="Core\Runtime\IUISynchronizer.cs" />
     <Compile Include="Core\Runtime\TinyIoC.cs" />
-    <Compile Include="Module\Updater\GitHubUpdateProvider.cs" />
+    <Compile Include="Module\Updater\Internal\GitHubUpdateProvider.cs" />
     <Compile Include="Core\UI\INotifyIconManager.cs" />
-    <Compile Include="Module\Updater\IUpdateProvider.cs" />
+    <Compile Include="Module\Updater\Internal\IUpdateProvider.cs" />
     <Compile Include="Core\UI\ProgressDisplayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -328,6 +376,7 @@
     <Content Include="resources\ui\config\gob-databinding.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\gobchat\GobchatAPI.js" />
     <Content Include="resources\ui\gobchat\GobchatSearch.js" />
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -362,7 +411,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\Message.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\FFUnicodes.js">
@@ -382,7 +430,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\MessageParser.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\StyleBuilder.js">
@@ -429,11 +476,11 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
-    <Compile Include="Core\Chat\ChatMessageWebEvent.cs" />
-    <Compile Include="Core\Chat\ChatlogToMessageConverter.cs" />
-    <Compile Include="Core\Chat\ChatMessage.cs" />
+    <Compile Include="Core\Chat\Deprecated\ChatMessageWebEventOld.cs" />
+    <Compile Include="Core\Chat\Deprecated\ChatlogToMessageConverter.cs" />
+    <Compile Include="Core\Chat\Deprecated\ChatMessageOld.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
-    <Compile Include="Core\Util\Extension\ExtEnumJson.cs" />
+    <Compile Include="Core\Util\Extension\EnumJsonExtension.cs" />
     <Compile Include="Core\Util\EnumUtil.cs" />
     <Compile Include="Core\Util\Lookup.cs" />
     <Compile Include="Core\Resource\ResourceBundle.cs" />
@@ -491,6 +538,9 @@
     <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Module\Chat\UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
