@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -48,7 +48,7 @@ namespace Gobchat.Core.Util
             using (var webClient = new WebClient())
             {
                 var currentVersion = GobchatApplicationContext.ApplicationVersion;
-                webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion.ToString()}");
+                webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion}");
 
                 progressMonitor.Progress = 0d;
                 progressMonitor.StatusText = $"Waiting...";

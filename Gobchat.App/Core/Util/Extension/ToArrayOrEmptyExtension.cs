@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -12,27 +12,29 @@
  *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gobchat.Core.Util.Extension
 {
-    public static partial class ExtEnumJson
+    public static class ToArrayOrEmptyExtension
     {
-        public static string EnumToJson(this Type type)
+        public static T[] ToArrayOrEmpty<T>(this ICollection<T> obj)
         {
-            if (!type.IsEnum)
-                throw new ArgumentException("enum type expected", nameof(type));
-
-            var results =
-                Enum.GetValues(type).Cast<object>()
-                    .ToDictionary(enumValue => enumValue.ToString(), enumValue => (int)enumValue);
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(results);
+            return obj == null || obj.Count == 0 ? Array.Empty<T>() : obj.ToArray();
         }
 
-        public static TEnum? StringToEnum<TEnum>(this string str) where TEnum : struct, IConvertible
+        public static T[] ToArrayOrEmpty<T>(this IEnumerable<T> obj)
         {
-            return global::Gobchat.Core.Util.EnumUtil.ObjectToEnum<TEnum>(str);
+            var array = obj == null ? Array.Empty<T>() : obj.ToArray();
+            if (array.Length == 0)
+                return Array.Empty<T>();
+            return array;
+        }
+
+        public static T[] ToArrayOrEmpty<T>(this T[] obj)
+        {
+            return obj == null || obj.Length == 0 ? Array.Empty<T>() : obj.ToArray();
         }
     }
 }
