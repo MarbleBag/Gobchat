@@ -11,25 +11,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System.Linq;
+
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessagesWebEvent : global::Gobchat.UI.Web.JavascriptEvents.JSEvent
     {
-        public readonly System.Collections.Generic.List<ChatMessage> messages;
+        public readonly ChatMessage[] messages;
 
         public ChatMessagesWebEvent(ChatMessage message) : base("ChatMessagesEvent")
         {
             if (messages == null)
                 throw new System.ArgumentNullException(nameof(message));
-            this.messages = new System.Collections.Generic.List<ChatMessage>();
-            this.messages.Add(message);
+            this.messages = new ChatMessage[] { message };
         }
 
         public ChatMessagesWebEvent(System.Collections.Generic.IEnumerable<ChatMessage> messages) : base("ChatMessagesEvent")
         {
             if (messages == null)
                 throw new System.ArgumentNullException(nameof(messages));
-            this.messages = new System.Collections.Generic.List<ChatMessage>(messages);
+            this.messages = messages.ToArray();
         }
     }
 }

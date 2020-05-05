@@ -24,18 +24,18 @@ namespace Gobchat.Core.Chat
             if (!processMessage)
                 return;
 
-            var messageSegments = message.Message.ToArray();
-            message.Message.Clear();
+            var messageSegments = message.Content.ToArray();
+            message.Content.Clear();
 
             foreach (var messageSegment in messageSegments)
             {
                 var marker = new SegmentMarker();
-                replacer.Segment(marker, messageSegment.Type, messageSegment.Content);
+                replacer.Segment(marker, messageSegment.Type, messageSegment.Text);
 
                 var replaceSegments = marker.Count > 0;
                 if (!replaceSegments)
                 {
-                    message.Message.Add(messageSegment);
+                    message.Content.Add(messageSegment);
                     continue;
                 }
 
@@ -45,8 +45,8 @@ namespace Gobchat.Core.Chat
                     if (mark.End - mark.Start <= 0)
                         continue; //ignore empty marks
 
-                    var newSegment = new MessageSegment(mark.Type, messageSegment.Content.Substring(mark.Start, mark.End));
-                    message.Message.Add(newSegment);
+                    var newSegment = new MessageSegment(mark.Type, messageSegment.Text.Substring(mark.Start, mark.End-mark.Start));
+                    message.Content.Add(newSegment);
                 }
             }
 

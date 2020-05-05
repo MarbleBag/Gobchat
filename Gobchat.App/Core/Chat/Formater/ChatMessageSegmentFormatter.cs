@@ -14,6 +14,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
 {
@@ -22,9 +23,10 @@ namespace Gobchat.Core.Chat
         private ReplaceTypeByToken _replacer = new ReplaceTypeByToken();
         private FormatConfig[] _formats = Array.Empty<FormatConfig>();
 
-        public void SetTokens(IEnumerable<FormatConfig> tokens)
+        public IEnumerable<FormatConfig> Formats
         {
-            _formats = tokens.ToArray();
+            get => _formats;
+            set => _formats = value.ToArrayOrEmpty();
         }
 
         public void Format(ChatMessage message)

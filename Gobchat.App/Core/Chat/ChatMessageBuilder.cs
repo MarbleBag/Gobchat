@@ -49,10 +49,22 @@ namespace Gobchat.Core.Chat
             set => _formateChannels = value.ToArrayOrEmpty();
         }
 
+        public List<FormatConfig> Formats
+        {
+            get => _formater.Formats.ToList();
+            set => _formater.Formats = value.ToArrayOrEmpty();
+        }
+
         public List<ChatChannel> MentionChannels
         {
             get => _mentionChannels.ToList();
             set => _mentionChannels = value.ToArrayOrEmpty();
+        }
+
+        public List<string> Mentions
+        {
+            get => _mentionFinder.Mentions.ToList();
+            set => _mentionFinder.Mentions = value;
         }
 
         public ChatMessageBuilder()
@@ -74,7 +86,7 @@ namespace Gobchat.Core.Chat
             };
 
             SetMessageSource(chatMessage, source);
-            chatMessage.Message.Add(new MessageSegment(MessageSegmentType.UNDEFINED, message));
+            chatMessage.Content.Add(new MessageSegment(MessageSegmentType.UNDEFINED, message));
 
             return chatMessage;
         }
@@ -100,8 +112,8 @@ namespace Gobchat.Core.Chat
                     lookupIdx = GetUnicodeIndex(PartyUnicodes);
                     if (lookupIdx >= 0)
                     {
-                        chatMessage.Source.Party = lookupIdx + 1;
-                        chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + $"[{lookupIdx + 1}]"; //move prefix building somewhere else!
+                        chatMessage.Source.Party = lookupIdx;
+                        // chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + $"[{lookupIdx + 1}]"; //part of html now
                         readIdx += 1; //party unicodes should be of size 1
                     }
                 }
@@ -110,8 +122,8 @@ namespace Gobchat.Core.Chat
                     lookupIdx = GetUnicodeIndex(RaidUnicodes);
                     if (lookupIdx >= 0)
                     {
-                        chatMessage.Source.Alliance = lookupIdx + 1;
-                        chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + $"[{char.ConvertFromUtf32(lookupIdx + 'A')}]"; //for now
+                        chatMessage.Source.Alliance = lookupIdx;
+                        // chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + $"[{char.ConvertFromUtf32(lookupIdx + 'A')}]";
                         readIdx += 1; //raid unicodes should be of size 1
                     }
                 }
@@ -120,23 +132,23 @@ namespace Gobchat.Core.Chat
                 lookupIdx = GetUnicodeIndex(GroupUnicodes);
                 if (lookupIdx >= 0)
                 {
-                    chatMessage.Source.FFGroup = lookupIdx + 1;
-                    chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + FFXIVUnicodes.GroupUnicodes[lookupIdx].Symbol;
+                    chatMessage.Source.FfGroup = lookupIdx;
+                    // chatMessage.Source.Prefix = (chatMessage.Source.Prefix ?? "") + FFXIVUnicodes.GroupUnicodes[lookupIdx].Symbol;
                     readIdx += 1;
                 }
 
-                chatMessage.Source.CharacterName = chatMessage.Source.Source.Substring(readIdx);
+                chatMessage.Source.CharacterName = chatMessage.Source.Original.Substring(readIdx);
             }
         }
 
-        public void FormatChatMessage(Gobchat.Core.Chat.ChatMessage chatMessage)
+        public void FormatChatMessage(ChatMessage chatMessage)
         {
             if (_formateChannels.Contains(chatMessage.Channel))
             {
                 _formater.Format(chatMessage);
                 if (DetecteEmoteInSayChannel && chatMessage.Channel == ChatChannel.SAY)
                 {
-                    var containsSay = chatMessage.Message.Any(e => e.Type == MessageSegmentType.SAY);
+                    var containsSay = chatMessage.Content.Any(e => e.Type == MessageSegmentType.SAY);
                     if (containsSay)
                         SetUndefinedTo(chatMessage, MessageSegmentType.EMOTE);
                 }
@@ -164,7 +176,7 @@ namespace Gobchat.Core.Chat
 
         private static void SetUndefinedTo(ChatMessage chatMessage, MessageSegmentType newType)
         {
-            foreach (var message in chatMessage.Message)
+            foreach (var message in chatMessage.Content)
                 if (message.Type == MessageSegmentType.UNDEFINED)
                     message.Type = newType;
         }

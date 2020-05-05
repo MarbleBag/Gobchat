@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System;
+using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
 {
@@ -23,26 +24,22 @@ namespace Gobchat.Core.Chat
         private string[] _mentions = Array.Empty<string>();
         private readonly ReplaceTypeByText _replacer = new ReplaceTypeByText();
 
+        public IEnumerable<string> Mentions
+        {
+            get => _mentions;
+            set
+            {
+                _mentions = value.ToArrayOrEmpty();
+                var pattern = _mentions.Select(t => new Regex($@"\b{Regex.Escape(t)}\b", RegexOptions.IgnoreCase));
+                _replacer.Pattern.Clear();
+                _replacer.Pattern.AddRange(pattern);
+            }
+        }
+
         public MessageSegmentType MessageSegmentType
         {
             get => _replacer.SegmentType;
             set => _replacer.SegmentType = value;
-        }
-
-        public void SetMentions(IEnumerable<string> mentions)
-        {
-            if (mentions == null)
-                throw new ArgumentNullException(nameof(mentions));
-            _mentions = mentions.ToArray();
-            var pattern = _mentions.Select(t => new Regex($"\b{Regex.Escape(t)}\b", RegexOptions.IgnoreCase));
-
-            _replacer.Pattern.Clear();
-            _replacer.Pattern.AddRange(pattern);
-        }
-
-        public IEnumerable<string> GetMentions()
-        {
-            return _mentions.ToList();
         }
 
         public void MarkMentions(ChatMessage message)

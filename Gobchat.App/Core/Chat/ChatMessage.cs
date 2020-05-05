@@ -18,42 +18,39 @@ namespace Gobchat.Core.Chat
         public ChatMessageSource Source { get; set; }
         public System.DateTime Timestamp { get; set; }
         public ChatChannel Channel { get; set; }
-        public System.Collections.Generic.List<MessageSegment> Message { get; }
+        public System.Collections.Generic.List<MessageSegment> Content { get; }
 
         public ChatMessage()
         {
             Source = null;
-            Channel = (int)ChatChannel.NONE;
-            Message = new System.Collections.Generic.List<MessageSegment>();
+            Channel = ChatChannel.NONE;
+            Content = new System.Collections.Generic.List<MessageSegment>();
         }
     }
 
     public sealed class ChatMessageSource
     {
-        public string Source { get; }
-        public string Prefix { get; set; } = null;
-
+        public string Original { get; }
         public string CharacterName { get; set; } = null;
-
-        public int FFGroup { get; set; } = -1;
+        public int FfGroup { get; set; } = -1;
         public int Party { get; set; } = -1;
         public int Alliance { get; set; } = -1;
 
         public ChatMessageSource(string source)
         {
-            Source = source;
+            Original = source;
         }
     }
 
     public sealed class MessageSegment
     {
         public MessageSegmentType Type { get; set; }
-        public string Content { get; set; }
+        public string Text { get; set; }
 
         public MessageSegment(MessageSegmentType type, string message)
         {
             this.Type = type;
-            this.Content = message;
+            this.Text = message;
         }
     }
 }

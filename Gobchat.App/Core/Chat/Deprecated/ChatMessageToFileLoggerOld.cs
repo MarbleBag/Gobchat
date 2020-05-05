@@ -25,11 +25,11 @@ namespace Gobchat.Core.Chat
     [System.Obsolete]
     internal sealed class ChatMessageToFileLoggerOld : IDisposable
     {
-        private readonly IGobchatConfigManager _configManager;
+        private readonly IConfigManager _configManager;
         private readonly Queue<ChatMessageOld> _pendingMessages = new Queue<ChatMessageOld>();
         private string _fileHandle;
 
-        public ChatMessageToFileLoggerOld(IGobchatConfigManager configManager)
+        public ChatMessageToFileLoggerOld(IConfigManager configManager)
         {
             _configManager = configManager;
         }

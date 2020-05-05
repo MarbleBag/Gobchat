@@ -48,15 +48,15 @@ namespace Gobchat.Core.Chat
         {
         }
 
-        public void Segment(SegmentMarker marker, MessageSegmentType segmentType, string text)
+        public void Segment(SegmentMarker marker, MessageSegmentType originalType, string text)
         {
-            if (segmentType != MessageSegmentType.UNDEFINED)
+            if (originalType != MessageSegmentType.UNDEFINED)
                 return; //already defined
 
             if (_lastSegmentClosed)
-                marker.NewMark(segmentType, 0, 0); //start mark, needs to be removed if no other mark is found
+                marker.NewMark(originalType, 0, 0); //start mark, needs to be removed if no other mark is found
             else
-                marker.NewMark(Format.TokenType, 0, 0); //this should not be deleted, even if no more marks are found
+                marker.NewMark(Format.Type, 0, 0); //this should not be deleted, even if no more marks are found
 
             var match = !_lastSegmentClosed;
 
@@ -69,7 +69,7 @@ namespace Gobchat.Core.Chat
                     { // closing marker found
                         match = false;
                         marker.Mark.End = i + tokenLength;
-                        marker.NewMark(Format.TokenType, i + tokenLength, i + tokenLength);
+                        marker.NewMark(originalType, i + tokenLength, i + tokenLength);
                         i = i + tokenLength - 1;
                     }
                 }
@@ -80,7 +80,7 @@ namespace Gobchat.Core.Chat
                     { // opening marker found
                         match = true;
                         marker.Mark.End = i;
-                        marker.NewMark(Format.TokenType, i, i + tokenLength);
+                        marker.NewMark(Format.Type, i, i + tokenLength);
                         i = i + tokenLength - 1;
                     }
                 }
