@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -15,6 +15,7 @@ using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
 using Gobchat.Core.Util;
+using Gobchat.Module.Updater.Internal;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Gobchat.Module.Updater
 
             DeleteOldPatchData();
 
-            var configManager = container.Resolve<IGobchatConfigManager>();
+            var configManager = container.Resolve<IConfigManager>();
             var doUpdate = configManager.GetProperty<bool>("behaviour.checkForUpdate");
 
             if (!doUpdate)
@@ -43,7 +44,7 @@ namespace Gobchat.Module.Updater
 
             var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.checkForBetaUpdate");
 
-            var update = GetUpdate(new GobVersion(GobchatApplicationContext.ApplicationVersion), allowBetaUpdates);
+            var update = GetUpdate(GobchatApplicationContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
                 return;
 
@@ -282,7 +283,7 @@ namespace Gobchat.Module.Updater
             }
         }
 
-        public void Dispose(IDIContext container)
+        public void Dispose()
         {
         }
     }
