@@ -20,29 +20,35 @@ namespace Gobchat.Memory.Actor
     {
         public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors(); } }
 
-        private bool TryProcess(Sharlayan.Core.ActorItem actor, PlayerCharacter.UpdateFlag flag, out PlayerCharacter data)
+        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, ActorPosition mainActor, ICollection<PlayerCharacter> results)
         {
-            data = null;
+            foreach (var actor in actors)
+            {
+                if (!(actor.IsValid && actor.IsTargetable))
+                    continue;
 
-            if (!(actor.IsValid && actor.IsTargetable))
-                return false;
+                var data = new PlayerCharacter()
+                {
+                    Name = actor.Name,
+                    Id = actor.ID,
+                    UId = actor.UUID,
+                    Flag = flag,
+                    SimplifiedDistanceToPlayer = actor.Distance,
+                };
 
-            var name = actor.Name;
-            var id = actor.ID;
-            var uid = actor.UUID;
-            // var pos = new ActorPosition(entry.X, entry.Y, entry.Z);
-            var distance = (int)actor.Distance;
+                if (mainActor != null)
+                    data.SquaredDistanceToPlayer = (float)mainActor.DistanceSquared(new ActorPosition(actor.X, actor.Y, actor.Z));
 
-            data = new PlayerCharacter(name, id, uid, distance, flag);
-
-            return true;
+                results.Add(data);
+            }
         }
 
-        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, ICollection<PlayerCharacter> results)
+        private ActorPosition GetActivePlayerPosition()
         {
-            foreach (var entry in actors)
-                if (TryProcess(entry, flag, out var data))
-                    results.Add(data);
+            var currentUser = Sharlayan.Core.ActorItem.CurrentUser;
+            if (currentUser != null && currentUser.IsValid)
+                return new ActorPosition(currentUser.X, currentUser.Y, currentUser.Z);
+            return null;
         }
 
         public List<PlayerCharacter> GetPlayerData()
@@ -50,9 +56,10 @@ namespace Gobchat.Memory.Actor
             var result = new List<PlayerCharacter>();
             var memoryResult = Sharlayan.Reader.GetActors();
 
-            Process(memoryResult.CurrentPCs.Values, PlayerCharacter.UpdateFlag.Update, result);
-            Process(memoryResult.RemovedPCs.Values, PlayerCharacter.UpdateFlag.Remove, result);
-            Process(memoryResult.NewPCs.Values, PlayerCharacter.UpdateFlag.New, result);
+            var activePlayerPosition = GetActivePlayerPosition();
+            Process(memoryResult.CurrentPCs.Values, PlayerCharacter.UpdateFlag.Update, activePlayerPosition, result);
+            Process(memoryResult.RemovedPCs.Values, PlayerCharacter.UpdateFlag.Remove, activePlayerPosition, result);
+            Process(memoryResult.NewPCs.Values, PlayerCharacter.UpdateFlag.New, activePlayerPosition, result);
 
             return result;
         }

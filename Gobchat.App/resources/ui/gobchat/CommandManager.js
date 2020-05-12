@@ -13,15 +13,18 @@
 
 'use strict'
 
-var Gobchat = (function (Gobchat, undefined) {
+var Gobchat = (function(Gobchat, undefined) {
     class CommandManager {
         constructor(manager, config) {
             this._manager = manager
             this._config = config
             this._cmdMap = new Map()
+            this._handlers = []
             this.registerCmdHandler(new PlayerGroupCommandHandler())
             this.registerCmdHandler(new ProfileCommandHandler())
             this.registerCmdHandler(new CloseCommandHandler())
+            this.registerCmdHandler(new ActorCountCommandHandler())
+            this.registerCmdHandler(new ActorListCommandHandler())
         }
 
         processCommand(message) {
@@ -29,22 +32,34 @@ var Gobchat = (function (Gobchat, undefined) {
             message = message.trim()
             if (!message.startsWith("gc")) return
 
-            const cmdLine = message.substring(2).trim()
+            const [cmdHandle, cmd, args] = this._getHandler(message.substring(2).trim())
 
-            const cmdIdx = cmdLine.indexOf(' ')
-            const cmd = cmdIdx < 0 ? cmdLine : cmdLine.substring(0, cmdIdx)
-            const args = cmdIdx < 0 ? "" : cmdLine.substring(cmdIdx + 1)
+            //const cmdLine = message.substring(2).trim()
+            //const cmdIdx = cmdLine.indexOf(' ')
+            //const cmd = cmdIdx < 0 ? cmdLine : cmdLine.substring(0, cmdIdx)
+            //const args = cmdIdx < 0 ? "" : cmdLine.substring(cmdIdx + 1)
 
-            const cmdHandle = this._cmdMap.get(cmd)
+            //const cmdHandle = this._cmdMap.get(cmd)
             if (cmdHandle) {
                 cmdHandle.execute(this, cmd, args)
             } else {
-                if (cmd.length > 0)
-                    this.sendErrorMessage(`'${cmd}' is not an available command`)
+                //if (cmd.length > 0)
+                //    this.sendErrorMessage(`'${cmd}' is not an available command`)
 
                 const availableCmds = Array.from(this._cmdMap.keys()).join(", ")
                 this.sendInfoMessage(`Available commands: ${availableCmds}`)
             }
+        }
+
+        _getHandler(msg) {
+            for (const handler of this._handlers) {
+                for (let cmd of handler.acceptedCommandNames) {
+                    if (msg.startsWith(cmd)) {
+                        return [handler, cmd, msg.substring(cmd.length).trim()]
+                    }
+                }
+            }
+            return [null, null, null]
         }
 
         sendErrorMessage(msg) {
@@ -59,6 +74,7 @@ var Gobchat = (function (Gobchat, undefined) {
             for (let cmd of commandHandler.acceptedCommandNames) {
                 this._cmdMap.set(cmd, commandHandler)
             }
+            this._handlers.push(commandHandler)
         }
     }
     Gobchat.CommandManager = CommandManager
@@ -206,6 +222,28 @@ var Gobchat = (function (Gobchat, undefined) {
 
         execute(commandManager, commandName, args) {
             GobchatAPI.closeGobchat()
+        }
+    }
+
+    class ActorCountCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["actor count"]
+        }
+
+        async execute(commandManager, commandName, args) {
+            const count = await GobchatAPI.getPlayerCount()
+            commandManager.sendInfoMessage(`Players nearby: ${count}`)
+        }
+    }
+
+    class ActorListCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["actor list"]
+        }
+
+        async execute(commandManager, commandName, args) {
+            const list = await GobchatAPI.getPlayersAndDistance()
+            commandManager.sendInfoMessage(`Players nearby: ${list.join(", ")}`)
         }
     }
 

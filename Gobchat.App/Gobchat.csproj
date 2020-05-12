@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
+    <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
     <Compile Include="Module\Chat\Logger\Internal\ChatLoggerFormated.cs" />
     <Compile Include="Core\Chat\Formater\ChatMessageMentionFinder.cs" />
@@ -216,13 +217,17 @@
     <Compile Include="Core\Chat\ChatMessageBuilder.cs" />
     <Compile Include="Core\Chat\Events\ChatMessageEventArgs.cs" />
     <Compile Include="Module\Chat\Manager\AppModuleChatManager.cs" />
+    <Compile Include="Module\Actor\Internal\ActorManager.cs" />
+    <Compile Include="Core\Chat\ChatMessageVisibilitySetter.cs" />
     <Compile Include="Module\Hotkey\ConfigHotkeyUpdater.cs" />
     <Compile Include="Module\Hotkey\HotkeyException.cs" />
     <Compile Include="Module\Hotkey\IHotkeyAction.cs" />
     <Compile Include="Module\Hotkey\IHotkeyManager.cs" />
     <Compile Include="Module\Hotkey\Internal\HotkeyData.cs" />
     <Compile Include="Module\Hotkey\Internal\HotkeyManager.cs" />
+    <Compile Include="Module\Actor\IActorManager.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
+    <Compile Include="Module\UI\Connector\AppModuleActorBrowserAPI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
     <Compile Include="Module\Chat\Manager\Internal\ChatManager.cs" />
     <Compile Include="Module\Chat\Logger\AppModuleChatLogger.cs" />
@@ -348,7 +353,6 @@
     <Content Include="resources\ui\config\config.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\confighelper.js" />
     <Content Include="resources\ui\config\config_channel.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -371,7 +375,6 @@
     <Content Include="resources\ui\config\gob-databinding.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\gobchat\GobchatAPI.js" />
     <Content Include="resources\ui\gobchat\GobchatSearch.js" />
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -431,9 +434,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobui_chat_old.css">
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
     <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -459,14 +459,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\lib\spectrum.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\resize_handle.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\resize_handle.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>

@@ -16,6 +16,7 @@
 var Gobchat = (function (Gobchat) {
     const ChannelEnum = Gobchat.ChannelEnum
     const MessageSegmentEnum = Gobchat.MessageSegmentEnum
+    const FadeOutLevels = 10
 
     const FFGroupUnicodes = Object.freeze([
         Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
@@ -24,41 +25,6 @@ var Gobchat = (function (Gobchat) {
 
     function applyClass(element, cssClass) {
         if (cssClass) element.classList.add(cssClass)
-    }
-
-    //TODO automate this
-    function getChannelCssClassForChannel(channelEnum) {
-        switch (channelEnum) {
-            case ChannelEnum.SAY: return "message-body-say"
-            case ChannelEnum.GOBCHAT_INFO: return "message-body-gobchatinfo"
-            case ChannelEnum.GOBCHAT_ERROR: return "message-body-gobchaterror"
-            case ChannelEnum.EMOTE: return "message-body-emote"
-            case ChannelEnum.TELL_SEND: return "message-body-tellsend"
-            case ChannelEnum.TELL_RECIEVE: return "message-body-tellrecieve"
-            case ChannelEnum.GUILD: return "message-body-guild"
-            case ChannelEnum.YELL: return "message-body-yell"
-            case ChannelEnum.SHOUT: return "message-body-shout"
-            case ChannelEnum.PARTY: return "message-body-party"
-            case ChannelEnum.ALLIANCE: return "message-body-alliance"
-            case ChannelEnum.LINKSHELL_1: return "message-body-linkshell-1"
-            case ChannelEnum.LINKSHELL_2: return "message-body-linkshell-2"
-            case ChannelEnum.LINKSHELL_3: return "message-body-linkshell-3"
-            case ChannelEnum.LINKSHELL_4: return "message-body-linkshell-4"
-            case ChannelEnum.LINKSHELL_5: return "message-body-linkshell-5"
-            case ChannelEnum.LINKSHELL_6: return "message-body-linkshell-6"
-            case ChannelEnum.LINKSHELL_7: return "message-body-linkshell-7"
-            case ChannelEnum.LINKSHELL_8: return "message-body-linkshell-8"
-            case ChannelEnum.WORLD_LINKSHELL_1: return "message-body-worldlinkshell-1"
-            case ChannelEnum.WORLD_LINKSHELL_2: return "message-body-worldlinkshell-2"
-            case ChannelEnum.WORLD_LINKSHELL_3: return "message-body-worldlinkshell-3"
-            case ChannelEnum.WORLD_LINKSHELL_4: return "message-body-worldlinkshell-4"
-            case ChannelEnum.WORLD_LINKSHELL_5: return "message-body-worldlinkshell-5"
-            case ChannelEnum.WORLD_LINKSHELL_6: return "message-body-worldlinkshell-6"
-            case ChannelEnum.WORLD_LINKSHELL_7: return "message-body-worldlinkshell-7"
-            case ChannelEnum.WORLD_LINKSHELL_8: return "message-body-worldlinkshell-8"
-            case ChannelEnum.ERROR: return "message-body-error"
-            default: return null
-        }
     }
 
     function findFirstMatchingGroup(config, message) {
@@ -104,19 +70,74 @@ var Gobchat = (function (Gobchat) {
         return resultId
     }
 
-    function getChannelCssClassForPlayerGroup(groupId) {
-        if (groupId != null && groupId != undefined)
-            return `message-group-body-${groupId}`
+    function setGroupId(config, message) {
+        message.groupId = findFirstMatchingGroup(config, message)
+    }
+
+    function getBodyGroupCSSClass(message) {
+        if (message.groupId)
+            return `message-group-body-${message.groupId}`
         return null
     }
 
-    function getSenderCssClassForPlayerGroup(groupId) {
-        if (groupId != null && groupId != undefined)
-            return `message-group-sender-${groupId}`
+    function getSenderGroupCSSClass(message) {
+        if (message.groupId)
+            return `message-group-sender-${message.groupId}`
         return null
     }
 
-    function getCssClassForMessageSegmentType(messageSegmentEnum) {
+    function getBodyVisibilityCSSClass(config, message) {
+        if (!message.source)
+            return null
+
+        const visibility = message.source.visibility
+        if (visibility >= 100)
+            return null
+
+        const ignoreDistance = config.get("behaviour.fadeout.mention", false)
+        if (ignoreDistance && message.containsMentions)
+            return null
+
+        const fadeOutStepSize = (100 / FadeOutLevels)
+        const visibilityLevel = (visibility + (fadeOutStepSize - 1)) / fadeOutStepSize >> 0
+        return `message-body-fadeout-${visibilityLevel}`
+    }
+
+    function getChannelCSSClass(message) {
+        switch (message.channel) {
+            case ChannelEnum.SAY: return "message-body-say"
+            case ChannelEnum.GOBCHAT_INFO: return "message-body-gobchatinfo"
+            case ChannelEnum.GOBCHAT_ERROR: return "message-body-gobchaterror"
+            case ChannelEnum.EMOTE: return "message-body-emote"
+            case ChannelEnum.TELL_SEND: return "message-body-tellsend"
+            case ChannelEnum.TELL_RECIEVE: return "message-body-tellrecieve"
+            case ChannelEnum.GUILD: return "message-body-guild"
+            case ChannelEnum.YELL: return "message-body-yell"
+            case ChannelEnum.SHOUT: return "message-body-shout"
+            case ChannelEnum.PARTY: return "message-body-party"
+            case ChannelEnum.ALLIANCE: return "message-body-alliance"
+            case ChannelEnum.LINKSHELL_1: return "message-body-linkshell-1"
+            case ChannelEnum.LINKSHELL_2: return "message-body-linkshell-2"
+            case ChannelEnum.LINKSHELL_3: return "message-body-linkshell-3"
+            case ChannelEnum.LINKSHELL_4: return "message-body-linkshell-4"
+            case ChannelEnum.LINKSHELL_5: return "message-body-linkshell-5"
+            case ChannelEnum.LINKSHELL_6: return "message-body-linkshell-6"
+            case ChannelEnum.LINKSHELL_7: return "message-body-linkshell-7"
+            case ChannelEnum.LINKSHELL_8: return "message-body-linkshell-8"
+            case ChannelEnum.WORLD_LINKSHELL_1: return "message-body-worldlinkshell-1"
+            case ChannelEnum.WORLD_LINKSHELL_2: return "message-body-worldlinkshell-2"
+            case ChannelEnum.WORLD_LINKSHELL_3: return "message-body-worldlinkshell-3"
+            case ChannelEnum.WORLD_LINKSHELL_4: return "message-body-worldlinkshell-4"
+            case ChannelEnum.WORLD_LINKSHELL_5: return "message-body-worldlinkshell-5"
+            case ChannelEnum.WORLD_LINKSHELL_6: return "message-body-worldlinkshell-6"
+            case ChannelEnum.WORLD_LINKSHELL_7: return "message-body-worldlinkshell-7"
+            case ChannelEnum.WORLD_LINKSHELL_8: return "message-body-worldlinkshell-8"
+            case ChannelEnum.ERROR: return "message-body-error"
+            default: return null
+        }
+    }
+
+    function getMessageSegmentCSSClass(messageSegmentEnum) {
         switch (messageSegmentEnum) {
             case MessageSegmentEnum.SAY: return "message-segment-say"
             case MessageSegmentEnum.EMOTE: return "message-segment-emote"
@@ -127,11 +148,11 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
-    function getMessageSenderName(source) {
+    function formatSource(source) {
         if (source === null || source.original === null) return null;
         if (source.characterName !== null && source.characterName != undefined) {
             let prefix = ""
-            if (source.party >= 0) prefix = prefix + `[${source.ffGroup + 1}]`
+            if (source.party >= 0) prefix = prefix + `[${source.party + 1}]`
             if (source.alliance >= 0) prefix = prefix + `[${String.fromCharCode('A' + source.alliance)}]`
             if (source.ffGroup >= 0) prefix = prefix + FFGroupUnicodes[source.ffGroup].char
             return `${prefix}${source.characterName}`
@@ -140,10 +161,10 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
-    function getMessageSenderInnerHtml(messageSource, channelEnum) {
-        const sourceName = getMessageSenderName(messageSource)
+    function formatSender(message) {
+        const sourceName = formatSource(message.source)
 
-        switch (channelEnum) {
+        switch (message.channel) {
             case ChannelEnum.GOBCHAT_INFO:
             case ChannelEnum.GOBCHAT_ERROR: return "[" + sourceName + "]"
             case ChannelEnum.ECHO: return "Echo:"
@@ -178,20 +199,20 @@ var Gobchat = (function (Gobchat) {
         return null
     }
 
-    function getMessageTime(message) {
-        const timestamp = message.timestamp
-        const date = new Date(timestamp)
-
-        function getHourAndMinutes(date) {
-            function twoDigits(t) {
-                return t < 10 ? '0' + t : t;
-            }
-            const hours = twoDigits(date.getHours())
-            const minutes = twoDigits(date.getMinutes())
-            return `${hours}:${minutes}`
+    function formateDate(date) {
+        function twoDigits(t) {
+            return t < 10 ? '0' + t : t;
         }
 
-        return getHourAndMinutes(date);
+        const hours = twoDigits(date.getHours())
+        const minutes = twoDigits(date.getMinutes())
+        return `${hours}:${minutes}`
+    }
+
+    function formatTime(message) {
+        const timestamp = message.timestamp
+        const date = new Date(timestamp)
+        return formateDate(date);
     }
 
     class MessageHtmlBuilder {
@@ -200,47 +221,44 @@ var Gobchat = (function (Gobchat) {
         }
 
         buildHtmlElement(message) {
-            const groupId = findFirstMatchingGroup(this._config, message)
+            setGroupId(this._config, message)
 
-            const chatEntry = document.createElement("div")
-            applyClass(chatEntry, "message-body-base")
-            applyClass(chatEntry, getChannelCssClassForPlayerGroup(groupId))
+            const bodyElement = document.createElement("div")
+            applyClass(bodyElement, "message-body-base")
+            applyClass(bodyElement, getBodyGroupCSSClass(message))
+            applyClass(bodyElement, getBodyVisibilityCSSClass(this._config, message))
 
             const timeElement = document.createElement("span")
-            timeElement.innerHTML = `[${getMessageTime(message)}] `
+            bodyElement.appendChild(timeElement)
             applyClass(timeElement, "message-timestamp")
-            chatEntry.appendChild(timeElement)
+            timeElement.innerHTML = `[${formatTime(message)}] `
 
-            const messageContainer = document.createElement("span")
-            applyClass(messageContainer, getChannelCssClassForChannel(message.channel))
-            //applyClass(messageContainer, getChannelCssClassForFFGroup(message))
-            chatEntry.appendChild(messageContainer)
+            const contentElement = document.createElement("span")
+            bodyElement.appendChild(contentElement)
+            applyClass(contentElement, getChannelCSSClass(message))
 
-            const senderInnerHtml = getMessageSenderInnerHtml(message.source, message.channel)
-            if (senderInnerHtml != null) {
+            const senderText = formatSender(message)
+            if (senderText !== null) {
                 const senderElement = document.createElement("span")
-                senderElement.innerHTML = senderInnerHtml
-                applyClass(senderElement, getSenderCssClassForPlayerGroup(groupId))
-                messageContainer.appendChild(senderElement)
+                contentElement.appendChild(senderElement)
+                applyClass(senderElement, getSenderGroupCSSClass(message))
+                senderElement.innerHTML = senderText
 
                 const spacerElement = document.createElement("span")
+                contentElement.appendChild(spacerElement)
                 spacerElement.innerHTML = " "
-                messageContainer.appendChild(spacerElement)
             }
 
-            message.content.forEach((segment) => {
-                const segmentType = segment.type
-                const segmentText = segment.text
-                const htmlEncoded = Gobchat.encodeHtmlEntities(segmentText)
-
+            message.content.forEach((messageSegment) => {
                 const segmentElement = document.createElement("span")
-                segmentElement.innerHTML = htmlEncoded
+                contentElement.appendChild(segmentElement)
+
+                segmentElement.innerHTML = Gobchat.encodeHtmlEntities(messageSegment.text)
                 applyClass(segmentElement, "message-segment-base")
-                applyClass(segmentElement, getCssClassForMessageSegmentType(segmentType))
-                messageContainer.appendChild(segmentElement)
+                applyClass(segmentElement, getMessageSegmentCSSClass(messageSegment.type))
             })
 
-            return chatEntry
+            return bodyElement
         }
     }
     Gobchat.MessageHtmlBuilder = MessageHtmlBuilder

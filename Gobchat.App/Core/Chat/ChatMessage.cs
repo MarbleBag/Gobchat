@@ -15,16 +15,15 @@ namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessage
     {
-        public ChatMessageSource Source { get; set; }
+        public ChatMessageSource Source { get; set; } = null;
         public System.DateTime Timestamp { get; set; }
-        public ChatChannel Channel { get; set; }
-        public System.Collections.Generic.List<MessageSegment> Content { get; }
+        public ChatChannel Channel { get; set; } = ChatChannel.NONE;
+        public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
+
+        public bool ContainsMentions { get; set; } = false;
 
         public ChatMessage()
         {
-            Source = null;
-            Channel = ChatChannel.NONE;
-            Content = new System.Collections.Generic.List<MessageSegment>();
         }
     }
 
@@ -35,6 +34,8 @@ namespace Gobchat.Core.Chat
         public int FfGroup { get; set; } = -1;
         public int Party { get; set; } = -1;
         public int Alliance { get; set; } = -1;
+        public int Visibility { get; set; } = 100; //100 = full visible, 0 = invisible
+        public bool IsPlayer { get; set; } = false;
 
         public ChatMessageSource(string source)
         {

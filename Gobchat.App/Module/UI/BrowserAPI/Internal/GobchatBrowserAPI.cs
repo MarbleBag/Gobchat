@@ -62,52 +62,34 @@ namespace Gobchat.Module.UI.Internal
 
             public async Task SendChatMessage(int channel, string source, string message)
             {
-                var task = _browserAPIManager.ChatHandler?.SendChatMessage(channel, source, message);
-                if (task == null)
-                    return;
-                await task.ConfigureAwait(false);
+                await _browserAPIManager.ChatHandler.SendChatMessage(channel, source, message).ConfigureAwait(false);
             }
 
             public async Task SendInfoChatMessage(string message)
             {
-                var task = _browserAPIManager.ChatHandler?.SendInfoChatMessage(message);
-                if (task == null)
-                    return;
-                await task.ConfigureAwait(false);
+                await _browserAPIManager.ChatHandler.SendInfoChatMessage(message).ConfigureAwait(false);
             }
 
             public async Task SendErrorChatMessage(string message)
             {
-                var task = _browserAPIManager.ChatHandler?.SendErrorChatMessage(message);
-                if (task == null)
-                    return;
-                await task.ConfigureAwait(false);
+                await _browserAPIManager.ChatHandler.SendErrorChatMessage(message).ConfigureAwait(false);
             }
 
             public async Task<string> GetConfigAsJson()
             {
-                var task = _browserAPIManager.ConfigHandler?.GetConfigAsJson();
-                if (task == null)
-                    return null;
-                var result = await task.ConfigureAwait(false);
+                var result = await _browserAPIManager.ConfigHandler.GetConfigAsJson().ConfigureAwait(false);
                 return result.ToString();
             }
 
             public async Task SetConfigActiveProfile(string profileId)
             {
-                var task = _browserAPIManager.ConfigHandler?.SetActiveProfile(profileId);
-                if (task == null)
-                    return;
-                await task.ConfigureAwait(false);
+                await _browserAPIManager.ConfigHandler.SetActiveProfile(profileId).ConfigureAwait(false);
             }
 
             public async Task SynchronizeConfig(string configJson)
             {
                 var jToken = _browserAPIManager._jsBuilder.Deserialize(configJson);
-                var task = _browserAPIManager.ConfigHandler?.SynchronizeConfig(jToken);
-                if (task == null)
-                    return;
-                await task.ConfigureAwait(false);
+                await _browserAPIManager.ConfigHandler.SynchronizeConfig(jToken).ConfigureAwait(false);
             }
 
             public async Task CloseGobchat()
@@ -160,14 +142,42 @@ namespace Gobchat.Module.UI.Internal
 
             public async Task<string> ImportProfile()
             {
-                var file = await OpenFileDialog("Json files (*.json)|*.json");
+                var file = await OpenFileDialog("Json files (*.json)|*.json").ConfigureAwait(false);
                 if (file == null || file.Trim().Length == 0)
                     return null;
-                var task = _browserAPIManager.ConfigHandler?.ParseProfile(file);
-                if (task == null)
-                    return null;
-                var result = await task.ConfigureAwait(false);
-                return result?.ToString();
+                var result = await _browserAPIManager.ConfigHandler.ParseProfile(file).ConfigureAwait(false);
+                return result.ToString();
+            }
+
+            public async Task<int> GetPlayerCount()
+            {
+                return await _browserAPIManager.ActorHandler.GetPlayerNearbyCount().ConfigureAwait(false);
+            }
+
+            public async Task<string[]> GetPlayersNearby()
+            {
+                return await _browserAPIManager.ActorHandler.GetPlayersNearby().ConfigureAwait(false);
+            }
+
+            public async Task<float> GetPlayerDistance(string playerName)
+            {
+                var distance = await _browserAPIManager.ActorHandler.GetDistanceToPlayer(playerName).ConfigureAwait(false);
+                return distance;
+            }
+
+            public async Task<string[]> GetPlayersAndDistance()
+            {
+                var players = await _browserAPIManager.ActorHandler.GetPlayersNearby().ConfigureAwait(false);
+                if (players.Length == 0)
+                    return Array.Empty<string>();
+
+                var result = new string[players.Length];
+                for (var i = 0; i < players.Length; ++i)
+                {
+                    var distance = await _browserAPIManager.ActorHandler.GetDistanceToPlayer(players[i]).ConfigureAwait(false);
+                    result[i] = $"{players[i]}: {distance}";
+                }
+                return result;
             }
         }
     }

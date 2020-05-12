@@ -33,13 +33,13 @@ namespace Gobchat.Memory.Chat.Token
         {
             var key = GetCompleteKey();
             if (key.StartsWith("0"))
-                return key.Substring(1, key.Length - 3); 
+                return key.Substring(1, key.Length - 3);
             return key.Substring(0, key.Length - 2); //Code always ends on 0x03. We don't need that.
         }
 
         public override string ToString()
         {
-            return $"Autotranslate[key={GetCompleteKey()}]";
+            return $"{nameof(AutotranslateToken)}[key={GetCompleteKey()}]";
         }
     }
 }

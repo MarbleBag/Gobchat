@@ -28,8 +28,7 @@ namespace Gobchat.Memory.Chat.Token
 
         public override string ToString()
         {
-            return $"Unknown[0x{Trigger} -> 0x{BitConverter.ToString(Code).Replace("-", "")}]";
+            return $"{nameof(UnknownToken)}[0x{Trigger} -> 0x{BitConverter.ToString(Code).Replace("-", "")}]";
         }
     }
-
 }

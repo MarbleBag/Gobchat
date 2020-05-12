@@ -19,7 +19,6 @@ using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Threadsafe via get/set")]
     public sealed class ChatMessageBuilder
     {
         private static readonly ChatChannel[] PlayerChannels = {
@@ -43,27 +42,27 @@ namespace Gobchat.Core.Chat
 
         public bool DetecteEmoteInSayChannel { get; set; }
 
-        public List<ChatChannel> FormatChannels
+        public ChatChannel[] FormatChannels
         {
-            get => _formateChannels.ToList();
+            get => _formateChannels.ToArray();
             set => _formateChannels = value.ToArrayOrEmpty();
         }
 
-        public List<FormatConfig> Formats
+        public FormatConfig[] Formats
         {
-            get => _formater.Formats.ToList();
+            get => _formater.Formats.ToArray();
             set => _formater.Formats = value.ToArrayOrEmpty();
         }
 
-        public List<ChatChannel> MentionChannels
+        public ChatChannel[] MentionChannels
         {
-            get => _mentionChannels.ToList();
+            get => _mentionChannels.ToArray();
             set => _mentionChannels = value.ToArrayOrEmpty();
         }
 
-        public List<string> Mentions
+        public string[] Mentions
         {
-            get => _mentionFinder.Mentions.ToList();
+            get => _mentionFinder.Mentions.ToArray();
             set => _mentionFinder.Mentions = value;
         }
 
@@ -93,9 +92,12 @@ namespace Gobchat.Core.Chat
 
         private void SetMessageSource(ChatMessage chatMessage, string source)
         {
-            chatMessage.Source = new ChatMessageSource(source);
+            chatMessage.Source = new ChatMessageSource(source)
+            {
+                IsPlayer = PlayerChannels.Contains(chatMessage.Channel)
+            };
 
-            if (source != null && source.Length > 0 && PlayerChannels.Contains(chatMessage.Channel))
+            if (source != null && source.Length > 0 && chatMessage.Source.IsPlayer)
             {
                 var readIdx = 0;
                 int GetUnicodeIndex(int[] unicodes)
@@ -155,7 +157,10 @@ namespace Gobchat.Core.Chat
             }
 
             if (_mentionChannels.Contains(chatMessage.Channel))
+            {
                 _mentionFinder.MarkMentions(chatMessage);
+                chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.MENTION);
+            }
 
             SetDefaultTypes(chatMessage);
         }

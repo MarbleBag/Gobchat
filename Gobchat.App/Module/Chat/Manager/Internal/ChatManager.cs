@@ -19,6 +19,7 @@ using Gobchat.Memory.Chat;
 using Gobchat.Core.Util.Extension;
 using System.Collections.Concurrent;
 using Gobchat.Core.Util.Extension.Queue;
+using Gobchat.Module.Actor;
 
 namespace Gobchat.Module.Chat.Internal
 {
@@ -39,31 +40,31 @@ namespace Gobchat.Module.Chat.Internal
                 set => _parent._chatlogCleaner.AutotranslateProvider = value ?? throw new ArgumentNullException(nameof(AutotranslateProvider));
             }
 
-            public List<ChatChannel> VisibleChannels
+            public ChatChannel[] VisibleChannels
             {
-                get => _parent._visibleChannels.ToList();
+                get => _parent._visibleChannels.ToArray();
                 set => _parent._visibleChannels = value.ToArrayOrEmpty();
             }
 
-            public List<ChatChannel> FormatChannels
+            public ChatChannel[] FormatChannels
             {
                 get => _parent._chatMessageBuilder.FormatChannels;
                 set => _parent._chatMessageBuilder.FormatChannels = value;
             }
 
-            public List<FormatConfig> Formats
+            public FormatConfig[] Formats
             {
                 get => _parent._chatMessageBuilder.Formats;
                 set => _parent._chatMessageBuilder.Formats = value;
             }
 
-            public List<ChatChannel> MentionChannels
+            public ChatChannel[] MentionChannels
             {
                 get => _parent._chatMessageBuilder.MentionChannels;
                 set => _parent._chatMessageBuilder.MentionChannels = value;
             }
 
-            public List<string> Mentions
+            public string[] Mentions
             {
                 get => _parent._chatMessageBuilder.Mentions;
                 set => _parent._chatMessageBuilder.Mentions = value;
@@ -73,6 +74,30 @@ namespace Gobchat.Module.Chat.Internal
             {
                 get => _parent._chatMessageBuilder.DetecteEmoteInSayChannel;
                 set => _parent._chatMessageBuilder.DetecteEmoteInSayChannel = value;
+            }
+
+            public bool EnableCutOff
+            {
+                get => _parent._applyDistanceComputation;
+                set => _parent._applyDistanceComputation = value;
+            }
+
+            public float CutOffDistance
+            {
+                get => _parent._chatMessageVisibility.CutOffDistance;
+                set => _parent._chatMessageVisibility.CutOffDistance = value;
+            }
+
+            public float FadeOutDistance
+            {
+                get => _parent._chatMessageVisibility.FadeOutDistance;
+                set => _parent._chatMessageVisibility.FadeOutDistance = value;
+            }
+
+            public ChatChannel[] CutOffChannels
+            {
+                get => _parent._chatMessageVisibility.CutOffChannels;
+                set => _parent._chatMessageVisibility.CutOffChannels = value;
             }
         }
 
@@ -84,9 +109,13 @@ namespace Gobchat.Module.Chat.Internal
 
         private readonly ChatlogCleaner _chatlogCleaner;
         private readonly ChatMessageBuilder _chatMessageBuilder;
+        private readonly ChatMessageVisibilitySetter _chatMessageVisibility;
 
         private DateTime _lastDispatchedMessage;
         private TimeSpan _outdatedMessageFilter = TimeSpan.FromSeconds(10);
+
+        private ChatChannel[] _visibleChannels = Array.Empty<ChatChannel>();
+        private bool _applyDistanceComputation;
 
         public bool FilterOutdatedMessages { get; set; } = true;
 
@@ -103,14 +132,13 @@ namespace Gobchat.Module.Chat.Internal
         public IChatMessageManagerConfig Config { get => _config; }
         private readonly ChatMessageManagerConfig _config;
 
-        private ChatChannel[] _visibleChannels = Array.Empty<ChatChannel>();
-
-        public ChatManager(IAutotranslateProvider autotranslateProvider)
+        public ChatManager(IAutotranslateProvider autotranslateProvider, IActorManager actorManager)
         {
             _config = new ChatMessageManagerConfig(this);
 
             _chatlogCleaner = new ChatlogCleaner(autotranslateProvider);
             _chatMessageBuilder = new ChatMessageBuilder();
+            _chatMessageVisibility = new ChatMessageVisibilitySetter(actorManager);
 
             _lastDispatchedMessage = DateTime.Now;
         }
@@ -167,6 +195,8 @@ namespace Gobchat.Module.Chat.Internal
                 {
                     var chatMessage = _chatMessageBuilder.BuildChatMessage(message);
                     _chatMessageBuilder.FormatChatMessage(chatMessage);
+                    if (_applyDistanceComputation)
+                        _chatMessageVisibility.SetVisibility(chatMessage);
                     result.Add(chatMessage);
                 }
                 catch (Exception ex)
@@ -197,5 +227,21 @@ namespace Gobchat.Module.Chat.Internal
             if (chatMessages.Count > 0)
                 OnChatMessage?.Invoke(this, new ChatMessageEventArgs(chatMessages));
         }
+    }
+
+    internal interface IChatMessageManagerConfig
+    {
+        IAutotranslateProvider AutotranslateProvider { get; set; }
+        ChatChannel[] VisibleChannels { get; set; }
+        ChatChannel[] FormatChannels { get; set; }
+        ChatChannel[] MentionChannels { get; set; }
+        string[] Mentions { get; set; }
+        FormatConfig[] Formats { get; set; }
+        bool DetecteEmoteInSayChannel { get; set; }
+
+        ChatChannel[] CutOffChannels { get; set; }
+        bool EnableCutOff { get; set; }
+        float CutOffDistance { get; set; }
+        float FadeOutDistance { get; set; }
     }
 }

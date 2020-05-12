@@ -98,12 +98,24 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
+    function generateFadeOutStyle(cssResults, minOpacity) {
+        generateCssStyleElement(cssResults, ".message-body-fadeout-0", { "display": "none" })
+
+        minOpacity = minOpacity / 100.0
+        const steps = 10
+        const stepSize = (1.0 - minOpacity) / steps
+        for (let i = 1; i <= steps; ++i) {
+            generateCssStyleElement(cssResults, `.message-body-fadeout-${i}`, { "opacity": `${minOpacity + (i - 1) * stepSize}` })
+        }
+    }
+
     function buildStyle(gobchatConfig) {
         const cssResults = []
 
         generateStyleSheet(cssResults, gobchatConfig.get("style"))
         generateTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
         generateGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
+        generateFadeOutStyle(cssResults, gobchatConfig.get("behaviour.fadeout.fadeopacity"))
 
         return cssResults.join("\n")
     }

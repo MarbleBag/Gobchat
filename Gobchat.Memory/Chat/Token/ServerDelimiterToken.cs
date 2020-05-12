@@ -26,8 +26,7 @@ namespace Gobchat.Memory.Chat.Token
 
         public override string ToString()
         {
-            return $"ServerDelimiter[0x{BitConverter.ToString(Code).Replace("-", "")}]";
+            return $"{nameof(ServerDelimiterToken)}[0x{BitConverter.ToString(Code).Replace("-", "")}]";
         }
     }
-
 }

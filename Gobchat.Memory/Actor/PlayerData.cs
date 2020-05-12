@@ -13,6 +13,13 @@
 
 namespace Gobchat.Memory.Actor
 {
+    public sealed class ActorDistance
+    {
+        public int SimplifiedDistanceToPlayer { get; internal set; }
+        public float SquaredDistanceToPlayer { get; internal set; }
+        public float DistanceToPlayer { get; internal set; }
+    }
+
     public sealed class PlayerCharacter
     {
         public enum UpdateFlag
@@ -22,25 +29,31 @@ namespace Gobchat.Memory.Actor
             Update
         }
 
-        // public ActorPosition Position { get; }
+        // public ActorPosition Position { get; internal set; }
 
-        public int DistanceToPlayer { get; }
+        // public ActorDistance ActorDistance { get; internal set; }
 
-        public string Name { get; }
+        public int SimplifiedDistanceToPlayer { get; internal set; }
 
-        public string Id { get; }
+        public float SquaredDistanceToPlayer { get; internal set; }
 
-        public string UId { get; }
+        //public float DistanceToPlayer { get; internal set; }
 
-        public UpdateFlag Flag { get; }
+        public string Name { get; internal set; }
 
-        public PlayerCharacter(string name, uint id, string uid, int distance, UpdateFlag flag)
+        public uint Id { get; internal set; }
+
+        public string UId { get; internal set; }
+
+        public UpdateFlag Flag { get; internal set; }
+
+        public PlayerCharacter()
         {
-            Name = name;
-            Id = id.ToString();
-            UId = uid;
-            DistanceToPlayer = distance;
-            Flag = flag;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(PlayerCharacter)} => {nameof(Name)}:{Name} | {nameof(Id)}:{Id} | {nameof(UId)}:{UId} | {nameof(Flag)}:{Flag}";
         }
     }
 }

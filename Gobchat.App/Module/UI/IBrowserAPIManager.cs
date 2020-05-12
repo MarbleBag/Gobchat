@@ -24,6 +24,8 @@ namespace Gobchat.Module.UI
         IBrowserChatHandler ChatHandler { get; set; }
         IBrowserConfigHandler ConfigHandler { get; set; }
 
+        IBrowserActorHandler ActorHandler { get; set; }
+
         event EventHandler<UIReadChangedEventArgs> OnUIReadyChanged;
 
         void DispatchEventToBrowser(global::Gobchat.UI.Web.JavascriptEvents.JSEvent jsEvent);
@@ -57,5 +59,14 @@ namespace Gobchat.Module.UI
         Task SetActiveProfile(string profileId);
 
         Task<JToken> ParseProfile(string file);
+    }
+
+    public interface IBrowserActorHandler
+    {
+        Task<int> GetPlayerNearbyCount();
+
+        Task<string[]> GetPlayersNearby();
+
+        Task<float> GetDistanceToPlayer(string name);
     }
 }

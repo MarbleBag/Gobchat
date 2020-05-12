@@ -13,6 +13,17 @@
 
 namespace Gobchat.Memory.Actor
 {
+    public interface IActorPosition
+    {
+        float X { get; }
+        float Y { get; }
+        float Z { get; }
+
+        double DistanceSquared(IActorPosition p);
+
+        float Distance(IActorPosition p);
+    }
+
     public sealed class ActorPosition
     {
         public double X;

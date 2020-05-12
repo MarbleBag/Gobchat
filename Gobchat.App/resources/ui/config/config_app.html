@@ -10,7 +10,7 @@
     <p>
         <div>
             <label>Language</label>
-            <select id="capp_language" data-gob-configkey="behaviour.language" disabled="true" title="Soon (TM)">
+            <select id="capp_language" data-gob-configkey="behaviour.language" disabled title="Soon (TM)">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
@@ -69,6 +69,52 @@
                         </td>
                         <td>
                             <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.checkForBetaUpdate" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Activate range filter</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_rangefilter_active" data-gob-configkey="behaviour.fadeout.active" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="capp_rangefilter_mention">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Exclude mentions</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_rangefilter_mention" data-gob-configkey="behaviour.fadeout.mention" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <div>
+                <label><b>Range filter</b></label>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label>Cut off (Yalm):</label></td>
+                        <td>
+                            <input type="number" min="0" id="capp_rangefilter_cutoff" data-gob-configkey="behaviour.fadeout.cutoff" style="color:#f6931f; font-weight:bold;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Fade out (Yalm):</label></td>
+                        <td>
+                            <input type="number" min="0" id="capp_rangefilter_fadeout" data-gob-configkey="behaviour.fadeout.falloff" style="color:#f6931f; font-weight:bold;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Transparency (%):</label></td>
+                        <td>
+                            <input type="number" min="1" max="100" id="capp_rangefilter_opacity" data-gob-configkey="behaviour.fadeout.fadeopacity" style="color:#f6931f; font-weight:bold;">
                         </td>
                     </tr>
                 </tbody>
@@ -269,10 +315,20 @@
             const ckbBetaUpdate = $("#capp_checkbetaupdates")
             ConfigHelper.bindCheckbox(binding, ckbBetaUpdate)
 
-            const ckbBetaUpdateLabel = $("[for='capp_checkbetaupdates']")
-            binding.bindConfigListener(ckbUpdate.attr(ConfigHelper.ConfigKeyAttribute), value => {
+            binding.bindConfigListener(ConfigHelper.getConfigKey(ckbUpdate), value => {
                 ckbBetaUpdate.attr("disabled", !value)
-                ckbBetaUpdateLabel.toggleClass("disabled", !value)
+                $("[for='capp_checkbetaupdates']").toggleClass("disabled", !value)
+            })
+
+            const ckbRangeFilterActive = $("#capp_rangefilter_active")
+            ConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
+
+            const ckbRangeFilterMention = $("#capp_rangefilter_mention")
+            ConfigHelper.bindCheckbox(binding, ckbRangeFilterMention)
+
+            binding.bindConfigListener(ConfigHelper.getConfigKey(ckbRangeFilterActive), value => {
+                ckbRangeFilterMention.attr("disabled", !value)
+                $("[for='capp_rangefilter_mention']").toggleClass("disabled", !value)
             })
 
             // setup font group
@@ -288,6 +344,14 @@
                 const value = parseInt($element.val())
                 return Gobchat.isNumber(value) && value > 0 ? value : undefined
             }
+
+            const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
+            const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
+            const txtRangeFilterOpacity = $("#capp_rangefilter_opacity")
+
+            ConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterOpacity, { elementGetAccessor: parseNumber })
 
             const txtFrameX = $("#capp_frame_x")
             const txtFrameY = $("#capp_frame_y")
@@ -344,7 +408,8 @@
             // setup profile copy
             const allFields = [
                 dpdLanguage,
-                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate,
+                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
+                txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterOpacity,
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
                 txtHotkeyShow,

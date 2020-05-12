@@ -54,10 +54,10 @@ namespace Gobchat.Core.Runtime
             _applicationDIContext = new DIContext();
             _uiManager = new UIManager(GobchatApplicationContext.UISynchronizer);
 
-            _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
-            _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
-            _applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ApplicationLocation, nameof(ApplicationLocation));
-            _applicationDIContext.Register<GobVersion>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
+            //_applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ResourceLocation, nameof(ResourceLocation));
+            //_applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.UserConfigLocation, nameof(UserConfigLocation));
+            //_applicationDIContext.Register<string>((c, _) => GobchatApplicationContext.ApplicationLocation, nameof(ApplicationLocation));
+            //_applicationDIContext.Register<GobVersion>((c, _) => GobchatApplicationContext.ApplicationVersion, nameof(ApplicationVersion));
 
             _applicationDIContext.Register<IUISynchronizer>((c, _) => GobchatApplicationContext.UISynchronizer);
             _applicationDIContext.Register<IUIManager>((c, _) => _uiManager);
@@ -76,6 +76,7 @@ namespace Gobchat.Core.Runtime
                 new global::Gobchat.Module.NotifyIcon.AppModuleNotifyIcon(),
                 new global::Gobchat.Module.Hotkey.AppModuleHotkeyManager(),
                 new global::Gobchat.Module.MemoryReader.AppModuleMemoryReader(),
+                new global::Gobchat.Module.Actor.AppModuleActorManager(),
                 new global::Gobchat.Module.Chat.AppModuleChatManager(),
 
                 // CEF overlay and javascript api
@@ -93,6 +94,7 @@ namespace Gobchat.Core.Runtime
                 //UI Adapter
                 new global::Gobchat.Module.UI.AppModuleChatToUI(),
                 new global::Gobchat.Module.UI.AppModuleConfigToUI(),
+                new global::Gobchat.Module.UI.AppModuleActorBrowserAPI(),
 
                 //Start UI
                 new global::Gobchat.Module.UI.AppModuleLoadUI(),
@@ -117,7 +119,7 @@ namespace Gobchat.Core.Runtime
 
                     try
                     {
-                        MessageBox.Show($"An error prevents Gobchat from starting. For more details please check gobchat_debug.log.\nError:\n{ex1.Message}", "Error on start", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"An error prevents Gobchat from starting. For more details please check gobchat_debug.log.\nError:\n{ex1.GetType()}: {ex1.Message}", "Error on start", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch (System.Exception)
                     {
@@ -152,7 +154,7 @@ namespace Gobchat.Core.Runtime
                 }
                 catch (System.Exception e)
                 {
-                    //that's the best you get, no one cares for you - for now.
+                    //that's the best you get, no one cares for you.
                     logger.Warn(e, $"Shutdown error in {module}");
                 }
             }

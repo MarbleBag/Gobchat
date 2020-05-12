@@ -78,6 +78,11 @@
         "LINKSHELL_6",
         "LINKSHELL_7",
         "LINKSHELL_8"
+      ],
+      "fadeout": [
+        "SAY",
+        "EMOTE",
+        "ANIMATED_EMOTE"
       ]
     },
     "segment": {
@@ -159,6 +164,13 @@
       },
       "order": [ "base" ]
     },
+    "fadeout": {
+      "active": true,
+      "cutoff": 24,
+      "falloff": 16,
+      "fadeopacity": 30,
+      "mention": true
+    },
     "checkForUpdate": true,
     "checkForBetaUpdate": false,
     "autodetectEmoteInSay": true,
@@ -168,7 +180,7 @@
     "datacenter": null,
     "chatUpdateInterval": 1000,
     "hotkeys": {
-      "showhide": "",
+      "showhide": ""
     },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],

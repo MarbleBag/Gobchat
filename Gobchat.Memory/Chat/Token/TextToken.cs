@@ -29,8 +29,7 @@ namespace Gobchat.Memory.Chat.Token
 
         public override string ToString()
         {
-            return $"Text[{GetText()}]";
+            return $"{nameof(TextToken)}[{GetText()}]";
         }
     }
-
 }

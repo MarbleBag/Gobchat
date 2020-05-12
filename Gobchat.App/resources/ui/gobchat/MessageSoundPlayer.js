@@ -14,8 +14,6 @@
 'use strict'
 
 var Gobchat = (function (Gobchat, undefined) {
-    const MessageSegmentEnum = Gobchat.MessageSegmentEnum
-
     class MessageSoundPlayer {
         constructor(config) {
             this._config = config
@@ -27,12 +25,17 @@ var Gobchat = (function (Gobchat, undefined) {
             if (!data.playSound || data.volume <= 0 || !data.soundPath)
                 return
 
-            const time = new Date()
-            if (time - this._lastSoundPlayed < data.soundInterval)
+            if (!message.containsMentions)
                 return
 
-            const hasMention = message.content.some(segment => { return segment.type === MessageSegmentEnum.MENTION })
-            if (!hasMention)
+            if (message.source.visibility === 0) {
+                const ignoreDistance = this._config.get("behaviour.fadeout.mention", false)
+                if (!ignoreDistance)
+                    return
+            }
+
+            const time = new Date()
+            if (time - this._lastSoundPlayed < data.soundInterval)
                 return
 
             this._lastSoundPlayed = time

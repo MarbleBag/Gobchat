@@ -23,6 +23,7 @@ using Gobchat.Core.Resource;
 using System.Globalization;
 using Gobchat.Module.Chat.Internal;
 using Newtonsoft.Json.Linq;
+using Gobchat.Module.Actor;
 
 namespace Gobchat.Module.Chat
 {
@@ -44,6 +45,7 @@ namespace Gobchat.Module.Chat
         ///
         /// Requires: <see cref="IGobchatConfig"/> <br></br>
         /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IActorManager"/> <br></br>
         /// Provides: <see cref="IChatManager"/> <br></br>
         /// <br></br>
         /// </summary>
@@ -56,12 +58,13 @@ namespace Gobchat.Module.Chat
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _configManager = _container.Resolve<IConfigManager>();
             _memoryReader = _container.Resolve<FFXIVMemoryReader>();
+            var actorManager = _container.Resolve<IActorManager>();
 
             var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"lang");
             var resourceResolvers = new IResourceLocator[] { new LocalFolderResourceResolver(languagePath) };
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 
-            _chatManager = new ChatManager(autotranslateProvider);
+            _chatManager = new ChatManager(autotranslateProvider, actorManager);
 
             _configManager.AddPropertyChangeListener("behaviour.channel", true, true, ConfigManager_UpdateChannelProperties);
             _configManager.AddPropertyChangeListener("behaviour.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
@@ -69,6 +72,7 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.mentions", true, true, ConfigManager_UpdateMentions);
             _configManager.AddPropertyChangeListener("behaviour.chatUpdateInterval", true, true, ConfigManager_UpdateChatInterval);
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
+            _configManager.AddPropertyChangeListener("behaviour.fadeout", true, true, ConfigManager_UpdateRangeFilter);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -83,6 +87,7 @@ namespace Gobchat.Module.Chat
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateFormaterProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
 
             _updater.Dispose();
 
@@ -118,7 +123,7 @@ namespace Gobchat.Module.Chat
             }
             finally
             {
-                //TODO some logging or cleanup work
+                logger.Info("Chat updates concluded");
             }
         }
 
@@ -129,9 +134,6 @@ namespace Gobchat.Module.Chat
                 var chatlogs = _memoryReader.GetNewestChatlog();
                 foreach (var chatlog in chatlogs)
                     _chatManager.EnqueueMessage(chatlog);
-
-                //var locations = _memoryReader.GetPlayerData();
-                //TODO
             }
 
             _chatManager.UpdateManager();
@@ -144,9 +146,10 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateChannelProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToList();
-            _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToList();
-            _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToList();
+            _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.fadeout").Select(i => (ChatChannel)i).ToArray();
         }
 
         private void ConfigManager_UpdateAutodetectProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -165,7 +168,7 @@ namespace Gobchat.Module.Chat
                 var format = data.ToObject<FormatConfig>();
                 newValues.Add(format);
             }
-            _chatManager.Config.Formats = newValues;
+            _chatManager.Config.Formats = newValues.ToArray();
         }
 
         private void ConfigManager_UpdateMentions(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -180,7 +183,7 @@ namespace Gobchat.Module.Chat
                 foreach (var trigger in data["trigger"].ToObject<List<string>>())
                     mentions.Add(trigger);
             }
-            _chatManager.Config.Mentions = mentions;
+            _chatManager.Config.Mentions = mentions.ToArray();
         }
 
         private void ConfigManager_UpdateLanguage(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -188,6 +191,14 @@ namespace Gobchat.Module.Chat
             var selectedLanguage = config.GetProperty<string>("behaviour.language");
             var autotranslateProvider = _chatManager.Config.AutotranslateProvider as AutotranslateProvider;
             autotranslateProvider?.LoadCulture(new CultureInfo(selectedLanguage));
+        }
+
+        private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.fadeout.active");
+            _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.fadeout.cutoff");
+            _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.fadeout.falloff");
+            //_chatManager.Config.CutOffConsiderMentions = config.GetProperty<bool>("behaviour.fadeout.mention");
         }
     }
 }

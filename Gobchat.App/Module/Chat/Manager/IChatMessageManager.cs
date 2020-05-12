@@ -21,8 +21,6 @@ namespace Gobchat.Module.Chat
 {
     public interface IChatManager
     {
-        IChatMessageManagerConfig Config { get; }
-
         event EventHandler<ChatMessageEventArgs> OnChatMessage;
 
         bool Enable { get; set; }
@@ -34,19 +32,5 @@ namespace Gobchat.Module.Chat
         void EnqueueMessage(SystemMessageType type, string message);
 
         void UpdateManager();
-    }
-}
-
-namespace Gobchat.Core.Chat
-{
-    public interface IChatMessageManagerConfig
-    {
-        IAutotranslateProvider AutotranslateProvider { get; set; }
-        List<ChatChannel> VisibleChannels { get; set; }
-        List<ChatChannel> FormatChannels { get; set; }
-        List<ChatChannel> MentionChannels { get; set; }
-        List<string> Mentions { get; set; }
-        List<FormatConfig> Formats { get; set; }
-        bool DetecteEmoteInSayChannel { get; set; }
     }
 }

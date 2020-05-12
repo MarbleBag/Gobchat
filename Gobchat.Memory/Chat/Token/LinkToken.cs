@@ -38,8 +38,7 @@ namespace Gobchat.Memory.Chat.Token
 
         public override string ToString()
         {
-            return $"LinkToken[0x{Trigger} | 0x{LinkType} -> 0x{LinkValue}]";
+            return $"{nameof(LinkToken)}[0x{Trigger} | 0x{LinkType} -> 0x{LinkValue}]";
         }
     }
-
 }
