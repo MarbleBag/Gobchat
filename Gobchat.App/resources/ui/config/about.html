@@ -7,7 +7,7 @@
 <body>
     <h1>Gobchat</h1>
     <p>
-        Version $${appversion} <br />
+        Version <span id="cabout_version" style="font-weight:bold;"></span><br />
         Copyright (C) 2019 - 2020 MarbleBag
     </p>
     <p>
@@ -21,5 +21,19 @@
         Looking for a way to contribute or just want to take a look into Gobchat's source code? <br />
         Visit this project on github under https://github.com/MarbleBag/Gobchat
     </p>
+
+    <script type="text/javascript">
+        'use strict';
+
+        (async () => {
+            const version = await GobchatAPI.getAppVersion()
+            const $version = $("#cabout_version")
+            if (version.includes("-")) {
+                $version.text(`Beta ${version}`)
+            } else {
+                $version.text(version)
+            }
+        })()
+    </script>
 </body>
 </html>
