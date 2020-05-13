@@ -165,10 +165,10 @@
       "order": [ "base" ]
     },
     "fadeout": {
-      "active": true,
+      "active": false,
       "cutoff": 24,
       "falloff": 16,
-      "fadeopacity": 30,
+      "minopacity": 30,
       "mention": true
     },
     "checkForUpdate": true,
