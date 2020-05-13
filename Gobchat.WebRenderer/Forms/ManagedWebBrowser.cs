@@ -260,7 +260,7 @@ namespace Gobchat.UI.Forms
             if (!CefBrowser.JavascriptObjectRepository.IsBound(api.APIName))
                 return false;
 
-            var script = $@"(async ()=>{{ return await CefCharp.DeleteBoundObject('{ api.APIName}') }})();";
+            var script = $@"(async ()=>{{ return await CefSharp.DeleteBoundObject('{ api.APIName}') }})();";
 
             if (this.CefBrowser.CanExecuteJavascriptInMainFrame)
             {
