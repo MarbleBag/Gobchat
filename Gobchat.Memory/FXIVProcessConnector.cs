@@ -27,7 +27,7 @@ namespace Gobchat.Memory
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public bool FFXIVProcessValid { get; private set; } = false;
+        public bool FFXIVProcessValid { get => MemoryHandler.Instance.IsAttached; }
         public int FFXIVProcessId { get; private set; } = 0;
 
         public event EventHandler OnConnectionLost;
@@ -47,12 +47,13 @@ namespace Gobchat.Memory
 
             ConnectTo(process);
 
+            process.EnableRaisingEvents = true;
             process.Exited += Process_Exited;
 
             return FFXIVProcessValid;
         }
 
-        public void Unconnect()
+        public void Disconnect()
         {
             MemoryHandler.Instance.UnsetProcess();
         }
@@ -65,24 +66,18 @@ namespace Gobchat.Memory
                 Process = process
             };
 
+            FFXIVProcessId = process.Id;
             MemoryHandler.Instance.SetProcess(processModel, useLocalCache: true);
             while (Scanner.Instance.IsScanning)
             {
                 logger.Debug("Scanning for FFXIV signatures...");
                 Thread.Sleep(1000);
             }
-
-            FFXIVProcessId = process.Id;
-            FFXIVProcessValid = MemoryHandler.Instance.IsAttached;
         }
 
         private void Process_Exited(object sender, EventArgs e)
         {
-            var process = (Process)sender;
-            if (process.Id != FFXIVProcessId)
-                return;
-
-            FFXIVProcessValid = false;
+            Disconnect();
             OnConnectionLost?.Invoke(this, new EventArgs());
         }
     }

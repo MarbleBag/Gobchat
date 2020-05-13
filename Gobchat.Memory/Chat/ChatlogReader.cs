@@ -26,7 +26,7 @@ namespace Gobchat.Memory.Chat
         private int _previousOffset = 0;
         private bool _chatlogException = false;
 
-        public bool ChatLogAvailable { get { return Sharlayan.Reader.CanGetChatLog(); /*Sharlayan.Scanner.Instance.Locations.ContainsKey(Sharlayan.Signatures.ChatLogKey);*/ } }
+        public bool ChatLogAvailable { get { return Sharlayan.Reader.CanGetChatLog() && MemoryHandler.Instance.IsAttached; } }
 
         public ChatlogReader()
         {

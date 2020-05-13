@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
+using Sharlayan;
 using System.Collections.Generic;
 
 namespace Gobchat.Memory.Actor
 {
     internal sealed class PlayerLocationMemoryReader
     {
-        public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors(); } }
+        public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors() && MemoryHandler.Instance.IsAttached; } }
 
         private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, ActorPosition mainActor, ICollection<PlayerCharacter> results)
         {

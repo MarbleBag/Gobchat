@@ -98,7 +98,7 @@ namespace Gobchat.Memory
 
         public void Dispose()
         {
-            _processConnector.Unconnect();
+            _processConnector.Disconnect();
             Sharlayan.MemoryHandler.Instance.ExceptionEvent -= Sharlayan_ExceptionEvent;
             _windowScanner.ActiveWindowChangedEvent -= OnEvent_ActiveWindowChangedEvent;
             _windowScanner.Dispose();
