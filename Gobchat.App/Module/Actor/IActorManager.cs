@@ -4,7 +4,7 @@ namespace Gobchat.Module.Actor
 {
     public interface IActorManager
     {
-        bool IsEnabled { get; }
+        bool IsAvailable { get; }
 
         int GetPlayerCount();
 

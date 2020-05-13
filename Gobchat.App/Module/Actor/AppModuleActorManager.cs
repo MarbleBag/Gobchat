@@ -54,6 +54,8 @@ namespace Gobchat.Module.Actor
             _actorManager = new ActorManager();
             _updater = new IndependendBackgroundWorker();
 
+            _memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
+
             _configManager.AddPropertyChangeListener("behaviour.chatUpdateInterval", true, true, ConfigManager_UpdateChatInterval);
             _configManager.AddPropertyChangeListener("behaviour.fadeout.active", true, true, ConfigManager_UpdateRangeFilter);
 
@@ -115,6 +117,11 @@ namespace Gobchat.Module.Actor
             _actorManager.UpdateManager();
         }
 
+        private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
+        {
+            _actorManager.IsAvailable = _memoryReader.PlayerCharactersAvailable;
+        }
+
         private void ConfigManager_UpdateChatInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
             _updateInterval = config.GetProperty<long>("behaviour.chatUpdateInterval");
@@ -134,8 +141,6 @@ namespace Gobchat.Module.Actor
             {
                 _updater.Stop(false);
             }
-
-            _actorManager.IsEnabled = runManager;
         }
     }
 }

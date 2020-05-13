@@ -32,7 +32,7 @@ namespace Gobchat.Module.Actor.Internal
         private readonly Dictionary<string, Data> _realm = new Dictionary<string, Data>();
         private readonly Queue<Data> _pendingUpdates = new Queue<Data>();
 
-        public bool IsEnabled { get; set; }
+        public bool IsAvailable { get; internal set; }
 
         public int GetPlayerCount()
         {
