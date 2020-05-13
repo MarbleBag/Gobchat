@@ -100,7 +100,7 @@ namespace Gobchat.Core.Runtime
                 new global::Gobchat.Module.UI.AppModuleLoadUI(),
             };
 
-            logger.Info(() => $"Initialize Gobchat v{GobchatApplicationContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");
+            logger.Info(() => $"Initialize Gobchat v{GobchatContext.ApplicationVersion} on {(Environment.Is64BitProcess ? "x64" : "x86")}");
 
             var startupHandler = new ApplicationStartupHandler();
             foreach (var module in moduleActivationSequence)
