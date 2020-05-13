@@ -220,12 +220,12 @@ This may take a while on your first start of Gobchat.
 ## Troubleshooting
 ### Range filter seems not to work
 - Check `Config / App`, it's possible that Gobchat can't retrieve informations about players from your running FFXIV. A red message will inform you about that. This can have many reasons.
- - Try: close Gobchat an delete the `sharlayan` folder under `resources`.  The content will be re downloaded and may contain the missing informations.
+  - Try: close Gobchat an delete the `sharlayan` folder under `resources`.  The content will be re downloaded and may contain the missing informations.
 
 ### Gobchat doesn't start
 - Check `gobchat_debug.log`
- - An error like `System.IO.FileNotFoundException` in combination with `CefSharp.Core.dll` indicates a problem with CEF.
- - There is a high probability that `Visual C++ Redistributable` are missing. Check [Dependencies](#dependencies).
+  - An error like `System.IO.FileNotFoundException` in combination with `CefSharp.Core.dll` indicates a problem with CEF.
+    - There is a high probability that `Visual C++ Redistributable` are missing. Check [Dependencies](#dependencies).
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
