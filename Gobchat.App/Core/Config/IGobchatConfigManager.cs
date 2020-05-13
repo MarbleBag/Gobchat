@@ -69,6 +69,8 @@ namespace Gobchat.Core.Config
 
         void SetProperty(string key, object value);
 
+        void SetGlobalProperty(string key, object value);
+
         void DispatchChangeEvents();
 
         #endregion property handling

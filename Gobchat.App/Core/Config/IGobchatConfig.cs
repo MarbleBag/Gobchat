@@ -44,6 +44,8 @@ namespace Gobchat.Core.Config
 
         void SetProperty(string key, object value);
 
+        void DeleteProperty(string key);
+
         JObject ToJson();
 
         void SetProperties(JObject json);

@@ -28,6 +28,13 @@ namespace Gobchat.Core.Config
         private readonly JObject _data;
         private readonly bool _writable;
 
+        private event EventHandler<PropertyChangedEventArgs> _onPropertyChange;
+
+        private bool _canLinkParent;
+        private bool _isParentLinked;
+
+        private object _lock = new object();
+
         public GobchatConfigProfile(JObject data, bool writable) : this(data, writable, null)
         {
         }
@@ -37,13 +44,48 @@ namespace Gobchat.Core.Config
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _writable = writable;
             _parent = parent;
+
+            _canLinkParent = _parent != null && _parent.IsWriteable;
         }
 
         public string ProfileId => _data["profile"]["id"].Value<string>();
 
         public int ProfileVersion => _data["version"].Value<int>();
 
-        public event EventHandler<PropertyChangedEventArgs> OnPropertyChange;
+        public bool IsWriteable => _writable;
+
+        public event EventHandler<PropertyChangedEventArgs> OnPropertyChange
+        {
+            add
+            {
+                lock (_lock)
+                {
+                    _onPropertyChange += value;
+                    if (_canLinkParent && !_isParentLinked)
+                    {
+                        _parent.OnPropertyChange += Parent_OnPropertyChange;
+                        _isParentLinked = true;
+                    }
+                }
+            }
+            remove
+            {
+                lock (_lock)
+                {
+                    _onPropertyChange -= value;
+                    if (_canLinkParent && _isParentLinked && _onPropertyChange == null)
+                    {
+                        _parent.OnPropertyChange -= Parent_OnPropertyChange;
+                        _isParentLinked = false;
+                    }
+                }
+            }
+        }
+
+        private void Parent_OnPropertyChange(object sender, PropertyChangedEventArgs e)
+        {
+            _onPropertyChange?.Invoke(this, e);
+        }
 
         public T GetProperty<T>(string key)
         {
@@ -136,6 +178,23 @@ namespace Gobchat.Core.Config
             FirePropertyChange(changes, true);
         }
 
+        public void DeleteProperty(string key)
+        {
+            if (!_writable)
+                throw new ConfigException("Config is read only");
+            if (UnchangableValues.Contains(key))
+                throw new PropertyReadOnlyException(key);
+
+            bool changed = false;
+            WalkJson(key, MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                changed = node.Remove(propertyName);
+            });
+
+            if (changed)
+                FirePropertyChange(key);
+        }
+
         public void SetProperty(string key, object value)
         {
             if (!_writable)
@@ -171,9 +230,9 @@ namespace Gobchat.Core.Config
 
         private void FirePropertyChange(ICollection<string> keys, bool synchronize = false)
         {
-            if (OnPropertyChange == null) return;
+            if (_onPropertyChange == null) return;
             foreach (var k in PreparePropertyCallbacks(keys))
-                OnPropertyChange?.Invoke(this, new PropertyChangedEventArgs(k, synchronize));
+                _onPropertyChange?.Invoke(this, new PropertyChangedEventArgs(k, synchronize));
         }
 
         private ICollection<string> PreparePropertyCallbacks(ICollection<string> keys)

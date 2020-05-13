@@ -16,5 +16,7 @@ namespace Gobchat.Core.Config
     public interface IGobchatConfigProfile : IGobchatConfig
     {
         string ProfileId { get; }
+
+        bool IsWriteable { get; }
     }
 }

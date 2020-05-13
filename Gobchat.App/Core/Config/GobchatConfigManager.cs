@@ -28,8 +28,10 @@ namespace Gobchat.Core.Config
         private readonly object _synchronizationLock = new object();
 
         private readonly string _defaultProfilePath;
+        private IGobchatConfigProfile _globalProfile;
 
         private readonly Dictionary<string, IGobchatConfigProfile> _profiles;
+
         private readonly IList<string> _profilesLoadedFromFile;
         private GobchatConfigProfile _defaultConfig;
 
@@ -99,6 +101,7 @@ namespace Gobchat.Core.Config
         public void InitializeManager()
         {
             LoadDefaultProfile();
+            LoadGlobalProfile();
             LoadUserProfiles();
             LoadAppConfig();
             logger.Info("Config manager loaded");
@@ -122,6 +125,11 @@ namespace Gobchat.Core.Config
             defaultConfig["profile"]["id"] = null;
 
             _defaultConfig = new GobchatConfigProfile(defaultConfig, false);
+        }
+
+        private void LoadGlobalProfile()
+        {
+            _globalProfile = new GobchatConfigProfile(new JObject(), true, _defaultConfig);
         }
 
         private void LoadUserProfiles()
@@ -246,6 +254,7 @@ namespace Gobchat.Core.Config
 
                 var json = profile.ToJson();
                 json = finalizer.Transform(json);
+                json.Remove("appdata"); //don't save those
 
                 try
                 {
@@ -358,7 +367,7 @@ namespace Gobchat.Core.Config
 
         private void StoreNewProfile(JObject profile, bool synchronizing)
         {
-            var config = new GobchatConfigProfile(profile, true, _defaultConfig);
+            var config = new GobchatConfigProfile(profile, true, _globalProfile);
 
             var configVersion = config.ProfileVersion;
             var defaultVersion = _defaultConfig.ProfileVersion;
@@ -463,19 +472,19 @@ namespace Gobchat.Core.Config
             return ActiveProfile.HasProperty(key);
         }
 
-        public void SetProperties(JObject json)
-        {
-            lock (_synchronizationLock)
-            {
-                ActiveProfile.SetProperties(json);
-            }
-        }
-
         public void SetProperty(string key, object value)
         {
             lock (_synchronizationLock)
             {
                 ActiveProfile.SetProperty(key, value);
+            }
+        }
+
+        public void SetGlobalProperty(string key, object value)
+        {
+            lock (_synchronizationLock)
+            {
+                _globalProfile.SetProperty(key, value);
             }
         }
 
