@@ -13,7 +13,7 @@
 
 'use strict'
 
-var Gobchat = (function(Gobchat, undefined) {
+var Gobchat = (function (Gobchat, undefined) {
     class CommandManager {
         constructor(manager, config) {
             this._manager = manager
@@ -23,8 +23,8 @@ var Gobchat = (function(Gobchat, undefined) {
             this.registerCmdHandler(new PlayerGroupCommandHandler())
             this.registerCmdHandler(new ProfileCommandHandler())
             this.registerCmdHandler(new CloseCommandHandler())
-            this.registerCmdHandler(new ActorCountCommandHandler())
-            this.registerCmdHandler(new ActorListCommandHandler())
+            this.registerCmdHandler(new PlayerCountCommandHandler())
+            this.registerCmdHandler(new PlayerListCommandHandler())
         }
 
         processCommand(message) {
@@ -225,9 +225,9 @@ var Gobchat = (function(Gobchat, undefined) {
         }
     }
 
-    class ActorCountCommandHandler extends CommandHandler {
+    class PlayerCountCommandHandler extends CommandHandler {
         get acceptedCommandNames() {
-            return ["actor count"]
+            return ["player count"]
         }
 
         async execute(commandManager, commandName, args) {
@@ -236,9 +236,9 @@ var Gobchat = (function(Gobchat, undefined) {
         }
     }
 
-    class ActorListCommandHandler extends CommandHandler {
+    class PlayerListCommandHandler extends CommandHandler {
         get acceptedCommandNames() {
-            return ["actor list"]
+            return ["player list"]
         }
 
         async execute(commandManager, commandName, args) {
