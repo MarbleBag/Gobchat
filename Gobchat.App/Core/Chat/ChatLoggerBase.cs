@@ -55,18 +55,18 @@ namespace Gobchat.Core.Chat
 
             if (_fileHandle == null)
             {
-                var logFolder = AbstractGobchatApplicationContext.UserLogLocation;
+                var logFolder = GobchatContext.UserLogLocation;
                 Directory.CreateDirectory(logFolder);
                 var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
                 var fileName = $"chatlog_{timestamp}.log";
                 _fileHandle = Path.Combine(logFolder, fileName);
 
                 if (!File.Exists(_fileHandle))
-                    File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" });
+                    File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" }, System.Text.Encoding.UTF8);
             }
 
             var logLines = _pendingMessages.DequeueAll().Select(e => FormatLine(e));
-            File.AppendAllLines(_fileHandle, logLines);
+            File.AppendAllLines(_fileHandle, logLines, System.Text.Encoding.UTF8);
         }
 
         abstract protected string FormatLine(ChatMessage msg);
