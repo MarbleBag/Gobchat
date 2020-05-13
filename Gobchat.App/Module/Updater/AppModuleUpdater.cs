@@ -44,7 +44,7 @@ namespace Gobchat.Module.Updater
 
             var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.checkForBetaUpdate");
 
-            var update = GetUpdate(GobchatApplicationContext.ApplicationVersion, allowBetaUpdates);
+            var update = GetUpdate(GobchatContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
                 return;
 
@@ -78,7 +78,7 @@ namespace Gobchat.Module.Updater
         {
             try
             {
-                var patchFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, PatchFolder);
+                var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
                 var tmpFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
 
                 if (System.IO.Directory.Exists(tmpFolder))
@@ -110,7 +110,7 @@ namespace Gobchat.Module.Updater
                 var progressDisplay = uiManager.GetUIElement<ProgressDisplayForm>(displayId);
                 using (var progressMonitor = new ProgressMonitorAdapter(progressDisplay))
                 {
-                    var patchFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, PatchFolder);
+                    var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
 
                     (var downloadResult, var filePath) = PerformAutoUpdateDownload(update, patchFolder, progressMonitor);
                     logger.Info($"Download complete: {downloadResult}");
@@ -257,7 +257,7 @@ namespace Gobchat.Module.Updater
         {
             using (var notes = new UpdateFormDialog())
             {
-                notes.UpdateHeadText = $"An update to version {update.Version} is available.\nCurrent version is {GobchatApplicationContext.ApplicationVersion}\nUpdate and restart?";
+                notes.UpdateHeadText = $"An update to version {update.Version} is available.\nCurrent version is {GobchatContext.ApplicationVersion}\nUpdate and restart?";
                 notes.UpdateNotes = update.PatchNotes;
                 notes.ShowDialog();
                 return notes.UpdateRequest;

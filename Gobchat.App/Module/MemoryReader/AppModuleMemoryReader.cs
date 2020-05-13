@@ -44,7 +44,7 @@ namespace Gobchat.Module.MemoryReader
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _worker = new IndependendBackgroundWorker();
 
-            var sharlayanResourceFolder = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"sharlayan");
+            var sharlayanResourceFolder = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"sharlayan");
             System.IO.Directory.CreateDirectory(sharlayanResourceFolder);
 
             //needs to be done on the same thread as dispose, anchore it to ui thread, because that one never changes
@@ -89,10 +89,14 @@ namespace Gobchat.Module.MemoryReader
         private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
         {
             if (e.IsProcessValid)
-                return;
-
-            logger.Info("No FFXIV process detected");
-            _worker.Start(ConnectMemoryReader);
+            {
+                //TODO
+            }
+            else
+            {
+                logger.Info("No FFXIV process detected");
+                _worker.Start(ConnectMemoryReader);
+            }
         }
     }
 }

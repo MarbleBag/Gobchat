@@ -47,7 +47,7 @@ namespace Gobchat.Core.Util
 
             using (var webClient = new WebClient())
             {
-                var currentVersion = GobchatApplicationContext.ApplicationVersion;
+                var currentVersion = GobchatContext.ApplicationVersion;
                 webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion}");
 
                 progressMonitor.Progress = 0d;

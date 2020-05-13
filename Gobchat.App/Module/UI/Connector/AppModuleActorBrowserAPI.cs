@@ -75,6 +75,11 @@ namespace Gobchat.Module.UI
             {
                 return _actorManager.GetPlayersInArea();
             }
+
+            public async Task<bool> IsAvailable()
+            {
+                return _actorManager.IsAvailable;
+            }
         }
     }
 }

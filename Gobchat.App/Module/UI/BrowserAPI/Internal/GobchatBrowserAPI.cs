@@ -92,6 +92,11 @@ namespace Gobchat.Module.UI.Internal
                 await _browserAPIManager.ConfigHandler.SynchronizeConfig(jToken).ConfigureAwait(false);
             }
 
+            public async Task<string> GetAppVersion()
+            {
+                return GobchatContext.ApplicationVersion.ToString();
+            }
+
             public async Task CloseGobchat()
             {
                 logger.Info("User requests shutdown");
@@ -126,7 +131,7 @@ namespace Gobchat.Module.UI.Internal
 
             private string RunFileDialog(FileDialog dialog, string filter, string fileName)
             {
-                dialog.InitialDirectory = GobchatApplicationContext.ResourceLocation;
+                dialog.InitialDirectory = GobchatContext.ResourceLocation;
                 dialog.RestoreDirectory = true;
                 dialog.Filter = filter ?? "Json files (*.json)|*.json";
                 dialog.FileName = fileName ?? "";
@@ -147,6 +152,11 @@ namespace Gobchat.Module.UI.Internal
                     return null;
                 var result = await _browserAPIManager.ConfigHandler.ParseProfile(file).ConfigureAwait(false);
                 return result.ToString();
+            }
+
+            public async Task<bool> ArePlayersAvailable()
+            {
+                return await _browserAPIManager.ActorHandler.IsAvailable().ConfigureAwait(false);
             }
 
             public async Task<int> GetPlayerCount()

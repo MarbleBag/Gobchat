@@ -21,7 +21,7 @@ namespace Gobchat.Module.Chat.Internal
     {
         private readonly StringBuilder _builder = new StringBuilder();
 
-        protected override string LoggerId => "FRT1v";
+        protected override string LoggerId => "FCLv1";
 
         protected override string FormatLine(ChatMessage msg)
         {

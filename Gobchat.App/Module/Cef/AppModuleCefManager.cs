@@ -32,9 +32,9 @@ namespace Gobchat.Module.Cef
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
 #if DEBUG
-            var cefFolder = GobchatApplicationContext.ApplicationLocation;
+            var cefFolder = GobchatContext.ApplicationLocation;
 #else
-            var cefFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, "libs", "cef");
+            var cefFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, "libs", "cef");
 #endif
 
             System.IO.Directory.CreateDirectory(cefFolder);

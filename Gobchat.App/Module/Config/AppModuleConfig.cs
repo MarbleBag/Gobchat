@@ -33,8 +33,8 @@ namespace Gobchat.Module.Config
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
-            var resourceLocation = GobchatApplicationContext.ResourceLocation;
-            var userLocation = GobchatApplicationContext.UserConfigLocation;
+            var resourceLocation = GobchatContext.ResourceLocation;
+            var userLocation = GobchatContext.UserConfigLocation;
 
             var defaultConfigPath = System.IO.Path.Combine(resourceLocation, @"default_profile.json");
 
@@ -43,6 +43,8 @@ namespace Gobchat.Module.Config
 
             _manager = new GobchatConfigManager(defaultConfigPath, userLocation);
             _manager.InitializeManager();
+
+            ConfigManager.SetGlobalProperty("appdata.version", GobchatContext.ApplicationVersion.ToString());
 
             container.Register<IConfigManager>((c, p) => ConfigManager);
         }

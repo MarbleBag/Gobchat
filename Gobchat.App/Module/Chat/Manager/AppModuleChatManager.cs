@@ -60,7 +60,7 @@ namespace Gobchat.Module.Chat
             _memoryReader = _container.Resolve<FFXIVMemoryReader>();
             var actorManager = _container.Resolve<IActorManager>();
 
-            var languagePath = System.IO.Path.Combine(GobchatApplicationContext.ResourceLocation, @"lang");
+            var languagePath = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"lang");
             var resourceResolvers = new IResourceLocator[] { new LocalFolderResourceResolver(languagePath) };
             var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
 

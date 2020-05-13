@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
+    <Compile Include="Core\Runtime\GobchatContext.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
     <Compile Include="Module\Chat\Logger\Internal\ChatLoggerFormated.cs" />
@@ -193,7 +194,7 @@
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\IGobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
-    <Compile Include="Core\Chat\ChannelEnum.cs" />
+    <Compile Include="Core\Chat\ChatChannel.cs" />
     <Compile Include="Core\Chat\MessageSegmentType.cs" />
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
     <Compile Include="Core\Config\IJsonTransformer.cs" />

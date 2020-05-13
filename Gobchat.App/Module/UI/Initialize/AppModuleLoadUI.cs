@@ -77,7 +77,7 @@ namespace Gobchat.Module.UI
         private void Browser_OnBrowserInitialized_LoadIndex()
         {
             logger.Info("Loading gobchat ui");
-            var htmlpath = System.IO.Path.Combine(AbstractGobchatApplicationContext.ResourceLocation, @"ui\gobchat.html");
+            var htmlpath = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"ui\gobchat.html");
             var uri = new UriBuilder() { Scheme = Uri.UriSchemeFile, Host = "", Path = htmlpath }.Uri.AbsoluteUri;
             _cefOverlay.Browser.Load(uri);
         }

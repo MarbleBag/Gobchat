@@ -32,7 +32,7 @@ namespace Gobchat.Module.Updater.Internal
                 return tasks;
 
             var updateContent = GetContent(feed);
-            var appContent = GetContent(GobchatApplicationContext.ApplicationLocation);
+            var appContent = GetContent(GobchatContext.ApplicationLocation);
 
             // For some reason this tasks crashes the update, seems like I need to fork that project and check out what's going wrong
             // foreach (var file in appContent)
