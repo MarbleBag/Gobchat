@@ -71,6 +71,11 @@
                             <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.checkForBetaUpdate" />
                         </td>
                     </tr>
+                    <tr id="capp_rangefilter_feature">
+                        <td colspan="2">
+                            <label style="color:crimson; font-weight:bold;">Rangefilter not available. Unable to retrieve informations from FFXIV</label>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label>Activate range filter</label>
@@ -102,19 +107,22 @@
                     <tr>
                         <td><label>Cut off (Yalm):</label></td>
                         <td>
-                            <input type="number" min="0" id="capp_rangefilter_cutoff" data-gob-configkey="behaviour.fadeout.cutoff" style="color:#f6931f; font-weight:bold;">
+                            <input type="number" min="0" id="capp_rangefilter_cutoff" data-gob-configkey="behaviour.fadeout.cutoff" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_cutoff_reset" data-gob-configkey="behaviour.fadeout.cutoff" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
                         </td>
                     </tr>
                     <tr>
                         <td><label>Fade out (Yalm):</label></td>
                         <td>
-                            <input type="number" min="0" id="capp_rangefilter_fadeout" data-gob-configkey="behaviour.fadeout.falloff" style="color:#f6931f; font-weight:bold;">
+                            <input type="number" min="0" id="capp_rangefilter_fadeout" data-gob-configkey="behaviour.fadeout.falloff" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_fadeout_reset" data-gob-configkey="behaviour.fadeout.falloff" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
                         </td>
                     </tr>
                     <tr>
                         <td><label>Transparency (%):</label></td>
                         <td>
-                            <input type="number" min="1" max="100" id="capp_rangefilter_opacity" data-gob-configkey="behaviour.fadeout.fadeopacity" style="color:#f6931f; font-weight:bold;">
+                            <input type="number" min="1" max="100" id="capp_rangefilter_opacity" data-gob-configkey="behaviour.fadeout.minopacity" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_opacity_reset" data-gob-configkey="behaviour.fadeout.minopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -320,6 +328,13 @@
                 $("[for='capp_checkbetaupdates']").toggleClass("disabled", !value)
             })
 
+            {
+                (async () => {
+                    const available = await GobchatAPI.arePlayersAvailable()
+                    $("#capp_rangefilter_feature").toggle(!available)
+                })()
+            }
+
             const ckbRangeFilterActive = $("#capp_rangefilter_active")
             ConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
 
@@ -346,8 +361,13 @@
             }
 
             const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_cutoff_reset"))
+
             const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
+
             const txtRangeFilterOpacity = $("#capp_rangefilter_opacity")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_opacity_reset"))
 
             ConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
             ConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
