@@ -2,10 +2,10 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.6.0.1] - 2020.05.13
+## [1.6.0.1 Beta] - 2020.05.13
 ### Added
 - A range filter (By default off), distance is given in yalms. Range filter will only work for players which are nearby.
-- A LogConverter (It's an executeable included in the root directory)
+- A LogConverter (It's an executable included in the root directory)
 - Chat command to count nearby players. Use: /e gc player count
 - Chat command to list nearby players and their distance to you. Use: /e gc player list
 
