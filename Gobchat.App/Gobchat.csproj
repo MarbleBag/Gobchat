@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
+    <Compile Include="Core\Chat\ChatUtil.cs" />
     <Compile Include="Core\Runtime\GobchatContext.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />

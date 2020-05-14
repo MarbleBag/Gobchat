@@ -55,6 +55,8 @@ namespace Gobchat.Module.Actor.Internal
             if (name == null)
                 return 0;
 
+            name = ChatUtil.StripServerName(name);
+
             lock (_realm)
             {
                 if (_realm.TryGetValue(name, out var storedData))

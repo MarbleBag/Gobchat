@@ -78,10 +78,6 @@ namespace Gobchat.Core.Chat
             if (characterName == null)
                 return;
 
-            var serverIdx = characterName.IndexOf("[", StringComparison.InvariantCultureIgnoreCase);
-            if (serverIdx >= 0) //strip server name
-                characterName = characterName.Substring(0, serverIdx).Trim();
-
             var distance = _actorManager.GetFastDistanceToPlayerWithName(characterName);
             if (distance > 0)
                 message.Source.Visibility = CalculateVisibility(distance);
