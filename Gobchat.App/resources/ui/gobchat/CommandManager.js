@@ -25,6 +25,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this.registerCmdHandler(new CloseCommandHandler())
             this.registerCmdHandler(new PlayerCountCommandHandler())
             this.registerCmdHandler(new PlayerListCommandHandler())
+            this.registerCmdHandler(new PlayerDistanceCommandHandler())
         }
 
         processCommand(message) {
@@ -244,6 +245,17 @@ var Gobchat = (function (Gobchat, undefined) {
         async execute(commandManager, commandName, args) {
             const list = await GobchatAPI.getPlayersAndDistance()
             commandManager.sendInfoMessage(`Players nearby: ${list.join(", ")}`)
+        }
+    }
+
+    class PlayerDistanceCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["player distance"]
+        }
+
+        async execute(commandManager, commandName, args) {
+            const distance = await GobchatAPI.GetDistanceToPlayer(args)
+            commandManager.sendInfoMessage(`Player distance ${distance.toFixed(2)}y`)
         }
     }
 
