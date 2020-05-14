@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor\ActorPosition.cs" />
-    <Compile Include="Actor\PlayerData.cs" />
+    <Compile Include="Actor\PlayerCharacter.cs" />
     <Compile Include="Actor\PlayerEventArgs.cs" />
     <Compile Include="Actor\PlayerLocationMemoryReader.cs" />
     <Compile Include="Chat\ChatlogMemoryReader.cs" />
