@@ -119,10 +119,17 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label>Transparency (%):</label></td>
+                        <td><label>Transparency Start (%):</label></td>
                         <td>
-                            <input type="number" min="1" max="100" id="capp_rangefilter_opacity" data-gob-configkey="behaviour.fadeout.minopacity" style="font-weight:bold;">
-                            <button class="ui-gc-btn" id="capp_rangefilter_opacity_reset" data-gob-configkey="behaviour.fadeout.minopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
+                            <input type="number" min="1" max="100" id="capp_rangefilter_startopacity" data-gob-configkey="behaviour.fadeout.startopacity" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_startopacity_reset" data-gob-configkey="behaviour.fadeout.startopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Transparency End (%):</label></td>
+                        <td>
+                            <input type="number" min="1" max="100" id="capp_rangefilter_endopacity" data-gob-configkey="behaviour.fadeout.endopacity" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_endopacity_reset" data-gob-configkey="behaviour.fadeout.endopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -366,12 +373,15 @@
             const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
             ConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
 
-            const txtRangeFilterOpacity = $("#capp_rangefilter_opacity")
-            ConfigHelper.makeResetButton($("#capp_rangefilter_opacity_reset"))
+            const txtRangeFilterStartOpacity = $("#capp_rangefilter_startopacity")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_startopacity_reset"))
+            const txtRangeFilterEndOpacity = $("#capp_rangefilter_endopacity")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_endopacity_reset"))
 
             ConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
             ConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
-            ConfigHelper.bindElement(binding, txtRangeFilterOpacity, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
 
             const txtFrameX = $("#capp_frame_x")
             const txtFrameY = $("#capp_frame_y")
@@ -429,7 +439,7 @@
             const allFields = [
                 dpdLanguage,
                 ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
-                txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterOpacity,
+                txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
                 txtHotkeyShow,

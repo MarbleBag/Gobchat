@@ -168,7 +168,8 @@
       "active": false,
       "cutoff": 24,
       "falloff": 16,
-      "minopacity": 30,
+      "endopacity": 30,
+      "startopacity": 80,
       "mention": true
     },
     "checkForUpdate": true,
