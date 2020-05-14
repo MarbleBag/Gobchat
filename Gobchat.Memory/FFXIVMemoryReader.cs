@@ -165,7 +165,7 @@ namespace Gobchat.Memory
         {
             if (!FFXIVProcessValid)
                 return new List<Actor.PlayerCharacter>();
-            return _locationProcessor.GetPlayerData();
+            return _locationProcessor.GetPlayerCharacters();
         }
     }
 }

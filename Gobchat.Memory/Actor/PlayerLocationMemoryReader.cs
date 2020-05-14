@@ -68,7 +68,7 @@ namespace Gobchat.Memory.Actor
             }
         }
 
-        public List<PlayerCharacter> GetPlayerData()
+        public List<PlayerCharacter> GetPlayerCharacters()
         {
             var result = new List<PlayerCharacter>();
             var memoryResult = Sharlayan.Reader.GetActors();
