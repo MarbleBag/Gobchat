@@ -255,7 +255,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const distance = await GobchatAPI.GetDistanceToPlayer(args)
-            commandManager.sendInfoMessage(`Player distance ${distance.toFixed(2)}y`)
+            commandManager.sendInfoMessage(`Distance to ${args}: ${distance.toFixed(2)}y`)
         }
     }
 
