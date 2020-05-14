@@ -5,7 +5,7 @@
 function DeleteIfExists([string] $Path){
 	if(Test-Path $Path){
 		Write-Host "Deleting: $Path"
-		Remove-Item -Recurse -Force  $Path
+		Remove-Item -Recurse   $Path
 	}
 }
 
@@ -36,6 +36,11 @@ Write-Host "Renaming release folder ..."
 $releaseFolder = RenameAndDeleteDirectory $releaseFolder "Gobchat"
 $debugFolder = CreatePathSibling $releaseFolder "GobchatDebug"
 MakeAndDeleteDirectory $debugFolder
+
+if(-Not (Test-Path $releaseFolder)){
+	Write-Error "No gobchat folder"
+	exit 1
+}
 
 #Deletes all folders except for the ones named in #allowedFolders
 Write-Host "Deleting all the stuff no one cares about ..."

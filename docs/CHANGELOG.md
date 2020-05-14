@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.6.0-1 Beta] - 2020.05.13
+## [1.6.0-2 Beta] - 2020.05.14
 ### Added
 - A range filter (By default off), distance is given in yalms. Range filter will only work for players which are nearby.
 - A LogConverter (It's an executable included in the root directory)
