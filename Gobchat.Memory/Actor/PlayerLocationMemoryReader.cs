@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Sharlayan;
+using System;
 using System.Collections.Generic;
 
 namespace Gobchat.Memory.Actor
@@ -51,6 +52,22 @@ namespace Gobchat.Memory.Actor
             return null;
         }
 
+        private void MarkActivePlayer(List<PlayerCharacter> characters)
+        {
+            var currentUser = Sharlayan.Core.ActorItem.CurrentUser;
+            if (currentUser == null)
+                return;
+
+            foreach (var character in characters)
+            {
+                if (character.Id == currentUser.ID)
+                {
+                    character.IsPlayer = true;
+                    break;
+                }
+            }
+        }
+
         public List<PlayerCharacter> GetPlayerData()
         {
             var result = new List<PlayerCharacter>();
@@ -60,6 +77,7 @@ namespace Gobchat.Memory.Actor
             Process(memoryResult.CurrentPCs.Values, PlayerCharacter.UpdateFlag.Update, activePlayerPosition, result);
             Process(memoryResult.RemovedPCs.Values, PlayerCharacter.UpdateFlag.Remove, activePlayerPosition, result);
             Process(memoryResult.NewPCs.Values, PlayerCharacter.UpdateFlag.New, activePlayerPosition, result);
+            MarkActivePlayer(result);
 
             return result;
         }
