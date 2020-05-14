@@ -26,7 +26,10 @@ namespace Gobchat.Module.Misc
         private IDIContext _container;
         private IChatManager _chatManager;
         private FFXIVMemoryReader _memoryReader;
+
         private volatile bool _lastMemoryState;
+        private volatile bool _reportDone;
+        private object _lock = new object();
 
         /// <summary>
         /// Requires: <see cref="IChatManager"/> <br></br>
@@ -44,47 +47,56 @@ namespace Gobchat.Module.Misc
             _memoryReader = _container.Resolve<FFXIVMemoryReader>();
 
             _memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
-            _memoryReader.OnProcessScanned += MemoryReader_OnProcessScanned;
-            //MemoryReader_PostMessage(null, null);
+            CheckReport();
         }
 
         public void Dispose()
         {
             _memoryReader.OnProcessChanged -= MemoryReader_OnProcessChanged;
-            _memoryReader.OnProcessScanned -= MemoryReader_OnProcessScanned;
 
             _chatManager = null;
             _container = null;
         }
 
-        private void MemoryReader_OnProcessScanned(object sender, EventArgs e)
-        {
-            _lastMemoryState = ReportToUser();
-            _memoryReader.OnProcessScanned -= MemoryReader_OnProcessScanned;
-        }
 
         private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
         {
-            if (_lastMemoryState == _memoryReader.FFXIVProcessValid)
-                return;
-            _lastMemoryState = ReportToUser();
+            CheckReport();
+        }
+
+        private void CheckReport()
+        {
+            lock (_lock)
+            {
+                if (_reportDone)
+                {
+                    if (_lastMemoryState != _memoryReader.FFXIVProcessValid)
+                        _lastMemoryState = ReportToUser();
+                }
+                else
+                {
+                    _lastMemoryState = ReportToUser();
+                    _reportDone = true;
+                }
+            }
         }
 
         private bool ReportToUser()
         {
-            var state = _memoryReader.FFXIVProcessValid;
-
-            if (state)
+            lock (_lock)
             {
-                if (_memoryReader.ChatLogAvailable)
-                    _chatManager.EnqueueMessage(SystemMessageType.Info, "FFXIV detected.");
+                var state = _memoryReader.FFXIVProcessValid;
+                if (state)
+                {
+                    if (_memoryReader.ChatLogAvailable)
+                        _chatManager.EnqueueMessage(SystemMessageType.Info, "FFXIV detected.");
+                    else
+                        _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
+                }
                 else
-                    _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
+                    _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't find a running instance of FFXIV.");
+                return state;
             }
-            else
-                _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't find a running instance of FFXIV.");
-
-            return state;
         }
     }
 }
