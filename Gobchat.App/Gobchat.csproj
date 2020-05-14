@@ -228,7 +228,7 @@
     <Compile Include="Module\Hotkey\Internal\HotkeyManager.cs" />
     <Compile Include="Module\Actor\IActorManager.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
-    <Compile Include="Module\UI\Connector\AppModuleActorBrowserAPI.cs" />
+    <Compile Include="Module\UI\Connector\AppModuleActorToUI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
     <Compile Include="Module\Chat\Manager\Internal\ChatManager.cs" />
     <Compile Include="Module\Chat\Logger\AppModuleChatLogger.cs" />
@@ -251,7 +251,7 @@
     <Compile Include="Module\UI\BrowserAPI\AppModuleBrowserAPIManager.cs" />
     <Compile Include="Core\Util\EventHandlerManager.cs" />
     <Compile Include="Core\Util\EventHandlerConfigManager.cs" />
-    <Compile Include="Module\UI\BrowserAPI\Internal\GobchatBrowserAPI.cs" />
+    <Compile Include="Module\UI\BrowserAPI\GobchatBrowserAPI.cs" />
     <Compile Include="Module\UI\IBrowserAPIManager.cs" />
     <Compile Include="Module\UI\UIReadChangedEventArgs.cs" />
     <Compile Include="Module\Updater\Internal\GitHubFileDownloader.cs" />

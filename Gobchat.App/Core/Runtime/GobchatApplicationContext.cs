@@ -94,7 +94,7 @@ namespace Gobchat.Core.Runtime
                 //UI Adapter
                 new global::Gobchat.Module.UI.AppModuleChatToUI(),
                 new global::Gobchat.Module.UI.AppModuleConfigToUI(),
-                new global::Gobchat.Module.UI.AppModuleActorBrowserAPI(),
+                new global::Gobchat.Module.UI.AppModuleActorToUI(),
 
                 //Start UI
                 new global::Gobchat.Module.UI.AppModuleLoadUI(),

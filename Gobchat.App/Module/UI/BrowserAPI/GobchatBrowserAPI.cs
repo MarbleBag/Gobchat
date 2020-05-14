@@ -14,6 +14,9 @@
 using Gobchat.Core.Runtime;
 using Gobchat.UI.Web;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -181,13 +184,15 @@ namespace Gobchat.Module.UI.Internal
                 if (players.Length == 0)
                     return Array.Empty<string>();
 
-                var result = new string[players.Length];
+                var result = new List<(float Distance, string Name)>(players.Length);
                 for (var i = 0; i < players.Length; ++i)
                 {
                     var distance = await _browserAPIManager.ActorHandler.GetDistanceToPlayer(players[i]).ConfigureAwait(false);
-                    result[i] = $"{players[i]}: {distance}";
+                    result.Add((distance, players[i]));
                 }
-                return result;
+
+                result.Sort((a, b) => (int)(a.Distance - b.Distance));
+                return result.Select(e => $"{e.Name}: {e.Distance.ToString("0.00", CultureInfo.InvariantCulture)}").ToArray();
             }
         }
     }

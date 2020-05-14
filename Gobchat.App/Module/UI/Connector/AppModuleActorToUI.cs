@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Gobchat.Module.UI
 {
-    public sealed class AppModuleActorBrowserAPI : IApplicationModule
+    public sealed class AppModuleActorToUI : IApplicationModule
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -31,7 +31,7 @@ namespace Gobchat.Module.UI
         /// Requires: <see cref="IActorManager"/> <br></br>
         /// <br></br>
         /// </summary>
-        public AppModuleActorBrowserAPI()
+        public AppModuleActorToUI()
         {
         }
 
