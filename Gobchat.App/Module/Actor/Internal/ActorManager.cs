@@ -21,8 +21,6 @@ namespace Gobchat.Module.Actor.Internal
 {
     internal sealed class ActorManager : IActorManager
     {
-        public TimeSpan OutdatedTimelimit { get; set; } = TimeSpan.FromSeconds(3);
-
         private sealed class Data
         {
             public DateTime LastUpdateTime;
@@ -31,14 +29,26 @@ namespace Gobchat.Module.Actor.Internal
 
         private readonly Dictionary<string, Data> _realm = new Dictionary<string, Data>();
         private readonly Queue<Data> _pendingUpdates = new Queue<Data>();
+        private PlayerCharacter ActivePlayer { get; set; }
 
         public bool IsAvailable { get; internal set; }
+        public TimeSpan OutdatedTimelimit { get; set; } = TimeSpan.FromSeconds(3);
 
         public int GetPlayerCount()
         {
             lock (_realm)
             {
                 return _realm.Count;
+            }
+        }
+
+        public string GetActivePlayerName()
+        {
+            lock (_realm)
+            {
+                if (ActivePlayer != null)
+                    return null;
+                return ActivePlayer.Name;
             }
         }
 
@@ -93,6 +103,8 @@ namespace Gobchat.Module.Actor.Internal
             lock (_realm)
             {
                 _realm.Clear();
+                ActivePlayer = null;
+
                 foreach (var newData in _pendingUpdates)
                 {
                     if (_realm.TryGetValue(newData.Actor.Name, out var oldData))
@@ -104,7 +116,11 @@ namespace Gobchat.Module.Actor.Internal
                     {
                         _realm[newData.Actor.Name] = newData;
                     }
+
+                    if (newData.Actor.IsPlayer)
+                        ActivePlayer = newData.Actor;
                 }
+
                 _pendingUpdates.Clear();
             }
         }

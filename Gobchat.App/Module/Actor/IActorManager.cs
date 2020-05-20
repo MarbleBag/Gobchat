@@ -6,6 +6,8 @@ namespace Gobchat.Module.Actor
     {
         bool IsAvailable { get; }
 
+        string GetActivePlayerName();
+
         int GetPlayerCount();
 
         float GetDistanceToPlayerWithName(string name);
