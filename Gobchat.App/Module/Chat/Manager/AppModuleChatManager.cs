@@ -66,13 +66,13 @@ namespace Gobchat.Module.Chat
 
             _chatManager = new ChatManager(autotranslateProvider, actorManager);
 
+            _configManager.AddPropertyChangeListener("behaviour.chat.updateInterval", true, true, ConfigManager_UpdateChatInterval);
             _configManager.AddPropertyChangeListener("behaviour.channel", true, true, ConfigManager_UpdateChannelProperties);
-            _configManager.AddPropertyChangeListener("behaviour.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
             _configManager.AddPropertyChangeListener("behaviour.segment", true, true, ConfigManager_UpdateFormaterProperties);
             _configManager.AddPropertyChangeListener("behaviour.mentions", true, true, ConfigManager_UpdateMentions);
-            _configManager.AddPropertyChangeListener("behaviour.chatUpdateInterval", true, true, ConfigManager_UpdateChatInterval);
+            _configManager.AddPropertyChangeListener("behaviour.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
-            _configManager.AddPropertyChangeListener("behaviour.fadeout", true, true, ConfigManager_UpdateRangeFilter);
+            _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -141,7 +141,7 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateChatInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _updateInterval = config.GetProperty<long>("behaviour.chatUpdateInterval");
+            _updateInterval = config.GetProperty<long>("behaviour.chat.updateInterval");
         }
 
         private void ConfigManager_UpdateChannelProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -195,9 +195,9 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.fadeout.active");
-            _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.fadeout.cutoff");
-            _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.fadeout.falloff");
+            _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
+            _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.rangefilter.cutoff");
+            _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.rangefilter.fadeout");
             //_chatManager.Config.CutOffConsiderMentions = config.GetProperty<bool>("behaviour.fadeout.mention");
         }
     }

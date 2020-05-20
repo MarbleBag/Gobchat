@@ -270,7 +270,7 @@
     <p>
         <div>
             <label>Chat Update Interval (MS)</label>
-            <input type="number" min="0" max="5000" id="capp_updateInterval" data-gob-configkey="behaviour.chatUpdateInterval" />
+            <input type="number" min="0" max="5000" id="capp_chat_updateInterval" data-gob-configkey="behaviour.chat.updateInterval" />
         </div>
         <div hidden>
             <table>
@@ -422,7 +422,7 @@
             ConfigHelper.bindElement(binding, txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
 
             // setup ungrouped
-            const txtUpdateInterval = $("#capp_updateInterval")
+            const txtUpdateInterval = $("#capp_chat_updateInterval")
             txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
 
             ConfigHelper.bindElement(binding, txtUpdateInterval, {
