@@ -25,9 +25,11 @@ namespace Gobchat.Module.Actor
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
+
         private IConfigManager _configManager;
 
         private FFXIVMemoryReader _memoryReader;
+
         private ActorManager _actorManager;
 
         private IndependendBackgroundWorker _updater;
@@ -35,11 +37,13 @@ namespace Gobchat.Module.Actor
         private long _updateInterval;
 
         /// <summary>
-        ///
+        /// Adds an <see cref="IActorManager"/> to the app context and supplies it with constant updates by querying a <see cref="FFXIVMemoryReader"/>
+        /// <br></br>
+        /// <br></br>
         /// Requires: <see cref="IGobchatConfig"/> <br></br>
         /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
-        /// Provides: <see cref="IActorManager"/> <br></br>
         /// <br></br>
+        /// Provides: <see cref="IActorManager"/> <br></br>
         /// </summary>
         public AppModuleActorManager()
         {
@@ -54,10 +58,8 @@ namespace Gobchat.Module.Actor
             _actorManager = new ActorManager();
             _updater = new IndependendBackgroundWorker();
 
-            _memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
-
-            _configManager.AddPropertyChangeListener("behaviour.chatUpdateInterval", true, true, ConfigManager_UpdateChatInterval);
-            _configManager.AddPropertyChangeListener("behaviour.fadeout.active", true, true, ConfigManager_UpdateRangeFilter);
+            _configManager.AddPropertyChangeListener("behaviour.actor.updateInterval", true, true, ConfigManager_UpdateChatInterval);
+            _configManager.AddPropertyChangeListener("behaviour.actor.active", true, true, ConfigManager_UpdateRangeFilter);
 
             _container.Register<IActorManager>((c, p) => _actorManager);
         }
@@ -102,12 +104,15 @@ namespace Gobchat.Module.Actor
             finally
             {
                 _actorManager.UpdateManager();
+                _actorManager.IsAvailable = false;
                 logger.Info("Actor updates concluded");
             }
         }
 
         private void UpdateManager()
         {
+            _actorManager.IsAvailable = _memoryReader.PlayerCharactersAvailable;
+
             if (_memoryReader.FFXIVProcessValid)
             {
                 var characterData = _memoryReader.GetPlayerCharacters();
@@ -117,19 +122,14 @@ namespace Gobchat.Module.Actor
             _actorManager.UpdateManager();
         }
 
-        private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
-        {
-            _actorManager.IsAvailable = _memoryReader.PlayerCharactersAvailable;
-        }
-
         private void ConfigManager_UpdateChatInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _updateInterval = config.GetProperty<long>("behaviour.chatUpdateInterval");
+            _updateInterval = config.GetProperty<long>("behaviour.actor.updateInterval");
         }
 
         private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            var runManager = config.GetProperty<bool>("behaviour.fadeout.active");
+            var runManager = config.GetProperty<bool>("behaviour.actor.active");
             if (runManager)
             {
                 if (_updater.IsRunning)
