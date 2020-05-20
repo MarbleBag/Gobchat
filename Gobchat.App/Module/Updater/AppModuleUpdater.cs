@@ -37,12 +37,12 @@ namespace Gobchat.Module.Updater
             DeleteOldPatchData();
 
             var configManager = container.Resolve<IConfigManager>();
-            var doUpdate = configManager.GetProperty<bool>("behaviour.checkForUpdate");
+            var doUpdate = configManager.GetProperty<bool>("behaviour.appUpdate.checkOnline");
 
             if (!doUpdate)
                 return;
 
-            var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.checkForBetaUpdate");
+            var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.appUpdate.acceptBeta");
 
             var update = GetUpdate(GobchatContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
