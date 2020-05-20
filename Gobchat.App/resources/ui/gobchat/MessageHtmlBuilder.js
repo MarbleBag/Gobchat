@@ -94,7 +94,7 @@ var Gobchat = (function (Gobchat) {
         if (visibility >= 100)
             return null
 
-        const ignoreDistance = config.get("behaviour.fadeout.mention", false)
+        const ignoreDistance = config.get("behaviour.rangefilter.ignoreMention", false)
         if (ignoreDistance && message.containsMentions)
             return null
 

@@ -38,8 +38,8 @@ namespace Gobchat.Core.Config
                     if (channel["visible"] is JArray visible)
                         ConvertValueToEnumAndReplace<Chat.ChatChannel>(visible);
 
-                    if (channel["fadeout"] is JArray fadeout)
-                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(fadeout);
+                    if (channel["rangefilter"] is JArray rangefilter)
+                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(rangefilter);
                 }
 
                 if (behaviour["segment"] is JObject segments)
@@ -129,8 +129,8 @@ namespace Gobchat.Core.Config
                     if (channel["visible"] is JArray visible)
                         ConvertEnumToStringAndReplace<Chat.ChatChannel>(visible);
 
-                    if (channel["fadeout"] is JArray fadeout)
-                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(fadeout);
+                    if (channel["rangefilter"] is JArray rangefilter)
+                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(rangefilter);
                 }
 
                 if (behaviour["segment"] is JObject segments)

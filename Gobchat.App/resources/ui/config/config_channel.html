@@ -44,7 +44,7 @@
                 <input class="entry-roleplay" type="checkbox" />
             </td>
             <td>
-                <input class="entry-fadeout" type="checkbox" />
+                <input class="entry-rangefilter" type="checkbox" />
             </td>
             <td>
                 <div>
@@ -124,7 +124,7 @@
                 const chkVisible = rowEntry.find(".entry-visible")
                 const chkMention = rowEntry.find(".entry-mention")
                 const chkRoleplay = rowEntry.find(".entry-roleplay")
-                const chkFadeOut = rowEntry.find(".entry-fadeout")
+                const chkRangefilter = rowEntry.find(".entry-rangefilter")
                 const clrSelectorFG = rowEntry.find(".entry-color-forground")
                 const btnResetFG = rowEntry.find(".entry-color-forground-reset")
                 const clrSelectorBG = rowEntry.find(".entry-color-background")
@@ -134,19 +134,19 @@
                 ConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
                 ConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
                 ConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
-                ConfigHelper.setConfigKey(chkFadeOut, "behaviour.channel.fadeout")
+                ConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
 
                 const channelEnums = [].concat(entry.channelEnum || []).map(e => Gobchat.ChannelEnum[e])
                 if (channelEnums.length === 0) {
                     chkVisible.hide()
                     chkMention.hide()
                     chkRoleplay.hide()
-                    chkFadeOut.hide()
+                    chkRangefilter.hide()
                 } else {
                     ConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
                     ConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
                     ConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkFadeOut, channelEnums)
+                    ConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
                 }
 
                 if (entry.styleId === undefined || entry.styleId === null) {

@@ -117,7 +117,7 @@ var Gobchat = (function (Gobchat) {
         generateStyleSheet(cssResults, gobchatConfig.get("style"))
         generateTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
         generateGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
-        generateFadeOutStyle(cssResults, gobchatConfig.get("behaviour.fadeout"))
+        generateFadeOutStyle(cssResults, gobchatConfig.get("behaviour.rangefilter"))
 
         return cssResults.join("\n")
     }
