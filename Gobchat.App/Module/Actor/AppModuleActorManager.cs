@@ -28,6 +28,7 @@ namespace Gobchat.Module.Actor
 
         private IConfigManager _configManager;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "not managed by this instance")]
         private FFXIVMemoryReader _memoryReader;
 
         private ActorManager _actorManager;
