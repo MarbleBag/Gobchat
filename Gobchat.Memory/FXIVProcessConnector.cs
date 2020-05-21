@@ -27,7 +27,7 @@ namespace Gobchat.Memory
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public bool FFXIVProcessValid { get => MemoryHandler.Instance.IsAttached; }
+        public bool FFXIVProcessValid { get; private set; }
         public int FFXIVProcessId { get; private set; } = 0;
 
         public event EventHandler OnConnectionLost;
@@ -49,6 +49,7 @@ namespace Gobchat.Memory
 
             process.EnableRaisingEvents = true;
             process.Exited += Process_Exited;
+            FFXIVProcessValid = true;
 
             return FFXIVProcessValid;
         }
@@ -56,6 +57,7 @@ namespace Gobchat.Memory
         public void Disconnect()
         {
             MemoryHandler.Instance.UnsetProcess();
+            FFXIVProcessValid = false;
         }
 
         private void ConnectTo(Process process)
