@@ -1,10 +1,7 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Gobchat.Memory.Window
 {
@@ -88,7 +85,7 @@ namespace Gobchat.Memory.Window
 
         public WindowObserver()
         {
-            // set & unset need to be called by the same thread, prefareable any thread with a running message pump
+            // set & unset need to be called by the same thread, preferable any thread with a running message pump
             _initializedThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
         }
 
@@ -203,11 +200,11 @@ namespace Gobchat.Memory.Window
         private string GetWindowTitle(IntPtr hwnd)
         {
             const int nChars = 256;
-            StringBuilder Buff = new StringBuilder(nChars);
+            StringBuilder buffer = new StringBuilder(nChars);
 
-            if (GetWindowText(hwnd, Buff, nChars) > 0)
+            if (GetWindowText(hwnd, buffer, nChars) > 0)
             {
-                return Buff.ToString();
+                return buffer.ToString();
             }
             return null;
         }
