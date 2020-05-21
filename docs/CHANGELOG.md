@@ -36,7 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Chatlogs are now easier to read by splitting message header from content
 
 
-- Mentions in your own messages will no longer be marked
+- Your message will no longer be scanned for any mentions
   - Requires: `Character location updates`
 
 ## [1.5.2] - 2020.03.22
