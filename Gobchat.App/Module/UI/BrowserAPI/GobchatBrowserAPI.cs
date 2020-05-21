@@ -191,7 +191,7 @@ namespace Gobchat.Module.UI.Internal
                     result.Add((distance, players[i]));
                 }
 
-                result.Sort((a, b) => (int)(a.Distance - b.Distance));
+                result.Sort((a, b) => a.Distance.CompareTo(b.Distance));
                 return result.Select(e => $"{e.Name}: {e.Distance.ToString("0.00", CultureInfo.InvariantCulture)}").ToArray();
             }
         }
