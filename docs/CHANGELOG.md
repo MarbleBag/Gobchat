@@ -2,6 +2,44 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [Unreleased]
+### Added
+- `Character location updates`
+  - Gobchat tries to get informations about your character and nearby players.
+  - This feature is optional and can be deactivated in `Config / App`
+
+
+- Chat command: `player count`
+  - Counts neraby players.
+  - Requires `Character location updates`
+
+
+- Chat command: `player list`
+  - Lists nearby players and their distance to you.
+  - Requires `Character location updates`
+
+
+- Chat command: `player distance`
+  - Shows distance (in yalms) to a player.
+  - Requires `Character location updates`
+
+
+- Range filter
+  - Applys (or hides) messages from players depending on their distance to you. Which channels are affected can be changed in `Config / Channels`. Will only work for players which are nearby. By default deactivated and can be activated in `Config / App`
+  - Requires `Character location updates`
+
+
+- ChatLog converter
+  - Can be found in the root directory and can be used to convert old chatlogs into the new format
+
+### Changed
+- Chatlogs are now easier to read by splitting message header from content
+
+
+- Mentions in your own messages will no longer be marked
+  - Requires: `Character location updates`
+
+
 ## [1.6.0-2 Beta] - 2020.05.14
 ### Added
 - Range filter (By default off), distance is given in yalms. Range filter will only work for players which are nearby.
