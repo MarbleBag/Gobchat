@@ -1,5 +1,5 @@
 ﻿{
-  "version": 3,
+  "version": 16,
   "profile": {
     "id": null,
     "name": null
@@ -79,7 +79,7 @@
         "LINKSHELL_7",
         "LINKSHELL_8"
       ],
-      "fadeout": [
+      "rangefilter": [
         "SAY",
         "EMOTE",
         "ANIMATED_EMOTE"
@@ -164,22 +164,29 @@
       },
       "order": [ "base" ]
     },
-    "fadeout": {
+    "rangefilter": {
       "active": false,
       "cutoff": 24,
-      "falloff": 16,
+      "fadeout": 16,
       "endopacity": 30,
       "startopacity": 80,
-      "mention": true
+      "ignoreMention": true
     },
-    "checkForUpdate": true,
-    "checkForBetaUpdate": false,
+    "actor": {
+      "updateInterval": 1000,
+      "active": true
+    },
+    "chat": {
+      "updateInterval": 1000
+    },
+    "appUpdate": {
+      "checkOnline": true,
+      "acceptBeta": false
+    },
     "autodetectEmoteInSay": true,
     "hideOnMinimize": false,
     "writeChatLog": false,
     "showTimestamp": true,
-    "datacenter": null,
-    "chatUpdateInterval": 1000,
     "hotkeys": {
       "showhide": ""
     },

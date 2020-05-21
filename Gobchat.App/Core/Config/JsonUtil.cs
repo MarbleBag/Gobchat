@@ -39,7 +39,7 @@ namespace Gobchat.Core.Config
                 var step = path[i];
                 var nextNode = node[step] as JObject;
 
-                if (nextNode == null )
+                if (nextNode == null)
                 {
                     switch (missingElementHandling)
                     {
@@ -286,6 +286,25 @@ namespace Gobchat.Core.Config
 
             var needsToBeReplaced = JsonUtil.TypeSwitch(source, destination, callbacks);
             return (changed, needsToBeReplaced);
+        }
+
+        public static bool CopyIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
+        {
+            JToken result = null;
+            JsonUtil.WalkJson(srcPath, src, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                result = node[propertyName];
+            });
+
+            if (result == null)
+                return false;
+
+            JsonUtil.WalkJson(dstPath, dst, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            {
+                node[propertyName] = result.DeepClone();
+            });
+
+            return true;
         }
     }
 }

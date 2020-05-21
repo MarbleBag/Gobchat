@@ -159,6 +159,7 @@
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v16.cs" />
     <Compile Include="Core\Runtime\GobchatContext.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
@@ -176,7 +177,7 @@
     <Compile Include="Core\Chat\Formater\ReplaceTypeByToken.cs" />
     <Compile Include="Core\Config\Events\ActiveProfileChangedEventArgs.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigLoadException.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\Transforme_v2_to_v3.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v3.cs" />
     <Compile Include="Core\Config\IGobchatConfigManager.cs" />
     <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
     <Compile Include="Core\Config\Exceptions\InvalidProfileIdException.cs" />

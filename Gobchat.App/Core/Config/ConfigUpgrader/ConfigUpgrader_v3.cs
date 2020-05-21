@@ -15,13 +15,10 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class Transforme_v2_to_v3 : IJsonTransformer
+    internal sealed class ConfigUpgrader_v3 : IJsonTransformer
     {
-        private GobchatConfigProfile defaultConfig;
-
-        public Transforme_v2_to_v3(GobchatConfigProfile defaultConfig)
+        public ConfigUpgrader_v3()
         {
-            this.defaultConfig = defaultConfig;
         }
 
         public JObject Transform(JObject json)
