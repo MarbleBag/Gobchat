@@ -60,7 +60,7 @@
                             <label>Check for updates on start</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="capp_checkupdates" data-gob-configkey="behaviour.checkForUpdate" />
+                            <input type="checkbox" id="capp_checkupdates" data-gob-configkey="behaviour.appUpdate.checkOnline" />
                         </td>
                     </tr>
                     <tr>
@@ -68,17 +68,25 @@
                             <label for="capp_checkbetaupdates">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- allow beta updates</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.checkForBetaUpdate" />
+                            <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.appUpdate.acceptBeta" />
                         </td>
                     </tr>
-                    <tr id="capp_rangefilter_feature">
+                    <tr id="capp_characterlocations_feature">
                         <td colspan="2">
-                            <label style="color:crimson; font-weight:bold;">Range filter not available. Unable to retrieve informations from FFXIV.</label>
+                            <label style="color:crimson; font-weight:bold;">Character locations are not available. Unable to retrieve informations from FFXIV.</label>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Activate range filter</label>
+                            <label>Character location updates</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_actor_updateActive" data-gob-configkey="behaviour.actor.active" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Range filter</label>
                         </td>
                         <td>
                             <input type="checkbox" id="capp_rangefilter_active" data-gob-configkey="behaviour.rangefilter.active" />
@@ -280,16 +288,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <label>Player Update Interval (MS)</label>
+                        <label>Character Update Interval (MS)</label>
                     </td>
                     <td>
                         <input type="number" min="200" max="20000" id="capp_actor_updateInterval" data-gob-configkey="behaviour.actor.updateInterval" />
-                    </td>
-                    <td>
-                        <label>Active</label>
-                    </td>
-                    <td>
-                        <input type="checkbox" id="capp_actor_updateActive" data-gob-configkey="behaviour.actor.active" />
                     </td>
                 </tr>
             </tbody>
@@ -360,7 +362,7 @@
             {
                 (async () => {
                     const available = await GobchatAPI.arePlayersAvailable()
-                    $("#capp_rangefilter_feature").toggle(!available)
+                    $("#capp_characterlocations_feature").toggle(!available)
                 })()
             }
 
