@@ -268,16 +268,32 @@
     </p>
 
     <p>
-        <div>
-            <label>Chat Update Interval (MS)</label>
-            <input type="number" min="0" max="5000" id="capp_chat_updateInterval" data-gob-configkey="behaviour.chat.updateInterval" />
-        </div>
-        <div>
-            <label>Player Update Interval (MS)</label>
-            <input type="number" min="200" max="20000" id="capp_actor_updateInterval" data-gob-configkey="behaviour.actor.updateInterval" />
-            <label>Active</label>
-            <input type="checkbox" id="capp_actor_updateActive" data-gob-configkey="behaviour.actor.active" />
-        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label>Chat Update Interval (MS)</label>
+                    </td>
+                    <td>
+                        <input type="number" min="50" max="5000" id="capp_chat_updateInterval" data-gob-configkey="behaviour.chat.updateInterval" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Player Update Interval (MS)</label>
+                    </td>
+                    <td>
+                        <input type="number" min="200" max="20000" id="capp_actor_updateInterval" data-gob-configkey="behaviour.actor.updateInterval" />
+                    </td>
+                    <td>
+                        <label>Active</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="capp_actor_updateActive" data-gob-configkey="behaviour.actor.active" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div hidden>
             <table>
                 <tbody>
@@ -428,15 +444,16 @@
             ConfigHelper.bindElement(binding, txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
 
             // setup ungrouped
-            const txtUpdateInterval = $("#capp_chat_updateInterval")
-            txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            const txtChatUpdateInterval = $("#capp_chat_updateInterval")
+            txtChatUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            ConfigHelper.bindElement(binding, txtChatUpdateInterval, { elementGetAccessor: parseNumber })
 
-            ConfigHelper.bindElement(binding, txtUpdateInterval, {
-                elementGetAccessor: ($element) => {
-                    const value = parseInt($element.val()) || 100
-                    return value < 0 ? 0 : value > 5000 ? 5000 : value
-                }
-            })
+            const txtActorUpdateInterval = $("#capp_actor_updateInterval")
+            txtActorUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            ConfigHelper.bindElement(binding, txtActorUpdateInterval, { elementGetAccessor: parseNumber })
+
+            const ckbActorActive = $("#capp_actor_updateActive")
+            ConfigHelper.bindCheckbox(binding, ckbActorActive)
 
             // activate bindings
             binding.initialize()
@@ -449,7 +466,8 @@
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
                 txtHotkeyShow,
-                txtUpdateInterval,
+                txtChatUpdateInterval, txtActorUpdateInterval,
+                ckbActorActive
             ]
 
             const btnCopyProfile = $("#capp_copyprofile")
