@@ -2,15 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [Unreleased]
+## [1.6.0] - 2020.05.21
 ### Added
 - `Character location updates`
-  - Gobchat tries to get informations about your character and nearby players.
+  - Gobchat tries to get information about your character and nearby players.
   - This feature is optional and can be deactivated in `Config / App`
 
 
 - Chat command: `player count`
-  - Counts neraby players.
+  - Counts nearby players.
   - Requires `Character location updates`
 
 
@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 
 - Range filter
-  - Applys (or hides) messages from players depending on their distance to you. Which channels are affected can be changed in `Config / Channels`. Will only work for players which are nearby. By default deactivated and can be activated in `Config / App`
+  - Applies (or hides) messages from players depending on their distance to you. The affected channels can be changed in `Config / Channels`. Will only work for players which are nearby. By default, deactivated and can be activated in `Config / App`
   - Requires `Character location updates`
 
 
@@ -38,18 +38,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 - Mentions in your own messages will no longer be marked
   - Requires: `Character location updates`
-
-
-## [1.6.0-2 Beta] - 2020.05.14
-### Added
-- Range filter (By default off), distance is given in yalms. Range filter will only work for players which are nearby.
-- LogConverter (It's an executable included in the root directory)
-- Chat command to count nearby players. Use: /e gc player count
-- Chat command to list nearby players and their distance to you. Use: /e gc player list
-- Chat command to show distance (in yalms) to a player. Use: /e gc player distance <t>
-
-### Changed
-- Log format changed and with improved readability for humans, while still easily machine parsable.
 
 ## [1.5.2] - 2020.03.22
 ### Added
