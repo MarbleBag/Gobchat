@@ -78,6 +78,7 @@ namespace Gobchat.Module.Actor
             //TODO some start up logging
             try
             {
+                logger.Info("Actor updates started");
                 var timer = new System.Diagnostics.Stopwatch();
                 while (!cancellationToken.IsCancellationRequested)
                 {

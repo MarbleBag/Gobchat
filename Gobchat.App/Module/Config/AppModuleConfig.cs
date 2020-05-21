@@ -45,6 +45,7 @@ namespace Gobchat.Module.Config
             _manager.InitializeManager();
 
             ConfigManager.SetGlobalProperty("appdata.version", GobchatContext.ApplicationVersion.ToString());
+            ConfigManager.DispatchChangeEvents();
 
             container.Register<IConfigManager>((c, p) => ConfigManager);
         }

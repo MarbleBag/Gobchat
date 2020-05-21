@@ -415,8 +415,8 @@ namespace Gobchat.Core.Config
 
             lock (_synchronizationLock)
             {
-                var pendingEvents = GetPendingEvents();
-                System.Threading.Tasks.Task.Run(() => DispatchEvents(pendingEvents, false));
+                if (_pendingPropertyChanges.Count != 0)
+                    throw new SynchronizationException("Pending property change events detected");
 
                 var storedProfiles = this.Profiles;
                 var availableProfiles = profileIds.Where(p => storedProfiles.Contains(p));
@@ -444,7 +444,7 @@ namespace Gobchat.Core.Config
                 foreach (var profileId in removedProfiles)
                     DeleteProfile(profileId, true);
 
-                pendingEvents = GetPendingEvents();
+                var pendingEvents = GetPendingEvents();
                 System.Threading.Tasks.Task.Run(() =>
                 {
                     if (profileEvent != null)

@@ -193,8 +193,9 @@ namespace Gobchat.Module.Chat.Internal
                 try
                 {
                     var chatMessage = _chatMessageBuilder.BuildChatMessage(message);
-                    _chatMessageBuilder.FormatChatMessage(chatMessage);
                     _chatMessageActorData.SetActorData(chatMessage);
+                    _chatMessageBuilder.FormatChatMessage(chatMessage);
+
                     result.Add(chatMessage);
                 }
                 catch (Exception ex)

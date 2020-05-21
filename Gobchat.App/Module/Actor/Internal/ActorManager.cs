@@ -46,7 +46,7 @@ namespace Gobchat.Module.Actor.Internal
         {
             lock (_realm)
             {
-                if (User != null)
+                if (User == null)
                     return null;
                 return User.Name;
             }

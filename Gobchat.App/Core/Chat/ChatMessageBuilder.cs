@@ -156,7 +156,7 @@ namespace Gobchat.Core.Chat
                 }
             }
 
-            if (_mentionChannels.Contains(chatMessage.Channel))
+            if (!chatMessage.Source.IsUser && _mentionChannels.Contains(chatMessage.Channel))
             {
                 _mentionFinder.MarkMentions(chatMessage);
                 chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.MENTION);
