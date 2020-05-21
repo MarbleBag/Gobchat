@@ -157,9 +157,9 @@ namespace Gobchat.Module.UI.Internal
                 return result.ToString();
             }
 
-            public async Task<bool> ArePlayersAvailable()
+            public async Task<bool> IsFeaturePlayerLocationAvailable()
             {
-                return await _browserAPIManager.ActorHandler.IsAvailable().ConfigureAwait(false);
+                return await _browserAPIManager.ActorHandler.IsFeatureAvailable().ConfigureAwait(false);
             }
 
             public async Task<int> GetPlayerCount()

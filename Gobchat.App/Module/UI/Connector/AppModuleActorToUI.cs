@@ -13,6 +13,7 @@
 
 using Gobchat.Core.Runtime;
 using Gobchat.Module.Actor;
+using Gobchat.Module.MemoryReader;
 using System;
 using System.Threading.Tasks;
 
@@ -24,10 +25,10 @@ namespace Gobchat.Module.UI
 
         private IDIContext _container;
         private IBrowserAPIManager _browserAPIManager;
-        private IActorManager _actorManager;
 
         /// <summary>
         /// Requires: <see cref="IBrowserAPIManager"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// Requires: <see cref="IActorManager"/> <br></br>
         /// <br></br>
         /// </summary>
@@ -39,26 +40,25 @@ namespace Gobchat.Module.UI
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _browserAPIManager = _container.Resolve<IBrowserAPIManager>();
-            _actorManager = _container.Resolve<IActorManager>();
-
-            _browserAPIManager.ActorHandler = new ActorHandler(_actorManager);
+            _browserAPIManager.ActorHandler = new ActorHandler(container);
         }
 
         public void Dispose()
         {
             _browserAPIManager.ActorHandler = null;
             _browserAPIManager = null;
-            _actorManager = null;
             _container = null;
         }
 
         private sealed class ActorHandler : IBrowserActorHandler
         {
             private IActorManager _actorManager;
+            private IMemoryReaderManager _memoryManager;
 
-            public ActorHandler(IActorManager actorManager)
+            public ActorHandler(IDIContext container)
             {
-                _actorManager = actorManager;
+                _actorManager = container.Resolve<IActorManager>();
+                _memoryManager = container.Resolve<IMemoryReaderManager>();
             }
 
             public async Task<float> GetDistanceToPlayer(string name)
@@ -76,9 +76,9 @@ namespace Gobchat.Module.UI
                 return _actorManager.GetPlayersInArea();
             }
 
-            public async Task<bool> IsAvailable()
+            public async Task<bool> IsFeatureAvailable()
             {
-                return _actorManager.IsAvailable;
+                return _memoryManager.PlayerCharactersAvailable;
             }
         }
     }

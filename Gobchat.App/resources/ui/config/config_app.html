@@ -361,7 +361,7 @@
 
             {
                 (async () => {
-                    const available = await GobchatAPI.arePlayersAvailable()
+                    const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
                     $("#capp_characterlocations_feature").toggle(!available)
                 })()
             }

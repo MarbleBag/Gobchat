@@ -63,7 +63,7 @@ namespace Gobchat.Module.UI
 
     public interface IBrowserActorHandler
     {
-        Task<bool> IsAvailable();
+        Task<bool> IsFeatureAvailable();
 
         Task<int> GetPlayerNearbyCount();
 
