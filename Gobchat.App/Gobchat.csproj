@@ -221,7 +221,7 @@
     <Compile Include="Core\Chat\Events\ChatMessageEventArgs.cs" />
     <Compile Include="Module\Chat\Manager\AppModuleChatManager.cs" />
     <Compile Include="Module\Actor\Internal\ActorManager.cs" />
-    <Compile Include="Core\Chat\ChatMessageVisibilitySetter.cs" />
+    <Compile Include="Core\Chat\ChatMessageActorDataSetter.cs" />
     <Compile Include="Module\Hotkey\ConfigHotkeyUpdater.cs" />
     <Compile Include="Module\Hotkey\HotkeyException.cs" />
     <Compile Include="Module\Hotkey\IHotkeyAction.cs" />

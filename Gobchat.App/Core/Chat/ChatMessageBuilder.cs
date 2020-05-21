@@ -94,10 +94,10 @@ namespace Gobchat.Core.Chat
         {
             chatMessage.Source = new ChatMessageSource(source)
             {
-                IsPlayer = PlayerChannels.Contains(chatMessage.Channel)
+                IsAPlayer = PlayerChannels.Contains(chatMessage.Channel)
             };
 
-            if (source != null && source.Length > 0 && chatMessage.Source.IsPlayer)
+            if (source != null && source.Length > 0 && chatMessage.Source.IsAPlayer)
             {
                 var readIdx = 0;
                 int GetUnicodeIndex(int[] unicodes)

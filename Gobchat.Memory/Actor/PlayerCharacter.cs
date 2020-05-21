@@ -46,7 +46,7 @@ namespace Gobchat.Memory.Actor
         public string UId { get; internal set; }
 
         public UpdateFlag Flag { get; internal set; }
-        public bool IsPlayer { get; internal set; }
+        public bool IsUser { get; internal set; }
 
         public PlayerCharacter()
         {

@@ -78,26 +78,26 @@ namespace Gobchat.Module.Chat.Internal
 
             public bool EnableCutOff
             {
-                get => _parent._applyDistanceComputation;
-                set => _parent._applyDistanceComputation = value;
+                get => _parent._chatMessageActorData.SetVisibility;
+                set => _parent._chatMessageActorData.SetVisibility = value;
             }
 
             public float CutOffDistance
             {
-                get => _parent._chatMessageVisibility.CutOffDistance;
-                set => _parent._chatMessageVisibility.CutOffDistance = value;
+                get => _parent._chatMessageActorData.CutOffDistance;
+                set => _parent._chatMessageActorData.CutOffDistance = value;
             }
 
             public float FadeOutDistance
             {
-                get => _parent._chatMessageVisibility.FadeOutDistance;
-                set => _parent._chatMessageVisibility.FadeOutDistance = value;
+                get => _parent._chatMessageActorData.FadeOutDistance;
+                set => _parent._chatMessageActorData.FadeOutDistance = value;
             }
 
             public ChatChannel[] CutOffChannels
             {
-                get => _parent._chatMessageVisibility.CutOffChannels;
-                set => _parent._chatMessageVisibility.CutOffChannels = value;
+                get => _parent._chatMessageActorData.CutOffChannels;
+                set => _parent._chatMessageActorData.CutOffChannels = value;
             }
         }
 
@@ -109,13 +109,12 @@ namespace Gobchat.Module.Chat.Internal
 
         private readonly ChatlogCleaner _chatlogCleaner;
         private readonly ChatMessageBuilder _chatMessageBuilder;
-        private readonly ChatMessageVisibilitySetter _chatMessageVisibility;
+        private readonly ChatMessageActorDataSetter _chatMessageActorData;
 
         private DateTime _lastDispatchedMessage;
         private TimeSpan _outdatedMessageFilter = TimeSpan.FromSeconds(10);
 
         private ChatChannel[] _visibleChannels = Array.Empty<ChatChannel>();
-        private bool _applyDistanceComputation;
 
         public bool FilterOutdatedMessages { get; set; } = true;
 
@@ -138,7 +137,7 @@ namespace Gobchat.Module.Chat.Internal
 
             _chatlogCleaner = new ChatlogCleaner(autotranslateProvider);
             _chatMessageBuilder = new ChatMessageBuilder();
-            _chatMessageVisibility = new ChatMessageVisibilitySetter(actorManager);
+            _chatMessageActorData = new ChatMessageActorDataSetter(actorManager);
 
             _lastDispatchedMessage = DateTime.Now;
         }
@@ -195,8 +194,7 @@ namespace Gobchat.Module.Chat.Internal
                 {
                     var chatMessage = _chatMessageBuilder.BuildChatMessage(message);
                     _chatMessageBuilder.FormatChatMessage(chatMessage);
-                    if (_applyDistanceComputation)
-                        _chatMessageVisibility.SetVisibility(chatMessage);
+                    _chatMessageActorData.SetActorData(chatMessage);
                     result.Add(chatMessage);
                 }
                 catch (Exception ex)

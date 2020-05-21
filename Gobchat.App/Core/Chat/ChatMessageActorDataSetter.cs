@@ -11,15 +11,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-using System.Globalization;
-using System.Linq;
 using Gobchat.Core.Util.Extension;
 using Gobchat.Module.Actor;
+using System;
+using System.Linq;
 
 namespace Gobchat.Core.Chat
 {
-    public sealed class ChatMessageVisibilitySetter
+    public sealed class ChatMessageActorDataSetter
     {
         private const int MaxVisibility = 100;
 
@@ -30,7 +29,7 @@ namespace Gobchat.Core.Chat
 
         private readonly IActorManager _actorManager;
 
-        public ChatMessageVisibilitySetter(IActorManager actorManager)
+        public ChatMessageActorDataSetter(IActorManager actorManager)
         {
             _actorManager = actorManager ?? throw new ArgumentNullException(nameof(actorManager));
         }
@@ -61,15 +60,22 @@ namespace Gobchat.Core.Chat
             set => _channels = value.ToArrayOrEmpty();
         }
 
-        private int CalculateVisibility(float distance)
+        public bool SetVisibility { get; set; }
+
+        public void SetActorData(ChatMessage message)
         {
-            if (distance > _cutOffDistance) return 0;
-            if (distance < _fadeOutDistance) return MaxVisibility;
-            var percentage = 1 - (distance - _fadeOutDistance) / (_cutOffDistance - _fadeOutDistance);
-            return (int)Math.Round(MaxVisibility * percentage);
+            if (!_actorManager.IsAvailable)
+                return;
+
+            if (SetVisibility)
+                SetVisibilityOnMessage(message);
+
+            var currentUser = _actorManager.GetActivePlayerName();
+            if (currentUser != null && message.Source.IsAPlayer)
+                message.Source.IsUser = currentUser.Equals(message.Source.CharacterName, StringComparison.InvariantCulture);
         }
 
-        public void SetVisibility(ChatMessage message)
+        private void SetVisibilityOnMessage(ChatMessage message)
         {
             if (!_channels.Contains(message.Channel))
                 return;
@@ -81,6 +87,14 @@ namespace Gobchat.Core.Chat
             var distance = _actorManager.GetFastDistanceToPlayerWithName(characterName);
             if (distance > 0)
                 message.Source.Visibility = CalculateVisibility(distance);
+        }
+
+        private int CalculateVisibility(float distance)
+        {
+            if (distance > _cutOffDistance) return 0;
+            if (distance < _fadeOutDistance) return MaxVisibility;
+            var percentage = 1 - (distance - _fadeOutDistance) / (_cutOffDistance - _fadeOutDistance);
+            return (int)Math.Round(MaxVisibility * percentage);
         }
     }
 }

@@ -35,7 +35,8 @@ namespace Gobchat.Core.Chat
         public int Party { get; set; } = -1;
         public int Alliance { get; set; } = -1;
         public int Visibility { get; set; } = 100; //100 = full visible, 0 = invisible
-        public bool IsPlayer { get; set; } = false;
+        public bool IsAPlayer { get; set; } = false;
+        public bool IsUser { get; set; } = false;
 
         public ChatMessageSource(string source)
         {

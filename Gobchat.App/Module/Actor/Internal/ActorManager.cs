@@ -29,7 +29,7 @@ namespace Gobchat.Module.Actor.Internal
 
         private readonly Dictionary<string, Data> _realm = new Dictionary<string, Data>();
         private readonly Queue<Data> _pendingUpdates = new Queue<Data>();
-        private PlayerCharacter ActivePlayer { get; set; }
+        private PlayerCharacter User { get; set; }
 
         public bool IsAvailable { get; internal set; }
         public TimeSpan OutdatedTimelimit { get; set; } = TimeSpan.FromSeconds(3);
@@ -46,9 +46,9 @@ namespace Gobchat.Module.Actor.Internal
         {
             lock (_realm)
             {
-                if (ActivePlayer != null)
+                if (User != null)
                     return null;
-                return ActivePlayer.Name;
+                return User.Name;
             }
         }
 
@@ -103,7 +103,7 @@ namespace Gobchat.Module.Actor.Internal
             lock (_realm)
             {
                 _realm.Clear();
-                ActivePlayer = null;
+                User = null;
 
                 foreach (var newData in _pendingUpdates)
                 {
@@ -117,8 +117,8 @@ namespace Gobchat.Module.Actor.Internal
                         _realm[newData.Actor.Name] = newData;
                     }
 
-                    if (newData.Actor.IsPlayer)
-                        ActivePlayer = newData.Actor;
+                    if (newData.Actor.IsUser)
+                        User = newData.Actor;
                 }
 
                 _pendingUpdates.Clear();

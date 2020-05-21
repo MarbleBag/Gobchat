@@ -62,7 +62,7 @@ namespace Gobchat.Memory.Actor
             {
                 if (character.Id == currentUser.ID)
                 {
-                    character.IsPlayer = true;
+                    character.IsUser = true;
                     break;
                 }
             }
