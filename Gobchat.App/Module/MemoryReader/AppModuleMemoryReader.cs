@@ -15,11 +15,6 @@ using Gobchat.Core.Runtime;
 using Gobchat.Memory;
 using Gobchat.Module.MemoryReader.Internal;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Gobchat.Module.MemoryReader
 {
