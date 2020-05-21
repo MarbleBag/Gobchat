@@ -79,8 +79,10 @@
             const ConfigKeyOrder = "behaviour.mentions.order"
             const EntryIdAttribute = "data-gob-entryid"
 
+            const binding = ConfigHelper.makeDatabinding(gobconfig)
+
             const txtMentions = $("#cmentions_mentions")
-            ConfigHelper.linkTextCollectionConfig(txtMentions)
+            ConfigHelper.bindTextCollection(binding, txtMentions)
 
             const template = $("#cmention_template_mention")
             const mentionTable = $("#cmentions_mention_table")
@@ -90,8 +92,11 @@
                     throw new Error("Invalid entry id")
 
                 const entry = $(template.html())
-                entry.attr(EntryIdAttribute, entryId)
                 entry.appendTo(mentionTable)
+                entry.attr(EntryIdAttribute, entryId)
+
+                const entryBinding = ConfigHelper.makeDatabinding(gobconfig)
+                entry.data("configbinding", entryBinding)
 
                 const configKey = ConfigKeyData + "." + entryId
 
@@ -190,11 +195,11 @@
                         $("#config_dialog_error_text").empty()
                         $("#config_dialog_error_text").append($(
                             `<span>
-                                Audiofile can't be played.<br>
-                                Either the format is not supported or the file can't be found!<br>
-                                Make sure to place any sound files you want to use in gobchat under resources/sounds
-                            </span>
-                            `
+                                                    Audiofile can't be played.<br>
+                                                    Either the format is not supported or the file can't be found!<br>
+                                                    Make sure to place any sound files you want to use in gobchat under resources/sounds
+                                                </span>
+                                                `
                         ))
                         $("#config_dialog_error").dialog({
                             resizable: false,
@@ -241,13 +246,20 @@
             }
 
             function populateTable() {
-                mentionTable.empty()
+                clearTableTable()
                 const ids = gobconfig.get(ConfigKeyOrder)
                 ids.forEach(id => addEntryToTable(id))
                 /* deactivated til multiple mentions are really needed
                 mentionTable.sortable("refresh")
                 mentionTable.accordion("refresh")
                 */
+            }
+
+            function clearTableTable() {
+                mentionTable.find("div[data-gob-entryid]").each(function (idx) {
+                    $(this).data("configbinding").clear()
+                })
+                mentionTable.empty()
             }
 
             function addNewEntry() {
@@ -315,6 +327,8 @@
             const btnAddMentionBox = $("#cmentions_add_new_mention1, #cmentions_add_new_mention2")
             btnAddMentionBox.attr("title", "Adds a new box for mentions")
             btnAddMentionBox.on("click", (event) => addNewEntry())
+
+            binding.initialize()
 
             const btnCopyProfile = $("#cmentions_copyprofile")
             const copyKeys = ["behaviour.mentions.data", "behaviour.mentions.order"]

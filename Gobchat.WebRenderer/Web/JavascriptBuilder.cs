@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,33 +11,41 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using CefSharp;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Gobchat.UI.Web
 {
     public sealed class JavascriptBuilder
     {
-        private readonly System.Text.StringBuilder stringbuilder;
-        private readonly Newtonsoft.Json.JsonSerializer jsonSerializer;
-        private readonly Newtonsoft.Json.JsonTextWriter jsonWriter;
+        private readonly System.Text.StringBuilder _stringbuilder;
+        public Newtonsoft.Json.JsonSerializer JsonSerializer { get; }
+        public Newtonsoft.Json.JsonTextWriter JsonWriter { get; }
 
         public JavascriptBuilder()
         {
-            stringbuilder = new System.Text.StringBuilder(1000);
-            jsonSerializer = new Newtonsoft.Json.JsonSerializer();
-            jsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(stringbuilder));
+            _stringbuilder = new System.Text.StringBuilder(1000);
+            JsonSerializer = new Newtonsoft.Json.JsonSerializer();
+            JsonSerializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            JsonWriter = new Newtonsoft.Json.JsonTextWriter(new System.IO.StringWriter(_stringbuilder));
+            JsonWriter.QuoteName = true;
         }
 
         public string BuildCustomEventDispatcher(JavascriptEvents.JSEvent evt)
         {
-            stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
-            stringbuilder.Append(evt.EventName);
-            stringbuilder.Append("', { detail: ");
-            jsonSerializer.Serialize(jsonWriter, evt);
-            stringbuilder.Append(" }));");
-            string result = stringbuilder.ToString();
-            stringbuilder.Clear();
-            return result;
+            lock (_stringbuilder)
+            {
+                _stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
+                _stringbuilder.Append(evt.EventName);
+                _stringbuilder.Append("', { detail: ");
+                JsonSerializer.Serialize(JsonWriter, evt);
+                _stringbuilder.Append(" }));");
+                string result = _stringbuilder.ToString();
+                _stringbuilder.Clear();
+                return result;
+            }
         }
 
         public JToken Deserialize(string json)
@@ -49,7 +57,7 @@ namespace Gobchat.UI.Web
         {
             using (var reader = new Newtonsoft.Json.JsonTextReader(new System.IO.StringReader(json)))
             {
-                var obj = jsonSerializer.Deserialize<T>(reader);
+                var obj = JsonSerializer.Deserialize<T>(reader);
                 return obj;
             }
         }

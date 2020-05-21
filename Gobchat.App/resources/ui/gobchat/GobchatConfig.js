@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 'use strict'
 
 //requieres Gobchat.DefaultProfileConfig
@@ -288,7 +301,7 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         async loadConfig() {
-            const dataJson = await GobchatAPI.getConfig()
+            const dataJson = await GobchatAPI.getConfigAsJson()
             this._loadConfig(dataJson)
 
             /*
@@ -307,7 +320,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async saveConfig() {
             const dataJson = this._saveConfig()
-            await GobchatAPI.setConfig(dataJson)
+            await GobchatAPI.synchronizeConfig(dataJson)
         }
 
         get activeProfile() {
@@ -328,7 +341,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._eventDispatcher.dispatch("profile:", { type: "active", detail: { old: previousId, new: this._activeProfileId } })
 
             if (this._isSynced)
-                GobchatAPI.setActiveProfile(this._activeProfileId)
+                GobchatAPI.setConfigActiveProfile(this._activeProfileId)
         }
 
         get profiles() {
@@ -404,11 +417,19 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         addProfileEventListener(callback) {
-            this._eventDispatcher.on("profile:", callback)
+            return this._eventDispatcher.on("profile:", callback)
+        }
+
+        removeProfileEventListener(callback) {
+            return this._eventDispatcher.off("profile:", callback)
         }
 
         addPropertyEventListener(topic, callback) {
-            this._eventDispatcher.on("property:" + topic, callback)
+            return this._eventDispatcher.on("property:" + topic, callback)
+        }
+
+        removePropertyEventListener(topic, callback) {
+            return this._eventDispatcher.off("property:" + topic, callback)
         }
 
         get(key, defaultValue) {
@@ -513,6 +534,7 @@ var Gobchat = (function (Gobchat, undefined) {
             this._firePropertyChanges(changes)
         }
 
+        //TODO delete
         getConfigDiff() {
             const config = copyByJson(this._config)
             retainChangesIterator(config, Gobchat.DefaultProfileConfig)
@@ -632,13 +654,14 @@ var Gobchat = (function (Gobchat, undefined) {
             }
         }
         on(topic, callback) {
-            if (!callback) return
+            if (!callback) return false
             let listeners = this.listenersByTopic.get(topic)
             if (!listeners) {
                 listeners = []
                 this.listenersByTopic.set(topic, listeners)
             }
             listeners.push(callback)
+            return true
         }
         off(topic, callback) {
             let listeners = this.listenersByTopic.get(topic)
@@ -646,7 +669,9 @@ var Gobchat = (function (Gobchat, undefined) {
                 const idx = listeners.indexOf(callback)
                 if (idx > -1) listeners.splice(idx, 1)
                 if (listeners.length === 0) this.listenersByTopic.delete(topic)
+                return idx > -1
             }
+            return false
         }
     }
 

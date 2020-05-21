@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,9 +16,8 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class FormMessageToCefKeyEventConverter
+    internal sealed class FormMessageToCefKeyEventConverter
     {
-
         public bool IsProcessableKeyEvent(ref Message m)
         {
             return IsRelevantKey(m.Msg);
@@ -56,6 +55,7 @@ namespace Gobchat.UI.Forms.Helper
                 case NativeMethods.WM_SYSKEYUP:
                 case NativeMethods.WM_SYSCHAR:
                     return true;
+
                 default:
                     return false;
             }
@@ -80,6 +80,7 @@ namespace Gobchat.UI.Forms.Helper
                     if (((m.LParam.ToInt64() >> 48) & 0x0100) != 0)
                         modifiers |= CefEventFlags.IsKeyPad;
                     break;
+
                 case Keys.Insert:
                 case Keys.Delete:
                 case Keys.Home:
@@ -93,6 +94,7 @@ namespace Gobchat.UI.Forms.Helper
                     if (!(((m.LParam.ToInt64() >> 48) & 0x0100) != 0))
                         modifiers |= CefEventFlags.IsKeyPad;
                     break;
+
                 case Keys.NumLock:
                 case Keys.NumPad0:
                 case Keys.NumPad1:
@@ -112,21 +114,26 @@ namespace Gobchat.UI.Forms.Helper
                 case Keys.Clear:
                     modifiers |= CefEventFlags.IsKeyPad;
                     break;
+
                 case Keys.Shift:
                     if (IsKeyDown(Keys.LShiftKey)) modifiers |= CefEventFlags.IsLeft;
                     else modifiers |= CefEventFlags.IsRight;
                     break;
+
                 case Keys.Control:
                     if (IsKeyDown(Keys.LControlKey)) modifiers |= CefEventFlags.IsLeft;
                     else modifiers |= CefEventFlags.IsRight;
                     break;
+
                 case Keys.Alt:
                     if (IsKeyDown(Keys.LMenu)) modifiers |= CefEventFlags.IsLeft;
                     else modifiers |= CefEventFlags.IsRight;
                     break;
+
                 case Keys.LWin:
                     modifiers |= CefEventFlags.IsLeft;
                     break;
+
                 case Keys.RWin:
                     modifiers |= CefEventFlags.IsRight;
                     break;
@@ -137,7 +144,6 @@ namespace Gobchat.UI.Forms.Helper
 
         private bool IsKeyDown(Keys key)
         {
-
             return (NativeMethods.GetKeyState((int)key) & NativeMethods.KEY_PRESSED) != 0;
         }
 

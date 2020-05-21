@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace Gobchat.Memory.Chat
 {
-    internal class ChatlogBuilder
+    internal sealed class ChatlogBuilder
     {
         public bool DebugMode { get; set; }
 

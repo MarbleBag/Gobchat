@@ -14,11 +14,13 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Draggable and Resizeable](#draggable-and-resizeable)
    1. [Chat Log](#chat-Log)
+   1. [Range Filter](#range-filter)
    1. [Groups](#groups)
    1. [Chat Commands](#chat-commands)
 1. [Installation](#installation)
 1. [Updating Gobchat](#updating-gobchat)
 1. [How to use Gobchat](#how-to-use-gobchat)
+1. [Troubleshooting](#troubleshooting)
 1. [License](#license)
 
 ## Features
@@ -52,7 +54,7 @@ Case-insensitive detection for a customizable list of words, which then will be 
 ![Mentions](screen_mention_highlighting.png)
 
 This feature can be enhanced further by playing a customizable sound.
-Soundfiles must be placed in `Gobchat\resources\sounds`.
+Sound files must be placed in `Gobchat\resources\sounds`.
 
 ### Customizable formatting settings
 
@@ -67,6 +69,11 @@ They can be found under `AppData\Roaming\Gobchat`.
 
 Each time Gobchat is started it will create a new file.
 By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings.
+
+### Range filter
+Filter messages in various channels by distance to the writer. Remove them completely and/or fade them slowly out the farther away they are. The numbers are given in yalms (in game unit). And the degree of fade out effect is computed by the distance between fade out and cut off.
+
+By default this feature is deactivated. You can turn it on in the settings.
 
 ### Groups
 The game allows you to sort players from your friend-list into seven predefined groups. Doing so, marks said players with a special icon in your chat, making it easier to keep track of them.
@@ -86,6 +93,7 @@ Gobchat supports the following chat commands:
 - [group](#chat-command-group)
 - [profile](#chat-command-profile)
 - [close](#chat-command-close)
+- [player](#chat-command-player)
 
 ***
 
@@ -143,7 +151,20 @@ Usage:
 
 This chat command will close Gobchat and provides an alternative way to right-clicking the Gobchat Icon in the tray-icon bar and clicking close.
 
+#### Chat command Player
+Usage:
+- `/e gc player count`
+- `/e gc player list`
+- `/e gc player distance <t>`
 
+##### count
+Returns the number of characters nearby. The definition of nearby depends on the total amount of characters close to you. The client will only display up to 100 characters.
+
+#### list
+Returns a list of character names and their current distance to you.
+
+#### distance
+Returns the distance in yalms to your current targetSS
 
 ## Installation
 
@@ -160,7 +181,7 @@ Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) f
 1. Go to [latest release](https://github.com/marblebag/gobchat/releases/latest)
 2. Download the latest version of Gobchat. The file is named gobchat-{version}.zip
 3. Right click the zip file and go to properties. In the bottom right corner of the properties menu, click `Unblock`, and then "OK" to close the menu
-4. Unzip the zip file to your prefered location. All files are already in a Gobchat folder.
+4. Unzip the zip file to your preferred location. All files are already in a Gobchat folder.
 5. Go into your Gobchat folder
 6. Start Gobchat.exe
 7. On start Gobchat will check for new updates
@@ -185,7 +206,7 @@ Within your tray a new icon will appear: ![gobchat looks for ffxiv](screen_gobch
 This icon means Gobchat is running and looks for an active instance of FFXIV.
 
 If you are running FFXIV and Gobchat finds it, the icon will switch to ![gobchat is ready to rumble](screen_gobchat_on.png), indicating that Gobchat is ready.
-This may take a while on your first start of gobchat.
+This may take a while on your first start of Gobchat.
 
 
 ### Tray Icon
@@ -198,8 +219,20 @@ This may take a while on your first start of gobchat.
 
 
 1. Use a chat command in FFXIV
-1. enter `/e gc close` in the ingame chat
+1. enter `/e gc close` in the in-game chat
 
-### License
+## Troubleshooting
+### Range filter seems not to work
+- Check `Config / App`, it's possible that Gobchat can't retrieve informations about players from your running FFXIV. A red message will inform you about that. This can have many reasons:
+  - Be sure FFXIV is running.
+  - Close and reopen config dialog. Gobchat needs some time until it has loaded everything.
+  - Close Gobchat an delete the `sharlayan` folder under `resources`.  The content will be re downloaded and may contain the missing informations.
+
+### Gobchat doesn't start
+- Check `gobchat_debug.log`
+  - An error like `System.IO.FileNotFoundException` in combination with `CefSharp.Core.dll` indicates a problem with CEF.
+    - There is a high probability that `Visual C++ Redistributable` are missing. Check [Dependencies](#dependencies).
+
+## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
 You can find the full license [here](LICENSE.md) or at https://www.gnu.org/licenses/

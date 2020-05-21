@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -12,20 +12,21 @@
  *******************************************************************************/
 
 using CefSharp;
-using Gobchat.UI.Forms.Extension;
+using CefSharp.Event;
 using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
-using NLog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms
 {
     internal sealed class ManagedWebBrowser : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser, IDisposable, IManagedWebBrowser
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        //unused - yet
         private class BrowserWrapper : CefSharp.OffScreen.ChromiumWebBrowser, CefSharp.Internals.IRenderWebBrowser
         {
             public delegate void OnPaint(CefSharp.PaintElementType type, CefSharp.Structs.Rect dirtyRect, IntPtr buffer, int width, int height);
@@ -57,19 +58,21 @@ namespace Gobchat.UI.Forms
         private CefSharp.OffScreen.ChromiumWebBrowser CefBrowser { get { return this; } }
 
         private readonly MouseEventHelper mouseEventHelper = new MouseEventHelper();
-        private List<IBrowserAPI> _availableAPIs = new List<IBrowserAPI>();
+        private readonly List<IBrowserAPI> _availableAPIs = new List<IBrowserAPI>();
 
-        public event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
+        public event EventHandler<BrowserConsoleLogEventArgs> OnBrowserConsoleLog;
 
-        public event EventHandler<BrowserErrorEventArgs> BrowserError;
+        public event EventHandler<BrowserErrorEventArgs> OnBrowserError;
 
-        public event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPage;
+        public event EventHandler<BrowserLoadPageEventArgs> OnBrowserLoadPage;
 
-        public event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
+        public event EventHandler<BrowserLoadPageEventArgs> OnBrowserLoadPageDone;
 
         public new event EventHandler<BrowserInitializedEventArgs> BrowserInitialized;
 
-        event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.BrowserInitialized
+        public event EventHandler<BrowserAPIBindingEventArgs> OnResolveBrowserAPI;
+
+        event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.OnBrowserInitialized
         {
             //someone may register after the original event has already fired
             add
@@ -122,47 +125,37 @@ namespace Gobchat.UI.Forms
 
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
             DownloadHandler = new CustomDownloadHandler();
-            // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon
+            // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
 
             CefBrowser.BrowserInitialized += OnEvent_BrowserInitialized;
             CefBrowser.FrameLoadStart += OnEvent_FrameLoadStart;
             CefBrowser.FrameLoadEnd += OnEvent_FrameLoadEnd;
             CefBrowser.LoadError += OnEvent_LoadError;
             CefBrowser.ConsoleMessage += OnEvent_ConsoleMessage;
+            CefBrowser.JavascriptObjectRepository.ResolveObject += OnEvent_JavascriptResolveObject;
         }
 
         #region BrowserEventHandling
 
         private void OnEvent_FrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
-            builder.Append("(async () => {");
-            foreach (var boundAPI in _availableAPIs)
-            {
-                builder.Append("await CefSharp.BindObjectAsync('");
-                builder.Append(boundAPI.APIName);
-                builder.Append("')");
-            }
-            builder.AppendLine("})();");
-            var awaitAPIScript = builder.ToString();
-            e.Frame.ExecuteJavaScriptAsync(awaitAPIScript, "Initialize");
-
-            BrowserLoadPage?.Invoke(this, new BrowserLoadPageEventArgs(0, e.Url));
+            JSAwaitAPIBinding(e.Frame, _availableAPIs.ToArray());
+            OnBrowserLoadPage?.Invoke(this, new BrowserLoadPageEventArgs(0, e.Url));
         }
 
         private void OnEvent_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
-            BrowserLoadPageDone?.Invoke(this, new BrowserLoadPageEventArgs(e.HttpStatusCode, e.Url));
+            OnBrowserLoadPageDone?.Invoke(this, new BrowserLoadPageEventArgs(e.HttpStatusCode, e.Url));
         }
 
         private void OnEvent_LoadError(object sender, LoadErrorEventArgs e)
         {
-            BrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
+            OnBrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
         }
 
         private void OnEvent_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
-            BrowserConsoleLog?.Invoke(sender, new BrowserConsoleLogEventArgs(e.Message, e.Source, e.Line));
+            OnBrowserConsoleLog?.Invoke(sender, new BrowserConsoleLogEventArgs(e.Message, e.Source, e.Line));
         }
 
         private void OnEvent_BrowserInitialized(object sender, EventArgs e)
@@ -176,6 +169,11 @@ namespace Gobchat.UI.Forms
                     BrowserInitialized = null;
                 }
             }
+        }
+
+        private void OnEvent_JavascriptResolveObject(object sender, JavascriptBindingEventArgs e)
+        {
+            OnResolveBrowserAPI?.Invoke(sender, new BrowserAPIBindingEventArgs(e.ObjectName, this));
         }
 
         #endregion BrowserEventHandling
@@ -243,14 +241,72 @@ namespace Gobchat.UI.Forms
                 if (boundAPI.APIName.Equals(api.APIName))
                     return false;
             }
+
             _availableAPIs.Add(api);
             CefBrowser.JavascriptObjectRepository.Register(api.APIName, api, isAsync: isApiAsync, options: CefSharp.BindingOptions.DefaultBinder);
+
+            if (this.CefBrowser.IsBrowserInitialized && this.GetMainFrame() != null)
+                AwaitAPIBinding(api);
+
             return true;
+        }
+
+        public bool UnbindBrowserAPI(IBrowserAPI api)
+        {
+            var removed = _availableAPIs.RemoveAll(e => e.APIName.Equals(api.APIName) && e == api);
+            if (removed == 0)
+                return false;
+
+            if (!CefBrowser.JavascriptObjectRepository.IsBound(api.APIName))
+                return false;
+
+            var script = $@"(async ()=>{{ return await CefSharp.DeleteBoundObject('{ api.APIName}') }})();";
+
+            if (this.CefBrowser.CanExecuteJavascriptInMainFrame)
+            {
+                var promise = this.GetMainFrame().EvaluateScriptAsync(script, "Gobchat");
+                if (promise.Status == System.Threading.Tasks.TaskStatus.WaitingForActivation)
+                {
+                    promise.Wait(TimeSpan.FromSeconds(5));
+                    if (promise.Status != System.Threading.Tasks.TaskStatus.WaitingForActivation)
+                        promise.GetAwaiter().GetResult();
+                }
+                else
+                    promise.GetAwaiter().GetResult();
+            }
+
+            return CefBrowser.JavascriptObjectRepository.UnRegister(api.APIName);
+        }
+
+        private void AwaitAPIBinding(params IBrowserAPI[] apis)
+        {
+            JSAwaitAPIBinding(this.GetMainFrame(), apis);
+        }
+
+        private void JSAwaitAPIBinding(IFrame frame, IEnumerable<IBrowserAPI> apis)
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            builder.Append("(async () => {");
+            foreach (var boundAPI in apis)
+            {
+                builder.Append("await CefSharp.BindObjectAsync('");
+                builder.Append(boundAPI.APIName);
+                builder.Append("')");
+            }
+            builder.AppendLine("})();");
+            var awaitAPIScript = builder.ToString();
+            frame.ExecuteJavaScriptAsync(awaitAPIScript, "Initialize");
         }
 
         public void ExecuteScript(string script)
         {
-            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
+            CefBrowser.GetMainFrame().ExecuteJavaScriptAsync(code: script, scriptUrl: "injected");
+        }
+
+        public async Task<IJavascriptResponse> EvaluateScript(string script, TimeSpan? timeout = null)
+        {
+            var response = await CefBrowser.GetMainFrame().EvaluateScriptAsync(script: script, scriptUrl: "injected", timeout: timeout);
+            return new global::Gobchat.UI.Web.JavascriptResponse(response);
         }
 
         public void SendMoveOrResizeStartedEvent()

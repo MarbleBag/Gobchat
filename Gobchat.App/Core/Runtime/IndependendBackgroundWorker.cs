@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -20,7 +20,21 @@ namespace Gobchat.Core.Runtime
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "Disposed on cancel")]
         private System.Threading.CancellationTokenSource _cancellationTokenSource;
 
+        private object _startupLock = new object();
+
         public System.Threading.Tasks.Task ActiveTask { get; private set; }
+
+        public bool IsRunning
+        {
+            get
+            {
+                lock (_startupLock)
+                {
+                    var isCompleted = (ActiveTask?.IsCompleted).GetValueOrDefault(true);
+                    return !isCompleted;
+                }
+            }
+        }
 
         private readonly object _innerLock = new object();
 
@@ -30,24 +44,27 @@ namespace Gobchat.Core.Runtime
 
         public void Start(Job job)
         {
-            Stop(false);
-            _cancellationTokenSource = new System.Threading.CancellationTokenSource();
-            var token = _cancellationTokenSource.Token;
-            ActiveTask = System.Threading.Tasks.Task.Run(() =>
+            lock (_startupLock)
             {
-                try
+                Stop(false);
+                _cancellationTokenSource = new System.Threading.CancellationTokenSource();
+                var token = _cancellationTokenSource.Token;
+                ActiveTask = System.Threading.Tasks.Task.Run(() =>
                 {
-                    job(token);
-                }
-                finally
-                {
-                    lock (_innerLock)
+                    try
                     {
-                        _cancellationTokenSource?.Dispose();
-                        _cancellationTokenSource = null;
+                        job(token);
                     }
-                }
-            }, token);
+                    finally
+                    {
+                        lock (_innerLock)
+                        {
+                            _cancellationTokenSource?.Dispose();
+                            _cancellationTokenSource = null;
+                        }
+                    }
+                }, token);
+            }
         }
 
         /// <summary>
@@ -61,7 +78,7 @@ namespace Gobchat.Core.Runtime
                     _cancellationTokenSource?.Cancel();
 
             if (waitForIt) //TODO may not work
-                ActiveTask?.Wait();
+                ActiveTask?.GetAwaiter().GetResult();
         }
 
         /// <summary>

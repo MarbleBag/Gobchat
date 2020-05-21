@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -15,6 +15,7 @@ using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
 using Gobchat.Core.Util;
+using Gobchat.Module.Updater.Internal;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,15 @@ namespace Gobchat.Module.Updater
 
             DeleteOldPatchData();
 
-            var configManager = container.Resolve<IGobchatConfigManager>();
-            var doUpdate = configManager.GetProperty<bool>("behaviour.checkForUpdate");
+            var configManager = container.Resolve<IConfigManager>();
+            var doUpdate = configManager.GetProperty<bool>("behaviour.appUpdate.checkOnline");
 
             if (!doUpdate)
                 return;
 
-            var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.checkForBetaUpdate");
+            var allowBetaUpdates = configManager.GetProperty<bool>("behaviour.appUpdate.acceptBeta");
 
-            var update = GetUpdate(new GobVersion(GobchatApplicationContext.ApplicationVersion), allowBetaUpdates);
+            var update = GetUpdate(GobchatContext.ApplicationVersion, allowBetaUpdates);
             if (update == null)
                 return;
 
@@ -77,7 +78,7 @@ namespace Gobchat.Module.Updater
         {
             try
             {
-                var patchFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, PatchFolder);
+                var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
                 var tmpFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
 
                 if (System.IO.Directory.Exists(tmpFolder))
@@ -109,7 +110,7 @@ namespace Gobchat.Module.Updater
                 var progressDisplay = uiManager.GetUIElement<ProgressDisplayForm>(displayId);
                 using (var progressMonitor = new ProgressMonitorAdapter(progressDisplay))
                 {
-                    var patchFolder = System.IO.Path.Combine(GobchatApplicationContext.ApplicationLocation, PatchFolder);
+                    var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
 
                     (var downloadResult, var filePath) = PerformAutoUpdateDownload(update, patchFolder, progressMonitor);
                     logger.Info($"Download complete: {downloadResult}");
@@ -256,7 +257,7 @@ namespace Gobchat.Module.Updater
         {
             using (var notes = new UpdateFormDialog())
             {
-                notes.UpdateHeadText = $"An update to version {update.Version} is available.\nCurrent version is {GobchatApplicationContext.ApplicationVersion}\nUpdate and restart?";
+                notes.UpdateHeadText = $"An update to version {update.Version} is available.\nCurrent version is {GobchatContext.ApplicationVersion}\nUpdate and restart?";
                 notes.UpdateNotes = update.PatchNotes;
                 notes.ShowDialog();
                 return notes.UpdateRequest;
@@ -275,14 +276,14 @@ namespace Gobchat.Module.Updater
                     return null;
                 return updateDescription;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO
                 return null;
             }
         }
 
-        public void Dispose(IDIContext container)
+        public void Dispose()
         {
         }
     }

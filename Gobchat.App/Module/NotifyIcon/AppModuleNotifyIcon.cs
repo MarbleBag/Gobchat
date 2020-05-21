@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -19,13 +19,22 @@ using System.Windows.Forms;
 
 namespace Gobchat.Module.NotifyIcon
 {
-    public sealed class AppModuleNotifyIcon : IApplicationModule, System.IDisposable
+    public sealed class AppModuleNotifyIcon : IApplicationModule
     {
         private readonly static Logger logger = LogManager.GetCurrentClassLogger();
 
         public const string NotifyIconManagerId = "Gobchat.NotifyIconManager";
 
         private IUIManager _manager;
+
+        /// <summary>
+        /// Requires: <see cref="IUIManager"/> <br></br>
+        /// <br></br>
+        /// Installs UI element: <see cref="INotifyIconManager"/> <br></br>
+        /// </summary>
+        public AppModuleNotifyIcon()
+        {
+        }
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
@@ -52,11 +61,6 @@ namespace Gobchat.Module.NotifyIcon
         {
             logger.Info("User requests shutdown");
             GobchatApplicationContext.ExitGobchat();
-        }
-
-        public void Dispose(IDIContext container)
-        {
-            Dispose();
         }
 
         public void Dispose()

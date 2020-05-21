@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using NLog;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -20,7 +20,7 @@ namespace Gobchat.UI.Web
 {
     public static class CEFManager
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static bool isInitialized = false;
         private static bool isDisposed = false;
@@ -42,7 +42,7 @@ namespace Gobchat.UI.Web
 
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (!args.Name.StartsWith("CefSharp"))
+            if (!args.Name.StartsWith("CefSharp", true, CultureInfo.InvariantCulture))
                 return null;
 
             string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
@@ -63,6 +63,8 @@ namespace Gobchat.UI.Web
             {
                 archSpecificPath = Path.Combine(archSpecificPath, Environment.Is64BitProcess ? "x64" : "x86", assemblyName);
             }
+
+            //logger.Trace(() => $"Assembly CefSharp Lookup: {archSpecificPath}");
 
             /* string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
                                         Environment.Is64BitProcess ? "x64" : "x86",
@@ -98,6 +100,36 @@ namespace Gobchat.UI.Web
             cefSettings.SetOffScreenRenderingBestPerformanceArgs();
 
             CefSharp.Cef.Initialize(cefSettings, performDependencyCheck: true, browserProcessHandler: null);
+        }
+
+        //TODO implementd for ui thread integration
+        private sealed class BrowserProcessHandler : CefSharp.IBrowserProcessHandler
+        {
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnContextInitialized()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnScheduleMessagePumpWork(long delay)
+            {
+                throw new NotImplementedException();
+
+                if (delay <= 0)
+                {
+                    //DO NOW
+                }
+                else
+                {
+                    //CHECK IF WORK IS ALREADY DELAYED
+                    //IF SO, CANCEL
+                    //SCHEDULE NEW WORK IN DELAY TIME
+                }
+            }
         }
 
         public static void Dispose()

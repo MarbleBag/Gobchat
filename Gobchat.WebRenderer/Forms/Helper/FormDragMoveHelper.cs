@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,14 +17,14 @@ using System.Windows.Forms;
 
 namespace Gobchat.UI.Forms.Helper
 {
-    internal class FormDragMoveHelper : IDisposable
+    internal sealed class FormDragMoveHelper : IDisposable
     {
         private bool _mouseDown;
         private bool _noficiationSent;
         private Point _lastLocation;
 
-        public Form TargetForm;
-        public bool AllowToMove;
+        public Form TargetForm { get; set; }
+        public bool AllowToMove { get; set; }
         public bool IsMoving { get { return _mouseDown && AllowToMove; } }
 
         public event System.EventHandler<FormMoveEventArgs> FormMove;
@@ -56,7 +56,7 @@ namespace Gobchat.UI.Forms.Helper
                 if (!_noficiationSent)
                 {
                     _noficiationSent = true;
-                    FormMove?.Invoke(e, new FormMoveEventArgs(newPosition,TargetForm));
+                    FormMove?.Invoke(e, new FormMoveEventArgs(newPosition, TargetForm));
                 }
 
                 TargetForm.Location = newPosition;
@@ -70,17 +70,16 @@ namespace Gobchat.UI.Forms.Helper
             FormMove = null;
         }
 
-        public class FormMoveEventArgs : System.EventArgs
+        public sealed class FormMoveEventArgs : System.EventArgs
         {
             public Point NewPosition { get; }
             public Form TargetForm { get; }
+
             public FormMoveEventArgs(Point newPosition, Form targetForm)
             {
                 NewPosition = newPosition;
                 TargetForm = targetForm;
             }
         }
-
-
     }
 }

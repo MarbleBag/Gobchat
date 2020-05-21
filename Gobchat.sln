@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{85BBFA00-DF8A-
 		Resources\UI\gobchat\StyleBuilder.js = Resources\UI\gobchat\StyleBuilder.js
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gobchat.LogConverter", "Gobchat.LogConverter\Gobchat.LogConverter.csproj", "{ACEEC40B-0784-46C9-9C0C-59E87435AF3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B504303-1CFC-4F76-8448-CD8C3396E14A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEEC40B-0784-46C9-9C0C-59E87435AF3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEEC40B-0784-46C9-9C0C-59E87435AF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEEC40B-0784-46C9-9C0C-59E87435AF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEEC40B-0784-46C9-9C0C-59E87435AF3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

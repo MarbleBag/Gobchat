@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,29 +11,48 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessage
     {
-        public DateTime Timestamp { get; }
-        public string Source { get; }
-        public int MessageType { get; }
-        public string Message { get; }
+        public ChatMessageSource Source { get; set; } = null;
+        public System.DateTime Timestamp { get; set; }
+        public ChatChannel Channel { get; set; } = ChatChannel.NONE;
+        public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
 
-        public ChatMessage(DateTime timestamp, string source, int messageType, string message)
+        public bool ContainsMentions { get; set; } = false;
+
+        public ChatMessage()
         {
-            Timestamp = timestamp;
-            Source = source;
-            MessageType = messageType;
-            Message = message ?? throw new ArgumentNullException(nameof(message));
         }
+    }
 
-        public override string ToString()
+    public sealed class ChatMessageSource
+    {
+        public string Original { get; }
+        public string CharacterName { get; set; } = null;
+        public int FfGroup { get; set; } = -1;
+        public int Party { get; set; } = -1;
+        public int Alliance { get; set; } = -1;
+        public int Visibility { get; set; } = 100; //100 = full visible, 0 = invisible
+        public bool IsAPlayer { get; set; } = false;
+        public bool IsUser { get; set; } = false;
+
+        public ChatMessageSource(string source)
         {
-            var className = nameof(ChatMessage);
-            return $"{className} => time:{Timestamp} | type:{MessageType} | source:'{Source}'  | msg:'{Message}'";
+            Original = source;
+        }
+    }
+
+    public sealed class MessageSegment
+    {
+        public MessageSegmentType Type { get; set; }
+        public string Text { get; set; }
+
+        public MessageSegment(MessageSegmentType type, string message)
+        {
+            this.Type = type;
+            this.Text = message;
         }
     }
 }

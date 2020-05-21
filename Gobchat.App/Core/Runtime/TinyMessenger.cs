@@ -71,7 +71,7 @@ namespace TinyMessenger
         public TinyMessageBase(object sender)
         {
             if (sender == null)
-                throw new ArgumentNullException("sender");
+                throw new ArgumentNullException(nameof(sender));
 
             _Sender = new WeakReference(sender);
         }
@@ -126,7 +126,7 @@ namespace TinyMessenger
             : base(sender)
         {
             if (cancelAction == null)
-                throw new ArgumentNullException("cancelAction");
+                throw new ArgumentNullException(nameof(cancelAction));
 
             Content = content;
             Cancel = cancelAction;
@@ -147,10 +147,10 @@ namespace TinyMessenger
         public TinyMessageSubscriptionToken(ITinyMessengerHub hub, Type messageType)
         {
             if (hub == null)
-                throw new ArgumentNullException("hub");
+                throw new ArgumentNullException(nameof(hub));
 
             if (!typeof(ITinyMessage).IsAssignableFrom(messageType))
-                throw new ArgumentOutOfRangeException("messageType");
+                throw new ArgumentOutOfRangeException(nameof(messageType));
 
             _Hub = new WeakReference(hub);
             _MessageType = messageType;
@@ -250,6 +250,7 @@ namespace TinyMessenger
     /// <summary>
     /// Thrown when an exceptions occurs while subscribing to a message type
     /// </summary>
+    [Serializable]
     public class TinyMessengerSubscriptionException : Exception
     {
         private const string ERROR_TEXT = "Unable to add subscription for {0} : {1}";
@@ -261,6 +262,10 @@ namespace TinyMessenger
 
         public TinyMessengerSubscriptionException(Type messageType, string reason, Exception innerException)
             : base(String.Format(ERROR_TEXT, messageType, reason), innerException)
+        {
+        }
+
+        protected TinyMessengerSubscriptionException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }
@@ -488,13 +493,13 @@ namespace TinyMessenger
             public WeakTinyMessageSubscription(TinyMessageSubscriptionToken subscriptionToken, Action<TMessage> deliveryAction, Func<TMessage, bool> messageFilter)
             {
                 if (subscriptionToken == null)
-                    throw new ArgumentNullException("subscriptionToken");
+                    throw new ArgumentNullException(nameof(subscriptionToken));
 
                 if (deliveryAction == null)
-                    throw new ArgumentNullException("deliveryAction");
+                    throw new ArgumentNullException(nameof(deliveryAction));
 
                 if (messageFilter == null)
-                    throw new ArgumentNullException("messageFilter");
+                    throw new ArgumentNullException(nameof(messageFilter));
 
                 _SubscriptionToken = subscriptionToken;
                 _DeliveryAction = new WeakReference(deliveryAction);
@@ -542,13 +547,13 @@ namespace TinyMessenger
             public StrongTinyMessageSubscription(TinyMessageSubscriptionToken subscriptionToken, Action<TMessage> deliveryAction, Func<TMessage, bool> messageFilter)
             {
                 if (subscriptionToken == null)
-                    throw new ArgumentNullException("subscriptionToken");
+                    throw new ArgumentNullException(nameof(subscriptionToken));
 
                 if (deliveryAction == null)
-                    throw new ArgumentNullException("deliveryAction");
+                    throw new ArgumentNullException(nameof(deliveryAction));
 
                 if (messageFilter == null)
-                    throw new ArgumentNullException("messageFilter");
+                    throw new ArgumentNullException(nameof(messageFilter));
 
                 _SubscriptionToken = subscriptionToken;
                 _DeliveryAction = deliveryAction;
@@ -763,13 +768,13 @@ namespace TinyMessenger
                 where TMessage : class, ITinyMessage
         {
             if (deliveryAction == null)
-                throw new ArgumentNullException("deliveryAction");
+                throw new ArgumentNullException(nameof(deliveryAction));
 
             if (messageFilter == null)
-                throw new ArgumentNullException("messageFilter");
+                throw new ArgumentNullException(nameof(messageFilter));
 
             if (proxy == null)
-                throw new ArgumentNullException("proxy");
+                throw new ArgumentNullException(nameof(proxy));
 
             lock (_SubscriptionsPadlock)
             {
@@ -791,7 +796,7 @@ namespace TinyMessenger
                 where TMessage : class, ITinyMessage
         {
             if (subscriptionToken == null)
-                throw new ArgumentNullException("subscriptionToken");
+                throw new ArgumentNullException(nameof(subscriptionToken));
 
             lock (_SubscriptionsPadlock)
             {
@@ -807,7 +812,7 @@ namespace TinyMessenger
                 where TMessage : class, ITinyMessage
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             List<SubscriptionItem> currentlySubscribed;
             lock (_SubscriptionsPadlock)

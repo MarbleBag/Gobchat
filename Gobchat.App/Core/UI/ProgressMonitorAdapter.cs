@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -25,7 +25,7 @@ namespace Gobchat.Core.UI
         {
             _source = new CancellationTokenSource();
             _progressDisplay = progressDisplay;
-            _progressDisplay.Cancel += (s, e) => { try { _source.Cancel(); } catch (Exception) { /*ignore*/ } };
+            _progressDisplay.OnCancel += (s, e) => { try { _source.Cancel(); } catch (Exception) { /*ignore*/ } };
         }
 
         public string StatusText

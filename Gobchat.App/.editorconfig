@@ -2,7 +2,19 @@
 [*.TinyIoC.cs]
 generated_code  = true
 
+
+
+# IDE0069: Disposable fields should be disposed
+dotnet_diagnostic.IDE0069.severity = suggestion
+
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = suggestion
+
 [*.cs]
+
+# CA1062: Validate arguments of public methods
+# null check on first use not needed, because it will throw anyway!
+dotnet_diagnostic.CA1062.severity = none
 
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none

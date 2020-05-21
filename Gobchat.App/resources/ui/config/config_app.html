@@ -10,7 +10,7 @@
     <p>
         <div>
             <label>Language</label>
-            <select id="capp_language" data-gob-configkey="behaviour.language" disabled="true" title="Soon (TM)">
+            <select id="capp_language" data-gob-configkey="behaviour.language" disabled title="Soon (TM)">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
@@ -60,7 +60,7 @@
                             <label>Check for updates on start</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="capp_checkupdates" data-gob-configkey="behaviour.checkForUpdate" />
+                            <input type="checkbox" id="capp_checkupdates" data-gob-configkey="behaviour.appUpdate.checkOnline" />
                         </td>
                     </tr>
                     <tr>
@@ -68,7 +68,76 @@
                             <label for="capp_checkbetaupdates">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- allow beta updates</label>
                         </td>
                         <td>
-                            <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.checkForBetaUpdate" />
+                            <input type="checkbox" id="capp_checkbetaupdates" data-gob-configkey="behaviour.appUpdate.acceptBeta" />
+                        </td>
+                    </tr>
+                    <tr id="capp_characterlocations_feature">
+                        <td colspan="2">
+                            <label style="color:crimson; font-weight:bold;">Character locations are not available. Unable to retrieve informations from FFXIV.</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Character location updates</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_actor_updateActive" data-gob-configkey="behaviour.actor.active" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Range filter</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_rangefilter_active" data-gob-configkey="behaviour.rangefilter.active" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="capp_rangefilter_mention">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Exclude mentions</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_rangefilter_mention" data-gob-configkey="behaviour.rangefilter.ignoreMention" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </p>
+
+    <p>
+        <div>
+            <div>
+                <label><b>Range filter</b></label>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label>Cut off (Yalm):</label></td>
+                        <td>
+                            <input type="number" min="0" id="capp_rangefilter_cutoff" data-gob-configkey="behaviour.rangefilter.cutoff" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_cutoff_reset" data-gob-configkey="behaviour.rangefilter.cutoff" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Fade out (Yalm):</label></td>
+                        <td>
+                            <input type="number" min="0" id="capp_rangefilter_fadeout" data-gob-configkey="behaviour.rangefilter.fadeout" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_fadeout_reset" data-gob-configkey="behaviour.rangefilter.fadeout" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Transparency Start (%):</label></td>
+                        <td>
+                            <input type="number" min="1" max="100" id="capp_rangefilter_startopacity" data-gob-configkey="behaviour.rangefilter.startopacity" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_startopacity_reset" data-gob-configkey="behaviour.rangefilter.startopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Transparency End (%):</label></td>
+                        <td>
+                            <input type="number" min="1" max="100" id="capp_rangefilter_endopacity" data-gob-configkey="behaviour.rangefilter.endopacity" style="font-weight:bold;">
+                            <button class="ui-gc-btn" id="capp_rangefilter_endopacity_reset" data-gob-configkey="behaviour.rangefilter.endopacity" title="Resets this to its default value"><i class="fas fa-undo-alt"></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -94,7 +163,7 @@
                             <input type="number" min="0" id="capp_frame_x" data-gob-configkey="behaviour.frame.chat.position.x" />
                         </td>
                         <td>
-                            <label>Hight: </label>
+                            <label>Height: </label>
                         </td>
                         <td>
                             <input type="number" min="200" id="capp_frame_height" data-gob-configkey="behaviour.frame.chat.size.height" />
@@ -123,7 +192,7 @@
         <div>
             <label><b>Fonts:</b></label>
             <input type="text" id="capp_font_family" data-gob-configkey="style.channel.base.font-family" style="width:100%;">
-            <button class="ui-gc-btn" id="capp_font_family_reset"><i class="fas fa-undo-alt"></i></button>
+            <button class="ui-gc-btn" id="capp_font_family_reset" title="Resets fonts to its default value" data-gob-configkey="style.channel.base.font-family"><i class="fas fa-undo-alt"></i></button>
         </div>
     </p>
 
@@ -147,9 +216,12 @@
                         <td>Search results:</td>
                         <td>
                             <div>
-                                <input id="capp_search_marked" type="text" data-gob-configkey="style.chatsearch.marked.background-color" />
+                                <input id="capp_search_marked"
+                                       type="text"
+                                       data-gob-configkey="style.chatsearch.marked.background-color" />
                                 <button id="capp_search_marked_reset" class="ui-gc-btn"
-                                        title="Resets the field to its default value">
+                                        title="Resets the field to its default value"
+                                        data-gob-configkey="style.chatsearch.marked.background-color">
                                     <i class='fas fa-undo-alt'></i>
                                 </button>
                             </div>
@@ -159,9 +231,12 @@
                         <td>Search border color:</td>
                         <td>
                             <div>
-                                <input id="capp_search_selected" class="" type="text" data-gob-configkey="style.chatsearch.selected.border-color" />
+                                <input id="capp_search_selected"
+                                       class="" type="text"
+                                       data-gob-configkey="style.chatsearch.selected.border-color" />
                                 <button id="capp_search_selected_reset" class="ui-gc-btn"
-                                        title="Resets the field to its default value">
+                                        title="Resets the field to its default value"
+                                        data-gob-configkey="style.chatsearch.selected.border-color">
                                     <i class='fas fa-undo-alt'></i>
                                 </button>
                             </div>
@@ -201,10 +276,26 @@
     </p>
 
     <p>
-        <div>
-            <label>Chat Update Interval (MS)</label>
-            <input type="number" min="0" max="5000" id="capp_updateInterval" data-gob-configkey="behaviour.chatUpdateInterval" />
-        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label>Chat Update Interval (MS)</label>
+                    </td>
+                    <td>
+                        <input type="number" min="50" max="5000" id="capp_chat_updateInterval" data-gob-configkey="behaviour.chat.updateInterval" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Character Update Interval (MS)</label>
+                    </td>
+                    <td>
+                        <input type="number" min="200" max="20000" id="capp_actor_updateInterval" data-gob-configkey="behaviour.actor.updateInterval" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div hidden>
             <table>
                 <tbody>
@@ -236,163 +327,149 @@
         'use strict';
 
         (function () {
+            const binding = ConfigHelper.makeDatabinding(gobconfig)
+
             // setup language
             const dpdLanguage = $("#capp_language")
-            ConfigHelper.linkDropdownConfig(dpdLanguage, { defaultValue: "en" })
+            ConfigHelper.bindElement(binding, dpdLanguage)
 
             // setup checkboxes
             const ckbChatLog = $("#capp_makechatlog")
             ckbChatLog.attr("title", "Gobchat creates a chatlog which will be saved under AppData\\Roaming\\Gobchat\\log")
-            ConfigHelper.linkCheckboxConfig(ckbChatLog)
+            ConfigHelper.bindCheckbox(binding, ckbChatLog)
 
             const ckbAutodetect = $("#capp_autodetectemote")
-            ConfigHelper.linkCheckboxConfig(ckbAutodetect)
+            ConfigHelper.bindCheckbox(binding, ckbAutodetect)
 
             const ckbTimestamp = $("#capp_showTimestamp")
-            ConfigHelper.linkCheckboxConfig(ckbTimestamp)
+            ConfigHelper.bindCheckbox(binding, ckbTimestamp)
 
             const ckbHide = $("#capp_hide")
             ckbHide.attr("title", "Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized")
-            ConfigHelper.linkCheckboxConfig(ckbHide)
+            ConfigHelper.bindCheckbox(binding, ckbHide)
 
             const ckbUpdate = $("#capp_checkupdates")
-            ConfigHelper.linkCheckboxConfig(ckbUpdate)
+            ConfigHelper.bindCheckbox(binding, ckbUpdate)
 
             const ckbBetaUpdate = $("#capp_checkbetaupdates")
-            ConfigHelper.linkCheckboxConfig(ckbBetaUpdate)
-            const ckbBetaUpdateLabel = $("[for='capp_checkbetaupdates']")
-            ConfigHelper.setupListener(ckbUpdate.attr(ConfigHelper.ConfigKeyAttribute), value => {
+            ConfigHelper.bindCheckbox(binding, ckbBetaUpdate)
+
+            binding.bindConfigListener(ConfigHelper.getConfigKey(ckbUpdate), value => {
                 ckbBetaUpdate.attr("disabled", !value)
-                ckbBetaUpdateLabel.toggleClass("disabled", !value)
+                $("[for='capp_checkbetaupdates']").toggleClass("disabled", !value)
             })
-            ckbBetaUpdate.attr("disabled", !ckbUpdate.prop("checked"))
-            ckbBetaUpdateLabel.toggleClass("disabled", !ckbUpdate.prop("checked"))
+
+            {
+                (async () => {
+                    const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
+                    $("#capp_characterlocations_feature").toggle(!available)
+                })()
+            }
+
+            const ckbRangeFilterActive = $("#capp_rangefilter_active")
+            ConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
+
+            const ckbRangeFilterMention = $("#capp_rangefilter_mention")
+            ConfigHelper.bindCheckbox(binding, ckbRangeFilterMention)
+
+            binding.bindConfigListener(ConfigHelper.getConfigKey(ckbRangeFilterActive), value => {
+                ckbRangeFilterMention.attr("disabled", !value)
+                $("[for='capp_rangefilter_mention']").toggleClass("disabled", !value)
+            })
 
             // setup font group
             // setup font family
             const txtFontFamily = $("#capp_font_family")
             txtFontFamily.attr("title", "Picks the first available font, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.")
-            ConfigHelper.linkTextConfig(txtFontFamily)
+            ConfigHelper.bindElement(binding, txtFontFamily)
 
             const btnFontFamilyReset = $("#capp_font_family_reset")
-            btnFontFamilyReset.attr("title", "Resets fonts to its default value")
-            btnFontFamilyReset.on("click", (event) => {
-                const configKey = txtFontFamily.attr(ConfigHelper.ConfigKeyAttribute)
-                if (configKey) gobconfig.reset(configKey)
-            })
+            ConfigHelper.makeResetButton(btnFontFamilyReset)
+
+            const parseNumber = ($element) => {
+                const value = parseInt($element.val())
+                return Gobchat.isNumber(value) && value > 0 ? value : undefined
+            }
+
+            const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_cutoff_reset"))
+
+            const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
+
+            const txtRangeFilterStartOpacity = $("#capp_rangefilter_startopacity")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_startopacity_reset"))
+            const txtRangeFilterEndOpacity = $("#capp_rangefilter_endopacity")
+            ConfigHelper.makeResetButton($("#capp_rangefilter_endopacity_reset"))
+
+            ConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
 
             const txtFrameX = $("#capp_frame_x")
-            const txtFrameXConfigKey = txtFrameX.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameXConfigKey, value => txtFrameX.val(value))
-            txtFrameX.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameXConfigKey, value)
-            })
-
             const txtFrameY = $("#capp_frame_y")
-            const txtFrameYConfigKey = txtFrameY.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameYConfigKey, value => txtFrameY.val(value))
-            txtFrameY.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameYConfigKey, value)
-            })
-
             const txtFrameHeight = $("#capp_frame_height")
-            const txtFrameHeightConfigKey = txtFrameHeight.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameHeightConfigKey, value => txtFrameHeight.val(value))
-            txtFrameHeight.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameHeightConfigKey, value)
-            })
-
             const txtFrameWidth = $("#capp_frame_width")
-            const txtFrameWidthConfigKey = txtFrameWidth.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtFrameWidthConfigKey, value => txtFrameWidth.val(value))
-            txtFrameWidth.on("change", function (e) {
-                const value = parseInt(e.target.value)
-                if (Gobchat.isNumber(value) && value > 0)
-                    gobconfig.set(txtFrameWidthConfigKey, value)
-            })
+
+            ConfigHelper.bindElement(binding, txtFrameX, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtFrameY, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtFrameHeight, { elementGetAccessor: parseNumber })
+            ConfigHelper.bindElement(binding, txtFrameWidth, { elementGetAccessor: parseNumber })
 
             // setup font size
             const dpdFontSize = $("#capp_font_size")
-            const dpdFonSizeConfigKey = dpdFontSize.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(dpdFonSizeConfigKey, value => dpdFontSize.val(value))
-            dpdFontSize.on("change", function (event) {
-                let newSize = event.target.value || "medium"
-                if (Gobchat.isNumber(newSize))
-                    newSize = Math.round(newSize) + "px"
-                gobconfig.set(dpdFonSizeConfigKey, newSize)
+            ConfigHelper.bindElement(binding, dpdFontSize, {
+                elementGetAccessor: ($element) => Gobchat.isNumber($element.val()) ? Math.round($element.val()) + "px" : ($element.val() || "medium")
             })
 
             const clrSearchMarked = $("#capp_search_marked")
+            ConfigHelper.makeColorSelector(clrSearchMarked)
+            ConfigHelper.bindColorSelector(binding, clrSearchMarked)
+
             const btnSearchMarkedReset = $("#capp_search_marked_reset")
-            ConfigHelper.makeAndBindColorSelector(clrSearchMarked)
-            btnSearchMarkedReset.on("click", e => gobconfig.reset(clrSearchMarked.attr(ConfigHelper.ConfigKeyAttribute)))
+            ConfigHelper.makeResetButton(btnSearchMarkedReset)
 
             const clrSearchSelected = $("#capp_search_selected")
+            ConfigHelper.makeColorSelector(clrSearchSelected)
+            ConfigHelper.bindColorSelector(binding, clrSearchSelected)
+
             const btnSearchSelectedReset = $("#capp_search_selected_reset")
-            ConfigHelper.makeAndBindColorSelector(clrSearchSelected)
-            btnSearchSelectedReset.on("click", e => gobconfig.reset(clrSearchSelected.attr(ConfigHelper.ConfigKeyAttribute)))
+            ConfigHelper.makeResetButton(btnSearchSelectedReset)
 
             // setup hotkey group
             // setup hotkey field
             const txtHotkeyShow = $("#capp_hotkey_show")
             txtHotkeyShow.attr("title", "Hides or shows gobchat on keypress")
-            const txtHotkeyShowConfigKey = txtHotkeyShow.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtHotkeyShowConfigKey, value => txtHotkeyShow.val(value), { defValue: "" })
-            txtHotkeyShow.on("keydown", function (event) {
-                //needs a way to transform the stored code into javascript and back
-                //this may create some problems for some very special keys
 
-                const keyMsg = ConfigHelper.decodeHotkey(event, true);
-                if (keyMsg === null)
-                    return
-
-                txtHotkeyShow.val(keyMsg)
-                gobconfig.set(txtHotkeyShowConfigKey, keyMsg)
-            })
-
-            /*
-            const txtHotkeySearch = $("#capp_hotkey_search")
-            txtHotkeySearch.attr("title", "Hides or shows a text search field")
-            const txtHotkeySearchConfigKey = txtHotkeySearch.attr(ConfigHelper.ConfigKeyAttribute)
-            ConfigHelper.setupListenerAndInitialize(txtHotkeySearchConfigKey, value => txtHotkeySearch.val(value), { defValue: "" })
-            txtHotkeySearch.on("keydown", function (event) {
-                const keyMsg = ConfigHelper.decodeHotkey(event, true);
-                if (keyMsg === null)
-                    return
-
-                txtHotkeySearch.val(keyMsg)
-                gobconfig.set(txtHotkeySearchConfigKey, keyMsg)
-            })
-            */
+            const getHotkey = ($element, event) => ConfigHelper.decodeHotkey(event, true)
+            ConfigHelper.bindElement(binding, txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
 
             // setup ungrouped
+            const txtChatUpdateInterval = $("#capp_chat_updateInterval")
+            txtChatUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            ConfigHelper.bindElement(binding, txtChatUpdateInterval, { elementGetAccessor: parseNumber })
 
-            const txtUpdateInterval = $("#capp_updateInterval")
-            const txtUpdateIntervalConfigKey = txtUpdateInterval.attr(ConfigHelper.ConfigKeyAttribute)
-            txtUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates of the chat overlay. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
-            ConfigHelper.setupListenerAndInitialize(txtUpdateIntervalConfigKey, value => txtUpdateInterval.val(value), { defValue: "1000" })
-            txtUpdateInterval.on("change", function (event) {
-                let newValue = event.target.value || 100
-                if (newValue < 0) newValue = 0
-                else if (newValue > 5000) newValue = 5000
+            const txtActorUpdateInterval = $("#capp_actor_updateInterval")
+            txtActorUpdateInterval.attr("title", "Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.")
+            ConfigHelper.bindElement(binding, txtActorUpdateInterval, { elementGetAccessor: parseNumber })
 
-                txtUpdateInterval.val(newValue)
-                gobconfig.set(txtUpdateIntervalConfigKey, newValue)
-            })
+            const ckbActorActive = $("#capp_actor_updateActive")
+            ConfigHelper.bindCheckbox(binding, ckbActorActive)
 
+            // activate bindings
+            binding.initialize()
+
+            // setup profile copy
             const allFields = [
                 dpdLanguage,
-                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate,
+                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
+                txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
                 txtHotkeyShow,
-                txtUpdateInterval,
+                txtChatUpdateInterval, txtActorUpdateInterval,
+                ckbActorActive
             ]
 
             const btnCopyProfile = $("#capp_copyprofile")

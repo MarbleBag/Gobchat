@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 'use strict'
 
 var Gobchat = (function (Gobchat) {
@@ -85,12 +98,26 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
+    function generateFadeOutStyle(cssResults, data) {
+        generateCssStyleElement(cssResults, ".message-body-fadeout-0", { "display": "none" })
+
+        const startopacity = data.startopacity / 100.0
+        const endopacity = data.endopacity / 100.0
+
+        const steps = 10
+        const stepSize = (startopacity - endopacity) / steps
+        for (let i = 1; i <= steps; ++i) {
+            generateCssStyleElement(cssResults, `.message-body-fadeout-${i}`, { "opacity": `${endopacity + (i - 1) * stepSize}` })
+        }
+    }
+
     function buildStyle(gobchatConfig) {
         const cssResults = []
 
         generateStyleSheet(cssResults, gobchatConfig.get("style"))
         generateTimestampStyle(cssResults, gobchatConfig.get("behaviour.showTimestamp"))
         generateGroupStyles(cssResults, gobchatConfig.get("behaviour.groups"))
+        generateFadeOutStyle(cssResults, gobchatConfig.get("behaviour.rangefilter"))
 
         return cssResults.join("\n")
     }

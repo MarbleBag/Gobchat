@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -14,10 +14,11 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Globalization;
 
 namespace Gobchat.Core.Runtime
 {
-    public sealed class DIContext : IDIContext
+    internal sealed class DIContext : IDIContext
     {
         private readonly TinyIoC.TinyIoCContainer _container = new TinyIoC.TinyIoCContainer();
         private readonly DIContext _parent;
@@ -140,18 +141,23 @@ namespace Gobchat.Core.Runtime
         }
     }
 
+    [Serializable]
     public sealed class DIException : System.Exception
     {
         private const string TYPE_ERROR = "Unable to resolve type '{0}'";
         private const string NAMED_TYPE_ERROR = "Unable to resolve type '{0}' with name '{1}'";
 
         public DIException(Type type, Exception innerException)
-            : base(String.Format(TYPE_ERROR, type.FullName), innerException)
+            : base(string.Format(CultureInfo.InvariantCulture, TYPE_ERROR, type.FullName), innerException)
         {
         }
 
         public DIException(Type type, string name, Exception innerException)
-            : base(String.Format(NAMED_TYPE_ERROR, type.FullName, name), innerException)
+            : base(string.Format(CultureInfo.InvariantCulture, NAMED_TYPE_ERROR, type.FullName, name), innerException)
+        {
+        }
+
+        private DIException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }

@@ -16,6 +16,9 @@
 
     <link rel="stylesheet" href="../gobui_default.css">
     <link rel="stylesheet" href="config.css">
+
+    <script src="config.js"></script>
+    <script src="gob-databinding.js"></script>
 </head>
 <body>
     <script type="text/javascript">
@@ -35,8 +38,8 @@
         <a data-nav-target="main_nav_mentions">Mentions</a>
         <a data-nav-target="main_nav_profiles">Profiles</a>
         <a data-nav-target="main_nav_channel">Channels</a>
-        <a data-nav-target="main_nav_roleplay">Roleplay</a>
         <a data-nav-target="main_nav_groups">Groups</a>
+        <a data-nav-target="main_nav_roleplay">Roleplay</a>
         <a data-nav-target="main_nav_about">About</a>
         <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
         <a class="btn-system" id="main_saveandexitconfig"><i class="fa fa-save"></i> Save &amp; Exit</a>
@@ -71,7 +74,7 @@
         jQuery(function ($) {
             $("#main_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
-                window.saveConfig()                
+                window.saveConfig()
                 //window.close()
                 //window.opener.postMessage("Done", '*')
             });
@@ -101,9 +104,57 @@
             });
 
             $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
-        });
-    </script>
 
-    <script src="config.js"></script>
+            initializeNavigationBar("main_navbar")
+        });
+
+        function initializeNavigationBar(navigationBarId) {
+            const navAttribute = "data-nav-target"
+
+            function hideNavigationContent(navigationId) {
+                $(`#${navigationId} > a`).each(function () {
+                    const target = $(this).attr(navAttribute)
+                    if (target)
+                        $(`#${target}`).hide()
+                })
+            }
+
+            function showActiveNavigationContent(navigationId) {
+                $(`#${navigationId} > .active`).each(function () {
+                    const target = $(this).attr(navAttribute)
+                    if (target)
+                        $(`#${target}`).show()
+                })
+            }
+
+            function importNavigationContent(navigationId) {
+                $(`#${navigationId} > a`).each(function () {
+                    const targetId = $(this).attr(navAttribute)
+                    if (!targetId) return
+                    const target = $(`#${targetId}`)
+                    const contentSrc = target.attr("data-content-src")
+                    if (!contentSrc) return
+                    target.load(contentSrc)
+                })
+            }
+
+            function hasNavigationAttribute(element) {
+                const target = $(element).attr(navAttribute)
+                return target !== null && target !== undefined
+            }
+
+            hideNavigationContent(navigationBarId)
+            importNavigationContent(navigationBarId)
+            showActiveNavigationContent(navigationBarId)
+
+            $(`#${navigationBarId}`).on("click", function (event) {
+                if (!hasNavigationAttribute(event.target)) return
+                hideNavigationContent(navigationBarId)
+                $(`#${navigationBarId} > .active`).removeClass("active")
+                $(event.target).addClass("active")
+                showActiveNavigationContent(navigationBarId)
+            })
+        }
+    </script>
 </body>
 </html>

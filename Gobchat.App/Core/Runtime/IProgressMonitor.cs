@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,6 +16,7 @@ namespace Gobchat.Core.Runtime
     public interface IProgressMonitor
     {
         string StatusText { get; set; }
+
         double Progress { get; set; }
 
         void Log(string log);

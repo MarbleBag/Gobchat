@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,19 +17,18 @@ using Gobchat.Core.Config;
 using System.Windows.Forms;
 using Gobchat.Core.UI;
 using System;
-using NLog;
 using Gobchat.Module.NotifyIcon;
 using Gobchat.Core.Util;
 
 namespace Gobchat.Module.Overlay
 {
-    public sealed class AppModuleChatOverlay : IApplicationModule, System.IDisposable
+    public sealed class AppModuleChatOverlay : IApplicationModule
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public const string OverlayUIId = "Gobchat.ChatOverlayForm";
 
-        private IGobchatConfigManager _configManager;
+        private IConfigManager _configManager;
         private IUIManager _manager;
 
         private CefOverlayForm _overlay;
@@ -37,10 +36,21 @@ namespace Gobchat.Module.Overlay
         private DelayedCallback _moveCallback;
         private DelayedCallback _resizeCallback;
 
+        /// <summary>
+        /// Requires: <see cref="IUIManager"/> <br></br>
+        /// Requires: <see cref="IConfigManager"/> <br></br>
+        /// <br></br>
+        /// Adds to UI element: <see cref="INotifyIconManager"/> <br></br>
+        /// Installs UI element: <see cref="CefOverlayForm"/> <br></br>
+        /// </summary>
+        public AppModuleChatOverlay()
+        {
+        }
+
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             _manager = container.Resolve<IUIManager>();
-            _configManager = container.Resolve<IGobchatConfigManager>();
+            _configManager = container.Resolve<IConfigManager>();
 
             var synchronizer = _manager.UISynchronizer;
             synchronizer.RunSync(() => InitializeUI());
@@ -52,9 +62,7 @@ namespace Gobchat.Module.Overlay
             _overlay.Show(); //initializes all properties
             _overlay.Visible = false;
 
-            _configManager.OnActiveProfileChange += (s, e) => _manager.UISynchronizer.RunSync(UpdateFormPosition);
-            _configManager.AddPropertyChangeListener("behaviour.frame.chat", (s, e) => _manager.UISynchronizer.RunSync(UpdateFormPosition));
-            UpdateFormPosition();
+            _configManager.AddPropertyChangeListener("behaviour.frame.chat", true, true, OnEvent_ConfigManager_PositionChange);
 
             _moveCallback = new DelayedCallback(TimeSpan.FromSeconds(1), () =>
             {
@@ -75,9 +83,15 @@ namespace Gobchat.Module.Overlay
             _overlay.Move += (s, e) => _moveCallback.Call();
             _overlay.SizeChanged += (s, e) => _resizeCallback.Call();
 
+            _overlay.Browser.OnBrowserLoadPageDone += (s, e) =>
+            {
+                if (!_overlay.Visible)
+                    _manager.UISynchronizer.RunSync(() => _overlay.Visible = true);
+            };
+
             if (_manager.TryGetUIElement<INotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
             {
-                trayIcon.Icon = Gobchat.Resource.GobTrayIconOff;
+                //trayIcon.Icon = Gobchat.Resource.GobTrayIconOff;
 
                 trayIcon.OnIconClick += (s, e) => _overlay.Visible = !_overlay.Visible;
 
@@ -97,6 +111,13 @@ namespace Gobchat.Module.Overlay
                 trayIcon.AddMenuToGroup("debug", "overlay.devtool", menuItemDevTool);
 #endif
             }
+
+            _overlay.Visible = false;
+        }
+
+        private void OnEvent_ConfigManager_PositionChange(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            _manager.UISynchronizer.RunSync(UpdateFormPosition);
         }
 
         private void UpdateFormPosition()
@@ -133,8 +154,10 @@ namespace Gobchat.Module.Overlay
             //TODO make sure chat is not too big
         }
 
-        private void DisposeUI()
+        public void Dispose()
         {
+            _configManager.RemovePropertyChangeListener(OnEvent_ConfigManager_PositionChange);
+
             var chatLocation = _overlay.Location;
             _configManager.SetProperty("behaviour.frame.chat.position.x", chatLocation.X);
             _configManager.SetProperty("behaviour.frame.chat.position.y", chatLocation.Y);
@@ -142,19 +165,9 @@ namespace Gobchat.Module.Overlay
             var chatSize = _overlay.Size;
             _configManager.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
             _configManager.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
-        }
 
-        public void Dispose(IDIContext container)
-        {
-            Dispose();
-        }
+            _manager.UISynchronizer.RunSync(() => _overlay.Close());
 
-        public void Dispose()
-        {
-            DisposeUI();
-
-            var synchronizer = _manager.UISynchronizer;
-            synchronizer.RunSync(() => _overlay.Close());
             _manager.DisposeUIElement(OverlayUIId);
             _moveCallback.Dispose();
             _resizeCallback.Dispose();

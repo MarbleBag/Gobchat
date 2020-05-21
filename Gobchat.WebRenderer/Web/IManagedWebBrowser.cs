@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,32 +11,37 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using CefSharp;
 using System;
 using System.Drawing;
-using CefSharp;
+using System.Threading.Tasks;
 
 namespace Gobchat.UI.Web
 {
     public interface IManagedWebBrowser
     {
-        event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
+        event EventHandler<BrowserConsoleLogEventArgs> OnBrowserConsoleLog;
 
-        event EventHandler<BrowserErrorEventArgs> BrowserError;
+        event EventHandler<BrowserErrorEventArgs> OnBrowserError;
 
         /// <summary>
         /// Will be fired as soon as the browser is initialized. Each registered listener will be unregistered afterwards.
         /// When the browser is already initialized newly added listener will fire immediately and will not be registered.
         /// </summary>
-        event EventHandler<BrowserInitializedEventArgs> BrowserInitialized;
+        event EventHandler<BrowserInitializedEventArgs> OnBrowserInitialized;
 
-        event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPage;
+        event EventHandler<BrowserLoadPageEventArgs> OnBrowserLoadPage;
 
-        event EventHandler<BrowserLoadPageEventArgs> BrowserLoadPageDone;
+        event EventHandler<BrowserLoadPageEventArgs> OnBrowserLoadPageDone;
+
+        event EventHandler<BrowserAPIBindingEventArgs> OnResolveBrowserAPI;
 
         bool IsBrowserInitialized { get; }
         Size Size { get; set; }
 
         bool BindBrowserAPI(IBrowserAPI api, bool isApiAsync);
+
+        bool UnbindBrowserAPI(IBrowserAPI api);
 
         void ShowDevTools();
 
@@ -45,6 +50,8 @@ namespace Gobchat.UI.Web
         void Dispose();
 
         void ExecuteScript(string script);
+
+        Task<IJavascriptResponse> EvaluateScript(string script, TimeSpan? timeout);
 
         void Load(string url);
 
@@ -104,6 +111,18 @@ namespace Gobchat.UI.Web
             Message = message;
             Source = source;
             Line = line;
+        }
+    }
+
+    public sealed class BrowserAPIBindingEventArgs : System.EventArgs
+    {
+        public string APIName { get; }
+        public IManagedWebBrowser Browser { get; }
+
+        public BrowserAPIBindingEventArgs(string apiName, IManagedWebBrowser browser)
+        {
+            APIName = apiName ?? throw new ArgumentNullException(nameof(apiName));
+            Browser = browser ?? throw new ArgumentNullException(nameof(browser));
         }
     }
 

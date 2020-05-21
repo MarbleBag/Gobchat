@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -33,13 +33,13 @@ namespace Gobchat.Memory.Chat.Token
         {
             var key = GetCompleteKey();
             if (key.StartsWith("0"))
-                return key.Substring(1, key.Length - 3); 
+                return key.Substring(1, key.Length - 3);
             return key.Substring(0, key.Length - 2); //Code always ends on 0x03. We don't need that.
         }
 
         public override string ToString()
         {
-            return $"Autotranslate[key={GetCompleteKey()}]";
+            return $"{nameof(AutotranslateToken)}[key={GetCompleteKey()}]";
         }
     }
 }

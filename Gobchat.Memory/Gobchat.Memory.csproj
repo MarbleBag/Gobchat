@@ -52,6 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor\ActorPosition.cs" />
+    <Compile Include="Actor\PlayerCharacter.cs" />
+    <Compile Include="Actor\PlayerEventArgs.cs" />
+    <Compile Include="Actor\PlayerLocationMemoryReader.cs" />
+    <Compile Include="Chat\ChatlogMemoryReader.cs" />
     <Compile Include="Chat\Token\AutotranslateToken.cs" />
     <Compile Include="Chat\ChatBuildException.cs" />
     <Compile Include="Chat\ChatlogBuilder.cs" />
@@ -64,8 +69,8 @@
     <Compile Include="Chat\Token\TextToken.cs" />
     <Compile Include="Chat\Token\UnknownLinkToken.cs" />
     <Compile Include="Chat\Token\UnknownToken.cs" />
-    <Compile Include="FFXIVProcessMonitor.cs" />
-    <Compile Include="MemoryProcessor.cs" />
+    <Compile Include="FFXIVMemoryReader.cs" />
+    <Compile Include="FXIVProcessConnector.cs" />
     <Compile Include="ProcessChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowFocusChangedEventArgs.cs" />
@@ -80,8 +85,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Actor\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

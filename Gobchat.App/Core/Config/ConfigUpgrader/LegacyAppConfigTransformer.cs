@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -19,9 +19,9 @@ namespace Gobchat.Core.Config
 {
     internal sealed class LegacyAppConfigTransformer : IJsonTransformer
     {
-        private IGobchatConfigManager _manager;
+        private IConfigManager _manager;
 
-        public LegacyAppConfigTransformer(IGobchatConfigManager manager)
+        public LegacyAppConfigTransformer(IConfigManager manager)
         {
             _manager = manager;
         }
@@ -40,8 +40,8 @@ namespace Gobchat.Core.Config
             profile.SetProperty("profile.name", "Profile 1");
 
             var visibleChannels = profile.GetProperty<List<int>>("behaviour.channel.visible");
-            visibleChannels.Add((int)ChannelEnum.GOBCHAT_INFO);
-            visibleChannels.Add((int)ChannelEnum.GOBCHAT_ERROR);
+            visibleChannels.Add((int)ChatChannel.GOBCHAT_INFO);
+            visibleChannels.Add((int)ChatChannel.GOBCHAT_ERROR);
             profile.SetProperty("behaviour.channel.visible", visibleChannels);
 
             var result = new JObject();

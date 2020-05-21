@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019 MarbleBag
+ * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -17,7 +17,7 @@ using System.Diagnostics;
 
 namespace Gobchat.UI.Forms
 {
-    internal class CustomLifeSpanHandler : ILifeSpanHandler
+    internal sealed class CustomLifeSpanHandler : ILifeSpanHandler
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

@@ -12,7 +12,7 @@ namespace Gobchat.Core.UI
 {
     public partial class ProgressDisplayForm : Form
     {
-        public event EventHandler Cancel;
+        public event EventHandler OnCancel;
 
         public ProgressDisplayForm()
         {
@@ -43,13 +43,13 @@ namespace Gobchat.Core.UI
 
         private void BtnSingle_Click(object sender, EventArgs e)
         {
-            Cancel?.Invoke(this, new EventArgs());
+            OnCancel?.Invoke(this, new EventArgs());
         }
 
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
-                Cancel?.Invoke(this, new EventArgs());
+                OnCancel?.Invoke(this, new EventArgs());
         }
     }
 }
