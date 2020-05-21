@@ -223,8 +223,10 @@ This may take a while on your first start of Gobchat.
 
 ## Troubleshooting
 ### Range filter seems not to work
-- Check `Config / App`, it's possible that Gobchat can't retrieve informations about players from your running FFXIV. A red message will inform you about that. This can have many reasons.
-  - Try: close Gobchat an delete the `sharlayan` folder under `resources`.  The content will be re downloaded and may contain the missing informations.
+- Check `Config / App`, it's possible that Gobchat can't retrieve informations about players from your running FFXIV. A red message will inform you about that. This can have many reasons:
+  - Be sure FFXIV is running.
+  - Close and reopen config dialog. Gobchat needs some time until it has loaded everything.
+  - Close Gobchat an delete the `sharlayan` folder under `resources`.  The content will be re downloaded and may contain the missing informations.
 
 ### Gobchat doesn't start
 - Check `gobchat_debug.log`
