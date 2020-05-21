@@ -14,6 +14,7 @@
 using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using Gobchat.Memory;
+using Gobchat.Module.MemoryReader;
 using Gobchat.UI.Forms;
 using System;
 
@@ -24,7 +25,7 @@ namespace Gobchat.Module.Overlay
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
-        private FFXIVMemoryReader _memoryReader;
+        private IMemoryReaderManager _memoryManager;
         private IConfigManager _configManager;
 
         private bool _hideOnMinimize;
@@ -32,7 +33,7 @@ namespace Gobchat.Module.Overlay
         /// <summary>
         /// Requires: <see cref="IUIManager"/> <br></br>
         /// Requires: <see cref="IGobchatConfig"/> <br></br>
-        /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// <br></br>
         /// Adds to UI element: <see cref="CefOverlayForm"/> <br></br>
         /// </summary>
@@ -44,19 +45,19 @@ namespace Gobchat.Module.Overlay
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
 
-            _memoryReader = _container.Resolve<FFXIVMemoryReader>();
+            _memoryManager = _container.Resolve<IMemoryReaderManager>();
             _configManager = _container.Resolve<IConfigManager>();
             _configManager.AddPropertyChangeListener("behaviour.hideOnMinimize", true, true, ConfigManager_UpdateHideOnMinimize);
-            _memoryReader.OnWindowFocusChanged += MemoryReader_OnWindowFocusChanged;
+            _memoryManager.OnWindowFocusChanged += MemoryReader_OnWindowFocusChanged;
         }
 
         public void Dispose()
         {
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateHideOnMinimize);
-            _memoryReader.OnWindowFocusChanged -= MemoryReader_OnWindowFocusChanged;
+            _memoryManager.OnWindowFocusChanged -= MemoryReader_OnWindowFocusChanged;
 
             _container = null;
-            _memoryReader = null;
+            _memoryManager = null;
             _configManager = null;
         }
 
@@ -65,7 +66,7 @@ namespace Gobchat.Module.Overlay
             _hideOnMinimize = config.GetProperty<bool>("behaviour.hideOnMinimize");
 
             var uiManager = _container.Resolve<IUIManager>();
-            uiManager.UISynchronizer.RunSync(() => _memoryReader.ObserveGameWindow = _hideOnMinimize);
+            uiManager.UISynchronizer.RunSync(() => _memoryManager.ObserveGameWindow = _hideOnMinimize);
         }
 
         private void MemoryReader_OnWindowFocusChanged(object sender, WindowFocusChangedEventArgs e)

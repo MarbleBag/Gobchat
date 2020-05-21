@@ -15,6 +15,7 @@ using Gobchat.Core.Chat;
 using Gobchat.Core.Runtime;
 using Gobchat.Memory;
 using Gobchat.Module.Chat;
+using Gobchat.Module.MemoryReader;
 using System;
 
 namespace Gobchat.Module.Misc
@@ -25,15 +26,15 @@ namespace Gobchat.Module.Misc
 
         private IDIContext _container;
         private IChatManager _chatManager;
-        private FFXIVMemoryReader _memoryReader;
+        private IMemoryReaderManager _memoryReader;
 
-        private volatile bool _lastMemoryState;
-        private volatile bool _reportDone;
-        private object _lock = new object();
+        private volatile bool _reportError;
+
+        private readonly object _lock = new object();
 
         /// <summary>
         /// Requires: <see cref="IChatManager"/> <br></br>
-        /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// <br></br>
         /// </summary>
         public AppModuleInformUserAboutMemoryState()
@@ -44,58 +45,52 @@ namespace Gobchat.Module.Misc
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _chatManager = _container.Resolve<IChatManager>();
-            _memoryReader = _container.Resolve<FFXIVMemoryReader>();
+            _memoryReader = _container.Resolve<IMemoryReaderManager>();
 
-            _memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
-            CheckReport();
+            _reportError = true; //report error on startup
+            _memoryReader.OnConnectionState += MemoryReader_OnConnectionState;
+            Report(_memoryReader.ConnectionState);
         }
 
         public void Dispose()
         {
-            _memoryReader.OnProcessChanged -= MemoryReader_OnProcessChanged;
+            _memoryReader.OnConnectionState -= MemoryReader_OnConnectionState;
 
             _chatManager = null;
             _container = null;
         }
 
-
-        private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
+        private void MemoryReader_OnConnectionState(object sender, ConnectionEventArgs e)
         {
-            CheckReport();
+            Report(e.State);
         }
 
-        private void CheckReport()
+        private void Report(ConnectionState state)
         {
             lock (_lock)
             {
-                if (_reportDone)
+                switch (state)
                 {
-                    if (_lastMemoryState != _memoryReader.FFXIVProcessValid)
-                        _lastMemoryState = ReportToUser();
-                }
-                else
-                {
-                    _lastMemoryState = ReportToUser();
-                    _reportDone = true;
-                }
-            }
-        }
+                    case ConnectionState.NotInitialized:
+                        return;
 
-        private bool ReportToUser()
-        {
-            lock (_lock)
-            {
-                var state = _memoryReader.FFXIVProcessValid;
-                if (state)
-                {
-                    if (_memoryReader.ChatLogAvailable)
-                        _chatManager.EnqueueMessage(SystemMessageType.Info, "FFXIV detected.");
-                    else
-                        _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
+                    case ConnectionState.Searching:
+                    case ConnectionState.NotFound:
+                        if (!_reportError)
+                            return;
+
+                        _reportError = false;
+                        _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't find a running instance of FFXIV.");
+                        break;
+
+                    case ConnectionState.Connected:
+                        _reportError = true;
+                        if (_memoryReader.ChatLogAvailable)
+                            _chatManager.EnqueueMessage(SystemMessageType.Info, "FFXIV detected.");
+                        else
+                            _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
+                        break;
                 }
-                else
-                    _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't find a running instance of FFXIV.");
-                return state;
             }
         }
     }

@@ -229,6 +229,8 @@
     <Compile Include="Module\Hotkey\Internal\HotkeyData.cs" />
     <Compile Include="Module\Hotkey\Internal\HotkeyManager.cs" />
     <Compile Include="Module\Actor\IActorManager.cs" />
+    <Compile Include="Module\MemoryReader\IMemoryReaderManager.cs" />
+    <Compile Include="Module\MemoryReader\Internal\MemoryReaderManager.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
     <Compile Include="Module\UI\Connector\AppModuleActorToUI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />

@@ -13,7 +13,6 @@
 
 using Gobchat.Core.Runtime;
 using Gobchat.Module.NotifyIcon;
-using Gobchat.Memory;
 using System;
 using Gobchat.Core.UI;
 
@@ -26,7 +25,7 @@ namespace Gobchat.Module.MemoryReader
         private IDIContext _container;
 
         /// <summary>
-        /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// Requires: <see cref="IUIManager"/> <br></br>
         /// <br></br>
         /// Adds to UI element: <see cref="INotifyIconManager"/> <br></br>
@@ -38,35 +37,29 @@ namespace Gobchat.Module.MemoryReader
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
-
-            var memoryReader = _container.Resolve<FFXIVMemoryReader>();
-            MemoryReader_OnProcessChanged(memoryReader.FFXIVProcessValid);
-            memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
+            var memoryReader = _container.Resolve<IMemoryReaderManager>();
+            memoryReader.OnConnectionState += MemoryReader_OnConnectionState;
+            OnConnection(memoryReader.ConnectionState);
         }
 
         public void Dispose()
         {
-            var memoryReader = _container.Resolve<FFXIVMemoryReader>();
-            memoryReader.OnProcessChanged -= MemoryReader_OnProcessChanged;
-
+            var memoryReader = _container.Resolve<IMemoryReaderManager>();
+            memoryReader.OnConnectionState -= MemoryReader_OnConnectionState;
             _container = null;
         }
 
-        private void MemoryReader_OnProcessChanged(object sender, Memory.ProcessChangeEventArgs e)
+        private void MemoryReader_OnConnectionState(object sender, ConnectionEventArgs e)
         {
-            MemoryReader_OnProcessChanged(e.IsProcessValid);
+            OnConnection(e.State);
         }
 
-        private void MemoryReader_OnProcessChanged(bool isValid)
+        private void OnConnection(ConnectionState state)
         {
+            var icon = state == ConnectionState.Connected ? Resource.GobTrayIconOn : Resource.GobTrayIconOff;
             var uiManager = _container.Resolve<IUIManager>();
             if (uiManager.TryGetUIElement<INotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
-            {
-                if (isValid)
-                    trayIcon.Icon = Resource.GobTrayIconOn;
-                else
-                    trayIcon.Icon = Resource.GobTrayIconOff;
-            }
+                trayIcon.Icon = icon;
         }
     }
 }

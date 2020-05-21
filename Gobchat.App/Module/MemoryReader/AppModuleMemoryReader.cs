@@ -13,6 +13,7 @@
 
 using Gobchat.Core.Runtime;
 using Gobchat.Memory;
+using Gobchat.Module.MemoryReader.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +28,11 @@ namespace Gobchat.Module.MemoryReader
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
-        private FFXIVMemoryReader _memoryReader;
-
-        private IndependendBackgroundWorker _worker;
+        private MemoryReaderManager _memoryReaderManager;
 
         /// <summary>
         /// Requires: <see cref="IUISynchronizer"/> <br></br>
-        /// Provides: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Provides: <see cref="IMemoryReaderManager"/> <br></br>
         /// </summary>
         public AppModuleMemoryReader()
         {
@@ -42,61 +41,18 @@ namespace Gobchat.Module.MemoryReader
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
-            _worker = new IndependendBackgroundWorker();
+            _memoryReaderManager = new MemoryReaderManager(container);
 
-            var sharlayanResourceFolder = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"sharlayan");
-            System.IO.Directory.CreateDirectory(sharlayanResourceFolder);
-
-            //needs to be done on the same thread as dispose, anchore it to ui thread, because that one never changes
-            var synchronizer = _container.Resolve<IUISynchronizer>();
-            _memoryReader = synchronizer.RunSync(() => new FFXIVMemoryReader());
-            _memoryReader.LocalCacheDirectory = sharlayanResourceFolder;
-            _memoryReader.Initialize();
-
-            _memoryReader.OnProcessChanged += MemoryReader_OnProcessChanged;
-            _worker.Start(ConnectMemoryReader);
-
-            container.Register<FFXIVMemoryReader>((c, p) => _memoryReader);
+            _container.Register<IMemoryReaderManager>((c, p) => _memoryReaderManager);
         }
 
         public void Dispose()
         {
             _container?.Unregister<FFXIVMemoryReader>();
-            _worker.Dispose();
-            _worker = null;
+            _memoryReaderManager?.Dispose();
 
-            var synchronizer = _container.Resolve<IUISynchronizer>();
-            synchronizer.RunSync(() => _memoryReader?.Dispose());
-
-            _memoryReader = null;
+            _memoryReaderManager = null;
             _container = null;
-        }
-
-        private void ConnectMemoryReader(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested && !_memoryReader.FFXIVProcessValid)
-            {
-                _memoryReader.CheckFFXIVProcess();
-                if (_memoryReader.FFXIVProcessValid)
-                    break;
-                Thread.Sleep(1000);
-            }
-
-            if (_memoryReader.FFXIVProcessValid)
-                logger.Info("FFXIV process detected");
-        }
-
-        private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
-        {
-            if (e.IsProcessValid)
-            {
-                //TODO
-            }
-            else
-            {
-                logger.Info("No FFXIV process detected");
-                _worker.Start(ConnectMemoryReader);
-            }
         }
     }
 }

@@ -14,9 +14,9 @@
 using System;
 using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
-using Gobchat.Memory;
 using System.Threading;
 using Gobchat.Module.Actor.Internal;
+using Gobchat.Module.MemoryReader;
 
 namespace Gobchat.Module.Actor
 {
@@ -25,24 +25,18 @@ namespace Gobchat.Module.Actor
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
-
         private IConfigManager _configManager;
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "not managed by this instance")]
-        private FFXIVMemoryReader _memoryReader;
-
+        private IMemoryReaderManager _memoryManager;
         private ActorManager _actorManager;
-
         private IndependendBackgroundWorker _updater;
-
         private long _updateInterval;
 
         /// <summary>
-        /// Adds an <see cref="IActorManager"/> to the app context and supplies it with constant updates by querying a <see cref="FFXIVMemoryReader"/>
+        /// Adds an <see cref="IActorManager"/> to the app context and supplies it with constant updates by querying a <see cref="IMemoryReaderManager"/>
         /// <br></br>
         /// <br></br>
         /// Requires: <see cref="IGobchatConfig"/> <br></br>
-        /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// <br></br>
         /// Provides: <see cref="IActorManager"/> <br></br>
         /// </summary>
@@ -54,7 +48,7 @@ namespace Gobchat.Module.Actor
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _configManager = _container.Resolve<IConfigManager>();
-            _memoryReader = _container.Resolve<FFXIVMemoryReader>();
+            _memoryManager = _container.Resolve<IMemoryReaderManager>();
 
             _actorManager = new ActorManager();
             _updater = new IndependendBackgroundWorker();
@@ -76,7 +70,7 @@ namespace Gobchat.Module.Actor
             _actorManager = null;
             _container = null;
             _configManager = null;
-            _memoryReader = null;
+            _memoryManager = null;
         }
 
         private void UpdateJob(CancellationToken cancellationToken)
@@ -112,11 +106,11 @@ namespace Gobchat.Module.Actor
 
         private void UpdateManager()
         {
-            _actorManager.IsAvailable = _memoryReader.PlayerCharactersAvailable;
+            _actorManager.IsAvailable = _memoryManager.PlayerCharactersAvailable;
 
-            if (_memoryReader.FFXIVProcessValid)
+            if (_memoryManager.IsConnected)
             {
-                var characterData = _memoryReader.GetPlayerCharacters();
+                var characterData = _memoryManager.GetPlayerCharacters();
                 _actorManager.AddUpdate(characterData);
             }
 

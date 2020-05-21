@@ -24,6 +24,7 @@ using System.Globalization;
 using Gobchat.Module.Chat.Internal;
 using Newtonsoft.Json.Linq;
 using Gobchat.Module.Actor;
+using Gobchat.Module.MemoryReader;
 
 namespace Gobchat.Module.Chat
 {
@@ -33,8 +34,7 @@ namespace Gobchat.Module.Chat
 
         private IDIContext _container;
         private IConfigManager _configManager;
-
-        private FFXIVMemoryReader _memoryReader;
+        private IMemoryReaderManager _memoryManager;
         private ChatManager _chatManager;
 
         private IndependendBackgroundWorker _updater;
@@ -44,7 +44,7 @@ namespace Gobchat.Module.Chat
         /// <summary>
         ///
         /// Requires: <see cref="IGobchatConfig"/> <br></br>
-        /// Requires: <see cref="FFXIVMemoryReader"/> <br></br>
+        /// Requires: <see cref="IMemoryReaderManager"/> <br></br>
         /// Requires: <see cref="IActorManager"/> <br></br>
         /// Provides: <see cref="IChatManager"/> <br></br>
         /// <br></br>
@@ -57,7 +57,7 @@ namespace Gobchat.Module.Chat
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _configManager = _container.Resolve<IConfigManager>();
-            _memoryReader = _container.Resolve<FFXIVMemoryReader>();
+            _memoryManager = _container.Resolve<IMemoryReaderManager>();
             var actorManager = _container.Resolve<IActorManager>();
 
             var languagePath = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"lang");
@@ -95,7 +95,7 @@ namespace Gobchat.Module.Chat
             _chatManager = null;
             _container = null;
             _configManager = null;
-            _memoryReader = null;
+            _memoryManager = null;
         }
 
         private void UpdateJob(CancellationToken cancellationToken)
@@ -129,9 +129,9 @@ namespace Gobchat.Module.Chat
 
         private void UpdateChatManager()
         {
-            if (_memoryReader.FFXIVProcessValid)
+            if (_memoryManager.IsConnected)
             {
-                var chatlogs = _memoryReader.GetNewestChatlog();
+                var chatlogs = _memoryManager.GetNewestChatlog();
                 foreach (var chatlog in chatlogs)
                     _chatManager.EnqueueMessage(chatlog);
             }
