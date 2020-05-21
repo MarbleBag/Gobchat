@@ -109,13 +109,13 @@ namespace Gobchat.Module.MemoryReader.Internal
 
         private void Task_ConnectMemoryReader(CancellationToken cancellationToken)
         {
-            SetConnectionState(ConnectionState.Searching);
-
             while (!cancellationToken.IsCancellationRequested && !_memoryReader.FFXIVProcessValid)
             {
                 _memoryReader.CheckFFXIVProcess();
                 if (_memoryReader.FFXIVProcessValid)
                     break;
+
+                SetConnectionState(ConnectionState.Searching);
                 Thread.Sleep(1000);
             }
 
