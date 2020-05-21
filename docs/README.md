@@ -155,12 +155,16 @@ This chat command will close Gobchat and provides an alternative way to right-cl
 Usage:
 - `/e gc player count`
 - `/e gc player list`
+- `/e gc player distance <t>`
 
 ##### count
 Returns the number of characters nearby. The definition of nearby depends on the total amount of characters close to you. The client will only display up to 100 characters.
 
 #### list
 Returns a list of character names and their current distance to you.
+
+#### distance
+Returns the distance in yalms to your current targetSS
 
 ## Installation
 
