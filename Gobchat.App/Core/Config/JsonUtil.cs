@@ -24,7 +24,7 @@ namespace Gobchat.Core.Config
         {
             Throw, // throw an exception, if the element can't be found
             Create, // create an object, if the element can't be found
-            Stop // stop and retur, if the element can't be found
+            Stop // stop and return, if the element can't be found
         }
 
         public delegate void Action(JObject node, string propertyName);
@@ -293,6 +293,8 @@ namespace Gobchat.Core.Config
             JToken result = null;
             JsonUtil.WalkJson(srcPath, src, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
             {
+                if (node == null)
+                    return;
                 result = node[propertyName];
             });
 

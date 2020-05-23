@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.6.1] - 2020.05.23
+### Fixed
+- Profiles were not loaded
+  - Player who used 1.5.2 but not any beta version of 1.6.0 experienced problems with their profiles
+
 ## [1.6.0] - 2020.05.21
 ### Added
 - `Character location updates`
