@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.6.2] - 2020.05.26
+### Fixed
+- Messages not shown
+  - A message which ends on one or more letters of a multi-letter token for roleplay, like '((', could cause an exception which leads to Gobchat not displaying the message
+
 ## [1.6.1] - 2020.05.23
 ### Fixed
 - Profiles were not loaded
