@@ -28,7 +28,7 @@ namespace Gobchat.Core.Chat
         {
             foreach (var token in tokens)
             {
-                var match = true;
+                var match = textOffset + token.Length <= text.Length;
                 for (var n = 0; n < token.Length && match; ++n)
                     match &= token[n] == text[textOffset + n];
 
