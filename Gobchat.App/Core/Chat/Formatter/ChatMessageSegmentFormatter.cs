@@ -13,10 +13,35 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
 {
-    public static class ChatMessageSegmentFormater
+    public sealed class ChatMessageSegmentFormatter
+    {
+        private ReplaceTypeByToken _replacer = new ReplaceTypeByToken();
+        private FormatConfig[] _formats = Array.Empty<FormatConfig>();
+
+        public IEnumerable<FormatConfig> Formats
+        {
+            get => _formats;
+            set => _formats = value.ToArrayOrEmpty();
+        }
+
+        public void Format(ChatMessage message)
+        {
+            foreach (var format in _formats)
+            {
+                if (!format.Active)
+                    continue;
+                _replacer.Format = format;
+                message.FormatSegments(_replacer);
+            }
+        }
+    }
+
+    public static class ChatMessageExtension
     {
         public static void FormatSegments(this ChatMessage message, IReplacer replacer)
         {
@@ -42,10 +67,12 @@ namespace Gobchat.Core.Chat
                 marker.Finish();
                 foreach (var mark in marker.Marks)
                 {
-                    if (mark.End - mark.Start <= 0)
+                    var substringStart = mark.Start;
+                    var substringLength = Math.Min(messageSegment.Text.Length - mark.Start, mark.End - mark.Start);
+                    if (substringLength <= 0)
                         continue; //ignore empty marks
 
-                    var newSegment = new MessageSegment(mark.Type, messageSegment.Text.Substring(mark.Start, mark.End-mark.Start));
+                    var newSegment = new MessageSegment(mark.Type, messageSegment.Text.Substring(substringStart, substringLength));
                     message.Content.Add(newSegment);
                 }
             }

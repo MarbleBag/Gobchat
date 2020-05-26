@@ -252,6 +252,9 @@
                 { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the enclosing character* was forgotten.' },
                 { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types«, of symbols, »to see if they work«' },
                 { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types», of symbols, «to see if they work»' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: 'Incomplete tokens(' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: 'Incomplete tokens)' },
+                { channel: Gobchat.ChannelEnum.PARTY, message: '((Incomplete tokens)' },
             ]
 
             textMessages.forEach(e => fireMessageEvent(e))
