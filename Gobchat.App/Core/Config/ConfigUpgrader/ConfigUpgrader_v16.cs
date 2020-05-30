@@ -28,17 +28,17 @@ namespace Gobchat.Core.Config
             dst["version"] = 16;
 
             // clean up old profiles
-            JsonUtil.CopyIfAvailable(src, "profile", dst, "profile"); // kepp around
+            JsonUtil.CopyIfAvailable(src, "profile", dst, "profile"); // keep around
 
             JsonUtil.CopyIfAvailable(src, "behaviour.channel.roleplay", dst, "behaviour.channel.roleplay");
             JsonUtil.CopyIfAvailable(src, "behaviour.channel.mention", dst, "behaviour.channel.mention");
             JsonUtil.CopyIfAvailable(src, "behaviour.channel.visible", dst, "behaviour.channel.visible");
             JsonUtil.CopyIfAvailable(src, "behaviour.channel.fadeout", dst, "behaviour.channel.rangefilter");
 
-            JsonUtil.CopyIfAvailable(src, "behaviour.segment", dst, "behaviour.segment"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.frame", dst, "behaviour.frame"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.language", dst, "behaviour.language"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.mentions", dst, "behaviour.mentions"); // kepp around
+            JsonUtil.CopyIfAvailable(src, "behaviour.segment", dst, "behaviour.segment"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.frame", dst, "behaviour.frame"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.language", dst, "behaviour.language"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.mentions", dst, "behaviour.mentions"); // keep around
 
             JsonUtil.CopyIfAvailable(src, "behaviour.fadeout.active", dst, "behaviour.rangefilter.active");
             JsonUtil.CopyIfAvailable(src, "behaviour.fadeout.cutoff", dst, "behaviour.rangefilter.cutoff");
@@ -52,13 +52,13 @@ namespace Gobchat.Core.Config
             JsonUtil.CopyIfAvailable(src, "behaviour.checkForUpdate", dst, "behaviour.appUpdate.checkOnline");
             JsonUtil.CopyIfAvailable(src, "behaviour.checkForBetaUpdate", dst, "behaviour.appUpdate.acceptBeta");
 
-            JsonUtil.CopyIfAvailable(src, "behaviour.autodetectEmoteInSay", dst, "behaviour.autodetectEmoteInSay"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.hideOnMinimize", dst, "behaviour.hideOnMinimize"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.writeChatLog", dst, "behaviour.writeChatLog"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.showTimestamp", dst, "behaviour.showTimestamp"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.hotkeys", dst, "behaviour.hotkeys"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "behaviour.groups", dst, "behaviour.groups"); // kepp around
-            JsonUtil.CopyIfAvailable(src, "style", dst, "style"); // kepp around
+            JsonUtil.CopyIfAvailable(src, "behaviour.autodetectEmoteInSay", dst, "behaviour.autodetectEmoteInSay"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.hideOnMinimize", dst, "behaviour.hideOnMinimize"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.writeChatLog", dst, "behaviour.writeChatLog"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.showTimestamp", dst, "behaviour.showTimestamp"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.hotkeys", dst, "behaviour.hotkeys"); // keep around
+            JsonUtil.CopyIfAvailable(src, "behaviour.groups", dst, "behaviour.groups"); // keep around
+            JsonUtil.CopyIfAvailable(src, "style", dst, "style"); // keep around
 
             return dst;
         }
