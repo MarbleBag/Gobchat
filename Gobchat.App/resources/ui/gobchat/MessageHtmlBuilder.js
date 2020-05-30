@@ -55,7 +55,7 @@ var Gobchat = (function (Gobchat) {
                 return
 
             if (message.source.ffGroup >= 0 && "ffgroup" in group) {
-                if (message.source.ffGroup === group.ffgroup - 1) { //group.ffgroup is shifted by +1 in the default profile - fix that
+                if (message.source.ffGroup === group.ffgroup) {
                     resultId = groupId
                     return false
                 }
