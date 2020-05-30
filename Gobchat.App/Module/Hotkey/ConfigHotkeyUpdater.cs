@@ -54,25 +54,30 @@ namespace Gobchat.Module.Hotkey
         {
             var keyString = sender.GetProperty<string>(_configKey);
             //var keyString = sender.GetProperty<string>($"{_configKey}.key");
-            var keyActive = sender.GetProperty<bool>($"{_configKey}.active", true);
+            var keyActive = true; //sender.GetProperty<bool>($"{_configKey}.active");
             var _newKeys = StringToKeys(keyString);
 
             try
             {
-                if (_keys != _newKeys)
+                if (_newKeys != _keys)
                 {
                     _hotkeyManager.RemoveKey(_hotkeyId, _keys);
-                    _hotkeyManager.AddKey(_hotkeyId, _newKeys);
+                    _keys = _newKeys;
+                    if (_keys != Keys.None)
+                        _hotkeyManager.AddKey(_hotkeyId, _newKeys);
                 }
 
+                //  if (_keys != Keys.None)
                 _hotkeyManager.ToggleHotkey(_hotkeyId, keyActive);
-
-                _keys = _newKeys;
             }
-            catch (HotkeyRegisterException e)
+            catch (HotkeyRegisterException ex1)
             {
-                logger.Fatal(e, $"Invalid Hotkey for {_hotkeyId}");
-                _chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, $"Invalid Hotkey for {_hotkeyName}: {e.Message}");
+                logger.Fatal(ex1, $"Invalid Hotkey for {_hotkeyId}");
+                _chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, $"Invalid Hotkey for {_hotkeyName}: {ex1.Message}");
+            }
+            catch (Exception ex2)
+            {
+                logger.Fatal(ex2, $"Unknown Hotkey exception {_hotkeyId}");
             }
         }
 

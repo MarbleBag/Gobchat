@@ -7,9 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - color selection to channels: NPC dialog, animated emote, echo
 
 ### Fixed
--  groups
+- groups
   - color reset buttons didn't work
   - ffxiv specific groups had their colors wrong
+  
+- hotkey: hide & show
+  - Previously set hotkey could become stuck on profile reset
 
 ## [1.6.2] - 2020.05.26
 ### Fixed
