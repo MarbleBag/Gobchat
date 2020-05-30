@@ -30,8 +30,9 @@ var Gobchat = (function (Gobchat) {
     function findFirstMatchingGroup(config, message) {
         if (message.source === null || message.source.original === null) return null
         switch (message.channel) {
-            case ChannelEnum.TELL_SEND: return null
-            case ChannelEnum.TELL_RECIEVE: return null
+            case ChannelEnum.TELL_SEND:
+            case ChannelEnum.TELL_RECIEVE:
+                return null
         }
 
         const groups = config.get("behaviour.groups")
@@ -53,8 +54,8 @@ var Gobchat = (function (Gobchat) {
             if (!group.active)
                 return
 
-            if (message.source.ffGroup > 0 && "ffgroup" in group) {
-                if (message.source.ffGroup === group.ffgroup) {
+            if (message.source.ffGroup >= 0 && "ffgroup" in group) {
+                if (message.source.ffGroup === group.ffgroup - 1) { //group.ffgroup is shifted by +1 in the default profile - fix that
                     resultId = groupId
                     return false
                 }
@@ -109,12 +110,14 @@ var Gobchat = (function (Gobchat) {
             case ChannelEnum.GOBCHAT_INFO: return "message-body-gobchatinfo"
             case ChannelEnum.GOBCHAT_ERROR: return "message-body-gobchaterror"
             case ChannelEnum.EMOTE: return "message-body-emote"
+            case ChannelEnum.ANIMATED_EMOTE: return "message-body-animated-emote"
             case ChannelEnum.TELL_SEND: return "message-body-tellsend"
             case ChannelEnum.TELL_RECIEVE: return "message-body-tellrecieve"
             case ChannelEnum.GUILD: return "message-body-guild"
             case ChannelEnum.YELL: return "message-body-yell"
             case ChannelEnum.SHOUT: return "message-body-shout"
             case ChannelEnum.PARTY: return "message-body-party"
+            case ChannelEnum.ECHO: return "message-body-echo"
             case ChannelEnum.ALLIANCE: return "message-body-alliance"
             case ChannelEnum.LINKSHELL_1: return "message-body-linkshell-1"
             case ChannelEnum.LINKSHELL_2: return "message-body-linkshell-2"
@@ -133,6 +136,11 @@ var Gobchat = (function (Gobchat) {
             case ChannelEnum.WORLD_LINKSHELL_7: return "message-body-worldlinkshell-7"
             case ChannelEnum.WORLD_LINKSHELL_8: return "message-body-worldlinkshell-8"
             case ChannelEnum.ERROR: return "message-body-error"
+            case ChannelEnum.NPC_TALK:
+            case ChannelEnum.NPC_DIALOGUE: return "message-body-npc-dialog"
+            case ChannelEnum.RANDOM_SELF:
+            case ChannelEnum.RANDOM_PARTY:
+            case ChannelEnum.RANDOM_OTHER: return "message-body-roll"
             default: return null
         }
     }
