@@ -307,10 +307,12 @@
         "background-color": null
       },
       "echo": {
-        "color": null
+        "color": null,
+        "background-color": null
       },
       "error": {
-        "color": "#d40420"
+        "color": "#d40420",
+        "background-color": null
       },
       "say": {
         "color": "#FFFFFF",
@@ -318,6 +320,10 @@
       },
       "emote": {
         "color": "#F19212",
+        "background-color": null
+      },
+      "animated-emote": {
+        "color": null,
         "background-color": null
       },
       "yell": {
@@ -408,6 +414,14 @@
       },
       "worldlinkshell-8": {
         "color": "#03fc73",
+        "background-color": null
+      },
+      "npc-dialog": {
+        "color": null,
+        "background-color": null
+      },
+      "roll": {
+        "color": null,
         "background-color": null
       }
     },
