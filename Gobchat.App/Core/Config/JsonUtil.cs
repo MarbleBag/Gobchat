@@ -308,5 +308,19 @@ namespace Gobchat.Core.Config
 
             return true;
         }
+
+        public static bool SetIfAvailable(JObject src, string srcPath, JToken value)
+        {
+            var found = false;
+            JsonUtil.WalkJson(srcPath, src, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+
+                node[propertyName] = value != null ? value.DeepClone() : value;
+                found = true;
+            });
+            return found;
+        }
     }
 }
