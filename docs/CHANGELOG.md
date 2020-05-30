@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Added
+- color selection to channels: NPC dialog, animated emote, echo
+
+### Fixed
+-  groups
+  - color reset buttons didn't work
+  - ffxiv specific groups had their colors wrong
+
 ## [1.6.2] - 2020.05.26
 ### Fixed
 - Messages not shown
