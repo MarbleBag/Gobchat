@@ -11,19 +11,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Collections.Generic;
-
 namespace Gobchat.Core.Resource
 {
-    public interface IResourceLoader
+    public interface IResourceBundle
     {
-        IResourceCollection LoadResource(IResourceLocator locator, string fileName);
-    }
+        string this[string key] { get; }
+        string CurrentLocale { get; }
 
-    public interface IResourceCollection : IEnumerable<KeyValuePair<string, object>>
-    {
-        object GetObject(string key);
+        void Clear();
 
-        string[] GetKeys();
+        void Reload();
+
+        void SetLocale(string locale);
     }
 }

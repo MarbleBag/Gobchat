@@ -17,6 +17,6 @@ namespace Gobchat.Core.Resource
 {
     public interface IResourceLocator
     {
-        IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern);
+        IEnumerable<IResourceProvider> FindResourcesById(string id);
     }
 }
