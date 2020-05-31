@@ -17,9 +17,9 @@ using System.Linq;
 
 namespace Gobchat.Core.Resource
 {
-    internal class LocalFolderResourceResolver : IResourceLocator
+    internal sealed class LocalFolderResourceResolver : IResourceLocator
     {
-        internal sealed class LocalResourceProvider : IResourceProvider
+        private sealed class LocalResourceProvider : IResourceProvider
         {
             public string ResourceName { get; }
 
@@ -41,7 +41,7 @@ namespace Gobchat.Core.Resource
             _directory = directory;
         }
 
-        public IEnumerable<IResourceProvider> FindResourcesByName(string searchPattern)
+        public IEnumerable<IResourceProvider> FindResourcesById(string searchPattern)
         {
             var enumerable = System.IO.Directory.EnumerateFiles(_directory, searchPattern, System.IO.SearchOption.AllDirectories);
             return enumerable.Select(file => new LocalResourceProvider(file));

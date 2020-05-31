@@ -11,34 +11,130 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Hjson;
 
 namespace Gobchat.Core.Resource
 {
     public sealed class HjsonResourceLoader : IResourceLoader
     {
-        public IEnumerable<KeyValuePair<string, string>> LoadResource(IEnumerable<IResourceLocator> locators, string fileName)
+        IResourceCollection IResourceLoader.LoadResource(IResourceLocator locator, string fileName)
         {
-            var loadedData = new List<KeyValuePair<string, string>>();
+            var resourceProvider = locator.FindResourcesById(fileName + ".hjson").FirstOrDefault();
+            var lookup = new Dictionary<string, object>();
 
-            foreach (var locator in locators)
+            if (resourceProvider != null)
             {
-                var resourceProvider = locator.FindResourcesByName(fileName + ".hjson").FirstOrDefault();
-                if (resourceProvider == null)
-                    continue;
-
                 using (var stream = resourceProvider.OpenStream())
                 {
                     var json = Hjson.HjsonValue.Load(stream);
                     var data = json as Hjson.JsonObject;
-
-                    foreach (var key in data.Keys)
-                        loadedData.Add(new KeyValuePair<string, string>(key.ToUpperInvariant(), data[key].ToString()));
+                    BuildLookup(lookup, data);
                 }
             }
 
-            return loadedData;
+            return new StringResourceCollection(lookup);
+        }
+
+        private void BuildLookup(Dictionary<string, object> lookup, JsonObject data)
+        {
+            BuildLookup(lookup, null, data);
+        }
+
+        private void BuildLookup(Dictionary<string, object> lookup, string path, JsonObject data)
+        {
+            foreach (var key in data.Keys)
+            {
+                var lookupKey = (path == null ? key : $"{path}.{key}").ToUpperInvariant();
+                var value = data[key];
+
+                if (value == null)
+                {
+                    lookup.Add(lookupKey, null);
+                    continue;
+                }
+
+                switch (value.JsonType)
+                {
+                    case JsonType.Array:
+                        BuildLookup(lookup, lookupKey, value as JsonArray);
+                        break;
+
+                    case JsonType.Object:
+                        BuildLookup(lookup, lookupKey, value as JsonObject);
+                        break;
+
+                    default:
+                        lookup.Add(lookupKey, value.ToString());
+                        break;
+                }
+            }
+        }
+
+        private void BuildLookup(Dictionary<string, object> lookup, string path, JsonArray data)
+        {
+            var count = data.Count;
+            for (var i = 0; i < count; ++i)
+            {
+                var lookupKey = (path == null ? i.ToString() : $"{path}.{i}").ToUpperInvariant();
+                var value = data[i];
+
+                if (value == null)
+                {
+                    lookup.Add(lookupKey, null);
+                    continue;
+                }
+
+                switch (value.JsonType)
+                {
+                    case JsonType.Array:
+                        BuildLookup(lookup, lookupKey, value as JsonArray);
+                        break;
+
+                    case JsonType.Object:
+                        BuildLookup(lookup, lookupKey, value as JsonObject);
+                        break;
+
+                    default:
+                        lookup.Add(lookupKey, value.ToString());
+                        break;
+                }
+            }
+        }
+
+        private sealed class StringResourceCollection : IResourceCollection
+        {
+            private readonly Dictionary<string, object> _lookup;
+
+            public StringResourceCollection(Dictionary<string, object> lookup)
+            {
+                _lookup = lookup ?? throw new ArgumentNullException(nameof(lookup));
+            }
+
+            public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+            {
+                return _lookup.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public string[] GetKeys()
+            {
+                return _lookup.Keys.ToArray();
+            }
+
+            public object GetObject(string key)
+            {
+                if (_lookup.TryGetValue(key, out var value))
+                    return value;
+                return null;
+            }
         }
     }
 }
