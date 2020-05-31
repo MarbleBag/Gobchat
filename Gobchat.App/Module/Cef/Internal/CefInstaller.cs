@@ -52,9 +52,9 @@ namespace Gobchat.Module.Cef.Internal
                     switch (result)
                     {
                         case DownloadHelper.DownloadResult.Canceled:
-                            progressMonitor.Log($"Delete partially downloaded cef archive\n{_cefPatchArchive}");
+                            progressMonitor.Log(StringFormat.Format(Resources.Module_Cef_Installer_Download_DeleteIncomplete, _cefPatchArchive));
                             File.Delete(_cefPatchArchive);
-                            throw new OperationCanceledException("Download cancelled");
+                            throw new OperationCanceledException("Download canceled");
                     }
                 }
                 catch (OperationCanceledException)
@@ -63,14 +63,14 @@ namespace Gobchat.Module.Cef.Internal
                 }
                 catch (Exception e) //TODO not good
                 {
-                    progressMonitor.Log($"An error occured: {e.Message}");
+                    progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, e.Message));
                     File.Delete(_cefPatchArchive);
                     throw;
                 }
 
                 if (!IsCefArchiveAvailable())
                 {
-                    throw new DirectoryNotFoundException("Downloaded CEF archive not found");
+                    throw new DirectoryNotFoundException(_cefPatchArchive);
                 }
             }
 
@@ -88,20 +88,20 @@ namespace Gobchat.Module.Cef.Internal
             switch (unpackingResults)
             {
                 case ArchiveUnpackerHelper.ExtractionResult.Complete:
-                    progressMonitor.Log("Unpacking complete");
+                    progressMonitor.Log(Resources.Module_Cef_Installer_Unpack_Complete);
                     File.Delete(_cefPatchArchive);
                     break;
 
                 case ArchiveUnpackerHelper.ExtractionResult.Canceled:
-                    progressMonitor.Log("Delete partially unpacked CEF archive");
+                    progressMonitor.Log(StringFormat.Format(Resources.Module_Cef_Installer_Unpack_DeleteIncomplete, _cefLibFolder));
                     Directory.Delete(_cefLibFolder, true);
-                    throw new OperationCanceledException("Unpacking cancelled");
+                    throw new OperationCanceledException("Unpacking canceled");
             }
 
             if (!IsCefAvailable())
             {
                 //TODO throw exception
-                throw new DirectoryNotFoundException("Unpacked CEF folder not found");
+                throw new DirectoryNotFoundException(_cefLibFolder);
             }
 
             return _cefLibFolder;

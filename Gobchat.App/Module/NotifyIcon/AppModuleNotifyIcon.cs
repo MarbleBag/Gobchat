@@ -45,11 +45,11 @@ namespace Gobchat.Module.NotifyIcon
                 var notifyIconManager = new NotifyIconManager(new[] { "app", "debug", "close" }, "app")
                 {
                     Text = "Gobchat",
-                    Icon = Gobchat.Resource.GobIcon,
+                    Icon = Gobchat.Resources.GobIcon,
                     Visible = true
                 };
 
-                var closeMenu = new ToolStripMenuItem("Close");
+                var closeMenu = new ToolStripMenuItem(Resources.Module_NotifyIcon_UI_Close);
                 closeMenu.Click += OnEvent_MenuItem_Close;
                 notifyIconManager.AddMenuToGroup("close", "close", closeMenu);
 

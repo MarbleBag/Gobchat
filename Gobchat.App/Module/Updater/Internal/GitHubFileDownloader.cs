@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using System;
+using System.Globalization;
 using System.IO;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Util;
@@ -85,7 +86,7 @@ namespace Gobchat.Module.Updater.Internal
             }
             catch (DownloadFailedException ex)
             {
-                progressMonitor.Log($"An error occured: {ex.Message}");
+                progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
                 DeleteFile(progressMonitor);
                 throw;
             }
@@ -95,7 +96,7 @@ namespace Gobchat.Module.Updater.Internal
 
         private void DeleteFile(IProgressMonitor progressMonitor)
         {
-            progressMonitor.Log($"Delete partially downloaded file:\n{FilePath}");
+            progressMonitor.Log(StringFormat.Format(Resources.Module_Updater_UI_Log_DeleteFile, FilePath));
             File.Delete(FilePath);
         }
 

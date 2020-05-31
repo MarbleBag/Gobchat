@@ -48,9 +48,9 @@ namespace Gobchat.Core.Util
             if (!Directory.Exists(destinationFolder))
                 throw new DirectoryNotFoundException(destinationFolder);
 
-            progressMonitor.StatusText = "Unpacking";
+            progressMonitor.StatusText = Resources.Core_Util_ArchiveUnpackerHelper_Unpack;
             progressMonitor.Progress = 0d;
-            progressMonitor.Log($"Unpacking {archivePath}");
+            progressMonitor.Log(StringFormat.Format(Resources.Core_Util_ArchiveUnpackerHelper_UnpackLog, archivePath));
 
             try
             {
@@ -76,16 +76,16 @@ namespace Gobchat.Core.Util
                         {
                             if (cancellationToken.IsCancellationRequested)
                             {
-                                progressMonitor.StatusText = "Unpacking cancelled";
-                                progressMonitor.Log("Unpacking cancelled");
+                                progressMonitor.StatusText = Resources.Core_Util_ArchiveUnpackerHelper_Canceled;
+                                progressMonitor.Log(Resources.Core_Util_ArchiveUnpackerHelper_Canceled);
                                 return ExtractionResult.Canceled;
                             }
 
                             var entry = reader.Entry;
                             if (!entry.IsDirectory)
                             {
-                                progressMonitor.StatusText = $"Unpacking: {entry.Key}";
-                                progressMonitor.Log($"Unpacking: {entry.Key}");
+                                progressMonitor.StatusText = StringFormat.Format(Resources.Core_Util_ArchiveUnpackerHelper_UnpackLog, entry.Key);
+                                progressMonitor.Log(StringFormat.Format(Resources.Core_Util_ArchiveUnpackerHelper_UnpackLog, entry.Key));
 
                                 reader.WriteEntryToDirectory(destinationFolder, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
                                 processedBytes += entry.Size;
@@ -100,7 +100,7 @@ namespace Gobchat.Core.Util
                 throw new ExtractionFailedException(ex.Message, ex);
             }
 
-            progressMonitor.StatusText = "Unpacking complete";
+            progressMonitor.StatusText = Resources.Core_Util_ArchiveUnpackerHelper_Complete;
             progressMonitor.Progress = 1d;
 
             return ExtractionResult.Complete;

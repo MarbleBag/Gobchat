@@ -25,6 +25,7 @@ using Gobchat.Module.Chat.Internal;
 using Newtonsoft.Json.Linq;
 using Gobchat.Module.Actor;
 using Gobchat.Module.MemoryReader;
+using Gobchat.Module.Language;
 
 namespace Gobchat.Module.Chat
 {
@@ -60,9 +61,8 @@ namespace Gobchat.Module.Chat
             _memoryManager = _container.Resolve<IMemoryReaderManager>();
             var actorManager = _container.Resolve<IActorManager>();
 
-            var languagePath = System.IO.Path.Combine(GobchatContext.ResourceLocation, @"lang");
-            var resourceResolvers = new IResourceLocator[] { new LocalFolderResourceResolver(languagePath) };
-            var autotranslateProvider = new AutotranslateProvider(resourceResolvers, "autotranslate", new CultureInfo("en"));
+            var resourceBundle = _container.Resolve<ILocaleManager>().GetResourceBundle("autotranslate");
+            var autotranslateProvider = new AutotranslateProvider(resourceBundle);
 
             _chatManager = new ChatManager(autotranslateProvider, actorManager);
 
@@ -190,7 +190,7 @@ namespace Gobchat.Module.Chat
         {
             var selectedLanguage = config.GetProperty<string>("behaviour.language");
             var autotranslateProvider = _chatManager.Config.AutotranslateProvider as AutotranslateProvider;
-            autotranslateProvider?.LoadCulture(new CultureInfo(selectedLanguage));
+            autotranslateProvider?.SetLocale(selectedLanguage);
         }
 
         private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)

@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Config;
+using Gobchat.Core.Util;
 using Gobchat.Module.Chat;
 using System;
 using System.Globalization;
@@ -73,11 +74,12 @@ namespace Gobchat.Module.Hotkey
             catch (HotkeyRegisterException ex1)
             {
                 logger.Fatal(ex1, $"Invalid Hotkey for {_hotkeyId}");
-                _chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, $"Invalid Hotkey for {_hotkeyName}: {ex1.Message}");
+                _chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, StringFormat.Format(Resources.Module_Hotkey_ConfigHotkeyUpdater_InvalidHotkey, _hotkeyName, ex1.Message));
             }
             catch (Exception ex2)
             {
                 logger.Fatal(ex2, $"Unknown Hotkey exception {_hotkeyId}");
+                _chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, StringFormat.Format(Resources.Module_Hotkey_ConfigHotkeyUpdater_InvalidHotkey, _hotkeyName, ex2.Message));
             }
         }
 

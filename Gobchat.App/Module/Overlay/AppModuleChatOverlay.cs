@@ -96,12 +96,12 @@ namespace Gobchat.Module.Overlay
                 trayIcon.OnIconClick += (s, e) => _overlay.Visible = !_overlay.Visible;
 
                 var menuItemHideShow = new ToolStripMenuItem();
-                menuItemHideShow.Text = _overlay.Visible ? "Hide" : "Show";
+                menuItemHideShow.Text = _overlay.Visible ? Resources.Module_NotifyIcon_UI_Hide : Resources.Module_NotifyIcon_UI_Show;
                 menuItemHideShow.Click += (s, e) => _overlay.Visible = !_overlay.Visible;
-                _overlay.VisibleChanged += (s, e) => menuItemHideShow.Text = _overlay.Visible ? "Hide" : "Show";
+                _overlay.VisibleChanged += (s, e) => menuItemHideShow.Text = _overlay.Visible ? Resources.Module_NotifyIcon_UI_Hide : Resources.Module_NotifyIcon_UI_Show;
                 trayIcon.AddMenu("overlay.showhide", menuItemHideShow);
 
-                var menuItemReload = new ToolStripMenuItem("Reload");
+                var menuItemReload = new ToolStripMenuItem(Resources.Module_NotifyIcon_UI_Reload);
                 menuItemReload.Click += (s, e) => _overlay.Reload();
                 trayIcon.AddMenu("overlay.reload", menuItemReload);
 

@@ -15,8 +15,9 @@ using Gobchat.Core.Runtime;
 using Gobchat.Module.NotifyIcon;
 using System;
 using Gobchat.Core.UI;
+using Gobchat.Module.MemoryReader;
 
-namespace Gobchat.Module.MemoryReader
+namespace Gobchat.Module.Misc
 {
     public sealed class AppModuleShowConnectionOnTrayIcon : IApplicationModule
     {
@@ -56,7 +57,7 @@ namespace Gobchat.Module.MemoryReader
 
         private void OnConnection(ConnectionState state)
         {
-            var icon = state == ConnectionState.Connected ? Resource.GobTrayIconOn : Resource.GobTrayIconOff;
+            var icon = state == ConnectionState.Connected ? Resources.GobTrayIconOn : Resources.GobTrayIconOff;
             var uiManager = _container.Resolve<IUIManager>();
             if (uiManager.TryGetUIElement<INotifyIconManager>(AppModuleNotifyIcon.NotifyIconManagerId, out var trayIcon))
                 trayIcon.Icon = icon;

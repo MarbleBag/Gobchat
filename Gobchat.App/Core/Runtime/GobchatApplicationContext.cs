@@ -66,6 +66,7 @@ namespace Gobchat.Core.Runtime
             {
                 //config
                 new global::Gobchat.Module.Config.AppModuleConfig(),
+                new global::Gobchat.Module.Language.AppModuleLanguage(),
 
                 //updater and downloadable dependencies
                 new global::Gobchat.Module.Updater.AppModuleUpdater(),
@@ -85,9 +86,9 @@ namespace Gobchat.Core.Runtime
                 new global::Gobchat.Module.UI.AppModuleBrowserAPIManager(),
 
                 // Misc
-                new global::Gobchat.Module.MemoryReader.AppModuleShowConnectionOnTrayIcon(),
-                new global::Gobchat.Module.Overlay.AppModuleHideOnMinimize(),
-                new global::Gobchat.Module.Chat.AppModuleChatLogger(),
+                new global::Gobchat.Module.Misc.AppModuleShowConnectionOnTrayIcon(),
+                new global::Gobchat.Module.Misc.AppModuleHideOnMinimize(),
+                new global::Gobchat.Module.Misc.Chatlogger.AppModuleChatLogger(),
                 new global::Gobchat.Module.Misc.AppModuleInformUserAboutMemoryState(),
                 new global::Gobchat.Module.Misc.AppModuleShowHideHotkey(),
 

@@ -42,8 +42,8 @@
             // 
             // btnThree
             // 
-            this.btnThree.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnThree, "btnThree");
+            this.btnThree.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnThree.Name = "btnThree";
             this.btnThree.UseVisualStyleBackColor = true;
             this.btnThree.Click += new System.EventHandler(this.OnEvent_ButtonThree_Click);
@@ -56,8 +56,8 @@
             // 
             // btnTwo
             // 
-            this.btnTwo.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnTwo, "btnTwo");
+            this.btnTwo.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnTwo.Name = "btnTwo";
             this.btnTwo.UseVisualStyleBackColor = true;
             this.btnTwo.Click += new System.EventHandler(this.OnEvent_ButtonTwo_Click);

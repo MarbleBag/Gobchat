@@ -14,12 +14,13 @@
 using Gobchat.Core.Chat;
 using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
-using Gobchat.Module.Chat.Internal;
+using Gobchat.Module.Chat;
+using Gobchat.Module.Misc.Chatlogger.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gobchat.Module.Chat
+namespace Gobchat.Module.Misc.Chatlogger
 {
     public sealed class AppModuleChatLogger : IApplicationModule
     {
