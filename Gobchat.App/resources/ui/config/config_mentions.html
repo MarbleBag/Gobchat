@@ -79,10 +79,10 @@
             const ConfigKeyOrder = "behaviour.mentions.order"
             const EntryIdAttribute = "data-gob-entryid"
 
-            const binding = ConfigHelper.makeDatabinding(gobconfig)
+            const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
             const txtMentions = $("#cmentions_mentions")
-            ConfigHelper.bindTextCollection(binding, txtMentions)
+            GobConfigHelper.bindTextCollection(binding, txtMentions)
 
             const template = $("#cmention_template_mention")
             const mentionTable = $("#cmentions_mention_table")
@@ -95,7 +95,7 @@
                 entry.appendTo(mentionTable)
                 entry.attr(EntryIdAttribute, entryId)
 
-                const entryBinding = ConfigHelper.makeDatabinding(gobconfig)
+                const entryBinding = GobConfigHelper.makeDatabinding(gobconfig)
                 entry.data("configbinding", entryBinding)
 
                 const configKey = ConfigKeyData + "." + entryId
@@ -123,8 +123,8 @@
                 /* deactivated til multiple mentions are really needed
                 function makeColorSelector(classId, configKey) {
                     const selectorElement = entry.find(`.${classId}`)
-                    selectorElement.attr(ConfigHelper.ConfigKeyAttribute, configKey)
-                    ConfigHelper.makeColorSelector(selectorElement)
+                    selectorElement.attr(GobConfigHelper.ConfigKeyAttribute, configKey)
+                    GobConfigHelper.makeColorSelector(selectorElement)
                     selectorElement.spectrum("set", gobconfig.get(configKey))
 
                     const resetButton = entry.find(`.${classId}-reset`)
@@ -195,11 +195,11 @@
                         $("#config_dialog_error_text").empty()
                         $("#config_dialog_error_text").append($(
                             `<span>
-                                                    Audiofile can't be played.<br>
-                                                    Either the format is not supported or the file can't be found!<br>
-                                                    Make sure to place any sound files you want to use in gobchat under resources/sounds
-                                                </span>
-                                                `
+                                                        Audiofile can't be played.<br>
+                                                        Either the format is not supported or the file can't be found!<br>
+                                                        Make sure to place any sound files you want to use in gobchat under resources/sounds
+                                                    </span>
+                                                    `
                         ))
                         $("#config_dialog_error").dialog({
                             resizable: false,
@@ -332,7 +332,7 @@
 
             const btnCopyProfile = $("#cmentions_copyprofile")
             const copyKeys = ["behaviour.mentions.data", "behaviour.mentions.order"]
-            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+            GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
         }());
     </script>
 </body>

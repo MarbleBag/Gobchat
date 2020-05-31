@@ -113,10 +113,10 @@
                         $("#config_dialog_error_text").empty()
                         $("#config_dialog_error_text").append($(
                             `<span>
-                                                                    Profile can't be loaded.<br>
-                                                                    Either the format is not supported or the file can't be found/read!<
-                                                                </span>
-                                                                `
+                                                                        Profile can't be loaded.<br>
+                                                                        Either the format is not supported or the file can't be found/read!<
+                                                                    </span>
+                                                                    `
                         ))
                         $("#config_dialog_error").dialog({
                             resizable: false,
@@ -185,7 +185,7 @@
 
                     const btnCopyProfile = rowElement.find("#profile_copy")
                     btnCopyProfile.on("click", function (event) {
-                        ConfigHelper.showProfileIdSelectionDialog(selectedId => gobconfig.copyProfile(selectedId, profile.profileId), { exclude: profile.profileId })
+                        GobConfigHelper.showProfileIdSelectionDialog(selectedId => gobconfig.copyProfile(selectedId, profile.profileId), { exclude: profile.profileId })
                     })
                     if (gobconfig.profiles.length <= 1)
                         btnCopyProfile.attr("disabled", true)

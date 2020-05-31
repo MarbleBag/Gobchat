@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="config.css">
 
     <script src="config.js"></script>
-    <script src="gob-databinding.js"></script>
+    <script src="../gobchat/gob-databinding.js"></script>
 </head>
 <body>
     <script type="text/javascript">
@@ -27,6 +27,7 @@
         //if (window.opener) {
         window.GobchatAPI = window.opener.GobchatAPI
         window.Gobchat = window.opener.Gobchat
+
         window.gobconfig = new Gobchat.GobchatConfig()
         window.gobconfig.loadFromLocalStore()
         //}
