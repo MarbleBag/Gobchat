@@ -347,6 +347,24 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to save profiles to disk. See debug log for more informations..
+        /// </summary>
+        internal static string Module_UI_Connector_Config_Profile_Error {
+            get {
+                return ResourceManager.GetString("Module.UI.Connector.Config.Profile.Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiles saved..
+        /// </summary>
+        internal static string Module_UI_Connector_Config_Profile_Saved {
+            get {
+                return ResourceManager.GetString("Module.UI.Connector.Config.Profile.Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to download newest version.
         ///Reason: {0}.
         /// </summary>
