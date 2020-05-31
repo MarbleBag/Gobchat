@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-var ConfigHelper = (function (ConfigHelper, undefined) {
-    ConfigHelper.ConfigKeyAttribute = "data-gob-configkey"
+var GobConfigHelper = (function (GobConfigHelper, undefined) {
+    GobConfigHelper.ConfigKeyAttribute = "data-gob-configkey"
 
-    ConfigHelper.generateId = function (length, ids) {
+    GobConfigHelper.generateId = function (length, ids) {
         let id = null
         do {
             id = Gobchat.generateId(length)
@@ -11,7 +11,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return id
     }
 
-    ConfigHelper.showProfileIdSelectionDialog = function (callback, options) {
+    GobConfigHelper.showProfileIdSelectionDialog = function (callback, options) {
         let defOptions = { exclude: undefined }
         defOptions = $.extend(defOptions, options)
 
@@ -44,11 +44,11 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
-    ConfigHelper.showErrorDialog = function () {
+    GobConfigHelper.showErrorDialog = function () {
         //TODO
     }
 
-    ConfigHelper.makeColorSelector = function (element, options) {
+    GobConfigHelper.makeColorSelector = function (element, options) {
         const defaultOptions = {
             hasAlpha: true,
             hasReset: true,
@@ -57,9 +57,9 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
 
         options = $.extend(defaultOptions, options)
 
-        const configKey = element.attr(ConfigHelper.ConfigKeyAttribute)
+        const configKey = element.attr(GobConfigHelper.ConfigKeyAttribute)
         if (configKey === undefined || configKey === null)
-            throw new Error(`Attribute '${ConfigHelper.ConfigKeyAttribute}' not set`)
+            throw new Error(`Attribute '${GobConfigHelper.ConfigKeyAttribute}' not set`)
 
         element.spectrum({
             preferredFormat: "hex3",
@@ -90,19 +90,19 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         })
     }
 
-    ConfigHelper.getConfigKey = function (element) {
-        return $(element).attr(ConfigHelper.ConfigKeyAttribute)
+    GobConfigHelper.getConfigKey = function (element) {
+        return $(element).attr(GobConfigHelper.ConfigKeyAttribute)
     }
 
-    ConfigHelper.setConfigKey = function (element, configKey) {
-        return $(element).attr(ConfigHelper.ConfigKeyAttribute, configKey)
+    GobConfigHelper.setConfigKey = function (element, configKey) {
+        return $(element).attr(GobConfigHelper.ConfigKeyAttribute, configKey)
     }
 
-    ConfigHelper.makeResetButton = function (element) {
-        $(element).on("click", () => gobconfig.reset(ConfigHelper.getConfigKey(element)))
+    GobConfigHelper.makeResetButton = function (element) {
+        $(element).on("click", () => gobconfig.reset(GobConfigHelper.getConfigKey(element)))
     }
 
-    ConfigHelper.makeCopyProfileButton = function (element, options) {
+    GobConfigHelper.makeCopyProfileButton = function (element, options) {
         const defOptions = { callback: undefined, configKeys: [] }
         options = $.extend(defOptions, options)
 
@@ -118,14 +118,14 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
             options.configKeys.forEach(key => dstProfile.copyFrom(srcProfile, key))
         }
 
-        element.on("click", event => ConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
+        element.on("click", event => GobConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
 
         const checkCopyProfileState = () => element.attr("disabled", (gobconfig.profiles.length <= 1))
         gobconfig.addProfileEventListener(event => checkCopyProfileState())
         checkCopyProfileState()
     }
 
-    ConfigHelper.decodeHotkey = function (keyEvent, ignoreEnter) {
+    GobConfigHelper.decodeHotkey = function (keyEvent, ignoreEnter) {
         if (ignoreEnter && event.keyCode == 13) // enter
             return null
 
@@ -148,5 +148,5 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return msg
     }
 
-    return ConfigHelper
-}(ConfigHelper || {}));
+    return GobConfigHelper
+}(GobConfigHelper || {}));

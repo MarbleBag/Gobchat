@@ -111,7 +111,7 @@
                 { label: "Cross-world Linkshell 8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
             ]
 
-            const binding = ConfigHelper.makeDatabinding(gobconfig)
+            const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
             const table = $("#cchannel_channels > tbody")
             const rowTemplate = $('#cchannel_template_channelentry')
@@ -129,10 +129,10 @@
                 const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
                 lblName.text(entry.label)
-                ConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
-                ConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
-                ConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
-                ConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
+                GobConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
+                GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
+                GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
+                GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
 
                 const channelEnums = [].concat(entry.channelEnum || []).map(e => Gobchat.ChannelEnum[e])
                 if (channelEnums.length === 0) {
@@ -141,29 +141,29 @@
                     chkRoleplay.hide()
                     chkRangefilter.hide()
                 } else {
-                    ConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
                 }
 
                 if (entry.styleId === undefined || entry.styleId === null) {
                     clrSelectorFG.parent().hide()
                     clrSelectorBG.parent().hide()
                 } else {
-                    ConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
-                    ConfigHelper.setConfigKey(clrSelectorBG, entry.styleId + ".background-color")
+                    GobConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
+                    GobConfigHelper.setConfigKey(clrSelectorBG, entry.styleId + ".background-color")
 
-                    ConfigHelper.makeColorSelector(clrSelectorFG)
-                    ConfigHelper.makeColorSelector(clrSelectorBG)
+                    GobConfigHelper.makeColorSelector(clrSelectorFG)
+                    GobConfigHelper.makeColorSelector(clrSelectorBG)
 
-                    ConfigHelper.bindColorSelector(binding, clrSelectorFG)
-                    ConfigHelper.bindColorSelector(binding, clrSelectorBG)
+                    GobConfigHelper.bindColorSelector(binding, clrSelectorFG)
+                    GobConfigHelper.bindColorSelector(binding, clrSelectorBG)
 
                     btnResetFG.attr("disabled", clrSelectorFG.attr("disabled"))
                     btnResetBG.attr("disabled", clrSelectorBG.attr("disabled"))
-                    btnResetFG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorFG)))
-                    btnResetBG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorBG)))
+                    btnResetFG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorFG)))
+                    btnResetBG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorBG)))
                 }
             })
 
@@ -176,7 +176,7 @@
                 copyKeys.push(entry.styleId + ".color")
                 copyKeys.push(entry.styleId + ".background-color")
             })
-            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+            GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
 
         }());
     </script>

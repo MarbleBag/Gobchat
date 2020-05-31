@@ -121,7 +121,7 @@
                 { label: "OoC", styleId: "style.segment.ooc" },
             ]
 
-            const binding = ConfigHelper.makeDatabinding(gobconfig)
+            const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
             const tblRoleplay = $("#croleplay_roleplay > tbody")
             const rowTemplate = $('#croleplay_template_roleplayentry')
@@ -134,10 +134,10 @@
 
                 lblName.text(entry.label)
 
-                ConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
-                ConfigHelper.makeColorSelector(clrSelectorFG)
-                ConfigHelper.bindColorSelector(binding, clrSelectorFG)
-                btnResetFG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorFG)))
+                GobConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
+                GobConfigHelper.makeColorSelector(clrSelectorFG)
+                GobConfigHelper.bindColorSelector(binding, clrSelectorFG)
+                btnResetFG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorFG)))
             })
 
             binding.initialize()
@@ -236,7 +236,7 @@
 
             function addNewEntrySegmentsTable() {
                 const data = gobconfig.get(ConfigKeyData)
-                const id = ConfigHelper.generateId(6, Object.keys(data))
+                const id = GobConfigHelper.generateId(6, Object.keys(data))
 
                 data[id] = {
                     type: 1,
@@ -308,7 +308,7 @@
                 if (entry.styleId === undefined || entry.styleId === null) return
                 copyKeys.push(entry.styleId + ".color")
             })
-            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+            GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
 
         }())
     </script>

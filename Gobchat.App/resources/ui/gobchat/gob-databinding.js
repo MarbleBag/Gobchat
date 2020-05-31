@@ -1,6 +1,19 @@
-﻿'use strict'
+﻿/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
 
-var ConfigHelper = (function (ConfigHelper, undefined) {
+'use strict'
+
+var GobConfigHelper = (function (GobConfigHelper, undefined) {
     //Wraps the given delegate inside a profile listener, which only propagates the call if active profile changes.
     function createProfileListener(delegate, profileId) {
         if (Gobchat.isString(profileId)) { //triggers only if the given profile is active
@@ -118,7 +131,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
             const defOptions = {
                 disabled: false,
                 elementKey: "change",
-                configKey: $element.attr(ConfigHelper.ConfigKeyAttribute),
+                configKey: $element.attr(GobConfigHelper.ConfigKeyAttribute),
                 elementGetAccessor: ($element) => $element.val(),
                 elementSetAccessor: ($element, value) => $element.val(value)
             }
@@ -224,15 +237,15 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         }
     }
 
-    ConfigHelper.makeDatabinding = function (gobconfig) {
+    GobConfigHelper.makeDatabinding = function (gobconfig) {
         return new GobconfigBindingContext(gobconfig)
     }
 
-    ConfigHelper.bindElement = function (bindingContext, element, options) {
+    GobConfigHelper.bindElement = function (bindingContext, element, options) {
         return bindingContext.bindElement(element, options)
     }
 
-    ConfigHelper.bindText = function (bindingContext, element, options) {
+    GobConfigHelper.bindText = function (bindingContext, element, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.text(),
             elementSetAccessor: ($element, value) => $element.text(value)
@@ -240,7 +253,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    ConfigHelper.bindTextCollection = function (bindingContext, element, options) {
+    GobConfigHelper.bindTextCollection = function (bindingContext, element, options) {
         const defOptions = {
             joinSequence: ", "
         }
@@ -261,7 +274,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, options)
     }
 
-    ConfigHelper.bindCheckbox = function (bindingContext, element, options) {
+    GobConfigHelper.bindCheckbox = function (bindingContext, element, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.prop("checked"),
             elementSetAccessor: ($element, value) => $element.prop("checked", value)
@@ -270,7 +283,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    ConfigHelper.bindCheckboxValue = function (bindingContext, element, checkValue, uncheckValue, options) {
+    GobConfigHelper.bindCheckboxValue = function (bindingContext, element, checkValue, uncheckValue, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.prop("checked") ? checkValue : uncheckValue,
             elementSetAccessor: ($element, value) => $element.prop("checked", value === checkValue)
@@ -279,7 +292,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    ConfigHelper.bindCheckboxArray = function (bindingContext, element, values, options) {
+    GobConfigHelper.bindCheckboxArray = function (bindingContext, element, values, options) {
         const defOptions = {
             disabled: values === null || values === undefined || values.length === 0,
             elementGetAccessor: ($element, event, oldValues) => {
@@ -295,7 +308,7 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    ConfigHelper.bindColorSelector = function (bindingContext, element, options) {
+    GobConfigHelper.bindColorSelector = function (bindingContext, element, options) {
         const defOptions = {
             elementKey: null,
             elementGetAccessor: null,
@@ -307,10 +320,10 @@ var ConfigHelper = (function (ConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    ConfigHelper.bindDropdown = function (bindingContext, element, options) {
+    GobConfigHelper.bindDropdown = function (bindingContext, element, options) {
         //const defOptions = {}
         return bindingContext.bindElement(element, options)
     }
 
-    return ConfigHelper
-}(ConfigHelper || {}));
+    return GobConfigHelper
+}(GobConfigHelper || {}));

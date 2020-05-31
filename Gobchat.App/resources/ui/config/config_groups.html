@@ -138,7 +138,7 @@
 
                 const tmplGroupEntry = $("#cgroups_template_groupentry")
                 function addGroupToTable(groupId) {
-                    const binding = ConfigHelper.makeDatabinding(gobconfig)
+                    const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
                     const groupConfigKey = `${ConfigKeyGroups}.${groupId}`
                     const groupData = gobconfig.get(groupConfigKey)
@@ -150,8 +150,8 @@
                     groupEntry.data("configbinding", binding)
 
                     const lblGroupName = groupEntry.find(".tmpl-header-name")
-                    ConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
-                    ConfigHelper.bindText(binding, lblGroupName)
+                    GobConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
+                    GobConfigHelper.bindText(binding, lblGroupName)
 
                     const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
                     btnDeleteGroup.on("click", (event) => {
@@ -168,28 +168,28 @@
                         btnDeleteGroup.attr("disabled", true).hide()
 
                     const txtGroupName = groupEntry.find(".tmpl-group-name")
-                    ConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
-                    ConfigHelper.bindElement(binding, txtGroupName)
+                    GobConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
+                    GobConfigHelper.bindElement(binding, txtGroupName)
 
                     const btnGroupName = groupEntry.find(".tmpl-group-name-reset")
-                    ConfigHelper.setConfigKey(btnGroupName, ConfigHelper.getConfigKey(txtGroupName))
-                    ConfigHelper.makeResetButton(btnGroupName)
+                    GobConfigHelper.setConfigKey(btnGroupName, GobConfigHelper.getConfigKey(txtGroupName))
+                    GobConfigHelper.makeResetButton(btnGroupName)
                     if (!isFFGroup)
                         btnGroupName.attr("disabled", true).hide()
 
                     const ckbIsActive = groupEntry.find(".tmpl-group-active")
-                    ConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
-                    ConfigHelper.bindCheckbox(binding, ckbIsActive)
+                    GobConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
+                    GobConfigHelper.bindCheckbox(binding, ckbIsActive)
 
                     function makeColorSelector(classId, configKey) {
                         const colorSelector = groupEntry.find(`.${classId}`)
-                        ConfigHelper.setConfigKey(colorSelector, configKey)
-                        ConfigHelper.makeColorSelector(colorSelector)
-                        ConfigHelper.bindColorSelector(binding, colorSelector)
+                        GobConfigHelper.setConfigKey(colorSelector, configKey)
+                        GobConfigHelper.makeColorSelector(colorSelector)
+                        GobConfigHelper.bindColorSelector(binding, colorSelector)
 
                         const resetButton = groupEntry.find(`.${classId}-reset`)
-                        ConfigHelper.setConfigKey(resetButton, configKey)
-                        ConfigHelper.makeResetButton(resetButton)
+                        GobConfigHelper.setConfigKey(resetButton, configKey)
+                        GobConfigHelper.makeResetButton(resetButton)
 
                         if (!isFFGroup)
                             resetButton.hide()
@@ -217,7 +217,7 @@
 
                 function makeNewGroup(addFront) {
                     const groups = gobconfig.get(ConfigKeyGroups)
-                    const groupId = ConfigHelper.generateId(6, Object.keys(groups))
+                    const groupId = GobConfigHelper.generateId(6, Object.keys(groups))
 
                     groups[groupId] = {
                         name: "Unnamed",
@@ -286,7 +286,7 @@
 
                 const btnCopyProfile = $("#cgroups_copyprofile")
                 const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
-                ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+                GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
             }())
         </script>
     </p>
