@@ -15,10 +15,11 @@ using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
 using Gobchat.Memory;
 using Gobchat.Module.MemoryReader;
+using Gobchat.Module.Overlay;
 using Gobchat.UI.Forms;
 using System;
 
-namespace Gobchat.Module.Overlay
+namespace Gobchat.Module.Misc
 {
     public sealed class AppModuleHideOnMinimize : IApplicationModule
     {

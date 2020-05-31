@@ -18,7 +18,6 @@ using Gobchat.Core.Util;
 using Gobchat.Module.Updater.Internal;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Gobchat.Module.Updater
@@ -61,8 +60,8 @@ namespace Gobchat.Module.Updater
 
             if (userRequest == UpdateFormDialog.UpdateType.Manual)
             {
-                var dialogText = $"Pressing Yes will close Gobchat and opens a webpage instead, which will provide the newest version for Gobchat.\n\nDownload gobchat-{update.Version}.zip and overwrite your current Gobchat.";
-                var dialogResult = System.Windows.Forms.MessageBox.Show(dialogText, "Update available", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Information);
+                var dialogText = StringFormat.Format(Resources.Module_Updater_Dialog_ManualInstall_Text, update.Version);
+                var dialogResult = System.Windows.Forms.MessageBox.Show(dialogText, Resources.Module_Updater_Dialog_ManualInstall_Title, System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Information);
 
                 //TODO improve - a lot
 
@@ -174,8 +173,8 @@ namespace Gobchat.Module.Updater
                 logger.Error(ex);
 
                 System.Windows.Forms.MessageBox.Show(
-                        string.Format("Unable to download newest version.\nReason: {0}", ex.ToString()),
-                        "Error",
+                        StringFormat.Format(Resources.Module_Updater_Dialog_DownloadFailed_Text, ex.ToString()),
+                        Resources.Module_Updater_Dialog_DownloadFailed_Title,
                         System.Windows.Forms.MessageBoxButtons.OK,
                         System.Windows.Forms.MessageBoxIcon.Error
                     );
@@ -211,8 +210,8 @@ namespace Gobchat.Module.Updater
                 logger.Error(ex);
 
                 System.Windows.Forms.MessageBox.Show(
-                        string.Format("Unable to extract archive.\nReason: {0}", ex.ToString()),
-                        "Error",
+                        StringFormat.Format(Resources.Module_Updater_Dialog_ExtractionFailed_Text, ex.ToString()),
+                        Resources.Module_Updater_Dialog_ExtractionFailed_Title,
                         System.Windows.Forms.MessageBoxButtons.OK,
                         System.Windows.Forms.MessageBoxIcon.Error
                     );
@@ -227,7 +226,7 @@ namespace Gobchat.Module.Updater
         {
             logger.Info("Prepare updates");
 
-            progressMonitor.StatusText = "Prepare installation of update";
+            progressMonitor.StatusText = Resources.Module_Updater_UI_Log_PrepareUpdates;
             progressMonitor.Progress = 0d;
 
             var tmp = System.IO.Path.Combine(patchFolder, "Gobchat");
@@ -242,12 +241,12 @@ namespace Gobchat.Module.Updater
             manager.ReinstateIfRestarted();
             manager.CheckForUpdates();
 
-            progressMonitor.Log($"{manager.UpdatesAvailable} updates for installation found.");
+            progressMonitor.Log(StringFormat.Format(Resources.Module_Updater_UI_Log_UpdateCount, manager.UpdatesAvailable));
 
             if (manager.UpdatesAvailable > 0)
                 manager.PrepareUpdates();
 
-            progressMonitor.StatusText = "Waiting for shutdown";
+            progressMonitor.StatusText = Resources.Module_Updater_UI_Log_Done;
             progressMonitor.Progress = 1d;
 
             logger.Info($"{manager.UpdatesAvailable} updates prepared.");
@@ -257,7 +256,7 @@ namespace Gobchat.Module.Updater
         {
             using (var notes = new UpdateFormDialog())
             {
-                notes.UpdateHeadText = $"An update to version {update.Version} is available.\nCurrent version is {GobchatContext.ApplicationVersion}\nUpdate and restart?";
+                notes.UpdateHeadText = StringFormat.Format(notes.UpdateHeadText, update.Version, GobchatContext.ApplicationVersion);
                 notes.UpdateNotes = update.PatchNotes;
                 notes.ShowDialog();
                 return notes.UpdateRequest;

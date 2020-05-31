@@ -46,7 +46,7 @@ namespace Gobchat.Core.Util
             }
             catch (ExtractionFailedException ex)
             {
-                progressMonitor.Log($"An error occured: {ex.Message}");
+                progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
                 DeleteExtractedData(progressMonitor);
                 throw;
             }
@@ -54,7 +54,7 @@ namespace Gobchat.Core.Util
             switch (unpackingResults)
             {
                 case ArchiveUnpackerHelper.ExtractionResult.Complete:
-                    progressMonitor.Log("Unpacking complete");
+                    progressMonitor.Log(Resources.Core_Util_ArchiveUnpacker_Complete);
                     if (DeleteArchiveOnCompletion)
                         File.Delete(ArchivePath);
                     return Result.Completed;
@@ -69,7 +69,7 @@ namespace Gobchat.Core.Util
 
         private void DeleteExtractedData(IProgressMonitor progressMonitor)
         {
-            progressMonitor.Log("Delete partially unpacked archive");
+            progressMonitor.Log(Resources.Core_Util_ArchiveUnpacker_DeleteIncomplete);
             if (DeleteOutputFolderOnFail)
                 Directory.Delete(OutputFolderPath, true);
         }

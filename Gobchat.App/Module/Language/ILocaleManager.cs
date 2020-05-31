@@ -11,21 +11,32 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Resource;
+using System;
 using System.Globalization;
 
-namespace Gobchat
+namespace Gobchat.Module.Language
 {
-    public static class App
+    public interface ILocaleManager
     {
-        [System.STAThread]
-        private static void Main(string[] args)
-        {
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en");
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en");
+        event EventHandler<LocaleEventArgs> OnLocaleChange;
 
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new global::Gobchat.Core.Runtime.GobchatApplicationContext());
+        CultureInfo ActiveCulture { get; }
+
+        CultureInfo DefaultCulture { get; }
+
+        string GetLocale(CultureInfo cultureInfo);
+
+        IResourceBundle GetResourceBundle(string filename);
+    }
+
+    public sealed class LocaleEventArgs : EventArgs
+    {
+        public CultureInfo Locale { get; }
+
+        public LocaleEventArgs(CultureInfo locale)
+        {
+            Locale = locale ?? throw new ArgumentNullException(nameof(locale));
         }
     }
 }

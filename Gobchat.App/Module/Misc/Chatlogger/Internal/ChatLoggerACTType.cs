@@ -15,7 +15,7 @@ using System.Linq;
 using System.Globalization;
 using Gobchat.Core.Chat;
 
-namespace Gobchat.Module.Chat.Internal
+namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
     public sealed class ChatLoggerACTType : ChatLoggerBase
     {

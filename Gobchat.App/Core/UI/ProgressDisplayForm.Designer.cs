@@ -59,10 +59,10 @@
             // 
             // pnlProgressBar
             // 
+            resources.ApplyResources(this.pnlProgressBar, "pnlProgressBar");
             this.pnlProgressBar.Controls.Add(this.pgbProgressBar);
             this.pnlProgressBar.Controls.Add(this.btnSingle);
             this.pnlProgressBar.Controls.Add(this.lblStatusText);
-            resources.ApplyResources(this.pnlProgressBar, "pnlProgressBar");
             this.pnlProgressBar.Name = "pnlProgressBar";
             // 
             // txtLog
@@ -82,7 +82,6 @@
             this.MinimizeBox = false;
             this.Name = "ProgressDisplayForm";
             this.TopMost = true;
-            this.FormClosing += this.Form_FormClosing;
             this.pnlProgressBar.ResumeLayout(false);
             this.pnlProgressBar.PerformLayout();
             this.ResumeLayout(false);

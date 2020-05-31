@@ -117,14 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="GobIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\GobIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Module.Hotkey.ConfigHotkeyUpdater.InvalidHotkey" xml:space="preserve">
+    <value>Ungültiger Hotkey für {0} wegen {1}</value>
   </data>
-  <data name="GobTrayIconOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\GobTrayIconOff.Ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Module.Misc.Connection.AdminRights" xml:space="preserve">
+    <value>FFXIV Chat kann nicht ausgelesen werden. Starte Gobchat mit Adminrechte.</value>
   </data>
-  <data name="GobTrayIconOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\GobTrayIconOn.Ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Module.Misc.Connection.Found" xml:space="preserve">
+    <value>FFXIV gefunden.</value>
+  </data>
+  <data name="Module.Misc.Connection.NotFound" xml:space="preserve">
+    <value>FFXIV nicht gefunden. Starte FFXIV.</value>
+  </data>
+  <data name="Module.NotifyIcon.UI.Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Module.NotifyIcon.UI.Hide" xml:space="preserve">
+    <value>Verstecken</value>
+  </data>
+  <data name="Module.NotifyIcon.UI.Reload" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="Module.NotifyIcon.UI.Show" xml:space="preserve">
+    <value>Zeigen</value>
+  </data>
+  <data name="Module.Updater.Dialog.ManualInstall.Text" xml:space="preserve">
+    <value>Bei Bestätigung mit 'Ja' wird Gobchat geschlossen und eine Webseite geöffnet, auf welcher die neuste Version von Gobchat verfügbar ist.
+
+Downloade gobchat-{0}.zip und überschreibe Gobchat.</value>
+  </data>
+  <data name="Module.Updater.Dialog.ManualInstall.Title" xml:space="preserve">
+    <value>Manuelle Installation</value>
   </data>
 </root>

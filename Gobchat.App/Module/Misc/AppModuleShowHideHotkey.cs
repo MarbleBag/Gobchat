@@ -45,7 +45,7 @@ namespace Gobchat.Module.Misc
             //TODO: hotkey management is still dumb
             _hkShowHide = new ConfigHotkeyUpdater(
                 "behaviour.hotkeys.showhide",
-                "Show & Hide",
+                Resources.Module_Misc_Hotkey_ShowHide,
                 container.Resolve<IConfigManager>(),
                 "behaviour.hotkeys.showhide",
                 container.Resolve<IHotkeyManager>(),
