@@ -121,18 +121,11 @@
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 400</value>
   </data>
-  <data name="&gt;&gt;btnTwo.Name" xml:space="preserve">
-    <value>btnTwo</value>
-  </data>
   <data name="&gt;&gt;pnlControls.Name" xml:space="preserve">
     <value>pnlControls</value>
   </data>
   <data name="txtDisplay.Size" type="System.Drawing.Size, System.Drawing">
     <value>524, 266</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnOne.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="lblHeader.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
@@ -162,6 +155,7 @@
   <data name="btnOne.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 7</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnTwo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -173,9 +167,6 @@
   </data>
   <data name="&gt;&gt;pnlControls.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnTwo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="formLayout.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -189,8 +180,8 @@
   <data name="pnlControls.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="&gt;&gt;btnTwo.Name" xml:space="preserve">
+    <value>btnTwo</value>
   </data>
   <data name="lblHeader.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -231,11 +222,17 @@
   <data name="&gt;&gt;pnlControls.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;formLayout.Name" xml:space="preserve">
-    <value>formLayout</value>
+  <data name="&gt;&gt;btnTwo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblHeader.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;lblHeader.Name" xml:space="preserve">
+    <value>lblHeader</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
   </data>
   <data name="btnThree.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -248,20 +245,17 @@ Update and restart?</value>
   <data name="btnTwo.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;btnThree.Name" xml:space="preserve">
+    <value>btnThree</value>
+  </data>
   <data name="btnThree.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="lblHeader.Size" type="System.Drawing.Size, System.Drawing">
     <value>524, 40</value>
   </data>
-  <data name="btnOne.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="&gt;&gt;txtDisplay.Name" xml:space="preserve">
     <value>txtDisplay</value>
-  </data>
-  <data name="&gt;&gt;btnOne.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="btnTwo.Text" xml:space="preserve">
     <value>Manual Install</value>
@@ -286,6 +280,9 @@ Update and restart?</value>
   </data>
   <data name="&gt;&gt;formLayout.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;formLayout.Name" xml:space="preserve">
+    <value>formLayout</value>
   </data>
   <data name="pnlControls.Size" type="System.Drawing.Size, System.Drawing">
     <value>524, 44</value>
@@ -7930,6 +7927,9 @@ Update and restart?</value>
   <data name="formLayout.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="btnTwo.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 26</value>
   </data>
@@ -7948,11 +7948,11 @@ Update and restart?</value>
   <data name="pnlControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;btnThree.Name" xml:space="preserve">
-    <value>btnThree</value>
+  <data name="&gt;&gt;btnOne.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;lblHeader.Name" xml:space="preserve">
-    <value>lblHeader</value>
+  <data name="btnOne.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="btnOne.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 26</value>
@@ -7984,13 +7984,10 @@ Update and restart?</value>
   <data name="&gt;&gt;formLayout.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="btnOne.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>de</value>
   </metadata>
 </root>

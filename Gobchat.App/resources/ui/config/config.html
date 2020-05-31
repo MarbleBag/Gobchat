@@ -19,6 +19,7 @@
 
     <script src="config.js"></script>
     <script src="../gobchat/gob-databinding.js"></script>
+    <script src="../gobchat/gob-jquery-loadthen.js"></script>
 </head>
 <body>
     <script type="text/javascript">
@@ -34,18 +35,55 @@
     </script>
 
     <div id="main_navbar" class="ui-side-navigation">
-        <select id="main_profileselect"></select>
-        <a data-nav-target="main_nav_app" class="active">App</a>
-        <a data-nav-target="main_nav_mentions">Mentions</a>
-        <a data-nav-target="main_nav_profiles">Profiles</a>
-        <a data-nav-target="main_nav_channel">Channels</a>
-        <a data-nav-target="main_nav_groups">Groups</a>
-        <a data-nav-target="main_nav_roleplay">Roleplay</a>
-        <a data-nav-target="main_nav_about">About</a>
-        <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
-        <a class="btn-system" id="main_saveandexitconfig"><i class="fa fa-save"></i> Save &amp; Exit</a>
+        <select id="main_profileselect" data-gob-locale-title="config.main.nav.selectprofile.tooltip"></select>
+        <a data-nav-target="main_nav_app" data-gob-locale-text="config.main.nav.app" class="active">App</a>
+        <a data-nav-target="main_nav_mentions" data-gob-locale-text="config.main.nav.mentions">Mentions</a>
+        <a data-nav-target="main_nav_profiles" data-gob-locale-text="config.main.nav.profiles">Profiles</a>
+        <a data-nav-target="main_nav_channel" data-gob-locale-text="config.main.nav.channels">Channels</a>
+        <a data-nav-target="main_nav_groups" data-gob-locale-text="config.main.nav.groups">Groups</a>
+        <a data-nav-target="main_nav_roleplay" data-gob-locale-text="config.main.nav.roleplay">Roleplay</a>
+        <a data-nav-target="main_nav_about" data-gob-locale-text="config.main.nav.about">About</a>
+        <a class="btn-system" id="main_saveconfig">
+            <i class="fa fa-save"></i>
+            <label data-gob-locale-text="config.main.nav.save"></label>
+        </a>
+        <a class="btn-system" id="main_saveandexitconfig">
+            <i class="fa fa-save"></i>
+            <label data-gob-locale-text="config.main.nav.saveandexit"></label>
+        </a>
         <!--<a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>-->
-        <a class="btn-system" id="main_cancelconfig"><i class="fas fa-trash-alt"></i> Cancel</a>
+        <a class="btn-system" id="main_cancelconfig">
+            <i class="fas fa-trash-alt"></i>
+            <label data-gob-locale-text="config.main.nav.cancel"></label>
+        </a>
+    </div>
+
+    <!--
+    <div id="config_navbar" class="gob-ui-navigation-side" data-gob-nav-target="config_content">
+        <select id="main_profileselect"></select>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_app.html" data-gob-locale-text="ui.config.main.nav.app">A</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_mentions.html" data-gob-locale-text="ui.config.main.nav.mentions">B</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_profiles.html" data-gob-locale-text="ui.config.main.nav.profiles">C</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_channel.html" data-gob-locale-text="ui.config.main.nav.channels">D</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_roleplay.html" data-gob-locale-text="ui.config.main.nav.roleplay">D</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_groups.html" data-gob-locale-text="ui.config.main.nav.groups">D</a>
+        <a class="active gob-ui-navigation-frame" data-gob-nav-target="about.html" data-gob-locale-text="ui.config.main.nav.about">D</a>
+        <a class="btn-system" id="main_saveconfig">
+            <i class="fa fa-save"></i>
+            <label class="gob-localized" data-gob-locale-text="config.main.nav.save"></label>
+        </a>
+        <a class="btn-system" id="main_saveandexitconfig">
+            <i class="fa fa-save"></i>
+            <label class="gob-localized" data-gob-locale-text="config.main.nav.saveandexit"></label>
+        </a>
+        <a class="btn-system" id="main_cancelconfig">
+            <i class="fas fa-trash-alt"></i>
+            <label class="gob-localized" data-gob-locale-text="config.main.nav.cancel"></label>
+        </a>
+    </div>
+    -->
+
+    <div id="config_content">
     </div>
 
     <div class="ui-content">
@@ -106,54 +144,74 @@
 
             $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
 
-            initializeNavigationBar("main_navbar")
+            {
+                (async () => {
+                    await initializeNavigationBar($("#main_navbar"))
+
+                    const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+                    window.goblocale = new Gobchat.GobLocaleManager()
+
+                    generalBinding.bindConfigListener("behaviour.language", (value) => {
+                        window.goblocale.setLocale(value)
+                        window.goblocale.updateElement($(document))
+                    })
+                    generalBinding.initialize()
+                })()
+            }
         });
 
-        function initializeNavigationBar(navigationBarId) {
+        async function initializeNavigationBar(navigationElement) {
+            const $navigationElement = $(navigationElement)
             const navAttribute = "data-nav-target"
 
-            function hideNavigationContent(navigationId) {
-                $(`#${navigationId} > a`).each(function () {
-                    const target = $(this).attr(navAttribute)
-                    if (target)
-                        $(`#${target}`).hide()
-                })
-            }
-
-            function showActiveNavigationContent(navigationId) {
-                $(`#${navigationId} > .active`).each(function () {
-                    const target = $(this).attr(navAttribute)
-                    if (target)
-                        $(`#${target}`).show()
-                })
-            }
-
-            function importNavigationContent(navigationId) {
-                $(`#${navigationId} > a`).each(function () {
-                    const targetId = $(this).attr(navAttribute)
-                    if (!targetId) return
-                    const target = $(`#${targetId}`)
-                    const contentSrc = target.attr("data-content-src")
-                    if (!contentSrc) return
-                    target.load(contentSrc)
-                })
-            }
-
-            function hasNavigationAttribute(element) {
+            function isNavigationElement(element) {
                 const target = $(element).attr(navAttribute)
                 return target !== null && target !== undefined
             }
 
-            hideNavigationContent(navigationBarId)
-            importNavigationContent(navigationBarId)
-            showActiveNavigationContent(navigationBarId)
+            function hideAllNavigationContent() {
+                $navigationElement.find("> a").each(function () {
+                    const targetId = $(this).attr(navAttribute)
+                    $(`#${targetId}`).hide()
+                })
+            }
 
-            $(`#${navigationBarId}`).on("click", function (event) {
-                if (!hasNavigationAttribute(event.target)) return
-                hideNavigationContent(navigationBarId)
-                $(`#${navigationBarId} > .active`).removeClass("active")
+            function showNavigationContent() {
+                $navigationElement.find("> .active").each(function () {
+                    const targetId = $(this).attr(navAttribute)
+                    $(`#${targetId}`).show()
+                })
+            }
+
+            var awaitPromises = []
+
+            $navigationElement.find("> a").each(function () {
+                const targetId = $(this).attr(navAttribute)
+                if (!targetId)
+                    return //skip
+                const target = $(`#${targetId}`)
+                const targetContent = target.attr("data-content-src")
+                if (!targetContent)
+                    return //skip
+
+                var promise = $(target)
+                    .loadThen(targetContent)
+
+                awaitPromises.push(promise)
+            })
+            await Promise.all(awaitPromises)
+
+            hideAllNavigationContent()
+            showNavigationContent()
+
+            $navigationElement.on("click", (event) => {
+                if (!isNavigationElement(event.target)) return
+                hideAllNavigationContent()
+
+                $navigationElement.find("> .active").removeClass("active")
                 $(event.target).addClass("active")
-                showActiveNavigationContent(navigationBarId)
+
+                showNavigationContent()
             })
         }
     </script>

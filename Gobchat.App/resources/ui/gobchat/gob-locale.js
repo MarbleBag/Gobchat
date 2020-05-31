@@ -14,49 +14,67 @@
 'use strict'
 
 var Gobchat = (function (Gobchat) {
-    async function updateLocale(htmlRoot, locale) {
-        const localizedElements = $(htmlRoot).find(".gob-locale-text .gob-locale-title")
+    const DataAttributeText = "data-gob-locale-text"
+    const DataAttributeTitle = "data-gob-locale-title"
+    const LocaleClass = "gob-localized"
+    const ElementSelector = `[${DataAttributeText}],[${DataAttributeTitle}]`
 
-        const ids = []
+    async function updateLocaleOnElements(htmlElement, locale) {
+        const selectedElements = $(htmlElement).find(ElementSelector).addBack(ElementSelector)
+        if (selectedElements.length == 0)
+            return
 
-        localizedElements.each(() => {
+        const stringIds = []
+
+        selectedElements.each(function () {
             const $this = $(this)
-            const id = $this.attr("data-gob-locale")
-            if (id)
-                ids.push($(this).attr(id))
+            if ($this.attr(DataAttributeText)) stringIds.push($this.attr(DataAttributeText))
+            if ($this.attr(DataAttributeTitle)) stringIds.push($this.attr(DataAttributeTitle))
         })
 
-        const lookup = await GobchatAPI.getLocalizedStrings(locale, ids)
+        console.log("Found: " + JSON.stringify(stringIds))
+        if (stringIds.length == 0)
+            return
 
-        localizedElements.each(() => {
+        const lookup = await GobchatAPI.getLocalizedStrings(locale, stringIds)
+
+        selectedElements.each(function () {
             const $this = $(this)
-            const id = $this.attr("data-gob-locale")
-            const txt = lookup[id]
 
-            if ($this.hasClass("gob-locale-title")) {
+            if ($this.attr(DataAttributeText)) {
+                const id = $this.attr(DataAttributeText)
+                const txt = lookup[id]
+                $this.html(txt)
+            }
+
+            if ($this.attr(DataAttributeTitle)) {
+                const id = $this.attr(DataAttributeTitle)
+                const txt = lookup[id]
                 $this.prop("title", txt);
-            } else if ($this.hasClass("gob-locale-text")) {
-                $this.text(txt)
             }
         })
     }
 
-    async function updateElementLocale(htmlElement, locale) {
-        const $this = $(this)
-        const id = $this.attr("data-gob-locale")
-        if (!id) return
+    async function getLocalizedString(locale, key) {
+        const lookup = await GobchatAPI.getLocalizedStrings(locale, [key])
+        return lookup[key]
+    }
 
-        const txt = await GobchatAPI.getLocalizedString(locale, id)
+    class GobLocaleManager {
+        setLocale(locale) {
+            this._locale = locale
+        }
 
-        if ($this.hasClass("gob-locale-title")) {
-            $this.prop("title", txt);
-        } else if ($this.hasClass("gob-locale-text")) {
-            $this.text(txt)
+        async get(key) {
+            return await getLocalizedString(this._locale, key)
+        }
+
+        async updateElement(element) {
+            updateLocaleOnElements(element, this._locale)
         }
     }
 
-    Gobchat.changeLanguageOnPage = updateLocale
-    Gobchat.changeLanguageOnElement = updateElementLocale
+    Gobchat.GobLocaleManager = GobLocaleManager
 
     return Gobchat
 }(Gobchat || {}));

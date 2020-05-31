@@ -223,6 +223,12 @@ Retry or install CEF manually for gobchat.</value>
   <data name="Module.NotifyIcon.UI.Show" xml:space="preserve">
     <value>Show</value>
   </data>
+  <data name="Module.UI.Connector.Config.Profile.Error" xml:space="preserve">
+    <value>Unable to save profiles to disk. See debug log for more informations.</value>
+  </data>
+  <data name="Module.UI.Connector.Config.Profile.Saved" xml:space="preserve">
+    <value>Profiles saved.</value>
+  </data>
   <data name="Module.Updater.Dialog.DownloadFailed.Text" xml:space="preserve">
     <value>Unable to download newest version.
 Reason: {0}</value>

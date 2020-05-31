@@ -7,7 +7,7 @@
 </head>
 <body>
     <p>
-        <button id="cprofiles_profile_new"><i class="fas fa-file"></i> Create new profile</button>
+        <button id="cprofiles_profile_new"><i class="fas fa-plus"></i> Create new profile</button>
         <button id="cprofiles_profile_import" title="(Soon (TM)) Imports a profile file"><i class="fas fa-file-import"></i> Import profile</button>
     </p>
 
@@ -68,7 +68,7 @@
 
             //setup profile selector
             const profileSelectionDropdown = $("#main_profileselect")
-            profileSelectionDropdown.attr("title", "Set your active profile.")
+            //profileSelectionDropdown.attr("title", "Set your active profile.")
 
             profileSelectionDropdown.on("change", function (event) {
                 const profileId = event.target.value
@@ -113,10 +113,10 @@
                         $("#config_dialog_error_text").empty()
                         $("#config_dialog_error_text").append($(
                             `<span>
-                                                                        Profile can't be loaded.<br>
-                                                                        Either the format is not supported or the file can't be found/read!<
-                                                                    </span>
-                                                                    `
+                                                                                Profile can't be loaded.<br>
+                                                                                Either the format is not supported or the file can't be found/read!<
+                                                                            </span>
+                                                                            `
                         ))
                         $("#config_dialog_error").dialog({
                             resizable: false,

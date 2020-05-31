@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Gobchat.Core.Runtime;
+using Gobchat.Core.Util;
 using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
@@ -193,6 +194,24 @@ namespace Gobchat.Module.UI.Internal
 
                 result.Sort((a, b) => a.Distance.CompareTo(b.Distance));
                 return result.Select(e => $"{e.Name}: {e.Distance.ToString("0.00", CultureInfo.InvariantCulture)}").ToArray();
+            }
+
+            public async Task<Dictionary<string, string>> GetLocalizedStrings(string locale, string[] requestedIds)
+            {
+                var selectedCulture = CultureInfo.GetCultureInfo(locale);
+                var manager = WebUIResources.ResourceManager;
+
+                var result = new Dictionary<string, string>();
+                foreach (var requestedId in requestedIds)
+                {
+                    var translation = manager.GetString(requestedId, selectedCulture);
+                    if (translation == null)
+                        result.Add(requestedId, StringFormat.Format(WebUIResources.config_missing, requestedId));
+                    else
+                        result.Add(requestedId, translation);
+                }
+
+                return result;
             }
         }
     }
