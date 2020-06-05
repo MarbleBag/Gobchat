@@ -379,7 +379,12 @@ namespace Gobchat.Core.Config
             var defaultVersion = _defaultConfig.ProfileVersion;
             if (configVersion < defaultVersion)
             {
-                logger.Warn($"Profile {config.ProfileId} is outdated with version {configVersion}. Expected is version {defaultVersion}. Profile not stored.");
+                logger.Warn($"Profile {config.ProfileId} with version {configVersion} is outdated. Expected version is {defaultVersion}. Profile not stored.");
+                return;
+            }
+            else if (configVersion > defaultVersion)
+            {
+                logger.Warn($"Profile {config.ProfileId} with version {configVersion} is too new. Expected version is {defaultVersion}. Profile not stored.");
                 return;
             }
 
