@@ -3,9 +3,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## [1.7.0] - Unreleased
-### Added
-- Color selection to channels: NPC dialog, animated emote, echo
-
 - Chat commands: `info off`, `info on`
   - `info off` will surpress any gobchat infos until turned back on via `info on` or restart of gobchat
 
@@ -16,7 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - Parts of gobchat were translated into german
  
 - Tons of tooltips 
-  
+
+## [1.6.3] - Unreleased  
+### Added
+- Color selection to channels: NPC dialog, animated emote, echo
+
 ### Fixed
 - groups
   - color reset buttons didn't work
