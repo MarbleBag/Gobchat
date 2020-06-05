@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Chat commands: `info off`, `info on`
   - `info off` will surpress any gobchat infos until turned back on via `info on` or restart of gobchat
 
+
 - Chat commands: `error off`, `error on`
   - `error off` will surpress any gobchat errors until turned back on via `error on` or restart of gobchat
 
+
 - Language selection dropdown in `Config / app`
   - Parts of gobchat were translated into german
+
+
 - Tons of tooltips
 
 ## [1.6.3] - 2020.06.05  
