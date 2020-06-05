@@ -411,7 +411,7 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         //TODO remove later
-        async loadFromLocalStore() {
+        loadFromLocalStore() {
             const json = window.localStorage.getItem("gobchat-config")
             window.localStorage.removeItem("gobchat-config")
             if (json === undefined || json === null)
@@ -427,7 +427,7 @@ var Gobchat = (function (Gobchat, undefined) {
             }
 
             if (this._isSynced)
-                await this.saveConfig()
+                this.saveConfig()
         }
 
         addProfileEventListener(callback) {
