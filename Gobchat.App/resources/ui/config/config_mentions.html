@@ -10,7 +10,10 @@
 
     <p>
         <div>
-            <button disabled hidden id="cmentions_add_new_mention1"><i style="color:green;" class="fas fa-plus-circle"></i></button>
+            <button disabled hidden id="cmentions_add_new_mention1"
+                    data-gob-locale-title="config.mentions.newmention.tooltip">
+                <i style="color:green;" class="fas fa-plus-circle"></i>
+            </button>
         </div>
     </p>
 
@@ -21,7 +24,10 @@
             <div>
             </div>
             <div>
-                <button disabled hidden id="cmentions_add_new_mention2"><i style="color:green;" class="fas fa-plus-circle"></i></button>
+                <button disabled hidden id="cmentions_add_new_mention2"
+                        data-gob-locale-title="config.mentions.newmention.tooltip">
+                    <i style="color:green;" class="fas fa-plus-circle"></i>
+                </button>
             </div>
         </div>
     </p>
@@ -29,9 +35,12 @@
     <template id="cmention_template_mention">
         <div data-gob-entryid>
             <div>
-                <label>Mentions</label>
+                <label data-gob-locale-text="config.mentions.mentions.label"></label>
                 <span>
-                    <button hidden class="tmpl-delete-entry ui-gc-btn-delete" title="Deletes this entry"><i class="fa fa-trash"></i></button>
+                    <button hidden class="tmpl-delete-entry ui-gc-btn-delete"
+                            data-gob-locale-title="config.main.deletebutton.tooltip">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </span>
             </div>
             <div>
@@ -50,20 +59,32 @@
                 -->
                 <div>
                     <span>
-                        <label>Play sound:</label>
-                        <input type="checkbox" class="tmpl-play-sound" data-gob-configkey="behaviour.mentions.{0}.playsound" />
+                        <label data-gob-locale-text="config.mentions.audio.play"></label>
+                        <input type="checkbox" class="tmpl-play-sound"
+                               data-gob-configkey="behaviour.mentions.{0}.playsound" />
                     </span>
                 </div>
                 <div class="tmp-sound-options" hidden>
                     <div>
-                        <input type="text" class="tmpl-sound-path" data-gob-configkey="behaviour.mentions.{0}.sound" />
-                        <button class="tmpl-sound-selector"><i class="fas fa-file-audio"></i></button>
-                        <button class="tmpl-test-sound"><i class="fas fa-play"></i></button>
-                        <input class="tmpl-sound-volume" type="range" min="0" max="100" />
+                        <input type="text" class="tmpl-sound-path"
+                               data-gob-configkey="behaviour.mentions.{0}.sound"
+                               data-gob-locale-title="config.mentions.audio.path.tooltip" />
+                        <button class="tmpl-sound-selector"
+                                data-gob-locale-title="config.mentions.audio.select.tooltip">
+                            <i class="fas fa-file-audio"></i>
+                        </button>
+                        <button class="tmpl-test-sound"
+                                data-gob-locale-title="config.mentions.audio.play.tooltip">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <input class="tmpl-sound-volume" type="range" min="0" max="100"
+                               data-gob-locale-title="config.mentions.audio.volume.tooltip" />
                     </div>
                     <div>
-                        <label>Time between plays</label>
-                        <input class="tmpl-sound-rest" type="number" min="1" />
+                        <label data-gob-locale-text="config.mentions.audio.interval"
+                               data-gob-locale-title="config.mentions.audio.interval.tooltip"></label>
+                        <input class="tmpl-sound-rest" type="number" min="1"
+                               data-gob-locale-title="config.mentions.audio.interval.tooltip" />
                     </div>
                 </div>
             </div>
@@ -151,7 +172,6 @@
                 }
 
                 const txtSoundPath = entry.find(".tmpl-sound-path")
-                txtSoundPath.attr("title", "The sound file needs to be located within the sound folder of gobchat")
                 txtSoundPath.val(gobconfig.get(configKey + ".soundPath") || "")
                 txtSoundPath.on("change", (event) => {
                     const soundFile = event.target.value
@@ -186,34 +206,34 @@
                 const btnCheckSound = entry.find(".tmpl-test-sound")
                 btnCheckSound.attr("disabled", !isSoundFileValid(txtSoundPath.val()))
                 btnCheckSound.on("click", (event) => {
-                    const soundPath = gobconfig.get(configKey + ".soundPath")
-                    const audio = new Audio("../" + soundPath);
-                    audio.volume = gobconfig.get(configKey + ".volume")
+                    (async () => {
+                        const soundPath = gobconfig.get(configKey + ".soundPath")
+                        const audio = new Audio("../" + soundPath);
+                        audio.volume = gobconfig.get(configKey + ".volume")
 
-                    const playPromise = audio.play()
-                    playPromise.catch(error => {
-                        $("#config_dialog_error_text").empty()
-                        $("#config_dialog_error_text").append($(
-                            `<span>
-                                                        Audiofile can't be played.<br>
-                                                        Either the format is not supported or the file can't be found!<br>
-                                                        Make sure to place any sound files you want to use in gobchat under resources/sounds
-                                                    </span>
-                                                    `
-                        ))
-                        $("#config_dialog_error").dialog({
-                            resizable: false,
-                            height: "auto",
-                            width: 600,
-                            modal: true,
-                            buttons: {
-                                "Ok": function () {
-                                    $(this).dialog("close");
+                        try {
+                            await audio.play()
+                        } catch (e) {
+                            $("#config_dialog_error_text").empty()
+                            $("#config_dialog_error_text").append(
+                                $("<span />").html(
+                                    await goblocale.get("config.mentions.audio.test.error")
+                                )
+                            )
+
+                            $("#config_dialog_error").dialog({
+                                resizable: false,
+                                height: "auto",
+                                width: 600,
+                                modal: true,
+                                buttons: {
+                                    "Ok": function () {
+                                        $(this).dialog("close");
+                                    }
                                 }
-                            }
-                        });
-                    });
-
+                            });
+                        }
+                    })()
                 })
 
                 const sldSoundVolume = entry.find(".tmpl-sound-volume")
@@ -237,7 +257,6 @@
                 }
 
                 const txtSoundRest = entry.find(".tmpl-sound-rest")
-                txtSoundRest.attr("title", "Amount of seconds which need to pass before a sound will be played again.")
                 txtSoundRest.val(gobconfig.get(configKey + ".soundInterval") / 1000)
                 txtSoundRest.on("change", function (event) {
                     gobconfig.set(configKey + ".soundInterval", (event.target.value || 0) * 1000)
@@ -325,7 +344,6 @@
             populateTable()
 
             const btnAddMentionBox = $("#cmentions_add_new_mention1, #cmentions_add_new_mention2")
-            btnAddMentionBox.attr("title", "Adds a new box for mentions")
             btnAddMentionBox.on("click", (event) => addNewEntry())
 
             binding.initialize()
