@@ -69,7 +69,7 @@ var Gobchat = (function (Gobchat) {
         get localeManager() {
             return this._localeManager
         }
-
+        
         //TODO test
         updateStyle() {
             Gobchat.StyleBuilder.updateStyle(this.config, "custome_style_id")

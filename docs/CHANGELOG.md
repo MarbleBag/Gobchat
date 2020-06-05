@@ -11,13 +11,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - `error off` will surpress any gobchat errors until turned back on via `error on` or restart of gobchat
 
 
+
+
 - Language selection dropdown in `Config / app`
   - Parts of gobchat were translated into german
 
 
 - Tons of tooltips
 
-## [1.6.3] - 2020.06.05  
+## [1.6.3] - 2020.06.05
 ### Added
 - Color selection to channels: NPC dialog, animated emote, echo
 
