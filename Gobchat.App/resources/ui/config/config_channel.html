@@ -15,13 +15,13 @@
         <table id="cchannel_channels">
             <thead>
                 <tr>
-                    <th>Channel Name</th>
-                    <th>Visible</th>
-                    <th>Mention</th>
-                    <th>Roleplay</th>
-                    <th>Range Filter</th>
-                    <th>Text Color</th>
-                    <th>Background Color</th>
+                    <th data-gob-locale-text="config.channel.tbl.name"></th>
+                    <th data-gob-locale-text="config.channel.tbl.visible"></th>
+                    <th data-gob-locale-text="config.channel.tbl.mention"></th>
+                    <th data-gob-locale-text="config.channel.tbl.roleplay"></th>
+                    <th data-gob-locale-text="config.channel.tbl.rangefilter"></th>
+                    <th data-gob-locale-text="config.channel.tbl.textcolor"></th>
+                    <th data-gob-locale-text="config.channel.tbl.backgroundcolor"></th>
                 </tr>
             </thead>
             <tbody>
@@ -50,7 +50,7 @@
                 <div>
                     <input class="entry-color-forground" type="text" />
                     <button class="entry-color-forground-reset ui-gc-btn"
-                            title="Resets the field to its default value">
+                            data-gob-locale-title="config.main.resetbutton.tooltip">
                         <i class='fas fa-undo-alt'></i>
                     </button>
                 </div>
@@ -59,7 +59,7 @@
                 <div>
                     <input class="entry-color-background" type="text" />
                     <button class="entry-color-background-reset ui-gc-btn"
-                            title="Resets the field to its default value">
+                            data-gob-locale-title="config.main.resetbutton.tooltip">
                         <i class='fas fa-undo-alt'></i>
                     </button>
                 </div>
@@ -72,43 +72,43 @@
 
         (function (undefined) {
             const channels = [
-                { label: "General", channelEnum: null, styleId: "style.channel.base" },
+                { label: "general", channelEnum: null, styleId: "style.channel.base" },
 
-                { label: "Say", channelEnum: "SAY", styleId: "style.channel.say" },
-                { label: "Emote", channelEnum: "EMOTE", styleId: "style.channel.emote" },
-                { label: "Yell", channelEnum: "YELL", styleId: "style.channel.yell" },
-                { label: "Shout", channelEnum: "SHOUT", styleId: "style.channel.shout" },
-                { label: "Party", channelEnum: "PARTY", styleId: "style.channel.party" },
-                { label: "Guild", channelEnum: "GUILD", styleId: "style.channel.guild" },
-                { label: "Tell send", channelEnum: "TELL_SEND", styleId: "style.channel.tellsend" },
-                { label: "Tell recieve", channelEnum: "TELL_RECIEVE", styleId: "style.channel.tellrecieve" },
-                { label: "Alliance", channelEnum: "ALLIANCE", styleId: "style.channel.alliance" },
-                { label: "NPC dialog", channelEnum: ["NPC_TALK", "NPC_DIALOGUE"], styleId: "style.channel.npc-dialog" },
-                { label: "Animated emote", channelEnum: "ANIMATED_EMOTE", styleId: "style.channel.animated-emote" },
-                { label: "Echo", channelEnum: "ECHO", styleId: "style.channel.echo" },
-                { label: "Random / Roll / Dice", channelEnum: ["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], styleId: "style.channel.roll" },
-                { label: "Error Messages", channelEnum: "ERROR", styleId: "style.channel.error" },
+                { label: "say", channelEnum: "SAY", styleId: "style.channel.say" },
+                { label: "emote", channelEnum: "EMOTE", styleId: "style.channel.emote" },
+                { label: "yell", channelEnum: "YELL", styleId: "style.channel.yell" },
+                { label: "shout", channelEnum: "SHOUT", styleId: "style.channel.shout" },
+                { label: "party", channelEnum: "PARTY", styleId: "style.channel.party" },
+                { label: "guild", channelEnum: "GUILD", styleId: "style.channel.guild" },
+                { label: "tellsend", channelEnum: "TELL_SEND", styleId: "style.channel.tellsend" },
+                { label: "tellrecieve", channelEnum: "TELL_RECIEVE", styleId: "style.channel.tellrecieve" },
+                { label: "alliance", channelEnum: "ALLIANCE", styleId: "style.channel.alliance" },
+                { label: "npc-dialog", channelEnum: ["NPC_TALK", "NPC_DIALOGUE"], styleId: "style.channel.npc-dialog" },
+                { label: "animated-emote", channelEnum: "ANIMATED_EMOTE", styleId: "style.channel.animated-emote" },
+                { label: "echo", channelEnum: "ECHO", styleId: "style.channel.echo" },
+                { label: "roll", channelEnum: ["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], styleId: "style.channel.roll" },
+                { label: "error", channelEnum: "ERROR", styleId: "style.channel.error" },
 
-                { label: "Gobchat Infos", channelEnum: "GOBCHAT_INFO", styleId: "style.channel.gobchatinfo" },
-                { label: "Gobchat Errors", channelEnum: "GOBCHAT_ERROR", styleId: "style.channel.gobchaterror" },
+                { label: "gobinfo", channelEnum: "GOBCHAT_INFO", styleId: "style.channel.gobchatinfo" },
+                { label: "goberror", channelEnum: "GOBCHAT_ERROR", styleId: "style.channel.gobchaterror" },
 
-                { label: "Linkshell 1", channelEnum: "LINKSHELL_1", styleId: "style.channel.linkshell-1" },
-                { label: "Linkshell 2", channelEnum: "LINKSHELL_2", styleId: "style.channel.linkshell-2" },
-                { label: "Linkshell 3", channelEnum: "LINKSHELL_3", styleId: "style.channel.linkshell-3" },
-                { label: "Linkshell 4", channelEnum: "LINKSHELL_4", styleId: "style.channel.linkshell-4" },
-                { label: "Linkshell 5", channelEnum: "LINKSHELL_5", styleId: "style.channel.linkshell-5" },
-                { label: "Linkshell 6", channelEnum: "LINKSHELL_6", styleId: "style.channel.linkshell-6" },
-                { label: "Linkshell 7", channelEnum: "LINKSHELL_7", styleId: "style.channel.linkshell-7" },
-                { label: "Linkshell 8", channelEnum: "LINKSHELL_8", styleId: "style.channel.linkshell-8" },
+                { label: "linkshell1", channelEnum: "LINKSHELL_1", styleId: "style.channel.linkshell-1" },
+                { label: "linkshell2", channelEnum: "LINKSHELL_2", styleId: "style.channel.linkshell-2" },
+                { label: "linkshell3", channelEnum: "LINKSHELL_3", styleId: "style.channel.linkshell-3" },
+                { label: "linkshell4", channelEnum: "LINKSHELL_4", styleId: "style.channel.linkshell-4" },
+                { label: "linkshell5", channelEnum: "LINKSHELL_5", styleId: "style.channel.linkshell-5" },
+                { label: "linkshell6", channelEnum: "LINKSHELL_6", styleId: "style.channel.linkshell-6" },
+                { label: "linkshell7", channelEnum: "LINKSHELL_7", styleId: "style.channel.linkshell-7" },
+                { label: "linkshell8", channelEnum: "LINKSHELL_8", styleId: "style.channel.linkshell-8" },
 
-                { label: "Cross-world Linkshell 1", channelEnum: "WORLD_LINKSHELL_1", styleId: "style.channel.worldlinkshell-1" },
-                { label: "Cross-world Linkshell 2", channelEnum: "WORLD_LINKSHELL_2", styleId: "style.channel.worldlinkshell-2" },
-                { label: "Cross-world Linkshell 3", channelEnum: "WORLD_LINKSHELL_3", styleId: "style.channel.worldlinkshell-3" },
-                { label: "Cross-world Linkshell 4", channelEnum: "WORLD_LINKSHELL_4", styleId: "style.channel.worldlinkshell-4" },
-                { label: "Cross-world Linkshell 5", channelEnum: "WORLD_LINKSHELL_5", styleId: "style.channel.worldlinkshell-5" },
-                { label: "Cross-world Linkshell 6", channelEnum: "WORLD_LINKSHELL_6", styleId: "style.channel.worldlinkshell-6" },
-                { label: "Cross-world Linkshell 7", channelEnum: "WORLD_LINKSHELL_7", styleId: "style.channel.worldlinkshell-7" },
-                { label: "Cross-world Linkshell 8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
+                { label: "worldlinkshell1", channelEnum: "WORLD_LINKSHELL_1", styleId: "style.channel.worldlinkshell-1" },
+                { label: "worldlinkshell2", channelEnum: "WORLD_LINKSHELL_2", styleId: "style.channel.worldlinkshell-2" },
+                { label: "worldlinkshell3", channelEnum: "WORLD_LINKSHELL_3", styleId: "style.channel.worldlinkshell-3" },
+                { label: "worldlinkshell4", channelEnum: "WORLD_LINKSHELL_4", styleId: "style.channel.worldlinkshell-4" },
+                { label: "worldlinkshell5", channelEnum: "WORLD_LINKSHELL_5", styleId: "style.channel.worldlinkshell-5" },
+                { label: "worldlinkshell6", channelEnum: "WORLD_LINKSHELL_6", styleId: "style.channel.worldlinkshell-6" },
+                { label: "worldlinkshell7", channelEnum: "WORLD_LINKSHELL_7", styleId: "style.channel.worldlinkshell-7" },
+                { label: "worldlinkshell8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
             ]
 
             const binding = GobConfigHelper.makeDatabinding(gobconfig)
@@ -128,7 +128,8 @@
                 const clrSelectorBG = rowEntry.find(".entry-color-background")
                 const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
-                lblName.text(entry.label)
+                lblName.attr("data-gob-locale-text", `main.chat.channel.${entry.label}`)
+                lblName.attr("data-gob-locale-title", `main.chat.channel.${entry.label}.tooltip`)
                 GobConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
                 GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
                 GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")

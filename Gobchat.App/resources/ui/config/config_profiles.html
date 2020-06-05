@@ -7,15 +7,21 @@
 </head>
 <body>
     <p>
-        <button id="cprofiles_profile_new"><i class="fas fa-plus"></i> Create new profile</button>
-        <button id="cprofiles_profile_import" title="(Soon (TM)) Imports a profile file"><i class="fas fa-file-import"></i> Import profile</button>
+        <button id="cprofiles_profile_new">
+            <i style="color:green;" class="fas fa-plus"></i>
+            <span data-gob-locale-text="config.profiles.newprofile"></span>
+        </button>
+        <button id="cprofiles_profile_import">
+            <i class="fas fa-file-import"></i>
+            <span data-gob-locale-text="config.profiles.importprofile"></span>
+        </button>
     </p>
 
     <table id="cprofiles_profiles">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Actions</th>
+                <th data-gob-locale-text="config.profiles.profiles.name"></th>
+                <th data-gob-locale-text="config.profiles.profiles.actions"></th>
                 <th></th>
             </tr>
         </thead>
@@ -33,25 +39,43 @@
                 <input id="profile_name" type="text" />
             </td>
             <td>
-                <button id="profile_activate" title="Activate"><i class="fas fa-check-square"></i> Activate</button>
+                <button id="profile_activate">
+                    <i class="fas fa-check-square"></i>
+                    <span data-gob-locale-text="config.profiles.profile.activate"></span>
+                </button>
             </td>
             <td>
                 <table>
                     <tr>
                         <td>
-                            <button id="profile_export" type="button" title="(Soon (TM)) Exports a profile as a file"><i class="fas fa-file-export"></i> Export</button>
+                            <button id="profile_export" type="button" data-gob-locale-title="config.profiles.profile.export.tooltip">
+                                <i class="fas fa-file-export"></i>
+                                <span data-gob-locale-text="config.profiles.profile.export"></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="profile_clone" title="Creates a copy of this profile"><i class="fas fa-copy"></i> Clone</button>
+                            <button id="profile_clone" data-gob-locale-title="config.profiles.profile.clone.tooltip">
+                                <i class="fas fa-copy"></i>
+                                <span data-gob-locale-text="config.profiles.profile.clone"></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="profile_copy" title="Overwrites this profile with another profile"><i class="fas fa-clone"></i> Copy from</button>
+                            <button id="profile_copy" data-gob-locale-title="config.profiles.profile.copy.tooltip">
+                                <i class="fas fa-clone"></i>
+                                <span data-gob-locale-text="config.profiles.profile.copy"></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="profile_default" title="Restore defaults for this profile"><i class="fas fa-undo-alt"></i> Reset</button>
+                            <button id="profile_default" data-gob-locale-title="config.profiles.profile.reset.tooltip">
+                                <i class="fas fa-undo-alt"></i>
+                                <span data-gob-locale-text="config.profiles.profile.reset"></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="profile_delete" title="Delete this profile"><i class="fas fa-eraser"></i> Delete</button>
+                            <button id="profile_delete" data-gob-locale-title="config.profiles.profile.delete.tooltip">
+                                <i class="fas fa-eraser"></i>
+                                <span data-gob-locale-text="config.profiles.profile.delete"></span>
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -62,7 +86,7 @@
     <script type="text/javascript">
         'use strict';
 
-        (function (undefined) {
+        (async function (undefined) {
 
             $("#cprofiles_copyprofiledialog").hide();
 
@@ -111,13 +135,12 @@
 
                     if (newProfile === undefined || newProfile === null || newProfile.length == 0) {
                         $("#config_dialog_error_text").empty()
-                        $("#config_dialog_error_text").append($(
-                            `<span>
-                                                                                Profile can't be loaded.<br>
-                                                                                Either the format is not supported or the file can't be found/read!<
-                                                                            </span>
-                                                                            `
-                        ))
+                        $("#config_dialog_error_text").append(
+                            $("<span />").html(
+                                await goblocale.get("config.profiles.import.error")
+                            )
+                        )
+
                         $("#config_dialog_error").dialog({
                             resizable: false,
                             height: "auto",
@@ -137,14 +160,10 @@
                 })()
             })
 
-            // gobconfig.addEventListener("profile.add", (event) => { })
-            // gobconfig.addEventListener("profile.remove", (event) => { })
-            //  gobconfig.addEventListener("profile.changed", (event) => { })
-
             const profileTable = $("#cprofiles_profiles > tbody")
             const template = $("#cprofiles_template_profiles_entry")
 
-            function populateProfileTable() {
+            async function populateProfileTable() {
                 profileTable.empty()
                 gobconfig.profiles.forEach((profileId) => {
                     const profile = gobconfig.getProfile(profileId)
@@ -192,9 +211,12 @@
 
                     const btnDefaultProfile = rowElement.find("#profile_default")
                     btnDefaultProfile.on("click", function (event) {
-                        if (window.confirm("Restore all settings for this profile to default?\nEverything will be deleted!\nPress save afterwards.")) {
-                            profile.restoreDefaultConfig()
-                        }
+                        (async () => {
+                            const msg = await goblocale.get("config.profiles.reset.confirmation")
+                            if (window.confirm(msg)) {
+                                profile.restoreDefaultConfig()
+                            }
+                        })()
                     })
 
                     const btnDeleteProfile = rowElement.find("#profile_delete")
@@ -204,12 +226,15 @@
                     if (gobconfig.profiles.length <= 1)
                         btnDeleteProfile.attr("disabled", true)
                 })
+                await goblocale.updateElement(profileTable)
             }
 
             gobconfig.addProfileEventListener((event) => {
-                populateProfileTable()
+                (async () => {
+                    await populateProfileTable()
+                })()
             })
-            populateProfileTable()
+            await populateProfileTable()
 
             gobconfig.addPropertyEventListener("profile.name", (event) => {
                 const profile = gobconfig.getProfile(event.source)

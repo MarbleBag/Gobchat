@@ -2,10 +2,22 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.6.3] - 2020.06.05
+## [1.7.0] - Unreleased
 ### Added
-- color selection to channels: NPC dialog, animated emote, echo
+- Color selection to channels: NPC dialog, animated emote, echo
 
+- Chat commands: `info off`, `info on`
+  - `info off` will surpress any gobchat infos until turned back on via `info on` or restart of gobchat
+
+- Chat commands: `error off`, `error on`
+  - `error off` will surpress any gobchat errors until turned back on via `error on` or restart of gobchat
+
+- Language selection dropdown in `Config / app`
+  - Parts of gobchat were translated into german
+
+- Tons of tooltips
+
+## [1.6.3] - 2020.06.05  
 ### Fixed
 - groups
   - color reset buttons didn't work
@@ -15,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - hotkey: hide & show
   - Previously set hotkey could become stuck on profile reset
 
-  
+
 - profiles
   - A newly created profile could not be immediately activated without pressing save in between
   - Profiles which were created and deleted in the same session were not correctly deleted from disk and were loaded again at the next start
