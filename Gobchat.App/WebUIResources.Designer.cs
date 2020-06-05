@@ -61,11 +61,650 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collect information about character locations.
+        /// </summary>
+        internal static string config_app_ckb_actor {
+            get {
+                return ResourceManager.GetString("config.app.ckb.actor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV..
+        /// </summary>
+        internal static string config_app_ckb_actor_label {
+            get {
+                return ResourceManager.GetString("config.app.ckb.actor.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work..
+        /// </summary>
+        internal static string config_app_ckb_actor_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.actor.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide when FF is minimized.
+        /// </summary>
+        internal static string config_app_ckb_autohide {
+            get {
+                return ResourceManager.GetString("config.app.ckb.autohide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized.
+        /// </summary>
+        internal static string config_app_ckb_autohide_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.autohide.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow beta updates.
+        /// </summary>
+        internal static string config_app_ckb_betaupdate {
+            get {
+                return ResourceManager.GetString("config.app.ckb.betaupdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_ckb_betaupdate_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.betaupdate.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make a chat log.
+        /// </summary>
+        internal static string config_app_ckb_chatlog {
+            get {
+                return ResourceManager.GetString("config.app.ckb.chatlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gobchat creates a chatlog, which will be saved under &apos;AppData\Roaming\Gobchat\log&apos;.
+        /// </summary>
+        internal static string config_app_ckb_chatlog_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.chatlog.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Autodetect emotes in say channel.
+        /// </summary>
+        internal static string config_app_ckb_emoteinsay {
+            get {
+                return ResourceManager.GetString("config.app.ckb.emoteinsay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote.
+        /// </summary>
+        internal static string config_app_ckb_emoteinsay_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.emoteinsay.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude mentions.
+        /// </summary>
+        internal static string config_app_ckb_mentions {
+            get {
+                return ResourceManager.GetString("config.app.ckb.mentions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_ckb_mentions_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.mentions.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range filter.
+        /// </summary>
+        internal static string config_app_ckb_rangefilter {
+            get {
+                return ResourceManager.GetString("config.app.ckb.rangefilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_ckb_rangefilter_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.rangefilter.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show timestamp.
+        /// </summary>
+        internal static string config_app_ckb_showtime {
+            get {
+                return ResourceManager.GetString("config.app.ckb.showtime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_ckb_showtime_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.showtime.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates on start.
+        /// </summary>
+        internal static string config_app_ckb_update {
+            get {
+                return ResourceManager.GetString("config.app.ckb.update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_ckb_update_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.update.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fonts.
+        /// </summary>
+        internal static string config_app_fonts_label {
+            get {
+                return ResourceManager.GetString("config.app.fonts.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picks the first available font, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
+        /// </summary>
+        internal static string config_app_fonts_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.fonts.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        internal static string config_app_fontsize_label {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large.
+        /// </summary>
+        internal static string config_app_fontsize_large {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        internal static string config_app_fontsize_medium {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.medium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        internal static string config_app_fontsize_small {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_fontsize_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide &amp;amp; show Gobchat.
+        /// </summary>
+        internal static string config_app_hotkeys_hideshow {
+            get {
+                return ResourceManager.GetString("config.app.hotkeys.hideshow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hides or shows Gobchat on keypress.
+        /// </summary>
+        internal static string config_app_hotkeys_hideshow_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.hotkeys.hideshow.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkeys.
+        /// </summary>
+        internal static string config_app_hotkeys_label {
+            get {
+                return ResourceManager.GetString("config.app.hotkeys.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Character Update Interval (MS).
+        /// </summary>
+        internal static string config_app_intervals_actor {
+            get {
+                return ResourceManager.GetString("config.app.intervals.actor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        /// </summary>
+        internal static string config_app_intervals_actor_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.intervals.actor.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat Update Interval (MS).
+        /// </summary>
+        internal static string config_app_intervals_chat {
+            get {
+                return ResourceManager.GetString("config.app.intervals.chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        /// </summary>
+        internal static string config_app_intervals_chat_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.intervals.chat.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         internal static string config_app_language {
             get {
                 return ResourceManager.GetString("config.app.language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        internal static string config_app_position_height {
+            get {
+                return ResourceManager.GetString("config.app.position.height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat position and size.
+        /// </summary>
+        internal static string config_app_position_lable {
+            get {
+                return ResourceManager.GetString("config.app.position.lable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values won&apos;t be updated as long as the config is open.
+        /// </summary>
+        internal static string config_app_position_sublable {
+            get {
+                return ResourceManager.GetString("config.app.position.sublable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        internal static string config_app_position_width {
+            get {
+                return ResourceManager.GetString("config.app.position.width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X.
+        /// </summary>
+        internal static string config_app_position_x {
+            get {
+                return ResourceManager.GetString("config.app.position.x", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        internal static string config_app_position_y {
+            get {
+                return ResourceManager.GetString("config.app.position.y", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut off (Yalm).
+        /// </summary>
+        internal static string config_app_rangefilter_cutoff {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.cutoff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_rangefilter_cutoff_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.cutoff.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fade out (Yalm).
+        /// </summary>
+        internal static string config_app_rangefilter_fadeout {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.fadeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_rangefilter_fadeout_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.fadeout.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range filter.
+        /// </summary>
+        internal static string config_app_rangefilter_label {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transparency End (%).
+        /// </summary>
+        internal static string config_app_rangefilter_transparencyend {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.transparencyend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_rangefilter_transparencyend_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.transparencyend.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transparency Start (%).
+        /// </summary>
+        internal static string config_app_rangefilter_transparencystart {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.transparencystart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_rangefilter_transparencystart_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.rangefilter.transparencystart.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Border for current result.
+        /// </summary>
+        internal static string config_app_search_border {
+            get {
+                return ResourceManager.GetString("config.app.search.border", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_search_border_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.search.border.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string config_app_search_label {
+            get {
+                return ResourceManager.GetString("config.app.search.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search results background.
+        /// </summary>
+        internal static string config_app_search_results {
+            get {
+                return ResourceManager.GetString("config.app.search.results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_search_results_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.search.results.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Color.
+        /// </summary>
+        internal static string config_channel_tbl_backgroundcolor {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.backgroundcolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mention.
+        /// </summary>
+        internal static string config_channel_tbl_mention {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel Name.
+        /// </summary>
+        internal static string config_channel_tbl_name {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range Filter.
+        /// </summary>
+        internal static string config_channel_tbl_rangefilter {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.rangefilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roleplay.
+        /// </summary>
+        internal static string config_channel_tbl_roleplay {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.roleplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Color.
+        /// </summary>
+        internal static string config_channel_tbl_textcolor {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.textcolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible.
+        /// </summary>
+        internal static string config_channel_tbl_visible {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string config_groups_group_active {
+            get {
+                return ResourceManager.GetString("config.groups.group.active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletes group.
+        /// </summary>
+        internal static string config_groups_group_delete_tooltip {
+            get {
+                return ResourceManager.GetString("config.groups.group.delete.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message Background.
+        /// </summary>
+        internal static string config_groups_group_message_background {
+            get {
+                return ResourceManager.GetString("config.groups.group.message.background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group name.
+        /// </summary>
+        internal static string config_groups_group_name {
+            get {
+                return ResourceManager.GetString("config.groups.group.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string config_groups_group_naming {
+            get {
+                return ResourceManager.GetString("config.groups.group.naming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sender Background.
+        /// </summary>
+        internal static string config_groups_group_sender_background {
+            get {
+                return ResourceManager.GetString("config.groups.group.sender.background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sender Text.
+        /// </summary>
+        internal static string config_groups_group_sender_forground {
+            get {
+                return ResourceManager.GetString("config.groups.group.sender.forground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players belonging to this group.
+        /// </summary>
+        internal static string config_groups_group_trigger {
+            get {
+                return ResourceManager.GetString("config.groups.group.trigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name..
+        /// </summary>
+        internal static string config_groups_group_trigger_tooltip {
+            get {
+                return ResourceManager.GetString("config.groups.group.trigger.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New group.
+        /// </summary>
+        internal static string config_groups_newgroup {
+            get {
+                return ResourceManager.GetString("config.groups.newgroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletes this entry.
+        /// </summary>
+        internal static string config_main_deletebutton_tooltip {
+            get {
+                return ResourceManager.GetString("config.main.deletebutton.tooltip", resourceCulture);
             }
         }
         
@@ -169,11 +808,880 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resets its value to its default.
+        /// </summary>
+        internal static string config_main_resetbutton_tooltip {
+            get {
+                return ResourceManager.GetString("config.main.resetbutton.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time between plays.
+        /// </summary>
+        internal static string config_mentions_audio_interval {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again..
+        /// </summary>
+        internal static string config_mentions_audio_interval_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.interval.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The audio file needs to be located within the sound folder of gobchat.
+        /// </summary>
+        internal static string config_mentions_audio_path_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.path.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play audio.
+        /// </summary>
+        internal static string config_mentions_audio_play {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play audio file.
+        /// </summary>
+        internal static string config_mentions_audio_play_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.play.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a file.
+        /// </summary>
+        internal static string config_mentions_audio_select_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.select.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audiofile can&apos;t be played.&lt;br&gt;
+        ///Either the format is not supported or the file can&apos;t be found!&lt;br&gt;
+        ///Make sure to place any sound files you want to use in gobchat under resources/sounds.
+        /// </summary>
+        internal static string config_mentions_audio_test_error {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.test.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio volume.
+        /// </summary>
+        internal static string config_mentions_audio_volume_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.volume.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mentions.
+        /// </summary>
+        internal static string config_mentions_mentions_label {
+            get {
+                return ResourceManager.GetString("config.mentions.mentions.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds a new box for mentions.
+        /// </summary>
+        internal static string config_mentions_newmention_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.newmention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
         /// </summary>
         internal static string config_missing {
             get {
                 return ResourceManager.GetString("config.missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
+        ///Either the format is not supported or the file can&apos;t be found/read!.
+        /// </summary>
+        internal static string config_profiles_import_error {
+            get {
+                return ResourceManager.GetString("config.profiles.import.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import profile.
+        /// </summary>
+        internal static string config_profiles_importprofile {
+            get {
+                return ResourceManager.GetString("config.profiles.importprofile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new profile.
+        /// </summary>
+        internal static string config_profiles_newprofile {
+            get {
+                return ResourceManager.GetString("config.profiles.newprofile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        internal static string config_profiles_profile_activate {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Makes this the active profile.
+        /// </summary>
+        internal static string config_profiles_profile_activate_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.activate.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clone.
+        /// </summary>
+        internal static string config_profiles_profile_clone {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.clone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a copy of this profile.
+        /// </summary>
+        internal static string config_profiles_profile_clone_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.clone.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy from.
+        /// </summary>
+        internal static string config_profiles_profile_copy {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrites this profile with another profile.
+        /// </summary>
+        internal static string config_profiles_profile_copy_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.copy.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string config_profiles_profile_delete {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this profile.
+        /// </summary>
+        internal static string config_profiles_profile_delete_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.delete.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        internal static string config_profiles_profile_export {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_profiles_profile_export_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.export.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string config_profiles_profile_reset {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore defaults for this profile.
+        /// </summary>
+        internal static string config_profiles_profile_reset_tooltip {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.reset.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        internal static string config_profiles_profiles_actions {
+            get {
+                return ResourceManager.GetString("config.profiles.profiles.actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string config_profiles_profiles_name {
+            get {
+                return ResourceManager.GetString("config.profiles.profiles.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore all settings for this profile to default?
+        ///Everything will be deleted!
+        ///Press save afterwards..
+        /// </summary>
+        internal static string config_profiles_reset_confirmation {
+            get {
+                return ResourceManager.GetString("config.profiles.reset.confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alliance.
+        /// </summary>
+        internal static string main_chat_channel_alliance {
+            get {
+                return ResourceManager.GetString("main.chat.channel.alliance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_alliance_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.alliance.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Animated emote.
+        /// </summary>
+        internal static string main_chat_channel_animated_emote {
+            get {
+                return ResourceManager.GetString("main.chat.channel.animated-emote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_animated_emote_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.animated-emote.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Echo.
+        /// </summary>
+        internal static string main_chat_channel_echo {
+            get {
+                return ResourceManager.GetString("main.chat.channel.echo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /e.
+        /// </summary>
+        internal static string main_chat_channel_echo_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.echo.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emote.
+        /// </summary>
+        internal static string main_chat_channel_emote {
+            get {
+                return ResourceManager.GetString("main.chat.channel.emote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /em.
+        /// </summary>
+        internal static string main_chat_channel_emote_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.emote.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Messages.
+        /// </summary>
+        internal static string main_chat_channel_error {
+            get {
+                return ResourceManager.GetString("main.chat.channel.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_error_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.error.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string main_chat_channel_general {
+            get {
+                return ResourceManager.GetString("main.chat.channel.general", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_general_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.general.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gobchat Errors.
+        /// </summary>
+        internal static string main_chat_channel_goberror {
+            get {
+                return ResourceManager.GetString("main.chat.channel.goberror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_goberror_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.goberror.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gobchat Infos.
+        /// </summary>
+        internal static string main_chat_channel_gobinfo {
+            get {
+                return ResourceManager.GetString("main.chat.channel.gobinfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_gobinfo_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.gobinfo.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free Company.
+        /// </summary>
+        internal static string main_chat_channel_guild {
+            get {
+                return ResourceManager.GetString("main.chat.channel.guild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /fc.
+        /// </summary>
+        internal static string main_chat_channel_guild_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.guild.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 1.
+        /// </summary>
+        internal static string main_chat_channel_linkshell1 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l1.
+        /// </summary>
+        internal static string main_chat_channel_linkshell1_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell1.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 2.
+        /// </summary>
+        internal static string main_chat_channel_linkshell2 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l2.
+        /// </summary>
+        internal static string main_chat_channel_linkshell2_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell2.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 3.
+        /// </summary>
+        internal static string main_chat_channel_linkshell3 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l3.
+        /// </summary>
+        internal static string main_chat_channel_linkshell3_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell3.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 4.
+        /// </summary>
+        internal static string main_chat_channel_linkshell4 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l4.
+        /// </summary>
+        internal static string main_chat_channel_linkshell4_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell4.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 5.
+        /// </summary>
+        internal static string main_chat_channel_linkshell5 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l5.
+        /// </summary>
+        internal static string main_chat_channel_linkshell5_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell5.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 6.
+        /// </summary>
+        internal static string main_chat_channel_linkshell6 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l6.
+        /// </summary>
+        internal static string main_chat_channel_linkshell6_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell6.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 7.
+        /// </summary>
+        internal static string main_chat_channel_linkshell7 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l7.
+        /// </summary>
+        internal static string main_chat_channel_linkshell7_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell7.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linkshell 8.
+        /// </summary>
+        internal static string main_chat_channel_linkshell8 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /l8.
+        /// </summary>
+        internal static string main_chat_channel_linkshell8_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell8.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NPC dialog.
+        /// </summary>
+        internal static string main_chat_channel_npc_dialog {
+            get {
+                return ResourceManager.GetString("main.chat.channel.npc-dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Party.
+        /// </summary>
+        internal static string main_chat_channel_party {
+            get {
+                return ResourceManager.GetString("main.chat.channel.party", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /p.
+        /// </summary>
+        internal static string main_chat_channel_party_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.party.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Random / Roll / Dice.
+        /// </summary>
+        internal static string main_chat_channel_roll {
+            get {
+                return ResourceManager.GetString("main.chat.channel.roll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /random, /dice.
+        /// </summary>
+        internal static string main_chat_channel_roll_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.roll.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Say.
+        /// </summary>
+        internal static string main_chat_channel_say {
+            get {
+                return ResourceManager.GetString("main.chat.channel.say", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /s.
+        /// </summary>
+        internal static string main_chat_channel_say_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.say.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shout.
+        /// </summary>
+        internal static string main_chat_channel_shout {
+            get {
+                return ResourceManager.GetString("main.chat.channel.shout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_shout_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.shout.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tell recieve.
+        /// </summary>
+        internal static string main_chat_channel_tellrecieve {
+            get {
+                return ResourceManager.GetString("main.chat.channel.tellrecieve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_tellrecieve_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.tellrecieve.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tell send.
+        /// </summary>
+        internal static string main_chat_channel_tellsend {
+            get {
+                return ResourceManager.GetString("main.chat.channel.tellsend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_tellsend_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.tellsend.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 1.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell1 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl1.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell1_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell1.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 2.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell2 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl2.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell2_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell2.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 3.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell3 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl3.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell3_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell3.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 4.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell4 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl4.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell4_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell4.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 5.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell5 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl5.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell5_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell5.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 6.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell6 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl6.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell6_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell6.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 7.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell7 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl7.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell7_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell7.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 8.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell8 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl8.
+        /// </summary>
+        internal static string main_chat_channel_worldlinkshell8_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.worldlinkshell8.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yell.
+        /// </summary>
+        internal static string main_chat_channel_yell {
+            get {
+                return ResourceManager.GetString("main.chat.channel.yell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /y.
+        /// </summary>
+        internal static string main_chat_channel_yell_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.yell.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available commands: {0}.
+        /// </summary>
+        internal static string main_cmdmanager_availableCmds {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.availableCmds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
+        /// </summary>
+        internal static string main_label_missing {
+            get {
+                return ResourceManager.GetString("main.label.missing", resourceCulture);
             }
         }
     }

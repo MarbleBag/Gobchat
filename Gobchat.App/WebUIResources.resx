@@ -117,8 +117,221 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="config.app.ckb.actor" xml:space="preserve">
+    <value>Collect information about character locations</value>
+  </data>
+  <data name="config.app.ckb.actor.label" xml:space="preserve">
+    <value>Character locations are not available. Unable to retrieve information from FFXIV.</value>
+  </data>
+  <data name="config.app.ckb.actor.tooltip" xml:space="preserve">
+    <value>If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work.</value>
+  </data>
+  <data name="config.app.ckb.autohide" xml:space="preserve">
+    <value>Hide when FF is minimized</value>
+  </data>
+  <data name="config.app.ckb.autohide.tooltip" xml:space="preserve">
+    <value>Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized</value>
+  </data>
+  <data name="config.app.ckb.betaupdate" xml:space="preserve">
+    <value>Allow beta updates</value>
+  </data>
+  <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.ckb.chatlog" xml:space="preserve">
+    <value>Make a chat log</value>
+  </data>
+  <data name="config.app.ckb.chatlog.tooltip" xml:space="preserve">
+    <value>Gobchat creates a chatlog, which will be saved under 'AppData\Roaming\Gobchat\log'</value>
+  </data>
+  <data name="config.app.ckb.emoteinsay" xml:space="preserve">
+    <value>Autodetect emotes in say channel</value>
+  </data>
+  <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
+    <value>When direct speech is marked, everything else will be automatically flagged as emote</value>
+  </data>
+  <data name="config.app.ckb.mentions" xml:space="preserve">
+    <value>Exclude mentions</value>
+  </data>
+  <data name="config.app.ckb.mentions.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.ckb.rangefilter" xml:space="preserve">
+    <value>Range filter</value>
+  </data>
+  <data name="config.app.ckb.rangefilter.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.ckb.showtime" xml:space="preserve">
+    <value>Show timestamp</value>
+  </data>
+  <data name="config.app.ckb.showtime.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.ckb.update" xml:space="preserve">
+    <value>Check for updates on start</value>
+  </data>
+  <data name="config.app.ckb.update.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.fonts.label" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="config.app.fonts.tooltip" xml:space="preserve">
+    <value>Picks the first available font, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.</value>
+  </data>
+  <data name="config.app.fontsize.label" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="config.app.fontsize.large" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="config.app.fontsize.medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="config.app.fontsize.small" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="config.app.fontsize.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.hotkeys.hideshow" xml:space="preserve">
+    <value>Hide &amp;amp; show Gobchat</value>
+  </data>
+  <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
+    <value>Hides or shows Gobchat on keypress</value>
+  </data>
+  <data name="config.app.hotkeys.label" xml:space="preserve">
+    <value>Hotkeys</value>
+  </data>
+  <data name="config.app.intervals.actor" xml:space="preserve">
+    <value>Character Update Interval (MS)</value>
+  </data>
+  <data name="config.app.intervals.actor.tooltip" xml:space="preserve">
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
+  </data>
+  <data name="config.app.intervals.chat" xml:space="preserve">
+    <value>Chat Update Interval (MS)</value>
+  </data>
+  <data name="config.app.intervals.chat.tooltip" xml:space="preserve">
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
+  </data>
   <data name="config.app.language" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="config.app.position.height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="config.app.position.lable" xml:space="preserve">
+    <value>Chat position and size</value>
+  </data>
+  <data name="config.app.position.sublable" xml:space="preserve">
+    <value>Values won't be updated as long as the config is open</value>
+  </data>
+  <data name="config.app.position.width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="config.app.position.x" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="config.app.position.y" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="config.app.rangefilter.cutoff" xml:space="preserve">
+    <value>Cut off (Yalm)</value>
+  </data>
+  <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.rangefilter.fadeout" xml:space="preserve">
+    <value>Fade out (Yalm)</value>
+  </data>
+  <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.rangefilter.label" xml:space="preserve">
+    <value>Range filter</value>
+  </data>
+  <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
+    <value>Transparency End (%)</value>
+  </data>
+  <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
+    <value>Transparency Start (%)</value>
+  </data>
+  <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.search.border" xml:space="preserve">
+    <value>Border for current result</value>
+  </data>
+  <data name="config.app.search.border.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.search.label" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="config.app.search.results" xml:space="preserve">
+    <value>Search results background</value>
+  </data>
+  <data name="config.app.search.results.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="config.channel.tbl.mention" xml:space="preserve">
+    <value>Mention</value>
+  </data>
+  <data name="config.channel.tbl.name" xml:space="preserve">
+    <value>Channel Name</value>
+  </data>
+  <data name="config.channel.tbl.rangefilter" xml:space="preserve">
+    <value>Range Filter</value>
+  </data>
+  <data name="config.channel.tbl.roleplay" xml:space="preserve">
+    <value>Roleplay</value>
+  </data>
+  <data name="config.channel.tbl.textcolor" xml:space="preserve">
+    <value>Text Color</value>
+  </data>
+  <data name="config.channel.tbl.visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="config.groups.group.active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="config.groups.group.delete.tooltip" xml:space="preserve">
+    <value>Deletes group</value>
+  </data>
+  <data name="config.groups.group.message.background" xml:space="preserve">
+    <value>Message Background</value>
+  </data>
+  <data name="config.groups.group.name" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="config.groups.group.naming" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="config.groups.group.sender.background" xml:space="preserve">
+    <value>Sender Background</value>
+  </data>
+  <data name="config.groups.group.sender.forground" xml:space="preserve">
+    <value>Sender Text</value>
+  </data>
+  <data name="config.groups.group.trigger" xml:space="preserve">
+    <value>Players belonging to this group</value>
+  </data>
+  <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
+    <value>Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name.</value>
+  </data>
+  <data name="config.groups.newgroup" xml:space="preserve">
+    <value>New group</value>
+  </data>
+  <data name="config.main.deletebutton.tooltip" xml:space="preserve">
+    <value>Deletes this entry</value>
   </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>About</value>
@@ -153,8 +366,302 @@
   <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
     <value>Set your active profile.</value>
   </data>
+  <data name="config.main.resetbutton.tooltip" xml:space="preserve">
+    <value>Resets its value to its default</value>
+  </data>
+  <data name="config.mentions.audio.interval" xml:space="preserve">
+    <value>Time between plays</value>
+  </data>
+  <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
+    <value>Amount of seconds which need to pass before a sound will be played again.</value>
+  </data>
+  <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
+    <value>The audio file needs to be located within the sound folder of gobchat</value>
+  </data>
+  <data name="config.mentions.audio.play" xml:space="preserve">
+    <value>Play audio</value>
+  </data>
+  <data name="config.mentions.audio.play.tooltip" xml:space="preserve">
+    <value>Play audio file</value>
+  </data>
+  <data name="config.mentions.audio.select.tooltip" xml:space="preserve">
+    <value>Select a file</value>
+  </data>
+  <data name="config.mentions.audio.test.error" xml:space="preserve">
+    <value>Audiofile can't be played.&lt;br&gt;
+Either the format is not supported or the file can't be found!&lt;br&gt;
+Make sure to place any sound files you want to use in gobchat under resources/sounds</value>
+  </data>
+  <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
+    <value>Audio volume</value>
+  </data>
+  <data name="config.mentions.mentions.label" xml:space="preserve">
+    <value>Mentions</value>
+  </data>
+  <data name="config.mentions.newmention.tooltip" xml:space="preserve">
+    <value>Adds a new box for mentions</value>
+  </data>
   <data name="config.missing" xml:space="preserve">
     <value>Missing '{0}'</value>
     <comment>0: resource id</comment>
+  </data>
+  <data name="config.profiles.import.error" xml:space="preserve">
+    <value>Profile can't be loaded.&lt;br&gt;
+Either the format is not supported or the file can't be found/read!</value>
+  </data>
+  <data name="config.profiles.importprofile" xml:space="preserve">
+    <value>Import profile</value>
+  </data>
+  <data name="config.profiles.newprofile" xml:space="preserve">
+    <value>Create new profile</value>
+  </data>
+  <data name="config.profiles.profile.activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
+    <value>Makes this the active profile</value>
+  </data>
+  <data name="config.profiles.profile.clone" xml:space="preserve">
+    <value>Clone</value>
+  </data>
+  <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
+    <value>Creates a copy of this profile</value>
+  </data>
+  <data name="config.profiles.profile.copy" xml:space="preserve">
+    <value>Copy from</value>
+  </data>
+  <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
+    <value>Overwrites this profile with another profile</value>
+  </data>
+  <data name="config.profiles.profile.delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
+    <value>Delete this profile</value>
+  </data>
+  <data name="config.profiles.profile.export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="config.profiles.profile.export.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.profiles.profile.reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
+    <value>Restore defaults for this profile</value>
+  </data>
+  <data name="config.profiles.profiles.actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="config.profiles.profiles.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.profiles.reset.confirmation" xml:space="preserve">
+    <value>Restore all settings for this profile to default?
+Everything will be deleted!
+Press save afterwards.</value>
+  </data>
+  <data name="main.chat.channel.alliance" xml:space="preserve">
+    <value>Alliance</value>
+  </data>
+  <data name="main.chat.channel.alliance.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.animated-emote" xml:space="preserve">
+    <value>Animated emote</value>
+  </data>
+  <data name="main.chat.channel.animated-emote.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.echo" xml:space="preserve">
+    <value>Echo</value>
+  </data>
+  <data name="main.chat.channel.echo.tooltip" xml:space="preserve">
+    <value>/e</value>
+  </data>
+  <data name="main.chat.channel.emote" xml:space="preserve">
+    <value>Emote</value>
+  </data>
+  <data name="main.chat.channel.emote.tooltip" xml:space="preserve">
+    <value>/em</value>
+  </data>
+  <data name="main.chat.channel.error" xml:space="preserve">
+    <value>Error Messages</value>
+  </data>
+  <data name="main.chat.channel.error.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="main.chat.channel.general.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.goberror" xml:space="preserve">
+    <value>Gobchat Errors</value>
+  </data>
+  <data name="main.chat.channel.goberror.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.gobinfo" xml:space="preserve">
+    <value>Gobchat Infos</value>
+  </data>
+  <data name="main.chat.channel.gobinfo.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.guild" xml:space="preserve">
+    <value>Free Company</value>
+  </data>
+  <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
+    <value>/fc</value>
+  </data>
+  <data name="main.chat.channel.linkshell1" xml:space="preserve">
+    <value>Linkshell 1</value>
+  </data>
+  <data name="main.chat.channel.linkshell1.tooltip" xml:space="preserve">
+    <value>/l1</value>
+  </data>
+  <data name="main.chat.channel.linkshell2" xml:space="preserve">
+    <value>Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.linkshell2.tooltip" xml:space="preserve">
+    <value>/l2</value>
+  </data>
+  <data name="main.chat.channel.linkshell3" xml:space="preserve">
+    <value>Linkshell 3</value>
+  </data>
+  <data name="main.chat.channel.linkshell3.tooltip" xml:space="preserve">
+    <value>/l3</value>
+  </data>
+  <data name="main.chat.channel.linkshell4" xml:space="preserve">
+    <value>Linkshell 4</value>
+  </data>
+  <data name="main.chat.channel.linkshell4.tooltip" xml:space="preserve">
+    <value>/l4</value>
+  </data>
+  <data name="main.chat.channel.linkshell5" xml:space="preserve">
+    <value>Linkshell 5</value>
+  </data>
+  <data name="main.chat.channel.linkshell5.tooltip" xml:space="preserve">
+    <value>/l5</value>
+  </data>
+  <data name="main.chat.channel.linkshell6" xml:space="preserve">
+    <value>Linkshell 6</value>
+  </data>
+  <data name="main.chat.channel.linkshell6.tooltip" xml:space="preserve">
+    <value>/l6</value>
+  </data>
+  <data name="main.chat.channel.linkshell7" xml:space="preserve">
+    <value>Linkshell 7</value>
+  </data>
+  <data name="main.chat.channel.linkshell7.tooltip" xml:space="preserve">
+    <value>/l7</value>
+  </data>
+  <data name="main.chat.channel.linkshell8" xml:space="preserve">
+    <value>Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.linkshell8.tooltip" xml:space="preserve">
+    <value>/l8</value>
+  </data>
+  <data name="main.chat.channel.npc-dialog" xml:space="preserve">
+    <value>NPC dialog</value>
+  </data>
+  <data name="main.chat.channel.party" xml:space="preserve">
+    <value>Party</value>
+  </data>
+  <data name="main.chat.channel.party.tooltip" xml:space="preserve">
+    <value>/p</value>
+  </data>
+  <data name="main.chat.channel.roll" xml:space="preserve">
+    <value>Random / Roll / Dice</value>
+  </data>
+  <data name="main.chat.channel.roll.tooltip" xml:space="preserve">
+    <value>/random, /dice</value>
+  </data>
+  <data name="main.chat.channel.say" xml:space="preserve">
+    <value>Say</value>
+  </data>
+  <data name="main.chat.channel.say.tooltip" xml:space="preserve">
+    <value>/s</value>
+  </data>
+  <data name="main.chat.channel.shout" xml:space="preserve">
+    <value>Shout</value>
+  </data>
+  <data name="main.chat.channel.shout.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.tellrecieve" xml:space="preserve">
+    <value>Tell recieve</value>
+  </data>
+  <data name="main.chat.channel.tellrecieve.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.tellsend" xml:space="preserve">
+    <value>Tell send</value>
+  </data>
+  <data name="main.chat.channel.tellsend.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.channel.worldlinkshell1" xml:space="preserve">
+    <value>Cross-world Linkshell 1</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell1.tooltip" xml:space="preserve">
+    <value>/cwl1</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell2" xml:space="preserve">
+    <value>Cross-world Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell2.tooltip" xml:space="preserve">
+    <value>/cwl2</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell3" xml:space="preserve">
+    <value>Cross-world Linkshell 3</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell3.tooltip" xml:space="preserve">
+    <value>/cwl3</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell4" xml:space="preserve">
+    <value>Cross-world Linkshell 4</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell4.tooltip" xml:space="preserve">
+    <value>/cwl4</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell5" xml:space="preserve">
+    <value>Cross-world Linkshell 5</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell5.tooltip" xml:space="preserve">
+    <value>/cwl5</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell6" xml:space="preserve">
+    <value>Cross-world Linkshell 6</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell6.tooltip" xml:space="preserve">
+    <value>/cwl6</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell7" xml:space="preserve">
+    <value>Cross-world Linkshell 7</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell7.tooltip" xml:space="preserve">
+    <value>/cwl7</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell8" xml:space="preserve">
+    <value>Cross-world Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.worldlinkshell8.tooltip" xml:space="preserve">
+    <value>/cwl8</value>
+  </data>
+  <data name="main.chat.channel.yell" xml:space="preserve">
+    <value>Yell</value>
+  </data>
+  <data name="main.chat.channel.yell.tooltip" xml:space="preserve">
+    <value>/y</value>
+  </data>
+  <data name="main.cmdmanager.availableCmds" xml:space="preserve">
+    <value>Available commands: {0}</value>
+    <comment>0: list of cmds</comment>
+  </data>
+  <data name="main.label.missing" xml:space="preserve">
+    <value>Missing '{0}'</value>
   </data>
 </root>

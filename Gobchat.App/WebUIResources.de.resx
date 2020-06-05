@@ -117,19 +117,227 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="config.app.ckb.actor" xml:space="preserve">
+    <value>Charakterpositionen erfassen</value>
+  </data>
+  <data name="config.app.ckb.actor.label" xml:space="preserve">
+    <value>Charakterpositionen sind nicht verfügbar. Die Daten können nicht aus FFXIV ausgelesen werden.</value>
+  </data>
+  <data name="config.app.ckb.actor.tooltip" xml:space="preserve">
+    <value>Wenn aktiviert sammelt Gobchat Informationen darüber wo sich andere Charakter befinden, um so die Entfernung zwischen diesen und deinem Charakter zu bestimmen. Manche Funktionen sind auf diese Informationen angewiesen.</value>
+  </data>
+  <data name="config.app.ckb.autohide" xml:space="preserve">
+    <value>Ausblenden wenn FFXIV minimiert wird</value>
+  </data>
+  <data name="config.app.ckb.autohide.tooltip" xml:space="preserve">
+    <value>Blende Gobchat aus bzw. ein, wenn FFXIV minimiert oder maximiert wird</value>
+  </data>
+  <data name="config.app.ckb.betaupdate" xml:space="preserve">
+    <value>Erlaube Beta Updates</value>
+  </data>
+  <data name="config.app.ckb.chatlog" xml:space="preserve">
+    <value>Chatlog erstellen</value>
+  </data>
+  <data name="config.app.ckb.chatlog.tooltip" xml:space="preserve">
+    <value>Gobchat erstellt ein chatlog, welches unter 'AppData\Roaming\Gobchat\log' zu finden ist</value>
+  </data>
+  <data name="config.app.ckb.emoteinsay" xml:space="preserve">
+    <value>Erkenne emotes im Sagen-Kanal</value>
+  </data>
+  <data name="config.app.ckb.mentions" xml:space="preserve">
+    <value>Erwähnungen nicht filtern</value>
+  </data>
+  <data name="config.app.ckb.rangefilter" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.app.ckb.showtime" xml:space="preserve">
+    <value>Zeitstempel anzeigen</value>
+  </data>
+  <data name="config.app.ckb.update" xml:space="preserve">
+    <value>Prüfe auf Updates bei Programmstart</value>
+  </data>
+  <data name="config.app.fonts.label" xml:space="preserve">
+    <value>Schriftart</value>
+  </data>
+  <data name="config.app.fontsize.label" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="config.app.fontsize.large" xml:space="preserve">
+    <value>Groß</value>
+  </data>
+  <data name="config.app.fontsize.medium" xml:space="preserve">
+    <value>Mittel</value>
+  </data>
+  <data name="config.app.fontsize.small" xml:space="preserve">
+    <value>Klein</value>
+  </data>
+  <data name="config.app.hotkeys.hideshow" xml:space="preserve">
+    <value>Gobchat ein- &amp;amp; ausblenden </value>
+  </data>
+  <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
+    <value>Mit dieser Taste kann Gobchat ein- oder ausgeblendet werden</value>
+  </data>
+  <data name="config.app.hotkeys.label" xml:space="preserve">
+    <value>Tastenkürzel</value>
+  </data>
   <data name="config.app.language" xml:space="preserve">
     <value>Sprache</value>
+  </data>
+  <data name="config.app.position.height" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
+  <data name="config.app.position.lable" xml:space="preserve">
+    <value>Chat Position und Größe</value>
+  </data>
+  <data name="config.app.position.sublable" xml:space="preserve">
+    <value>Werte werden nicht aktualisiert, solange die Einstellung geöffnet ist</value>
+  </data>
+  <data name="config.app.position.width" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="config.app.rangefilter.cutoff" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="config.app.rangefilter.fadeout" xml:space="preserve">
+    <value>Verblassen</value>
+  </data>
+  <data name="config.app.rangefilter.label" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
+    <value>Transparenz nah</value>
+  </data>
+  <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
+    <value>Transparenz fern</value>
+  </data>
+  <data name="config.app.search.border" xml:space="preserve">
+    <value>Markierung</value>
+  </data>
+  <data name="config.app.search.label" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="config.app.search.results" xml:space="preserve">
+    <value>Ergebnis-Farbhinterlegung</value>
+  </data>
+  <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
+    <value>Hintergrundfarbe</value>
+  </data>
+  <data name="config.channel.tbl.mention" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.channel.tbl.name" xml:space="preserve">
+    <value>Kanalname</value>
+  </data>
+  <data name="config.channel.tbl.rangefilter" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.channel.tbl.roleplay" xml:space="preserve">
+    <value>Rollenspiel</value>
+  </data>
+  <data name="config.channel.tbl.textcolor" xml:space="preserve">
+    <value>Textfarbe</value>
+  </data>
+  <data name="config.channel.tbl.visible" xml:space="preserve">
+    <value>Sichtbar</value>
+  </data>
+  <data name="config.groups.group.active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="config.groups.group.delete.tooltip" xml:space="preserve">
+    <value>Lösche Gruppe</value>
+  </data>
+  <data name="config.groups.group.message.background" xml:space="preserve">
+    <value>Hintergrundfarbe</value>
+  </data>
+  <data name="config.groups.group.name" xml:space="preserve">
+    <value>Gruppenname</value>
+  </data>
+  <data name="config.groups.group.naming" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="config.groups.group.sender.background" xml:space="preserve">
+    <value>Absenderhintergrundfarbe</value>
+  </data>
+  <data name="config.groups.group.sender.forground" xml:space="preserve">
+    <value>Absenderfarbe</value>
+  </data>
+  <data name="config.groups.group.trigger" xml:space="preserve">
+    <value>Spieler die zu dieser Gruppe gehören</value>
+  </data>
+  <data name="config.groups.newgroup" xml:space="preserve">
+    <value>Neue Gruppe</value>
+  </data>
+  <data name="config.main.nav.about" xml:space="preserve">
+    <value>Info</value>
   </data>
   <data name="config.main.nav.cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="config.main.nav.channels" xml:space="preserve">
+    <value>Kanäle</value>
+  </data>
+  <data name="config.main.nav.groups" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
   <data name="config.main.nav.mentions" xml:space="preserve">
     <value>Erwähnungen</value>
+  </data>
+  <data name="config.main.nav.profiles" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="config.main.nav.roleplay" xml:space="preserve">
+    <value>Rollenspiel</value>
   </data>
   <data name="config.main.nav.save" xml:space="preserve">
     <value>Speichern</value>
   </data>
   <data name="config.main.nav.saveandexit" xml:space="preserve">
-    <value>Speichern &amp;amp; schließen</value>
+    <value>Speichern &amp;amp; Schließen</value>
+  </data>
+  <data name="config.main.resetbutton.tooltip" xml:space="preserve">
+    <value>Wert zurücksetzen</value>
+  </data>
+  <data name="config.mentions.audio.interval" xml:space="preserve">
+    <value>Zeit zwischen dem Abspielen</value>
+  </data>
+  <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
+    <value>Anzahl an Sekunden die vergehen müssen, bevor der Ton erneut abgespielt wird.</value>
+  </data>
+  <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
+    <value>Das Audio-file muss sich im 'sound' Ordner von Gobchat befinden</value>
+  </data>
+  <data name="config.mentions.audio.play" xml:space="preserve">
+    <value>Audio abspielen</value>
+  </data>
+  <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
+    <value>Lautstärke</value>
+  </data>
+  <data name="config.profiles.newprofile" xml:space="preserve">
+    <value>Neues Profil</value>
+  </data>
+  <data name="config.profiles.profile.activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="config.profiles.profile.clone" xml:space="preserve">
+    <value>Clonen</value>
+  </data>
+  <data name="config.profiles.profile.copy" xml:space="preserve">
+    <value>Kopieren</value>
+  </data>
+  <data name="config.profiles.profile.delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="config.profiles.profile.export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="config.profiles.profile.reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="config.profiles.profiles.actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="config.profiles.reset.confirmation" xml:space="preserve">
+    <value>Alle Einstellungen werden für dieses Profil gelöscht!
+Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
 </root>
