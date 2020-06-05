@@ -198,12 +198,21 @@ namespace Gobchat.Module.UI.Internal
 
             public async Task<Dictionary<string, string>> GetLocalizedStrings(string locale, string[] requestedIds)
             {
+                if (requestedIds == null)
+                    requestedIds = Array.Empty<string>();
+
+                if (locale == null)
+                    throw new ArgumentNullException(nameof(locale));
+
                 var selectedCulture = CultureInfo.GetCultureInfo(locale);
                 var manager = WebUIResources.ResourceManager;
 
                 var result = new Dictionary<string, string>();
                 foreach (var requestedId in requestedIds)
                 {
+                    if (result.ContainsKey(requestedId))
+                        continue;
+
                     var translation = manager.GetString(requestedId, selectedCulture);
                     if (translation == null)
                         result.Add(requestedId, StringFormat.Format(WebUIResources.config_missing, requestedId));
