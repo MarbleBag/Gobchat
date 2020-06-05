@@ -382,7 +382,10 @@ var Gobchat = (function (Gobchat, undefined) {
             if (!_.includes(profiles, profileId))
                 return
             delete this._profiles[profileId]
-            this.activeProfile = this.profiles[0]
+
+            if (this.activeProfile === profileId)
+                this.activeProfile = this.profiles[0]
+
             this._eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
         }
 
@@ -408,12 +411,23 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         //TODO remove later
-        loadFromLocalStore() {
+        async loadFromLocalStore() {
             const json = window.localStorage.getItem("gobchat-config")
             window.localStorage.removeItem("gobchat-config")
             if (json === undefined || json === null)
                 return
-            this._loadConfig(json)
+
+            //TODO toggle sync, so the change is not immediately propagated back
+            const isSynced = this._isSynced
+            this._isSynced = false
+            try {
+                this._loadConfig(json)
+            } finally {
+                this._isSynced = isSynced
+            }
+
+            if (this._isSynced)
+                await this.saveConfig()
         }
 
         addProfileEventListener(callback) {
