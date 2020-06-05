@@ -205,13 +205,15 @@
     <value>Hotkeys</value>
   </data>
   <data name="config.app.intervals.actor" xml:space="preserve">
-    <value>Character Update Interval (MS)</value>
+    <value>Character Update Interval (ms)</value>
   </data>
   <data name="config.app.intervals.actor.tooltip" xml:space="preserve">
-    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
+    <value>
+
+Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
   </data>
   <data name="config.app.intervals.chat" xml:space="preserve">
-    <value>Chat Update Interval (MS)</value>
+    <value>Chat Update Interval (ms)</value>
   </data>
   <data name="config.app.intervals.chat.tooltip" xml:space="preserve">
     <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
@@ -238,13 +240,13 @@
     <value>Y</value>
   </data>
   <data name="config.app.rangefilter.cutoff" xml:space="preserve">
-    <value>Cut off (Yalm)</value>
+    <value>Cut off (yalm)</value>
   </data>
   <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
-    <value>Fade out (Yalm)</value>
+    <value>Fade out (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
     <value />
@@ -253,13 +255,13 @@
     <value>Range filter</value>
   </data>
   <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
-    <value>Transparency End (%)</value>
+    <value>Transparency end (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
-    <value>Transparency Start (%)</value>
+    <value>Transparency start (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
     <value />
@@ -280,22 +282,22 @@
     <value />
   </data>
   <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
-    <value>Background Color</value>
+    <value>Background color</value>
   </data>
   <data name="config.channel.tbl.mention" xml:space="preserve">
     <value>Mention</value>
   </data>
   <data name="config.channel.tbl.name" xml:space="preserve">
-    <value>Channel Name</value>
+    <value>Channel name</value>
   </data>
   <data name="config.channel.tbl.rangefilter" xml:space="preserve">
-    <value>Range Filter</value>
+    <value>Range filter</value>
   </data>
   <data name="config.channel.tbl.roleplay" xml:space="preserve">
     <value>Roleplay</value>
   </data>
   <data name="config.channel.tbl.textcolor" xml:space="preserve">
-    <value>Text Color</value>
+    <value>Text color</value>
   </data>
   <data name="config.channel.tbl.visible" xml:space="preserve">
     <value>Visible</value>
@@ -307,7 +309,7 @@
     <value>Deletes group</value>
   </data>
   <data name="config.groups.group.message.background" xml:space="preserve">
-    <value>Message Background</value>
+    <value>Message background</value>
   </data>
   <data name="config.groups.group.name" xml:space="preserve">
     <value>Group name</value>
@@ -316,10 +318,10 @@
     <value>Group</value>
   </data>
   <data name="config.groups.group.sender.background" xml:space="preserve">
-    <value>Sender Background</value>
+    <value>Sender background</value>
   </data>
   <data name="config.groups.group.sender.forground" xml:space="preserve">
-    <value>Sender Text</value>
+    <value>Sender text</value>
   </data>
   <data name="config.groups.group.trigger" xml:space="preserve">
     <value>Players belonging to this group</value>
@@ -657,7 +659,7 @@ Press save afterwards.</value>
   <data name="main.chat.channel.yell.tooltip" xml:space="preserve">
     <value>/y</value>
   </data>
-  <data name="main.cmdmanager.availableCmds" xml:space="preserve">
+  <data name="main.cmdmanager.availablecmds" xml:space="preserve">
     <value>Available commands: {0}</value>
     <comment>0: list of cmds</comment>
   </data>

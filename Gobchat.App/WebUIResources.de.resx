@@ -340,4 +340,8 @@
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
+  <data name="main.cmdmanager.availablecmds" xml:space="preserve">
+    <value>Verfügbare Befehle: {0}</value>
+    <comment>0: list of cmds</comment>
+  </data>
 </root>

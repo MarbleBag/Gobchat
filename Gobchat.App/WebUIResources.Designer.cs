@@ -322,7 +322,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Character Update Interval (MS).
+        ///   Looks up a localized string similar to Character Update Interval (ms).
         /// </summary>
         internal static string config_app_intervals_actor {
             get {
@@ -331,7 +331,9 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        ///   Looks up a localized string similar to 
+        ///
+        ///Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
         internal static string config_app_intervals_actor_tooltip {
             get {
@@ -340,7 +342,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chat Update Interval (MS).
+        ///   Looks up a localized string similar to Chat Update Interval (ms).
         /// </summary>
         internal static string config_app_intervals_chat {
             get {
@@ -421,7 +423,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cut off (Yalm).
+        ///   Looks up a localized string similar to Cut off (yalm).
         /// </summary>
         internal static string config_app_rangefilter_cutoff {
             get {
@@ -439,7 +441,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fade out (Yalm).
+        ///   Looks up a localized string similar to Fade out (yalm).
         /// </summary>
         internal static string config_app_rangefilter_fadeout {
             get {
@@ -466,7 +468,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transparency End (%).
+        ///   Looks up a localized string similar to Transparency end (%).
         /// </summary>
         internal static string config_app_rangefilter_transparencyend {
             get {
@@ -484,7 +486,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transparency Start (%).
+        ///   Looks up a localized string similar to Transparency start (%).
         /// </summary>
         internal static string config_app_rangefilter_transparencystart {
             get {
@@ -547,7 +549,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Background Color.
+        ///   Looks up a localized string similar to Background color.
         /// </summary>
         internal static string config_channel_tbl_backgroundcolor {
             get {
@@ -565,7 +567,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Channel Name.
+        ///   Looks up a localized string similar to Channel name.
         /// </summary>
         internal static string config_channel_tbl_name {
             get {
@@ -574,7 +576,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Range Filter.
+        ///   Looks up a localized string similar to Range filter.
         /// </summary>
         internal static string config_channel_tbl_rangefilter {
             get {
@@ -592,7 +594,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Text Color.
+        ///   Looks up a localized string similar to Text color.
         /// </summary>
         internal static string config_channel_tbl_textcolor {
             get {
@@ -628,7 +630,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message Background.
+        ///   Looks up a localized string similar to Message background.
         /// </summary>
         internal static string config_groups_group_message_background {
             get {
@@ -655,7 +657,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sender Background.
+        ///   Looks up a localized string similar to Sender background.
         /// </summary>
         internal static string config_groups_group_sender_background {
             get {
@@ -664,7 +666,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sender Text.
+        ///   Looks up a localized string similar to Sender text.
         /// </summary>
         internal static string config_groups_group_sender_forground {
             get {
@@ -1670,9 +1672,9 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Available commands: {0}.
         /// </summary>
-        internal static string main_cmdmanager_availableCmds {
+        internal static string main_cmdmanager_availablecmds {
             get {
-                return ResourceManager.GetString("main.cmdmanager.availableCmds", resourceCulture);
+                return ResourceManager.GetString("main.cmdmanager.availablecmds", resourceCulture);
             }
         }
         
