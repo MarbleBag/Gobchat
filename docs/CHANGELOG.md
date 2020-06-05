@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## Unreleased
+## [1.6.3] - 2020.06.05
 ### Added
 - color selection to channels: NPC dialog, animated emote, echo
 
@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   
 - hotkey: hide & show
   - Previously set hotkey could become stuck on profile reset
+  
+- profiles
+  - A newly created profile could not be immediately activated without pressing save inbetween
+  - Profiles which were created and deleted in the same session were not correcly deleted from disk and were loaded again at the next start
 
 ## [1.6.2] - 2020.05.26
 ### Fixed
