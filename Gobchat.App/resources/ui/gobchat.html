@@ -82,11 +82,11 @@
 
             localStorage.setItem("gobchat-config-open", "true")
 
-            window.chatManager.saveConfigToLocalStore()
+            window.chatManager.config.saveToLocalStore()
 
             const handle = window.open("config/config.html", 'Settings', 'width=900,height=600')
             handle.saveConfig = function () {
-                window.chatManager.loadConfigFromLocalStore()
+                window.chatManager.config.loadFromLocalStore()
                 window.chatManager.updateStyle()
             }
 

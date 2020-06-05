@@ -56,15 +56,6 @@ var Gobchat = (function (Gobchat) {
             return this._chatConfig
         }
 
-        saveConfigToLocalStore() {
-            this._chatConfig.saveToLocalStore()
-        }
-
-        loadConfigFromLocalStore() {
-            this._chatConfig.loadFromLocalStore()
-            this._chatConfig.saveConfig()
-        }
-
         //TODO test
         updateStyle() {
             Gobchat.StyleBuilder.updateStyle(this.config, "custome_style_id")
