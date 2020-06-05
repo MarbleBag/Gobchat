@@ -17,8 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
   
 - profiles
-  - A newly created profile could not be immediately activated without pressing save inbetween
-  - Profiles which were created and deleted in the same session were not correcly deleted from disk and were loaded again at the next start
+  - A newly created profile could not be immediately activated without pressing save in between
+  - Profiles which were created and deleted in the same session were not correctly deleted from disk and were loaded again at the next start
 
 ## [1.6.2] - 2020.05.26
 ### Fixed
