@@ -146,11 +146,12 @@
 
             {
                 (async () => {
+                    window.goblocale = new Gobchat.GobLocaleManager()
+                    window.goblocale.setLocale(gobconfig.get("behaviour.language"))
+
                     await initializeNavigationBar($("#main_navbar"))
 
                     const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
-                    window.goblocale = new Gobchat.GobLocaleManager()
-
                     generalBinding.bindConfigListener("behaviour.language", (value) => {
                         window.goblocale.setLocale(value)
                         window.goblocale.updateElement($(document))
