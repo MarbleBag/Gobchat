@@ -32,7 +32,7 @@ namespace Gobchat.Core.Config
 
         private readonly Dictionary<string, IGobchatConfigProfile> _profiles;
 
-        private readonly IList<string> _profilesLoadedFromFile;
+        private readonly ISet<string> _deletedProfiles;
         private GobchatConfigProfile _defaultConfig;
 
         private string _activeProfileId;
@@ -86,7 +86,7 @@ namespace Gobchat.Core.Config
             ConfigFolderPath = configFolderPath ?? throw new ArgumentNullException(nameof(configFolderPath));
 
             _profiles = new Dictionary<string, IGobchatConfigProfile>();
-            _profilesLoadedFromFile = new List<string>();
+            _deletedProfiles = new HashSet<string>();
 
             _allPropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
             _activePropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
@@ -160,7 +160,6 @@ namespace Gobchat.Core.Config
 
                 var profileId = EnsureProfileId(userProfile);
                 StoreNewProfile(userProfile, false);
-                _profilesLoadedFromFile.Add(profileId);
             }
         }
 
@@ -272,7 +271,7 @@ namespace Gobchat.Core.Config
                 }
             }
 
-            foreach (var profileId in _profilesLoadedFromFile)
+            foreach (var profileId in _deletedProfiles)
             {
                 if (_profiles.ContainsKey(profileId))
                     continue;
@@ -280,13 +279,15 @@ namespace Gobchat.Core.Config
                 try
                 {
                     var file = Path.Combine(outputFolder, $"profile_{profileId}.json");
-                    File.Delete(file);
+                    if (File.Exists(file))
+                        File.Delete(file);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
                     logger.Warn(ex);
                 }
             }
+            _deletedProfiles.Clear();
         }
 
         private void SaveAppConfig()
@@ -346,6 +347,8 @@ namespace Gobchat.Core.Config
             config.OnPropertyChange -= OnEvent_Config_OnPropertyChange;
 
             _profiles.Remove(profileId);
+            _deletedProfiles.Add(profileId);
+
             if (ActiveProfileId == profileId)
                 ActiveProfileId = _profiles.Keys.First();
 
@@ -380,6 +383,7 @@ namespace Gobchat.Core.Config
 
             config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
             _profiles.Add(config.ProfileId, config);
+            _deletedProfiles.Remove(config.ProfileId);
             OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New, synchronizing));
         }
 
