@@ -10,9 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - groups
   - color reset buttons didn't work
   - ffxiv specific groups had their colors wrong
-  
+
+
 - hotkey: hide & show
   - Previously set hotkey could become stuck on profile reset
+
   
 - profiles
   - A newly created profile could not be immediately activated without pressing save inbetween
