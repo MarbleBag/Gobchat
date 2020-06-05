@@ -32,7 +32,6 @@ var Gobchat = (function (Gobchat) {
             if ($this.attr(DataAttributeTitle)) stringIds.push($this.attr(DataAttributeTitle))
         })
 
-        console.log("Found: " + JSON.stringify(stringIds))
         if (stringIds.length == 0)
             return
 
@@ -66,11 +65,18 @@ var Gobchat = (function (Gobchat) {
         }
 
         async get(key) {
-            return await getLocalizedString(this._locale, key)
+            const value = await getLocalizedString(this._locale, key)
+            return value
+        }
+
+        async getAndFormat(key, params) {
+            let value = await this.get(key)
+            value = Gobchat.formatString(value, params)
+            return value
         }
 
         async updateElement(element) {
-            updateLocaleOnElements(element, this._locale)
+            await updateLocaleOnElements(element, this._locale)
         }
     }
 
