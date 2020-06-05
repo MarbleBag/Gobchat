@@ -20,31 +20,41 @@ var Gobchat = (function (Gobchat) {
     class GobchatManager {
         constructor(chatHtmlId) {
             this._chatHtmlId = chatHtmlId
+            this._hideInfo = false
+            this._hideError = false
         }
 
         async init() {
             const self = this
 
             this._chatConfig = new Gobchat.GobchatConfig(true)
-
             await this.config.loadConfig()
 
-            this._chatConfig.addProfileEventListener(event => {
-                if (event.type === "active") this.updateStyle()
+            this._localeManager = new Gobchat.GobLocaleManager()
+            this.localeManager.setLocale(this.config.get("behaviour.language"))
+
+            this.config.addProfileEventListener(event => {
+                if (event.type === "active") {
+                    this.updateStyle()
+                    this.localeManager.setLocale(this.config.get("behaviour.language"))
+                }
             })
-            this._chatConfig.addPropertyEventListener("style", event => {
+            this.config.addPropertyEventListener("style", event => {
                 if (event.isActive) this.updateStyle()
             })
-            this._chatConfig.addPropertyEventListener("behaviour", event => {
+            this.config.addPropertyEventListener("behaviour", event => {
                 if (event.isActive) this.updateStyle()
+            })
+            this.config.addPropertyEventListener("behaviour.language", event => {
+                if (event.isActive) this.localeManager.setLocale(this.config.get("behaviour.language"))
             })
 
             this.updateStyle()
 
-            this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(self._chatConfig)
-            this._messageSound = new Gobchat.MessageSoundPlayer(self._chatConfig)
+            this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(this.config)
+            this._messageSound = new Gobchat.MessageSoundPlayer(this.config)
 
-            this._cmdManager = new Gobchat.CommandManager(this, self._chatConfig)
+            this._cmdManager = new Gobchat.CommandManager(this, this.config)
 
             this._scrollbar = new ScrollbarControl(this._chatHtmlId)
             this._scrollbar.init()
@@ -54,6 +64,10 @@ var Gobchat = (function (Gobchat) {
 
         get config() {
             return this._chatConfig
+        }
+
+        get localeManager() {
+            return this._localeManager
         }
 
         //TODO test
@@ -69,7 +83,7 @@ var Gobchat = (function (Gobchat) {
             const messageCollection = messagesEvent.detail
             if (!messageCollection) return
             for (let message of messageCollection.messages) {
-                this.onNewMessage(message)
+                this._onNewMessage(message)
             }
 
             /*
@@ -82,7 +96,14 @@ var Gobchat = (function (Gobchat) {
             */
         }
 
-        onNewMessage(message) {
+        _onNewMessage(message) {
+            if (this._hideInfo && message.channel === Gobchat.ChannelEnum.GOBCHAT_INFO) {
+                return
+            }
+            if (this._hideError && message.channel === Gobchat.ChannelEnum.GOBCHAT_ERROR) {
+                return
+            }
+
             const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
             $("#" + this._chatHtmlId).append(messageHtmlElement)
             this._scrollbar.scrollToBottomIfNeeded()
@@ -92,6 +113,14 @@ var Gobchat = (function (Gobchat) {
                 const msgComplete = message.content.map(e => e.text).join()
                 this._cmdManager.processCommand(msgComplete)
             }
+        }
+
+        showGobInfo(value) {
+            this._hideInfo = !value
+        }
+
+        showGobError(value) {
+            this._hideError = !value
         }
     }
     Gobchat.GobchatManager = GobchatManager
