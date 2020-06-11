@@ -94,6 +94,7 @@ Gobchat supports the following chat commands:
 - [profile](#chat-command-profile)
 - [close](#chat-command-close)
 - [player](#chat-command-player)
+- [info/error](#chat-command-info-error)
 
 ***
 
@@ -160,11 +161,20 @@ Usage:
 ##### count
 Returns the number of characters nearby. The definition of nearby depends on the total amount of characters close to you. The client will only display up to 100 characters.
 
-#### list
+##### list
 Returns a list of character names and their current distance to you.
 
-#### distance
-Returns the distance in yalms to your current targetSS
+##### distance
+Returns the distance in yalms to your current target.
+
+#### Chat command info / error
+Usage:
+- `/e gc info on`
+- `/e gc info off`
+- `/e gc error on`
+- `/e gc error off`
+
+Will temporarily deactivate Gobchat's info and error messages.
 
 ## Installation
 
