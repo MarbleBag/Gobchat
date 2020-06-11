@@ -96,6 +96,7 @@ namespace Gobchat.UI.Web
             cefSettings.EnableAudio();
 
             cefSettings.LogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cef_debug.log");
+            cefSettings.LogSeverity = CefSharp.LogSeverity.Error;
 
             cefSettings.SetOffScreenRenderingBestPerformanceArgs();
 
