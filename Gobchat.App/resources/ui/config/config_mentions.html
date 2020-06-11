@@ -45,7 +45,9 @@
             </div>
             <div>
                 <div>
-                    <textarea rows="3" class="tmpl-trigger" style="width:100%;" data-gob-configkey="behaviour.mentions.{0}.trigger"></textarea>
+                    <textarea rows="3" class="tmpl-trigger" style="width:100%;"
+                              data-gob-configkey="behaviour.mentions.{0}.trigger"
+                              data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
                 </div>
                 <!-- deactivated til multiple mentions are really needed
                 <div>
@@ -61,7 +63,8 @@
                     <span>
                         <label data-gob-locale-text="config.mentions.audio.play"></label>
                         <input type="checkbox" class="tmpl-play-sound"
-                               data-gob-configkey="behaviour.mentions.{0}.playsound" />
+                               data-gob-configkey="behaviour.mentions.{0}.playsound"
+                               data-gob-locale-title="config.mentions.audio.play.tooltip" />
                     </span>
                 </div>
                 <div class="tmp-sound-options" hidden>
@@ -74,7 +77,7 @@
                             <i class="fas fa-file-audio"></i>
                         </button>
                         <button class="tmpl-test-sound"
-                                data-gob-locale-title="config.mentions.audio.play.tooltip">
+                                data-gob-locale-title="config.mentions.audio.test.tooltip">
                             <i class="fas fa-play"></i>
                         </button>
                         <input class="tmpl-sound-volume" type="range" min="0" max="100"
@@ -94,7 +97,7 @@
     <script type="text/javascript">
         'use strict';
 
-        (function () {
+        (async function () {
 
             const ConfigKeyData = "behaviour.mentions.data"
             const ConfigKeyOrder = "behaviour.mentions.order"
@@ -264,10 +267,11 @@
 
             }
 
-            function populateTable() {
+            async function populateTable() {
                 clearTableTable()
                 const ids = gobconfig.get(ConfigKeyOrder)
                 ids.forEach(id => addEntryToTable(id))
+                await goblocale.updateElement(mentionTable)
                 /* deactivated til multiple mentions are really needed
                 mentionTable.sortable("refresh")
                 mentionTable.accordion("refresh")
@@ -334,14 +338,18 @@
             */
 
             gobconfig.addProfileEventListener((event) => {
-                if (event.type === "active")
-                    populateTable()
+                (async () => {
+                    if (event.type === "active")
+                        await populateTable()
+                })()
             })
             gobconfig.addPropertyEventListener(ConfigKeyOrder, (event) => {
-                if (event.isActive)
-                    populateTable()
+                (async () => {
+                    if (event.isActive)
+                        await populateTable()
+                })()
             })
-            populateTable()
+            await populateTable()
 
             const btnAddMentionBox = $("#cmentions_add_new_mention1, #cmentions_add_new_mention2")
             btnAddMentionBox.on("click", (event) => addNewEntry())

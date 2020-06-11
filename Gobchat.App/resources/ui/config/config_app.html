@@ -78,10 +78,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - </label>
                             <label for="capp_checkbetaupdates"
-                                   data-gob-locale-text="config.app.ckb.betaupdate"
-                                   data-gob-locale-title="config.app.ckb.betaupdate.tooltip"></label>
+                                   data-gob-locale-title="config.app.ckb.betaupdate.tooltip">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - </span>
+                                <span data-gob-locale-text="config.app.ckb.betaupdate"></span>
+                            </label>
                         </td>
                         <td>
                             <input type="checkbox" id="capp_checkbetaupdates"
@@ -120,10 +121,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - </label>
                             <label for="capp_rangefilter_mention"
-                                   data-gob-locale-text="config.app.ckb.mentions"
-                                   data-gob-locale-title="config.app.ckb.mentions.tooltip"></label>
+                                   data-gob-locale-title="config.app.ckb.mentions.tooltip">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - </span>
+                                <span data-gob-locale-text="config.app.ckb.mentions"></span>
+                            </label>
                         </td>
                         <td>
                             <input type="checkbox" id="capp_rangefilter_mention"
@@ -380,6 +382,13 @@
                                data-gob-configkey="behaviour.chat.updateInterval"
                                data-gob-locale-title="config.app.intervals.chat.tooltip" />
                     </td>
+                    <td>
+                        <button class="ui-gc-btn" id="capp_chat_updateInterval_reset"
+                                data-gob-configkey="behaviour.chat.updateInterval"
+                                data-gob-locale-title="config.main.resetbutton.tooltip">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -391,6 +400,13 @@
                         <input type="number" min="200" max="20000" id="capp_actor_updateInterval"
                                data-gob-configkey="behaviour.actor.updateInterval"
                                data-gob-locale-title="config.app.intervals.actor.tooltip" />
+                    </td>
+                    <td>
+                        <button class="ui-gc-btn" id="capp_actor_updateInterval_reset"
+                                data-gob-configkey="behaviour.actor.updateInterval"
+                                data-gob-locale-title="config.main.resetbutton.tooltip">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -460,6 +476,9 @@
                 const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
                 $("#capp_characterlocations_feature").toggle(!available)
             }
+
+            const ckbActorActive = $("#capp_actor_updateActive")
+            GobConfigHelper.bindCheckbox(binding, ckbActorActive)
 
             const ckbRangeFilterActive = $("#capp_rangefilter_active")
             GobConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
@@ -540,12 +559,11 @@
             // setup ungrouped
             const txtChatUpdateInterval = $("#capp_chat_updateInterval")
             GobConfigHelper.bindElement(binding, txtChatUpdateInterval, { elementGetAccessor: parseNumber })
+            GobConfigHelper.makeResetButton($("#capp_chat_updateInterval_reset"))
 
             const txtActorUpdateInterval = $("#capp_actor_updateInterval")
             GobConfigHelper.bindElement(binding, txtActorUpdateInterval, { elementGetAccessor: parseNumber })
-
-            const ckbActorActive = $("#capp_actor_updateActive")
-            GobConfigHelper.bindCheckbox(binding, ckbActorActive)
+            GobConfigHelper.makeResetButton($("capp_actor_updateInterval_reset"))
 
             // activate bindings
             binding.initialize()
