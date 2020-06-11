@@ -94,7 +94,7 @@ Gobchat supports the following chat commands:
 - [profile](#chat-command-profile)
 - [close](#chat-command-close)
 - [player](#chat-command-player)
-- [info/error](#chat-command-info-error)
+- [info/error](#chat-command-info--error)
 
 ***
 
