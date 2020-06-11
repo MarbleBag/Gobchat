@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
+    // FINALIZED DO NOT CHANGE
     internal sealed class ConfigUpgrader_v3 : IJsonTransformer
     {
         public ConfigUpgrader_v3()
