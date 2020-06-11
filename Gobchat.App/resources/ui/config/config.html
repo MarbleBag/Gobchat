@@ -14,8 +14,11 @@
 
     <script defer src="../lib/fontawesome/js/all.js"></script>
 
+    <!--
     <link rel="stylesheet" href="../gobui_default.css">
     <link rel="stylesheet" href="config.css">
+    -->
+    <link rel="stylesheet" href="../_default.css">
 
     <script src="config.js"></script>
     <script src="../gobchat/gob-databinding.js"></script>
@@ -34,66 +37,52 @@
         //}
     </script>
 
-    <div id="main_navbar" class="ui-side-navigation">
-        <select id="main_profileselect" data-gob-locale-title="config.main.nav.selectprofile.tooltip"></select>
-        <a data-nav-target="main_nav_app" data-gob-locale-text="config.main.nav.app" class="active">App</a>
-        <a data-nav-target="main_nav_mentions" data-gob-locale-text="config.main.nav.mentions">Mentions</a>
-        <a data-nav-target="main_nav_profiles" data-gob-locale-text="config.main.nav.profiles">Profiles</a>
-        <a data-nav-target="main_nav_channel" data-gob-locale-text="config.main.nav.channels">Channels</a>
-        <a data-nav-target="main_nav_groups" data-gob-locale-text="config.main.nav.groups">Groups</a>
-        <a data-nav-target="main_nav_roleplay" data-gob-locale-text="config.main.nav.roleplay">Roleplay</a>
-        <a data-nav-target="main_nav_about" data-gob-locale-text="config.main.nav.about">About</a>
-        <a class="btn-system" id="main_saveconfig">
-            <i class="fa fa-save"></i>
-            <label data-gob-locale-text="config.main.nav.save"></label>
-        </a>
-        <a class="btn-system" id="main_saveandexitconfig">
-            <i class="fa fa-save"></i>
-            <label data-gob-locale-text="config.main.nav.saveandexit"></label>
-        </a>
-        <!--<a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>-->
-        <a class="btn-system" id="main_cancelconfig">
-            <i class="fas fa-trash-alt"></i>
-            <label data-gob-locale-text="config.main.nav.cancel"></label>
-        </a>
-    </div>
-
-    <!--
-    <div id="config_navbar" class="gob-ui-navigation-side" data-gob-nav-target="config_content">
-        <select id="main_profileselect"></select>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_app.html" data-gob-locale-text="ui.config.main.nav.app">A</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_mentions.html" data-gob-locale-text="ui.config.main.nav.mentions">B</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_profiles.html" data-gob-locale-text="ui.config.main.nav.profiles">C</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_channel.html" data-gob-locale-text="ui.config.main.nav.channels">D</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_roleplay.html" data-gob-locale-text="ui.config.main.nav.roleplay">D</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="config_groups.html" data-gob-locale-text="ui.config.main.nav.groups">D</a>
-        <a class="active gob-ui-navigation-frame" data-gob-nav-target="about.html" data-gob-locale-text="ui.config.main.nav.about">D</a>
-        <a class="btn-system" id="main_saveconfig">
-            <i class="fa fa-save"></i>
-            <label class="gob-localized" data-gob-locale-text="config.main.nav.save"></label>
-        </a>
-        <a class="btn-system" id="main_saveandexitconfig">
-            <i class="fa fa-save"></i>
-            <label class="gob-localized" data-gob-locale-text="config.main.nav.saveandexit"></label>
-        </a>
-        <a class="btn-system" id="main_cancelconfig">
-            <i class="fas fa-trash-alt"></i>
-            <label class="gob-localized" data-gob-locale-text="config.main.nav.cancel"></label>
-        </a>
-    </div>
-    -->
-
-    <div id="config_content">
-    </div>
-
-    <div class="ui-content">
-        <div id="main_nav_app" data-content-src="config_app.html"></div>
-        <div id="main_nav_mentions" data-content-src="config_mentions.html"></div>
-        <div id="main_nav_profiles" data-content-src="config_profiles.html"></div>
-        <div id="main_nav_channel" data-content-src="config_channel.html"></div>
-        <div id="main_nav_roleplay" data-content-src="config_roleplay.html"></div>
-        <div id="main_nav_groups" data-content-src="config_groups.html"></div>
-        <div id="main_nav_about" data-content-src="about.html"></div>
+    <div class="gob-ffxivbox" style="display: flex; flex-direction:column; overflow:hidden;">
+        <div style="min-height: 22px; max-height:22px">Config</div>
+        <div class="gob-separator-horizontal"></div>
+        <div style="display: inline-flex; overflow:hidden;">
+            <div id="cmain_navbar" class="gob-column-navigation" data-gob-nav-target="cmain_config_content">
+                <select id="cmain_profileselect"></select>
+                <div class="gob-separator-horizontal"></div>
+                <div class="gob-nav-element gob-selectable-element active" data-gob-nav-target="config_app.html">
+                    <div class="gob-tab-button" data-gob-locale-text="config.main.nav.app"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_mentions.html">
+                    <div data-gob-locale-text="config.main.nav.mentions"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_profiles.html">
+                    <div  data-gob-locale-text="config.main.nav.profiles"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_channel.html">
+                    <div  data-gob-locale-text="config.main.nav.channels"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_groups.html">
+                    <div  data-gob-locale-text="config.main.nav.groups"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_roleplay.html">
+                    <div  data-gob-locale-text="config.main.nav.roleplay"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="about.html">
+                    <div  data-gob-locale-text="config.main.nav.about"></div>
+                </div>
+                <div class="gob-separator-horizontal"></div>
+                <div id="cmain_saveconfig" class="gob-button-primar">
+                    <i class="fa fa-save"></i>
+                    <span data-gob-locale-text="config.main.nav.save"></span>
+                </div>
+                <div id="cmain_saveandexitconfig" class="gob-button-primar">
+                    <i class="fa fa-save"></i>
+                    <span data-gob-locale-text="config.main.nav.saveandexit"></span>
+                </div>
+                <div id="cmain_cancelconfig" class="gob-button-primar">
+                    <i class="fas fa-trash-alt"></i>
+                    <span data-gob-locale-text="config.main.nav.cancel"></span>
+                </div>
+            </div>
+            <div class="gob-separator-vertical"></div>
+            <div class="gob-nav-panel" id="cmain_config_content">
+            </div>
+        </div>
     </div>
 
     <div id="config_copyprofiledialog" title="Select a profile" hidden>
@@ -108,8 +97,8 @@
     </div>
 
     <script type="text/javascript">
-        'use strict'
 
+        // import { buildNavigationElement } from "../gobchat/gob-navbar"
         jQuery(function ($) {
             $("#main_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
@@ -149,7 +138,7 @@
                     window.goblocale = new Gobchat.GobLocaleManager()
                     window.goblocale.setLocale(gobconfig.get("behaviour.language"))
 
-                    await initializeNavigationBar($("#main_navbar"))
+                    await makeNavigationElement($("#cmain_navbar"))
 
                     const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
                     generalBinding.bindConfigListener("behaviour.language", (value) => {
@@ -161,59 +150,32 @@
             }
         });
 
-        async function initializeNavigationBar(navigationElement) {
-            const $navigationElement = $(navigationElement)
-            const navAttribute = "data-nav-target"
+        async function makeNavigationElement(navigationElement) {
+            const navAttribute = "data-gob-nav-target"
+            const navIdAttribute = "data-gob-nav-id"
+            const $navBar = $(navigationElement)
+            const $navPanel = $(`#${navigationElement.attr(navAttribute)}`)
 
-            function isNavigationElement(element) {
-                const target = $(element).attr(navAttribute)
-                return target !== null && target !== undefined
-            }
+            $navElements = $navBar.find(`.gob-nav-element[${navAttribute}]`)
 
-            function hideAllNavigationContent() {
-                $navigationElement.find("> a").each(function () {
-                    const targetId = $(this).attr(navAttribute)
-                    $(`#${targetId}`).hide()
+            const awaitPromises = []
+            $navElements.each(function () {
+                const $panelElement = $("<div class='gob-nav-panel-content' />").appendTo($navPanel)
+                const pageToLoad = $(this).attr(navAttribute)
+                $panelElement.attr(navIdAttribute, pageToLoad)
+                awaitPromises.push($panelElement.loadThen(pageToLoad))
+
+                if ($(this).hasClass("active"))
+                    $panelElement.addClass("active")
+
+                $(this).on("click", function () {
+                    $navBar.find("> .gob-nav-element.active").removeClass("active")
+                    $(this).addClass("active")
+                    $navPanel.find("> .gob-nav-panel-content.active").removeClass("active")
+                    $panelElement.addClass("active")
                 })
-            }
-
-            function showNavigationContent() {
-                $navigationElement.find("> .active").each(function () {
-                    const targetId = $(this).attr(navAttribute)
-                    $(`#${targetId}`).show()
-                })
-            }
-
-            var awaitPromises = []
-
-            $navigationElement.find("> a").each(function () {
-                const targetId = $(this).attr(navAttribute)
-                if (!targetId)
-                    return //skip
-                const target = $(`#${targetId}`)
-                const targetContent = target.attr("data-content-src")
-                if (!targetContent)
-                    return //skip
-
-                var promise = $(target)
-                    .loadThen(targetContent)
-
-                awaitPromises.push(promise)
             })
             await Promise.all(awaitPromises)
-
-            hideAllNavigationContent()
-            showNavigationContent()
-
-            $navigationElement.on("click", (event) => {
-                if (!isNavigationElement(event.target)) return
-                hideAllNavigationContent()
-
-                $navigationElement.find("> .active").removeClass("active")
-                $(event.target).addClass("active")
-
-                showNavigationContent()
-            })
         }
     </script>
 </body>

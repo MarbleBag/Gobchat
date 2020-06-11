@@ -74,6 +74,24 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="resources\ui\graphics\ButtonActive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\ButtonIdle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox-checked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\noise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\_default.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="buildscript.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
