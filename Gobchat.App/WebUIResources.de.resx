@@ -159,6 +159,9 @@
   <data name="config.app.fonts.label" xml:space="preserve">
     <value>Schriftart</value>
   </data>
+  <data name="config.app.fonts.tooltip" xml:space="preserve">
+    <value>Wählt die erste verfügbare Schriftart auf deinem System. Es ist also möglich eine generische Schriftart zu wählen wie: serif, sans-serife, monospace.</value>
+  </data>
   <data name="config.app.fontsize.label" xml:space="preserve">
     <value>Schriftgröße</value>
   </data>
@@ -196,19 +199,19 @@
     <value>Breite</value>
   </data>
   <data name="config.app.rangefilter.cutoff" xml:space="preserve">
-    <value>Ausblenden</value>
+    <value>Ausblenden (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
-    <value>Verblassen</value>
+    <value>Verblassen (yalm)</value>
   </data>
   <data name="config.app.rangefilter.label" xml:space="preserve">
     <value>Reichweitenfilter</value>
   </data>
   <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
-    <value>Transparenz nah</value>
+    <value>Transparenz nah (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
-    <value>Transparenz fern</value>
+    <value>Transparenz fern (%)</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Markierung</value>
@@ -217,7 +220,7 @@
     <value>Suche</value>
   </data>
   <data name="config.app.search.results" xml:space="preserve">
-    <value>Ergebnis-Farbhinterlegung</value>
+    <value>Farbhinterlegung</value>
   </data>
   <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
     <value>Hintergrundfarbe</value>

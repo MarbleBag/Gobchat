@@ -115,7 +115,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to To safely test a beta update, please ensure you have a backup of your Gobchat profile under &apos;AppData\Roaming\Gobchat\config&apos; by copying the whole folder!.
         /// </summary>
         internal static string config_app_ckb_betaupdate_tooltip {
             get {
@@ -241,7 +241,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Picks the first available font, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
+        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
         /// </summary>
         internal static string config_app_fonts_tooltip {
             get {
@@ -322,7 +322,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Character Update Interval (ms).
+        ///   Looks up a localized string similar to Character location update interval (ms).
         /// </summary>
         internal static string config_app_intervals_actor {
             get {
@@ -331,9 +331,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///
-        ///Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
         internal static string config_app_intervals_actor_tooltip {
             get {
@@ -342,7 +340,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chat Update Interval (ms).
+        ///   Looks up a localized string similar to Chat update interval (ms).
         /// </summary>
         internal static string config_app_intervals_chat {
             get {
@@ -684,7 +682,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name..
+        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name..
         /// </summary>
         internal static string config_groups_group_trigger_tooltip {
             get {
@@ -810,6 +808,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy this page from another profile.
+        /// </summary>
+        internal static string config_main_profile_copypage {
+            get {
+                return ResourceManager.GetString("config.main.profile.copypage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resets its value to its default.
         /// </summary>
         internal static string config_main_resetbutton_tooltip {
@@ -855,7 +862,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Play audio file.
+        ///   Looks up a localized string similar to Play an audio file whenever a message contains one or more mentions.
         /// </summary>
         internal static string config_mentions_audio_play_tooltip {
             get {
@@ -884,6 +891,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play audio.
+        /// </summary>
+        internal static string config_mentions_audio_test_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.test.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audio volume.
         /// </summary>
         internal static string config_mentions_audio_volume_tooltip {
@@ -907,6 +923,15 @@ namespace Gobchat {
         internal static string config_mentions_newmention_tooltip {
             get {
                 return ResourceManager.GetString("config.mentions.newmention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention..
+        /// </summary>
+        internal static string config_mentions_trigger_tooltip {
+            get {
+                return ResourceManager.GetString("config.mentions.trigger.tooltip", resourceCulture);
             }
         }
         
