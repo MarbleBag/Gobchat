@@ -30,16 +30,16 @@ namespace Gobchat.Core.Config
                 if (behaviour["channel"] is JObject channel)
                 {
                     if (channel["roleplay"] is JArray roleplay)
-                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(roleplay);
+                        ConvertValueToEnumAndReplace<Chat.FFXIVChatChannel>(roleplay);
 
                     if (channel["mention"] is JArray mention)
-                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(mention);
+                        ConvertValueToEnumAndReplace<Chat.FFXIVChatChannel>(mention);
 
                     if (channel["visible"] is JArray visible)
-                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(visible);
+                        ConvertValueToEnumAndReplace<Chat.FFXIVChatChannel>(visible);
 
                     if (channel["rangefilter"] is JArray rangefilter)
-                        ConvertValueToEnumAndReplace<Chat.ChatChannel>(rangefilter);
+                        ConvertValueToEnumAndReplace<Chat.FFXIVChatChannel>(rangefilter);
                 }
 
                 if (behaviour["segment"] is JObject segments)
@@ -60,7 +60,7 @@ namespace Gobchat.Core.Config
 
         private void ConvertValueToEnumAndReplace<TEnum>(JArray list) where TEnum : struct, IConvertible
         {
-            var enums = ConvertValueToEnum<Chat.ChatChannel>(list);
+            var enums = ConvertValueToEnum<Chat.FFXIVChatChannel>(list);
             list.Clear();
             enums.ForEach(e => list.Add(e));
         }
@@ -121,16 +121,16 @@ namespace Gobchat.Core.Config
                 if (behaviour["channel"] is JObject channel)
                 {
                     if (channel["roleplay"] is JArray roleplay)
-                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(roleplay);
+                        ConvertEnumToStringAndReplace<Chat.FFXIVChatChannel>(roleplay);
 
                     if (channel["mention"] is JArray mention)
-                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(mention);
+                        ConvertEnumToStringAndReplace<Chat.FFXIVChatChannel>(mention);
 
                     if (channel["visible"] is JArray visible)
-                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(visible);
+                        ConvertEnumToStringAndReplace<Chat.FFXIVChatChannel>(visible);
 
                     if (channel["rangefilter"] is JArray rangefilter)
-                        ConvertEnumToStringAndReplace<Chat.ChatChannel>(rangefilter);
+                        ConvertEnumToStringAndReplace<Chat.FFXIVChatChannel>(rangefilter);
                 }
 
                 if (behaviour["segment"] is JObject segments)
@@ -153,7 +153,7 @@ namespace Gobchat.Core.Config
 
         private void ConvertEnumToStringAndReplace<TEnum>(JArray list) where TEnum : struct, IConvertible
         {
-            var enums = ConvertEnumToString<Chat.ChatChannel>(list);
+            var enums = ConvertEnumToString<Chat.FFXIVChatChannel>(list);
             list.Clear();
             enums.ForEach(e => list.Add(e));
         }

@@ -40,8 +40,8 @@ namespace Gobchat.Core.Config
             profile.SetProperty("profile.name", "Profile 1");
 
             var visibleChannels = profile.GetProperty<List<int>>("behaviour.channel.visible");
-            visibleChannels.Add((int)ChatChannel.GOBCHAT_INFO);
-            visibleChannels.Add((int)ChatChannel.GOBCHAT_ERROR);
+            visibleChannels.Add((int)FFXIVChatChannel.GOBCHAT_INFO);
+            visibleChannels.Add((int)FFXIVChatChannel.GOBCHAT_ERROR);
             profile.SetProperty("behaviour.channel.visible", visibleChannels);
 
             var result = new JObject();

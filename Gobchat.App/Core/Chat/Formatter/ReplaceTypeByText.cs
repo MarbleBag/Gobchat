@@ -18,7 +18,7 @@ namespace Gobchat.Core.Chat
 {
     internal sealed class ReplaceTypeByText : IReplacer
     {
-        public MessageSegmentType SegmentType { get; set; } = MessageSegmentType.UNDEFINED;
+        public MessageSegmentType SegmentType { get; set; } = MessageSegmentType.Undefined;
         public List<Regex> Pattern { get; } = new List<Regex>();
 
         public bool StartReplace(ChatMessage message)

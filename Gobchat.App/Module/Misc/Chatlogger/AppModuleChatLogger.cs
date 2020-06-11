@@ -78,7 +78,7 @@ namespace Gobchat.Module.Misc.Chatlogger
 
         private void ConfigManager_UpdateLogChannels(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatLogger.LogChannels = sender.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToList();
+            _chatLogger.LogChannels = sender.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (FFXIVChatChannel)i).ToList();
         }
 
         private void ChatManager_ChatMessageEvent(object sender, ChatMessageEventArgs e)

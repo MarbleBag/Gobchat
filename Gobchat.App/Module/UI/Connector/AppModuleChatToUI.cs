@@ -83,7 +83,7 @@ namespace Gobchat.Module.UI
 
             public async Task SendChatMessage(int channel, string source, string message)
             {
-                _chatManager.EnqueueMessage(DateTime.Now, (ChatChannel)channel, source, message);
+                _chatManager.EnqueueMessage(DateTime.Now, (FFXIVChatChannel)channel, source, message);
             }
 
             public async Task SendErrorChatMessage(string message)

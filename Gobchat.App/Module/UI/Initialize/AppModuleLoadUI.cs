@@ -124,7 +124,7 @@ namespace Gobchat.Module.UI
             _browserAPIManager.ExecuteGobchatJavascript(builder =>
             {
                 builder.Append("Gobchat.ChannelEnum = ");
-                builder.AppendLine(typeof(ChatChannel).EnumToJson(s => s.ToUpperInvariant()));
+                builder.AppendLine(typeof(FFXIVChatChannel).EnumToJson(s => s.ToUpperInvariant()));
 
                 builder.Append("Gobchat.MessageSegmentEnum = ");
                 builder.AppendLine(typeof(MessageSegmentType).EnumToJson(s => s.ToUpperInvariant()));

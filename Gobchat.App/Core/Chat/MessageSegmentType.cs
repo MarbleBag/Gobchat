@@ -15,11 +15,11 @@ namespace Gobchat.Core.Chat
 {
     public enum MessageSegmentType
     {
-        UNDEFINED = 0,
-        SAY = 1,
-        EMOTE = 2,
-        OOC = 3,
-        MENTION = 4,
-        WEB_LINK = 5,
+        Undefined,
+        Say,
+        Emote,
+        OoC,
+        Mention,
+        WebLink,
     }
 }

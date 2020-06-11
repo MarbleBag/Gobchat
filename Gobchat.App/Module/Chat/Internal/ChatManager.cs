@@ -40,13 +40,13 @@ namespace Gobchat.Module.Chat.Internal
                 set => _parent._chatlogCleaner.AutotranslateProvider = value ?? throw new ArgumentNullException(nameof(AutotranslateProvider));
             }
 
-            public ChatChannel[] VisibleChannels
+            public FFXIVChatChannel[] VisibleChannels
             {
                 get => _parent._visibleChannels.ToArray();
                 set => _parent._visibleChannels = value.ToArrayOrEmpty();
             }
 
-            public ChatChannel[] FormatChannels
+            public FFXIVChatChannel[] FormatChannels
             {
                 get => _parent._chatMessageBuilder.FormatChannels;
                 set => _parent._chatMessageBuilder.FormatChannels = value;
@@ -58,7 +58,7 @@ namespace Gobchat.Module.Chat.Internal
                 set => _parent._chatMessageBuilder.Formats = value;
             }
 
-            public ChatChannel[] MentionChannels
+            public FFXIVChatChannel[] MentionChannels
             {
                 get => _parent._chatMessageBuilder.MentionChannels;
                 set => _parent._chatMessageBuilder.MentionChannels = value;
@@ -94,7 +94,7 @@ namespace Gobchat.Module.Chat.Internal
                 set => _parent._chatMessageActorData.FadeOutDistance = value;
             }
 
-            public ChatChannel[] CutOffChannels
+            public FFXIVChatChannel[] CutOffChannels
             {
                 get => _parent._chatMessageActorData.CutOffChannels;
                 set => _parent._chatMessageActorData.CutOffChannels = value;
@@ -114,7 +114,7 @@ namespace Gobchat.Module.Chat.Internal
         private DateTime _lastDispatchedMessage;
         private TimeSpan _outdatedMessageFilter = TimeSpan.FromSeconds(10);
 
-        private ChatChannel[] _visibleChannels = Array.Empty<ChatChannel>();
+        private FFXIVChatChannel[] _visibleChannels = Array.Empty<FFXIVChatChannel>();
 
         public bool FilterOutdatedMessages { get; set; } = true;
 
@@ -165,7 +165,7 @@ namespace Gobchat.Module.Chat.Internal
             }
         }
 
-        public void EnqueueMessage(DateTime timestamp, ChatChannel channel, string source, string message)
+        public void EnqueueMessage(DateTime timestamp, FFXIVChatChannel channel, string source, string message)
         {
             var cleanedChatlogItem = new CleanedChatlogItem(timestamp, channel, source, message);
             EnqueueMessage(cleanedChatlogItem);
@@ -173,7 +173,7 @@ namespace Gobchat.Module.Chat.Internal
 
         public void EnqueueMessage(SystemMessageType type, string message)
         {
-            ChatChannel channel = type == SystemMessageType.Error ? ChatChannel.GOBCHAT_ERROR : ChatChannel.GOBCHAT_INFO;
+            FFXIVChatChannel channel = type == SystemMessageType.Error ? FFXIVChatChannel.GOBCHAT_ERROR : FFXIVChatChannel.GOBCHAT_INFO;
             EnqueueMessage(DateTime.Now, channel, "Gobchat", message);
         }
 
@@ -231,14 +231,14 @@ namespace Gobchat.Module.Chat.Internal
     internal interface IChatMessageManagerConfig
     {
         IAutotranslateProvider AutotranslateProvider { get; set; }
-        ChatChannel[] VisibleChannels { get; set; }
-        ChatChannel[] FormatChannels { get; set; }
-        ChatChannel[] MentionChannels { get; set; }
+        FFXIVChatChannel[] VisibleChannels { get; set; }
+        FFXIVChatChannel[] FormatChannels { get; set; }
+        FFXIVChatChannel[] MentionChannels { get; set; }
         string[] Mentions { get; set; }
         FormatConfig[] Formats { get; set; }
         bool DetecteEmoteInSayChannel { get; set; }
 
-        ChatChannel[] CutOffChannels { get; set; }
+        FFXIVChatChannel[] CutOffChannels { get; set; }
         bool EnableCutOff { get; set; }
         float CutOffDistance { get; set; }
         float FadeOutDistance { get; set; }
