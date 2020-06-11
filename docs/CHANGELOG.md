@@ -2,13 +2,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.7.0] - Unreleased
+## [1.7.0-1] - 2020.06.12
 - Chat commands: `info off`, `info on`
-  - `info off` will surpress any gobchat infos until turned back on via `info on` or restart of gobchat
+  - `info off` will suppress any gobchat info until turned back on via `info on` or restart of gobchat
 
 
 - Chat commands: `error off`, `error on`
-  - `error off` will surpress any gobchat errors until turned back on via `error on` or restart of gobchat
+  - `error off` will suppress any gobchat errors until turned back on via `error on` or restart of gobchat
 
 
 - Language selection dropdown in `Config / app`
