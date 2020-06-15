@@ -241,7 +241,7 @@ This may take a while on your first start of Gobchat.
 ### Gobchat doesn't start
 - Check `gobchat_debug.log`
   - An error like `System.IO.FileNotFoundException` in combination with `CefSharp.Core.dll` indicates a problem with CEF.
-    - There is a high probability that `Visual C++ Redistributable` is missing. Check [Dependencies](#dependencies).
+    - There is a good chance that `Visual C++ Redistributable` is missing. Check [Dependencies](#dependencies).
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (AGPL-3.0-only) as published by the Free Software Foundation, version 3.
