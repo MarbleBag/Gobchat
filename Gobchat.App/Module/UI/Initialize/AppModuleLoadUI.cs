@@ -84,9 +84,16 @@ namespace Gobchat.Module.UI
 
         private void Browser_BrowserLoadPage(object sender, Gobchat.UI.Web.BrowserLoadPageEventArgs e)
         {
-            Browser_OnLoadPage_InjectEnums();
-            Browser_OnLoadPage_InjectDefaultConfig();
-            Browser_OnloadPage_InjectKeyCodes();
+            try
+            {
+                Browser_OnLoadPage_InjectEnums();
+                Browser_OnLoadPage_InjectDefaultConfig();
+                Browser_OnloadPage_InjectKeyCodes();
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex, "Error in browser load page");
+            }
         }
 
         private void Browser_OnloadPage_InjectKeyCodes()
@@ -123,11 +130,38 @@ namespace Gobchat.Module.UI
         {
             _browserAPIManager.ExecuteGobchatJavascript(builder =>
             {
-                builder.Append("Gobchat.ChannelEnum = ");
-                builder.AppendLine(typeof(FFXIVChatChannel).EnumToJson(s => s.ToUpperInvariant()));
-
                 builder.Append("Gobchat.MessageSegmentEnum = ");
                 builder.AppendLine(typeof(MessageSegmentType).EnumToJson(s => s.ToUpperInvariant()));
+            });
+
+            _browserAPIManager.ExecuteGobchatJavascript(builder =>
+            {
+                builder.Append("Gobchat.ChannelEnum = ");
+                builder.AppendLine(typeof(ChatChannel).EnumToJson(s => s.ToUpperInvariant()));
+            });
+
+            _browserAPIManager.ExecuteGobchatJavascript(builder =>
+            {
+                var channels = GobchatChannelMapping.GetAllChannels();
+
+                var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+
+                builder.AppendLine("Gobchat.Channels = {");
+
+                for (var i = 0; i < channels.Count; ++i)
+                {
+                    var channel = channels[i];
+                    var name = channel.ChatChannel.ToString().ToUpperInvariant();
+                    var jsonObject = Newtonsoft.Json.JsonConvert.SerializeObject(channel, settings);
+                    builder.Append("\"").Append(name).Append("\": ").Append(jsonObject);
+                    if (i + 1 < channels.Count)
+                        builder.AppendLine(",");
+                    else
+                        builder.AppendLine();
+                }
+
+                builder.AppendLine("}");
             });
         }
 

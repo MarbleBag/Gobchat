@@ -40,7 +40,7 @@ namespace Gobchat.Core.Config
 
             do
             {
-                var upgrader = _upgrader.Where(e => e.MinVersion > version).FirstOrDefault();
+                var upgrader = _upgrader.Where(e => e.MinVersion >= version && e.MaxVersion <= version).FirstOrDefault(); //TODO select best upgrader
                 if (upgrader == null)
                     break;
 
@@ -87,6 +87,7 @@ namespace Gobchat.Core.Config
     internal interface IConfigUpgradeStep
     {
         int MinVersion { get; }
+        int MaxVersion { get; }
         int TargetVersion { get; }
 
         JObject Upgrade(JToken jToken);

@@ -72,8 +72,10 @@
 
         (function (undefined) {
             const channels = [
+                { channel: null, translationId: "main.chat.channel.general", styleId: "style.channel.base" },
                 { label: "general", channelEnum: null, styleId: "style.channel.base" },
 
+                { channel: Gobchat.Channels.SAY, styleId: "style.channel.base" },
                 { label: "say", channelEnum: "SAY", styleId: "style.channel.say" },
                 { label: "emote", channelEnum: "EMOTE", styleId: "style.channel.emote" },
                 { label: "yell", channelEnum: "YELL", styleId: "style.channel.yell" },
@@ -115,7 +117,8 @@
 
             const table = $("#cchannel_channels > tbody")
             const rowTemplate = $('#cchannel_template_channelentry')
-            channels.forEach((entry) => {
+
+            function buildChannelEntry(channelData) {
                 const rowEntry = $(rowTemplate.html()).appendTo(table)
 
                 const lblName = rowEntry.find(".entry-label")
@@ -128,14 +131,15 @@
                 const clrSelectorBG = rowEntry.find(".entry-color-background")
                 const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
-                lblName.attr("data-gob-locale-text", `main.chat.channel.${entry.label}`)
-                lblName.attr("data-gob-locale-title", `main.chat.channel.${entry.label}.tooltip`)
+                lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
+                lblName.attr("data-gob-locale-title", `${channelData.translationId}.tooltip`)
+
                 GobConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
                 GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
                 GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
                 GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
 
-                const channelEnums = [].concat(entry.channelEnum || []).map(e => Gobchat.ChannelEnum[e])
+                const channelEnums = [].concat(channelData.chatChannel || [])
                 if (channelEnums.length === 0) {
                     chkVisible.hide()
                     chkMention.hide()
@@ -148,12 +152,12 @@
                     GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
                 }
 
-                if (entry.styleId === undefined || entry.styleId === null) {
+                if (channelData.configId === null) {
                     clrSelectorFG.parent().hide()
                     clrSelectorBG.parent().hide()
                 } else {
-                    GobConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
-                    GobConfigHelper.setConfigKey(clrSelectorBG, entry.styleId + ".background-color")
+                    GobConfigHelper.setConfigKey(clrSelectorFG, channelData.configId + ".color")
+                    GobConfigHelper.setConfigKey(clrSelectorBG, channelData.configId + ".background-color")
 
                     GobConfigHelper.makeColorSelector(clrSelectorFG)
                     GobConfigHelper.makeColorSelector(clrSelectorBG)
@@ -166,6 +170,19 @@
                     btnResetFG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorFG)))
                     btnResetBG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorBG)))
                 }
+            }
+
+            buildChannelEntry({
+                translationId: "main.chat.channel.general",
+                configId: "style.channel.base",
+                relevant: true
+            })
+
+            Object.entries(Gobchat.Channels).forEach((entry) => {
+                const channelData = entry[1]
+                if(!channelData.relevant)
+                    return
+                buildChannelEntry(channelData)
             })
 
             binding.initialize()

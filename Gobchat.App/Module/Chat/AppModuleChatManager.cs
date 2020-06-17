@@ -17,10 +17,7 @@ using System.Linq;
 using Gobchat.Core.Chat;
 using Gobchat.Core.Config;
 using Gobchat.Core.Runtime;
-using Gobchat.Memory;
 using System.Threading;
-using Gobchat.Core.Resource;
-using System.Globalization;
 using Gobchat.Module.Chat.Internal;
 using Newtonsoft.Json.Linq;
 using Gobchat.Module.Actor;
@@ -73,6 +70,7 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
             _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
+            _configManager.AddPropertyChangeListener("behaviour.mentions.userCanTriggerMention", true, true, ConfigManager_UpdateUserMentionProperties);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -84,6 +82,7 @@ namespace Gobchat.Module.Chat
         {
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChannelProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateAutodetectProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUserMentionProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateFormaterProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
@@ -146,15 +145,20 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateChannelProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (FFXIVChatChannel)i).ToArray();
-            _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (FFXIVChatChannel)i).ToArray();
-            _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (FFXIVChatChannel)i).ToArray();
-            _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (FFXIVChatChannel)i).ToArray();
+            _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
+            _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (ChatChannel)i).ToArray();
         }
 
         private void ConfigManager_UpdateAutodetectProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
             _chatManager.Config.DetecteEmoteInSayChannel = config.GetProperty<bool>("behaviour.autodetectEmoteInSay");
+        }
+
+        private void ConfigManager_UpdateUserMentionProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            _chatManager.Config.ExcludeUserMention = !config.GetProperty<bool>("behaviour.mentions.userCanTriggerMention");
         }
 
         private void ConfigManager_UpdateFormaterProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)

@@ -29,6 +29,8 @@ namespace Gobchat.Module.Chat
 
         void EnqueueMessage(DateTime timestamp, FFXIVChatChannel channel, string source, string message);
 
+        void EnqueueMessage(DateTime timestamp, ChatChannel channel, string source, string message);
+
         void EnqueueMessage(SystemMessageType type, string message);
 
         void UpdateManager();

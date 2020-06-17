@@ -12,9 +12,7 @@
  *******************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Gobchat.Core.Chat;
 using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
@@ -41,6 +39,8 @@ namespace Gobchat.Core.Chat
         private readonly ChatMessageMentionFinder _mentionFinder = new ChatMessageMentionFinder();
 
         public bool DetecteEmoteInSayChannel { get; set; }
+
+        public bool ExcludeUserMention { get; set; }
 
         public ChatChannel[] FormatChannels
         {
@@ -69,12 +69,6 @@ namespace Gobchat.Core.Chat
         public ChatMessageBuilder()
         {
             _mentionFinder.MessageSegmentType = MessageSegmentType.Mention;
-        }
-
-        public ChatMessage BuildChatMessage(CleanedChatlogItem message)
-        {
-            var channelData = ChannelData.GetChannel(message.Channel);
-            return BuildChatMessage(message.Timestamp, channelData.ChatChannel, message.Source, message.Message);
         }
 
         public ChatMessage BuildChatMessage(DateTime time, ChatChannel channel, string source, string message)
@@ -157,7 +151,11 @@ namespace Gobchat.Core.Chat
                 }
             }
 
-            if (!chatMessage.Source.IsUser && _mentionChannels.Contains(chatMessage.Channel))
+            var scanForMentions =
+                !(ExcludeUserMention && chatMessage.Source.IsUser) &&
+                _mentionChannels.Contains(chatMessage.Channel);
+
+            if (scanForMentions)
             {
                 _mentionFinder.MarkMentions(chatMessage);
                 chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.Mention);

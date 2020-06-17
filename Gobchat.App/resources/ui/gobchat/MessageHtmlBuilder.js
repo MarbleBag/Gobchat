@@ -30,8 +30,8 @@ var Gobchat = (function (Gobchat) {
     function findFirstMatchingGroup(config, message) {
         if (message.source === null || message.source.original === null) return null
         switch (message.channel) {
-            case ChannelEnum.TELL_SEND:
-            case ChannelEnum.TELL_RECIEVE:
+            case ChannelEnum.TELLSEND:
+            case ChannelEnum.TELLRECIEVE:
                 return null
         }
 
@@ -107,12 +107,12 @@ var Gobchat = (function (Gobchat) {
     function getChannelCSSClass(message) {
         switch (message.channel) {
             case ChannelEnum.SAY: return "message-body-say"
-            case ChannelEnum.GOBCHAT_INFO: return "message-body-gobchatinfo"
-            case ChannelEnum.GOBCHAT_ERROR: return "message-body-gobchaterror"
+            case ChannelEnum.GOBCHATINFO: return "message-body-gobchatinfo"
+            case ChannelEnum.GOBCHATERROR: return "message-body-gobchaterror"
             case ChannelEnum.EMOTE: return "message-body-emote"
-            case ChannelEnum.ANIMATED_EMOTE: return "message-body-animated-emote"
-            case ChannelEnum.TELL_SEND: return "message-body-tellsend"
-            case ChannelEnum.TELL_RECIEVE: return "message-body-tellrecieve"
+            case ChannelEnum.ANIMATEDEMOTE: return "message-body-animatedemote"
+            case ChannelEnum.TELLSEND: return "message-body-tellsend"
+            case ChannelEnum.TELLRECIEVE: return "message-body-tellrecieve"
             case ChannelEnum.GUILD: return "message-body-guild"
             case ChannelEnum.YELL: return "message-body-yell"
             case ChannelEnum.SHOUT: return "message-body-shout"
@@ -127,20 +127,17 @@ var Gobchat = (function (Gobchat) {
             case ChannelEnum.LINKSHELL_6: return "message-body-linkshell-6"
             case ChannelEnum.LINKSHELL_7: return "message-body-linkshell-7"
             case ChannelEnum.LINKSHELL_8: return "message-body-linkshell-8"
-            case ChannelEnum.WORLD_LINKSHELL_1: return "message-body-worldlinkshell-1"
-            case ChannelEnum.WORLD_LINKSHELL_2: return "message-body-worldlinkshell-2"
-            case ChannelEnum.WORLD_LINKSHELL_3: return "message-body-worldlinkshell-3"
-            case ChannelEnum.WORLD_LINKSHELL_4: return "message-body-worldlinkshell-4"
-            case ChannelEnum.WORLD_LINKSHELL_5: return "message-body-worldlinkshell-5"
-            case ChannelEnum.WORLD_LINKSHELL_6: return "message-body-worldlinkshell-6"
-            case ChannelEnum.WORLD_LINKSHELL_7: return "message-body-worldlinkshell-7"
-            case ChannelEnum.WORLD_LINKSHELL_8: return "message-body-worldlinkshell-8"
+            case ChannelEnum.CROSSWORLDLINKSHELL_1: return "message-body-crossworldlinkshell-1"
+            case ChannelEnum.CROSSWORLDLINKSHELL_2: return "message-body-crossworldlinkshell-2"
+            case ChannelEnum.CROSSWORLDLINKSHELL_3: return "message-body-crossworldlinkshell-3"
+            case ChannelEnum.CROSSWORLDLINKSHELL_4: return "message-body-crossworldlinkshell-4"
+            case ChannelEnum.CROSSWORLDLINKSHELL_5: return "message-body-crossworldlinkshell-5"
+            case ChannelEnum.CROSSWORLDLINKSHELL_6: return "message-body-crossworldlinkshell-6"
+            case ChannelEnum.CROSSWORLDLINKSHELL_7: return "message-body-crossworldlinkshell-7"
+            case ChannelEnum.CROSSWORLDLINKSHELL_8: return "message-body-crossworldlinkshell-8"
             case ChannelEnum.ERROR: return "message-body-error"
-            case ChannelEnum.NPC_TALK:
-            case ChannelEnum.NPC_DIALOGUE: return "message-body-npc-dialog"
-            case ChannelEnum.RANDOM_SELF:
-            case ChannelEnum.RANDOM_PARTY:
-            case ChannelEnum.RANDOM_OTHER: return "message-body-roll"
+            case ChannelEnum.NPC_DIALOG: return "message-body-npc-dialog"
+            case ChannelEnum.RANDOM: return "message-body-random"
             default: return null
         }
     }
@@ -173,13 +170,13 @@ var Gobchat = (function (Gobchat) {
         const sourceName = formatSource(message.source)
 
         switch (message.channel) {
-            case ChannelEnum.GOBCHAT_INFO:
-            case ChannelEnum.GOBCHAT_ERROR: return "[" + sourceName + "]"
+            case ChannelEnum.GOBCHATINFO:
+            case ChannelEnum.GOBCHATERROR: return "[" + sourceName + "]"
             case ChannelEnum.ECHO: return "Echo:"
             case ChannelEnum.EMOTE: return sourceName
-            case ChannelEnum.TELL_SEND: return "&gt;&gt; " + sourceName + ":"
-            case ChannelEnum.TELL_RECIEVE: return sourceName + " &gt;&gt;"
-            case ChannelEnum.ANIMATED_EMOTE: return null //source is set, but the animation message already contains the source name
+            case ChannelEnum.TELLSEND: return "&gt;&gt; " + sourceName + ":"
+            case ChannelEnum.TELLRECIEVE: return sourceName + " &gt;&gt;"
+            case ChannelEnum.ANIMATEDEMOTE: return null //source is set, but the animation message already contains the source name
             case ChannelEnum.GUILD: return "[FC]&lt;" + sourceName + "&gt;"
             case ChannelEnum.PARTY: return "(" + sourceName + ")"
             case ChannelEnum.ALLIANCE: return "&lt;" + sourceName + "&gt;"
@@ -191,16 +188,16 @@ var Gobchat = (function (Gobchat) {
             case ChannelEnum.LINKSHELL_6: return "[LS6]&lt;" + sourceName + "&gt;"
             case ChannelEnum.LINKSHELL_7: return "[LS7]&lt;" + sourceName + "&gt;"
             case ChannelEnum.LINKSHELL_8: return "[LS8]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_1: return "[CWLS1]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_2: return "[CWLS2]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_3: return "[CWLS3]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_4: return "[CWLS4]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_5: return "[CWLS5]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_6: return "[CWLS6]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_7: return "[CWLS7]&lt;" + sourceName + "&gt;"
-            case ChannelEnum.WORLD_LINKSHELL_8: return "[CWLS8]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_1: return "[CWLS1]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_2: return "[CWLS2]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_3: return "[CWLS3]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_4: return "[CWLS4]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_5: return "[CWLS5]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_6: return "[CWLS6]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_7: return "[CWLS7]&lt;" + sourceName + "&gt;"
+            case ChannelEnum.CROSSWORLDLINKSHELL_8: return "[CWLS8]&lt;" + sourceName + "&gt;"
             default:
-                if (sourceName != null) {
+                if (sourceName !== null && sourceName !== undefined) {
                     return sourceName + ":"
                 }
         }

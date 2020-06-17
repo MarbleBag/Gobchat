@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using CefSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -39,7 +38,7 @@ namespace Gobchat.UI.Web
             {
                 _stringbuilder.Append("document.dispatchEvent(new CustomEvent('");
                 _stringbuilder.Append(evt.EventName);
-                _stringbuilder.Append("', { detail: ");
+                _stringbuilder.Append("', { \"detail\": ");
                 JsonSerializer.Serialize(JsonWriter, evt);
                 _stringbuilder.Append(" }));");
                 string result = _stringbuilder.ToString();
@@ -51,6 +50,14 @@ namespace Gobchat.UI.Web
         public JToken Deserialize(string json)
         {
             return JToken.Parse(json);
+        }
+
+        public string SerializeObject(object obj)
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, settings);
         }
 
         public T Deserialize<T>(string json)

@@ -159,15 +159,17 @@
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
+    <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
+    <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v16.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v1700.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v1701.cs" />
     <Compile Include="Core\Config\Exceptions\SynchronizationException.cs" />
     <Compile Include="Core\Resource\IResourceBundle.cs" />
     <Compile Include="Core\Resource\ResourceManagerResourceBundle.cs" />
     <Compile Include="Core\Runtime\GobchatContext.cs" />
     <Compile Include="Core\Util\Extension\BinarySearchExtension.cs" />
-    <Compile Include="Core\Util\ResourcesFileHelper.cs" />
+    <Compile Include="Core\Util\StringFormat.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
     <Compile Include="Module\Language\ILocaleManager.cs" />

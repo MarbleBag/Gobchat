@@ -112,7 +112,8 @@ namespace Gobchat.Core.Config
             var loader = new JsonConfigLoader();
             loader.AddConverter(2, new ConfigUpgrader_v3());
             loader.AddConverter(3, new ConfigUpgrader_v16());
-            loader.AddConverter(16, new ConfigUpgrader_v1700());
+            loader.AddConverter(16, new ConfigUpgrader_v1701());
+            loader.AddConverter(1700, new ConfigUpgrader_v1701());
 
             //TODO add converters
             return loader;

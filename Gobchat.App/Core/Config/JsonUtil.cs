@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Util;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -22,16 +23,21 @@ namespace Gobchat.Core.Config
     {
         public enum MissingElementHandling
         {
-            Throw, // throw an exception, if the element can't be found
-            Create, // create an object, if the element can't be found
-            Stop // stop and return, if the element can't be found
+            Throw, // if the element can't be found, throw an exception
+            Create, // if the element can't be found, create an object and call action
+            Stop //  if the element can't be found, call action and pass null into it
         }
 
-        public delegate void Action(JObject node, string propertyName);
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="node">null if node wasn't found</param>
+        /// <param name="propertyName">last element of path if node is not null</param>
+        public delegate void WalkAction(JObject node, string propertyName);
 
-        public static void WalkJson(string key, JObject root, MissingElementHandling missingElementHandling, Action action)
+        public static void WalkJson(JObject root, string jsonPath, MissingElementHandling missingElementHandling, WalkAction action)
         {
-            var path = key.Split(new char[] { '.' });
+            var path = jsonPath.Split(new char[] { '.' });
             var node = root;
 
             for (int i = 0; i < path.Length - 1; ++i)
@@ -169,12 +175,12 @@ namespace Gobchat.Core.Config
             }
         }
 
-        public static (ISet<string>, bool) Write(JObject source, JObject destination)
+        public static (ISet<string>, bool) Overwrite(JObject source, JObject destination)
         {
-            return Write(source, destination, null);
+            return Overwrite(source, destination, null);
         }
 
-        public static (ISet<string>, bool) Write(JObject source, JObject destination, Func<string, bool> ignorePath)
+        public static (ISet<string>, bool) Overwrite(JObject source, JObject destination, Func<string, bool> ignorePath)
         {
             var path = new List<string>();
             var changed = new HashSet<string>();
@@ -291,7 +297,7 @@ namespace Gobchat.Core.Config
         public static bool CopyIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
         {
             JToken result = null;
-            JsonUtil.WalkJson(srcPath, src, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
             {
                 if (node == null)
                     return;
@@ -301,7 +307,7 @@ namespace Gobchat.Core.Config
             if (result == null)
                 return false;
 
-            JsonUtil.WalkJson(dstPath, dst, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            JsonUtil.WalkJson(dst, dstPath, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
             {
                 node[propertyName] = result.DeepClone();
             });
@@ -309,10 +315,29 @@ namespace Gobchat.Core.Config
             return true;
         }
 
+        public static bool MoveIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
+        {
+            if (CopyIfAvailable(src, srcPath, dst, dstPath))
+                return DeleteIfAvailable(src, srcPath);
+            return false;
+        }
+
+        public static bool DeleteIfAvailable(JObject src, string srcPath)
+        {
+            var result = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+                result = node.Remove(propertyName);
+            });
+            return result;
+        }
+
         public static bool SetIfAvailable(JObject src, string srcPath, JToken value)
         {
             var found = false;
-            JsonUtil.WalkJson(srcPath, src, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
             {
                 if (node == null)
                     return;
@@ -321,6 +346,76 @@ namespace Gobchat.Core.Config
                 found = true;
             });
             return found;
+        }
+
+        public static bool ReplaceArrayIfAvailable(JObject src, string srcPath, Func<JArray, JToken> converter)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
+            {
+                if (node == null)
+                    return;
+                if (node[key] is JArray array)
+                {
+                    found = true;
+                    node[key] = converter(array);
+                }
+            });
+            return found;
+        }
+
+        public static bool AccessIfAvailable(JObject src, string srcPath, Action<JToken> action)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
+            {
+                if (node == null)
+                    return;
+                action(node[key]);
+            });
+            return found;
+        }
+
+        public static bool TryConvertValueToEnum<TEnum>(JToken value, out TEnum e) where TEnum : struct, IConvertible
+        {
+            e = default;
+
+            if (!(value is JValue jValue))
+                return false;
+
+            if (jValue.Value == null)
+                return false;
+
+            if (jValue.Value is string)
+            {
+                if (Enum.TryParse<TEnum>((string)jValue.Value, true, out e))
+                    return true;
+                return false;
+            }
+
+            if (MathUtil.IsNumber(jValue.Value))
+            {
+                //why you do dis c#
+                e = (TEnum)(object)(int)(long)jValue.Value;
+                return true;
+            }
+
+            return false;
+        }
+
+        public static JArray ConvertArrayToEnum<TEnum>(JArray array) where TEnum : struct, IConvertible
+        {
+            var typeT = typeof(TEnum);
+            if (!typeT.IsEnum)
+                throw new ArgumentException("Not an enum");
+
+            var newArray = new JArray();
+            foreach (var element in array)
+            {
+                if (TryConvertValueToEnum(element, out TEnum enumValue))
+                    newArray.Add(enumValue);
+            }
+            return newArray;
         }
     }
 }
