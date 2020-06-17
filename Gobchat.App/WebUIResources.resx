@@ -174,6 +174,12 @@
   <data name="config.app.ckb.update.tooltip" xml:space="preserve">
     <value />
   </data>
+  <data name="config.app.ckb.usermention" xml:space="preserve">
+    <value>Show mentions in your own messages</value>
+  </data>
+  <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
+    <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.</value>
+  </data>
   <data name="config.app.fonts.label" xml:space="preserve">
     <value>Fonts</value>
   </data>
@@ -477,11 +483,59 @@ Press save afterwards.</value>
   <data name="main.chat.channel.alliance.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="main.chat.channel.animated-emote" xml:space="preserve">
+  <data name="main.chat.channel.animatedemote" xml:space="preserve">
     <value>Animated emote</value>
   </data>
-  <data name="main.chat.channel.animated-emote.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.animatedemote.tooltip" xml:space="preserve">
     <value />
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
+    <value>Cross-world Linkshell 1</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
+    <value>/cwl1</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
+    <value>Cross-world Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
+    <value>/cwl2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-3" xml:space="preserve">
+    <value>Cross-world Linkshell 3</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-3.tooltip" xml:space="preserve">
+    <value>/cwl3</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4" xml:space="preserve">
+    <value>Cross-world Linkshell 4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4.tooltip" xml:space="preserve">
+    <value>/cwl4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-5" xml:space="preserve">
+    <value>Cross-world Linkshell 5</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-5.tooltip" xml:space="preserve">
+    <value>/cwl5</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6" xml:space="preserve">
+    <value>Cross-world Linkshell 6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6.tooltip" xml:space="preserve">
+    <value>/cwl6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-7" xml:space="preserve">
+    <value>Cross-world Linkshell 7</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-7.tooltip" xml:space="preserve">
+    <value>/cwl7</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8" xml:space="preserve">
+    <value>Cross-world Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8.tooltip" xml:space="preserve">
+    <value>/cwl8</value>
   </data>
   <data name="main.chat.channel.echo" xml:space="preserve">
     <value>Echo</value>
@@ -507,16 +561,16 @@ Press save afterwards.</value>
   <data name="main.chat.channel.general.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="main.chat.channel.goberror" xml:space="preserve">
+  <data name="main.chat.channel.gobchaterror" xml:space="preserve">
     <value>Gobchat Errors</value>
   </data>
-  <data name="main.chat.channel.goberror.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.gobchaterror.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="main.chat.channel.gobinfo" xml:space="preserve">
+  <data name="main.chat.channel.gobchatinfo" xml:space="preserve">
     <value>Gobchat Infos</value>
   </data>
-  <data name="main.chat.channel.gobinfo.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.gobchatinfo.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="main.chat.channel.guild" xml:space="preserve">
@@ -525,52 +579,52 @@ Press save afterwards.</value>
   <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
     <value>/fc</value>
   </data>
-  <data name="main.chat.channel.linkshell1" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-1" xml:space="preserve">
     <value>Linkshell 1</value>
   </data>
-  <data name="main.chat.channel.linkshell1.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-1.tooltip" xml:space="preserve">
     <value>/l1</value>
   </data>
-  <data name="main.chat.channel.linkshell2" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-2" xml:space="preserve">
     <value>Linkshell 2</value>
   </data>
-  <data name="main.chat.channel.linkshell2.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-2.tooltip" xml:space="preserve">
     <value>/l2</value>
   </data>
-  <data name="main.chat.channel.linkshell3" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-3" xml:space="preserve">
     <value>Linkshell 3</value>
   </data>
-  <data name="main.chat.channel.linkshell3.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-3.tooltip" xml:space="preserve">
     <value>/l3</value>
   </data>
-  <data name="main.chat.channel.linkshell4" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-4" xml:space="preserve">
     <value>Linkshell 4</value>
   </data>
-  <data name="main.chat.channel.linkshell4.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-4.tooltip" xml:space="preserve">
     <value>/l4</value>
   </data>
-  <data name="main.chat.channel.linkshell5" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-5" xml:space="preserve">
     <value>Linkshell 5</value>
   </data>
-  <data name="main.chat.channel.linkshell5.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-5.tooltip" xml:space="preserve">
     <value>/l5</value>
   </data>
-  <data name="main.chat.channel.linkshell6" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-6" xml:space="preserve">
     <value>Linkshell 6</value>
   </data>
-  <data name="main.chat.channel.linkshell6.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-6.tooltip" xml:space="preserve">
     <value>/l6</value>
   </data>
-  <data name="main.chat.channel.linkshell7" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-7" xml:space="preserve">
     <value>Linkshell 7</value>
   </data>
-  <data name="main.chat.channel.linkshell7.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-7.tooltip" xml:space="preserve">
     <value>/l7</value>
   </data>
-  <data name="main.chat.channel.linkshell8" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-8" xml:space="preserve">
     <value>Linkshell 8</value>
   </data>
-  <data name="main.chat.channel.linkshell8.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.linkshell-8.tooltip" xml:space="preserve">
     <value>/l8</value>
   </data>
   <data name="main.chat.channel.npc-dialog" xml:space="preserve">
@@ -582,10 +636,10 @@ Press save afterwards.</value>
   <data name="main.chat.channel.party.tooltip" xml:space="preserve">
     <value>/p</value>
   </data>
-  <data name="main.chat.channel.roll" xml:space="preserve">
+  <data name="main.chat.channel.random" xml:space="preserve">
     <value>Random / Roll / Dice</value>
   </data>
-  <data name="main.chat.channel.roll.tooltip" xml:space="preserve">
+  <data name="main.chat.channel.random.tooltip" xml:space="preserve">
     <value>/random, /dice</value>
   </data>
   <data name="main.chat.channel.say" xml:space="preserve">
@@ -611,54 +665,6 @@ Press save afterwards.</value>
   </data>
   <data name="main.chat.channel.tellsend.tooltip" xml:space="preserve">
     <value />
-  </data>
-  <data name="main.chat.channel.worldlinkshell1" xml:space="preserve">
-    <value>Cross-world Linkshell 1</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell1.tooltip" xml:space="preserve">
-    <value>/cwl1</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell2" xml:space="preserve">
-    <value>Cross-world Linkshell 2</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell2.tooltip" xml:space="preserve">
-    <value>/cwl2</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell3" xml:space="preserve">
-    <value>Cross-world Linkshell 3</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell3.tooltip" xml:space="preserve">
-    <value>/cwl3</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell4" xml:space="preserve">
-    <value>Cross-world Linkshell 4</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell4.tooltip" xml:space="preserve">
-    <value>/cwl4</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell5" xml:space="preserve">
-    <value>Cross-world Linkshell 5</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell5.tooltip" xml:space="preserve">
-    <value>/cwl5</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell6" xml:space="preserve">
-    <value>Cross-world Linkshell 6</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell6.tooltip" xml:space="preserve">
-    <value>/cwl6</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell7" xml:space="preserve">
-    <value>Cross-world Linkshell 7</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell7.tooltip" xml:space="preserve">
-    <value>/cwl7</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell8" xml:space="preserve">
-    <value>Cross-world Linkshell 8</value>
-  </data>
-  <data name="main.chat.channel.worldlinkshell8.tooltip" xml:space="preserve">
-    <value>/cwl8</value>
   </data>
   <data name="main.chat.channel.yell" xml:space="preserve">
     <value>Yell</value>

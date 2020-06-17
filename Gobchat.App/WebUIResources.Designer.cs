@@ -232,6 +232,24 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show mentions in your own messages.
+        /// </summary>
+        internal static string config_app_ckb_usermention {
+            get {
+                return ResourceManager.GetString("config.app.ckb.usermention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
+        /// </summary>
+        internal static string config_app_ckb_usermention_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.usermention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fonts.
         /// </summary>
         internal static string config_app_fonts_label {
@@ -1130,18 +1148,162 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Animated emote.
         /// </summary>
-        internal static string main_chat_channel_animated_emote {
+        internal static string main_chat_channel_animatedemote {
             get {
-                return ResourceManager.GetString("main.chat.channel.animated-emote", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.animatedemote", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string main_chat_channel_animated_emote_tooltip {
+        internal static string main_chat_channel_animatedemote_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.animated-emote.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.animatedemote.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 1.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl1.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 3.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_3 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl3.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_3_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 4.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_4 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl4.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_4_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 5.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_5 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl5.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_5_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 6.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_6 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl6.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_6_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 7.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_7 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl7.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_7_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-world Linkshell 8.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_8 {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /cwl8.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_8_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8.tooltip", resourceCulture);
             }
         }
         
@@ -1220,36 +1382,36 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Gobchat Errors.
         /// </summary>
-        internal static string main_chat_channel_goberror {
+        internal static string main_chat_channel_gobchaterror {
             get {
-                return ResourceManager.GetString("main.chat.channel.goberror", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.gobchaterror", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string main_chat_channel_goberror_tooltip {
+        internal static string main_chat_channel_gobchaterror_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.goberror.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.gobchaterror.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Gobchat Infos.
         /// </summary>
-        internal static string main_chat_channel_gobinfo {
+        internal static string main_chat_channel_gobchatinfo {
             get {
-                return ResourceManager.GetString("main.chat.channel.gobinfo", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.gobchatinfo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string main_chat_channel_gobinfo_tooltip {
+        internal static string main_chat_channel_gobchatinfo_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.gobinfo.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.gobchatinfo.tooltip", resourceCulture);
             }
         }
         
@@ -1274,144 +1436,144 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 1.
         /// </summary>
-        internal static string main_chat_channel_linkshell1 {
+        internal static string main_chat_channel_linkshell_1 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell1", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l1.
         /// </summary>
-        internal static string main_chat_channel_linkshell1_tooltip {
+        internal static string main_chat_channel_linkshell_1_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell1.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-1.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 2.
         /// </summary>
-        internal static string main_chat_channel_linkshell2 {
+        internal static string main_chat_channel_linkshell_2 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell2", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l2.
         /// </summary>
-        internal static string main_chat_channel_linkshell2_tooltip {
+        internal static string main_chat_channel_linkshell_2_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell2.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-2.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 3.
         /// </summary>
-        internal static string main_chat_channel_linkshell3 {
+        internal static string main_chat_channel_linkshell_3 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell3", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l3.
         /// </summary>
-        internal static string main_chat_channel_linkshell3_tooltip {
+        internal static string main_chat_channel_linkshell_3_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell3.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-3.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 4.
         /// </summary>
-        internal static string main_chat_channel_linkshell4 {
+        internal static string main_chat_channel_linkshell_4 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell4", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-4", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l4.
         /// </summary>
-        internal static string main_chat_channel_linkshell4_tooltip {
+        internal static string main_chat_channel_linkshell_4_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell4.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-4.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 5.
         /// </summary>
-        internal static string main_chat_channel_linkshell5 {
+        internal static string main_chat_channel_linkshell_5 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell5", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-5", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l5.
         /// </summary>
-        internal static string main_chat_channel_linkshell5_tooltip {
+        internal static string main_chat_channel_linkshell_5_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell5.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-5.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 6.
         /// </summary>
-        internal static string main_chat_channel_linkshell6 {
+        internal static string main_chat_channel_linkshell_6 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell6", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-6", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l6.
         /// </summary>
-        internal static string main_chat_channel_linkshell6_tooltip {
+        internal static string main_chat_channel_linkshell_6_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell6.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-6.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 7.
         /// </summary>
-        internal static string main_chat_channel_linkshell7 {
+        internal static string main_chat_channel_linkshell_7 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell7", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-7", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l7.
         /// </summary>
-        internal static string main_chat_channel_linkshell7_tooltip {
+        internal static string main_chat_channel_linkshell_7_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell7.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-7.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 8.
         /// </summary>
-        internal static string main_chat_channel_linkshell8 {
+        internal static string main_chat_channel_linkshell_8 {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell8", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-8", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /l8.
         /// </summary>
-        internal static string main_chat_channel_linkshell8_tooltip {
+        internal static string main_chat_channel_linkshell_8_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.linkshell8.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.linkshell-8.tooltip", resourceCulture);
             }
         }
         
@@ -1445,18 +1607,18 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Random / Roll / Dice.
         /// </summary>
-        internal static string main_chat_channel_roll {
+        internal static string main_chat_channel_random {
             get {
-                return ResourceManager.GetString("main.chat.channel.roll", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.random", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to /random, /dice.
         /// </summary>
-        internal static string main_chat_channel_roll_tooltip {
+        internal static string main_chat_channel_random_tooltip {
             get {
-                return ResourceManager.GetString("main.chat.channel.roll.tooltip", resourceCulture);
+                return ResourceManager.GetString("main.chat.channel.random.tooltip", resourceCulture);
             }
         }
         
@@ -1529,150 +1691,6 @@ namespace Gobchat {
         internal static string main_chat_channel_tellsend_tooltip {
             get {
                 return ResourceManager.GetString("main.chat.channel.tellsend.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 1.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell1 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl1.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell1_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell1.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 2.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell2 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl2.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell2_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell2.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 3.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell3 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl3.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell3_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell3.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 4.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell4 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl4.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell4_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell4.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 5.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell5 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl5.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell5_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell5.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 6.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell6 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell6", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl6.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell6_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell6.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 7.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell7 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell7", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl7.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell7_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell7.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cross-world Linkshell 8.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell8 {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell8", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /cwl8.
-        /// </summary>
-        internal static string main_chat_channel_worldlinkshell8_tooltip {
-            get {
-                return ResourceManager.GetString("main.chat.channel.worldlinkshell8.tooltip", resourceCulture);
             }
         }
         
