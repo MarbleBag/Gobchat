@@ -1605,7 +1605,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Random / Roll / Dice.
+        ///   Looks up a localized string similar to Random.
         /// </summary>
         internal static string main_chat_channel_random {
             get {
@@ -1614,7 +1614,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /random, /dice.
+        ///   Looks up a localized string similar to /random, use /dice to roll in current channel.
         /// </summary>
         internal static string main_chat_channel_random_tooltip {
             get {

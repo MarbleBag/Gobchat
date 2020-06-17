@@ -637,10 +637,10 @@ Press save afterwards.</value>
     <value>/p</value>
   </data>
   <data name="main.chat.channel.random" xml:space="preserve">
-    <value>Random / Roll / Dice</value>
+    <value>Random</value>
   </data>
   <data name="main.chat.channel.random.tooltip" xml:space="preserve">
-    <value>/random, /dice</value>
+    <value>/random, use /dice to roll in current channel</value>
   </data>
   <data name="main.chat.channel.say" xml:space="preserve">
     <value>Say</value>
