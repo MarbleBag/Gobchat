@@ -45,6 +45,17 @@
                     </tr>
                     <tr>
                         <td>
+                            <label data-gob-locale-text="config.app.ckb.usermention"
+                                   data-gob-locale-title="config.app.ckb.usermention.tooltip"></label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="capp_userMention"
+                                   data-gob-configkey="behaviour.mentions.userCanTriggerMention"
+                                   data-gob-locale-title="config.app.ckb.usermention.tooltip" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label data-gob-locale-text="config.app.ckb.showtime"
                                    data-gob-locale-title="config.app.ckb.showtime.tooltip"></label>
                         </td>
@@ -455,6 +466,9 @@
             const ckbAutodetect = $("#capp_autodetectemote")
             GobConfigHelper.bindCheckbox(binding, ckbAutodetect)
 
+            const ckbUserMention = $("#capp_userMention")
+            GobConfigHelper.bindCheckbox(binding, ckbUserMention)
+
             const ckbTimestamp = $("#capp_showTimestamp")
             GobConfigHelper.bindCheckbox(binding, ckbTimestamp)
 
@@ -571,7 +585,7 @@
             // setup profile copy
             const allFields = [
                 dpdLanguage,
-                ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
+                ckbChatLog, ckbAutodetect, ckbUserMention, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
                 txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
                 txtFontFamily, dpdFontSize,
