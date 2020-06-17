@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Added
+- Checkbox in `Config / app` to set if you like to see your mentions in your own messages
+
 ## [1.7.0-1] - 2020.06.12
+### Added
 - Chat commands: `info off`, `info on`
   - `info off` will suppress any gobchat info until turned back on via `info on` or restart of gobchat
 
