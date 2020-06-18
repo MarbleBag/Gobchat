@@ -19,6 +19,17 @@
 
     <p>
         <div>
+            <label data-gob-locale-text="config.app.theme"></label>
+            <select id="capp_theme" data-gob-configkey="style.theme">
+                <option value="ffxiv_dark_style">FFXIV Dark</option>
+                <option value="ffxiv_light_style">FFXIV Light</option>
+                <option value="gobchat_style">Gobchat</option>
+            </select>
+        </div>
+    </p>
+
+    <p>
+        <div>
             <table>
                 <tbody>
                     <tr>
@@ -448,6 +459,9 @@
             const dpdLanguage = $("#capp_language")
             GobConfigHelper.bindElement(binding, dpdLanguage)
 
+            const dpdTheme = $("#capp_theme")
+            GobConfigHelper.bindElement(binding, dpdTheme)
+
             // setup checkboxes
             const ckbChatLog = $("#capp_makechatlog")
             GobConfigHelper.bindCheckbox(binding, ckbChatLog)
@@ -570,7 +584,7 @@
 
             // setup profile copy
             const allFields = [
-                dpdLanguage,
+                dpdLanguage, dpdTheme,
                 ckbChatLog, ckbAutodetect, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
                 txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
                 txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
