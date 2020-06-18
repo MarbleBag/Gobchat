@@ -1,0 +1,63 @@
+﻿/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+.gob-ffxivbox {
+}
+
+.gob-separator-horizontal {
+}
+
+.gob-separator-vertical {
+}
+
+.gob-column-navigation {
+    background-color: #f1f1f1;
+}
+
+    .gob-column-navigation > select {
+        padding: 6px;
+        width: 100%;
+        margin: unset;
+    }
+
+.gob-nav-element {
+    color: black;
+    margin: initial;
+    padding: 16px;
+}
+
+.gob-text {
+    text-shadow: unset;
+    color: unset;
+}
+
+.gob-selectable-element {
+    border-radius: unset;
+    color: black;
+}
+
+    .gob-selectable-element.active {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .gob-selectable-element:hover:not(.active) {
+        background-color: #555555;
+        color: white;
+    }
+
+    .gob-selectable-element > * {
+        text-shadow: unset;
+        color: unset;
+        font-size: unset;
+    }

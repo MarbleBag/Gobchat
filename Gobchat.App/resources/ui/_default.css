@@ -1,4 +1,17 @@
-﻿body, html {
+﻿/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+body, html {
     margin: 0;
     height: 100%;
     width: 100%;
@@ -12,23 +25,53 @@
 }
 
 .gob-chatbox-toolbar {
+    display: inline-flex;
 }
 
-    .gob-chatbox-toolbar > button {
-        background-color: #222;
-        border: none;
-        color: #c0c0c0;
-        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-        padding: 3px 3px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 12px;
-        background-image: linear-gradient(to bottom, #d0d0d0 0%, #505050 50%, #505050 70%, #a0a0a0 100%);
+.gob-chatbox-toolbar-left {
+    border-radius: 15px 15px 0px 0px;
+}
+
+.gob-chatbox-toolbar-right {
+    border-radius: 15px 15px 0px 0px;
+}
+
+.gob-chatbox-toolbar-element {
+    border-right: 1px solid black;
+}
+
+.gob-chatbox-toolbar-button {
+    -webkit-appearance: none;
+    background-color: #222;
+    border: none;
+    color: #c0c0c0;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    padding: 3px 3px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    background-image: linear-gradient(to bottom, #d0d0d0 0%, #505050 50%, #505050 70%, #a0a0a0 100%);
+}
+
+    .gob-chatbox-toolbar-button:hover {
+        background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
     }
 
-        .gob-chatbox-toolbar > button:hover {
-            background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
-        }
+.gob-chatbox-toolbar > button {
+    background-color: #222;
+    border: none;
+    color: #c0c0c0;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    padding: 3px 3px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    background-image: linear-gradient(to bottom, #d0d0d0 0%, #505050 50%, #505050 70%, #a0a0a0 100%);
+}
+
+    .gob-chatbox-toolbar > button:hover {
+        background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
+    }
 
 .gob-chatbox-content {
     display: flex;
@@ -84,32 +127,21 @@
     }
 
 .gob-ffxivbox {
-    background-image: url("graphics/noise.png"), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
     height: 100%;
     width: 100%;
     overflow: hidden;
 }
 
 .gob-separator-horizontal {
-    border: .5px solid black;
-    margin: 5px 10px 5px 10px;
-    box-shadow: 0px 1px 1.5px -0.3px white;
 }
 
 .gob-separator-vertical {
-    border: .5px solid black;
-    margin: 1px 3px 1px 3px;
-    box-shadow: 1px 0px 1.5px -0.3px white;
 }
 
 .gob-separator-gold-vertical {
-    border: .7px solid #cc9f5e;
-    margin: 1px 3px 1px 3px;
 }
 
-.gob-regular-text {
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-    color: #ded2b8;
+.gob-text {
 }
 
 .gob-column-navigation {
@@ -127,36 +159,21 @@
 .gob-nav-element {
     display: block;
     margin: 2px 0px 2px 5px;
-    /* border-radius: 20px; */
 }
-
-/*
-.gob-nav-element.active {
-    background-image: linear-gradient(135deg, #e4e4af, #e4e4af5c, #ffff0000 80%);
-}
-
-.gob-nav-element:hover:not(.active) {
-    background-image: linear-gradient(135deg, #150807, #1508075c, #ffff0000 80%);
-}
-*/
 
 .gob-selectable-element {
     display: block;
     border-radius: 20px;
+    padding-left: 12px;
 }
 
     .gob-selectable-element.active {
-        background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
     }
 
     .gob-selectable-element:hover:not(.active) {
-        background-image: linear-gradient(135deg, #131313, #ffff0000 80%);
     }
 
     .gob-selectable-element > * {
-        margin: 0px 0px 0px 12px;
-        text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-        color: #ded2b8;
         font-size: larger;
     }
 
@@ -173,6 +190,15 @@
     .gob-nav-panel-content.active {
         display: block;
     }
+
+.gob-config-group {
+}
+
+.gob-config-head1 {
+}
+
+.gob-config-head2 {
+}
 
 .gob-button-primar2 {
     cursor: pointer;
@@ -241,15 +267,7 @@ border-image: initial;
     }
 
 input[type="checkbox"] {
-    -webkit-appearance: none;
-    background-image: url("graphics/checkbox.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
 }
 
     input[type="checkbox"]:checked {
-        background-image: url("graphics/checkbox-checked.png");
     }
