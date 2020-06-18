@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Added
+- Theme selection in `Config / App`
+  - Change the config dialog style
+
 ## [1.7.0] - Unreleased
 - Chat commands: `info off`, `info on`
   - `info off` will surpress any gobchat infos until turned back on via `info on` or restart of gobchat
@@ -13,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 
 
-- Language selection dropdown in `Config / app`
+- Language selection dropdown in `Config / App`
   - Parts of gobchat were translated into german
 
 
