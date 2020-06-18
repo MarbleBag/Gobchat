@@ -288,6 +288,7 @@
     }
   },
   "style": {
+    "theme": "ffxiv_dark_style",
     "chatbox": {
       "background-color": "rgba(20, 20, 20, 0.95)"
     },
