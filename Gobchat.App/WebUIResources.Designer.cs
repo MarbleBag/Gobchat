@@ -547,6 +547,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        internal static string config_app_theme {
+            get {
+                return ResourceManager.GetString("config.app.theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Background color.
         /// </summary>
         internal static string config_channel_tbl_backgroundcolor {

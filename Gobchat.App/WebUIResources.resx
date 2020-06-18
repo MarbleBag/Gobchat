@@ -279,6 +279,9 @@
   <data name="config.app.search.results.tooltip" xml:space="preserve">
     <value />
   </data>
+  <data name="config.app.theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
   <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
     <value>Background color</value>
   </data>
