@@ -232,6 +232,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string config_app_ckblabel {
+            get {
+                return ResourceManager.GetString("config.app.ckblabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fonts.
         /// </summary>
         internal static string config_app_fonts_label {

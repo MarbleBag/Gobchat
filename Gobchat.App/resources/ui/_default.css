@@ -141,7 +141,13 @@ body, html {
 .gob-separator-gold-vertical {
 }
 
-.gob-text {
+.gob-text-head-1 {
+}
+
+.gob-text-head-2 {
+}
+
+.gob-text-error {
 }
 
 .gob-column-navigation {
@@ -192,12 +198,48 @@ body, html {
     }
 
 .gob-config-group {
+    margin: 10px 0px 10px 5px;
 }
 
-.gob-config-head1 {
+.gob-config-group-label {
 }
 
-.gob-config-head2 {
+.gob-config-group-item {
+    margin-left: 10px;
+}
+
+    .gob-config-group-item .gob-config-group-item {
+        margin-left: 25px;
+    }
+
+    .gob-config-group-item > * {
+        display: flex;
+    }
+
+        .gob-config-group-item > * > * ~ * {
+            margin-left: 5px;
+        }
+
+.gob-config-header-1 {
+}
+
+    .gob-config-header-1 + .gob-separator-horizontal {
+        margin-top: 0px;
+    }
+
+.gob-dropdown {
+    width: -webkit-fill-available;
+}
+
+.gob-input {
+    width: -webkit-fill-available;
+    font-weight: bold;
+}
+
+.gob-button-reset {
+}
+
+.gob-button-delete {
 }
 
 .gob-button-primar2 {
@@ -271,3 +313,11 @@ input[type="checkbox"] {
 
     input[type="checkbox"]:checked {
     }
+
+td > select:last-child {
+    width: 100%;
+}
+
+td > input:last-child {
+    width: 100%
+}

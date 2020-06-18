@@ -11,6 +11,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+html {
+    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    color: #ded2b8;
+}
+
 .gob-ffxivbox {
     background-image: url("../graphics/noise.png"), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
 }
@@ -32,9 +37,9 @@
     margin: 1px 3px 1px 3px;
 }
 
-.gob-text {
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-    color: #ded2b8;
+.gob-text-error {
+    color: crimson;
+    font-weight: bold;
 }
 
 .gob-nav-element {
@@ -51,6 +56,29 @@
 
     .gob-selectable-element:hover:not(.active) {
         background-image: linear-gradient(135deg, #131313, #ffff0000 80%);
+    }
+
+.gob-config-group .gob-config-group-label {
+    color: #cccccc;
+    font-size: 18px;
+    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+}
+
+.gob-config-header-1 {
+    min-height: 30px;
+    max-height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: 15px;
+    font-size: 24px;
+    z-index: 1;
+    color: #cccccc;
+    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+}
+
+    .gob-config-header-1 + .gob-separator-horizontal {
+        margin-top: -2px;
     }
 
 .gob-button-primar {
