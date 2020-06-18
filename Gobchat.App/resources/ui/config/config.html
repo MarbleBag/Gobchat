@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="../gobui_default.css">
     <link rel="stylesheet" href="config.css">
     -->
+
     <link rel="stylesheet" href="../_default.css">
+    <link rel="stylesheet" href="" id="cmain_style_theme" />
 
     <script src="config.js"></script>
     <script src="../gobchat/gob-databinding.js"></script>
@@ -34,6 +36,7 @@
 
         window.gobconfig = new Gobchat.GobchatConfig()
         window.gobconfig.loadFromLocalStore()
+
         //}
     </script>
 
@@ -45,37 +48,37 @@
                 <select id="cmain_profileselect"></select>
                 <div class="gob-separator-horizontal"></div>
                 <div class="gob-nav-element gob-selectable-element active" data-gob-nav-target="config_app.html">
-                    <div class="gob-tab-button" data-gob-locale-text="config.main.nav.app"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.app"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_mentions.html">
-                    <div data-gob-locale-text="config.main.nav.mentions"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.mentions"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_profiles.html">
-                    <div  data-gob-locale-text="config.main.nav.profiles"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.profiles"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_channel.html">
-                    <div  data-gob-locale-text="config.main.nav.channels"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.channels"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_groups.html">
-                    <div  data-gob-locale-text="config.main.nav.groups"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.groups"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_roleplay.html">
-                    <div  data-gob-locale-text="config.main.nav.roleplay"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.roleplay"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="about.html">
-                    <div  data-gob-locale-text="config.main.nav.about"></div>
+                    <div class="gob-text" data-gob-locale-text="config.main.nav.about"></div>
                 </div>
                 <div class="gob-separator-horizontal"></div>
                 <div id="cmain_saveconfig" class="gob-button-primar">
-                    <i class="fa fa-save"></i>
+                    <!--<i class="fa fa-save"></i>-->
                     <span data-gob-locale-text="config.main.nav.save"></span>
                 </div>
                 <div id="cmain_saveandexitconfig" class="gob-button-primar">
-                    <i class="fa fa-save"></i>
+                    <!--<i class="fa fa-save"></i>-->
                     <span data-gob-locale-text="config.main.nav.saveandexit"></span>
                 </div>
                 <div id="cmain_cancelconfig" class="gob-button-primar">
-                    <i class="fas fa-trash-alt"></i>
+                    <!--<i class="fas fa-trash-alt"></i>-->
                     <span data-gob-locale-text="config.main.nav.cancel"></span>
                 </div>
             </div>
@@ -100,14 +103,14 @@
 
         // import { buildNavigationElement } from "../gobchat/gob-navbar"
         jQuery(function ($) {
-            $("#main_saveconfig").on("click", function (e) {
+            $("#cmain_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
                 window.saveConfig()
                 //window.close()
                 //window.opener.postMessage("Done", '*')
             });
 
-            $("#main_saveandexitconfig").on("click", function (e) {
+            $("#cmain_saveandexitconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
                 window.saveConfig()
                 //window.gobresult = "save"
@@ -115,7 +118,7 @@
                 //window.opener.postMessage("Done", '*')
             });
 
-            $("#main_resetconfig").on("click", function (e) {
+            $("#cmain_resetconfig").on("click", function (e) {
                 if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
                     window.gobconfig.resetProfile()
                     window.gobconfig.saveToLocalStore()
@@ -123,7 +126,7 @@
                 }
             });
 
-            $("#main_cancelconfig").on("click", function (e) {
+            $("#cmain_cancelconfig").on("click", function (e) {
                 if (window.confirm("Cancel? Any unsaved changes will be lost.")) {
                     //window.gobresult = "cancel"
                     window.close()
@@ -131,7 +134,7 @@
                 }
             });
 
-            $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
+            // $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
 
             {
                 (async () => {
@@ -141,10 +144,16 @@
                     await makeNavigationElement($("#cmain_navbar"))
 
                     const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+
                     generalBinding.bindConfigListener("behaviour.language", (value) => {
                         window.goblocale.setLocale(value)
                         window.goblocale.updateElement($(document))
                     })
+
+                    generalBinding.bindConfigListener("style.theme", (value) => {
+                        $("#cmain_style_theme").attr("href", `../styles/${value}.css`)
+                    })
+
                     generalBinding.initialize()
                 })()
             }
