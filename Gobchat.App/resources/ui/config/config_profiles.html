@@ -91,9 +91,7 @@
             $("#cprofiles_copyprofiledialog").hide();
 
             //setup profile selector
-            const profileSelectionDropdown = $("#main_profileselect")
-            //profileSelectionDropdown.attr("title", "Set your active profile.")
-
+            const profileSelectionDropdown = $("#cmain_profileselect")
             profileSelectionDropdown.on("change", function (event) {
                 const profileId = event.target.value
                 gobconfig.activeProfile = profileId
