@@ -40,7 +40,8 @@ namespace Sharlayan.Utilities
             }
             else
             {
-                APIResponseToDictionary(actions, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/actions.json");
+                // It will be either there or not
+                // APIResponseToDictionary(actions, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/actions.json");
             }
         }
 
@@ -75,7 +76,8 @@ namespace Sharlayan.Utilities
             }
             else
             {
-                APIResponseToDictionary(statusEffects, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/statuses.json");
+                // It will be either there or not
+                // APIResponseToDictionary(statusEffects, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/statuses.json");
             }
         }
 
@@ -106,7 +108,8 @@ namespace Sharlayan.Utilities
             }
             else
             {
-                APIResponseToDictionary(mapInfos, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/zones.json");
+                // It will be either there or not
+                // APIResponseToDictionary(mapInfos, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/zones.json");
             }
         }
 
