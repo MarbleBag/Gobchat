@@ -228,12 +228,16 @@ body, html {
     }
 
 .gob-dropdown {
-    width: -webkit-fill-available;
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
 }
 
 .gob-input {
-    width: -webkit-fill-available;
+    /*width: -webkit-fill-available;*/
     font-weight: bold;
+    padding-left: 5px;
 }
 
 .gob-button-reset {
@@ -307,6 +311,11 @@ border-image: initial;
         position: relative;
         top: 1px;
     }
+
+[disabled], .disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
 
 input[type="checkbox"] {
 }
