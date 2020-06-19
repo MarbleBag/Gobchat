@@ -44,7 +44,7 @@ if(-Not (Test-Path $releaseFolder)){
 
 #Deletes all folders except for the ones named in #allowedFolders
 Write-Host "Deleting all the stuff no one cares about ..."
-$allowedFolders = @("resources", "de", "en")
+$allowedFolders = @("resources", "sharlayan", "de", "en")
 Get-ChildItem -Path $releaseFolder | 
 	Where-Object {$_.PsIsContainer -eq $true} |
 	ForEach-Object {
