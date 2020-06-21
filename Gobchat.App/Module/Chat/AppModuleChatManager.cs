@@ -128,32 +128,64 @@ namespace Gobchat.Module.Chat
 
         private void UpdateChatManager()
         {
-            if (_memoryManager.IsConnected)
+            try
             {
-                var chatlogs = _memoryManager.GetNewestChatlog();
-                foreach (var chatlog in chatlogs)
-                    _chatManager.EnqueueMessage(chatlog);
-            }
+                if (_memoryManager.IsConnected)
+                {
+                    var chatlogs = _memoryManager.GetNewestChatlog();
+                    foreach (var chatlog in chatlogs)
+                        _chatManager.EnqueueMessage(chatlog);
+                }
 
-            _chatManager.UpdateManager();
+                _chatManager.UpdateManager();
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateChatInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _updateInterval = config.GetProperty<long>("behaviour.chat.updateInterval");
+            try
+            {
+                _updateInterval = config.GetProperty<long>("behaviour.chat.updateInterval");
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateChannelProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
-            _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
-            _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
-            _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (ChatChannel)i).ToArray();
+            try
+            {
+                _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
+                _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
+                _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
+                _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (ChatChannel)i).ToArray();
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateAutodetectProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.DetecteEmoteInSayChannel = config.GetProperty<bool>("behaviour.autodetectEmoteInSay");
+            try
+            {
+                _chatManager.Config.DetecteEmoteInSayChannel = config.GetProperty<bool>("behaviour.autodetectEmoteInSay");
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateUserMentionProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -163,46 +195,81 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateFormaterProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            var ids = config.GetProperty<List<string>>("behaviour.segment.order");
-            var list = config.GetProperty<JToken>("behaviour.segment.data");
-            var newValues = new List<FormatConfig>();
-            foreach (var id in ids)
+            try
             {
-                var data = list[id];
-                var format = data.ToObject<FormatConfig>();
-                newValues.Add(format);
+                var ids = config.GetProperty<List<string>>("behaviour.segment.order");
+                var list = config.GetProperty<JToken>("behaviour.segment.data");
+                var newValues = new List<FormatConfig>();
+                foreach (var id in ids)
+                {
+                    var data = list[id];
+                    var format = data.ToObject<FormatConfig>();
+                    newValues.Add(format);
+                }
+                _chatManager.Config.Formats = newValues.ToArray();
             }
-            _chatManager.Config.Formats = newValues.ToArray();
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateMentions(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            var ids = config.GetProperty<List<string>>("behaviour.mentions.order");
-            var list = config.GetProperty<JToken>("behaviour.mentions.data");
-
-            var mentions = new List<string>();
-            foreach (var id in ids)
+            try
             {
-                var data = list[id];
-                foreach (var trigger in data["trigger"].ToObject<List<string>>())
-                    mentions.Add(trigger);
+                var ids = config.GetProperty<List<string>>("behaviour.mentions.order");
+                var list = config.GetProperty<JToken>("behaviour.mentions.data");
+
+                var mentions = new List<string>();
+                foreach (var id in ids)
+                {
+                    var data = list[id];
+                    foreach (var trigger in data["trigger"].ToObject<List<string>>())
+                        mentions.Add(trigger);
+                }
+
+                var newMentions = mentions.ToArray();
+                logger.Trace(() => $"Set mentions to: {newMentions}");
+                _chatManager.Config.Mentions = newMentions;
             }
-            _chatManager.Config.Mentions = mentions.ToArray();
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateLanguage(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            var selectedLanguage = config.GetProperty<string>("behaviour.language");
-            var autotranslateProvider = _chatManager.Config.AutotranslateProvider as AutotranslateProvider;
-            autotranslateProvider?.SetLocale(selectedLanguage);
+            try
+            {
+                var selectedLanguage = config.GetProperty<string>("behaviour.language");
+                var autotranslateProvider = _chatManager.Config.AutotranslateProvider as AutotranslateProvider;
+                autotranslateProvider?.SetLocale(selectedLanguage);
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
-            _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.rangefilter.cutoff");
-            _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.rangefilter.fadeout");
-            //_chatManager.Config.CutOffConsiderMentions = config.GetProperty<bool>("behaviour.fadeout.mention");
+            try
+            {
+                _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
+                _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.rangefilter.cutoff");
+                _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.rangefilter.fadeout");
+                //_chatManager.Config.CutOffConsiderMentions = config.GetProperty<bool>("behaviour.fadeout.mention");
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
     }
 }
