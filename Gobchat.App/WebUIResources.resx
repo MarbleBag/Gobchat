@@ -384,6 +384,9 @@
   <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
     <value>Amount of seconds which need to pass before a sound will be played again.</value>
   </data>
+  <data name="config.mentions.audio.path" xml:space="preserve">
+    <value>Audio file</value>
+  </data>
   <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
     <value>The audio file needs to be located within the sound folder of gobchat</value>
   </data>
@@ -403,6 +406,9 @@ Make sure to place any sound files you want to use in gobchat under resources/so
   </data>
   <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
     <value>Play audio</value>
+  </data>
+  <data name="config.mentions.audio.volume" xml:space="preserve">
+    <value>Audio volume</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
     <value>Audio volume</value>

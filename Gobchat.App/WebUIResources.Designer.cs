@@ -862,6 +862,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio file.
+        /// </summary>
+        internal static string config_mentions_audio_path {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The audio file needs to be located within the sound folder of gobchat.
         /// </summary>
         internal static string config_mentions_audio_path_tooltip {
@@ -914,6 +923,15 @@ namespace Gobchat {
         internal static string config_mentions_audio_test_tooltip {
             get {
                 return ResourceManager.GetString("config.mentions.audio.test.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio volume.
+        /// </summary>
+        internal static string config_mentions_audio_volume {
+            get {
+                return ResourceManager.GetString("config.mentions.audio.volume", resourceCulture);
             }
         }
         

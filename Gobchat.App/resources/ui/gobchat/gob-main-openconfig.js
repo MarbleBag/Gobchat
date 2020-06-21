@@ -24,7 +24,7 @@ jQuery(function ($) {
 
         window.chatManager.config.saveToLocalStore()
 
-        const handle = window.open("config/config.html", 'Settings', 'width=900,height=600')
+        const handle = window.open("config/config.html", 'Settings', 'width=1040,height=600')
         handle.saveConfig = function () {
             window.chatManager.config.loadFromLocalStore()
             window.chatManager.updateStyle()

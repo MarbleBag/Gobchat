@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
 </head>
 <body>
-    <button class="ui-btn-copyprofile" id="capp_copyprofile" data-gob-locale-title="config.main.profile.copypage"><i class="fas fa-clone"></i></button>
+    <button id="capp_copyprofile"><i class="fas fa-clone"></i></button>
 
     <div class="gob-config-group">
         <div class="gob-config-group-item">
@@ -28,9 +28,11 @@
                         </td>
                         <td>
                             <select class="gob-dropdown" id="capp_theme" data-gob-configkey="style.theme">
+                                <!--
                                 <option value="ffxiv_dark_style">FFXIV Dark</option>
                                 <option value="ffxiv_light_style">FFXIV Light</option>
                                 <option value="gobchat_style">Gobchat</option>
+                                 -->
                             </select>
                         </td>
                     </tr>
@@ -173,7 +175,7 @@
                                  data-gob-locale-title="config.app.rangefilter.cutoff.tooltip"></div>
                         </td>
                         <td>
-                            <input class="gob-input"
+                            <input class=""
                                    type="number" min="0" id="capp_rangefilter_cutoff"
                                    data-gob-configkey="behaviour.rangefilter.cutoff"
                                    data-gob-locale-title="config.app.rangefilter.cutoff.tooltip">
@@ -195,7 +197,7 @@
                                  data-gob-locale-title="config.app.rangefilter.fadeout.tooltip"></div>
                         </td>
                         <td>
-                            <input class="gob-input"
+                            <input class=""
                                    type="number" min="0" id="capp_rangefilter_fadeout"
                                    data-gob-configkey="behaviour.rangefilter.fadeout"
                                    data-gob-locale-title="config.app.rangefilter.fadeout.tooltip">
@@ -217,7 +219,7 @@
                                  data-gob-locale-title="config.app.rangefilter.transparencystart.tooltip"></div>
                         </td>
                         <td>
-                            <input class="gob-input"
+                            <input class=""
                                    type="number" min="1" max="100" id="capp_rangefilter_startopacity"
                                    data-gob-configkey="behaviour.rangefilter.startopacity"
                                    data-gob-locale-title="config.app.rangefilter.transparencystart.tooltip">
@@ -239,7 +241,7 @@
                                  data-gob-locale-title="config.app.rangefilter.transparencyend.tooltip"></div>
                         </td>
                         <td>
-                            <input class="gob-input"
+                            <input class=""
                                    type="number" min="1" max="100" id="capp_rangefilter_endopacity"
                                    data-gob-configkey="behaviour.rangefilter.endopacity"
                                    data-gob-locale-title="config.app.rangefilter.transparencyend.tooltip">
@@ -277,7 +279,7 @@
                     <td>
                         <input type="number" min="0" id="capp_frame_x"
                                style="max-width:100px"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.frame.chat.position.x" />
                     </td>
                     <td>
@@ -286,7 +288,7 @@
                     <td>
                         <input type="number" min="200" id="capp_frame_height"
                                style="max-width:100px"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.frame.chat.size.height" />
                     </td>
                 </tr>
@@ -297,7 +299,7 @@
                     <td>
                         <input type="number" min="0" id="capp_frame_y"
                                style="max-width:100px"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.frame.chat.position.y" />
                     </td>
                     <td>
@@ -306,7 +308,7 @@
                     <td>
                         <input type="number" min="200" id="capp_frame_width"
                                style="max-width:100px"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.frame.chat.size.width" />
                     </td>
                 </tr>
@@ -314,17 +316,19 @@
         </div>
     </div>
 
-    <div class="gob-config-group-item">
+    <div class="gob-config-group">
         <div class="gob-config-group-label">
             <div data-gob-locale-text="config.app.fonts.label"></div>
         </div>
 
         <div class="gob-config-group-item">
             <div>
-                <input type="text" id="capp_font_family" style="width:100%;"
-                       class="gob-input"
-                       data-gob-configkey="style.channel.base.font-family"
-                       data-gob-locale-title="config.app.fonts.tooltip">
+                <textarea id="capp_font_family"
+                          style="width:100%;" rows="2"
+                          class="gob-textarea"
+                          data-gob-configkey="style.channel.base.font-family"
+                          data-gob-locale-title="config.app.fonts.tooltip">
+                </textarea>
                 <button class="gob-button-reset" id="capp_font_family_reset"
                         data-gob-configkey="style.channel.base.font-family"
                         data-gob-locale-title="config.main.resetbutton.tooltip">
@@ -346,7 +350,6 @@
                 </select>
             </div>
         </div>
-
     </div>
 
     <div class="gob-config-group">
@@ -360,7 +363,7 @@
                     <tr>
                         <td>
                             <div data-gob-locale-text="config.app.search.results"
-                                   data-gob-locale-title="config.app.search.results.tooltip">
+                                 data-gob-locale-title="config.app.search.results.tooltip">
                             </div>
                         </td>
                         <td>
@@ -380,7 +383,7 @@
                     <tr>
                         <td>
                             <div data-gob-locale-text="config.app.search.border"
-                                   data-gob-locale-title="config.app.search.border.tooltip">
+                                 data-gob-locale-title="config.app.search.border.tooltip">
                             </div>
                         </td>
                         <td>
@@ -421,15 +424,15 @@
                         </td>
                     </tr>
                     <!--
-            <tr>
-                <td>
-                    <label>Text Search</label>
-                </td>
-                <td>
-                    <input type="text" id="capp_hotkey_search" data-gob-configkey="behaviour.hotkeys.search" />
-                </td>
-            </tr>
-            -->
+                    <tr>
+                        <td>
+                            <label>Text Search</label>
+                        </td>
+                        <td>
+                            <input type="text" id="capp_hotkey_search" data-gob-configkey="behaviour.hotkeys.search" />
+                        </td>
+                    </tr>
+                    -->
                 </tbody>
             </table>
         </div>
@@ -450,7 +453,7 @@
                     </td>
                     <td>
                         <input type="number" min="50" max="5000" id="capp_chat_updateInterval"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.chat.updateInterval"
                                data-gob-locale-title="config.app.intervals.chat.tooltip" />
                     </td>
@@ -465,12 +468,12 @@
                 <tr>
                     <td>
                         <div data-gob-locale-text="config.app.intervals.actor"
-                            data-gob-locale-title="config.app.intervals.actor.tooltip">
+                             data-gob-locale-title="config.app.intervals.actor.tooltip">
                         </div>
                     </td>
                     <td>
                         <input type="number" min="200" max="20000" id="capp_actor_updateInterval"
-                               class="gob-input"
+                               class=""
                                data-gob-configkey="behaviour.actor.updateInterval"
                                data-gob-locale-title="config.app.intervals.actor.tooltip" />
                     </td>

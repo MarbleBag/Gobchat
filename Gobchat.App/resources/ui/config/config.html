@@ -33,6 +33,7 @@
         //if (window.opener) {
         window.GobchatAPI = window.opener.GobchatAPI
         window.Gobchat = window.opener.Gobchat
+        window.console = window.opener.console
 
         window.gobconfig = new Gobchat.GobchatConfig()
         window.gobconfig.loadFromLocalStore()
@@ -71,15 +72,15 @@
                     <div class="" data-gob-locale-text="config.main.nav.about"></div>
                 </div>
                 <div class="gob-separator-horizontal"></div>
-                <div id="cmain_saveconfig" class="gob-button-primar">
+                <div id="cmain_saveconfig" class="gob-button-primary">
                     <!--<i class="fa fa-save"></i>-->
                     <span data-gob-locale-text="config.main.nav.save"></span>
                 </div>
-                <div id="cmain_saveandexitconfig" class="gob-button-primar">
+                <div id="cmain_saveandexitconfig" class="gob-button-primary">
                     <!--<i class="fa fa-save"></i>-->
                     <span data-gob-locale-text="config.main.nav.saveandexit"></span>
                 </div>
-                <div id="cmain_cancelconfig" class="gob-button-primar">
+                <div id="cmain_cancelconfig" class="gob-button-primary">
                     <!--<i class="fas fa-trash-alt"></i>-->
                     <span data-gob-locale-text="config.main.nav.cancel"></span>
                 </div>
@@ -152,8 +153,25 @@
                         window.goblocale.updateElement($(document))
                     })
 
+                    const styleLoader = new Gobchat.StyleLoader(document.head, "..")
+                    await styleLoader.loadStyles()
+
+                    try {
+                        const dpdThemes = $("#capp_theme")
+                        dpdThemes.empty()
+                        for (let style of styleLoader.styles) {
+                            $('<option>', {
+                                text: style,
+                                value: style
+                            }).appendTo(dpdThemes)                        
+                        }
+                    } catch (e1) {
+                        console.log(e1)
+                    }
+
                     generalBinding.bindConfigListener("style.theme", (value) => {
-                        $("#cmain_style_theme").attr("href", `../styles/${value}.css`)
+                        styleLoader.activateStyle(value)
+                        $("#capp_theme").val(value)
                     })
 
                     generalBinding.initialize()

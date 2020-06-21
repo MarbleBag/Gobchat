@@ -208,6 +208,10 @@ body, html {
     margin-left: 10px;
 }
 
+    .gob-config-group-item + .gob-config-group-item {
+        margin-top: 3px;
+    }
+
     .gob-config-group-item .gob-config-group-item {
         margin-left: 25px;
     }
@@ -223,28 +227,22 @@ body, html {
 .gob-config-header-1 {
 }
 
-    .gob-config-header-1 + .gob-separator-horizontal {
-        margin-top: 0px;
-    }
-
-.gob-dropdown {
-    /*width: -webkit-fill-available;*/
-    padding-left: 5px;
-    padding-right: 5px;
-    font-weight: bold;
-}
-
-.gob-input {
-    /*width: -webkit-fill-available;*/
-    font-weight: bold;
-    padding-left: 5px;
+.gob-table-listing {
 }
 
 .gob-button-reset {
+    max-width: 28px;
+    max-height: 28px;
 }
+
+    .gob-button-reset:hover {
+    }
 
 .gob-button-delete {
 }
+
+    .gob-button-delete:hover {
+    }
 
 .gob-button-primar2 {
     cursor: pointer;
@@ -257,10 +255,8 @@ body, html {
     height: 25px;
 }
 
-.gob-button-primar {
+.gob-button-primary {
     cursor: pointer;
-    background: linear-gradient(to bottom, #737373 5%, #3b3b3b 100%);
-    color: #fffdeb;
     text-shadow: 0px 1px 0px #000000;
     word-spacing: normal;
     letter-spacing: normal;
@@ -277,40 +273,28 @@ body, html {
     margin: 2px;
 }
 
-    /*
--webkit-appearance: button;
--webkit-writing-mode: horizontal-tb !important;
-text-rendering: auto;
-color: buttontext;
-letter-spacing: normal;
-word-spacing: normal;
-text-transform: none;
-text-indent: 0px;
-text-shadow: none;
-display: inline-block;
-text-align: center;
-align-items: flex-start;
-cursor: default;
-background-color: buttonface;
-box-sizing: border-box;
-margin: 0em;
-font: 400 13.3333px Arial;
-padding: 1px 6px;
-border-width: 2px;
-border-style: outset;
-border-color: buttonface;
-border-image: initial;
-    */
-
-    .gob-button-primar:hover {
-        background: linear-gradient(to bottom, #3b3b3b 5%, #737373 100%);
-        background-color: #3b3b3b;
+    .gob-button-primary:hover {
     }
 
-    .gob-button-primar:active {
+    .gob-button-primary:active {
         position: relative;
         top: 1px;
     }
+
+.gob-button-secondary {
+}
+
+.gob-button-tertiary {
+}
+
+.gob-button-copypage {
+    line-height: 24px;
+    width: 28px;
+    margin: 3px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 
 [disabled], .disabled {
     pointer-events: none;
@@ -322,6 +306,36 @@ input[type="checkbox"] {
 
     input[type="checkbox"]:checked {
     }
+
+input[type="text"] {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+input[type="number"] {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+select {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+textarea {
+    font-weight: bold;
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 400px;
+    width: 100%;
+}
 
 td > select:last-child {
     width: 100%;
