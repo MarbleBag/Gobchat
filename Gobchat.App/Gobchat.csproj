@@ -74,6 +74,9 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="resources\ui\gobchat\gob-styleloader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\styles\ffxiv_dark_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -98,7 +101,7 @@
     <Content Include="resources\ui\graphics\noise.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\gobchat_style.css">
+    <Content Include="resources\ui\styles\gobchat_v1_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\_default.css">
@@ -145,6 +148,9 @@
     <Content Include="resources\default_profile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="resources\ui\styles\styles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -81,7 +81,57 @@ html {
         margin-top: -2px;
     }
 
-.gob-button-primar {
+.gob-table-channel {
+    border-spacing: 0px;
+    text-align: center;
+}
+
+.gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
+.gob-table-stripes-hrzt > thead > tr > th:nth-child(even) {
+    background-color: #13131350;
+}
+
+.gob-table-channel > thead > tr > th {
+    text-align: left;
+    color: #cccccc;
+    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    padding: 10px 5px 0px 10px;
+}
+
+.gob-table-channel > thead > tr > th:nth-child(1) {
+    padding-left: 0px;
+}
+
+.gob-table-channel > tbody > tr > td:nth-child(1) {
+    text-align: left;
+    padding-right: 15px;
+}
+
+.gob-table-channel > tbody > tr:hover {
+    background-image: linear-gradient(135deg, #131313, #13131310 80%);
+}
+
+.gob-button-primary {
+    background: linear-gradient(to bottom, #737373 5%, #3b3b3b 100%);
+    color: #fffdeb;
+    text-shadow: 0px 1px 0px #000000;
+    box-shadow: inset 0px -3px 7px 0px #212121;
+    border-radius: 3px;
+    border: 1px solid #050505;
+}
+
+    .gob-button-primary:hover {
+        background: linear-gradient(to bottom, #3b3b3b 5%, #737373 100%);
+        background-color: #3b3b3b;
+    }
+
+    .gob-button-primary:active {
+    }
+
+.gob-button-secondary {
+}
+
+.gob-button-tertiary {
 }
 
 input[type="checkbox"] {
@@ -98,4 +148,34 @@ input[type="checkbox"] {
 
     input[type="checkbox"]:checked {
         background-image: url("../graphics/checkbox-checked.png");
+    }
+
+input[type="range"] {
+    -webkit-appearance: none;
+    cursor: pointer;
+    outline: none;
+    background-color: transparent;
+}
+
+    input[type="range"]::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
+        color: #e1e0e4;
+        border-radius: 25px;
+        /*background-color: #212021;*/
+        background-color: #94be10;
+        height: 8px;
+        border-top: 2px solid #212021;
+        border-bottom: 2px solid #212021;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        margin-top: -5px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50px;
+        border: 1px solid #484848;
+        cursor: ew-resize;
+        background: radial-gradient(circle at center, #e1e0e4, #ababab);
+        /*box-shadow: -100px 0 0 100px #94be10;*/
     }
