@@ -74,6 +74,7 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="resources\ui\config\config_groups_new.html" />
     <Content Include="resources\ui\gobchat\gob-styleloader.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
