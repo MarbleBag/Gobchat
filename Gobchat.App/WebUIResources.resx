@@ -483,6 +483,25 @@ Either the format is not supported or the file can't be found/read!</value>
 Everything will be deleted!
 Press save afterwards.</value>
   </data>
+  <data name="config.roleplay.entry.active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="config.roleplay.entry.deleteconfirm" xml:space="preserve">
+    <value>Entry will be deleted. Are you sure?</value>
+  </data>
+  <data name="config.roleplay.entry.header" xml:space="preserve">
+    <value>Starts with {0} and ends with {1}</value>
+    <comment>0: start tokens, 1: end tokens</comment>
+  </data>
+  <data name="config.roleplay.entry.info" xml:space="preserve">
+    <value>They will be processed from top to down. To reorder them drag and drop the header.</value>
+  </data>
+  <data name="config.roleplay.entry.tokenend" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="config.roleplay.entry.tokenstart" xml:space="preserve">
+    <value>Start</value>
+  </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
     <value>Alliance</value>
   </data>

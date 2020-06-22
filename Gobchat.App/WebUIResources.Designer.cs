@@ -1146,6 +1146,60 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string config_roleplay_entry_active {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry will be deleted. Are you sure?.
+        /// </summary>
+        internal static string config_roleplay_entry_deleteconfirm {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.deleteconfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starts with {0} and ends with {1}.
+        /// </summary>
+        internal static string config_roleplay_entry_header {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
+        /// </summary>
+        internal static string config_roleplay_entry_info {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        internal static string config_roleplay_entry_tokenend {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.tokenend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string config_roleplay_entry_tokenstart {
+            get {
+                return ResourceManager.GetString("config.roleplay.entry.tokenstart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alliance.
         /// </summary>
         internal static string main_chat_channel_alliance {

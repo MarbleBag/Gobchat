@@ -62,48 +62,68 @@
                             <span> and ends with </span>
                             <span class="tmpl-header-name-end"></span>
                         </span>
-                        <span>
-                            <button class="tmpl-delete-entry ui-gc-btn-delete" title="Deletes this entry"><i class="fa fa-trash"></i></button>
+                        <span style="float:right;">
+                            <button class="tmpl-delete-entry gob-button-delete"
+                                    data-gob-locale-title="config.main.deletebutton.tooltip">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </span>
                     </span>
                 </h4>
                 <div>
-                    <span>They will be processed from top to down. To reorder them drag and drop the header.</span>
-                    <div>
-                        <label>Active:</label>
-                        <input type="checkbox" class="tmpl-entry-active" />
+                    <div class="gob-config-group-item">
+                        <span data-gob-locale-text="config.roleplay.entry.info"></span>
                     </div>
-                    <div>
-                        <label>
-                            Type:
-                        </label>
-                        <select class="tmpl-segment-selector">
-                            <option value=1>SAY</option>
-                            <option value=2>EMOTE</option>
-                            <option value=3>OOC</option>
-                        </select>
+                    <div class="gob-config-group">
+                        <div class="gob-config-group-item">
+                            <div>
+                                <input type="checkbox" class="tmpl-entry-active" />
+                                <div data-gob-locale-text="config.roleplay.entry.active"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label>
-                            Start:
-                        </label>
-                        <input type="text" class="tmpl-startTokens" />
-                        <label>
-                            Unicode:
-                        </label>
-                        <label class="tmpl-startTokens-unicode">
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            End  :
-                        </label>
-                        <input type="text" class="tmpl-endTokens" />
-                        <label>
-                            Unicode:
-                        </label>
-                        <label class="tmpl-endTokens-unicode">
-                        </label>
+
+                    <div class="gob-config-group">
+                        <div class="gob-config-group-item">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <span>Type</span>
+                                    </td>
+                                    <td>
+                                        <select class="tmpl-segment-selector">
+                                            <option value=1>SAY</option>
+                                            <option value=2>EMOTE</option>
+                                            <option value=3>OOC</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span data-gob-locale-text="config.roleplay.entry.tokenstart"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="tmpl-startTokens" />
+                                    </td>
+                                    <td>
+                                        <span>Unicode:</span>
+                                        <span class="tmpl-startTokens-unicode"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span data-gob-locale-text="config.roleplay.entry.tokenend"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="tmpl-endTokens" />
+                                    </td>
+                                    <td>
+                                        <span>Unicode:</span>
+                                        <span class="tmpl-endTokens-unicode"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -160,11 +180,22 @@
                 const btnDelete = entry.find(".tmpl-delete-entry")
                 btnDelete.on("click", event => {
                     event.stopPropagation()
-                    if (!window.confirm("Entry will be deleted. Are you sure?")) return
-                    gobconfig.remove(configKey)
-                    const order = gobconfig.get(ConfigKeyOrder)
-                    _.remove(order, e => e === entryId)
-                    gobconfig.set(ConfigKeyOrder, order)
+                    console.log("CHECK 1")
+                        (async () => {
+                            console.log("CHECK 2")
+                            try {
+                                const deleteConfirmation = await goblocale.get("config.roleplay.entry.deleteconfirm")
+                                console.log("BIBA!: " + deleteConfirmation)
+                                if (!window.confirm(deleteConfirmation)) return
+
+                                gobconfig.remove(configKey)
+                                const order = gobconfig.get(ConfigKeyOrder)
+                                _.remove(order, e => e === entryId)
+                                gobconfig.set(ConfigKeyOrder, order)
+                            } catch (e1) {
+                                console.error(e1)
+                            }
+                        })()
                 })
 
                 const ckbIsActive = entry.find(".tmpl-entry-active")
