@@ -14,6 +14,10 @@
 .gob-ffxivbox {
 }
 
+.gob-config-dialog-header{
+    display:none;
+}
+
 .gob-separator-horizontal {
 }
 

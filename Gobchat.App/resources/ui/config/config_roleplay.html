@@ -301,6 +301,8 @@
                 tblSegments.find(".tmpl-header-index").each(function (idx) {
                     $(this).text(idx + 1)
                 })
+
+                goblocale.updateElement(tblSegments)
             }
 
             tblSegments.accordion({

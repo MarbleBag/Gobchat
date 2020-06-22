@@ -108,7 +108,7 @@ html {
     text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
 }
 
-.gob-config-header-1 {
+.gob-config-dialog-header {
     min-height: 30px;
     max-height: 30px;
     display: flex;
@@ -121,7 +121,7 @@ html {
     text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
 }
 
-    .gob-config-header-1 + .gob-separator-horizontal {
+    .gob-config-dialog-header + .gob-separator-horizontal {
         margin-top: -2px;
     }
 
