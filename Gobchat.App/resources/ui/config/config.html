@@ -163,15 +163,17 @@
                             $('<option>', {
                                 text: style,
                                 value: style
-                            }).appendTo(dpdThemes)                        
+                            }).appendTo(dpdThemes)
                         }
                     } catch (e1) {
                         console.log(e1)
                     }
 
                     generalBinding.bindConfigListener("style.theme", (value) => {
+                        $("body").hide()
                         styleLoader.activateStyle(value)
                         $("#capp_theme").val(value)
+                        $("body").show("fast") //trigger reflow so style gets applied everywhere (especially scrollbars!) What a shitty bug
                     })
 
                     generalBinding.initialize()
