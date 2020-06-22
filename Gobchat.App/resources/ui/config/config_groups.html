@@ -14,7 +14,8 @@
     <p>
 
         <div>
-            <button id="cgroups_addnewgrouptop">
+            <button id="cgroups_addnewgrouptop"
+                    class="gob-button-secondary">
                 <i style="color:green;" class="fa fa-plus"></i>
                 <span data-gob-locale-text="config.groups.newgroup"></span>
             </button>
@@ -24,7 +25,8 @@
         </div>
 
         <div>
-            <button id="cgroups_addnewgroupbot">
+            <button id="cgroups_addnewgroupbot"
+                    class="gob-button-secondary">
                 <i style="color:green;" class="fa fa-plus"></i>
                 <span data-gob-locale-text="config.groups.newgroup"></span>
             </button>
@@ -39,8 +41,11 @@
                             <span class="tmpl-header-prefix">. <span data-gob-locale-text="config.groups.group.naming"></span>: </span>
                             <span class="tmpl-header-name"></span>
                         </span>
-                        <span>
-                            <button class="tmpl-delete-group ui-gc-btn-delete" data-gob-locale-title="config.groups.group.delete.tooltip"><i class="fa fa-trash"></i></button>
+                        <span style="float:right;">
+                            <button class="tmpl-delete-group gob-button-delete"
+                                    data-gob-locale-title="config.groups.group.delete.tooltip">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </span>
                     </span>
                 </h4><!--&#x274C;-->
