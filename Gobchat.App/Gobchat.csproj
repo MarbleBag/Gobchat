@@ -78,6 +78,21 @@
     <Content Include="resources\ui\gobchat\gob-styleloader.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\gobui_chat.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox-checked-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\styles\ffxiv_dark_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -87,12 +102,8 @@
     <Content Include="resources\ui\gobchat\gob-main-chatsearch.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\graphics\ButtonActive.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\graphics\ButtonIdle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\graphics\ButtonActive.png" />
+    <Content Include="resources\ui\graphics\ButtonIdle.png" />
     <Content Include="resources\ui\graphics\checkbox-checked.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -105,7 +116,7 @@
     <Content Include="resources\ui\styles\gobchat_v1_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\_default.css">
+    <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="buildscript.ps1" />
@@ -433,9 +444,6 @@
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\gobui_chat.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="resources\ui\lib\fontawesome\js\all.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -485,10 +493,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\StyleBuilder.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
-    <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>

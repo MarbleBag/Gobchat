@@ -8,12 +8,14 @@
   {
     "label": "FFXIV Dark",
     "files": [
+      "styles/ffxiv_style.css",
       "styles/ffxiv_dark_style.css"
     ]
   },
   {
     "label": "FFXIV Light",
     "files": [
+      "styles/ffxiv_style.css",
       "styles/ffxiv_light_style.css"
     ]
   }

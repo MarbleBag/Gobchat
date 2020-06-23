@@ -99,6 +99,8 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
     }
 
     GobConfigHelper.makeResetButton = function (element) {
+        $(element).addClass("gob-button-tertiary ")
+        $(element).addClass("gob-button-reset")
         $(element).on("click", () => gobconfig.reset(GobConfigHelper.getConfigKey(element)))
     }
 
@@ -106,6 +108,9 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         const $element = $(element)
         const defOptions = { callback: undefined, configKeys: [] }
         options = $.extend(defOptions, options)
+
+        $element.addClass("gob-button-tertiary ")
+        $element.addClass("gob-button-copypage")
 
         function copyProfile(profileId) {
             if (options.callback) {

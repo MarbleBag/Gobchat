@@ -10,12 +10,13 @@
 
     <script defer src="lib/fontawesome/js/all.js"></script>
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <!--
+    <link rel="stylesheet" href="gobui_default.css">
+    <link rel="stylesheet" href="gobui_chat.css">
+    -->
 
     <link rel="stylesheet" href="gobui_default.css">
     <link rel="stylesheet" href="gobui_chat.css">
-
-    <link rel="stylesheet" href="_default.css">
-    <link rel="stylesheet" href="ffxiv_dark_style.css">
     <style id="custome_style_id" type="text/css"></style>
 
     <script src="gobchat/CommonUtilFunctions.js"></script>
@@ -37,18 +38,18 @@
 <body>
     <div id="container">
         <div id="chatbox" class="gob-chatbox">
-            <div id="chatbox_toolba_top" class="chatbox-topbar chatbox-toolbar">
-                <button id="gobchat_showconfig"><i class="fas fa-cog"></i></button>
-                <button id="gobchat_togglechatsearch"><i class="fas fa-search"></i></button>
-                <div id="chatbox_tabbar">
-                    <div class="chatbox-tabbar-left"></div>
-                    <div id="chatbox_tabbar_content"></div>
-                    <div class="chatbox-tabbar-right"></div>
+            <div id="chatbox_toolba_top" class="gob-chatbox-toolbar">
+                <button id="gobchat_showconfig" class="gob-chatbox-toolbar-button"><i class="fas fa-cog"></i></button>
+                <button id="gobchat_togglechatsearch" class="gob-chatbox-toolbar-button"><i class="fas fa-search"></i></button>
+                <div class="gob-tab-nav">
+                    <div class="gob-tab-nav-left"></div>
+                    <div class="gob-tab-nav gob-tab-nav-content"></div>
+                    <div class="gob-tab-nav-right"></div>
                 </div>
             </div>
-            <div id="chatbox_content" class="chatbox-content chatbox-gen">
+            <div id="chatbox_content" class="gob-chatbox-content chatbox-gen">
             </div>
-            <div id="chatbox_toolba_bot" class="chatbox-bottombar chatbox-gen">
+            <div id="chatbox_toolba_bot" class="gob-chatbox-toolbar chatbox-gen">
                 <div id="chatbox_search">
                     <input id="chatbox_search_txt" />
                     <button id="chatbox_search_hits">0 / 0</button>
@@ -79,9 +80,9 @@
 
     document.addEventListener("OverlayStateUpdate", function (e) {
         if (!e.detail.isLocked)
-            document.documentElement.classList.add("resize-handle");
+            document.documentElement.classList.add("gob-resize-active");
         else
-            document.documentElement.classList.remove("resize-handle");
+            document.documentElement.classList.remove("gob-resize-active");
     });
 
     jQuery(function ($) {

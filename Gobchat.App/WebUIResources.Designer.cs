@@ -124,7 +124,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make a chat log.
+        ///   Looks up a localized string similar to Save chat log.
         /// </summary>
         internal static string config_app_ckb_chatlog {
             get {
@@ -1196,6 +1196,42 @@ namespace Gobchat {
         internal static string config_roleplay_entry_tokenstart {
             get {
                 return ResourceManager.GetString("config.roleplay.entry.tokenstart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text color.
+        /// </summary>
+        internal static string config_roleplay_tokentbl_header_color {
+            get {
+                return ResourceManager.GetString("config.roleplay.tokentbl.header.color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel name.
+        /// </summary>
+        internal static string config_roleplay_tokentbl_header_name {
+            get {
+                return ResourceManager.GetString("config.roleplay.tokentbl.header.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add entry.
+        /// </summary>
+        internal static string config_roleplay_tokentbl_new {
+            get {
+                return ResourceManager.GetString("config.roleplay.tokentbl.new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset entries.
+        /// </summary>
+        internal static string config_roleplay_tokentbl_reset {
+            get {
+                return ResourceManager.GetString("config.roleplay.tokentbl.reset", resourceCulture);
             }
         }
         

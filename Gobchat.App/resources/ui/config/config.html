@@ -19,14 +19,13 @@
     <link rel="stylesheet" href="config.css">
     -->
 
-    <link rel="stylesheet" href="../_default.css">
-    <link rel="stylesheet" href="" id="cmain_style_theme" />
+    <link rel="stylesheet" href="../gobui_default.css">
 
     <script src="config.js"></script>
     <script src="../gobchat/gob-databinding.js"></script>
     <script src="../gobchat/gob-jquery-loadthen.js"></script>
 </head>
-<body>
+<body class="gob-config-dialog">
     <script type="text/javascript">
         'use strict';
 
@@ -41,7 +40,7 @@
         //}
     </script>
 
-    <div class="gob-ffxivbox" style="display: flex; flex-direction:column; overflow:hidden;">
+    <div class="gob-config-dialog-panel" style="display: flex; flex-direction:column; overflow:hidden;">
         <div class="gob-config-dialog-header">
             Gobchat Configuration
         </div>
@@ -72,17 +71,19 @@
                     <div class="" data-gob-locale-text="config.main.nav.about"></div>
                 </div>
                 <div class="gob-separator-horizontal"></div>
-                <div id="cmain_saveconfig" class="gob-button-primary">
-                    <!--<i class="fa fa-save"></i>-->
-                    <span data-gob-locale-text="config.main.nav.save"></span>
-                </div>
-                <div id="cmain_saveandexitconfig" class="gob-button-primary">
-                    <!--<i class="fa fa-save"></i>-->
-                    <span data-gob-locale-text="config.main.nav.saveandexit"></span>
-                </div>
-                <div id="cmain_cancelconfig" class="gob-button-primary">
-                    <!--<i class="fas fa-trash-alt"></i>-->
-                    <span data-gob-locale-text="config.main.nav.cancel"></span>
+                <div class="gob-button-column">
+                    <button id="cmain_saveconfig" class="gob-button-primary">
+                        <i class="fa fa-save"></i>
+                        <span data-gob-locale-text="config.main.nav.save"></span>
+                    </button>
+                    <button id="cmain_saveandexitconfig" class="gob-button-primary">
+                        <i class="fa fa-save"></i>
+                        <span data-gob-locale-text="config.main.nav.saveandexit"></span>
+                    </button>
+                    <button id="cmain_cancelconfig" class="gob-button-primary">
+                        <i class="fas fa-trash-alt"></i>
+                        <span data-gob-locale-text="config.main.nav.cancel"></span>
+                    </button>
                 </div>
             </div>
             <div class="gob-separator-vertical"></div>

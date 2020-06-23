@@ -14,14 +14,16 @@
 .gob-ffxivbox {
 }
 
-.gob-config-dialog-header{
-    display:none;
+.gob-config-dialog-header {
+    display: none;
 }
 
 .gob-separator-horizontal {
+    display: none;
 }
 
 .gob-separator-vertical {
+    display: none;
 }
 
 .gob-column-navigation {
@@ -38,11 +40,6 @@
     color: black;
     margin: initial;
     padding: 16px;
-}
-
-.gob-text {
-    text-shadow: unset;
-    color: unset;
 }
 
 .gob-selectable-element {
@@ -65,3 +62,23 @@
         color: unset;
         font-size: unset;
     }
+
+.gob-config-group {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.gob-nav-panel-content.active {
+    margin-top: 15px;
+}
+
+.gob-button-secondary:hover {
+    filter: brightness(110%);
+    transition: all 0.4s ease 0s;
+}
+
+.gob-button-tertiary:hover {
+    background: #f6b93b;
+    border-color: #f6b93b;
+    transition: all 0.4s ease 0s;
+}

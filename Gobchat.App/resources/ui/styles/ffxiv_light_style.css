@@ -10,24 +10,32 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
+:root {
+    --text-regular-color: #855b43;
+    --text-header-color: #674f45;
+    --element-selection-active: linear-gradient(135deg, #f99f00a6, #ff000000 80%);
+    --element-selection-hover: linear-gradient(135deg, #af631b7d, #ff000000 80%);
+    --button-color: linear-gradient(to bottom, #8b6e5b, #533c29 50%, #664f3b 80%, #664f3b);
+}
+
 
 .gob-config-dialog {
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-    color: #ded2b8;
+    text-shadow: .5px 0px 1px #ffe8bf;
+    color: var(--text-regular-color);
 }
 
 .gob-config-dialog-panel {
-    background-image: url("../graphics/noise.png"), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
+    background-image: url("../graphics/noise.png"), linear-gradient(to bottom, #fbe8cd, #efd6b2 20px, #e6cba4 50px);
 }
 
 .gob-separator-horizontal {
-    border: .5px solid black;
-    box-shadow: 0px 1px 1.5px -0.3px white;
+    border: .5px solid #bba38c;
+    box-shadow: 0px 1px 1.5px -0.3px #d0b59c;
 }
 
 .gob-separator-vertical {
-    border: .5px solid black;
-    box-shadow: 1px 0px 1.5px -0.3px white;
+    border: .5px solid #bba38c;
+    box-shadow: 0px 1px 1.5px -0.3px #d0b59c;
 }
 
 .gob-separator-gold-vertical {
@@ -35,12 +43,14 @@
 }
 
 .gob-text-error {
-    color: crimson;
+    color: #bf1334;
+    text-shadow: unset;
 }
 
 .gob-nav-panel::-webkit-scrollbar-thumb {
     background: #f0f4ce;
     border: 1px inset #ddd391;
+    border-radius: 4px;
 }
 
     .gob-nav-panel::-webkit-scrollbar-thumb:hover {
@@ -52,33 +62,35 @@
     }
 
 .gob-nav-panel::-webkit-scrollbar-track {
-    background: #666666;
-    border: 4px solid #202020;
-    border-radius: 0px;
+    background: #c29e81;
+    border: 3px solid #bc977a;
+    border-radius: 4px;
 }
 
     .gob-nav-panel::-webkit-scrollbar-track:hover {
-        background: #666666;
+        background: #ddd391;
     }
 
     .gob-nav-panel::-webkit-scrollbar-track:active {
-        background: #333333;
+        background: #ddd391;
     }
 
 .gob-selectable-element.active {
-    background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+    background-image: var(--element-selection-active);
 }
 
 .gob-selectable-element:hover:not(.active) {
-    background-image: linear-gradient(135deg, #131313, #ffff0000 80%);
+    background-image: var(--element-selection-hover);
 }
 
 .gob-config-group .gob-config-group-label {
-    color: #cccccc;
+    color: var(--text-header-color);
+    text-shadow: unset;
 }
 
 .gob-config-dialog-header {
-    color: #cccccc;
+    color: var(--text-header-color);
+    text-shadow: unset;
 }
 
 .gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
@@ -87,20 +99,19 @@
 }
 
 .gob-table-channel > thead > tr > th {
-    color: #cccccc;
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    color: var(--text-header-color);
 }
 
 .gob-table-channel > tbody > tr:hover {
-    background-image: linear-gradient(135deg, #131313, #13131310 80%);
+    background-image: linear-gradient(135deg, #af631b7d, #af631b26 80%);
 }
 
 /* button styles */
 
 .gob-button-primary {
-    background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
+    background: var(--button-color);
     color: #eeeeee;
-    border: 1px solid #141414;
+    border: 1px solid #b8a084;
 }
 
     .gob-button-primary:active {
@@ -108,13 +119,13 @@
     }
 
     .gob-button-primary > svg {
-        color: #e8a33f;
+        color: #eeeeee;
     }
 
 .gob-button-secondary {
-    background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
+    background: var(--button-color);
     color: #eeeeee;
-    border: 1px solid #141414;
+    border: 1px solid #b8a084;
 }
 
     .gob-button-secondary:active {
@@ -122,17 +133,17 @@
     }
 
     .gob-button-secondary > svg {
-        color: #e8a33f;
+        color: #eeeeee;
     }
 
 /* general styles */
 
 input[type="checkbox"] {
-    background-image: url("../graphics/checkbox.png");
+    background-image: url("../graphics/checkbox-light.png");
 }
 
     input[type="checkbox"]:checked {
-        background-image: url("../graphics/checkbox-checked.png");
+        background-image: url("../graphics/checkbox-checked-light.png");
     }
 
 input[type="range"] {
@@ -161,23 +172,30 @@ input[type="range"] {
     border-bottom: 1.5px solid #cc9f5e;
     border-right: 1.5px solid #cc9f5e;
     border-radius: 0px 0px 5px 5px;
+    background-color: #ff8f004a;
 }
 
 .ui-accordion .ui-accordion-header {
-    color: #cccccc;
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-    box-shadow: inset 0px -2px 7px 0px #212121;
+    color: var(--text-header-color);
+    text-shadow: unset;
+    box-shadow: inset 0px -2px 7px 0px #b16e05;
 }
 
     .ui-accordion .ui-accordion-header:hover {
-        background-image: linear-gradient(175deg, #131313, #ffff0000 70%);
+        background-image: var(--element-selection-hover);
     }
 
     .ui-accordion .ui-accordion-header.ui-state-active {
-        background-image: linear-gradient(175deg, #a98b5694, #ffff0000 70%);
+        background-image: var(--element-selection-active);
         border-left: 1.5px solid #cc9f5e;
         border-top: 1.5px solid #cc9f5e;
         border-right: 1.5px solid #cc9f5e;
-        color: #cccccc;
-        text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+        color: var(--text-header-color);
+        text-shadow: unset;
     }
+
+/* spectrum */
+
+.sp-replacer {
+    background: var(--button-color);
+}
