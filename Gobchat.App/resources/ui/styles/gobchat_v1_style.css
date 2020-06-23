@@ -1,0 +1,84 @@
+﻿/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+.gob-ffxivbox {
+}
+
+.gob-config-dialog-header {
+    display: none;
+}
+
+.gob-separator-horizontal {
+    display: none;
+}
+
+.gob-separator-vertical {
+    display: none;
+}
+
+.gob-column-navigation {
+    background-color: #f1f1f1;
+}
+
+    .gob-column-navigation > select {
+        padding: 6px;
+        width: 100%;
+        margin: unset;
+    }
+
+.gob-nav-element {
+    color: black;
+    margin: initial;
+    padding: 16px;
+}
+
+.gob-selectable-element {
+    border-radius: unset;
+    color: black;
+}
+
+    .gob-selectable-element.active {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .gob-selectable-element:hover:not(.active) {
+        background-color: #555555;
+        color: white;
+    }
+
+    .gob-selectable-element > * {
+        text-shadow: unset;
+        color: unset;
+        font-size: unset;
+    }
+
+.gob-config-group {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.gob-nav-panel-content.active {
+    margin-top: 15px;
+}
+
+.gob-button-secondary:hover {
+    filter: brightness(110%);
+    transition: all 0.4s ease 0s;
+}
+
+.gob-button-tertiary:hover {
+    background: #f6b93b;
+    border-color: #f6b93b;
+    transition: all 0.4s ease 0s;
+}

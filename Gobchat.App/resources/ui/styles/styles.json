@@ -1,0 +1,22 @@
+﻿[
+  {
+    "label": "Gobchat v1",
+    "files": [
+      "styles/gobchat_v1_style.css"
+    ]
+  },
+  {
+    "label": "FFXIV Dark",
+    "files": [
+      "styles/ffxiv_style.css",
+      "styles/ffxiv_dark_style.css"
+    ]
+  },
+  {
+    "label": "FFXIV Light",
+    "files": [
+      "styles/ffxiv_style.css",
+      "styles/ffxiv_light_style.css"
+    ]
+  }
+]

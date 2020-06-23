@@ -4,10 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## Unreleased
 ### Added
+- Theme selection in `Config / App`
+  - Change the config dialog style
+
 - Checkbox in `Config / app` to set if you like to see your mentions in your own messages
 
-## [1.7.0-1] - 2020.06.12
-### Added
+## [1.7.0] - Unreleased
 - Chat commands: `info off`, `info on`
   - `info off` will suppress any gobchat info until turned back on via `info on` or restart of gobchat
 
@@ -16,8 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - `error off` will suppress any gobchat errors until turned back on via `error on` or restart of gobchat
 
 
-- Language selection dropdown in `Config / app`
-  - Some parts of gobchat were translated into german
+- Language selection dropdown in `Config / App`
+  - Parts of gobchat were translated into german
 
 
 - Tons of new tooltips

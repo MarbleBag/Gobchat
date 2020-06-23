@@ -112,12 +112,18 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
     }
 
     GobConfigHelper.makeResetButton = function (element) {
+        $(element).addClass("gob-button-tertiary ")
+        $(element).addClass("gob-button-reset")
         $(element).on("click", () => gobconfig.reset(GobConfigHelper.getConfigKey(element)))
     }
 
     GobConfigHelper.makeCopyProfileButton = function (element, options) {
+        const $element = $(element)
         const defOptions = { callback: undefined, configKeys: [] }
         options = $.extend(defOptions, options)
+
+        $element.addClass("gob-button-tertiary ")
+        $element.addClass("gob-button-copypage")
 
         function copyProfile(profileId) {
             if (options.callback) {
@@ -131,9 +137,11 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
             options.configKeys.forEach(key => dstProfile.copyFrom(srcProfile, key))
         }
 
-        element.on("click", event => GobConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
+        $element.on("click", event => GobConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))
+        $element.addClass("gob-button-copypage")
+        $element.attr("data-gob-locale-title", "config.main.profile.copypage")
 
-        const checkCopyProfileState = () => element.attr("disabled", (gobconfig.profiles.length <= 1))
+        const checkCopyProfileState = () => $element.attr("disabled", (gobconfig.profiles.length <= 1))
         gobconfig.addProfileEventListener(event => checkCopyProfileState())
         checkCopyProfileState()
     }

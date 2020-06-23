@@ -17,6 +17,7 @@ using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -147,6 +148,15 @@ namespace Gobchat.Module.UI.Internal
             public async Task WriteTextToFile(string file, string content)
             {
                 System.IO.File.WriteAllText(file, content);
+            }
+
+            public async Task<string> ReadTextFromFile(string file)
+            {
+                if (String.IsNullOrEmpty(file))
+                    throw new ArgumentNullException(nameof(file));
+                if (!System.IO.Path.IsPathRooted(file))
+                    file = System.IO.Path.Combine(GobchatContext.ResourceLocation, file);
+                return System.IO.File.ReadAllText(file);
             }
 
             public async Task<string> ImportProfile()
