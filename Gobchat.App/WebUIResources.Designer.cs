@@ -10,8 +10,8 @@
 
 namespace Gobchat {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Gobchat {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class WebUIResources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal WebUIResources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Gobchat {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Gobchat {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.actor", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV..
         /// </summary>
@@ -77,7 +77,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.actor.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work..
         /// </summary>
@@ -86,7 +86,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.actor.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hide when FF is minimized.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.autohide", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.autohide.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Allow beta updates.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.betaupdate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To safely test a beta update, please ensure you have a backup of your Gobchat profile under &apos;AppData\Roaming\Gobchat\config&apos; by copying the whole folder!.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.betaupdate.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save chat log.
         /// </summary>
@@ -131,16 +131,16 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.chatlog", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Gobchat creates a chatlog, which will be saved under &apos;AppData\Roaming\Gobchat\log&apos;.
+        ///   Looks up a localized string similar to Gobchat saves the chat log under &apos;AppData\Roaming\Gobchat\log&apos; as text.
         /// </summary>
         internal static string config_app_ckb_chatlog_tooltip {
             get {
                 return ResourceManager.GetString("config.app.ckb.chatlog.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Autodetect emotes in say channel.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.emoteinsay", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote.
         /// </summary>
@@ -158,7 +158,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.emoteinsay.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Exclude mentions.
         /// </summary>
@@ -167,7 +167,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.mentions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -176,7 +176,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.mentions.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Range filter.
         /// </summary>
@@ -185,7 +185,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.rangefilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -194,7 +194,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.rangefilter.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show timestamp.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.showtime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -212,7 +212,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.showtime.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Check for updates on start.
         /// </summary>
@@ -221,7 +221,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.update", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -230,7 +230,25 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckb.update.tooltip", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show mentions in your own messages.
+        /// </summary>
+        internal static string config_app_ckb_usermention {
+            get {
+                return ResourceManager.GetString("config.app.ckb.usermention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
+        /// </summary>
+        internal static string config_app_ckb_usermention_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.ckb.usermention.tooltip", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
@@ -239,7 +257,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.ckblabel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fonts.
         /// </summary>
@@ -248,7 +266,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fonts.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
         /// </summary>
@@ -257,7 +275,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fonts.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Font size.
         /// </summary>
@@ -266,7 +284,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fontsize.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Large.
         /// </summary>
@@ -275,7 +293,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fontsize.large", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
@@ -284,7 +302,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fontsize.medium", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Small.
         /// </summary>
@@ -293,7 +311,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fontsize.small", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -302,7 +320,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.fontsize.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hide &amp;amp; show Gobchat.
         /// </summary>
@@ -311,7 +329,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.hotkeys.hideshow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hides or shows Gobchat on keypress.
         /// </summary>
@@ -320,7 +338,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.hotkeys.hideshow.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hotkeys.
         /// </summary>
@@ -329,7 +347,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.hotkeys.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Character location update interval (ms).
         /// </summary>
@@ -338,7 +356,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.intervals.actor", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
@@ -347,7 +365,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.intervals.actor.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Chat update interval (ms).
         /// </summary>
@@ -356,7 +374,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.intervals.chat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
@@ -365,7 +383,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.intervals.chat.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
@@ -374,7 +392,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.language", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
@@ -383,7 +401,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.height", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Chat position and size.
         /// </summary>
@@ -392,7 +410,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.lable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Values won&apos;t be updated as long as the config is open.
         /// </summary>
@@ -401,7 +419,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.sublable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
@@ -410,7 +428,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.width", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to X.
         /// </summary>
@@ -419,7 +437,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.x", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Y.
         /// </summary>
@@ -428,7 +446,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.position.y", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cut off (yalm).
         /// </summary>
@@ -437,7 +455,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.cutoff", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -446,7 +464,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.cutoff.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fade out (yalm).
         /// </summary>
@@ -455,7 +473,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.fadeout", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -464,7 +482,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.fadeout.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Range filter.
         /// </summary>
@@ -473,7 +491,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Transparency end (%).
         /// </summary>
@@ -482,7 +500,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.transparencyend", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -491,7 +509,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.transparencyend.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Transparency start (%).
         /// </summary>
@@ -500,7 +518,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.transparencystart", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -509,7 +527,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.rangefilter.transparencystart.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Border for current result.
         /// </summary>
@@ -518,7 +536,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.search.border", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -527,7 +545,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.search.border.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
@@ -536,7 +554,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.search.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search results background.
         /// </summary>
@@ -545,7 +563,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.search.results", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -554,7 +572,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.search.results.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
@@ -563,7 +581,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.app.theme", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Background color.
         /// </summary>
@@ -572,7 +590,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.backgroundcolor", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Mention.
         /// </summary>
@@ -581,7 +599,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.mention", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Channel name.
         /// </summary>
@@ -590,7 +608,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Range filter.
         /// </summary>
@@ -599,7 +617,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.rangefilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Roleplay.
         /// </summary>
@@ -608,7 +626,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.roleplay", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Text color.
         /// </summary>
@@ -617,7 +635,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.textcolor", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Visible.
         /// </summary>
@@ -626,7 +644,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.channel.tbl.visible", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
@@ -635,7 +653,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.active", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Deletes group.
         /// </summary>
@@ -644,7 +662,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.delete.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Message background.
         /// </summary>
@@ -653,7 +671,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.message.background", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Group name.
         /// </summary>
@@ -662,7 +680,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
@@ -671,7 +689,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.naming", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sender background.
         /// </summary>
@@ -680,7 +698,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.sender.background", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sender text.
         /// </summary>
@@ -689,7 +707,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.sender.forground", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Players belonging to this group.
         /// </summary>
@@ -698,7 +716,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.trigger", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name..
         /// </summary>
@@ -707,7 +725,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.group.trigger.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to New group.
         /// </summary>
@@ -716,7 +734,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.groups.newgroup", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Deletes this entry.
         /// </summary>
@@ -725,7 +743,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.deletebutton.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
@@ -734,7 +752,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.about", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to App.
         /// </summary>
@@ -743,7 +761,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.app", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -752,7 +770,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Channels.
         /// </summary>
@@ -761,7 +779,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.channels", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Groups.
         /// </summary>
@@ -770,7 +788,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.groups", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Mentions.
         /// </summary>
@@ -779,7 +797,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.mentions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Profiles.
         /// </summary>
@@ -788,7 +806,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.profiles", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Roleplay.
         /// </summary>
@@ -797,7 +815,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.roleplay", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -806,7 +824,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save &amp;amp; Exit.
         /// </summary>
@@ -815,7 +833,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.saveandexit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Set your active profile..
         /// </summary>
@@ -824,7 +842,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.nav.selectprofile.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Copy this page from another profile.
         /// </summary>
@@ -833,7 +851,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.profile.copypage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Resets its value to its default.
         /// </summary>
@@ -842,7 +860,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.main.resetbutton.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Time between plays.
         /// </summary>
@@ -851,7 +869,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.interval", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again..
         /// </summary>
@@ -860,7 +878,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.interval.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Audio file.
         /// </summary>
@@ -869,7 +887,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.path", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The audio file needs to be located within the sound folder of gobchat.
         /// </summary>
@@ -878,7 +896,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.path.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Play audio.
         /// </summary>
@@ -887,7 +905,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.play", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Play an audio file whenever a message contains one or more mentions.
         /// </summary>
@@ -896,7 +914,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.play.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select a file.
         /// </summary>
@@ -905,7 +923,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.select.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Audiofile can&apos;t be played.&lt;br&gt;
         ///Either the format is not supported or the file can&apos;t be found!&lt;br&gt;
@@ -916,7 +934,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.test.error", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Play audio.
         /// </summary>
@@ -925,7 +943,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.test.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Audio volume.
         /// </summary>
@@ -934,7 +952,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.volume", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Audio volume.
         /// </summary>
@@ -943,7 +961,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.audio.volume.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Mentions.
         /// </summary>
@@ -952,7 +970,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.mentions.label", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Adds a new box for mentions.
         /// </summary>
@@ -961,7 +979,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.newmention.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention..
         /// </summary>
@@ -970,7 +988,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.mentions.trigger.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
         /// </summary>
@@ -979,7 +997,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.missing", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
         ///Either the format is not supported or the file can&apos;t be found/read!.
@@ -989,7 +1007,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.import.error", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import profile.
         /// </summary>
@@ -998,7 +1016,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.importprofile", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Create new profile.
         /// </summary>
@@ -1007,7 +1025,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.newprofile", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
@@ -1016,7 +1034,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.activate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Makes this the active profile.
         /// </summary>
@@ -1025,7 +1043,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.activate.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Clone.
         /// </summary>
@@ -1034,7 +1052,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.clone", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Creates a copy of this profile.
         /// </summary>
@@ -1043,7 +1061,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.clone.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Copy from.
         /// </summary>
@@ -1052,7 +1070,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.copy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Overwrites this profile with another profile.
         /// </summary>
@@ -1061,7 +1079,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.copy.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
@@ -1070,7 +1088,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.delete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete this profile.
         /// </summary>
@@ -1079,7 +1097,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.delete.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
@@ -1088,7 +1106,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.export", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1097,7 +1115,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.export.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
@@ -1106,7 +1124,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.reset", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Restore defaults for this profile.
         /// </summary>
@@ -1115,7 +1133,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profile.reset.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Actions.
         /// </summary>
@@ -1124,7 +1142,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profiles.actions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
@@ -1133,7 +1151,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.profiles.name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Restore all settings for this profile to default?
         ///Everything will be deleted!
@@ -1144,7 +1162,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.profiles.reset.confirmation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
@@ -1153,7 +1171,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.active", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Entry will be deleted. Are you sure?.
         /// </summary>
@@ -1162,7 +1180,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.deleteconfirm", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Starts with {0} and ends with {1}.
         /// </summary>
@@ -1171,7 +1189,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.header", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
         /// </summary>
@@ -1180,7 +1198,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.info", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to End.
         /// </summary>
@@ -1189,7 +1207,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.tokenend", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
@@ -1198,7 +1216,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.entry.tokenstart", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Text color.
         /// </summary>
@@ -1207,7 +1225,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.tokentbl.header.color", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Channel name.
         /// </summary>
@@ -1216,7 +1234,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.tokentbl.header.name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add entry.
         /// </summary>
@@ -1225,7 +1243,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.tokentbl.new", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reset entries.
         /// </summary>
@@ -1234,7 +1252,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("config.roleplay.tokentbl.reset", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Alliance.
         /// </summary>
@@ -1243,7 +1261,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.alliance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1252,7 +1270,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.alliance.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Animated emote.
         /// </summary>
@@ -1261,7 +1279,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.animatedemote", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1270,7 +1288,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.animatedemote.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 1.
         /// </summary>
@@ -1279,7 +1297,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl1.
         /// </summary>
@@ -1288,7 +1306,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 2.
         /// </summary>
@@ -1297,7 +1315,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl2.
         /// </summary>
@@ -1306,7 +1324,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 3.
         /// </summary>
@@ -1315,7 +1333,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl3.
         /// </summary>
@@ -1324,7 +1342,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 4.
         /// </summary>
@@ -1333,7 +1351,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl4.
         /// </summary>
@@ -1342,7 +1360,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 5.
         /// </summary>
@@ -1351,7 +1369,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl5.
         /// </summary>
@@ -1360,7 +1378,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 6.
         /// </summary>
@@ -1369,7 +1387,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl6.
         /// </summary>
@@ -1378,7 +1396,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 7.
         /// </summary>
@@ -1387,7 +1405,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl7.
         /// </summary>
@@ -1396,7 +1414,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cross-world Linkshell 8.
         /// </summary>
@@ -1405,7 +1423,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /cwl8.
         /// </summary>
@@ -1414,7 +1432,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Echo.
         /// </summary>
@@ -1423,7 +1441,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.echo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /e.
         /// </summary>
@@ -1432,7 +1450,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.echo.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Emote.
         /// </summary>
@@ -1441,7 +1459,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.emote", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /em.
         /// </summary>
@@ -1450,7 +1468,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.emote.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error Messages.
         /// </summary>
@@ -1459,7 +1477,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.error", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1468,7 +1486,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.error.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
@@ -1477,7 +1495,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.general", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1486,7 +1504,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.general.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Gobchat Errors.
         /// </summary>
@@ -1495,7 +1513,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.gobchaterror", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1504,7 +1522,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.gobchaterror.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Gobchat Infos.
         /// </summary>
@@ -1513,7 +1531,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.gobchatinfo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1522,7 +1540,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.gobchatinfo.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Free Company.
         /// </summary>
@@ -1531,7 +1549,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.guild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /fc.
         /// </summary>
@@ -1540,7 +1558,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.guild.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 1.
         /// </summary>
@@ -1549,7 +1567,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l1.
         /// </summary>
@@ -1558,7 +1576,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-1.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 2.
         /// </summary>
@@ -1567,7 +1585,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l2.
         /// </summary>
@@ -1576,7 +1594,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-2.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 3.
         /// </summary>
@@ -1585,7 +1603,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-3", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l3.
         /// </summary>
@@ -1594,7 +1612,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-3.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 4.
         /// </summary>
@@ -1603,7 +1621,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-4", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l4.
         /// </summary>
@@ -1612,7 +1630,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-4.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 5.
         /// </summary>
@@ -1621,7 +1639,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-5", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l5.
         /// </summary>
@@ -1630,7 +1648,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-5.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 6.
         /// </summary>
@@ -1639,7 +1657,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-6", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l6.
         /// </summary>
@@ -1648,7 +1666,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-6.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 7.
         /// </summary>
@@ -1657,7 +1675,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-7", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l7.
         /// </summary>
@@ -1666,7 +1684,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-7.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Linkshell 8.
         /// </summary>
@@ -1675,7 +1693,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-8", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /l8.
         /// </summary>
@@ -1684,7 +1702,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.linkshell-8.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to NPC dialog.
         /// </summary>
@@ -1693,7 +1711,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.npc-dialog", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Party.
         /// </summary>
@@ -1702,7 +1720,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.party", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /p.
         /// </summary>
@@ -1711,7 +1729,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.party.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Random.
         /// </summary>
@@ -1720,7 +1738,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.random", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /random, use /dice to roll in current channel.
         /// </summary>
@@ -1729,7 +1747,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.random.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Say.
         /// </summary>
@@ -1738,7 +1756,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.say", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /s.
         /// </summary>
@@ -1747,7 +1765,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.say.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shout.
         /// </summary>
@@ -1756,7 +1774,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.shout", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1765,7 +1783,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.shout.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tell recieve.
         /// </summary>
@@ -1774,7 +1792,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.tellrecieve", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1783,7 +1801,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.tellrecieve.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tell send.
         /// </summary>
@@ -1792,7 +1810,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.tellsend", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -1801,7 +1819,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.tellsend.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Yell.
         /// </summary>
@@ -1810,7 +1828,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.yell", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to /y.
         /// </summary>
@@ -1819,7 +1837,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.chat.channel.yell.tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Available commands: {0}.
         /// </summary>
@@ -1828,7 +1846,7 @@ namespace Gobchat {
                 return ResourceManager.GetString("main.cmdmanager.availablecmds", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
         /// </summary>

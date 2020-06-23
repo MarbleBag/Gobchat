@@ -3,23 +3,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## Unreleased
+
+## Beta [1.7.0-2] - 2020.06.23
 ### Added
 - Theme selection in `Config / App`
-  - Change the config dialog style
+  - Available  themes are ffxiv dark / light and a kind of Gobchat legacy
 
-- Checkbox in `Config / app` to set if you like to see your mentions in your own messages
 
-## [1.7.0] - Unreleased
+- A checkbox in `Config / app` to (de)activate mention scanning in your own messages
+  - If turned on, Gobchat will mark any mentions in your messages - so you can test them!
+  - If turned off, Gobchat will not mark them, unless another user uses them.
+
+## Beta [1.7.0-1] - 2020.06.12
+### Added
 - Chat commands: `info off`, `info on`
-  - `info off` will suppress any gobchat info until turned back on via `info on` or restart of gobchat
+  - `info off` will suppress any Gobchat info until turned back on via `info on` or restart of Gobchat
 
 
 - Chat commands: `error off`, `error on`
-  - `error off` will suppress any gobchat errors until turned back on via `error on` or restart of gobchat
+  - `error off` will suppress any Gobchat errors until turned back on via `error on` or restart of Gobchat
 
 
 - Language selection dropdown in `Config / App`
-  - Parts of gobchat were translated into german
+  - Parts of Gobchat were translated into german
 
 
 - Tons of new tooltips
