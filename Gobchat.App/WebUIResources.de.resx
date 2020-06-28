@@ -367,6 +367,18 @@
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
+    <value>Weltenkontaktkreis 1</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
+    <value>/wkk1</value>
+  </data>
+  <data name="main.chat.channel.error" xml:space="preserve">
+    <value>Fehlermeldungen</value>
+  </data>
+  <data name="main.chat.channel.general" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
   <data name="main.cmdmanager.availablecmds" xml:space="preserve">
     <value>Verfügbare Befehle: {0}</value>
     <comment>0: list of cmds</comment>
