@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class LegacyAppConfigTransformer : IJsonTransformer
+    internal sealed class LegacyAppConfigTransformer : IJsonFunction
     {
         private IConfigManager _manager;
 
@@ -25,15 +25,15 @@ namespace Gobchat.Core.Config
             _manager = manager;
         }
 
-        public JObject Transform(JObject json)
+        public JObject Apply(JObject json)
         {
             var profileId = _manager.CreateNewProfile();
             var profile = _manager.GetProfile(profileId);
 
             var loader = new JsonConfigLoader();
-            var finalizer = new ValueToEnumTransformer();
+            var finalizer = new JsonValueToEnum();
             json = loader.LoadConfig(json);
-            json = finalizer.Transform(json);
+            json = finalizer.Apply(json);
 
             profile.SetProperties(json);
             profile.SetProperty("profile.name", "Profile 1");

@@ -21,16 +21,16 @@ namespace Gobchat.Core.Config
 {
     public sealed class JsonConfigLoader
     {
-        private readonly Dictionary<int, IJsonTransformer> _converters = new Dictionary<int, IJsonTransformer>();
+        private readonly IList<IJsonFunction> _transformers = new List<IJsonFunction>();
 
         public JsonConfigLoader()
         {
         }
 
-        public void AddConverter(int targetVersion, IJsonTransformer transformer)
+        public void AddFunction(IJsonFunction transformer)
         {
             if (transformer == null) throw new ArgumentNullException(nameof(transformer));
-            _converters.Add(targetVersion, transformer);
+            _transformers.Add(transformer);
         }
 
         /// <summary>
@@ -54,8 +54,7 @@ namespace Gobchat.Core.Config
         /// <exception cref="VersionProperyException"></exception>
         public JObject LoadConfig(JObject configObject)
         {
-            ValidateIsConfig(configObject);
-            return UpgradeConfig(configObject);
+            return TransformConfig(configObject);
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace Gobchat.Core.Config
         /// <param name="configPath"></param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException">If the file can't be found</exception>
-        public JObject LoadJsonFromFile(string configPath)
+        private JObject LoadJsonFromFile(string configPath)
         {
             if (!System.IO.File.Exists(configPath))
                 throw new FileNotFoundException(configPath);
@@ -77,65 +76,11 @@ namespace Gobchat.Core.Config
             }
         }
 
-        private void ValidateIsConfig(JObject configObject)
+        private JObject TransformConfig(JObject configObject)
         {
-            if (configObject == null)
-                throw new ConfigLoadException("Config object is null");
-
-            if (configObject["version"] == null)
-                throw new MissingPropertyException("version");
-
-            if (configObject["version"].Type != JTokenType.Integer)
-                throw new InvalidPropertyTypeException("version", System.Enum.GetName(typeof(JTokenType), JTokenType.Integer), System.Enum.GetName(typeof(JTokenType), configObject["version"].Type));
-
-            if (configObject["profile"] is JObject profile)
-            {
-                if (configObject["profile"]["id"] == null)
-                    throw new MissingPropertyException("profile.id");
-                if (configObject["profile"]["name"] == null)
-                    throw new MissingPropertyException("profile.name");
-            }
-            else
-            {
-                throw new MissingPropertyException("profile");
-            }
-        }
-
-        private JObject UpgradeConfig(JObject configObject)
-        {
-            var version = GetVersion(configObject);
-
-            do
-            {
-                if (!_converters.TryGetValue(version, out IJsonTransformer converter))
-                    break;
-
-                configObject = converter.Transform(configObject);
-
-                var newVersion = GetVersion(configObject);
-                if (newVersion < version)
-                    throw new ConfigLoadException($"Version converter {version} is defect");
-                version = newVersion;
-            } while (true);
-
+            foreach (var transformer in _transformers)
+                configObject = transformer.Apply(configObject);
             return configObject;
-        }
-
-        private int GetVersion(JObject configObject)
-        {
-            var jToken = configObject["version"];
-
-            if (jToken.Type == JTokenType.String)
-            {
-                if (int.TryParse((string)jToken, out int result))
-                {
-                    configObject["version"] = result;
-                    jToken = configObject["version"];
-                }
-            }
-
-            long version = jToken.Value<long>();
-            return (int)version;
         }
     }
 }

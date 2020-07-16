@@ -167,8 +167,8 @@ namespace Gobchat.Core.Config
             if (!_writable)
                 throw new ConfigException("Config is read only");
 
-            var enumTransformer = new ValueToEnumTransformer();
-            root = enumTransformer.Transform(root);
+            var enumTransformer = new JsonValueToEnum();
+            root = enumTransformer.Apply(root);
 
             var (changes, _) = JsonUtil.RemoveUnused(root, _data, (path) => UnchangableValues.Contains(path));
             var (writeChanges, _) = JsonUtil.Overwrite(root, _data, (path) => UnchangableValues.Contains(path));

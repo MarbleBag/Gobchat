@@ -110,24 +110,18 @@ namespace Gobchat.Core.Config
         private JsonConfigLoader GetProfileLoader()
         {
             var loader = new JsonConfigLoader();
-            loader.AddConverter(2, new ConfigUpgrader_v3());
-            loader.AddConverter(3, new ConfigUpgrader_v16());
-            loader.AddConverter(16, new ConfigUpgrader_v1701());
-            loader.AddConverter(1700, new ConfigUpgrader_v1701());
-
-            //TODO add converters
+            loader.AddFunction(new JsonValidateIsProfile());
+            loader.AddFunction(new JsonConfigUpgrader(new ConfigUpgrader()));
+            loader.AddFunction(new JsonValueToEnum());
             return loader;
         }
 
         private void LoadDefaultProfile()
         {
             var loader = new JsonConfigLoader();
+            loader.AddFunction(new JsonValueToEnum());
             var defaultConfig = loader.LoadConfig(_defaultProfilePath);
-
-            var finalizer = new ValueToEnumTransformer();
-            defaultConfig = finalizer.Transform(defaultConfig);
             defaultConfig["profile"]["id"] = null;
-
             _defaultConfig = new GobchatConfigProfile(defaultConfig, false);
         }
 
@@ -144,25 +138,11 @@ namespace Gobchat.Core.Config
 
             var userProfileFiles = Directory.EnumerateFiles(userProfileFolderPath, "profile_*.json", SearchOption.TopDirectoryOnly);
 
-            var loader = GetProfileLoader();
-            var finalizer = new ValueToEnumTransformer();
-
             foreach (var userProfileFile in userProfileFiles)
             {
-                JObject userProfile;
-                try
-                {
-                    userProfile = loader.LoadConfig(userProfileFile);
-                    userProfile = finalizer.Transform(userProfile);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, $"Unable to load profile");
-                    continue;
-                }
-
-                var profileId = EnsureProfileId(userProfile);
-                StoreNewProfile(userProfile, false);
+                var userProfile = ParseProfile(userProfileFile);
+                if (userProfile != null)
+                    StoreNewProfile(userProfile, false);
             }
         }
 
@@ -177,17 +157,15 @@ namespace Gobchat.Core.Config
             return profileId;
         }
 
-        public JToken ParseProfile(string path)
+        public JObject ParseProfile(string path)
         {
             var loader = GetProfileLoader();
-            var finalizer = new ValueToEnumTransformer();
 
             JObject userProfile;
             try
             {
                 userProfile = loader.LoadConfig(path);
-                userProfile = finalizer.Transform(userProfile);
-                var profileId = EnsureProfileId(userProfile);
+                EnsureProfileId(userProfile);
                 return userProfile;
             }
             catch (Exception ex)
@@ -205,7 +183,7 @@ namespace Gobchat.Core.Config
             if (File.Exists(appConfigPath))
             {
                 var loader = new JsonConfigLoader();
-                var appConfig = loader.LoadJsonFromFile(appConfigPath);
+                var appConfig = loader.LoadConfig(appConfigPath);
 
                 if (appConfig["activeProfile"] != null)
                 {
@@ -247,14 +225,14 @@ namespace Gobchat.Core.Config
             var outputFolder = Path.Combine(ConfigFolderPath, "profiles");
             Directory.CreateDirectory(outputFolder);
 
-            var finalizer = new EnumToStringTransformer();
+            var finalizer = new JsonEnumToString();
 
             foreach (var profile in _profiles.Values)
             {
                 var profilePath = Path.Combine(outputFolder, $"profile_{profile.ProfileId}.json");
 
                 var json = profile.ToJson();
-                json = finalizer.Transform(json);
+                json = finalizer.Apply(json);
                 json.Remove("appdata"); //don't save those
 
                 try
@@ -402,7 +380,7 @@ namespace Gobchat.Core.Config
 
         #endregion profile managment
 
-        public JToken AsJson()
+        public JObject AsJson()
         {
             var root = new JObject();
             root["activeProfile"] = this.ActiveProfileId;

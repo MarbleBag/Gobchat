@@ -11,16 +11,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Util;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class ValueToEnumTransformer : IJsonTransformer
+    public interface IJsonFunction
     {
-        public JObject Transform(JObject json)
+        JObject Apply(JObject json);
+    }
+
+    internal sealed class JsonValueToEnum : IJsonFunction
+    {
+        public JObject Apply(JObject json)
         {
             if (json == null)
                 return null;
@@ -42,9 +45,9 @@ namespace Gobchat.Core.Config
         }
     }
 
-    internal sealed class EnumToStringTransformer : IJsonTransformer
+    internal sealed class JsonEnumToString : IJsonFunction
     {
-        public JObject Transform(JObject json)
+        public JObject Apply(JObject json)
         {
             if (json == null)
                 return null;
@@ -117,6 +120,50 @@ namespace Gobchat.Core.Config
             }
 
             return false;
+        }
+    }
+
+    internal sealed class JsonValidateIsProfile : IJsonFunction
+    {
+        public JObject Apply(JObject configObject)
+        {
+            if (configObject == null)
+                throw new ConfigLoadException("Config object is null");
+
+            if (configObject["version"] == null)
+                throw new MissingPropertyException("version");
+
+            if (configObject["version"].Type != JTokenType.Integer)
+                throw new InvalidPropertyTypeException("version", System.Enum.GetName(typeof(JTokenType), JTokenType.Integer), System.Enum.GetName(typeof(JTokenType), configObject["version"].Type));
+
+            if (configObject["profile"] is JObject profile)
+            {
+                if (configObject["profile"]["id"] == null)
+                    throw new MissingPropertyException("profile.id");
+                if (configObject["profile"]["name"] == null)
+                    throw new MissingPropertyException("profile.name");
+            }
+            else
+            {
+                throw new MissingPropertyException("profile");
+            }
+
+            return configObject;
+        }
+    }
+
+    internal sealed class JsonConfigUpgrader : IJsonFunction
+    {
+        private readonly ConfigUpgrader _configUpgrader;
+
+        public JsonConfigUpgrader(ConfigUpgrader configUpgrader)
+        {
+            this._configUpgrader = configUpgrader ?? throw new ArgumentNullException(nameof(configUpgrader));
+        }
+
+        public JObject Apply(JObject json)
+        {
+            return _configUpgrader.UpgradeConfig(json);
         }
     }
 }

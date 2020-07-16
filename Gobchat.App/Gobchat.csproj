@@ -210,8 +210,6 @@
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
     <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v16.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v1701.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1701.cs" />
@@ -239,7 +237,6 @@
     <Compile Include="Core\Chat\Formatter\ReplaceTypeByToken.cs" />
     <Compile Include="Core\Config\Events\ActiveProfileChangedEventArgs.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigLoadException.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v3.cs" />
     <Compile Include="Core\Config\IGobchatConfigManager.cs" />
     <Compile Include="Core\Config\IGobchatConfigProfile.cs" />
     <Compile Include="Core\Config\Exceptions\InvalidProfileIdException.cs" />
@@ -254,14 +251,13 @@
     <Compile Include="Core\Config\Events\PropertyChangedEventArgs.cs" />
     <Compile Include="Core\Config\Exceptions\PropertyException.cs" />
     <Compile Include="Core\Config\Exceptions\PropertyReadOnlyException.cs" />
-    <Compile Include="Core\Config\ValueAndEnumTransformer.cs" />
     <Compile Include="Core\Chat\IAutotranslateProvider.cs" />
     <Compile Include="Core\Config\IGobchatConfig.cs" />
     <Compile Include="Core\Config\JsonConfigLoader.cs" />
     <Compile Include="Core\Chat\ChatChannel.cs" />
     <Compile Include="Core\Chat\MessageSegmentType.cs" />
     <Compile Include="Core\Config\GobchatConfigManager.cs" />
-    <Compile Include="Core\Config\IJsonTransformer.cs" />
+    <Compile Include="Core\Config\IJsonFunction.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigException.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
     <Compile Include="Core\Resource\Resources.cs" />
