@@ -51,16 +51,16 @@ namespace Gobchat.Core.Util
                 webClient.Headers.Add("User-Agent", $"Gobchat v{currentVersion}");
 
                 progressMonitor.Progress = 0d;
-                progressMonitor.StatusText = $"Waiting...";
-                progressMonitor.Log("Prepare download");
+                progressMonitor.StatusText = Resources.Core_Util_DownloadHelper_Waiting;
+                progressMonitor.Log(Resources.Core_Util_DownloadHelper_Prepare);
 
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
                     progressMonitor.Progress = e.ProgressPercentage / 100d;
-                    progressMonitor.StatusText = $"Downloading: {e.BytesReceived} / {e.TotalBytesToReceive}";
+                    progressMonitor.StatusText = StringFormat.Format(Resources.Core_Util_DownloadHelper_Download, e.BytesReceived / e.TotalBytesToReceive);
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        progressMonitor.Log("Download cancelled");
+                        progressMonitor.Log(Resources.Core_Util_DownloadHelper_Canceled);
                         webClient.CancelAsync();
                     }
                 }
@@ -69,13 +69,13 @@ namespace Gobchat.Core.Util
 
                 try
                 {
-                    progressMonitor.Log($"Connecting to {downloadUrl}");
+                    progressMonitor.Log(StringFormat.Format(Resources.Core_Util_DownloadHelper_Connecting, downloadUrl));
                     var downloadTask = webClient.DownloadFileTaskAsync(downloadUrl, destinationFile);
                     downloadTask.Wait();
 
                     progressMonitor.Progress = 1d;
-                    progressMonitor.StatusText = "Download complete";
-                    progressMonitor.Log("Download complete");
+                    progressMonitor.StatusText = Resources.Core_Util_DownloadHelper_Complete;
+                    progressMonitor.Log(Resources.Core_Util_DownloadHelper_Complete);
                 }
                 catch (AggregateException ex)
                 {

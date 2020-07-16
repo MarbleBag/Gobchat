@@ -1,59 +1,239 @@
+﻿/*******************************************************************************
+ * Copyright (C) 2019-2020 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
 body, html {
     margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
-button > * {
+.gob-tab-nav {
+    display: inline-flex;
+}
+
+    .gob-tab-nav .gob-tab-nav-left {
+        border-radius: 15px 15px 0px 0px;
+    }
+
+    .gob-tab-nav .gob-tab-nav-right {
+        border-radius: 15px 15px 0px 0px;
+    }
+
+    .gob-tab-nav gob-tab-nav-content {
+        display: inline-flex;
+    }
+
+.gob-config-dialog-panel {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.gob-button-copypage {
+    height: 28px;
+    width: 28px;
+    margin: 3px;
+    position: absolute;
+    top: 32px;
+    right: 15px;
+}
+
+.gob-column-navigation {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    height: 100%;
+    width: 280px;
+}
+
+    .gob-column-navigation > select {
+        margin: 3px 3px 3px 3px;
+    }
+
+.gob-nav-element {
+    display: block;
+    margin: 2px 0px 2px 5px;
+}
+
+.gob-selectable-element {
+    display: block;
+}
+
+    .gob-selectable-element.active {
+    }
+
+    .gob-selectable-element:hover:not(.active) {
+    }
+
+    .gob-selectable-element > * {
+        font-size: larger;
+    }
+
+.gob-nav-panel {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.gob-nav-panel-content {
+    display: none;
+}
+
+    .gob-nav-panel-content.active {
+        display: block;
+    }
+
+.gob-config-group-item {
+    margin-left: 10px;
+}
+
+    .gob-config-group-item + .gob-config-group-item {
+        margin-top: 3px;
+    }
+
+    .gob-config-group-item .gob-config-group-item {
+        margin-left: 25px;
+    }
+
+    .gob-config-group-item > * {
+        display: flex;
+    }
+
+        .gob-config-group-item > * > * ~ * {
+            margin-left: 5px;
+        }
+
+.gob-config-dialog-header {
+}
+
+.gob-table-channel {
+    white-space: nowrap;
+}
+
+/* icon styles */
+.gob-icon-warning {
+    color: orangered;
+}
+
+/* button styles */
+.gob-button-column > .gob-button-primary,
+.gob-button-column > .gob-button-secondary,
+.gob-button-column > .gob-button-tertiary {
+    text-align: left;
+    padding: 3px 0px 3px 28px;
+}
+
+.gob-button-primary {
+    cursor: pointer;
+    margin: 2px;
+    word-spacing: normal;
+    letter-spacing: normal;
+    font-family: Arial;
+    font-size: 16px;
+    text-decoration: none;
+    outline: none;
+    width: 100%;
+    height: 25px;
+}
+
+    .gob-button-primary:hover {
+        filter: brightness(110%);
+    }
+
+    .gob-button-primary:active {
+        position: relative;
+        top: 1px;
+    }
+
+.gob-button-secondary {
+    cursor: pointer;
+    outline: none;
+}
+
+.gob-button-tertiary {
+    cursor: pointer;
+    outline: none;
+}
+
+.gob-button-copypage {
+    height: 28px;
+    width: 28px;
+    margin: 3px;
+    position: absolute;
+    right: 15px;
+}
+
+.gob-button-delete {
+}
+
+.gob-button-reset {
+    max-width: 28px;
+    max-height: 28px;
+}
+
+/* general styles */
+[disabled], .disabled {
     pointer-events: none;
+    opacity: 0.4;
 }
 
 .hide {
     display: none !important;
 }
 
-.ui-gc-reset {
+/* general control styles */
+
+input[type="checkbox"] {
+    outline: none;
 }
 
-.ui-gc-btn {
-    border: 1px solid #444444;
-    transition: all 0.4s ease 0s;
+    input[type="checkbox"]:checked {
+    }
+
+input[type="text"] {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
 }
 
-    .ui-gc-btn:hover {
-        background: #f6b93b;
-        border-color: #f6b93b;
-        transition: all 0.4s ease 0s;
-    }
-
-.ui-gc-btn-delete {
-    border: 1px solid #444444;
-    transition: all 0.4s ease 0s;
+input[type="number"] {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
 }
 
-    .ui-gc-btn-delete:hover {
-        background: #f6b93b;
-        border-color: #f6b93b;
-        transition: all 0.4s ease 0s;
-    }
-
-.ui-gc-group-header {
-    padding: 0px;
-    margin: 0px;
+select {
+    /*width: -webkit-fill-available;*/
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+    box-sizing: border-box;
 }
 
-    .ui-gc-group-header > *:first-child {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+textarea {
+    font-weight: bold;
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 400px;
+    width: 100%;
+}
 
-    .ui-gc-group-header > *:last-child {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+td > select:last-child {
+    width: 100%;
+}
 
-.ui-gc-highlight {
-    background: #f6b93b;
+td > input:last-child {
+    width: 100%
 }

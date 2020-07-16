@@ -80,15 +80,15 @@ namespace Gobchat.Module.Misc
                             return;
 
                         _reportError = false;
-                        _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't find a running instance of FFXIV.");
+                        _chatManager.EnqueueMessage(SystemMessageType.Error, Resources.Module_Misc_Connection_NotFound);
                         break;
 
                     case ConnectionState.Connected:
                         _reportError = true;
                         if (_memoryReader.ChatLogAvailable)
-                            _chatManager.EnqueueMessage(SystemMessageType.Info, "FFXIV detected.");
+                            _chatManager.EnqueueMessage(SystemMessageType.Info, Resources.Module_Misc_Connection_Found);
                         else
-                            _chatManager.EnqueueMessage(SystemMessageType.Error, "Can't access FFXIV chatlog. Restart Gobchat with admin rights.");
+                            _chatManager.EnqueueMessage(SystemMessageType.Error, Resources.Module_Misc_Connection_AdminRights);
                         break;
                 }
             }

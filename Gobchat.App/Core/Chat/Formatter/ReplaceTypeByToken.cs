@@ -50,7 +50,7 @@ namespace Gobchat.Core.Chat
 
         public void Segment(SegmentMarker marker, MessageSegmentType originalType, string text)
         {
-            if (originalType != MessageSegmentType.UNDEFINED)
+            if (originalType != MessageSegmentType.Undefined)
                 return; //already defined
 
             if (_lastSegmentClosed)

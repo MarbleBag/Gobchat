@@ -2,9 +2,37 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.7.0] - 2020.07.16
+### Added
+- Theme selection in `Config / App`
+  - Available  themes are ffxiv dark / light and a kind of Gobchat legacy
+
+
+- A checkbox in `Config / app` to (de)activate mention scanning in your own messages
+  - If turned on, Gobchat will mark any mention it can find in your message
+  - If turned off, Gobchat will not mark them, unless another user uses them.
+
+
+- Chat commands: `info off`, `info on`
+  - `info off` will suppress any Gobchat info until turned back on via `info on` or restart of Gobchat
+
+
+- Chat commands: `error off`, `error on`
+  - `error off` will suppress any Gobchat errors until turned back on via `error on` or restart of Gobchat
+
+
+- Language selection dropdown in `Config / App`
+  - Most of Gobchat is translated into german
+
+
+- Tons of new tooltips
+
+### Changed
+- Merged channels which are used by NPCs to talk into a single channel
+
 ## [1.6.3] - 2020.06.05
 ### Added
-- color selection to channels: NPC dialog, animated emote, echo
+- Color selection to channels: NPC dialog, animated emote, echo
 
 ### Fixed
 - groups
@@ -15,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - hotkey: hide & show
   - Previously set hotkey could become stuck on profile reset
 
-  
+
 - profiles
   - A newly created profile could not be immediately activated without pressing save in between
   - Profiles which were created and deleted in the same session were not correctly deleted from disk and were loaded again at the next start

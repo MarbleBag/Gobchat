@@ -42,7 +42,7 @@ namespace Gobchat.Core.Config
         /// <exception cref="ConfigLoadException"></exception>
         public JObject LoadConfig(string configPath)
         {
-            JObject configObject = GetConfigFromFile(configPath);
+            JObject configObject = LoadJsonFromFile(configPath);
             return LoadConfig(configObject);
         }
 
@@ -54,14 +54,8 @@ namespace Gobchat.Core.Config
         /// <exception cref="VersionProperyException"></exception>
         public JObject LoadConfig(JObject configObject)
         {
-            try
-            {
-                return UpgradeConfig(configObject);
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new ConfigLoadException("", e);
-            }
+            ValidateIsConfig(configObject);
+            return UpgradeConfig(configObject);
         }
 
         /// <summary>
@@ -69,8 +63,8 @@ namespace Gobchat.Core.Config
         /// </summary>
         /// <param name="configPath"></param>
         /// <returns></returns>
-        /// <exception cref="FileNotFoundException">If the version property is missing</exception>
-        private JObject GetConfigFromFile(string configPath)
+        /// <exception cref="FileNotFoundException">If the file can't be found</exception>
+        public JObject LoadJsonFromFile(string configPath)
         {
             if (!System.IO.File.Exists(configPath))
                 throw new FileNotFoundException(configPath);
@@ -80,6 +74,30 @@ namespace Gobchat.Core.Config
             {
                 JObject configObject = (JObject)JToken.ReadFrom(reader);
                 return configObject;
+            }
+        }
+
+        private void ValidateIsConfig(JObject configObject)
+        {
+            if (configObject == null)
+                throw new ConfigLoadException("Config object is null");
+
+            if (configObject["version"] == null)
+                throw new MissingPropertyException("version");
+
+            if (configObject["version"].Type != JTokenType.Integer)
+                throw new InvalidPropertyTypeException("version", System.Enum.GetName(typeof(JTokenType), JTokenType.Integer), System.Enum.GetName(typeof(JTokenType), configObject["version"].Type));
+
+            if (configObject["profile"] is JObject profile)
+            {
+                if (configObject["profile"]["id"] == null)
+                    throw new MissingPropertyException("profile.id");
+                if (configObject["profile"]["name"] == null)
+                    throw new MissingPropertyException("profile.name");
+            }
+            else
+            {
+                throw new MissingPropertyException("profile");
             }
         }
 
@@ -106,8 +124,6 @@ namespace Gobchat.Core.Config
         private int GetVersion(JObject configObject)
         {
             var jToken = configObject["version"];
-            if (jToken == null)
-                throw new MissingPropertyException("version");
 
             if (jToken.Type == JTokenType.String)
             {
@@ -117,9 +133,6 @@ namespace Gobchat.Core.Config
                     jToken = configObject["version"];
                 }
             }
-
-            if (jToken.Type != JTokenType.Integer)
-                throw new InvalidPropertyTypeException("version", "Integer", System.Enum.GetName(typeof(JTokenType), jToken.Type));
 
             long version = jToken.Value<long>();
             return (int)version;

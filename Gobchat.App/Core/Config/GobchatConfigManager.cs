@@ -112,6 +112,9 @@ namespace Gobchat.Core.Config
             var loader = new JsonConfigLoader();
             loader.AddConverter(2, new ConfigUpgrader_v3());
             loader.AddConverter(3, new ConfigUpgrader_v16());
+            loader.AddConverter(16, new ConfigUpgrader_v1701());
+            loader.AddConverter(1700, new ConfigUpgrader_v1701());
+
             //TODO add converters
             return loader;
         }
@@ -189,7 +192,7 @@ namespace Gobchat.Core.Config
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Invalid profile");
+                logger.Error(ex, $"Invalid profile {path}");
                 return null;
             }
         }
@@ -202,9 +205,7 @@ namespace Gobchat.Core.Config
             if (File.Exists(appConfigPath))
             {
                 var loader = new JsonConfigLoader();
-                loader.AddConverter(1, new LegacyAppConfigTransformer(this));
-
-                var appConfig = loader.LoadConfig(appConfigPath);
+                var appConfig = loader.LoadJsonFromFile(appConfigPath);
 
                 if (appConfig["activeProfile"] != null)
                 {
@@ -377,7 +378,12 @@ namespace Gobchat.Core.Config
             var defaultVersion = _defaultConfig.ProfileVersion;
             if (configVersion < defaultVersion)
             {
-                logger.Warn($"Profile {config.ProfileId} is outdated with version {configVersion}. Expected is version {defaultVersion}. Profile not stored.");
+                logger.Warn($"Profile {config.ProfileId} with version {configVersion} is outdated. Expected version is {defaultVersion}. Profile not stored.");
+                return;
+            }
+            else if (configVersion > defaultVersion)
+            {
+                logger.Warn($"Profile {config.ProfileId} with version {configVersion} is too new. Expected version is {defaultVersion}. Profile not stored.");
                 return;
             }
 

@@ -114,12 +114,12 @@ namespace Gobchat.Module.UI
                 try
                 { //try to do a early save
                     _module._configManager.SaveProfiles();
-                    _module._chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Info, "Profiles saved");
+                    _module._chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Info, Resources.Module_UI_Connector_Config_Profile_Saved);
                 }
                 catch (Exception e)
                 {
                     logger.Warn(e, "Error on profile save");
-                    _module._chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, "Unable to save profiles to disk. See debug log for more informations");
+                    _module._chatManager.EnqueueMessage(Core.Chat.SystemMessageType.Error, Resources.Module_UI_Connector_Config_Profile_Error);
                 }
             }
         }

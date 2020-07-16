@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System.Globalization;
+
 namespace Gobchat
 {
     public static class App
@@ -18,6 +20,9 @@ namespace Gobchat
         [System.STAThread]
         private static void Main(string[] args)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en");
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en");
+
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new global::Gobchat.Core.Runtime.GobchatApplicationContext());

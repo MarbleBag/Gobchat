@@ -13,7 +13,6 @@
 
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using static Gobchat.Core.Config.JsonUtil;
 using System.Globalization;
@@ -159,7 +158,7 @@ namespace Gobchat.Core.Config
             if (!_writable)
                 throw new ConfigException("Config is read only");
 
-            var (changes, _) = JsonUtil.Write(json, _data, (path) => UnchangableValues.Contains(path));
+            var (changes, _) = JsonUtil.Overwrite(json, _data, (path) => UnchangableValues.Contains(path));
             FirePropertyChange(changes);
         }
 
@@ -172,7 +171,7 @@ namespace Gobchat.Core.Config
             root = enumTransformer.Transform(root);
 
             var (changes, _) = JsonUtil.RemoveUnused(root, _data, (path) => UnchangableValues.Contains(path));
-            var (writeChanges, _) = JsonUtil.Write(root, _data, (path) => UnchangableValues.Contains(path));
+            var (writeChanges, _) = JsonUtil.Overwrite(root, _data, (path) => UnchangableValues.Contains(path));
 
             changes.UnionWith(writeChanges);
             FirePropertyChange(changes, true);
@@ -273,9 +272,9 @@ namespace Gobchat.Core.Config
             return (JObject)_data.DeepClone();
         }
 
-        private void WalkJson(string key, JsonUtil.MissingElementHandling missingElementHandling, JsonUtil.Action action)
+        private void WalkJson(string key, JsonUtil.MissingElementHandling missingElementHandling, JsonUtil.WalkAction action)
         {
-            JsonUtil.WalkJson(key, _data, missingElementHandling, action);
+            JsonUtil.WalkJson(_data, key, missingElementHandling, action);
         }
 
         private T GetJsonValue<T>(JToken jToken)

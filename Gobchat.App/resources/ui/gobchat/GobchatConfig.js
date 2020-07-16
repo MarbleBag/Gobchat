@@ -689,5 +689,7 @@ var Gobchat = (function (Gobchat, undefined) {
         }
     }
 
+    Gobchat.EventDispatcher = EventDispatcher
+
     return Gobchat
 }(Gobchat || {}));

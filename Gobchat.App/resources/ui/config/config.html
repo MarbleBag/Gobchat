@@ -14,47 +14,82 @@
 
     <script defer src="../lib/fontawesome/js/all.js"></script>
 
+    <!--
     <link rel="stylesheet" href="../gobui_default.css">
     <link rel="stylesheet" href="config.css">
+    -->
+
+    <link rel="stylesheet" href="../gobui_default.css">
 
     <script src="config.js"></script>
-    <script src="gob-databinding.js"></script>
+    <script src="../gobchat/gob-databinding.js"></script>
+    <script src="../gobchat/gob-jquery-loadthen.js"></script>
 </head>
-<body>
+<body class="gob-config-dialog">
     <script type="text/javascript">
         'use strict';
 
         //if (window.opener) {
         window.GobchatAPI = window.opener.GobchatAPI
         window.Gobchat = window.opener.Gobchat
+        window.console = window.opener.console
+
         window.gobconfig = new Gobchat.GobchatConfig()
         window.gobconfig.loadFromLocalStore()
+
         //}
     </script>
 
-    <div id="main_navbar" class="ui-side-navigation">
-        <select id="main_profileselect"></select>
-        <a data-nav-target="main_nav_app" class="active">App</a>
-        <a data-nav-target="main_nav_mentions">Mentions</a>
-        <a data-nav-target="main_nav_profiles">Profiles</a>
-        <a data-nav-target="main_nav_channel">Channels</a>
-        <a data-nav-target="main_nav_groups">Groups</a>
-        <a data-nav-target="main_nav_roleplay">Roleplay</a>
-        <a data-nav-target="main_nav_about">About</a>
-        <a class="btn-system" id="main_saveconfig"><i class="fa fa-save"></i> Save</a>
-        <a class="btn-system" id="main_saveandexitconfig"><i class="fa fa-save"></i> Save &amp; Exit</a>
-        <!--<a class="btn-system" id="main_resetconfig"><i class="fa fa-exclamation-circle"></i> Defaults</a>-->
-        <a class="btn-system" id="main_cancelconfig"><i class="fas fa-trash-alt"></i> Cancel</a>
-    </div>
-
-    <div class="ui-content">
-        <div id="main_nav_app" data-content-src="config_app.html"></div>
-        <div id="main_nav_mentions" data-content-src="config_mentions.html"></div>
-        <div id="main_nav_profiles" data-content-src="config_profiles.html"></div>
-        <div id="main_nav_channel" data-content-src="config_channel.html"></div>
-        <div id="main_nav_roleplay" data-content-src="config_roleplay.html"></div>
-        <div id="main_nav_groups" data-content-src="config_groups.html"></div>
-        <div id="main_nav_about" data-content-src="about.html"></div>
+    <div class="gob-config-dialog-panel" style="display: flex; flex-direction:column; overflow:hidden;">
+        <div class="gob-config-dialog-header">
+            Gobchat Configuration
+        </div>
+        <div class="gob-separator-horizontal"></div>
+        <div style="display: inline-flex; overflow:hidden;">
+            <div id="cmain_navbar" class="gob-column-navigation" data-gob-nav-target="cmain_config_content">
+                <select id="cmain_profileselect"></select>
+                <div class="gob-separator-horizontal"></div>
+                <div class="gob-nav-element gob-selectable-element active" data-gob-nav-target="config_app.html">
+                    <div data-gob-locale-text="config.main.nav.app"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_mentions.html">
+                    <div data-gob-locale-text="config.main.nav.mentions"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_profiles.html">
+                    <div class="" data-gob-locale-text="config.main.nav.profiles"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_channel.html">
+                    <div class="" data-gob-locale-text="config.main.nav.channels"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_groups.html">
+                    <div class="" data-gob-locale-text="config.main.nav.groups"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_roleplay.html">
+                    <div class="" data-gob-locale-text="config.main.nav.roleplay"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="about.html">
+                    <div class="" data-gob-locale-text="config.main.nav.about"></div>
+                </div>
+                <div class="gob-separator-horizontal"></div>
+                <div class="gob-button-column">
+                    <button id="cmain_saveconfig" class="gob-button-primary">
+                        <i class="fa fa-save"></i>
+                        <span data-gob-locale-text="config.main.nav.save"></span>
+                    </button>
+                    <button id="cmain_saveandexitconfig" class="gob-button-primary">
+                        <i class="fa fa-save"></i>
+                        <span data-gob-locale-text="config.main.nav.saveandexit"></span>
+                    </button>
+                    <button id="cmain_cancelconfig" class="gob-button-primary">
+                        <i class="fas fa-trash-alt"></i>
+                        <span data-gob-locale-text="config.main.nav.cancel"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="gob-separator-vertical"></div>
+            <div class="gob-nav-panel" id="cmain_config_content">
+            </div>
+        </div>
     </div>
 
     <div id="config_copyprofiledialog" title="Select a profile" hidden>
@@ -63,23 +98,23 @@
 
     <div id="config_dialog_error" title="An error occured" hidden>
         <p>
-            <span style="float:left; margin:24px 24px 20px 0; color:orangered;"><i class="fas fa-exclamation-triangle fa-3x"></i></span>
+            <span style="float:left; margin:24px 24px 20px 0;"><i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i></span>
             <span id="config_dialog_error_text">hello</span>
         </p>
     </div>
 
     <script type="text/javascript">
-        'use strict'
 
+        // import { buildNavigationElement } from "../gobchat/gob-navbar"
         jQuery(function ($) {
-            $("#main_saveconfig").on("click", function (e) {
+            $("#cmain_saveconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
                 window.saveConfig()
                 //window.close()
                 //window.opener.postMessage("Done", '*')
             });
 
-            $("#main_saveandexitconfig").on("click", function (e) {
+            $("#cmain_saveandexitconfig").on("click", function (e) {
                 window.gobconfig.saveToLocalStore()
                 window.saveConfig()
                 //window.gobresult = "save"
@@ -87,7 +122,7 @@
                 //window.opener.postMessage("Done", '*')
             });
 
-            $("#main_resetconfig").on("click", function (e) {
+            $("#cmain_resetconfig").on("click", function (e) {
                 if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
                     window.gobconfig.resetProfile()
                     window.gobconfig.saveToLocalStore()
@@ -95,7 +130,7 @@
                 }
             });
 
-            $("#main_cancelconfig").on("click", function (e) {
+            $("#cmain_cancelconfig").on("click", function (e) {
                 if (window.confirm("Cancel? Any unsaved changes will be lost.")) {
                     //window.gobresult = "cancel"
                     window.close()
@@ -103,57 +138,76 @@
                 }
             });
 
-            $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
+            // $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
 
-            initializeNavigationBar("main_navbar")
+            {
+                (async () => {
+                    window.goblocale = new Gobchat.GobLocaleManager()
+                    window.goblocale.setLocale(gobconfig.get("behaviour.language"))
+
+                    const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+
+                    generalBinding.bindConfigListener("behaviour.language", (value) => {
+                        window.goblocale.setLocale(value)
+                        window.goblocale.updateElement($(document))
+                    })
+
+                    await makeNavigationElement($("#cmain_navbar"))
+
+                    const styleLoader = new Gobchat.StyleLoader(document.head, "..")
+                    await styleLoader.loadStyles()
+
+                    try {
+                        const dpdThemes = $("#capp_theme")
+                        dpdThemes.empty()
+                        for (let style of styleLoader.styles) {
+                            $('<option>', {
+                                text: style,
+                                value: style
+                            }).appendTo(dpdThemes)
+                        }
+                    } catch (e1) {
+                        console.log(e1)
+                    }
+
+                    generalBinding.bindConfigListener("style.theme", (value) => {
+                        $("body").hide()
+                        styleLoader.activateStyle(value)
+                        $("#capp_theme").val(value)
+                        $("body").show("fast") //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+                    })
+
+                    generalBinding.initialize()
+                })()
+            }
         });
 
-        function initializeNavigationBar(navigationBarId) {
-            const navAttribute = "data-nav-target"
+        async function makeNavigationElement(navigationElement) {
+            const navAttribute = "data-gob-nav-target"
+            const navIdAttribute = "data-gob-nav-id"
+            const $navBar = $(navigationElement)
+            const $navPanel = $(`#${navigationElement.attr(navAttribute)}`)
 
-            function hideNavigationContent(navigationId) {
-                $(`#${navigationId} > a`).each(function () {
-                    const target = $(this).attr(navAttribute)
-                    if (target)
-                        $(`#${target}`).hide()
+            $navElements = $navBar.find(`.gob-nav-element[${navAttribute}]`)
+
+            const awaitPromises = []
+            $navElements.each(function () {
+                const $panelElement = $("<div class='gob-nav-panel-content' />").appendTo($navPanel)
+                const pageToLoad = $(this).attr(navAttribute)
+                $panelElement.attr(navIdAttribute, pageToLoad)
+                awaitPromises.push($panelElement.loadThen(pageToLoad))
+
+                if ($(this).hasClass("active"))
+                    $panelElement.addClass("active")
+
+                $(this).on("click", function () {
+                    $navBar.find("> .gob-nav-element.active").removeClass("active")
+                    $(this).addClass("active")
+                    $navPanel.find("> .gob-nav-panel-content.active").removeClass("active")
+                    $panelElement.addClass("active")
                 })
-            }
-
-            function showActiveNavigationContent(navigationId) {
-                $(`#${navigationId} > .active`).each(function () {
-                    const target = $(this).attr(navAttribute)
-                    if (target)
-                        $(`#${target}`).show()
-                })
-            }
-
-            function importNavigationContent(navigationId) {
-                $(`#${navigationId} > a`).each(function () {
-                    const targetId = $(this).attr(navAttribute)
-                    if (!targetId) return
-                    const target = $(`#${targetId}`)
-                    const contentSrc = target.attr("data-content-src")
-                    if (!contentSrc) return
-                    target.load(contentSrc)
-                })
-            }
-
-            function hasNavigationAttribute(element) {
-                const target = $(element).attr(navAttribute)
-                return target !== null && target !== undefined
-            }
-
-            hideNavigationContent(navigationBarId)
-            importNavigationContent(navigationBarId)
-            showActiveNavigationContent(navigationBarId)
-
-            $(`#${navigationBarId}`).on("click", function (event) {
-                if (!hasNavigationAttribute(event.target)) return
-                hideNavigationContent(navigationBarId)
-                $(`#${navigationBarId} > .active`).removeClass("active")
-                $(event.target).addClass("active")
-                showActiveNavigationContent(navigationBarId)
             })
+            await Promise.all(awaitPromises)
         }
     </script>
 </body>

@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Core.Chat;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -40,8 +39,8 @@ namespace Gobchat.Core.Config
             profile.SetProperty("profile.name", "Profile 1");
 
             var visibleChannels = profile.GetProperty<List<int>>("behaviour.channel.visible");
-            visibleChannels.Add((int)ChatChannel.GOBCHAT_INFO);
-            visibleChannels.Add((int)ChatChannel.GOBCHAT_ERROR);
+            visibleChannels.Add((int)0x01FFFF /*GOBCHAT_INFO*/);
+            visibleChannels.Add((int)0x02FFFF /*GOBCHAT_ERROR*/);
             profile.SetProperty("behaviour.channel.visible", visibleChannels);
 
             var result = new JObject();

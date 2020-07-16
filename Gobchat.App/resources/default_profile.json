@@ -1,5 +1,5 @@
 ﻿{
-  "version": 16,
+  "version": 1701,
   "profile": {
     "id": null,
     "name": null
@@ -7,15 +7,15 @@
   "behaviour": {
     "channel": {
       "roleplay": [
-        "SAY",
-        "EMOTE",
-        "YELL",
-        "SHOUT",
-        "PARTY",
-        "GUILD",
-        "ALLIANCE",
-        "TELL_SEND",
-        "TELL_RECIEVE"
+        "Say",
+        "Emote",
+        "Yell",
+        "Shout",
+        "Party",
+        "Guild",
+        "Alliance",
+        "TellSend",
+        "TellRecieve"
       ],
       "mention": [
         "SAY",
@@ -33,44 +33,41 @@
         "LINKSHELL_6",
         "LINKSHELL_7",
         "LINKSHELL_8",
-        "WORLD_LINKSHELL_1",
-        "WORLD_LINKSHELL_2",
-        "WORLD_LINKSHELL_3",
-        "WORLD_LINKSHELL_4",
-        "WORLD_LINKSHELL_5",
-        "WORLD_LINKSHELL_6",
-        "WORLD_LINKSHELL_7",
-        "WORLD_LINKSHELL_8"
+        "CrossWorldLinkShell_1",
+        "CrossWorldLinkShell_2",
+        "CrossWorldLinkShell_3",
+        "CrossWorldLinkShell_4",
+        "CrossWorldLinkShell_5",
+        "CrossWorldLinkShell_6",
+        "CrossWorldLinkShell_7",
+        "CrossWorldLinkShell_8"
       ],
       "visible": [
-        "GOBCHAT_INFO",
-        "GOBCHAT_ERROR",
+        "GobchatInfo",
+        "GobchatError",
         "SAY",
         "EMOTE",
         "YELL",
         "SHOUT",
-        "TELL_SEND",
-        "TELL_RECIEVE",
+        "TellSend",
+        "TellRecieve",
         "PARTY",
         "GUILD",
         "ALLIANCE",
-        "NPC_TALK",
-        "NPC_DIALOGUE",
-        "ANIMATED_EMOTE",
+        "NPC_Dialogue",
+        "AnimatedEmote",
         "ECHO",
         "ERROR",
-        "RANDOM_OTHER",
-        "RANDOM_PARTY",
-        "RANDOM_SELF",
-        "WORLD_LINKSHELL_1",
-        "WORLD_LINKSHELL_2",
-        "WORLD_LINKSHELL_3",
-        "WORLD_LINKSHELL_4",
-        "WORLD_LINKSHELL_5",
-        "WORLD_LINKSHELL_6",
-        "WORLD_LINKSHELL_7",
-        "WORLD_LINKSHELL_8",
-        "LINKSHELL_1",
+        "Random",
+        "CrossWorldLinkShell_1",
+        "CrossWorldLinkShell_2",
+        "CrossWorldLinkShell_3",
+        "CrossWorldLinkShell_4",
+        "CrossWorldLinkShell_5",
+        "CrossWorldLinkShell_6",
+        "CrossWorldLinkShell_7",
+        "CrossWorldLinkShell_8",
+        "LinkShell_1",
         "LINKSHELL_2",
         "LINKSHELL_3",
         "LINKSHELL_4",
@@ -80,9 +77,9 @@
         "LINKSHELL_8"
       ],
       "rangefilter": [
-        "SAY",
-        "EMOTE",
-        "ANIMATED_EMOTE"
+        "Say",
+        "Emote",
+        "AnimatedEmote"
       ]
     },
     "segment": {
@@ -162,7 +159,8 @@
           "volume": 0.2
         }
       },
-      "order": [ "base" ]
+      "order": [ "base" ],
+      "userCanTriggerMention": false
     },
     "rangefilter": {
       "active": false,
@@ -196,7 +194,7 @@
         "group-ff-1": {
           "name": "\u2605",
           "active": true,
-          "ffgroup": 1,
+          "ffgroup": 0,
           "id": "group-ff-1",
           "style": {
             "body": { "background-color": null },
@@ -209,7 +207,7 @@
         "group-ff-2": {
           "name": "\u25CF",
           "active": true,
-          "ffgroup": 2,
+          "ffgroup": 1,
           "id": "group-ff-2",
           "style": {
             "body": { "background-color": null },
@@ -222,7 +220,7 @@
         "group-ff-3": {
           "name": "\u25B2",
           "active": true,
-          "ffgroup": 3,
+          "ffgroup": 2,
           "id": "group-ff-3",
           "style": {
             "body": { "background-color": null },
@@ -235,7 +233,7 @@
         "group-ff-4": {
           "name": "\u2666",
           "active": true,
-          "ffgroup": 4,
+          "ffgroup": 3,
           "id": "group-ff-4",
           "style": {
             "body": { "background-color": null },
@@ -248,7 +246,7 @@
         "group-ff-5": {
           "name": "\u2665",
           "active": true,
-          "ffgroup": 5,
+          "ffgroup": 4,
           "id": "group-ff-5",
           "style": {
             "body": { "background-color": null },
@@ -261,7 +259,7 @@
         "group-ff-6": {
           "name": "\u2660",
           "active": true,
-          "ffgroup": 6,
+          "ffgroup": 5,
           "id": "group-ff-6",
           "style": {
             "body": { "background-color": null },
@@ -274,7 +272,7 @@
         "group-ff-7": {
           "name": "\u2663",
           "active": true,
-          "ffgroup": 7,
+          "ffgroup": 6,
           "id": "group-ff-7",
           "style": {
             "body": { "background-color": null },
@@ -288,6 +286,7 @@
     }
   },
   "style": {
+    "theme": "FFXIV Dark",
     "chatbox": {
       "background-color": "rgba(20, 20, 20, 0.95)"
     },
@@ -322,7 +321,7 @@
         "color": "#F19212",
         "background-color": null
       },
-      "animated-emote": {
+      "animatedemote": {
         "color": "#F19212",
         "background-color": null
       },
@@ -384,35 +383,35 @@
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-1": {
+      "crossworldlinkshell-1": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-2": {
+      "crossworldlinkshell-2": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-3": {
+      "crossworldlinkshell-3": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-4": {
+      "crossworldlinkshell-4": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-5": {
+      "crossworldlinkshell-5": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-6": {
+      "crossworldlinkshell-6": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-7": {
+      "crossworldlinkshell-7": {
         "color": "#03fc73",
         "background-color": null
       },
-      "worldlinkshell-8": {
+      "crossworldlinkshell-8": {
         "color": "#03fc73",
         "background-color": null
       },

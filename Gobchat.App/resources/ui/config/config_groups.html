@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-    <button class="ui-btn-copyprofile" id="cgroups_copyprofile"><i class="fas fa-clone"></i></button>
+    <button class="gob-button-tertiary gob-button-copypage" id="cgroups_copyprofile"><i class="fas fa-clone"></i></button>
 
     <p>
         <div></div>
@@ -14,14 +14,22 @@
     <p>
 
         <div>
-            <button id="cgroups_addnewgrouptop">Add new group <i class="fa fa-folder-open"></i></button>
+            <button id="cgroups_addnewgrouptop"
+                    class="gob-button-secondary">
+                <i class="fa fa-plus"></i>
+                <span data-gob-locale-text="config.groups.newgroup"></span>
+            </button>
         </div>
 
         <div id="cgroups_groups">
         </div>
 
         <div>
-            <button id="cgroups_addnewgroupbot">Add new group <i class="fa fa-folder-open"></i></button>
+            <button id="cgroups_addnewgroupbot"
+                    class="gob-button-secondary">
+                <i class="fa fa-plus"></i>
+                <span data-gob-locale-text="config.groups.newgroup"></span>
+            </button>
         </div>
 
         <template id="cgroups_template_groupentry">
@@ -30,75 +38,99 @@
                     <span class="ui-gc-group-header">
                         <span>
                             <span class="tmpl-header-index"></span>
-                            <span class="tmpl-header-prefix">. Group: </span>
+                            <span class="tmpl-header-prefix">. <span data-gob-locale-text="config.groups.group.naming"></span>: </span>
                             <span class="tmpl-header-name"></span>
                         </span>
-                        <span>
-                            <button class="tmpl-delete-group ui-gc-btn-delete" title="Deletes this group"><i class="fa fa-trash"></i></button>
+                        <span style="float:right;">
+                            <button class="tmpl-delete-group gob-button-tertiary gob-button-delete"
+                                    data-gob-locale-title="config.groups.group.delete.tooltip">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </span>
                     </span>
                 </h4><!--&#x274C;-->
                 <div>
                     <div class="group-body">
+                        <div class="gob-config-group">
+                            <div class="gob-config-group-item">
+                                <div>
+                                    <div data-gob-locale-text="config.groups.group.name"></div>
+                                    <input type="text" class="tmpl-group-name" />
+                                    <button class="tmpl-group-name-reset gob-button-tertiary gob-button-reset"
+                                            data-gob-locale-title="config.main.resetbutton.tooltip">
+                                        <i class='fas fa-undo-alt'></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="gob-config-group-item">
+                                <div>
+                                    <input type="checkbox" class="tmpl-group-active" />
+                                    <div data-gob-locale-text="config.groups.group.active"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <table style="width:100%;">
                             <tr>
-                                <td><label>Group name:</label></td>
-                                <td colspan="3">
-                                    <div>
-                                        <input type="text" class="tmpl-group-name" />
-                                        <button class="tmpl-group-name-reset ui-gc-btn"
-                                                title="Resets the field to its default value">
-                                            <i class='fas fa-undo-alt'></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Active:</label></td>
                                 <td>
-                                    <input type="checkbox" class="tmpl-group-active" />
+                                    <label>
+                                        <span data-gob-locale-text="config.groups.group.sender.forground"
+                                              data-gob-locale-title="config.groups.group.sender.forground.title"></span>
+                                    </label>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td><label>Sender Text:</label></td>
                                 <td>
                                     <div>
                                         <input type="text" class="tmpl-sender-fgcolor" />
-                                        <button class="tmpl-sender-fgcolor-reset ui-gc-btn"
-                                                title="Resets the field to its default value">
+                                        <button class="tmpl-sender-fgcolor-reset gob-button-tertiary gob-button-reset"
+                                                data-gob-locale-title="config.main.resetbutton.tooltip">
                                             <i class='fas fa-undo-alt'></i>
                                         </button>
                                     </div>
                                 </td>
-                                <td><label>Sender Background:</label></td>
+                                <td>
+                                    <label>
+                                        <span data-gob-locale-text="config.groups.group.sender.background"
+                                              data-gob-locale-title="config.groups.group.sender.background.title"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <div>
                                         <input type="text" class="tmpl-sender-bgcolor" />
-                                        <button class="tmpl-sender-bgcolor-reset ui-gc-btn"
-                                                title="Resets the field to its default value">
+                                        <button class="tmpl-sender-bgcolor-reset gob-button-tertiary gob-button-reset"
+                                                data-gob-locale-title="config.main.resetbutton.tooltip">
                                             <i class='fas fa-undo-alt'></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><label>Message Background:</label></td>
+                                <td>
+                                    <label>
+                                        <span data-gob-locale-text="config.groups.group.message.background"
+                                              data-gob-locale-title="config.groups.group.message.background.title"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <div>
                                         <input type="text" class="tmpl-msg-bgcolor" />
-                                        <button class="tmpl-msg-bgcolor-reset ui-gc-btn"
-                                                title="Resets the field to its default value">
+                                        <button class="tmpl-msg-bgcolor-reset gob-button-tertiary gob-button-reset"
+                                                data-gob-locale-title="config.main.resetbutton.tooltip">
                                             <i class='fas fa-undo-alt'></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4"><label>Players belonging to this group:</label></td>
+                                <td colspan="4">
+                                    <label>
+                                        <span data-gob-locale-text="config.groups.group.trigger"
+                                              data-gob-locale-title="config.groups.group.trigger.tooltip"></span>
+                                    </label>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <textarea class="tmpl-group-triggers" rows="5" style="width:100%;" title="Names of players which belong to this group. Names are separated by comma. If a player comes from a different server, add [servername] to the end of its name."></textarea>
+                                    <textarea class="tmpl-group-triggers" rows="5" style="width:100%;" data-gob-locale-title="config.groups.group.trigger.tooltip"></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -109,13 +141,13 @@
 
         <script type="text/javascript">
             'use strict';
-            (function () {
+            (async function () {
                 const GroupIdAttribute = "data-gob-groupid"
                 const ConfigKeyGroupSorting = "behaviour.groups.sorting"
                 const ConfigKeyGroups = "behaviour.groups.data"
 
                 const tblGroups = $("#cgroups_groups")
-                function populateGroupTable() {
+                async function populateGroupTable() {
                     clearGroupTable()
 
                     const groupIds = gobconfig.get(ConfigKeyGroupSorting)
@@ -127,6 +159,8 @@
                     tblGroups.find(".tmpl-header-index").each(function (idx) {
                         $(this).text(idx + 1)
                     })
+
+                    await goblocale.updateElement(tblGroups)
                 }
 
                 function clearGroupTable() {
@@ -138,7 +172,7 @@
 
                 const tmplGroupEntry = $("#cgroups_template_groupentry")
                 function addGroupToTable(groupId) {
-                    const binding = ConfigHelper.makeDatabinding(gobconfig)
+                    const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
                     const groupConfigKey = `${ConfigKeyGroups}.${groupId}`
                     const groupData = gobconfig.get(groupConfigKey)
@@ -150,17 +184,27 @@
                     groupEntry.data("configbinding", binding)
 
                     const lblGroupName = groupEntry.find(".tmpl-header-name")
-                    ConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
-                    ConfigHelper.bindText(binding, lblGroupName)
+                    GobConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
+                    GobConfigHelper.bindText(binding, lblGroupName)
 
                     const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
                     btnDeleteGroup.on("click", (event) => {
                         event.stopPropagation()
-                        if (!window.confirm("Group will be deleted. Are you sure?")) return
-                        gobconfig.remove(groupConfigKey)
-                        const groupSorting = gobconfig.get(ConfigKeyGroupSorting)
-                        _.remove(groupSorting, e => e === groupId)
-                        gobconfig.set(ConfigKeyGroupSorting, groupSorting)
+                        {
+                            (async () => {
+                                try {
+                                    const deleteConfirmation = await goblocale.get("config.groups.entry.deleteconfirm")
+                                    if (!window.confirm(deleteConfirmation)) return
+
+                                    gobconfig.remove(groupConfigKey)
+                                    const order = gobconfig.get(ConfigKeyGroupSorting)
+                                    _.remove(order, e => e === entryId)
+                                    gobconfig.set(ConfigKeyGroupSorting, order)
+                                } catch (e1) {
+                                    console.error(e1)
+                                }
+                            })()
+                        }
                     })
 
                     const isFFGroup = "ffgroup" in groupData
@@ -168,28 +212,28 @@
                         btnDeleteGroup.attr("disabled", true).hide()
 
                     const txtGroupName = groupEntry.find(".tmpl-group-name")
-                    ConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
-                    ConfigHelper.bindElement(binding, txtGroupName)
+                    GobConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
+                    GobConfigHelper.bindElement(binding, txtGroupName)
 
                     const btnGroupName = groupEntry.find(".tmpl-group-name-reset")
-                    ConfigHelper.setConfigKey(btnGroupName, ConfigHelper.getConfigKey(txtGroupName))
-                    ConfigHelper.makeResetButton(btnGroupName)
+                    GobConfigHelper.setConfigKey(btnGroupName, GobConfigHelper.getConfigKey(txtGroupName))
+                    GobConfigHelper.makeResetButton(btnGroupName)
                     if (!isFFGroup)
                         btnGroupName.attr("disabled", true).hide()
 
                     const ckbIsActive = groupEntry.find(".tmpl-group-active")
-                    ConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
-                    ConfigHelper.bindCheckbox(binding, ckbIsActive)
+                    GobConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
+                    GobConfigHelper.bindCheckbox(binding, ckbIsActive)
 
                     function makeColorSelector(classId, configKey) {
                         const colorSelector = groupEntry.find(`.${classId}`)
-                        ConfigHelper.setConfigKey(colorSelector, configKey)
-                        ConfigHelper.makeColorSelector(colorSelector)
-                        ConfigHelper.bindColorSelector(binding, colorSelector)
+                        GobConfigHelper.setConfigKey(colorSelector, configKey)
+                        GobConfigHelper.makeColorSelector(colorSelector)
+                        GobConfigHelper.bindColorSelector(binding, colorSelector)
 
                         const resetButton = groupEntry.find(`.${classId}-reset`)
-                        ConfigHelper.setConfigKey(resetButton, configKey)
-                        ConfigHelper.makeResetButton(resetButton)
+                        GobConfigHelper.setConfigKey(resetButton, configKey)
+                        GobConfigHelper.makeResetButton(resetButton)
 
                         if (!isFFGroup)
                             resetButton.hide()
@@ -217,7 +261,7 @@
 
                 function makeNewGroup(addFront) {
                     const groups = gobconfig.get(ConfigKeyGroups)
-                    const groupId = ConfigHelper.generateId(6, Object.keys(groups))
+                    const groupId = GobConfigHelper.generateId(6, Object.keys(groups))
 
                     groups[groupId] = {
                         name: "Unnamed",
@@ -274,19 +318,23 @@
                     });
 
                 gobconfig.addProfileEventListener((event) => {
-                    if (event.type === "active")
-                        populateGroupTable()
+                    (async () => {
+                        if (event.type === "active")
+                            await populateGroupTable()
+                    })()
                 })
                 gobconfig.addPropertyEventListener(ConfigKeyGroupSorting, (event) => {
-                    if (event.isActive)
-                        populateGroupTable()
+                    (async () => {
+                        if (event.isActive)
+                            await populateGroupTable()
+                    })()
                 })
 
-                populateGroupTable()
+                await populateGroupTable()
 
                 const btnCopyProfile = $("#cgroups_copyprofile")
                 const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
-                ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+                GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
             }())
         </script>
     </p>

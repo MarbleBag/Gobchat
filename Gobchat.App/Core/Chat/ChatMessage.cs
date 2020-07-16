@@ -17,7 +17,7 @@ namespace Gobchat.Core.Chat
     {
         public ChatMessageSource Source { get; set; } = null;
         public System.DateTime Timestamp { get; set; }
-        public ChatChannel Channel { get; set; } = ChatChannel.NONE;
+        public ChatChannel Channel { get; set; } = ChatChannel.None;
         public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
 
         public bool ContainsMentions { get; set; } = false;

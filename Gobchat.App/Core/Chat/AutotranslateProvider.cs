@@ -19,11 +19,11 @@ namespace Gobchat.Core.Chat
 {
     public sealed class AutotranslateProvider : IAutotranslateProvider
     {
-        private Resource.ResourceBundle _resourceBundle;
+        private readonly Resource.IResourceBundle _resourceBundle;
 
-        public AutotranslateProvider(IList<Resource.IResourceLocator> resourceResolver, string baseName, CultureInfo fallbackCulture)
+        public AutotranslateProvider(Resource.IResourceBundle resourceBundle)
         {
-            _resourceBundle = new Resource.ResourceBundle(resourceResolver, baseName, fallbackCulture);
+            _resourceBundle = resourceBundle ?? throw new ArgumentNullException(nameof(resourceBundle));
         }
 
         public string GetTranslationFor(string key)
@@ -31,9 +31,9 @@ namespace Gobchat.Core.Chat
             return _resourceBundle[key];
         }
 
-        public void LoadCulture(CultureInfo cultureInfo)
+        public void SetLocale(string locale)
         {
-            _resourceBundle.LoadCulture(cultureInfo);
+            _resourceBundle.SetLocale(locale);
         }
     }
 }

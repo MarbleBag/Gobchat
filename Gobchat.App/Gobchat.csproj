@@ -74,6 +74,51 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="resources\ui\config\config_groups_new.html" />
+    <Content Include="resources\ui\gobchat\gob-styleloader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobui_chat.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox-checked-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_dark_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\gob-main-openconfig.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\gob-main-chatsearch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\ButtonActive.png" />
+    <Content Include="resources\ui\graphics\ButtonIdle.png" />
+    <Content Include="resources\ui\graphics\checkbox-checked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\checkbox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\graphics\noise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\gobchat_v1_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobui_default.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="buildscript.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
@@ -115,6 +160,9 @@
     <Content Include="resources\default_profile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="resources\ui\styles\styles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -159,16 +207,30 @@
   <ItemGroup>
     <Compile Include="Core\Chat\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
+    <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
+    <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v16.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v1701.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1701.cs" />
     <Compile Include="Core\Config\Exceptions\SynchronizationException.cs" />
+    <Compile Include="Core\Resource\IResourceBundle.cs" />
+    <Compile Include="Core\Resource\ResourceManagerBundle.cs" />
     <Compile Include="Core\Runtime\GobchatContext.cs" />
+    <Compile Include="Core\Util\Extension\BinarySearchExtension.cs" />
+    <Compile Include="Core\Util\StringFormat.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
-    <Compile Include="Module\Chat\Logger\Internal\ChatLoggerFormated.cs" />
+    <Compile Include="Module\Language\ILocaleManager.cs" />
+    <Compile Include="Module\Language\Internal\LocaleManager.cs" />
+    <Compile Include="Module\Language\Internal\LocalePrototypes.cs" />
+    <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerFormated.cs" />
     <Compile Include="Core\Chat\Formatter\ChatMessageMentionFinder.cs" />
     <Compile Include="Core\Chat\ChatlogCleaner.cs" />
     <Compile Include="Core\Chat\ChatMessage.cs" />
-    <Compile Include="Module\Chat\Logger\Internal\ChatLoggerACTType.cs" />
+    <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerACTType.cs" />
     <Compile Include="Core\Chat\Events\ChatMessagesWebEvent.cs" />
     <Compile Include="Core\Chat\Formatter\ChatMessageSegmentFormatter.cs" />
     <Compile Include="Core\Chat\Formatter\FormatConfig.cs" />
@@ -202,14 +264,8 @@
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigException.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
-    <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Core\Resource\Resources.cs" />
     <Compile Include="Core\Runtime\ContextSpecificUISynchronizer.cs" />
-    <Compile Include="Core\UI\ManualUpdateDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Core\UI\ManualUpdateDialog.Designer.cs">
-      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Core\Util\ArchiveUnpacker.cs" />
     <Compile Include="Core\Util\DownloadFailedException.cs" />
     <Compile Include="Core\Util\Either.cs" />
@@ -219,7 +275,7 @@
     <Compile Include="Core\Chat\FFXIVUnicodes.cs" />
     <Compile Include="Core\Chat\ChatMessageBuilder.cs" />
     <Compile Include="Core\Chat\Events\ChatMessageEventArgs.cs" />
-    <Compile Include="Module\Chat\Manager\AppModuleChatManager.cs" />
+    <Compile Include="Module\Chat\AppModuleChatManager.cs" />
     <Compile Include="Module\Actor\Internal\ActorManager.cs" />
     <Compile Include="Core\Chat\ChatMessageActorDataSetter.cs" />
     <Compile Include="Module\Hotkey\ConfigHotkeyUpdater.cs" />
@@ -229,19 +285,20 @@
     <Compile Include="Module\Hotkey\Internal\HotkeyData.cs" />
     <Compile Include="Module\Hotkey\Internal\HotkeyManager.cs" />
     <Compile Include="Module\Actor\IActorManager.cs" />
+    <Compile Include="Module\Language\AppModuleLanguage.cs" />
     <Compile Include="Module\MemoryReader\IMemoryReaderManager.cs" />
     <Compile Include="Module\MemoryReader\Internal\MemoryReaderManager.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
     <Compile Include="Module\UI\Connector\AppModuleActorToUI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
-    <Compile Include="Module\Chat\Manager\Internal\ChatManager.cs" />
-    <Compile Include="Module\Chat\Logger\AppModuleChatLogger.cs" />
+    <Compile Include="Module\Chat\Internal\ChatManager.cs" />
+    <Compile Include="Module\Misc\Chatlogger\AppModuleChatLogger.cs" />
     <Compile Include="Core\Util\Extension\ToArrayOrEmptyExtension.cs" />
-    <Compile Include="Module\Chat\Manager\IChatMessageManager.cs" />
+    <Compile Include="Module\Chat\IChatManager.cs" />
     <Compile Include="Core\Chat\IChatLogger.cs" />
     <Compile Include="Module\Misc\AppModuleInformUserAboutMemoryState.cs" />
     <Compile Include="Module\Hotkey\AppModuleHotkeyManager.cs" />
-    <Compile Include="Module\Overlay\AppModuleHideOnMinimize.cs" />
+    <Compile Include="Module\Misc\AppModuleHideOnMinimize.cs" />
     <Compile Include="Module\UI\Connector\AppModuleConfigToUI.cs" />
     <Compile Include="Module\UI\Initialize\AppModuleLoadUI.cs" />
     <Compile Include="Module\Misc\AppModuleShowHideHotkey.cs" />
@@ -250,7 +307,7 @@
     <Compile Include="Module\UI\ToggleSearchWebEvent.cs" />
     <Compile Include="Core\Util\DelayedCallback.cs" />
     <Compile Include="Module\MemoryReader\AppModuleMemoryReader.cs" />
-    <Compile Include="Module\MemoryReader\AppModuleShowConnectionOnTrayIcon.cs" />
+    <Compile Include="Module\Misc\AppModuleShowConnectionOnTrayIcon.cs" />
     <Compile Include="Module\UI\BrowserAPI\AppModuleBrowserAPIManager.cs" />
     <Compile Include="Core\Util\EventHandlerManager.cs" />
     <Compile Include="Core\Util\EventHandlerConfigManager.cs" />
@@ -261,9 +318,7 @@
     <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\Cef\Internal\CefInstaller.cs" />
-    <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
-    <Compile Include="Core\Resource\IResourceResolver.cs" />
     <Compile Include="Module\Cef\AppModuleCefInstaller.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Module\Hotkey\Internal\OSLevelHotkeyRegister.cs" />
@@ -283,10 +338,10 @@
     <Compile Include="Module\Updater\Internal\NAUDeleteTask.cs" />
     <Compile Include="Module\Updater\Internal\NAULocalFileFeedReader.cs" />
     <Compile Include="Module\Updater\Internal\NAULocalFileUpdateSource.cs" />
-    <Compile Include="Resource.Designer.cs">
+    <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Module\Updater\UpdateException.cs" />
     <Compile Include="Core\UI\UpdateFormDialog.cs">
@@ -320,6 +375,11 @@
     </Compile>
     <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebUIResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebUIResources.resx</DependentUpon>
     </Compile>
     <Content Include="resources\sounds\FFXIV_Aggro.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -376,14 +436,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\ChatTabHtmlElement.js" />
-    <Content Include="resources\ui\config\gob-databinding.js">
+    <Content Include="resources\ui\gobchat\gob-databinding.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\gob-jquery-loadthen.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\gobchat\gob-locale.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\GobchatSearch.js" />
     <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobui_chat.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\fontawesome\js\all.js">
@@ -438,10 +501,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobui_default.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DestinationFolder>resources\</DestinationFolder>
-    </Content>
     <Content Include="resources\ui\lib\jquery-3.4.1.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
@@ -471,7 +530,7 @@
     <Compile Include="Core\Util\Extension\EnumJsonExtension.cs" />
     <Compile Include="Core\Util\EnumUtil.cs" />
     <Compile Include="Core\Util\Lookup.cs" />
-    <Compile Include="Core\Resource\ResourceBundle.cs" />
+    <Compile Include="Core\Resource\CachedResourceBundle.cs" />
     <Compile Include="Core\Util\DirectoryTraverser.cs" />
     <Compile Include="Core\Util\MathUtil.cs" />
     <Compile Include="Core\Runtime\GobchatApplicationContext.cs" />
@@ -500,18 +559,30 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\UI\ManualUpdateDialog.resx">
-      <DependentUpon>ManualUpdateDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Core\UI\ProgressDisplayForm.de.resx">
+      <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\UI\UpdateFormDialog.de.resx">
+      <DependentUpon>UpdateFormDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\UI\UpdateFormDialog.resx">
       <DependentUpon>UpdateFormDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource.resx">
+    <EmbeddedResource Include="Resources.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\UI\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebUIResources.de.resx" />
+    <EmbeddedResource Include="WebUIResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WebUIResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -525,9 +596,7 @@
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Module\Chat\UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

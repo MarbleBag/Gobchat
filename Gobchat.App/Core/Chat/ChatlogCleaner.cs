@@ -51,7 +51,7 @@ namespace Gobchat.Core.Chat
             var source = ExtractSource(text, out int readIdx);
             var message = ExtractMsg(text, readIdx);
 
-            return new CleanedChatlogItem(item.TimeStamp, (ChatChannel)item.Channel, source, message);
+            return new CleanedChatlogItem(item.TimeStamp, (FFXIVChatChannel)item.Channel, source, message);
         }
 
         //Not the best solution, but works by simplifying the task
@@ -150,11 +150,11 @@ namespace Gobchat.Core.Chat
     public sealed class CleanedChatlogItem
     {
         public System.DateTime Timestamp { get; }
-        public ChatChannel Channel { get; }
+        public FFXIVChatChannel Channel { get; }
         public string Source { get; }
         public string Message { get; }
 
-        public CleanedChatlogItem(System.DateTime timestamp, ChatChannel channel, string source, string message)
+        public CleanedChatlogItem(System.DateTime timestamp, FFXIVChatChannel channel, string source, string message)
         {
             Timestamp = timestamp;
             Channel = channel;

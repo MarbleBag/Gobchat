@@ -12,9 +12,7 @@
  *******************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Gobchat.Core.Chat;
 using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
@@ -22,12 +20,12 @@ namespace Gobchat.Core.Chat
     public sealed class ChatMessageBuilder
     {
         private static readonly ChatChannel[] PlayerChannels = {
-        ChatChannel.SAY, ChatChannel.EMOTE, ChatChannel.YELL, ChatChannel.SHOUT, ChatChannel.TELL_SEND, ChatChannel.TELL_RECIEVE, ChatChannel.PARTY, ChatChannel.GUILD, ChatChannel.ALLIANCE,
-        ChatChannel.ANIMATED_EMOTE,
-        ChatChannel.WORLD_LINKSHELL_1, ChatChannel.WORLD_LINKSHELL_2, ChatChannel.WORLD_LINKSHELL_3, ChatChannel.WORLD_LINKSHELL_4,
-        ChatChannel.WORLD_LINKSHELL_5, ChatChannel.WORLD_LINKSHELL_6, ChatChannel.WORLD_LINKSHELL_7, ChatChannel.WORLD_LINKSHELL_8,
-        ChatChannel.LINKSHELL_1, ChatChannel.LINKSHELL_2, ChatChannel.LINKSHELL_3, ChatChannel.LINKSHELL_4,
-        ChatChannel.LINKSHELL_5, ChatChannel.LINKSHELL_6, ChatChannel.LINKSHELL_7, ChatChannel.LINKSHELL_8,
+        ChatChannel.Say, ChatChannel.Emote, ChatChannel.Yell, ChatChannel.Shout, ChatChannel.TellSend, ChatChannel.TellRecieve, ChatChannel.Party, ChatChannel.Guild, ChatChannel.Alliance,
+        ChatChannel.AnimatedEmote,
+        ChatChannel.CrossWorldLinkShell_1, ChatChannel.CrossWorldLinkShell_2, ChatChannel.CrossWorldLinkShell_3, ChatChannel.CrossWorldLinkShell_4,
+        ChatChannel.CrossWorldLinkShell_5, ChatChannel.CrossWorldLinkShell_6, ChatChannel.CrossWorldLinkShell_7, ChatChannel.CrossWorldLinkShell_8,
+        ChatChannel.LinkShell_1, ChatChannel.LinkShell_2, ChatChannel.LinkShell_3, ChatChannel.LinkShell_4,
+        ChatChannel.LinkShell_5, ChatChannel.LinkShell_6, ChatChannel.LinkShell_7, ChatChannel.LinkShell_8,
         };
 
         private static readonly int[] GroupUnicodes = FFXIVUnicodes.GroupUnicodes.Select(e => e.Value).ToArray();
@@ -41,6 +39,8 @@ namespace Gobchat.Core.Chat
         private readonly ChatMessageMentionFinder _mentionFinder = new ChatMessageMentionFinder();
 
         public bool DetecteEmoteInSayChannel { get; set; }
+
+        public bool ExcludeUserMention { get; set; }
 
         public ChatChannel[] FormatChannels
         {
@@ -68,12 +68,7 @@ namespace Gobchat.Core.Chat
 
         public ChatMessageBuilder()
         {
-            _mentionFinder.MessageSegmentType = MessageSegmentType.MENTION;
-        }
-
-        public ChatMessage BuildChatMessage(CleanedChatlogItem message)
-        {
-            return BuildChatMessage(message.Timestamp, message.Channel, message.Source, message.Message);
+            _mentionFinder.MessageSegmentType = MessageSegmentType.Mention;
         }
 
         public ChatMessage BuildChatMessage(DateTime time, ChatChannel channel, string source, string message)
@@ -85,7 +80,7 @@ namespace Gobchat.Core.Chat
             };
 
             SetMessageSource(chatMessage, source);
-            chatMessage.Content.Add(new MessageSegment(MessageSegmentType.UNDEFINED, message));
+            chatMessage.Content.Add(new MessageSegment(MessageSegmentType.Undefined, message));
 
             return chatMessage;
         }
@@ -109,7 +104,7 @@ namespace Gobchat.Core.Chat
                 }
 
                 int lookupIdx;
-                if (ChatChannel.PARTY == chatMessage.Channel)
+                if (ChatChannel.Party == chatMessage.Channel)
                 { // check for party number
                     lookupIdx = GetUnicodeIndex(PartyUnicodes);
                     if (lookupIdx >= 0)
@@ -119,7 +114,7 @@ namespace Gobchat.Core.Chat
                         readIdx += 1; //party unicodes should be of size 1
                     }
                 }
-                else if (ChatChannel.ALLIANCE == chatMessage.Channel)
+                else if (ChatChannel.Alliance == chatMessage.Channel)
                 { // check for alliance letter
                     lookupIdx = GetUnicodeIndex(RaidUnicodes);
                     if (lookupIdx >= 0)
@@ -148,18 +143,22 @@ namespace Gobchat.Core.Chat
             if (_formateChannels.Contains(chatMessage.Channel))
             {
                 _formater.Format(chatMessage);
-                if (DetecteEmoteInSayChannel && chatMessage.Channel == ChatChannel.SAY)
+                if (DetecteEmoteInSayChannel && chatMessage.Channel == ChatChannel.Say)
                 {
-                    var containsSay = chatMessage.Content.Any(e => e.Type == MessageSegmentType.SAY);
+                    var containsSay = chatMessage.Content.Any(e => e.Type == MessageSegmentType.Say);
                     if (containsSay)
-                        SetUndefinedTo(chatMessage, MessageSegmentType.EMOTE);
+                        SetUndefinedTo(chatMessage, MessageSegmentType.Emote);
                 }
             }
 
-            if (!chatMessage.Source.IsUser && _mentionChannels.Contains(chatMessage.Channel))
+            var scanForMentions =
+                !(ExcludeUserMention && chatMessage.Source.IsUser) &&
+                _mentionChannels.Contains(chatMessage.Channel);
+
+            if (scanForMentions)
             {
                 _mentionFinder.MarkMentions(chatMessage);
-                chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.MENTION);
+                chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.Mention);
             }
 
             SetDefaultTypes(chatMessage);
@@ -169,12 +168,12 @@ namespace Gobchat.Core.Chat
         {
             switch (chatMessage.Channel)
             {
-                case ChatChannel.SAY:
-                    SetUndefinedTo(chatMessage, MessageSegmentType.SAY);
+                case ChatChannel.Say:
+                    SetUndefinedTo(chatMessage, MessageSegmentType.Say);
                     break;
 
-                case ChatChannel.EMOTE:
-                    SetUndefinedTo(chatMessage, MessageSegmentType.EMOTE);
+                case ChatChannel.Emote:
+                    SetUndefinedTo(chatMessage, MessageSegmentType.Emote);
                     break;
             }
         }
@@ -182,7 +181,7 @@ namespace Gobchat.Core.Chat
         private static void SetUndefinedTo(ChatMessage chatMessage, MessageSegmentType newType)
         {
             foreach (var message in chatMessage.Content)
-                if (message.Type == MessageSegmentType.UNDEFINED)
+                if (message.Type == MessageSegmentType.Undefined)
                     message.Type = newType;
         }
     }

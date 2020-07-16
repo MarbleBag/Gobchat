@@ -16,6 +16,7 @@ using System.IO;
 using System.Windows.Forms;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.UI;
+using Gobchat.Core.Util;
 using Gobchat.Module.Cef.Internal;
 using NLog;
 
@@ -49,7 +50,7 @@ namespace Gobchat.Module.Cef
             {
                 logger.Info("CEF missing");
                 var dialogResult = MessageBox.Show(
-                    "CEF not found. Without Gobchat will not work.\nShould it be downloaded and installed for Gobchat?",
+                    Resources.Module_Cef_Dialog_CefMissing_Text,
                     "Gobchat",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
@@ -94,16 +95,16 @@ namespace Gobchat.Module.Cef
             }
             catch (Exception e)
             {
-                var errorMessage = $"CEF installation failed. Reason:\n{e.Message}\n\nRetry or install CEF manually for gobchat.";
                 logger.Fatal("CEF installation failed");
                 logger.Fatal(e);
 
                 MessageBox.Show(
-                   errorMessage,
-                   "Gobchat",
+                    StringFormat.Format(Resources.Module_Cef_Dialog_InstallFailed_Text, e.Message),
+                   Resources.Module_Cef_Dialog_InstallFailed_Title,
                    MessageBoxButtons.OK,
                    MessageBoxIcon.Error
                );
+
                 handler.StopStartup = true;
             }
             finally

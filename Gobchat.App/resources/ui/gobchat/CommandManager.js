@@ -26,30 +26,31 @@ var Gobchat = (function (Gobchat, undefined) {
             this.registerCmdHandler(new PlayerCountCommandHandler())
             this.registerCmdHandler(new PlayerListCommandHandler())
             this.registerCmdHandler(new PlayerDistanceCommandHandler())
+            this.registerCmdHandler(new DisableGobInfoHandler())
         }
 
-        processCommand(message) {
+        async processCommand(message) {
             if (message === null || message === undefined) return
             message = message.trim()
             if (!message.startsWith("gc")) return
 
             const [cmdHandle, cmd, args] = this._getHandler(message.substring(2).trim())
 
-            //const cmdLine = message.substring(2).trim()
-            //const cmdIdx = cmdLine.indexOf(' ')
-            //const cmd = cmdIdx < 0 ? cmdLine : cmdLine.substring(0, cmdIdx)
-            //const args = cmdIdx < 0 ? "" : cmdLine.substring(cmdIdx + 1)
-
-            //const cmdHandle = this._cmdMap.get(cmd)
             if (cmdHandle) {
-                cmdHandle.execute(this, cmd, args)
+                await cmdHandle.execute(this, cmd, args)
             } else {
-                //if (cmd.length > 0)
-                //    this.sendErrorMessage(`'${cmd}' is not an available command`)
-
                 const availableCmds = Array.from(this._cmdMap.keys()).join(", ")
-                this.sendInfoMessage(`Available commands: ${availableCmds}`)
+                const msg = await this.getTranslationAndFormat("main.cmdmanager.availablecmds", availableCmds)
+                this.sendInfoMessage(msg)
             }
+        }
+
+        async getTranslation(key) {
+            return await this._manager.localeManager.get(key)
+        }
+
+        async getTranslationAndFormat(key, params) {
+            return await this._manager.localeManager.getAndFormat(key, params)
         }
 
         _getHandler(msg) {
@@ -233,7 +234,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const count = await GobchatAPI.getPlayerCount()
-            commandManager.sendInfoMessage(`Players nearby: ${count}`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playercount", count)
+            commandManager.sendInfoMessage(msg)
         }
     }
 
@@ -244,7 +246,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const list = await GobchatAPI.getPlayersAndDistance()
-            commandManager.sendInfoMessage(`Players nearby: ${list.join(", ")}`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerlist", list.join(", "))
+            commandManager.sendInfoMessage(msg)
         }
     }
 
@@ -255,7 +258,35 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const distance = await GobchatAPI.getPlayerDistance(args)
-            commandManager.sendInfoMessage(`Distance to '${args}': ${distance.toFixed(2)}y`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerdistance", `${distance.toFixed(2)}y`)
+            commandManager.sendInfoMessage(msg)
+        }
+    }
+
+    class DisableGobInfoHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["info on", "info off", "error on", "error off"]
+        }
+
+        async execute(commandManager, commandName, args) {
+            if ("info on" == commandName) {
+                window.chatManager.showGobInfo(true)
+            } else if ("info off" == commandName) {
+                window.chatManager.showGobInfo(false)
+            } else if ("error on" == commandName) {
+                window.chatManager.showGobError(true)
+            } else if ("error off" == commandName) {
+                window.chatManager.showGobError(false)
+            }
+        }
+    }
+
+    class ShowHideChannelHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["channel"]
+        }
+
+        async execute(commandManager, commandName, args) {
         }
     }
 

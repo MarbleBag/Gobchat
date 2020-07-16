@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <button class="gob-button-copypage"
+            id="cgroups_copyprofile">
+        <i class="fas fa-clone"></i>
+    </button>
+
+    <div>
+        <button id="cgroups_addnewgrouptop"
+                class="gob-button-secondary"
+                data-gob-addtop="true">
+            <i style="color:green;" class="fa fa-plus"></i>
+            <span data-gob-locale-text="config.groups.newgroup"></span>
+        </button>
+    </div>
+
+    <div id="cgroups_groups" class="gob-accordion">
+    </div>
+
+    <div>
+        <button id="cgroups_addnewgroupbot"
+                class="gob-button-secondary"
+                data-gob-addtop="false">
+            <i style="color:green;" class="fa fa-plus"></i>
+            <span data-gob-locale-text="config.groups.newgroup"></span>
+        </button>
+    </div>
+
+    <template id="cgroups_template_entry">
+        <div class="gob-accordion-item" data-gob-entryid>
+            <div class="gob-accordion-handle">
+                <span>
+                    <span class="tmpl-entry-header" data-gob-locale-text="config.groups.group.naming"></span>
+                    <span>
+                        <span>
+                            <button class="tmpl-delete-group ui-gc-btn-delete gob-button-delete" data-gob-locale-title="config.groups.group.delete.tooltip"><i class="fa fa-trash"></i></button>
+                        </span>
+                        <span>
+                            <button class="tmpl-group-moveup gob-button-tertiary" data-gob-locale-title="config.groups.group.moveup.tooltip"><i class="fas fa-arrow-up"></i></button>
+                            <button class="tmpl-group-movedown gob-button-tertiary" data-gob-locale-title="config.groups.group.movedown.tooltip"><i class="fas fa-arrow-down"></i></button>
+                        </span>
+                    </span>
+                </span>
+            </div>
+            <div class="gob-accordion-content">
+            </div>
+        </div>
+    </template>
+
+    <script type="text/javascript">
+        'use strict';
+        (async function () {
+
+            const tblEntries = $("#cgroups_groups")
+
+            async function buildTable(openIndex) {
+                //const lastOpenEntry = findOpenEntry()
+                clearTable()
+
+                const entryIds = gobconfig.get("behaviour.groups.sorting")
+                for (let entryId of entryIds)
+                    addEntry(entryId)
+
+                tblEntries.sortable("refresh")
+                tblEntries.accordion("refresh")
+                await goblocale.updateElement(tblEntries)
+
+                if (openIndex < 0) {
+                    openIndex = tblEntries.find("div[data-gob-entryid]").length - 1
+                }
+
+                if (!_.isFinite(openIndex))
+                    openIndex = 0
+
+                tblEntries.accordion('option', 'active', openIndex)
+            }
+
+            function clearTable() {
+                tblEntries.find("div[data-gob-entryid]").each(function (idx) {
+                    $(this).data("configbinding").clear()
+                })
+                tblEntries.empty()
+            }
+
+            function findOpenEntry() {
+                const $entries = tblEntries.find("div[data-gob-entryid]")
+                const $targetEntry = tblEntries.find("div[data-gob-entryid]:has(.gob-accordion-handle.ui-accordion-header-active)")
+                //return $targetEntry.attr("data-gob-entryid");
+                const index = $entries.index($targetEntry)
+                return index
+            }
+
+            function openEntry(entryId) {
+                if (!entryId)
+                    return
+
+                const $entries = tblEntries.find("div[data-gob-entryid]")
+                const $targetEntry = tblEntries.find(`div[data-gob-entryid=${entryId}]`)
+                const index = $entries.index($targetEntry)
+                if (index < 0)
+                    return
+
+                tblEntries.accordion('option', 'active', index);
+            }
+
+            const templateEntry = $("#cgroups_template_entry")
+            function addEntry(entryId) {
+                const binding = GobConfigHelper.makeDatabinding(gobconfig)
+                const entry = $(templateEntry.html())
+                entry.attr("data-gob-entryid", entryId)
+                entry.data("configbinding", binding)
+                entry.appendTo(tblEntries)
+                //TODO
+            }
+
+            function createNewEntry(addFront) {
+                const groups = gobconfig.get("behaviour.groups.data")
+                const groupId = GobConfigHelper.generateId(6, Object.keys(groups))
+
+                groups[groupId] = {
+                    name: "Unnamed",
+                    id: groupId,
+                    active: true,
+                    trigger: [],
+                    style: {
+                        body: { "background-color": null, },
+                        header: { "background-color": null, "color": null, },
+                    },
+                }
+
+                gobconfig.set("behaviour.groups.data", groups)
+                const sorting = gobconfig.get("behaviour.groups.sorting")
+                if (addFront) {
+                    sorting.unshift(groupId)
+                } else {
+                    sorting.push(groupId)
+                }
+                gobconfig.set("behaviour.groups.sorting", sorting)
+            }
+
+            tblEntries.accordion({
+                heightStyle: "content",
+                header: ".gob-accordion-handle",
+            }).sortable({
+                axis: "y",
+                handle: ".gob-accordion-handle",
+                stop: function (event, ui) {
+                    //update sort order
+
+                    let order = []
+                    tblEntries.find("div[data-gob-entryid]").each(function () {
+                        order.push($(this).attr("data-gob-entryid"))
+                    })
+
+                    order = order.filter(e => e !== null && e !== undefined && e.length > 0)
+                    gobconfig.set("behaviour.groups.sorting", order)
+                }
+            })
+
+            $("#cgroups_addnewgrouptop").on("click", function (event) {
+                (async () => {
+                    createNewEntry(true)
+                    await buildTable(0)
+                })()
+            })
+
+            $("#cgroups_addnewgroupbot").on("click", function (event) {
+                (async () => {
+                    createNewEntry(false)
+                    await buildTable(-1)
+                })()
+            })
+
+            gobconfig.addProfileEventListener((event) => {
+                (async () => {
+                    if (event.type === "active")
+                        await buildTable()
+                })()
+            })
+
+            /*gobconfig.addPropertyEventListener("behaviour.groups.sorting", (event) => {
+                (async () => {
+                    if (event.isActive)
+                        await populateTable()
+                })()
+            })*/
+
+            await buildTable()
+
+            const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
+            GobConfigHelper.makeCopyProfileButton($("#cgroups_copyprofile"), { configKeys: copyKeys })
+        }())
+    </script>
+    </p>
+</body>
+</html>

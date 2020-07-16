@@ -6,28 +6,25 @@
     <title></title>
 </head>
 <body>
-    <button class="ui-btn-copyprofile" id="cchannel_copyprofile"><i class="fas fa-clone"></i></button>
+    <button class="gob-button-tertiary gob-button-copypage" id="cchannel_copyprofile"><i class="fas fa-clone"></i></button>
 
-    <p>
-        <div></div>
-    </p>
-    <p>
-        <table id="cchannel_channels">
+    <div class="gob-config-group" style="overflow-x: auto;">
+        <table id="cchannel_channels" class="gob-table-channel gob-table-stripes-hrzt">
             <thead>
                 <tr>
-                    <th>Channel Name</th>
-                    <th>Visible</th>
-                    <th>Mention</th>
-                    <th>Roleplay</th>
-                    <th>Range Filter</th>
-                    <th>Text Color</th>
-                    <th>Background Color</th>
+                    <th data-gob-locale-text="config.channel.tbl.name"></th>
+                    <th data-gob-locale-text="config.channel.tbl.visible"></th>
+                    <th data-gob-locale-text="config.channel.tbl.mention"></th>
+                    <th data-gob-locale-text="config.channel.tbl.roleplay"></th>
+                    <th data-gob-locale-text="config.channel.tbl.rangefilter"></th>
+                    <th data-gob-locale-text="config.channel.tbl.textcolor"></th>
+                    <th data-gob-locale-text="config.channel.tbl.backgroundcolor"></th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-    </p>
+    </div>
 
     <template id="cchannel_template_channelentry">
         <tr>
@@ -49,8 +46,8 @@
             <td>
                 <div>
                     <input class="entry-color-forground" type="text" />
-                    <button class="entry-color-forground-reset ui-gc-btn"
-                            title="Resets the field to its default value">
+                    <button class="entry-color-forground-reset gob-button-tertiary gob-button-reset"
+                            data-gob-locale-title="config.main.resetbutton.tooltip">
                         <i class='fas fa-undo-alt'></i>
                     </button>
                 </div>
@@ -58,8 +55,8 @@
             <td>
                 <div>
                     <input class="entry-color-background" type="text" />
-                    <button class="entry-color-background-reset ui-gc-btn"
-                            title="Resets the field to its default value">
+                    <button class="entry-color-background-reset gob-button-tertiary gob-button-reset"
+                            data-gob-locale-title="config.main.resetbutton.tooltip">
                         <i class='fas fa-undo-alt'></i>
                     </button>
                 </div>
@@ -71,51 +68,12 @@
         'use strict';
 
         (function (undefined) {
-            const channels = [
-                { label: "General", channelEnum: null, styleId: "style.channel.base" },
-
-                { label: "Say", channelEnum: "SAY", styleId: "style.channel.say" },
-                { label: "Emote", channelEnum: "EMOTE", styleId: "style.channel.emote" },
-                { label: "Yell", channelEnum: "YELL", styleId: "style.channel.yell" },
-                { label: "Shout", channelEnum: "SHOUT", styleId: "style.channel.shout" },
-                { label: "Party", channelEnum: "PARTY", styleId: "style.channel.party" },
-                { label: "Guild", channelEnum: "GUILD", styleId: "style.channel.guild" },
-                { label: "Tell send", channelEnum: "TELL_SEND", styleId: "style.channel.tellsend" },
-                { label: "Tell recieve", channelEnum: "TELL_RECIEVE", styleId: "style.channel.tellrecieve" },
-                { label: "Alliance", channelEnum: "ALLIANCE", styleId: "style.channel.alliance" },
-                { label: "NPC dialog", channelEnum: ["NPC_TALK", "NPC_DIALOGUE"], styleId: "style.channel.npc-dialog" },
-                { label: "Animated emote", channelEnum: "ANIMATED_EMOTE", styleId: "style.channel.animated-emote" },
-                { label: "Echo", channelEnum: "ECHO", styleId: "style.channel.echo" },
-                { label: "Random / Roll / Dice", channelEnum: ["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], styleId: "style.channel.roll" },
-                { label: "Error Messages", channelEnum: "ERROR", styleId: "style.channel.error" },
-
-                { label: "Gobchat Infos", channelEnum: "GOBCHAT_INFO", styleId: "style.channel.gobchatinfo" },
-                { label: "Gobchat Errors", channelEnum: "GOBCHAT_ERROR", styleId: "style.channel.gobchaterror" },
-
-                { label: "Linkshell 1", channelEnum: "LINKSHELL_1", styleId: "style.channel.linkshell-1" },
-                { label: "Linkshell 2", channelEnum: "LINKSHELL_2", styleId: "style.channel.linkshell-2" },
-                { label: "Linkshell 3", channelEnum: "LINKSHELL_3", styleId: "style.channel.linkshell-3" },
-                { label: "Linkshell 4", channelEnum: "LINKSHELL_4", styleId: "style.channel.linkshell-4" },
-                { label: "Linkshell 5", channelEnum: "LINKSHELL_5", styleId: "style.channel.linkshell-5" },
-                { label: "Linkshell 6", channelEnum: "LINKSHELL_6", styleId: "style.channel.linkshell-6" },
-                { label: "Linkshell 7", channelEnum: "LINKSHELL_7", styleId: "style.channel.linkshell-7" },
-                { label: "Linkshell 8", channelEnum: "LINKSHELL_8", styleId: "style.channel.linkshell-8" },
-
-                { label: "Cross-world Linkshell 1", channelEnum: "WORLD_LINKSHELL_1", styleId: "style.channel.worldlinkshell-1" },
-                { label: "Cross-world Linkshell 2", channelEnum: "WORLD_LINKSHELL_2", styleId: "style.channel.worldlinkshell-2" },
-                { label: "Cross-world Linkshell 3", channelEnum: "WORLD_LINKSHELL_3", styleId: "style.channel.worldlinkshell-3" },
-                { label: "Cross-world Linkshell 4", channelEnum: "WORLD_LINKSHELL_4", styleId: "style.channel.worldlinkshell-4" },
-                { label: "Cross-world Linkshell 5", channelEnum: "WORLD_LINKSHELL_5", styleId: "style.channel.worldlinkshell-5" },
-                { label: "Cross-world Linkshell 6", channelEnum: "WORLD_LINKSHELL_6", styleId: "style.channel.worldlinkshell-6" },
-                { label: "Cross-world Linkshell 7", channelEnum: "WORLD_LINKSHELL_7", styleId: "style.channel.worldlinkshell-7" },
-                { label: "Cross-world Linkshell 8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
-            ]
-
-            const binding = ConfigHelper.makeDatabinding(gobconfig)
+            const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
             const table = $("#cchannel_channels > tbody")
             const rowTemplate = $('#cchannel_template_channelentry')
-            channels.forEach((entry) => {
+
+            function buildChannelEntry(channelData) {
                 const rowEntry = $(rowTemplate.html()).appendTo(table)
 
                 const lblName = rowEntry.find(".entry-label")
@@ -128,55 +86,75 @@
                 const clrSelectorBG = rowEntry.find(".entry-color-background")
                 const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
-                lblName.text(entry.label)
-                ConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
-                ConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
-                ConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
-                ConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
+                lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
+                lblName.attr("data-gob-locale-title", `${channelData.translationId}.tooltip`)
 
-                const channelEnums = [].concat(entry.channelEnum || []).map(e => Gobchat.ChannelEnum[e])
+                GobConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
+                GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
+                GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
+                GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
+
+                const channelEnums = [].concat(channelData.chatChannel || [])
                 if (channelEnums.length === 0) {
                     chkVisible.hide()
                     chkMention.hide()
                     chkRoleplay.hide()
                     chkRangefilter.hide()
                 } else {
-                    ConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
-                    ConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
+                    GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
                 }
 
-                if (entry.styleId === undefined || entry.styleId === null) {
+                if (channelData.configId === null) {
                     clrSelectorFG.parent().hide()
                     clrSelectorBG.parent().hide()
                 } else {
-                    ConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
-                    ConfigHelper.setConfigKey(clrSelectorBG, entry.styleId + ".background-color")
+                    GobConfigHelper.setConfigKey(clrSelectorFG, channelData.configId + ".color")
+                    GobConfigHelper.setConfigKey(clrSelectorBG, channelData.configId + ".background-color")
 
-                    ConfigHelper.makeColorSelector(clrSelectorFG)
-                    ConfigHelper.makeColorSelector(clrSelectorBG)
+                    GobConfigHelper.makeColorSelector(clrSelectorFG)
+                    GobConfigHelper.makeColorSelector(clrSelectorBG)
 
-                    ConfigHelper.bindColorSelector(binding, clrSelectorFG)
-                    ConfigHelper.bindColorSelector(binding, clrSelectorBG)
+                    GobConfigHelper.bindColorSelector(binding, clrSelectorFG)
+                    GobConfigHelper.bindColorSelector(binding, clrSelectorBG)
 
                     btnResetFG.attr("disabled", clrSelectorFG.attr("disabled"))
                     btnResetBG.attr("disabled", clrSelectorBG.attr("disabled"))
-                    btnResetFG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorFG)))
-                    btnResetBG.on("click", event => gobconfig.reset(ConfigHelper.getConfigKey(clrSelectorBG)))
+                    btnResetFG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorFG)))
+                    btnResetBG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorBG)))
                 }
+            }
+
+            buildChannelEntry({
+                translationId: "main.chat.channel.general",
+                configId: "style.channel.base",
+                relevant: true
+            })
+
+            Object.entries(Gobchat.Channels).forEach((entry) => {
+                const channelData = entry[1]
+                if (!channelData.relevant)
+                    return
+                buildChannelEntry(channelData)
             })
 
             binding.initialize()
 
             const btnCopyProfile = $("#cchannel_copyprofile")
             const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay"]
-            channels.forEach(entry => {
-                if (entry.styleId === undefined || entry.styleId === null) return
-                copyKeys.push(entry.styleId + ".color")
-                copyKeys.push(entry.styleId + ".background-color")
+            copyKeys.push("style.channel.base" + ".color")
+            copyKeys.push("style.channel.base" + ".color")
+
+            Object.entries(Gobchat.Channels).forEach((entry) => {
+                const channelData = entry[1]
+                if (!channelData.relevant || channelData.configId == null) return
+                copyKeys.push(channelData.configId + ".color")
+                copyKeys.push(channelData.configId + ".background-color")
             })
-            ConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+
+            GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
 
         }());
     </script>

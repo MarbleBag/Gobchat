@@ -125,7 +125,10 @@ namespace Gobchat.UI.Forms
 
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
             DownloadHandler = new CustomDownloadHandler();
-            // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
+            //LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
+#if DEBUG
+            KeyboardHandler = new CustomKeyboardHandler();
+#endif
 
             CefBrowser.BrowserInitialized += OnEvent_BrowserInitialized;
             CefBrowser.FrameLoadStart += OnEvent_FrameLoadStart;
