@@ -210,6 +210,7 @@
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
     <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1800.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1701.cs" />
