@@ -27,6 +27,8 @@ namespace Gobchat.Core.Config
         {
             JObject dst = (JObject)src.DeepClone();
 
+            JsonUtil.Remove(dst, "behaviour.channel.visible");
+            JsonUtil.Remove(dst, "behaviour.showTimestamp");
             JsonUtil.MoveIfAvailable(dst, "behaviour.autodetectEmoteInSay", dst, "behaviour.chat.autodetectEmoteInSay");
 
             return dst;
