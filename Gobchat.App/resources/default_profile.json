@@ -175,13 +175,13 @@
       "active": true
     },
     "chat": {
-      "updateInterval": 1000
+      "updateInterval": 1000,
+      "autodetectEmoteInSay": true
     },
     "appUpdate": {
       "checkOnline": true,
       "acceptBeta": false
     },
-    "autodetectEmoteInSay": true,
     "hideOnMinimize": false,
     "writeChatLog": false,
     "showTimestamp": true,
