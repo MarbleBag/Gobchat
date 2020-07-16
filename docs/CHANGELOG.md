@@ -30,6 +30,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ### Changed
 - Merged channels which are used by NPCs to talk into a single channel
 
+### Fixed
+- An error on `Config / Roleplay` where `reset entries` stops working after one use
+  - This bug also affected some other reset buttons
+
 ## [1.6.3] - 2020.06.05
 ### Added
 - Color selection to channels: NPC dialog, animated emote, echo
