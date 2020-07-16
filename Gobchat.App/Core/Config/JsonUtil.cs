@@ -364,6 +364,18 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public static bool Remove(JObject src, string srcPath)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
+            {
+                if (node == null)
+                    return;
+                found = node.Remove(key);
+            });
+            return found;
+        }
+
         public static bool AccessIfAvailable(JObject src, string srcPath, Action<JToken> action)
         {
             var found = false;
