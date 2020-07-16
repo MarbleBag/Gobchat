@@ -61,6 +61,23 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;
+        ///A chat overlay for FFXIV with the goal to provide a better experience for roleplayers. &lt;br/&gt;
+        ///For FFXIV 5.2
+        ///&lt;/p&gt;&lt;p&gt;
+        ///Contact via github.
+        ///&lt;/p&gt;&lt;p&gt;
+        ///Looking for a way to contribute or just want to take a look into Gobchat&apos;s source code? &lt;br/&gt;
+        ///Visit this project on github under https://github.com/MarbleBag/Gobchat
+        ///&lt;/p&gt;.
+        /// </summary>
+        internal static string config_about_text {
+            get {
+                return ResourceManager.GetString("config.about.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
         internal static string config_app_ckb_actor {
@@ -70,7 +87,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV..
+        ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV.
         /// </summary>
         internal static string config_app_ckb_actor_label {
             get {
@@ -79,7 +96,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work..
+        ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work.
         /// </summary>
         internal static string config_app_ckb_actor_tooltip {
             get {
@@ -232,7 +249,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show mentions in your own messages.
+        ///   Looks up a localized string similar to Check own messages for mentions.
         /// </summary>
         internal static string config_app_ckb_usermention {
             get {
@@ -241,7 +258,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
+        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.
         /// </summary>
         internal static string config_app_ckb_usermention_tooltip {
             get {
@@ -268,7 +285,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
+        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace.
         /// </summary>
         internal static string config_app_fonts_tooltip {
             get {
@@ -358,7 +375,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.
         /// </summary>
         internal static string config_app_intervals_actor_tooltip {
             get {
@@ -376,7 +393,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.
         /// </summary>
         internal static string config_app_intervals_chat_tooltip {
             get {
@@ -457,7 +474,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Hides other players&apos; messages at this distance.
         /// </summary>
         internal static string config_app_rangefilter_cutoff_tooltip {
             get {
@@ -475,7 +492,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Starts reducing opacity of other players&apos; messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it.
         /// </summary>
         internal static string config_app_rangefilter_fadeout_tooltip {
             get {
@@ -493,7 +510,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transparency end (%).
+        ///   Looks up a localized string similar to Opacity end (%).
         /// </summary>
         internal static string config_app_rangefilter_transparencyend {
             get {
@@ -502,7 +519,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Final opacity at cut off distance.
         /// </summary>
         internal static string config_app_rangefilter_transparencyend_tooltip {
             get {
@@ -511,7 +528,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transparency start (%).
+        ///   Looks up a localized string similar to Opacity start (%).
         /// </summary>
         internal static string config_app_rangefilter_transparencystart {
             get {
@@ -520,7 +537,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Initial opacity at fade out distance.
         /// </summary>
         internal static string config_app_rangefilter_transparencystart_tooltip {
             get {
@@ -556,7 +573,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search results background.
+        ///   Looks up a localized string similar to All search results background.
         /// </summary>
         internal static string config_app_search_results {
             get {
@@ -646,6 +663,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group will be deleted. Are you sure?.
+        /// </summary>
+        internal static string config_groups_entry_deleteconfirm {
+            get {
+                return ResourceManager.GetString("config.groups.entry.deleteconfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         internal static string config_groups_group_active {
@@ -718,7 +744,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name..
+        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name.
         /// </summary>
         internal static string config_groups_group_trigger_tooltip {
             get {
@@ -871,7 +897,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again..
+        ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again.
         /// </summary>
         internal static string config_mentions_audio_interval_tooltip {
             get {
@@ -925,9 +951,9 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audiofile can&apos;t be played.&lt;br&gt;
-        ///Either the format is not supported or the file can&apos;t be found!&lt;br&gt;
-        ///Make sure to place any sound files you want to use in gobchat under resources/sounds.
+        ///   Looks up a localized string similar to Audiofile can&apos;t be played.&lt;br/&gt;
+        ///Either the format is not supported or the file can&apos;t be found!&lt;br/&gt;
+        ///Make sure to place any sound files you want to use in gobchat under &apos;resources/sounds&apos;.
         /// </summary>
         internal static string config_mentions_audio_test_error {
             get {
@@ -981,7 +1007,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention..
+        ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention.
         /// </summary>
         internal static string config_mentions_trigger_tooltip {
             get {
@@ -1182,7 +1208,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starts with {0} and ends with {1}.
+        ///   Looks up a localized string similar to {0} starts with {1} and ends with {2}.
         /// </summary>
         internal static string config_roleplay_entry_header {
             get {
@@ -1191,7 +1217,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
+        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header.
         /// </summary>
         internal static string config_roleplay_entry_info {
             get {
@@ -1227,7 +1253,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Channel name.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
         internal static string config_roleplay_tokentbl_header_name {
             get {
@@ -1263,7 +1289,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to /a.
         /// </summary>
         internal static string main_chat_channel_alliance_tooltip {
             get {
@@ -1470,7 +1496,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error Messages.
+        ///   Looks up a localized string similar to System error messages.
         /// </summary>
         internal static string main_chat_channel_error {
             get {
@@ -1506,7 +1532,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gobchat Errors.
+        ///   Looks up a localized string similar to Gobchat errors.
         /// </summary>
         internal static string main_chat_channel_gobchaterror {
             get {
@@ -1524,7 +1550,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gobchat Infos.
+        ///   Looks up a localized string similar to Gobchat infos.
         /// </summary>
         internal static string main_chat_channel_gobchatinfo {
             get {
@@ -1776,7 +1802,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to /shout.
         /// </summary>
         internal static string main_chat_channel_shout_tooltip {
             get {
@@ -1839,11 +1865,110 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emote.
+        /// </summary>
+        internal static string main_chat_segment_type_emote {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.emote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_segment_type_emote_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.emote.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mention.
+        /// </summary>
+        internal static string main_chat_segment_type_mention {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_segment_type_mention_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.mention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OoC.
+        /// </summary>
+        internal static string main_chat_segment_type_ooc {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.ooc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_segment_type_ooc_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.ooc.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Say.
+        /// </summary>
+        internal static string main_chat_segment_type_say {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.say", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_segment_type_say_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.segment.type.say.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available commands: {0}.
         /// </summary>
         internal static string main_cmdmanager_availablecmds {
             get {
                 return ResourceManager.GetString("main.cmdmanager.availablecmds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players nearby: {0}.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_playercount {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.playercount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance to {0} is {1}.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_playerdistance {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.playerdistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players nearby: {0}.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_playerlist {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.playerlist", resourceCulture);
             }
         }
         

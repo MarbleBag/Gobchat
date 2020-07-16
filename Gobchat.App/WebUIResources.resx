@@ -117,14 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="config.about.text" xml:space="preserve">
+    <value>&lt;p&gt;
+A chat overlay for FFXIV with the goal to provide a better experience for roleplayers. &lt;br/&gt;
+For FFXIV 5.2
+&lt;/p&gt;&lt;p&gt;
+Contact via github.
+&lt;/p&gt;&lt;p&gt;
+Looking for a way to contribute or just want to take a look into Gobchat's source code? &lt;br/&gt;
+Visit this project on github under https://github.com/MarbleBag/Gobchat
+&lt;/p&gt;</value>
+  </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
   </data>
   <data name="config.app.ckb.actor.label" xml:space="preserve">
-    <value>Character locations are not available. Unable to retrieve information from FFXIV.</value>
+    <value>Character locations are not available. Unable to retrieve information from FFXIV</value>
   </data>
   <data name="config.app.ckb.actor.tooltip" xml:space="preserve">
-    <value>If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work.</value>
+    <value>If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work</value>
   </data>
   <data name="config.app.ckb.autohide" xml:space="preserve">
     <value>Hide when FF is minimized</value>
@@ -175,10 +186,10 @@
     <value />
   </data>
   <data name="config.app.ckb.usermention" xml:space="preserve">
-    <value>Show mentions in your own messages</value>
+    <value>Check own messages for mentions</value>
   </data>
   <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
-    <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.</value>
+    <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself</value>
   </data>
   <data name="config.app.ckblabel" xml:space="preserve">
     <value>Settings</value>
@@ -187,7 +198,7 @@
     <value>Fonts</value>
   </data>
   <data name="config.app.fonts.tooltip" xml:space="preserve">
-    <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.</value>
+    <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace</value>
   </data>
   <data name="config.app.fontsize.label" xml:space="preserve">
     <value>Font size</value>
@@ -217,13 +228,13 @@
     <value>Character location update interval (ms)</value>
   </data>
   <data name="config.app.intervals.actor.tooltip" xml:space="preserve">
-    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second</value>
   </data>
   <data name="config.app.intervals.chat" xml:space="preserve">
     <value>Chat update interval (ms)</value>
   </data>
   <data name="config.app.intervals.chat.tooltip" xml:space="preserve">
-    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second</value>
   </data>
   <data name="config.app.language" xml:space="preserve">
     <value>Language</value>
@@ -250,28 +261,28 @@
     <value>Cut off (yalm)</value>
   </data>
   <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
-    <value />
+    <value>Hides other players' messages at this distance</value>
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
     <value>Fade out (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
-    <value />
+    <value>Starts reducing opacity of other players' messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it</value>
   </data>
   <data name="config.app.rangefilter.label" xml:space="preserve">
     <value>Range filter</value>
   </data>
   <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
-    <value>Transparency end (%)</value>
+    <value>Opacity end (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value />
+    <value>Final opacity at cut off distance</value>
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
-    <value>Transparency start (%)</value>
+    <value>Opacity start (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
-    <value />
+    <value>Initial opacity at fade out distance</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Border for current result</value>
@@ -283,7 +294,7 @@
     <value>Search</value>
   </data>
   <data name="config.app.search.results" xml:space="preserve">
-    <value>Search results background</value>
+    <value>All search results background</value>
   </data>
   <data name="config.app.search.results.tooltip" xml:space="preserve">
     <value />
@@ -312,6 +323,9 @@
   <data name="config.channel.tbl.visible" xml:space="preserve">
     <value>Visible</value>
   </data>
+  <data name="config.groups.entry.deleteconfirm" xml:space="preserve">
+    <value>Group will be deleted. Are you sure?</value>
+  </data>
   <data name="config.groups.group.active" xml:space="preserve">
     <value>Active</value>
   </data>
@@ -337,7 +351,7 @@
     <value>Players belonging to this group</value>
   </data>
   <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
-    <value>Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name.</value>
+    <value>Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name</value>
   </data>
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>New group</value>
@@ -388,7 +402,7 @@
     <value>Time between plays</value>
   </data>
   <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
-    <value>Amount of seconds which need to pass before a sound will be played again.</value>
+    <value>Amount of seconds which need to pass before a sound will be played again</value>
   </data>
   <data name="config.mentions.audio.path" xml:space="preserve">
     <value>Audio file</value>
@@ -406,9 +420,9 @@
     <value>Select a file</value>
   </data>
   <data name="config.mentions.audio.test.error" xml:space="preserve">
-    <value>Audiofile can't be played.&lt;br&gt;
-Either the format is not supported or the file can't be found!&lt;br&gt;
-Make sure to place any sound files you want to use in gobchat under resources/sounds</value>
+    <value>Audiofile can't be played.&lt;br/&gt;
+Either the format is not supported or the file can't be found!&lt;br/&gt;
+Make sure to place any sound files you want to use in gobchat under 'resources/sounds'</value>
   </data>
   <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
     <value>Play audio</value>
@@ -426,7 +440,7 @@ Make sure to place any sound files you want to use in gobchat under resources/so
     <value>Adds a new box for mentions</value>
   </data>
   <data name="config.mentions.trigger.tooltip" xml:space="preserve">
-    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention.</value>
+    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention</value>
   </data>
   <data name="config.missing" xml:space="preserve">
     <value>Missing '{0}'</value>
@@ -496,11 +510,11 @@ Press save afterwards.</value>
     <value>Entry will be deleted. Are you sure?</value>
   </data>
   <data name="config.roleplay.entry.header" xml:space="preserve">
-    <value>Starts with {0} and ends with {1}</value>
-    <comment>0: start tokens, 1: end tokens</comment>
+    <value>{0} starts with {1} and ends with {2}</value>
+    <comment>0: type, 1: start tokens, 2: end tokens</comment>
   </data>
   <data name="config.roleplay.entry.info" xml:space="preserve">
-    <value>They will be processed from top to down. To reorder them drag and drop the header.</value>
+    <value>They will be processed from top to down. To reorder them drag and drop the header</value>
   </data>
   <data name="config.roleplay.entry.tokenend" xml:space="preserve">
     <value>End</value>
@@ -512,7 +526,7 @@ Press save afterwards.</value>
     <value>Text color</value>
   </data>
   <data name="config.roleplay.tokentbl.header.name" xml:space="preserve">
-    <value>Channel name</value>
+    <value>Type</value>
   </data>
   <data name="config.roleplay.tokentbl.new" xml:space="preserve">
     <value>Add entry</value>
@@ -524,7 +538,7 @@ Press save afterwards.</value>
     <value>Alliance</value>
   </data>
   <data name="main.chat.channel.alliance.tooltip" xml:space="preserve">
-    <value />
+    <value>/a</value>
   </data>
   <data name="main.chat.channel.animatedemote" xml:space="preserve">
     <value>Animated emote</value>
@@ -593,7 +607,7 @@ Press save afterwards.</value>
     <value>/em</value>
   </data>
   <data name="main.chat.channel.error" xml:space="preserve">
-    <value>Error Messages</value>
+    <value>System error messages</value>
   </data>
   <data name="main.chat.channel.error.tooltip" xml:space="preserve">
     <value />
@@ -605,13 +619,13 @@ Press save afterwards.</value>
     <value />
   </data>
   <data name="main.chat.channel.gobchaterror" xml:space="preserve">
-    <value>Gobchat Errors</value>
+    <value>Gobchat errors</value>
   </data>
   <data name="main.chat.channel.gobchaterror.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="main.chat.channel.gobchatinfo" xml:space="preserve">
-    <value>Gobchat Infos</value>
+    <value>Gobchat infos</value>
   </data>
   <data name="main.chat.channel.gobchatinfo.tooltip" xml:space="preserve">
     <value />
@@ -695,7 +709,7 @@ Press save afterwards.</value>
     <value>Shout</value>
   </data>
   <data name="main.chat.channel.shout.tooltip" xml:space="preserve">
-    <value />
+    <value>/shout</value>
   </data>
   <data name="main.chat.channel.tellrecieve" xml:space="preserve">
     <value>Tell recieve</value>
@@ -715,9 +729,45 @@ Press save afterwards.</value>
   <data name="main.chat.channel.yell.tooltip" xml:space="preserve">
     <value>/y</value>
   </data>
+  <data name="main.chat.segment.type.emote" xml:space="preserve">
+    <value>Emote</value>
+  </data>
+  <data name="main.chat.segment.type.emote.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.segment.type.mention" xml:space="preserve">
+    <value>Mention</value>
+  </data>
+  <data name="main.chat.segment.type.mention.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.segment.type.ooc" xml:space="preserve">
+    <value>OoC</value>
+  </data>
+  <data name="main.chat.segment.type.ooc.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="main.chat.segment.type.say" xml:space="preserve">
+    <value>Say</value>
+  </data>
+  <data name="main.chat.segment.type.say.tooltip" xml:space="preserve">
+    <value />
+  </data>
   <data name="main.cmdmanager.availablecmds" xml:space="preserve">
     <value>Available commands: {0}</value>
     <comment>0: list of cmds</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.playercount" xml:space="preserve">
+    <value>Players nearby: {0}</value>
+    <comment>0: number of players</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.playerdistance" xml:space="preserve">
+    <value>Distance to {0} is {1}</value>
+    <comment>0: target name, 1: distance to target</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
+    <value>Players nearby: {0}</value>
+    <comment>0: list of players</comment>
   </data>
   <data name="main.label.missing" xml:space="preserve">
     <value>Missing '{0}'</value>

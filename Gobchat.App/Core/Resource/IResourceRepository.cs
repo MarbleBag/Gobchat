@@ -43,9 +43,9 @@ namespace Gobchat.Core.Resource
         System.IO.Stream OpenRead();
     }
 
-    public class FileSystemResourceRepository : IResourceRepository
+    public sealed class FileSystemResourceRepository : IResourceRepository
     {
-        public static string FilePathToFileUrl(string filePath)
+        private static string FilePathToFileUrl(string filePath)
         {
             StringBuilder uri = new StringBuilder();
             foreach (char v in filePath)

@@ -16,6 +16,50 @@ using System.Collections.Generic;
 
 namespace Gobchat.Core.Resource
 {
+    public sealed class CachedResourceBundle2 : IResourceBundle
+    {
+        private readonly IDictionary<string, object> _cache;
+        private readonly IResourceBundle bundle;
+
+        public CachedResourceBundle2(IResourceBundle bundle)
+        {
+            this.bundle = bundle ?? throw new ArgumentNullException(nameof(bundle));
+        }
+
+        public string this[string key]
+        {
+            get
+            {
+                key = key.ToUpperInvariant();
+                object result;
+                if (_cache.TryGetValue(key, out result))
+                {
+                    return result?.ToString();
+                }
+                else
+                {
+                    result = this.bundle[key];
+                    _cache.Add(key, result);
+                    return result?.ToString();
+                }
+            }
+        }
+
+        public string CurrentLocale => this.bundle.CurrentLocale;
+
+        public void Reload()
+        {
+            _cache.Clear();
+            this.bundle.Reload();
+        }
+
+        public void SetLocale(string locale)
+        {
+            _cache.Clear();
+            this.bundle.SetLocale(locale);
+        }
+    }
+
     public sealed class CachedResourceBundle : IResourceBundle
     {
         private readonly IResourceLocator _resourceResolver;

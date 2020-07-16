@@ -325,5 +325,9 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, options)
     }
 
+    GobConfigHelper.bindListener = function (bindingContext, configKey, callback) {
+        return bindingContext.bindConfigListener(configKey, callback)
+    }
+
     return GobConfigHelper
 }(GobConfigHelper || {}));

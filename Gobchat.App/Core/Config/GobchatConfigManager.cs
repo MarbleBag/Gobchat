@@ -192,7 +192,7 @@ namespace Gobchat.Core.Config
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Invalid profile");
+                logger.Error(ex, $"Invalid profile {path}");
                 return null;
             }
         }
@@ -205,9 +205,7 @@ namespace Gobchat.Core.Config
             if (File.Exists(appConfigPath))
             {
                 var loader = new JsonConfigLoader();
-                loader.AddConverter(1, new LegacyAppConfigTransformer(this));
-
-                var appConfig = loader.LoadConfig(appConfigPath);
+                var appConfig = loader.LoadJsonFromFile(appConfigPath);
 
                 if (appConfig["activeProfile"] != null)
                 {

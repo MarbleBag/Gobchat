@@ -212,9 +212,12 @@
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v16.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader_v1701.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1701.cs" />
     <Compile Include="Core\Config\Exceptions\SynchronizationException.cs" />
     <Compile Include="Core\Resource\IResourceBundle.cs" />
-    <Compile Include="Core\Resource\ResourceManagerResourceBundle.cs" />
+    <Compile Include="Core\Resource\ResourceManagerBundle.cs" />
     <Compile Include="Core\Runtime\GobchatContext.cs" />
     <Compile Include="Core\Util\Extension\BinarySearchExtension.cs" />
     <Compile Include="Core\Util\StringFormat.cs" />
@@ -261,7 +264,7 @@
     <Compile Include="Core\Config\IJsonTransformer.cs" />
     <Compile Include="Core\Config\Exceptions\ConfigException.cs" />
     <Compile Include="Core\Resource\HjsonResourceLoader.cs" />
-    <Compile Include="Core\Resource\IResourceLoader.cs" />
+    <Compile Include="Core\Resource\Resources.cs" />
     <Compile Include="Core\Runtime\ContextSpecificUISynchronizer.cs" />
     <Compile Include="Core\Util\ArchiveUnpacker.cs" />
     <Compile Include="Core\Util\DownloadFailedException.cs" />
@@ -291,7 +294,7 @@
     <Compile Include="Module\Chat\Internal\ChatManager.cs" />
     <Compile Include="Module\Misc\Chatlogger\AppModuleChatLogger.cs" />
     <Compile Include="Core\Util\Extension\ToArrayOrEmptyExtension.cs" />
-    <Compile Include="Module\Chat\IChatMessageManager.cs" />
+    <Compile Include="Module\Chat\IChatManager.cs" />
     <Compile Include="Core\Chat\IChatLogger.cs" />
     <Compile Include="Module\Misc\AppModuleInformUserAboutMemoryState.cs" />
     <Compile Include="Module\Hotkey\AppModuleHotkeyManager.cs" />
@@ -315,9 +318,7 @@
     <Compile Include="Core\Util\IdGenerator.cs" />
     <Compile Include="Module\Cef\AppModuleCefManager.cs" />
     <Compile Include="Module\Cef\Internal\CefInstaller.cs" />
-    <Compile Include="Core\Resource\IResourceProvider.cs" />
     <Compile Include="Core\Resource\IResourceRepository.cs" />
-    <Compile Include="Core\Resource\IResourceResolver.cs" />
     <Compile Include="Module\Cef\AppModuleCefInstaller.cs" />
     <Compile Include="Core\Runtime\EmptyUnhandledExceptionHandler.cs" />
     <Compile Include="Module\Hotkey\Internal\OSLevelHotkeyRegister.cs" />

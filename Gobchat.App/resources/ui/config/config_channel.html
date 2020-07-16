@@ -68,48 +68,6 @@
         'use strict';
 
         (function (undefined) {
-            const channels = [
-                { channel: null, translationId: "main.chat.channel.general", styleId: "style.channel.base" },
-                { label: "general", channelEnum: null, styleId: "style.channel.base" },
-
-                { channel: Gobchat.Channels.SAY, styleId: "style.channel.base" },
-                { label: "say", channelEnum: "SAY", styleId: "style.channel.say" },
-                { label: "emote", channelEnum: "EMOTE", styleId: "style.channel.emote" },
-                { label: "yell", channelEnum: "YELL", styleId: "style.channel.yell" },
-                { label: "shout", channelEnum: "SHOUT", styleId: "style.channel.shout" },
-                { label: "party", channelEnum: "PARTY", styleId: "style.channel.party" },
-                { label: "guild", channelEnum: "GUILD", styleId: "style.channel.guild" },
-                { label: "tellsend", channelEnum: "TELL_SEND", styleId: "style.channel.tellsend" },
-                { label: "tellrecieve", channelEnum: "TELL_RECIEVE", styleId: "style.channel.tellrecieve" },
-                { label: "alliance", channelEnum: "ALLIANCE", styleId: "style.channel.alliance" },
-                { label: "npc-dialog", channelEnum: ["NPC_TALK", "NPC_DIALOGUE"], styleId: "style.channel.npc-dialog" },
-                { label: "animated-emote", channelEnum: "ANIMATED_EMOTE", styleId: "style.channel.animated-emote" },
-                { label: "echo", channelEnum: "ECHO", styleId: "style.channel.echo" },
-                { label: "roll", channelEnum: ["RANDOM_SELF", "RANDOM_PARTY", "RANDOM_OTHER"], styleId: "style.channel.roll" },
-                { label: "error", channelEnum: "ERROR", styleId: "style.channel.error" },
-
-                { label: "gobinfo", channelEnum: "GOBCHAT_INFO", styleId: "style.channel.gobchatinfo" },
-                { label: "goberror", channelEnum: "GOBCHAT_ERROR", styleId: "style.channel.gobchaterror" },
-
-                { label: "linkshell1", channelEnum: "LINKSHELL_1", styleId: "style.channel.linkshell-1" },
-                { label: "linkshell2", channelEnum: "LINKSHELL_2", styleId: "style.channel.linkshell-2" },
-                { label: "linkshell3", channelEnum: "LINKSHELL_3", styleId: "style.channel.linkshell-3" },
-                { label: "linkshell4", channelEnum: "LINKSHELL_4", styleId: "style.channel.linkshell-4" },
-                { label: "linkshell5", channelEnum: "LINKSHELL_5", styleId: "style.channel.linkshell-5" },
-                { label: "linkshell6", channelEnum: "LINKSHELL_6", styleId: "style.channel.linkshell-6" },
-                { label: "linkshell7", channelEnum: "LINKSHELL_7", styleId: "style.channel.linkshell-7" },
-                { label: "linkshell8", channelEnum: "LINKSHELL_8", styleId: "style.channel.linkshell-8" },
-
-                { label: "worldlinkshell1", channelEnum: "WORLD_LINKSHELL_1", styleId: "style.channel.worldlinkshell-1" },
-                { label: "worldlinkshell2", channelEnum: "WORLD_LINKSHELL_2", styleId: "style.channel.worldlinkshell-2" },
-                { label: "worldlinkshell3", channelEnum: "WORLD_LINKSHELL_3", styleId: "style.channel.worldlinkshell-3" },
-                { label: "worldlinkshell4", channelEnum: "WORLD_LINKSHELL_4", styleId: "style.channel.worldlinkshell-4" },
-                { label: "worldlinkshell5", channelEnum: "WORLD_LINKSHELL_5", styleId: "style.channel.worldlinkshell-5" },
-                { label: "worldlinkshell6", channelEnum: "WORLD_LINKSHELL_6", styleId: "style.channel.worldlinkshell-6" },
-                { label: "worldlinkshell7", channelEnum: "WORLD_LINKSHELL_7", styleId: "style.channel.worldlinkshell-7" },
-                { label: "worldlinkshell8", channelEnum: "WORLD_LINKSHELL_8", styleId: "style.channel.worldlinkshell-8" },
-            ]
-
             const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
             const table = $("#cchannel_channels > tbody")
@@ -177,7 +135,7 @@
 
             Object.entries(Gobchat.Channels).forEach((entry) => {
                 const channelData = entry[1]
-                if(!channelData.relevant)
+                if (!channelData.relevant)
                     return
                 buildChannelEntry(channelData)
             })
@@ -186,11 +144,16 @@
 
             const btnCopyProfile = $("#cchannel_copyprofile")
             const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay"]
-            channels.forEach(entry => {
-                if (entry.styleId === undefined || entry.styleId === null) return
-                copyKeys.push(entry.styleId + ".color")
-                copyKeys.push(entry.styleId + ".background-color")
+            copyKeys.push("style.channel.base" + ".color")
+            copyKeys.push("style.channel.base" + ".color")
+
+            Object.entries(Gobchat.Channels).forEach((entry) => {
+                const channelData = entry[1]
+                if (!channelData.relevant || channelData.configId == null) return
+                copyKeys.push(channelData.configId + ".color")
+                copyKeys.push(channelData.configId + ".background-color")
             })
+
             GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
 
         }());

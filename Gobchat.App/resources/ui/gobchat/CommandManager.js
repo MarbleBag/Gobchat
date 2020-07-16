@@ -40,9 +40,17 @@ var Gobchat = (function (Gobchat, undefined) {
                 await cmdHandle.execute(this, cmd, args)
             } else {
                 const availableCmds = Array.from(this._cmdMap.keys()).join(", ")
-                const msg = await this._manager.localeManager.getAndFormat("main.cmdmanager.availableCmds", availableCmds)
+                const msg = await this.getTranslationAndFormat("main.cmdmanager.availablecmds", availableCmds)
                 this.sendInfoMessage(msg)
             }
+        }
+
+        async getTranslation(key) {
+            return await this._manager.localeManager.get(key)
+        }
+
+        async getTranslationAndFormat(key, params) {
+            return await this._manager.localeManager.getAndFormat(key, params)
         }
 
         _getHandler(msg) {
@@ -226,7 +234,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const count = await GobchatAPI.getPlayerCount()
-            commandManager.sendInfoMessage(`Players nearby: ${count}`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playercount", count)
+            commandManager.sendInfoMessage(msg)
         }
     }
 
@@ -237,7 +246,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const list = await GobchatAPI.getPlayersAndDistance()
-            commandManager.sendInfoMessage(`Players nearby: ${list.join(", ")}`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerlist", list.join(", "))
+            commandManager.sendInfoMessage(msg)
         }
     }
 
@@ -248,7 +258,8 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const distance = await GobchatAPI.getPlayerDistance(args)
-            commandManager.sendInfoMessage(`Distance to '${args}': ${distance.toFixed(2)}y`)
+            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerdistance", `${distance.toFixed(2)}y`)
+            commandManager.sendInfoMessage(msg)
         }
     }
 

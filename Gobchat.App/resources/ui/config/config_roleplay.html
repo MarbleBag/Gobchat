@@ -59,12 +59,16 @@
                         <span>
                             <span class="tmpl-header-index"></span>
                             <span>. </span>
+                            <span class="tmpl-header-name"></span>
+                            <!--
                             <span class="tmpl-header-name-type"></span>
                             <span> starts with </span>
                             <span class="tmpl-header-name-start"></span>
                             <span> and ends with </span>
                             <span class="tmpl-header-name-end"></span>
+                            -->
                         </span>
+
                         <span style="float:right;">
                             <button class="tmpl-delete-entry gob-button-tertiary gob-button-delete"
                                     data-gob-locale-title="config.main.deletebutton.tooltip">
@@ -138,10 +142,10 @@
 
         (function () {
             const tblRoleplayContent = [
-                { label: "Say", styleId: "style.segment.say" },
-                { label: "Emote", styleId: "style.segment.emote" },
-                { label: "Mention", styleId: "style.segment.mention" },
-                { label: "OoC", styleId: "style.segment.ooc" },
+                { styleId: "style.segment.say", translationId: "main.chat.segment.type.say" },
+                { styleId: "style.segment.emote", translationId: "main.chat.segment.type.emote" },
+                { styleId: "style.segment.mention", translationId: "main.chat.segment.type.mention" },
+                { styleId: "style.segment.ooc", translationId: "main.chat.segment.type.ooc" },
             ]
 
             const binding = GobConfigHelper.makeDatabinding(gobconfig)
@@ -155,7 +159,8 @@
                 const clrSelectorFG = rowEntry.find(".entry-color-forground")
                 const btnResetFG = rowEntry.find(".entry-color-forground-reset")
 
-                lblName.text(entry.label)
+                lblName.attr("data-gob-locale-text", `${entry.translationId}`)
+                lblName.attr("data-gob-locale-title", `${entry.translationId}.tooltip`)
 
                 GobConfigHelper.setConfigKey(clrSelectorFG, entry.styleId + ".color")
                 GobConfigHelper.makeColorSelector(clrSelectorFG)
@@ -170,6 +175,23 @@
             const ConfigKeyData = "behaviour.segment.data"
             const ConfigKeyOrder = "behaviour.segment.order"
 
+            function convertTokenInput(str) {
+                const text = str.trim()
+                const split = text.split(" ")
+                const data = []
+                for (let s of split) {
+                    if (s.length === 0) continue
+                    s = Gobchat.decodeUnicode(s)
+                    data.push(s)
+                }
+                return data;
+            }
+
+            function toUnicodeString(arr) {
+                let f = arr.map(s => Gobchat.encodeUnicode(s)).join(" | ")
+                return f
+            }
+
             function buildSegmentsTableEntry(entryId) {
                 if (entryId === null || entryId === undefined || entryId.length === 0)
                     throw new Error("Invalid entry id")
@@ -177,6 +199,9 @@
                 const entry = $(segmentsEntryTmpl.html())
                 entry.attr("data-gob-entryid", entryId)
                 entry.appendTo(tblSegments)
+
+                const binding = GobConfigHelper.makeDatabinding(gobconfig)
+                entry.data("configbinding", binding)
 
                 const configKey = ConfigKeyData + "." + entryId
 
@@ -201,70 +226,54 @@
                 })
 
                 const ckbIsActive = entry.find(".tmpl-entry-active")
-                ckbIsActive.prop("checked", gobconfig.get(configKey + ".active"))
-                ckbIsActive.on("change", event => gobconfig.set(configKey + ".active", event.target.checked))
+                GobConfigHelper.setConfigKey(ckbIsActive, configKey + ".active")
+                GobConfigHelper.bindCheckbox(binding, ckbIsActive)
 
                 const dpdSegmentType = entry.find(".tmpl-segment-selector")
-                dpdSegmentType.val(gobconfig.get(configKey + ".type"))
-                dpdSegmentType.on("change", function (event) {
-                    const newType = parseInt(event.target.value || 1)
-                    gobconfig.set(configKey + ".type", newType)
-
-                    const text = dpdSegmentType.find("option:selected").text()
-                    entry.find(".tmpl-header-name-type").text(text)
-                })
-                entry.find(".tmpl-header-name-type").text(dpdSegmentType.find("option:selected").text())
-
-                function convertTokenInput(str) {
-                    const text = str.trim()
-                    const split = text.split(" ")
-                    const data = []
-                    for (let s of split) {
-                        if (s.length === 0) continue
-                        s = Gobchat.decodeUnicode(s)
-                        data.push(s)
-                    }
-                    return data;
-                }
-
-                function toUnicodeString(arr) {
-                    let f = arr.map(s => Gobchat.encodeUnicode(s)).join(" | ")
-                    return f
-                }
+                GobConfigHelper.setConfigKey(dpdSegmentType, configKey + ".type")
+                GobConfigHelper.bindElement(binding, dpdSegmentType)
 
                 const txtStartTokens = entry.find(".tmpl-startTokens")
-                const strStartTokens = gobconfig.get(configKey + ".startTokens")
-                txtStartTokens.val(strStartTokens.join(" "))
-                txtStartTokens.on("change", function (event) {
-                    const data = convertTokenInput(txtStartTokens.val())
-                    gobconfig.set(configKey + ".startTokens", data)
-
-                    lblStartTokenUnicode.text(toUnicodeString(data))
-
-                    txtStartTokens.val(data.join(" "))
-                    entry.find(".tmpl-header-name-start").text(data.join(" or "))
-                })
-
-                const lblStartTokenUnicode = entry.find(".tmpl-startTokens-unicode")
-                lblStartTokenUnicode.text(toUnicodeString(strStartTokens))
-                entry.find(".tmpl-header-name-start").text(strStartTokens.join(" or "))
+                GobConfigHelper.setConfigKey(txtStartTokens, configKey + ".startTokens")
+                GobConfigHelper.bindElement(binding, txtStartTokens,
+                    {
+                        elementGetAccessor: ($element) => convertTokenInput($element.val()),
+                        elementSetAccessor: ($element, value) => $element.val(value.join(" "))
+                    })
 
                 const txtEndTokens = entry.find(".tmpl-endTokens")
-                const strEndTokens = gobconfig.get(configKey + ".endTokens")
-                txtEndTokens.val(strEndTokens.join(" "))
-                txtEndTokens.on("change", function (event) {
-                    const data = convertTokenInput(txtEndTokens.val())
-                    gobconfig.set(configKey + ".endTokens", data)
+                GobConfigHelper.setConfigKey(txtEndTokens, configKey + ".endTokens")
+                GobConfigHelper.bindElement(binding, txtEndTokens,
+                    {
+                        elementGetAccessor: ($element) => convertTokenInput($element.val()),
+                        elementSetAccessor: ($element, value) => $element.val(value.join(" "))
+                    })
 
-                    lblEndTokenUnicode.text(toUnicodeString(data))
-
-                    txtEndTokens.val(data.join(" "))
-                    entry.find(".tmpl-header-name-end").text(data.join(" or "))
+                GobConfigHelper.bindListener(binding, GobConfigHelper.getConfigKey(dpdSegmentType), (value) => {
+                    updateEntryHeader()
+                })
+                GobConfigHelper.bindListener(binding, GobConfigHelper.getConfigKey(txtStartTokens), (value) => {
+                    entry.find(".tmpl-startTokens-unicode").text(toUnicodeString(value))
+                    updateEntryHeader()
+                })
+                GobConfigHelper.bindListener(binding, GobConfigHelper.getConfigKey(txtEndTokens), (value) => {
+                    entry.find(".tmpl-endTokens-unicode").text(toUnicodeString(value))
+                    updateEntryHeader()
                 })
 
-                const lblEndTokenUnicode = entry.find(".tmpl-endTokens-unicode")
-                lblEndTokenUnicode.text(toUnicodeString(strEndTokens))
-                entry.find(".tmpl-header-name-end").text(strEndTokens.join(" or "))
+                function updateEntryHeader() {
+                    {
+                        (async () => {
+                            const txtStart = gobconfig.get(GobConfigHelper.getConfigKey(txtStartTokens)).join(" or ")
+                            const txtEnd = gobconfig.get(GobConfigHelper.getConfigKey(txtEndTokens)).join(" or ")
+                            const txtType = dpdSegmentType.find("option:selected").text()
+                            const label = await goblocale.getAndFormat("config.roleplay.entry.header", [txtType, txtStart, txtEnd])
+                            entry.find(".tmpl-header-name").text(label)
+                        })()
+                    }
+                }
+
+                binding.initialize()
             }
 
             function addNewEntrySegmentsTable() {
@@ -292,8 +301,15 @@
                 gobconfig.reset(ConfigKeyOrder)
             })
 
-            function populateSegmentsTable() {
+            function clearSegmentsTable() {
+                tblSegments.find("div[data-gob-entryid]").each(function (idx) {
+                    $(this).data("configbinding").clear()
+                })
                 tblSegments.empty()
+            }
+
+            function populateSegmentsTable() {
+                clearSegmentsTable()
                 const ids = gobconfig.get(ConfigKeyOrder)
                 ids.forEach(id => buildSegmentsTableEntry(id))
 

@@ -21,17 +21,16 @@ namespace Gobchat.Core.Config
 {
     internal sealed class ConfigUpgrader
     {
-        private readonly IConfigUpgradeStep[] _upgrader;
+        private readonly IConfigUpgrade[] _upgrader;
 
         public ConfigUpgrader()
         {
-            _upgrader = new IConfigUpgradeStep[]
+            _upgrader = new IConfigUpgrade[]
             {
-           //     new ConfigUpgrader_v3(),
-            //    new ConfigUpgrader_v16(),
-            //    new ConfigUpgrader_v1700(),
+                new ConfigUpgrade_v3(),
+                new ConfigUpgrade_v16(),
+                new ConfigUpgrade_v1701()
             };
-            Array.Sort(_upgrader, (x, y) => x.MinVersion - y.MinVersion);
         }
 
         public JObject UpgradeConfig(JObject configObject)
@@ -40,7 +39,7 @@ namespace Gobchat.Core.Config
 
             do
             {
-                var upgrader = _upgrader.Where(e => e.MinVersion >= version && e.MaxVersion <= version).FirstOrDefault(); //TODO select best upgrader
+                var upgrader = MaxUpgrade(version);
                 if (upgrader == null)
                     break;
 
@@ -82,14 +81,30 @@ namespace Gobchat.Core.Config
             long version = jToken.Value<long>();
             return (int)version;
         }
+
+        private IConfigUpgrade MaxUpgrade(int version)
+        {
+            return _upgrader.Where(e => e.MinVersion >= version && e.MaxVersion <= version).Aggregate((e1, e2) => e1.TargetVersion >= e2.TargetVersion ? e1 : e2);
+        }
+
+        private IEnumerable<IConfigUpgrade> GetUpgraders(int version)
+        {
+            var upgrader = MaxUpgrade(version);
+            while (upgrader != null)
+            {
+                version = upgrader.TargetVersion;
+                yield return upgrader;
+                upgrader = MaxUpgrade(version);
+            }
+        }
     }
 
-    internal interface IConfigUpgradeStep
+    internal interface IConfigUpgrade
     {
         int MinVersion { get; }
         int MaxVersion { get; }
         int TargetVersion { get; }
 
-        JObject Upgrade(JToken jToken);
+        JObject Upgrade(JObject src);
     }
 }

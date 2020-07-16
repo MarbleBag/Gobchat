@@ -11,19 +11,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Collections.Generic;
+using System;
+using Gobchat.Core.Chat;
+using Gobchat.Memory.Chat;
 
-namespace Gobchat.Core.Resource
+namespace Gobchat.Module.Chat
 {
-    public interface IResourceLoader
+    public interface IChatManager
     {
-        IResourceCollection LoadResource(IResourceLocator locator, string fileName);
-    }
+        event EventHandler<ChatMessageEventArgs> OnChatMessage;
 
-    public interface IResourceCollection : IEnumerable<KeyValuePair<string, object>>
-    {
-        object GetObject(string key);
+        bool Enable { get; set; }
 
-        string[] GetKeys();
+        void EnqueueMessage(ChatlogItem chatlogItem);
+
+        void EnqueueMessage(DateTime timestamp, FFXIVChatChannel channel, string source, string message);
+
+        void EnqueueMessage(DateTime timestamp, ChatChannel channel, string source, string message);
+
+        void EnqueueMessage(SystemMessageType type, string message);
+
+        void UpdateManager();
     }
 }

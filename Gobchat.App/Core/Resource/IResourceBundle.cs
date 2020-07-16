@@ -16,9 +16,10 @@ namespace Gobchat.Core.Resource
     public interface IResourceBundle
     {
         string this[string key] { get; }
-        string CurrentLocale { get; }
 
-        void Clear();
+        //object GetObject(string key);
+
+        string CurrentLocale { get; }
 
         void Reload();
 

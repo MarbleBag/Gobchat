@@ -109,7 +109,7 @@ namespace Gobchat.Module.Language.Internal
             return registry;
         }
 
-        public void Update<M>(MessageRegistry<M> registry)
+        private void Update<M>(MessageRegistry<M> registry)
         {
             var messageType = typeof(M);
             var emptyConstructor = messageType.GetConstructor(Type.EmptyTypes);

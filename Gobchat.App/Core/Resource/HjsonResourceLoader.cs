@@ -21,9 +21,9 @@ namespace Gobchat.Core.Resource
 {
     public sealed class HjsonResourceLoader : IResourceLoader
     {
-        IResourceCollection IResourceLoader.LoadResource(IResourceLocator locator, string fileName)
+        IResourceCollection IResourceLoader.LoadResource(IResourceLocator locator, string uri)
         {
-            var resourceProvider = locator.FindResourcesById(fileName + ".hjson").FirstOrDefault();
+            var resourceProvider = locator.FindResourcesById(uri + ".hjson").FirstOrDefault();
             var lookup = new Dictionary<string, object>();
 
             if (resourceProvider != null)

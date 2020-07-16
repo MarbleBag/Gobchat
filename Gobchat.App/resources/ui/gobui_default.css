@@ -116,11 +116,16 @@ body, html {
 .gob-config-dialog-header {
 }
 
-.gob-table-listing {
+.gob-table-channel {
+    white-space: nowrap;
+}
+
+/* icon styles */
+.gob-icon-warning {
+    color: orangered;
 }
 
 /* button styles */
-
 .gob-button-column > .gob-button-primary,
 .gob-button-column > .gob-button-secondary,
 .gob-button-column > .gob-button-tertiary {

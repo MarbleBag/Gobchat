@@ -15,12 +15,12 @@ using System;
 
 namespace Gobchat.Core.Resource
 {
-    public sealed class ResourceManagerResourceBundle : IResourceBundle
+    public sealed class ResourceManagerBundle : IResourceBundle
     {
         private global::System.Globalization.CultureInfo _resourceCulture;
         private readonly global::System.Resources.ResourceManager _resourceManager;
 
-        public ResourceManagerResourceBundle(global::System.Resources.ResourceManager resourceManager)
+        public ResourceManagerBundle(global::System.Resources.ResourceManager resourceManager)
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
         }

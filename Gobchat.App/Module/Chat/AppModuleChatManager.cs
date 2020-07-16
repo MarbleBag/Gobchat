@@ -190,7 +190,15 @@ namespace Gobchat.Module.Chat
 
         private void ConfigManager_UpdateUserMentionProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatManager.Config.ExcludeUserMention = !config.GetProperty<bool>("behaviour.mentions.userCanTriggerMention");
+            try
+            {
+                _chatManager.Config.ExcludeUserMention = !config.GetProperty<bool>("behaviour.mentions.userCanTriggerMention");
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
         }
 
         private void ConfigManager_UpdateFormaterProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)

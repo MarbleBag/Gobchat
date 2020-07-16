@@ -98,7 +98,7 @@
 
     <div id="config_dialog_error" title="An error occured" hidden>
         <p>
-            <span style="float:left; margin:24px 24px 20px 0; color:orangered;"><i class="fas fa-exclamation-triangle fa-3x"></i></span>
+            <span style="float:left; margin:24px 24px 20px 0;"><i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i></span>
             <span id="config_dialog_error_text">hello</span>
         </p>
     </div>
@@ -145,14 +145,14 @@
                     window.goblocale = new Gobchat.GobLocaleManager()
                     window.goblocale.setLocale(gobconfig.get("behaviour.language"))
 
-                    await makeNavigationElement($("#cmain_navbar"))
-
                     const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
 
                     generalBinding.bindConfigListener("behaviour.language", (value) => {
                         window.goblocale.setLocale(value)
                         window.goblocale.updateElement($(document))
                     })
+
+                    await makeNavigationElement($("#cmain_navbar"))
 
                     const styleLoader = new Gobchat.StyleLoader(document.head, "..")
                     await styleLoader.loadStyles()
@@ -174,7 +174,7 @@
                         $("body").hide()
                         styleLoader.activateStyle(value)
                         $("#capp_theme").val(value)
-                        $("body").show("fast") //trigger reflow so style gets applied everywhere (especially scrollbars!) What a shitty bug
+                        $("body").show("fast") //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
                     })
 
                     generalBinding.initialize()

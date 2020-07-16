@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="config.about.text" xml:space="preserve">
+    <value>&lt;p&gt;
+Ein Chat Overlay für FFXIV, mit dem Ziel eine bessere Chat-Übersicht für Rollenspieler zu bieten. &lt;br/&gt; 
+Für FFXIV 5.2
+&lt;/p&gt;&lt;p&gt;
+Kontakt über Github.
+&lt;/p&gt;&lt;p&gt;
+Willst du selbst etwas beitragen oder einen Blick auf den Quellcode von Gobchat werfen? &lt;br/&gt;
+Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobchat
+&lt;/p&gt;</value>
+  </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Charakterpositionen erfassen</value>
   </data>
@@ -161,6 +172,9 @@
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
+  </data>
+  <data name="config.app.ckb.usermention" xml:space="preserve">
+    <value>Prüfe eigene Nachrichten auf Erwähnungen</value>
   </data>
   <data name="config.app.fonts.label" xml:space="preserve">
     <value>Schriftart</value>
@@ -208,28 +222,28 @@
     <value>Ausblenden (yalm)</value>
   </data>
   <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine Emotes in Gobchat nicht mehr angezeigt</value>
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt</value>
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
     <value>Verblassen (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden die Emotes in Gobchat in geringerer Transparenz, somit blasser angezeigt</value>
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird</value>
   </data>
   <data name="config.app.rangefilter.label" xml:space="preserve">
     <value>Reichweitenfilter</value>
   </data>
   <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
-    <value>Transparenz fern (%)</value>
+    <value>Sichtbarkeit fern (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value>Bezieht sich auf "Verblassen". Maximale Transparenz, somit maximales Verblassen von Emotes</value>
+    <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'</value>
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
-    <value>Transparenz nah (%)</value>
+    <value>Sichtbarkeit nah (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
-    <value>Bezieht sich auf "Verblassen". Anfängliche Transparenz beginnt bei angegebenem Wert</value>
+    <value>Wie sichtbar soll eine Nachricht sein, wenn sie anfängt zu verblassen.</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Markierung</value>
@@ -267,6 +281,9 @@
   <data name="config.channel.tbl.visible" xml:space="preserve">
     <value>Sichtbar</value>
   </data>
+  <data name="config.groups.entry.deleteconfirm" xml:space="preserve">
+    <value>Gruppe wird gelöscht. Fortsetzen?</value>
+  </data>
   <data name="config.groups.group.active" xml:space="preserve">
     <value>Aktiv</value>
   </data>
@@ -283,7 +300,7 @@
     <value>Gruppe</value>
   </data>
   <data name="config.groups.group.sender.background" xml:space="preserve">
-    <value>Absenderhintergrundfarbe</value>
+    <value>Absender-Hintergrundfarbe</value>
   </data>
   <data name="config.groups.group.sender.forground" xml:space="preserve">
     <value>Absenderfarbe</value>
@@ -293,6 +310,9 @@
   </data>
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>Neue Gruppe</value>
+  </data>
+  <data name="config.main.deletebutton.tooltip" xml:space="preserve">
+    <value>Lösche diesen Eintrag</value>
   </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>Info</value>
@@ -321,6 +341,9 @@
   <data name="config.main.nav.saveandexit" xml:space="preserve">
     <value>Speichern &amp;amp; Schließen</value>
   </data>
+  <data name="config.main.profile.copypage" xml:space="preserve">
+    <value>Kopiere diese Seite von einem anderen Profil</value>
+  </data>
   <data name="config.main.resetbutton.tooltip" xml:space="preserve">
     <value>Wert zurücksetzen</value>
   </data>
@@ -330,11 +353,28 @@
   <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
     <value>Anzahl an Sekunden die vergehen müssen, bevor der Ton erneut abgespielt wird.</value>
   </data>
+  <data name="config.mentions.audio.path" xml:space="preserve">
+    <value>Audiodatei</value>
+  </data>
   <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
-    <value>Das Audio-file muss sich im 'sound' Ordner von Gobchat befinden</value>
+    <value>Die Audiodatei muss sich im 'sound' Ordner von Gobchat befinden</value>
   </data>
   <data name="config.mentions.audio.play" xml:space="preserve">
     <value>Audio abspielen</value>
+  </data>
+  <data name="config.mentions.audio.play.tooltip" xml:space="preserve">
+    <value>Spiel die Audiodatei ab wann immer eine Nachricht eine oder mehrere Erwähnungen enthält</value>
+  </data>
+  <data name="config.mentions.audio.select.tooltip" xml:space="preserve">
+    <value>Datei auswählen</value>
+  </data>
+  <data name="config.mentions.audio.test.error" xml:space="preserve">
+    <value>Audiodatei kann nicht abgespielt werden.&lt;br/&gt;
+Entweder wird das Format nicht unterstützt oder die Datei kann nicht gefunden werden!&lt;br/&gt;
+Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
+  </data>
+  <data name="config.mentions.audio.volume" xml:space="preserve">
+    <value>Lautstärke</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
     <value>Lautstärke</value>
@@ -367,20 +407,206 @@
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
+  <data name="config.roleplay.entry.active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="config.roleplay.entry.deleteconfirm" xml:space="preserve">
+    <value>Eintrag wird gelöscht. Fortsetzen?</value>
+  </data>
+  <data name="config.roleplay.entry.header" xml:space="preserve">
+    <value>{0} beginnt mit {1} und endet auf {2}</value>
+  </data>
+  <data name="config.roleplay.entry.info" xml:space="preserve">
+    <value>Die Einträge werden von oben beginnend abgearbeitet. Um die Reihenfolge zu ändern, die Elemente am Kopf greifen und auf die neue Position ziehen.</value>
+  </data>
+  <data name="config.roleplay.tokentbl.header.color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="config.roleplay.tokentbl.header.name" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="config.roleplay.tokentbl.new" xml:space="preserve">
+    <value>Eintrag hinzufügen</value>
+  </data>
+  <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
+    <value>Alle Einträge auf standard zurücksetzen</value>
+  </data>
+  <data name="main.chat.channel.alliance" xml:space="preserve">
+    <value>Allianz</value>
+  </data>
+  <data name="main.chat.channel.animatedemote" xml:space="preserve">
+    <value>Animierte Emotes</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
     <value>Weltenkontaktkreis 1</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
     <value>/wkk1</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
+    <value>Weltenkontaktkreis 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
+    <value>/wkk2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-3" xml:space="preserve">
+    <value>Weltenkontaktkreis 3</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-3.tooltip" xml:space="preserve">
+    <value>/wkk3</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4" xml:space="preserve">
+    <value>Weltenkontaktkreis 4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4.tooltip" xml:space="preserve">
+    <value>/wkk4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-5" xml:space="preserve">
+    <value>Weltenkontaktkreis 5</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-5.tooltip" xml:space="preserve">
+    <value>/wkk5</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6" xml:space="preserve">
+    <value>Weltenkontaktkreis 6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6.tooltip" xml:space="preserve">
+    <value>/wkk6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-7" xml:space="preserve">
+    <value>Weltenkontaktkreis 7</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-7.tooltip" xml:space="preserve">
+    <value>/wkk7</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8" xml:space="preserve">
+    <value>Weltenkontaktkreis 8</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8.tooltip" xml:space="preserve">
+    <value>/wkk8</value>
+  </data>
   <data name="main.chat.channel.error" xml:space="preserve">
-    <value>Fehlermeldungen</value>
+    <value>System-Fehlermeldungen</value>
   </data>
   <data name="main.chat.channel.general" xml:space="preserve">
     <value>Allgemein</value>
   </data>
+  <data name="main.chat.channel.gobchaterror" xml:space="preserve">
+    <value>Gobchat Fehler</value>
+  </data>
+  <data name="main.chat.channel.gobchatinfo" xml:space="preserve">
+    <value>Gobchat Info</value>
+  </data>
+  <data name="main.chat.channel.guild" xml:space="preserve">
+    <value>Freie Gesellschaft</value>
+  </data>
+  <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
+    <value>/fg</value>
+  </data>
+  <data name="main.chat.channel.linkshell-1" xml:space="preserve">
+    <value>Kontaktkreis 1</value>
+  </data>
+  <data name="main.chat.channel.linkshell-1.tooltip" xml:space="preserve">
+    <value>/kk1</value>
+  </data>
+  <data name="main.chat.channel.linkshell-2" xml:space="preserve">
+    <value>Kontaktkreis 2</value>
+  </data>
+  <data name="main.chat.channel.linkshell-2.tooltip" xml:space="preserve">
+    <value>/kk2</value>
+  </data>
+  <data name="main.chat.channel.linkshell-3" xml:space="preserve">
+    <value>Kontaktkreis 3</value>
+  </data>
+  <data name="main.chat.channel.linkshell-3.tooltip" xml:space="preserve">
+    <value>/kk3</value>
+  </data>
+  <data name="main.chat.channel.linkshell-4" xml:space="preserve">
+    <value>Kontaktkreis 4</value>
+  </data>
+  <data name="main.chat.channel.linkshell-4.tooltip" xml:space="preserve">
+    <value>/kk4</value>
+  </data>
+  <data name="main.chat.channel.linkshell-5" xml:space="preserve">
+    <value>Kontaktkreis 5</value>
+  </data>
+  <data name="main.chat.channel.linkshell-5.tooltip" xml:space="preserve">
+    <value>/kk5</value>
+  </data>
+  <data name="main.chat.channel.linkshell-6" xml:space="preserve">
+    <value>Kontaktkreis 6</value>
+  </data>
+  <data name="main.chat.channel.linkshell-6.tooltip" xml:space="preserve">
+    <value>/kk6</value>
+  </data>
+  <data name="main.chat.channel.linkshell-7" xml:space="preserve">
+    <value>Kontaktkreis 7</value>
+  </data>
+  <data name="main.chat.channel.linkshell-7.tooltip" xml:space="preserve">
+    <value>/kk7</value>
+  </data>
+  <data name="main.chat.channel.linkshell-8" xml:space="preserve">
+    <value>Kontaktkreis 8</value>
+  </data>
+  <data name="main.chat.channel.linkshell-8.tooltip" xml:space="preserve">
+    <value>/kk8</value>
+  </data>
+  <data name="main.chat.channel.npc-dialog" xml:space="preserve">
+    <value>NPC-Gespräche</value>
+  </data>
+  <data name="main.chat.channel.party" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="main.chat.channel.party.tooltip" xml:space="preserve">
+    <value>/gr</value>
+  </data>
+  <data name="main.chat.channel.random" xml:space="preserve">
+    <value>Zufallszahlen-Benachrichtigung</value>
+  </data>
+  <data name="main.chat.channel.random.tooltip" xml:space="preserve">
+    <value>/zufall, nutze /würfeln um NUR im aktuellen Kanal eine Zufallszahl zu erhalten</value>
+  </data>
+  <data name="main.chat.channel.say" xml:space="preserve">
+    <value>Sagen</value>
+  </data>
+  <data name="main.chat.channel.shout" xml:space="preserve">
+    <value>Schreien</value>
+  </data>
+  <data name="main.chat.channel.shout.tooltip" xml:space="preserve">
+    <value>/schreien</value>
+  </data>
+  <data name="main.chat.channel.tellrecieve" xml:space="preserve">
+    <value>Flüstern von</value>
+  </data>
+  <data name="main.chat.channel.tellsend" xml:space="preserve">
+    <value>Flüstern an</value>
+  </data>
+  <data name="main.chat.channel.yell" xml:space="preserve">
+    <value>Rufen</value>
+  </data>
+  <data name="main.chat.channel.yell.tooltip" xml:space="preserve">
+    <value>/ru</value>
+  </data>
+  <data name="main.chat.segment.type.emote" xml:space="preserve">
+    <value>Emote</value>
+  </data>
+  <data name="main.chat.segment.type.mention" xml:space="preserve">
+    <value>Erwähnung</value>
+  </data>
+  <data name="main.chat.segment.type.ooc" xml:space="preserve">
+    <value>OoC</value>
+  </data>
+  <data name="main.chat.segment.type.say" xml:space="preserve">
+    <value>Sagen</value>
+  </data>
   <data name="main.cmdmanager.availablecmds" xml:space="preserve">
     <value>Verfügbare Befehle: {0}</value>
     <comment>0: list of cmds</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.playercount" xml:space="preserve">
+    <value>Spieler in der Umgebung: {0}</value>
+  </data>
+  <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
+    <value>Spieler in der Umgebung: {0}</value>
   </data>
 </root>

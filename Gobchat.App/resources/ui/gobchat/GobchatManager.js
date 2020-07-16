@@ -69,7 +69,7 @@ var Gobchat = (function (Gobchat) {
         get localeManager() {
             return this._localeManager
         }
-        
+
         //TODO test
         updateStyle() {
             Gobchat.StyleBuilder.updateStyle(this.config, "custome_style_id")
@@ -97,10 +97,10 @@ var Gobchat = (function (Gobchat) {
         }
 
         _onNewMessage(message) {
-            if (this._hideInfo && message.channel === Gobchat.ChannelEnum.GOBCHAT_INFO) {
+            if (this._hideInfo && message.channel === Gobchat.ChannelEnum.GOBCHATINFO) {
                 return
             }
-            if (this._hideError && message.channel === Gobchat.ChannelEnum.GOBCHAT_ERROR) {
+            if (this._hideError && message.channel === Gobchat.ChannelEnum.GOBCHATERROR) {
                 return
             }
 

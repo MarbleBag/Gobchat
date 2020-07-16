@@ -6,7 +6,9 @@
     <title></title>
 </head>
 <body>
-    <button class="gob-button-tertiary gob-button-copypage" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
+    <button class="gob-button-tertiary gob-button-copypage" id="cmentions_copyprofile">
+        <i class="fas fa-clone"></i>
+    </button>
 
     <p>
         <div>
@@ -68,7 +70,8 @@
                     <input type="checkbox" class="tmpl-play-sound"
                            data-gob-configkey="behaviour.mentions.{0}.playsound"
                            data-gob-locale-title="config.mentions.audio.play.tooltip" />
-                    <div data-gob-locale-text="config.mentions.audio.play"></div>
+                    <div data-gob-locale-text="config.mentions.audio.play"
+                         data-gob-locale-title="config.mentions.audio.play.tooltip"></div>
                 </div>
             </div>
 
@@ -77,7 +80,8 @@
                     <table>
                         <tr>
                             <td>
-                                <div data-gob-locale-text="config.mentions.audio.path"></div>
+                                <div data-gob-locale-text="config.mentions.audio.path"
+                                     data-gob-locale-title="config.mentions.audio.path.tooltip"></div>
                             </td>
                             <td>
                                 <div>
@@ -97,7 +101,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <div data-gob-locale-text="config.mentions.audio.volume"></div>
+                                <div data-gob-locale-text="config.mentions.audio.volume" 
+                                     data-gob-locale-title="config.mentions.audio.volume.tooltip"></div>
                             </td>
                             <td>
                                 <input class="tmpl-sound-volume" type="range" min="0" max="100"
@@ -250,6 +255,8 @@
                                     await goblocale.get("config.mentions.audio.test.error")
                                 )
                             )
+
+                            //const labelCloseBtn = await goblocale.get("config.dialog.btn.close")
 
                             $("#config_dialog_error").dialog({
                                 resizable: false,

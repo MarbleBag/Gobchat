@@ -190,11 +190,21 @@
                     const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
                     btnDeleteGroup.on("click", (event) => {
                         event.stopPropagation()
-                        if (!window.confirm("Group will be deleted. Are you sure?")) return
-                        gobconfig.remove(groupConfigKey)
-                        const groupSorting = gobconfig.get(ConfigKeyGroupSorting)
-                        _.remove(groupSorting, e => e === groupId)
-                        gobconfig.set(ConfigKeyGroupSorting, groupSorting)
+                        {
+                            (async () => {
+                                try {
+                                    const deleteConfirmation = await goblocale.get("config.groups.entry.deleteconfirm")
+                                    if (!window.confirm(deleteConfirmation)) return
+
+                                    gobconfig.remove(groupConfigKey)
+                                    const order = gobconfig.get(ConfigKeyGroupSorting)
+                                    _.remove(order, e => e === entryId)
+                                    gobconfig.set(ConfigKeyGroupSorting, order)
+                                } catch (e1) {
+                                    console.error(e1)
+                                }
+                            })()
+                        }
                     })
 
                     const isFFGroup = "ffgroup" in groupData

@@ -11,13 +11,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+:root {
+    --text-regular-color: #ded2b8;
+    --text-regular-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    --text-header-color: #cccccc;
+    --text-header-shadow: var(--text-regular-shadow);
+}
+
 .gob-config-dialog {
-    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
-    color: #ded2b8;
+    text-shadow: var(--text-regular-shadow);
+    color: var(--text-regular-color);
 }
 
 .gob-config-dialog-panel {
-    background-image: url("../graphics/noise.png"), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
+    background-image: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
 }
 
 .gob-separator-horizontal {
@@ -31,37 +38,37 @@
 }
 
 .gob-separator-gold-vertical {
-    border: .7px solid #cc9f5e;
+    border: .7px solid var(--color-gold);
 }
 
 .gob-text-error {
     color: crimson;
 }
 
-.gob-nav-panel::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: #f0f4ce;
     border: 1px inset #ddd391;
 }
 
-    .gob-nav-panel::-webkit-scrollbar-thumb:hover {
+    ::-webkit-scrollbar-thumb:hover {
         background: #f0f4ce;
     }
 
-    .gob-nav-panel::-webkit-scrollbar-thumb:active {
+    ::-webkit-scrollbar-thumb:active {
         background: #f0f4ce;
     }
 
-.gob-nav-panel::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: #666666;
     border: 4px solid #202020;
     border-radius: 0px;
 }
 
-    .gob-nav-panel::-webkit-scrollbar-track:hover {
+    ::-webkit-scrollbar-track:hover {
         background: #666666;
     }
 
-    .gob-nav-panel::-webkit-scrollbar-track:active {
+    ::-webkit-scrollbar-track:active {
         background: #333333;
     }
 
@@ -74,11 +81,11 @@
 }
 
 .gob-config-group .gob-config-group-label {
-    color: #cccccc;
+    color: var(--text-header-color);
 }
 
 .gob-config-dialog-header {
-    color: #cccccc;
+    color: var(--text-header-color);
 }
 
 .gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
@@ -87,12 +94,17 @@
 }
 
 .gob-table-channel > thead > tr > th {
-    color: #cccccc;
+    color: var(--text-header-color);
     text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
 }
 
 .gob-table-channel > tbody > tr:hover {
     background-image: linear-gradient(135deg, #131313, #13131310 80%);
+}
+
+/* icon styles */
+.gob-icon-warning {
+    color: #e8a33f;
 }
 
 /* button styles */
@@ -104,7 +116,7 @@
 }
 
     .gob-button-primary:active {
-        border: 1px solid #cc9f5e;
+        border: 1px solid var(--color-gold);
     }
 
     .gob-button-primary > svg {
@@ -118,7 +130,7 @@
 }
 
     .gob-button-secondary:active {
-        border: 1px solid #cc9f5e;
+        border: 1px solid var(--color-gold);
     }
 
     .gob-button-secondary > svg {
@@ -155,11 +167,11 @@ input[type="range"] {
     }
 
 /* jQuery UI */
-
+/* jQuery UI accordion */
 .ui-accordion .ui-accordion-content {
-    border-left: 1.5px solid #cc9f5e;
-    border-bottom: 1.5px solid #cc9f5e;
-    border-right: 1.5px solid #cc9f5e;
+    border-left: 1.5px solid var(--color-gold);
+    border-bottom: 1.5px solid var(--color-gold);
+    border-right: 1.5px solid var(--color-gold);
     border-radius: 0px 0px 5px 5px;
 }
 
@@ -175,9 +187,45 @@ input[type="range"] {
 
     .ui-accordion .ui-accordion-header.ui-state-active {
         background-image: linear-gradient(175deg, #a98b5694, #ffff0000 70%);
-        border-left: 1.5px solid #cc9f5e;
-        border-top: 1.5px solid #cc9f5e;
-        border-right: 1.5px solid #cc9f5e;
+        border-left: 1.5px solid var(--color-gold);
+        border-top: 1.5px solid var(--color-gold);
+        border-right: 1.5px solid var(--color-gold);
         color: #cccccc;
         text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    }
+
+/* jQuery UI dialog */
+.ui-dialog {
+    background-image: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 20px, #313131 50px);
+}
+
+    .ui-dialog.ui-widget {
+        border: 1px solid var(--color-gold);
+    }
+
+    .ui-dialog > .ui-widget-content {
+        text-shadow: var(--text-regular-shadow);
+        color: var(--text-regular-color);
+    }
+
+    .ui-dialog > .ui-widget-header {
+        color: var(--text-header-color);
+        text-shadow: var(--text-header-shadow);
+        border-bottom: .5px solid black;
+        box-shadow: 0 2px 3px -3px white;
+    }
+
+    .ui-dialog > .ui-dialog-buttonpane {
+        border-top: .5px solid black;
+        box-shadow: inset 0 2px 3px -3px white;
+    }
+
+    .ui-dialog .ui-dialog-buttonset > button {
+        background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
+        color: #eeeeee;
+        border: 1px solid #141414;
+    }
+
+    .ui-dialog ui-dialog-buttonset > button:active {
+        border: 1px solid var(--color-gold);
     }
