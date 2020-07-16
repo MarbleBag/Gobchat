@@ -42,40 +42,6 @@
         "CROSSWORLDLINKSHELL_7",
         "CROSSWORLDLINKSHELL_8"
       ],
-      "visible": [
-        "GOBCHATINFO",
-        "GOBCHATERROR",
-        "SAY",
-        "EMOTE",
-        "YELL",
-        "SHOUT",
-        "TELLSEND",
-        "TELLRECIEVE",
-        "PARTY",
-        "GUILD",
-        "ALLIANCE",
-        "NPC_Dialog",
-        "ANIMATEDEMOTE",
-        "ECHO",
-        "ERROR",
-        "RANDOM",
-        "CROSSWORLDLINKSHELL_1",
-        "CROSSWORLDLINKSHELL_2",
-        "CROSSWORLDLINKSHELL_3",
-        "CROSSWORLDLINKSHELL_4",
-        "CROSSWORLDLINKSHELL_5",
-        "CROSSWORLDLINKSHELL_6",
-        "CROSSWORLDLINKSHELL_7",
-        "CROSSWORLDLINKSHELL_8",
-        "LINKSHELL_1",
-        "LINKSHELL_2",
-        "LINKSHELL_3",
-        "LINKSHELL_4",
-        "LINKSHELL_5",
-        "LINKSHELL_6",
-        "LINKSHELL_7",
-        "LINKSHELL_8"
-      ],
       "rangefilter": [
         "SAY",
         "EMOTE",
@@ -178,13 +144,63 @@
       "updateInterval": 1000,
       "autodetectEmoteInSay": true
     },
+    "chattabs": {
+      "sorting": [],
+      "data": {
+        "default": {
+          "id": "default",
+          "name": null,
+          "channel": {
+            "visible": {
+              "GOBCHATINFO",
+              "GOBCHATERROR",
+              "SAY",
+              "EMOTE",
+              "YELL",
+              "SHOUT",
+              "TELLSEND",
+              "TELLRECIEVE",
+              "PARTY",
+              "GUILD",
+              "ALLIANCE",
+              "NPC_Dialog",
+              "ANIMATEDEMOTE",
+              "ECHO",
+              "ERROR",
+              "RANDOM",
+              "CROSSWORLDLINKSHELL_1",
+              "CROSSWORLDLINKSHELL_2",
+              "CROSSWORLDLINKSHELL_3",
+              "CROSSWORLDLINKSHELL_4",
+              "CROSSWORLDLINKSHELL_5",
+              "CROSSWORLDLINKSHELL_6",
+              "CROSSWORLDLINKSHELL_7",
+              "CROSSWORLDLINKSHELL_8",
+              "LINKSHELL_1",
+              "LINKSHELL_2",
+              "LINKSHELL_3",
+              "LINKSHELL_4",
+              "LINKSHELL_5",
+              "LINKSHELL_6",
+              "LINKSHELL_7",
+              "LINKSHELL_8"
+            }
+          },
+          "formatting": {
+            "timestamps": true,
+            "mentions": true,
+            "rangefilter": true,
+            "roleplay": true
+          }
+        }
+      }
+    },
     "appUpdate": {
       "checkOnline": true,
       "acceptBeta": false
     },
     "hideOnMinimize": false,
     "writeChatLog": false,
-    "showTimestamp": true,
     "hotkeys": {
       "showhide": ""
     },
