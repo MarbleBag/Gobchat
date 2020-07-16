@@ -44,7 +44,7 @@ if(-Not (Test-Path $releaseFolder)){
 
 #Deletes all folders except for the ones named in #allowedFolders
 Write-Host "Deleting all the stuff no one cares about ..."
-$allowedFolders = @("resources", "sharlayan", "de", "en")
+$allowedFolders = @("resources", "de", "en")
 Get-ChildItem -Path $releaseFolder | 
 	Where-Object {$_.PsIsContainer -eq $true} |
 	ForEach-Object {
@@ -53,8 +53,8 @@ Get-ChildItem -Path $releaseFolder |
 		}
 	}
 
-#Delete downloadable content	
-Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
+#Delete downloadable content - not needed anymore	
+#Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
 
 #Remove all .log files
 Get-ChildItem -Path $releaseFolder -Filter  *.log | 
