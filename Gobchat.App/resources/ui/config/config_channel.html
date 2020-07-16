@@ -143,9 +143,9 @@
             binding.initialize()
 
             const btnCopyProfile = $("#cchannel_copyprofile")
-            const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay"]
+            const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay", "behaviour.channel.rangefilter"]
             copyKeys.push("style.channel.base" + ".color")
-            copyKeys.push("style.channel.base" + ".color")
+            copyKeys.push("style.channel.base" + ".background-color")
 
             Object.entries(Gobchat.Channels).forEach((entry) => {
                 const channelData = entry[1]

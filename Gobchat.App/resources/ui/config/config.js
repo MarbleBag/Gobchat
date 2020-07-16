@@ -132,9 +132,16 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
                     return
             }
 
+           
             const srcProfile = gobconfig.getProfile(profileId)
             const dstProfile = gobconfig.getProfile(gobconfig.activeProfile)
-            options.configKeys.forEach(key => dstProfile.copyFrom(srcProfile, key))
+            options.configKeys.forEach(key => {
+                    try {
+                        dstProfile.copyFrom(srcProfile, key)
+                    } catch (e1) {
+                        console.error(`Profile copy Error in key '${key}'. Reason: ${e1}`)
+                    }
+                })
         }
 
         $element.on("click", event => GobConfigHelper.showProfileIdSelectionDialog(copyProfile, { exclude: gobconfig.activeProfile }))

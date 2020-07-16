@@ -7,15 +7,15 @@
   "behaviour": {
     "channel": {
       "roleplay": [
-        "Say",
-        "Emote",
-        "Yell",
-        "Shout",
-        "Party",
-        "Guild",
-        "Alliance",
-        "TellSend",
-        "TellRecieve"
+        "SAY",
+        "EMOTE",
+        "YELL",
+        "SHOUT",
+        "PARTY",
+        "GUILD",
+        "ALLIANCE",
+        "TELLSEND",
+        "TELLRECIEVE"
       ],
       "mention": [
         "SAY",
@@ -33,41 +33,41 @@
         "LINKSHELL_6",
         "LINKSHELL_7",
         "LINKSHELL_8",
-        "CrossWorldLinkShell_1",
-        "CrossWorldLinkShell_2",
-        "CrossWorldLinkShell_3",
-        "CrossWorldLinkShell_4",
-        "CrossWorldLinkShell_5",
-        "CrossWorldLinkShell_6",
-        "CrossWorldLinkShell_7",
-        "CrossWorldLinkShell_8"
+        "CROSSWORLDLINKSHELL_1",
+        "CROSSWORLDLINKSHELL_2",
+        "CROSSWORLDLINKSHELL_3",
+        "CROSSWORLDLINKSHELL_4",
+        "CROSSWORLDLINKSHELL_5",
+        "CROSSWORLDLINKSHELL_6",
+        "CROSSWORLDLINKSHELL_7",
+        "CROSSWORLDLINKSHELL_8"
       ],
       "visible": [
-        "GobchatInfo",
-        "GobchatError",
+        "GOBCHATINFO",
+        "GOBCHATERROR",
         "SAY",
         "EMOTE",
         "YELL",
         "SHOUT",
-        "TellSend",
-        "TellRecieve",
+        "TELLSEND",
+        "TELLRECIEVE",
         "PARTY",
         "GUILD",
         "ALLIANCE",
-        "NPC_Dialogue",
-        "AnimatedEmote",
+        "NPC_Dialog",
+        "ANIMATEDEMOTE",
         "ECHO",
         "ERROR",
-        "Random",
-        "CrossWorldLinkShell_1",
-        "CrossWorldLinkShell_2",
-        "CrossWorldLinkShell_3",
-        "CrossWorldLinkShell_4",
-        "CrossWorldLinkShell_5",
-        "CrossWorldLinkShell_6",
-        "CrossWorldLinkShell_7",
-        "CrossWorldLinkShell_8",
-        "LinkShell_1",
+        "RANDOM",
+        "CROSSWORLDLINKSHELL_1",
+        "CROSSWORLDLINKSHELL_2",
+        "CROSSWORLDLINKSHELL_3",
+        "CROSSWORLDLINKSHELL_4",
+        "CROSSWORLDLINKSHELL_5",
+        "CROSSWORLDLINKSHELL_6",
+        "CROSSWORLDLINKSHELL_7",
+        "CROSSWORLDLINKSHELL_8",
+        "LINKSHELL_1",
         "LINKSHELL_2",
         "LINKSHELL_3",
         "LINKSHELL_4",
@@ -77,9 +77,9 @@
         "LINKSHELL_8"
       ],
       "rangefilter": [
-        "Say",
-        "Emote",
-        "AnimatedEmote"
+        "SAY",
+        "EMOTE",
+        "ANIMATEDEMOTE"
       ]
     },
     "segment": {
@@ -419,7 +419,7 @@
         "color": null,
         "background-color": null
       },
-      "roll": {
+      "random": {
         "color": null,
         "background-color": null
       }

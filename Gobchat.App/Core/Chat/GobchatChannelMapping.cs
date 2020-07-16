@@ -151,8 +151,8 @@ namespace Gobchat.Core.Chat
             if (clientChannel != null)
                 ClientChannel = clientChannel;
 
-            TranslationId = translationId ?? MakeTranslationId(chatChannel);
-            ConfigId = configId ?? MakeConfigId(chatChannel);
+            TranslationId = (translationId ?? MakeTranslationId(chatChannel)).ToLowerInvariant();
+            ConfigId = (configId ?? MakeConfigId(chatChannel)).ToLowerInvariant();
         }
     }
 }

@@ -192,7 +192,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
         const targetKey = keySteps[keySteps.length - 1]
         if (value !== undefined) {
-            _config[targetKey] = value
+            _config[targetKey] = value != null ? copyByJson(value) : null
         }
         if (remove !== undefined && remove) {
             delete _config[targetKey]
@@ -509,7 +509,8 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         copyFrom(config, rootKey, copyAll) {
-            const srcRoot = copyByJson(config.get(rootKey))
+            const srcValue = config.get(rootKey)
+            const srcRoot = srcValue != null ? copyByJson(srcValue) : null
             if (!this.has(rootKey)) {
                 this.set(rootKey, srcRoot)
                 return
