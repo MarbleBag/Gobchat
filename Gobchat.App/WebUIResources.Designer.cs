@@ -771,6 +771,69 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string config_main_dialog_btn_cancel {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string config_main_dialog_btn_no {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string config_main_dialog_btn_ok {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string config_main_dialog_btn_yes {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any unsaved changes will be lost..
+        /// </summary>
+        internal static string config_main_dialog_nav_cancel_text {
+            get {
+                return ResourceManager.GetString("config.main.dialog.nav.cancel.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string config_main_dialog_title_confirm {
+            get {
+                return ResourceManager.GetString("config.main.dialog.title.confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured.
+        /// </summary>
+        internal static string config_main_dialog_title_error {
+            get {
+                return ResourceManager.GetString("config.main.dialog.title.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string config_main_nav_about {
@@ -1025,12 +1088,11 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
-        ///Either the format is not supported or the file can&apos;t be found/read!.
+        ///   Looks up a localized string similar to Select a profile to copy.
         /// </summary>
-        internal static string config_profiles_import_error {
+        internal static string config_profiles_dialog_copyprofilepage_title {
             get {
-                return ResourceManager.GetString("config.profiles.import.error", resourceCulture);
+                return ResourceManager.GetString("config.profiles.dialog.copyprofilepage.title", resourceCulture);
             }
         }
         
@@ -1040,6 +1102,16 @@ namespace Gobchat {
         internal static string config_profiles_importprofile {
             get {
                 return ResourceManager.GetString("config.profiles.importprofile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
+        ///Either the format is not supported or the file can&apos;t be found/read!.
+        /// </summary>
+        internal static string config_profiles_importprofile_error {
+            get {
+                return ResourceManager.GetString("config.profiles.importprofile.error", resourceCulture);
             }
         }
         
@@ -1116,6 +1188,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete this profile? Deletion is final after clicking save..
+        /// </summary>
+        internal static string config_profiles_profile_delete_dialog_text {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.delete.dialog.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete this profile.
         /// </summary>
         internal static string config_profiles_profile_delete_tooltip {
@@ -1152,6 +1233,16 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore all settings for this profile to default?
+        ///Restoration is final after clicking save..
+        /// </summary>
+        internal static string config_profiles_profile_reset_dialog_text {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.reset.dialog.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore defaults for this profile.
         /// </summary>
         internal static string config_profiles_profile_reset_tooltip {
@@ -1175,17 +1266,6 @@ namespace Gobchat {
         internal static string config_profiles_profiles_name {
             get {
                 return ResourceManager.GetString("config.profiles.profiles.name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore all settings for this profile to default?
-        ///Everything will be deleted!
-        ///Press save afterwards..
-        /// </summary>
-        internal static string config_profiles_reset_confirmation {
-            get {
-                return ResourceManager.GetString("config.profiles.reset.confirmation", resourceCulture);
             }
         }
         

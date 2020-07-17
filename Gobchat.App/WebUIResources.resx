@@ -359,6 +359,27 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.deletebutton.tooltip" xml:space="preserve">
     <value>Deletes this entry</value>
   </data>
+  <data name="config.main.dialog.btn.cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="config.main.dialog.btn.no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="config.main.dialog.btn.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="config.main.dialog.btn.yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
+    <value>Any unsaved changes will be lost.</value>
+  </data>
+  <data name="config.main.dialog.title.confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="config.main.dialog.title.error" xml:space="preserve">
+    <value>An error occured</value>
+  </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>About</value>
   </data>
@@ -446,12 +467,15 @@ Make sure to place any sound files you want to use in gobchat under 'resources/s
     <value>Missing '{0}'</value>
     <comment>0: resource id</comment>
   </data>
-  <data name="config.profiles.import.error" xml:space="preserve">
-    <value>Profile can't be loaded.&lt;br&gt;
-Either the format is not supported or the file can't be found/read!</value>
+  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
+    <value>Select a profile to copy</value>
   </data>
   <data name="config.profiles.importprofile" xml:space="preserve">
     <value>Import profile</value>
+  </data>
+  <data name="config.profiles.importprofile.error" xml:space="preserve">
+    <value>Profile can't be loaded.&lt;br&gt;
+Either the format is not supported or the file can't be found/read!</value>
   </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Create new profile</value>
@@ -477,6 +501,9 @@ Either the format is not supported or the file can't be found/read!</value>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="config.profiles.profile.delete.dialog.text" xml:space="preserve">
+    <value>Delete this profile? Deletion is final after clicking save.</value>
+  </data>
   <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
     <value>Delete this profile</value>
   </data>
@@ -489,6 +516,10 @@ Either the format is not supported or the file can't be found/read!</value>
   <data name="config.profiles.profile.reset" xml:space="preserve">
     <value>Reset</value>
   </data>
+  <data name="config.profiles.profile.reset.dialog.text" xml:space="preserve">
+    <value>Restore all settings for this profile to default?
+Restoration is final after clicking save.</value>
+  </data>
   <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
     <value>Restore defaults for this profile</value>
   </data>
@@ -497,11 +528,6 @@ Either the format is not supported or the file can't be found/read!</value>
   </data>
   <data name="config.profiles.profiles.name" xml:space="preserve">
     <value>Name</value>
-  </data>
-  <data name="config.profiles.reset.confirmation" xml:space="preserve">
-    <value>Restore all settings for this profile to default?
-Everything will be deleted!
-Press save afterwards.</value>
   </data>
   <data name="config.roleplay.entry.active" xml:space="preserve">
     <value>Active</value>

@@ -314,6 +314,24 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.main.deletebutton.tooltip" xml:space="preserve">
     <value>Lösche diesen Eintrag</value>
   </data>
+  <data name="config.main.dialog.btn.cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="config.main.dialog.btn.no" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="config.main.dialog.btn.yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
+    <value>Alle nicht gespeicherten Änderungen gehen verloren.</value>
+  </data>
+  <data name="config.main.dialog.title.confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="config.main.dialog.title.error" xml:space="preserve">
+    <value>Fehler!</value>
+  </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>Info</value>
   </data>
@@ -379,6 +397,12 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
     <value>Lautstärke</value>
   </data>
+  <data name="config.profiles.importprofile" xml:space="preserve">
+    <value>Importiere Profil</value>
+  </data>
+  <data name="config.profiles.importprofile.error" xml:space="preserve">
+    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft.</value>
+  </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Neues Profil</value>
   </data>
@@ -394,18 +418,21 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="config.profiles.profile.delete.dialog.text" xml:space="preserve">
+    <value>Profil löschen? Die Löschung kann nicht mehr rückgängig gemacht werden, wenn gespeichert wird.</value>
+  </data>
   <data name="config.profiles.profile.export" xml:space="preserve">
     <value>Exportieren</value>
   </data>
   <data name="config.profiles.profile.reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
-  <data name="config.profiles.profiles.actions" xml:space="preserve">
-    <value>Aktionen</value>
-  </data>
-  <data name="config.profiles.reset.confirmation" xml:space="preserve">
+  <data name="config.profiles.profile.reset.dialog.text" xml:space="preserve">
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
+  </data>
+  <data name="config.profiles.profiles.actions" xml:space="preserve">
+    <value>Aktionen</value>
   </data>
   <data name="config.roleplay.entry.active" xml:space="preserve">
     <value>Aktiv</value>
