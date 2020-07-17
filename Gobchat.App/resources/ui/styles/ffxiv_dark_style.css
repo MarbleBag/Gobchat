@@ -224,8 +224,14 @@ input[type="range"] {
         background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
         color: #eeeeee;
         border: 1px solid #141414;
+        outline: none;
     }
 
     .ui-dialog ui-dialog-buttonset > button:active {
         border: 1px solid var(--color-gold);
+    }
+
+    .ui-dialog .ui-dialog-buttonset > button:focus {
+        border: 1px solid var(--color-gold);
+        /*outline: var(--color-gold) solid 1px;*/
     }

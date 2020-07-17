@@ -224,11 +224,16 @@ input[type="range"] {
         background: var(--button-color);
         color: #eeeeee;
         border: 1px solid #b8a084;
+        outline: none;
     }
 
-    .ui-dialog ui-dialog-buttonset > button:active {
-        border: 1px solid #cc9f5e;
-    }
+        .ui-dialog .ui-dialog-buttonset > button:active {
+            border: 1px solid #cc9f5e;
+        }
+
+        .ui-dialog .ui-dialog-buttonset > button:focus {
+            border: 1px solid #cc9f5e;
+        }
 
 /* spectrum */
 
