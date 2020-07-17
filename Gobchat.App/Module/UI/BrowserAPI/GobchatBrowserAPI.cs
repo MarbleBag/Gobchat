@@ -165,7 +165,7 @@ namespace Gobchat.Module.UI.Internal
                 if (file == null || file.Trim().Length == 0)
                     return null;
                 var result = await _browserAPIManager.ConfigHandler.ParseProfile(file).ConfigureAwait(false);
-                return result.ToString();
+                return result?.ToString();
             }
 
             public async Task<bool> IsFeaturePlayerLocationAvailable()
