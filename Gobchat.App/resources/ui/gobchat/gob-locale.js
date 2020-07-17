@@ -54,19 +54,19 @@ var Gobchat = (function (Gobchat) {
         })
     }
 
-    async function getLocalizedString(locale, key) {
-        const lookup = await GobchatAPI.getLocalizedStrings(locale, [key])
-        return lookup[key]
-    }
-
     class GobLocaleManager {
         setLocale(locale) {
             this._locale = locale
         }
 
         async get(key) {
-            const value = await getLocalizedString(this._locale, key)
-            return value
+            const lookup = await getAll([key])
+            return lookup[key]
+        }
+
+        async getAll(keys) {
+            const lookup = await GobchatAPI.getLocalizedStrings(this._locale, keys || [])
+            return lookup
         }
 
         async getAndFormat(key, params) {
