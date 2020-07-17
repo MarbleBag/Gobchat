@@ -60,7 +60,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         async get(key) {
-            const lookup = await getAll([key])
+            const lookup = await this.getAll([key])
             return lookup[key]
         }
 
