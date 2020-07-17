@@ -141,26 +141,8 @@
             $("#cprofiles_profile_import").on("click", function (event) {
                 (async () => {
                     let newProfile = await GobchatAPI.importProfile()
-
                     if (newProfile === undefined || newProfile === null || newProfile.length == 0) {
-                        $("#config_dialog_error_text").empty()
-                        $("#config_dialog_error_text").append(
-                            $("<span />").html(
-                                await goblocale.get("config.profiles.import.error")
-                            )
-                        )
-
-                        $("#config_dialog_error").dialog({
-                            resizable: false,
-                            height: "auto",
-                            width: 600,
-                            modal: true,
-                            buttons: {
-                                "Ok": function () {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        })
+                        GobConfigHelper.showErrorDialog({ dialogText: "config.profiles.importprofile.error" });
                         return
                     }
 
@@ -215,14 +197,18 @@
                     btnCopyProfile.on("click", function (event) {
                         GobConfigHelper.showProfileIdSelectionDialog(selectedId => gobconfig.copyProfile(selectedId, profile.profileId), { exclude: profile.profileId })
                     })
+
                     if (gobconfig.profiles.length <= 1)
                         btnCopyProfile.attr("disabled", true)
 
                     const btnDefaultProfile = rowElement.find("#profile_default")
                     btnDefaultProfile.on("click", function (event) {
                         (async () => {
-                            const msg = await goblocale.get("config.profiles.reset.confirmation")
-                            if (window.confirm(msg)) {
+                            const result = await GobConfigHelper.showConfirmationDialog({
+                                dialogText: "config.profiles.profile.reset.dialog.text",
+                            })
+
+                            if (result === 1) {
                                 profile.restoreDefaultConfig()
                             }
                         })()
@@ -230,7 +216,15 @@
 
                     const btnDeleteProfile = rowElement.find("#profile_delete")
                     btnDeleteProfile.on("click", function (event) {
-                        gobconfig.deleteProfile(profile.profileId)
+                        (async () => {
+                            const result = await GobConfigHelper.showConfirmationDialog({
+                                dialogText: "config.profiles.profile.delete.dialog.text",
+                            })
+
+                            if (result === 1) {
+                                gobconfig.deleteProfile(profile.profileId)
+                            }
+                        })()
                     })
                     if (gobconfig.profiles.length <= 1)
                         btnDeleteProfile.attr("disabled", true)
