@@ -198,7 +198,7 @@
 
                                     gobconfig.remove(groupConfigKey)
                                     const order = gobconfig.get(ConfigKeyGroupSorting)
-                                    _.remove(order, e => e === entryId)
+                                    _.remove(order, e => e === groupId)
                                     gobconfig.set(ConfigKeyGroupSorting, order)
                                 } catch (e1) {
                                     console.error(e1)
