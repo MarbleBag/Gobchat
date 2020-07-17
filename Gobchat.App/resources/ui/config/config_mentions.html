@@ -101,7 +101,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div data-gob-locale-text="config.mentions.audio.volume" 
+                                <div data-gob-locale-text="config.mentions.audio.volume"
                                      data-gob-locale-title="config.mentions.audio.volume.tooltip"></div>
                             </td>
                             <td>
@@ -159,11 +159,17 @@
                 const btnDelete = entry.find(".tmpl-delete-entry")
                 btnDelete.on("click", event => {
                     event.stopPropagation()
-                    if (!window.confirm("Entry will be deleted. Are you sure?")) return
-                    gobconfig.remove(configKey)
-                    const order = gobconfig.get(ConfigKeyOrder)
-                    _.remove(order, e => e === entryId)
-                    gobconfig.set(ConfigKeyOrder, order)
+                    {
+                        (async () => {
+                            const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.mentions.entry.delete.dialog" })
+                            if (result !== 1) return
+
+                            gobconfig.remove(configKey)
+                            const order = gobconfig.get(ConfigKeyOrder)
+                            _.remove(order, e => e === entryId)
+                            gobconfig.set(ConfigKeyOrder, order)
+                        })()
+                    }
                 })
                 btnDelete.attr("disabled", gobconfig.get(ConfigKeyOrder).length <= 1)
 
@@ -229,13 +235,6 @@
                         checkPlayability(file.type || "")
                     }
                     fileSelector.click();
-                    /*
-                    (async function () {
-                        const selectedFile = await GobchatAPI.openFileDialog()
-                        txtSoundPath.val(selectedFile)
-                        txtSoundPath.change()
-                    }())
-                    */
                 })
 
                 const btnCheckSound = entry.find(".tmpl-test-sound")
@@ -249,26 +248,8 @@
                         try {
                             await audio.play()
                         } catch (e) {
-                            $("#config_dialog_error_text").empty()
-                            $("#config_dialog_error_text").append(
-                                $("<span />").html(
-                                    await goblocale.get("config.mentions.audio.test.error")
-                                )
-                            )
-
-                            //const labelCloseBtn = await goblocale.get("config.dialog.btn.close")
-
-                            $("#config_dialog_error").dialog({
-                                resizable: false,
-                                height: "auto",
-                                width: 600,
-                                modal: true,
-                                buttons: {
-                                    "Ok": function () {
-                                        $(this).dialog("close");
-                                    }
-                                }
-                            });
+                            console.error(e)
+                            GobConfigHelper.showErrorDialog({ dialogText: "config.mentions.audio.test.error" });
                         }
                     })()
                 })
