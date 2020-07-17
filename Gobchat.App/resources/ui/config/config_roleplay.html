@@ -210,10 +210,12 @@
                     event.stopPropagation()
                     {
                         (async () => {
-                            try {
-                                const deleteConfirmation = await goblocale.get("config.roleplay.entry.deleteconfirm")
-                                if (!window.confirm(deleteConfirmation)) return
+                            const result = await GobConfigHelper.showConfirmationDialog({
+                                dialogText: "config.roleplay.entry.deleteconfirm",
+                            })
+                            if (result !== 1) return
 
+                            try {
                                 gobconfig.remove(configKey)
                                 const order = gobconfig.get(ConfigKeyOrder)
                                 _.remove(order, e => e === entryId)
