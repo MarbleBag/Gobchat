@@ -192,16 +192,19 @@
                         event.stopPropagation()
                         {
                             (async () => {
-                                try {
-                                    const deleteConfirmation = await goblocale.get("config.groups.entry.deleteconfirm")
-                                    if (!window.confirm(deleteConfirmation)) return
+                                const result = await GobConfigHelper.showConfirmationDialog({
+                                    dialogText: "config.groups.entry.deleteconfirm",
+                                })
 
-                                    gobconfig.remove(groupConfigKey)
-                                    const order = gobconfig.get(ConfigKeyGroupSorting)
-                                    _.remove(order, e => e === entryId)
-                                    gobconfig.set(ConfigKeyGroupSorting, order)
-                                } catch (e1) {
-                                    console.error(e1)
+                                if (result === 1) {
+                                    try {
+                                        gobconfig.remove(groupConfigKey)
+                                        const order = gobconfig.get(ConfigKeyGroupSorting)
+                                        _.remove(order, e => e === groupId)
+                                        gobconfig.set(ConfigKeyGroupSorting, order)
+                                    } catch (e1) {
+                                        console.error(e1)
+                                    }
                                 }
                             })()
                         }
