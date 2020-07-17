@@ -21,11 +21,11 @@ namespace Gobchat.Core.Config
 {
     internal sealed class ConfigUpgrader
     {
-        private readonly IConfigUpgrade[] _upgrader;
+        private readonly IConfigUpgrade[] _upgrades;
 
         public ConfigUpgrader()
         {
-            _upgrader = new IConfigUpgrade[]
+            _upgrades = new IConfigUpgrade[]
             {
                 new ConfigUpgrade_v3(),
                 new ConfigUpgrade_v16(),
@@ -84,7 +84,17 @@ namespace Gobchat.Core.Config
 
         private IConfigUpgrade MaxUpgrade(int version)
         {
-            return _upgrader.Where(e => e.MinVersion >= version && e.MaxVersion <= version).Aggregate((e1, e2) => e1.TargetVersion >= e2.TargetVersion ? e1 : e2);
+            IConfigUpgrade bestUpgrade = null;
+            foreach (var upgrade in _upgrades)
+            {
+                if (upgrade.MinVersion < version || upgrade.MaxVersion > version)
+                    continue;
+
+                if (bestUpgrade == null || bestUpgrade.TargetVersion < upgrade.TargetVersion)
+                    bestUpgrade = upgrade;
+            }
+
+            return bestUpgrade;
         }
 
         private IEnumerable<IConfigUpgrade> GetUpgraders(int version)
