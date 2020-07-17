@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Added
+- More localisation
+
+
+### Changed
+- Swapped some old JS Dialogs with custom made ones
+
+
 ## [1.7.0] - 2020.07.16
 ### Added
 - Theme selection in `Config / App`
