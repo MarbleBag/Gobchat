@@ -145,13 +145,14 @@
       "autodetectEmoteInSay": true
     },
     "chattabs": {
-      "sorting": [],
+      "sorting": [ "default" ],
       "data": {
         "default": {
           "id": "default",
-          "name": null,
+          "name": "Tab",
+          "visible": true,
           "channel": {
-            "visible": {
+            "visible": [
               "GOBCHATINFO",
               "GOBCHATERROR",
               "SAY",
@@ -184,7 +185,7 @@
               "LINKSHELL_6",
               "LINKSHELL_7",
               "LINKSHELL_8"
-            }
+            ]
           },
           "formatting": {
             "timestamps": true,
