@@ -452,6 +452,20 @@ var Gobchat = (function (Gobchat, undefined) {
             return this._activeProfile.get(key, defaultValue)
         }
 
+        getDefault(key, defaultValue) {
+            try {
+                const value = resolvePath(key, this._defaultProfile)
+                return value === undefined ? defaultValue : value !== null ? copyByJson(value) : value
+            } catch (error) {
+                if (defaultValue !== undefined) {
+                    if (error instanceof InvalidKeyError) {
+                        return defaultValue
+                    }
+                }
+                throw error
+            }
+        }
+
         set(key, value) {
             if (!this._activeProfile)
                 throw new Error("No active profile")
