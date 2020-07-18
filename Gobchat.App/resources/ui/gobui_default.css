@@ -116,8 +116,17 @@ body, html {
 .gob-config-dialog-header {
 }
 
-.gob-table-channel {
+.gob-table {
     white-space: nowrap;
+}
+
+.gob-table-row-hover {
+}
+
+.gob-table-stripes-hrzt {
+}
+
+.gob-channel-table {
 }
 
 /* icon styles */

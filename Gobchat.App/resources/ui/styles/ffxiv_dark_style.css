@@ -88,17 +88,19 @@
     color: var(--text-header-color);
 }
 
+/* table styles */
+
 .gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
 .gob-table-stripes-hrzt > thead > tr > th:nth-child(even) {
     background-color: #13131350;
 }
 
-.gob-table-channel > thead > tr > th {
+.gob-table > thead > tr > th {
     color: var(--text-header-color);
     text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
 }
 
-.gob-table-channel > tbody > tr:hover {
+.gob-table-row-hover > tbody > tr:hover {
     background-image: linear-gradient(135deg, #131313, #13131310 80%);
 }
 
