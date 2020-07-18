@@ -70,6 +70,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete file: {0}.
+        /// </summary>
+        internal static string Core_Util_ArchiveUnpacker_DeleteFile {
+            get {
+                return ResourceManager.GetString("Core.Util.ArchiveUnpacker.DeleteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete partially unpacked archive.
         /// </summary>
         internal static string Core_Util_ArchiveUnpacker_DeleteIncomplete {
@@ -142,7 +151,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading: {0}.
+        ///   Looks up a localized string similar to Downloading: {0} of {1}.
         /// </summary>
         internal static string Core_Util_DownloadHelper_Download {
             get {

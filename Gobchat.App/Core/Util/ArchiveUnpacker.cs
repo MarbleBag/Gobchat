@@ -48,6 +48,7 @@ namespace Gobchat.Core.Util
             {
                 progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
                 DeleteExtractedData(progressMonitor);
+                DeleteArchive(progressMonitor);
                 throw;
             }
 
@@ -56,7 +57,7 @@ namespace Gobchat.Core.Util
                 case ArchiveUnpackerHelper.ExtractionResult.Complete:
                     progressMonitor.Log(Resources.Core_Util_ArchiveUnpacker_Complete);
                     if (DeleteArchiveOnCompletion)
-                        File.Delete(ArchivePath);
+                        DeleteArchive(progressMonitor);
                     return Result.Completed;
 
                 case ArchiveUnpackerHelper.ExtractionResult.Canceled:
@@ -65,6 +66,12 @@ namespace Gobchat.Core.Util
             }
 
             return Result.Completed;
+        }
+
+        private void DeleteArchive(IProgressMonitor progressMonitor)
+        {
+            progressMonitor.Log(StringFormat.Format(Resources.Core_Util_ArchiveUnpacker_DeleteFile, ArchivePath));
+            File.Delete(ArchivePath);
         }
 
         private void DeleteExtractedData(IProgressMonitor progressMonitor)

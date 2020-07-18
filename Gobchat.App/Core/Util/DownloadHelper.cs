@@ -57,7 +57,7 @@ namespace Gobchat.Core.Util
                 void OnDownloadProgressChanged(object s, DownloadProgressChangedEventArgs e)
                 {
                     progressMonitor.Progress = e.ProgressPercentage / 100d;
-                    progressMonitor.StatusText = StringFormat.Format(Resources.Core_Util_DownloadHelper_Download, e.BytesReceived / e.TotalBytesToReceive);
+                    progressMonitor.StatusText = StringFormat.Format(Resources.Core_Util_DownloadHelper_Download, e.BytesReceived, e.TotalBytesToReceive);
                     if (cancellationToken.IsCancellationRequested)
                     {
                         progressMonitor.Log(Resources.Core_Util_DownloadHelper_Canceled);

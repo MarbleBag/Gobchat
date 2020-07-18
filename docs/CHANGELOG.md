@@ -11,6 +11,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Swapped some old JS Dialogs with custom made ones
 
 
+## [1.7.1] - 2020.07.18
+### Fixed
+- Groups
+  - Delete button for custom groups did not work
+
+
+- Updater
+  - Download status text will now show the correct number of downloaded bytes
+  - Archive will be deleted if an error occurs while unpacking to avoid the same error on restart due to a corrupted archive
+
 ## [1.7.0] - 2020.07.16
 ### Added
 - Theme selection in `Config / App`
