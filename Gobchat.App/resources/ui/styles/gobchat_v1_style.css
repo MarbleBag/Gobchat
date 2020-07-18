@@ -68,6 +68,10 @@
     margin-top: 10px;
 }
 
+.gob-config-group-label {
+    font-weight: bold;
+}
+
 .gob-nav-panel-content.active {
     margin-top: 15px;
 }
