@@ -933,6 +933,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat tabs.
+        /// </summary>
+        internal static string config_main_nav_tabs {
+            get {
+                return ResourceManager.GetString("config.main.nav.tabs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy this page from another profile.
         /// </summary>
         internal static string config_main_profile_copypage {
@@ -1356,6 +1365,42 @@ namespace Gobchat {
         internal static string config_roleplay_tokentbl_reset {
             get {
                 return ResourceManager.GetString("config.roleplay.tokentbl.reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new tab.
+        /// </summary>
+        internal static string config_tabs_btn_newtab {
+            get {
+                return ResourceManager.GetString("config.tabs.btn.newtab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        internal static string config_tabs_tabtable_actions {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string config_tabs_tabtable_name {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible.
+        /// </summary>
+        internal static string config_tabs_tabtable_visible {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.visible", resourceCulture);
             }
         }
         

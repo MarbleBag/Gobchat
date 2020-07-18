@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <button class="gob-button-tertiary gob-button-copypage" id="ctabs_copyprofile"><i class="fas fa-clone"></i></button>
+
+    <div class="gob-config-group" style="overflow-x: auto;">
+        <div>
+            <button id="ctabs_newtab" class="gob-button-secondary">
+                <i class="fas fa-plus"></i>
+                <span data-gob-locale-text="config.tabs.btn.newtab"></span>
+            </button>
+        </div>
+        <table id="ctabs_tabs" class="gob-table gob-table-row-hover gob-table-t-chattab">
+            <thead>
+                <tr>
+                    <th data-gob-locale-text="config.tabs.tabtable.name"></th>
+                    <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
+                    <th data-gob-locale-text="config.tabs.tabtable.actions"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="gob-config-group">
+        <div id="ctabs_config">
+        </div>
+    </div>
+
+    <template id="ctabs_template_tblentry">
+        <tr data-gob-entryid>
+            <td>
+                <input type="text" class="tmp_entry_name" />
+            </td>
+            <td>
+                <input class="tmp_entry_visible" type="checkbox" />
+            </td>
+            <td>
+                <button class="gob-button-tertiary tmp_entry_action_mup"
+                        data-gob-locale-title="config.tabs.tabtable.action.up">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </td>
+            <td>
+                <button class="gob-button-tertiary tmp_entry_action_mdown"
+                        data-gob-locale-title="config.tabs.tabtable.action.down">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </td>
+            <td>
+                <button class="gob-button-tertiary tmp_entry_action_delete"
+                        data-gob-locale-title="config.tabs.tabtable.action.delete">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </template>
+
+    <script type="text/javascript" src="config_tabs.js"></script>
+</body>
+</html>

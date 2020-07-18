@@ -413,6 +413,9 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
     <value>Set your active profile.</value>
   </data>
+  <data name="config.main.nav.tabs" xml:space="preserve">
+    <value>Chat tabs</value>
+  </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Copy this page from another profile</value>
   </data>
@@ -559,6 +562,18 @@ Restoration is final after clicking save.</value>
   </data>
   <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
     <value>Reset entries</value>
+  </data>
+  <data name="config.tabs.btn.newtab" xml:space="preserve">
+    <value>Add new tab</value>
+  </data>
+  <data name="config.tabs.tabtable.actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="config.tabs.tabtable.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.tabs.tabtable.visible" xml:space="preserve">
+    <value>Visible</value>
   </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
     <value>Alliance</value>
