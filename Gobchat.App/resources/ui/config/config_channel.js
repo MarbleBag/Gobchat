@@ -23,7 +23,6 @@
         const rowEntry = $(rowTemplate.html()).appendTo(table)
 
         const lblName = rowEntry.find(".entry-label")
-        const chkVisible = rowEntry.find(".entry-visible")
         const chkMention = rowEntry.find(".entry-mention")
         const chkRoleplay = rowEntry.find(".entry-roleplay")
         const chkRangefilter = rowEntry.find(".entry-rangefilter")
@@ -35,19 +34,16 @@
         lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
         lblName.attr("data-gob-locale-title", `${channelData.translationId}.tooltip`)
 
-        GobConfigHelper.setConfigKey(chkVisible, "behaviour.channel.visible")
         GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
         GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
         GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
 
         const channelEnums = [].concat(channelData.chatChannel || [])
         if (channelEnums.length === 0) {
-            chkVisible.hide()
             chkMention.hide()
             chkRoleplay.hide()
             chkRangefilter.hide()
         } else {
-            GobConfigHelper.bindCheckboxArray(binding, chkVisible, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
@@ -89,7 +85,7 @@
     binding.initialize()
 
     const btnCopyProfile = $("#cchannel_copyprofile")
-    const copyKeys = ["behaviour.channel.visible", "behaviour.channel.mention", "behaviour.channel.roleplay", "behaviour.channel.rangefilter"]
+    const copyKeys = ["behaviour.channel.mention", "behaviour.channel.roleplay", "behaviour.channel.rangefilter"]
     copyKeys.push("style.channel.base" + ".color")
     copyKeys.push("style.channel.base" + ".background-color")
 
