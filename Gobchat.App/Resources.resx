@@ -120,6 +120,10 @@
   <data name="Core.Util.ArchiveUnpacker.Complete" xml:space="preserve">
     <value>Unpacking complete</value>
   </data>
+  <data name="Core.Util.ArchiveUnpacker.DeleteFile" xml:space="preserve">
+    <value>Delete file: {0}</value>
+    <comment>0: uri</comment>
+  </data>
   <data name="Core.Util.ArchiveUnpacker.DeleteIncomplete" xml:space="preserve">
     <value>Delete partially unpacked archive</value>
   </data>
@@ -147,8 +151,8 @@
     <comment>0: uri</comment>
   </data>
   <data name="Core.Util.DownloadHelper.Download" xml:space="preserve">
-    <value>Downloading: {0}</value>
-    <comment>0: progress in %</comment>
+    <value>Downloading: {0} of {1}</value>
+    <comment>0: bytes downloaded, 1: total number of bytes</comment>
   </data>
   <data name="Core.Util.DownloadHelper.Prepare" xml:space="preserve">
     <value>Prepare download</value>
