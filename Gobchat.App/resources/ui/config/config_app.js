@@ -83,30 +83,37 @@
     }
 
     const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
+    GobConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_cutoff_reset"))
 
     const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
+    GobConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
 
     const txtRangeFilterStartOpacity = $("#capp_rangefilter_startopacity")
+    GobConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_startopacity_reset"))
+
     const txtRangeFilterEndOpacity = $("#capp_rangefilter_endopacity")
+    GobConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_endopacity_reset"))
 
-    GobConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
-    GobConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
-    GobConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
-    GobConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
-
     const txtFrameX = $("#capp_frame_x")
-    const txtFrameY = $("#capp_frame_y")
-    const txtFrameHeight = $("#capp_frame_height")
-    const txtFrameWidth = $("#capp_frame_width")
-
     GobConfigHelper.bindElement(binding, txtFrameX, { elementGetAccessor: parseNumber })
+
+    const txtFrameY = $("#capp_frame_y")
     GobConfigHelper.bindElement(binding, txtFrameY, { elementGetAccessor: parseNumber })
+
+    const txtFrameHeight = $("#capp_frame_height")
     GobConfigHelper.bindElement(binding, txtFrameHeight, { elementGetAccessor: parseNumber })
+
+    const txtFrameWidth = $("#capp_frame_width")
     GobConfigHelper.bindElement(binding, txtFrameWidth, { elementGetAccessor: parseNumber })
+
+    const clrChatboxBackground = $("#capp_chatbox_backgroundcolor")
+    GobConfigHelper.makeColorSelector(clrChatboxBackground)
+    GobConfigHelper.bindColorSelector(binding, clrChatboxBackground)
+    GobConfigHelper.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
 
     // setup font size
     const dpdFontSize = $("#capp_font_size")
@@ -117,16 +124,12 @@
     const clrSearchMarked = $("#capp_search_marked")
     GobConfigHelper.makeColorSelector(clrSearchMarked)
     GobConfigHelper.bindColorSelector(binding, clrSearchMarked)
-
-    const btnSearchMarkedReset = $("#capp_search_marked_reset")
-    GobConfigHelper.makeResetButton(btnSearchMarkedReset)
+    GobConfigHelper.makeResetButton($("#capp_search_marked_reset"))
 
     const clrSearchSelected = $("#capp_search_selected")
     GobConfigHelper.makeColorSelector(clrSearchSelected)
     GobConfigHelper.bindColorSelector(binding, clrSearchSelected)
-
-    const btnSearchSelectedReset = $("#capp_search_selected_reset")
-    GobConfigHelper.makeResetButton(btnSearchSelectedReset)
+    GobConfigHelper.makeResetButton($("#capp_search_selected_reset"))
 
     // setup hotkey group
     // setup hotkey field
@@ -152,6 +155,8 @@
         ckbChatLog, ckbAutodetect, ckbUserMention, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
         txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
         txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
+        clrChatboxBackground,
+        clrSearchMarked, clrSearchSelected,
         txtFontFamily, dpdFontSize,
         txtHotkeyShow,
         txtChatUpdateInterval, txtActorUpdateInterval,
