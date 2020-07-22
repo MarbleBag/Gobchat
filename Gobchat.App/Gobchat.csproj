@@ -84,6 +84,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_groups_new.html" />
+    <Content Include="resources\ui\gobchat-test.js" />
+    <Content Include="resources\ui\gobchat.js" />
     <Content Include="resources\ui\gobchat\gob-styleloader.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
