@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ### Added
 - More localisation
 
+- Chat
+  - It's now possible to change the background color of the chat in `Config / App`
+
 
 ### Changed
 - Swapped some old JS Dialogs with custom made ones
