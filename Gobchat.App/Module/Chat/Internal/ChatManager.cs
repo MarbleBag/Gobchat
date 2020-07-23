@@ -58,6 +58,12 @@ namespace Gobchat.Module.Chat.Internal
                 set => _parent._chatMessageBuilder.Formats = value;
             }
 
+            public TriggerGroup[] TriggerGroups
+            {
+                get => _parent._chatMessageTriggerGroups.Groups;
+                set => _parent._chatMessageTriggerGroups.Groups = value;
+            }
+
             public ChatChannel[] MentionChannels
             {
                 get => _parent._chatMessageBuilder.MentionChannels;
@@ -116,6 +122,7 @@ namespace Gobchat.Module.Chat.Internal
         private readonly ChatlogCleaner _chatlogCleaner;
         private readonly ChatMessageBuilder _chatMessageBuilder;
         private readonly ChatMessageActorDataSetter _chatMessageActorData;
+        private readonly ChatMessageTriggerGroupSetter _chatMessageTriggerGroups;
 
         private DateTime _lastDispatchedMessage;
         private TimeSpan _outdatedMessageFilter = TimeSpan.FromSeconds(10);
@@ -144,6 +151,7 @@ namespace Gobchat.Module.Chat.Internal
             _chatlogCleaner = new ChatlogCleaner(autotranslateProvider);
             _chatMessageBuilder = new ChatMessageBuilder();
             _chatMessageActorData = new ChatMessageActorDataSetter(actorManager);
+            _chatMessageTriggerGroups = new ChatMessageTriggerGroupSetter();
 
             _lastDispatchedMessage = DateTime.Now;
         }
@@ -212,6 +220,7 @@ namespace Gobchat.Module.Chat.Internal
                 try
                 {
                     _chatMessageActorData.SetActorData(message);
+                    _chatMessageTriggerGroups.SetTriggerGroup(message);
                     _chatMessageBuilder.FormatChatMessage(message);
                     result.Add(message);
                 }
@@ -253,6 +262,7 @@ namespace Gobchat.Module.Chat.Internal
         ChatChannel[] MentionChannels { get; set; }
         string[] Mentions { get; set; }
         FormatConfig[] Formats { get; set; }
+        TriggerGroup[] TriggerGroups { get; set; }
         bool DetecteEmoteInSayChannel { get; set; }
         bool ExcludeUserMention { get; set; }
         ChatChannel[] CutOffChannels { get; set; }

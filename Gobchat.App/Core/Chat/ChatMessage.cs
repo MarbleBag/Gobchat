@@ -31,6 +31,7 @@ namespace Gobchat.Core.Chat
     {
         public string Original { get; }
         public string CharacterName { get; set; } = null;
+        public string TriggerGroupId { get; internal set; } = null;
         public int FfGroup { get; set; } = -1;
         public int Party { get; set; } = -1;
         public int Alliance { get; set; } = -1;

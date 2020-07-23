@@ -89,9 +89,12 @@
     </Content>
     <Content Include="resources\ui\gobchat-test.js" />
     <Content Include="resources\ui\gobchat.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\config\config_tabs.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\gobchat\gob-messagebuilder.js" />
     <Content Include="resources\ui\gobchat\gob-styleloader.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -239,6 +242,7 @@
     <Compile Include="Core\Util\StringFormat.cs" />
     <Compile Include="Module\Actor\AppModuleActorManager.cs" />
     <Compile Include="Module\Cef\AppModuleCefDependencyChecker.cs" />
+    <Compile Include="Core\Chat\ChatMessageTriggerGroupSetter.cs" />
     <Compile Include="Module\Language\ILocaleManager.cs" />
     <Compile Include="Module\Language\Internal\LocaleManager.cs" />
     <Compile Include="Module\Language\Internal\LocalePrototypes.cs" />
