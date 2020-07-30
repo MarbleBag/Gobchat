@@ -21,9 +21,10 @@
 
     <link rel="stylesheet" href="../gobui_default.css">
 
-    <script src="gob-confighelper.js"></script>
-    <script src="../gobchat/gob-databinding.js"></script>
-    <script src="../gobchat/gob-jquery-loadthen.js"></script>
+    <script type="text/javascript" src="gob-confighelper.js"></script>
+    <script type="text/javascript" src="../gobchat/Databinding.js"></script>
+    <script type="text/javascript" src="../gobchat/jQuery-extension.js"></script>
+    <script type="text/javascript" src="../gobchat/web-components.js"></script>
 </head>
 <body class="gob-config-dialog">
     <script type="text/javascript">
@@ -34,7 +35,7 @@
         window.console = window.opener.console
 
         window.gobconfig = new Gobchat.GobchatConfig()
-        window.gobconfig.loadFromLocalStore()
+        window.gobconfig.loadFromLocalStore(true)
     </script>
 
     <div class="gob-config-dialog-panel" style="display: flex; flex-direction:column; overflow:hidden;">
