@@ -2,7 +2,8 @@
   "version": 1701,
   "profile": {
     "id": null,
-    "name": null
+    "name": null,
+    "index": 0
   },
   "behaviour": {
     "channel": {
@@ -145,16 +146,14 @@
       "autodetectEmoteInSay": true
     },
     "chattabs": {
-      "sorting": [ "default" ],
+      "sorting": [ "chat", "sys" ],
       "data": {
-        "default": {
-          "id": "default",
-          "name": "Tab",
+        "chat": {
+          "id": "chat",
+          "name": "Chat",
           "visible": true,
           "channel": {
             "visible": [
-              "GOBCHATINFO",
-              "GOBCHATERROR",
               "SAY",
               "EMOTE",
               "YELL",
@@ -166,8 +165,6 @@
               "ALLIANCE",
               "NPC_Dialog",
               "ANIMATEDEMOTE",
-              "ECHO",
-              "ERROR",
               "RANDOM",
               "CROSSWORLDLINKSHELL_1",
               "CROSSWORLDLINKSHELL_2",
@@ -190,7 +187,40 @@
           "formatting": {
             "timestamps": true,
             "mentions": true,
-            "rangefilter": true,
+            "rangefilter": false,
+            "roleplay": true
+          }
+        },
+        "sys": {
+          "id": "sys",
+          "name": "Sys",
+          "visible": true,
+          "channel": {
+            "visible": [
+              "GOBCHATINFO",
+              "GOBCHATERROR",
+              "ECHO",
+              "ERROR"
+            ]
+          },
+          "formatting": {
+            "timestamps": true,
+            "mentions": false,
+            "rangefilter": false,
+            "roleplay": false
+          }
+        },
+        "default": {
+          "id": "default",
+          "name": "Tab",
+          "visible": false,
+          "channel": {
+            "visible": []
+          },
+          "formatting": {
+            "timestamps": true,
+            "mentions": true,
+            "rangefilter": false,
             "roleplay": true
           }
         }
