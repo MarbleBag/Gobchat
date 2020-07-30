@@ -16,6 +16,7 @@
 (async () => {
     const keyTabsData = "behaviour.chattabs.data"
     const keyTabsSorting = "behaviour.chattabs.sorting"
+    const pagebinding = GobConfigHelper.makeDatabinding(gobconfig)
 
     $("#ctabs_newtab").on("click", function () {
         const data = gobconfig.get(keyTabsData)
@@ -23,6 +24,7 @@
 
         const newConfig = gobconfig.getDefault(`${keyTabsData}.default`)
         newConfig.id = id
+        newConfig.visible = true
         newConfig.name = `${newConfig.name} ${Object.keys(data).length}`
 
         data[id] = newConfig
@@ -72,31 +74,37 @@
         GobConfigHelper.setConfigKey($entryVisible, `${entryConfigKey}.visible`)
         GobConfigHelper.bindCheckbox(binding, $entryVisible)
 
-        $entry.find(".tmp_entry_action_delete").on("click", function (event) {
-            event.stopPropagation()
-            {
-                (async () => {
-                    const result = await GobConfigHelper.showConfirmationDialog({
-                        dialogText: "config.tabs.tabtable.action.delete.confirm",
-                    })
-
-                    if (result === 1) {
-                        try {
-                            gobconfig.remove(entryConfigKey)
-                            const order = gobconfig.get(keyTabsSorting)
-                            _.remove(order, e => e === entryId)
-                            gobconfig.set(keyTabsSorting, order)
-                        } catch (ex) {
-                            console.error(ex)
-                        }
-                    }
-                })()
-            }
+        $entry.find(".tmp_entry_action_config").on("click", function (event) {
+            buildConfig(entryId)
         })
+
+        $entry.find(".tmp_entry_action_delete")
+            .toggleClass("disabled", gobconfig.get(keyTabsSorting, []).length <= 1)
+            .on("click", function (event) {
+                event.stopPropagation()
+                {
+                    (async () => {
+                        const result = await GobConfigHelper.showConfirmationDialog({
+                            dialogText: "config.tabs.tabtable.action.delete.confirm",
+                        })
+
+                        if (result === 1) {
+                            try {
+                                gobconfig.remove(entryConfigKey)
+                                const order = gobconfig.get(keyTabsSorting)
+                                _.remove(order, e => e === entryId)
+                                gobconfig.set(keyTabsSorting, order)
+                            } catch (ex) {
+                                console.error(ex)
+                            }
+                        }
+                    })()
+                }
+            })
 
         const entryIds = gobconfig.get(keyTabsSorting)
         $entry.find(".tmp_entry_action_mup")
-            .toggle(entryIds.indexOf(entryId) !== 0)
+            .toggleClass("disabled", entryIds.indexOf(entryId) === 0)
             .on("click", function () {
                 const entryIds = gobconfig.get(keyTabsSorting)
                 const idx = entryIds.indexOf(entryId)
@@ -105,7 +113,7 @@
             })
 
         $entry.find(".tmp_entry_action_mdown")
-            .toggle(entryIds.indexOf(entryId) !== entryIds.length - 1)
+            .toggleClass("disabled", entryIds.indexOf(entryId) === entryIds.length - 1)
             .on("click", function () {
                 const entryIds = gobconfig.get(keyTabsSorting)
                 const idx = entryIds.indexOf(entryId)
@@ -116,16 +124,95 @@
         binding.initialize()
     }
 
-    function buildConfig(tabid) {
+    function buildConfig(id) {
+        $tableTabs.children(".active").removeClass("active")
+        $tableTabs.children(`[data-gob-entryid=${id}]`).addClass("active")
+
+        const $config = $("#ctabs_tab_config")
+        let binding = $config.data("configbinding")
+        if (binding) binding.clear()
+
+        const $tbl1 = $("#ctabs_tab_channel1 > tbody")
+        $tbl1.empty()
+        const $tbl2 = $("#ctabs_tab_channel2 > tbody")
+        $tbl2.empty()
+
+        if (!id) {
+            $("#ctabs_config_tabname").html("")
+            return
+        }
+
+        $("#ctabs_config_tabname").html(
+            Gobchat.encodeHtmlEntities(
+                gobconfig.get(`${keyTabsData}.${id}`).name
+            )
+        )
+
+        binding = GobConfigHelper.makeDatabinding(gobconfig)
+        $config.data("configbinding", binding)
+
+        $("#ctabs_formatting_mention")
+            .databindKey(`${keyTabsData}.${id}.formatting.mentions`)
+            .databind(binding, { type: "checkbox" })
+
+        $("#ctabs_formatting_roleplay")
+            .databindKey(`${keyTabsData}.${id}.formatting.roleplay`)
+            .databind(binding, { type: "checkbox" })
+
+        $("#ctabs_formatting_timestamp")
+            .databindKey(`${keyTabsData}.${id}.formatting.timestamps`)
+            .databind(binding, { type: "checkbox" })
+
+        $("#ctabs_formatting_rangefilter")
+            .databindKey(`${keyTabsData}.${id}.formatting.rangefilter`)
+            .databind(binding, { type: "checkbox" })
+
+        const $rowTemplate = $("#ctabs_template_channelentry")
+        function buildChannelEntry(channelData) {
+            const $table = $tbl1.children().length <= $tbl2.children().length ? $tbl1 : $tbl2
+            const $rowEntry = $($rowTemplate.html()).appendTo($table)
+
+            $rowEntry.find(".entry-label")
+                .attr("data-gob-locale-text", `${channelData.translationId}`)
+                .attr("data-gob-locale-title", `${channelData.tooltipId}`)
+
+            const $chkVisible = $rowEntry.find(".entry-visible")
+                .databindKey(`${keyTabsData}.${id}.channel.visible`)
+
+            const channelEnums = [].concat(channelData.chatChannel || [])
+            if (channelEnums.length === 0) {
+                $chkVisible.hide()
+            } else {
+                GobConfigHelper.bindCheckboxArray(binding, $chkVisible, channelEnums)
+            }
+        }
+
+        Object.entries(Gobchat.Channels).forEach((entry) => {
+            const channelData = entry[1]
+            if (!channelData.relevant) return
+            buildChannelEntry(channelData)
+        })
+
+        goblocale.updateElement($tbl1)
+        goblocale.updateElement($tbl2)
+        binding.initialize()
     }
 
-    gobconfig.addProfileEventListener((event) => {
-        if (event.type === "active")
-            buildTableTabs()
+    GobConfigHelper.bindListener(pagebinding, keyTabsSorting, function (entryIds) {
+        buildTableTabs(entryIds)
+        if (entryIds.length > 0)
+            buildConfig(entryIds[0])
+        else
+            buildConfig(null)
     })
-    gobconfig.addPropertyEventListener(keyTabsSorting, (event) => {
-        if (event.isActive)
-            buildTableTabs()
-    })
-    buildTableTabs()
+
+    pagebinding.initialize()
+
+    //doesn't work. Old tabs are keept around?
+    GobConfigHelper.makeCopyProfileButton($("#ctabs_copyprofile"),
+        {
+            configKeys: [keyTabsData, keyTabsSorting]
+        })
 })()
+
+//# sourceURL=config_tabs.js

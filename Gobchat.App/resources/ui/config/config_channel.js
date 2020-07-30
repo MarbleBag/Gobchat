@@ -32,7 +32,7 @@
         const btnResetBG = rowEntry.find(".entry-color-background-reset")
 
         lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
-        lblName.attr("data-gob-locale-title", `${channelData.translationId}.tooltip`)
+        lblName.attr("data-gob-locale-title", `${channelData.tooltipId}`)
 
         GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
         GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
@@ -98,3 +98,5 @@
 
     GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
 }());
+
+//# sourceURL=config_channel.js
