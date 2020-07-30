@@ -348,6 +348,23 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public static List<string> GetKeysIfAvailable(JObject src, string srcPath)
+        {
+            var result = new List<string>();
+            AccessIfAvailable(src, srcPath, (node) =>
+            {
+                if (node is JObject jObject)
+                {
+                    result.AddRange(jObject.Properties().Select(p => p.Name));
+                }
+                else if (node is JArray jArray)
+                {
+                    result.AddRange(Enumerable.Range(0, jArray.Count).Select(x => x.ToString()));
+                }
+            });
+            return result;
+        }
+
         public static bool ReplaceArrayIfAvailable(JObject src, string srcPath, Func<JArray, JToken> converter)
         {
             var found = false;
@@ -428,6 +445,54 @@ namespace Gobchat.Core.Config
                     newArray.Add(enumValue);
             }
             return newArray;
+        }
+
+        public static JArray ConvertEnumArrayToString<TEnum>(JArray array) where TEnum : struct, IConvertible
+        {
+            var typeT = typeof(TEnum);
+            if (!typeT.IsEnum)
+                throw new ArgumentException("Not an enum");
+            var newArray = new JArray();
+            foreach (var element in array)
+                if (TryConvertEnumToString<TEnum>(element, out var name))
+                    newArray.Add(name.ToUpperInvariant());
+            return newArray;
+        }
+
+        public static bool TryConvertEnumToString<TEnum>(JToken value, out string enumName) where TEnum : struct, IConvertible
+        {
+            enumName = null;
+
+            if (!(value is JValue jValue))
+                return false;
+
+            if (jValue.Value == null)
+                return false;
+
+            var eType = typeof(TEnum);
+
+            if (jValue.Type == JTokenType.Integer || jValue.Type == JTokenType.Bytes)
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (Enum.IsDefined(eType, jValue.Value))
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (jValue.Type == JTokenType.String)
+            {
+                if (int.TryParse((string)jValue, out var iValue))
+                {
+                    enumName = Enum.GetName(eType, iValue);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
