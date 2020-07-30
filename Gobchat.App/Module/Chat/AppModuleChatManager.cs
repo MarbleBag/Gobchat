@@ -72,6 +72,7 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
             _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
             _configManager.AddPropertyChangeListener("behaviour.mentions.userCanTriggerMention", true, true, ConfigManager_UpdateUserMentionProperties);
+            _configManager.AddPropertyChangeListener("behaviour.chattabs.data", true, true, ConfigManager_UpdateVisibleChannel);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -89,6 +90,7 @@ namespace Gobchat.Module.Chat
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateVisibleChannel);
 
             _updater.Dispose();
 
@@ -165,10 +167,35 @@ namespace Gobchat.Module.Chat
         {
             try
             {
-                _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
+                // _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (ChatChannel)i).ToArray();
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
+        }
+
+        private void ConfigManager_UpdateVisibleChannel(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            try
+            {
+                var jTabs = config.GetProperty<JObject>("behaviour.chattabs.data")
+                .Properties()
+                .Select(p => p.Value)
+                .Where(tab => tab.Value<bool>("visible"))
+                .ToList();
+
+                var visibleChannels = jTabs.Select(tab => tab["channel"]["visible"]
+                    .ToObject<List<long>>())
+                    .Select(channel => channel.Select(i => (ChatChannel)i))
+                    .SelectMany(channel => channel)
+                    .ToArray();
+
+                _chatManager.Config.VisibleChannels = visibleChannels;
             }
             catch (Exception e1)
             {
