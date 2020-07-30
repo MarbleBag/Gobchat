@@ -35,9 +35,12 @@ namespace Gobchat.Module.Updater.Internal
             var appContent = GetContent(GobchatContext.ApplicationLocation);
 
             // For some reason this tasks crashes the update, seems like I need to fork that project and check out what's going wrong
-            // foreach (var file in appContent)
-            //     if (!updateContent.Contains(file))
-            //         tasks.Add(new DeleteTask(Path.Combine(GobchatApplicationContext.ApplicationLocation, file)));
+            foreach (var file in appContent)
+                if (!updateContent.Contains(file))
+                    tasks.Add(new NAUDeleteTask()
+                    {
+                        LocalPath = Path.Combine(GobchatContext.ApplicationLocation, file)
+                    });
 
             /*
             foreach (var file in appContent)
@@ -52,15 +55,13 @@ namespace Gobchat.Module.Updater.Internal
              .GroupBy(s => System.IO.Path.GetDirectoryName(s));
 
             foreach (var folder in files)
-            {
                 foreach (var file in folder)
-                {
-                    var fileToPatch = file.Replace(feed, "").TrimStart('\\', ' ');
-                    var updateTask = new NAppUpdate.Framework.Tasks.FileUpdateTask();
-                    updateTask.LocalPath = fileToPatch;
-                    tasks.Add(updateTask);
-                }
-            }
+                    tasks.Add(
+                        new NAppUpdate.Framework.Tasks.FileUpdateTask()
+                        {
+                            LocalPath = file.Replace(feed, "").TrimStart('\\', ' ')
+                        }
+                    );
 
             return tasks;
         }

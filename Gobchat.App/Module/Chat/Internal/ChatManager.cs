@@ -16,103 +16,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Gobchat.Core.Chat;
 using Gobchat.Memory.Chat;
-using Gobchat.Core.Util.Extension;
 using System.Collections.Concurrent;
 using Gobchat.Core.Util.Extension.Queue;
 using Gobchat.Module.Actor;
 
 namespace Gobchat.Module.Chat.Internal
 {
-    internal sealed class ChatManager : IChatManager
+    internal sealed partial class ChatManager : IChatManager
     {
-        private sealed class ChatMessageManagerConfig : IChatMessageManagerConfig
-        {
-            private readonly ChatManager _parent;
-
-            public ChatMessageManagerConfig(ChatManager parent)
-            {
-                _parent = parent ?? throw new ArgumentNullException(nameof(parent));
-            }
-
-            public IAutotranslateProvider AutotranslateProvider
-            {
-                get => _parent._chatlogCleaner.AutotranslateProvider;
-                set => _parent._chatlogCleaner.AutotranslateProvider = value ?? throw new ArgumentNullException(nameof(AutotranslateProvider));
-            }
-
-            public ChatChannel[] VisibleChannels
-            {
-                get => _parent._visibleChannels.ToArray();
-                set => _parent._visibleChannels = value.ToArrayOrEmpty();
-            }
-
-            public ChatChannel[] FormatChannels
-            {
-                get => _parent._chatMessageBuilder.FormatChannels;
-                set => _parent._chatMessageBuilder.FormatChannels = value;
-            }
-
-            public FormatConfig[] Formats
-            {
-                get => _parent._chatMessageBuilder.Formats;
-                set => _parent._chatMessageBuilder.Formats = value;
-            }
-
-            public TriggerGroup[] TriggerGroups
-            {
-                get => _parent._chatMessageTriggerGroups.Groups;
-                set => _parent._chatMessageTriggerGroups.Groups = value;
-            }
-
-            public ChatChannel[] MentionChannels
-            {
-                get => _parent._chatMessageBuilder.MentionChannels;
-                set => _parent._chatMessageBuilder.MentionChannels = value;
-            }
-
-            public string[] Mentions
-            {
-                get => _parent._chatMessageBuilder.Mentions;
-                set => _parent._chatMessageBuilder.Mentions = value;
-            }
-
-            public bool DetecteEmoteInSayChannel
-            {
-                get => _parent._chatMessageBuilder.DetecteEmoteInSayChannel;
-                set => _parent._chatMessageBuilder.DetecteEmoteInSayChannel = value;
-            }
-
-            public bool ExcludeUserMention
-            {
-                get => _parent._chatMessageBuilder.ExcludeUserMention;
-                set => _parent._chatMessageBuilder.ExcludeUserMention = value;
-            }
-
-            public bool EnableCutOff
-            {
-                get => _parent._chatMessageActorData.SetVisibility;
-                set => _parent._chatMessageActorData.SetVisibility = value;
-            }
-
-            public float CutOffDistance
-            {
-                get => _parent._chatMessageActorData.CutOffDistance;
-                set => _parent._chatMessageActorData.CutOffDistance = value;
-            }
-
-            public float FadeOutDistance
-            {
-                get => _parent._chatMessageActorData.FadeOutDistance;
-                set => _parent._chatMessageActorData.FadeOutDistance = value;
-            }
-
-            public ChatChannel[] CutOffChannels
-            {
-                get => _parent._chatMessageActorData.CutOffChannels;
-                set => _parent._chatMessageActorData.CutOffChannels = value;
-            }
-        }
-
         private const int MAX_NUMBER_OF_MESSAGES_PER_UPDATE = 10;
 
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -141,12 +52,12 @@ namespace Gobchat.Module.Chat.Internal
 
         public bool Enable { get; set; }
 
-        public IChatMessageManagerConfig Config { get => _config; }
-        private readonly ChatMessageManagerConfig _config;
+        public IChatManagerConfig Config { get => _config; }
+        private readonly ChatManagerConfig _config;
 
         public ChatManager(IAutotranslateProvider autotranslateProvider, IActorManager actorManager)
         {
-            _config = new ChatMessageManagerConfig(this);
+            _config = new ChatManagerConfig(this);
 
             _chatlogCleaner = new ChatlogCleaner(autotranslateProvider);
             _chatMessageBuilder = new ChatMessageBuilder();
@@ -252,22 +163,5 @@ namespace Gobchat.Module.Chat.Internal
             if (chatMessages.Count > 0)
                 OnChatMessage?.Invoke(this, new ChatMessageEventArgs(chatMessages));
         }
-    }
-
-    internal interface IChatMessageManagerConfig
-    {
-        IAutotranslateProvider AutotranslateProvider { get; set; }
-        ChatChannel[] VisibleChannels { get; set; }
-        ChatChannel[] FormatChannels { get; set; }
-        ChatChannel[] MentionChannels { get; set; }
-        string[] Mentions { get; set; }
-        FormatConfig[] Formats { get; set; }
-        TriggerGroup[] TriggerGroups { get; set; }
-        bool DetecteEmoteInSayChannel { get; set; }
-        bool ExcludeUserMention { get; set; }
-        ChatChannel[] CutOffChannels { get; set; }
-        bool EnableCutOff { get; set; }
-        float CutOffDistance { get; set; }
-        float FadeOutDistance { get; set; }
     }
 }

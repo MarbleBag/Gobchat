@@ -47,10 +47,11 @@ namespace Gobchat.Module.Misc.Chatlogger
             _container = container ?? throw new ArgumentNullException(nameof(container));
 
             _chatLogger = new ChatLoggerFormated();
+            _chatLogger.LogChannels = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>(); //will log everything that comes from the chat manager
 
             _configManager = _container.Resolve<IConfigManager>();
             _configManager.AddPropertyChangeListener("behaviour.writeChatLog", true, true, ConfigManager_UpdateWriteLog);
-            _configManager.AddPropertyChangeListener("behaviour.channel.visible", true, true, ConfigManager_UpdateLogChannels);
+            // _configManager.AddPropertyChangeListener("behaviour.channel.visible", true, true, ConfigManager_UpdateLogChannels);
 
             _chatManager = _container.Resolve<IChatManager>();
             _chatManager.OnChatMessage += ChatManager_ChatMessageEvent;
@@ -78,7 +79,7 @@ namespace Gobchat.Module.Misc.Chatlogger
 
         private void ConfigManager_UpdateLogChannels(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatLogger.LogChannels = sender.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToList();
+            // _chatLogger.LogChannels = sender.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToList();
         }
 
         private void ChatManager_ChatMessageEvent(object sender, ChatMessageEventArgs e)
