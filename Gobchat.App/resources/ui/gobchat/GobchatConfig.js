@@ -411,9 +411,11 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         //TODO remove later
-        loadFromLocalStore() {
+        loadFromLocalStore(keepLocaleStore) {
             const json = window.localStorage.getItem("gobchat-config")
-            window.localStorage.removeItem("gobchat-config")
+            if (!keepLocaleStore)
+                window.localStorage.removeItem("gobchat-config")
+
             if (json === undefined || json === null)
                 return
 

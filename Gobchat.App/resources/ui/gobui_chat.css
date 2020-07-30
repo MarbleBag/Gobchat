@@ -10,6 +10,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
+:root {
+    --button-background: linear-gradient(to bottom, #d0d0d0 0%, #505050 40%, #505050 70%, #a0a0a0 100%);
+}
+
 .gob-resize-active {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAAAGZJREFUOE+ljEEOACEIA92f+f9XaQ822EUgajJJC4xtvu+BPnEXFSBff7Bk5N8yw8pgW2aojLwdRHhy+YOTjMzhiUgGDB6ZjMyiVGTAgeV0rB1wqMusL7iIjrVb0mPtypMMGC7k1geoEhcn0OEM6wAAAABJRU5ErkJggg==);
     background-position: bottom right;
@@ -25,76 +29,149 @@
     height: 100%;
 }
 
-.gob-chatbox-toolbar {
-    display: inline-flex;
-}
-
-.gob-chatbox-toolbar-button {
-    -webkit-appearance: none;
-    background-color: #222;
-    border: none;
-    color: #c0c0c0;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    padding: 3px 3px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 12px;
-    background-image: linear-gradient(to bottom, #d0d0d0 0%, #505050 50%, #505050 70%, #a0a0a0 100%);
-}
-
-    .gob-chatbox-toolbar-button:hover {
-        background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
+    .gob-chatbox .chat-toolbar {
+        display: inline-flex;
     }
 
-.gob-chatbox-content {
-    display: flex;
-    flex: auto;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    flex-direction: column;
-    padding-top: 1px;
-    padding-left: 3px;
-    padding-right: 4px;
+    .gob-chatbox .chat-toolbar-button {
+        -webkit-appearance: none;
+        background-color: #222;
+        border: none;
+        color: #c0c0c0;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        padding: 3px 3px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 12px;
+        background-image: var(--button-background);
+    }
+
+        .gob-chatbox .chat-toolbar-button:hover {
+            filter: brightness(110%);
+            /*
+            background-image: linear-gradient(to bottom, #f0f0f0 0%, #909090 50%, #909090 70%, #f0f0f0 100%);
+                */
+        }
+
+    .gob-chatbox .chat-panel {
+        display: flex;
+        flex: auto;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        flex-direction: column;
+        padding-top: 1px;
+        padding-left: 3px;
+        padding-right: 4px;
+    }
+
+        .gob-chatbox .chat-panel > * {
+            display: flex;
+            flex-direction: column;
+            flex: auto;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+    .gob-chatbox .chat-tabnav {
+        display: inline-flex;
+        background-image: var(--button-background);
+        color: #c0c0c0;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        border-radius: 15px 15px 15px 15px;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .gob-chatbox .chat-tabbar {
+        display: inline-flex;
+        overflow-x: hidden;
+    }
+
+    .gob-chatbox .chat-tabnav .chat-tabnav-btn {
+        cursor: pointer;
+        background: inherit;
+        background-image: var(--button-background);
+        color: inherit;
+        text-shadow: inherit;
+        outline: none;
+        padding: 0px 10px 0px 10px;
+    }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.chat-tabnav-left {
+            border-left: none;
+            padding: 0px 5px 0px 10px;
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.chat-tabnav-right {
+            border-right: none;
+            padding: 0px 10px 0px 5px;
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.disabled {
+            filter: brightness(70%);
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.active {
+            color: #ffbc00;
+            filter: brightness(120%);
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn:hover:not(.active) {
+            filter: brightness(110%);
+        }
+
+.ani-flash {
+    animation: blinker 1s linear infinite;
 }
 
-    .gob-chatbox-content::-webkit-scrollbar {
-        width: 11px;
-        height: 11px;
+@keyframes blinker {
+    50% {
+        opacity: 0.2;
     }
+}
 
-    .gob-chatbox-content::-webkit-scrollbar-button {
-        width: 4px;
-        height: 4px;
-    }
+.gob-chat-tab {
+}
 
-    .gob-chatbox-content::-webkit-scrollbar-thumb {
+.gob-chatbox ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+}
+
+.gob-chatbox ::-webkit-scrollbar-button {
+    width: 4px;
+    height: 4px;
+}
+
+.gob-chatbox ::-webkit-scrollbar-thumb {
+    background: #f0f4ce;
+    border: 1px inset #ddd391;
+    border-radius: 0px;
+}
+
+    .gob-chatbox ::-webkit-scrollbar-thumb:hover {
         background: #f0f4ce;
-        border: 1px inset #ddd391;
-        border-radius: 0px;
     }
 
-        .gob-chatbox-content::-webkit-scrollbar-thumb:hover {
-            background: #f0f4ce;
-        }
+    .gob-chatbox ::-webkit-scrollbar-thumb:active {
+        background: #f0f4ce;
+    }
 
-        .gob-chatbox-content::-webkit-scrollbar-thumb:active {
-            background: #f0f4ce;
-        }
+.gob-chatbox ::-webkit-scrollbar-track {
+    background: #666666;
+    border: 4px solid #202020;
+    border-radius: 0px;
+}
 
-    .gob-chatbox-content::-webkit-scrollbar-track {
+    .gob-chatbox ::-webkit-scrollbar-track:hover {
         background: #666666;
-        border: 4px solid #202020;
-        border-radius: 0px;
     }
 
-        .gob-chatbox-content::-webkit-scrollbar-track:hover {
-            background: #666666;
-        }
-
-        .gob-chatbox-content::-webkit-scrollbar-track:active {
-            background: #333333;
-        }
-
-    .gob-chatbox-content::-webkit-scrollbar-corner {
-        background: transparent;
+    .gob-chatbox ::-webkit-scrollbar-track:active {
+        background: #333333;
     }
+
+.gob-chatbox ::-webkit-scrollbar-corner {
+    background: transparent;
+}

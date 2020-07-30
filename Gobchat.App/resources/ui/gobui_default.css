@@ -17,21 +17,17 @@ body, html {
     width: 100%;
 }
 
-.gob-tab-nav {
-    display: inline-flex;
+/* deletes scroll position
+stacked-panel > [data-gob-panel-id] {
+    visibility: hidden;
+    position: fixed;
 }
 
-    .gob-tab-nav .gob-tab-nav-left {
-        border-radius: 15px 15px 0px 0px;
+    stacked-panel > [data-gob-panel-id].active {
+        visibility: visible;
+        position: relative;
     }
-
-    .gob-tab-nav .gob-tab-nav-right {
-        border-radius: 15px 15px 0px 0px;
-    }
-
-    .gob-tab-nav gob-tab-nav-content {
-        display: inline-flex;
-    }
+*/
 
 .gob-config-dialog-panel {
     height: 100%;
@@ -116,9 +112,21 @@ body, html {
 .gob-config-dialog-header {
 }
 
+.gob-config-sunk {
+    box-shadow: 1px 1px 5px #151515 inset;
+}
+
 .gob-table {
     white-space: nowrap;
 }
+
+.gob-table-double {
+    display: flex;
+}
+
+    .gob-table-double > table {
+        margin-right: 15px;
+    }
 
 .gob-table-row-hover {
 }

@@ -86,3 +86,7 @@
     border-color: #f6b93b;
     transition: all 0.4s ease 0s;
 }
+
+.gob-table > tbody > tr.active {
+    background-color: #4caf50;
+}

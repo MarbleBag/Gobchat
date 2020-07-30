@@ -25,5 +25,16 @@ var Gobchat = (function (Gobchat) {
         Gobchat.ChannelEnum.LINKSHELL_5, Gobchat.ChannelEnum.LINKSHELL_6, Gobchat.ChannelEnum.LINKSHELL_7, Gobchat.ChannelEnum.LINKSHELL_8,
     ])
 
+    Gobchat.ChannelEnumValues = Object.freeze(
+        Object.entries(Gobchat.ChannelEnum).map(e => e[1])
+    )
+
+    Gobchat.ChannelEnumToKey = Object.freeze(
+        _(Gobchat.Channels)
+            .mapKeys(function (v, k) { return v.chatChannel })
+            .mapValues(function (v, k) { return v.internalName })
+            .value()
+    )
+
     return Gobchat
 }(Gobchat || {}));
