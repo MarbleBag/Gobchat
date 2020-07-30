@@ -173,12 +173,6 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.rangefilter.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.app.ckb.showtime" xml:space="preserve">
-    <value>Show timestamp</value>
-  </data>
-  <data name="config.app.ckb.showtime.tooltip" xml:space="preserve">
-    <value />
-  </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Check for updates on start</value>
   </data>
@@ -566,6 +560,39 @@ Restoration is final after clicking save.</value>
   <data name="config.tabs.btn.newtab" xml:space="preserve">
     <value>Add new tab</value>
   </data>
+  <data name="config.tabs.tab.label" xml:space="preserve">
+    <value>Selected tab</value>
+  </data>
+  <data name="config.tabs.tab.mention" xml:space="preserve">
+    <value>Apply mentions</value>
+  </data>
+  <data name="config.tabs.tab.rangefilter" xml:space="preserve">
+    <value>Apply rangefilter</value>
+  </data>
+  <data name="config.tabs.tab.roleplay" xml:space="preserve">
+    <value>Apply roleplay formatting</value>
+  </data>
+  <data name="config.tabs.tab.timestamp" xml:space="preserve">
+    <value>Show timestamp</value>
+  </data>
+  <data name="config.tabs.tab.timestamp.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tabtable.action.config" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
+    <value>Delete </value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
+    <value>Delete entry?</value>
+  </data>
+  <data name="config.tabs.tabtable.action.down" xml:space="preserve">
+    <value>Move one down</value>
+  </data>
+  <data name="config.tabs.tabtable.action.up" xml:space="preserve">
+    <value>Move one up</value>
+  </data>
   <data name="config.tabs.tabtable.actions" xml:space="preserve">
     <value>Actions</value>
   </data>
@@ -590,11 +617,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
     <value>Cross-world Linkshell 1</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.short" xml:space="preserve">
+    <value>CWL1</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
     <value>/cwl1</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
     <value>Cross-world Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.short" xml:space="preserve">
+    <value>CWL2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
     <value>/cwl2</value>

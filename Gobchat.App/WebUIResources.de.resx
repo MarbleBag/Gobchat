@@ -167,9 +167,6 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.app.ckb.rangefilter" xml:space="preserve">
     <value>Reichweitenfilter</value>
   </data>
-  <data name="config.app.ckb.showtime" xml:space="preserve">
-    <value>Zeitstempel anzeigen</value>
-  </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
   </data>
@@ -359,6 +356,9 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.main.nav.saveandexit" xml:space="preserve">
     <value>Speichern &amp;amp; Schließen</value>
   </data>
+  <data name="config.main.nav.tabs" xml:space="preserve">
+    <value>Chat Reiter</value>
+  </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Kopiere diese Seite von einem anderen Profil</value>
   </data>
@@ -457,6 +457,48 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
   <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
     <value>Alle Einträge auf standard zurücksetzen</value>
+  </data>
+  <data name="config.tabs.btn.newtab" xml:space="preserve">
+    <value>Neuen Reiter hinzufügen</value>
+  </data>
+  <data name="config.tabs.tab.label" xml:space="preserve">
+    <value>Ausgewählter Reiter</value>
+  </data>
+  <data name="config.tabs.tab.mention" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.tabs.tab.rangefilter" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.tabs.tab.roleplay" xml:space="preserve">
+    <value>Rollenspiel</value>
+  </data>
+  <data name="config.tabs.tab.timestamp" xml:space="preserve">
+    <value>Zeitstempel anzeigen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.config" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
+    <value>Eintrag löschen?</value>
+  </data>
+  <data name="config.tabs.tabtable.action.down" xml:space="preserve">
+    <value>Eins nach unten</value>
+  </data>
+  <data name="config.tabs.tabtable.action.up" xml:space="preserve">
+    <value>Eins nach oben</value>
+  </data>
+  <data name="config.tabs.tabtable.actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="config.tabs.tabtable.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.tabs.tabtable.visible" xml:space="preserve">
+    <value>Sichtbar</value>
   </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
     <value>Allianz</value>

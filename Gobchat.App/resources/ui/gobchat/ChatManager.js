@@ -94,6 +94,9 @@ var Gobchat = (function (Gobchat) {
             const $chatPanel = getChatPanel(this._$target)
             const tabData = this._tabData
             const scrollControl = this._scrollControl
+            const tabsModel = gobconfig.get("behaviour.chattabs.data")
+
+            tabIds = tabIds.filter(id => tabsModel[id].visible) //only show tabs which are visible
 
             function activateChatTab(newTabId) {
                 const activeTabId = $chatPanel.attr("data-gob-activetab") || ""
@@ -146,7 +149,6 @@ var Gobchat = (function (Gobchat) {
 
             //rebuild buttons in the correct order
             {
-                const tabsModel = gobconfig.get("behaviour.chattabs.data")
                 $tabBar.empty()
                 tabIds.forEach(id => {
                     $("<button/>")

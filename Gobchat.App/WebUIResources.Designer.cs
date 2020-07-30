@@ -213,24 +213,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show timestamp.
-        /// </summary>
-        internal static string config_app_ckb_showtime {
-            get {
-                return ResourceManager.GetString("config.app.ckb.showtime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_showtime_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.showtime.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check for updates on start.
         /// </summary>
         internal static string config_app_ckb_update {
@@ -1378,6 +1360,105 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected tab.
+        /// </summary>
+        internal static string config_tabs_tab_label {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply mentions.
+        /// </summary>
+        internal static string config_tabs_tab_mention {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply rangefilter.
+        /// </summary>
+        internal static string config_tabs_tab_rangefilter {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.rangefilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply roleplay formatting.
+        /// </summary>
+        internal static string config_tabs_tab_roleplay {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.roleplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show timestamp.
+        /// </summary>
+        internal static string config_tabs_tab_timestamp {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_timestamp_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.timestamp.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_config {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete .
+        /// </summary>
+        internal static string config_tabs_tabtable_action_delete {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete entry?.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_delete_confirm {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.delete.confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move one down.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_down {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move one up.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_up {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actions.
         /// </summary>
         internal static string config_tabs_tabtable_actions {
@@ -1450,6 +1531,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL1.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1_short {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl1.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_1_tooltip {
@@ -1464,6 +1554,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_2 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2_short {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.short", resourceCulture);
             }
         }
         
