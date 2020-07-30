@@ -128,6 +128,12 @@ Looking for a way to contribute or just want to take a look into Gobchat's sourc
 Visit this project on github under https://github.com/MarbleBag/Gobchat
 &lt;/p&gt;</value>
   </data>
+  <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
+    <value>Chat background color</value>
+  </data>
+  <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
+    <value>Changes the background color of the chat. Don't go full transparent.</value>
+  </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
   </data>

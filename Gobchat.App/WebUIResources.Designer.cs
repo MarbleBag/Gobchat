@@ -78,6 +78,24 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat background color.
+        /// </summary>
+        internal static string config_app_chatbox_backgroundcolor {
+            get {
+                return ResourceManager.GetString("config.app.chatbox.backgroundcolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes the background color of the chat. Don&apos;t go full transparent..
+        /// </summary>
+        internal static string config_app_chatbox_backgroundcolor_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.chatbox.backgroundcolor.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
         internal static string config_app_ckb_actor {
