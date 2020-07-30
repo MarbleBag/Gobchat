@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System.Linq;
+
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessage
@@ -24,6 +26,11 @@ namespace Gobchat.Core.Chat
 
         public ChatMessage()
         {
+        }
+
+        public override string ToString()
+        {
+            return $"ChatMessage[{Source.Original}: {string.Join("", Content.Select(c => c.Text))}]";
         }
     }
 
@@ -54,6 +61,11 @@ namespace Gobchat.Core.Chat
         {
             this.Type = type;
             this.Text = message;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Type}] {Text}";
         }
     }
 }
