@@ -60,7 +60,7 @@ namespace Gobchat.Core.Chat
                     continue;
                 }
 
-                if (group.Triggers.Contains(searchName))
+                if (group.Trigger.Contains(searchName))
                     return group.Id;
             }
 
@@ -70,7 +70,6 @@ namespace Gobchat.Core.Chat
 
     public sealed class TriggerGroup
     {
-        public string Name { get; set; }
         public bool Active { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -79,6 +78,6 @@ namespace Gobchat.Core.Chat
         public string Id { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> Triggers { get; set; }
+        public List<string> Trigger { get; set; }
     }
 }
