@@ -312,6 +312,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Larger.
+        /// </summary>
+        internal static string config_app_fontsize_larger {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.larger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
         internal static string config_app_fontsize_medium {
@@ -330,11 +339,29 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smaller.
+        /// </summary>
+        internal static string config_app_fontsize_smaller {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.smaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string config_app_fontsize_tooltip {
             get {
                 return ResourceManager.GetString("config.app.fontsize.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Very large.
+        /// </summary>
+        internal static string config_app_fontsize_verylarge {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.verylarge", resourceCulture);
             }
         }
         

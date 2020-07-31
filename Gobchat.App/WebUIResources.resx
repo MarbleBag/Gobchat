@@ -206,14 +206,23 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.fontsize.large" xml:space="preserve">
     <value>Large</value>
   </data>
+  <data name="config.app.fontsize.larger" xml:space="preserve">
+    <value>Larger</value>
+  </data>
   <data name="config.app.fontsize.medium" xml:space="preserve">
     <value>Medium</value>
   </data>
   <data name="config.app.fontsize.small" xml:space="preserve">
     <value>Small</value>
   </data>
+  <data name="config.app.fontsize.smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
   <data name="config.app.fontsize.tooltip" xml:space="preserve">
     <value />
+  </data>
+  <data name="config.app.fontsize.verylarge" xml:space="preserve">
+    <value>Very large</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Hide &amp;amp; show Gobchat</value>

@@ -185,11 +185,20 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.app.fontsize.large" xml:space="preserve">
     <value>Groß</value>
   </data>
+  <data name="config.app.fontsize.larger" xml:space="preserve">
+    <value>Größer</value>
+  </data>
   <data name="config.app.fontsize.medium" xml:space="preserve">
     <value>Mittel</value>
   </data>
   <data name="config.app.fontsize.small" xml:space="preserve">
     <value>Klein</value>
+  </data>
+  <data name="config.app.fontsize.smaller" xml:space="preserve">
+    <value>Kleiner</value>
+  </data>
+  <data name="config.app.fontsize.verylarge" xml:space="preserve">
+    <value>Sehr groß</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Gobchat ein- &amp;amp; ausblenden </value>
