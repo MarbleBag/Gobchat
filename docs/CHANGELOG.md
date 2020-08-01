@@ -7,21 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Chat
   - It's now possible to change the background color of the chat in 'Config / App'
 
-  
+
 - Chat tabs
   - Configuration can be found in 'Config / Chat tabs'
   - Chat tab bar does currently not support scrolling, the number of tabs is limited by the width of the window
 
-  
+
 - More font sizes
   - Smaller, larger and very large
 
-  
+
 - More localization
 
 ### Changed
 - Swapped some old JS Dialogs with custom made ones
 
+
+- Profile selection shows its content sorted
 
 ## [1.7.1] - 2020.07.18
 ### Fixed

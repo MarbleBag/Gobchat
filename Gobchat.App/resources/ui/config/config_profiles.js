@@ -25,10 +25,22 @@
 
     function populateProfileSelection() {
         profileSelectionDropdown.empty()
-        gobconfig.profiles.forEach((profileId) => {
-            var profile = gobconfig.getProfile(profileId)
-            profileSelectionDropdown.append(new Option(profile.profileName, profileId))
-        })
+        gobconfig.profiles
+            .map(profileId => {
+                var profile = gobconfig.getProfile(profileId)
+                return { name: profile.profileName, id: profileId }
+            })
+            .sort((a, b) => {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+            })
+            .forEach(e => {
+                profileSelectionDropdown.append(new Option(e.name, e.id))
+            })
+
         profileSelectionDropdown.val(gobconfig.activeProfile)
     }
 
