@@ -2,18 +2,22 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## Unreleased
+## [1.8.0-1] - 2020.08.01
 ### Added
-- More localisation
-
 - Chat
-  - It's now possible to change the background color of the chat in `Config / App`
+  - It's now possible to change the background color of the chat in 'Config / App'
 
-- Tabs
-  - They can be configurated in `Config / Chat tabs`
+  
+- Chat tabs
+  - Configuration can be found in 'Config / Chat tabs'
+  - Chat tab bar does currently not support scrolling, the number of tabs is limited by the width of the window
 
+  
 - More font sizes
   - Smaller, larger and very large
+
+  
+- More localization
 
 ### Changed
 - Swapped some old JS Dialogs with custom made ones
