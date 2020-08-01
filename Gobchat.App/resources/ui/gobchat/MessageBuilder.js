@@ -17,17 +17,11 @@ var Gobchat = (function (Gobchat) {
     // Start - Constants
     const ChannelEnum = Gobchat.ChannelEnum
     const MessageSegmentEnum = Gobchat.MessageSegmentEnum
-    const FadeOutLevels = 10
     const FFGroupUnicodes = Object.freeze([
         Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
         Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
     ])
-    const ChannelLookup = Object.freeze(
-        _(Gobchat.Channels)
-            .mapKeys(function (v, k) { return v.chatChannel })
-            .mapValues(function (v, k) { return v.internalName })
-            .value()
-    )
+
     // End - Constants
 
     function getVisibilityCssClass(message) {
@@ -42,25 +36,27 @@ var Gobchat = (function (Gobchat) {
         if (ignoreDistance && message.containsMentions)
             return null
 
-        const fadeOutStepSize = (100 / FadeOutLevels)
+        const fadeOutStepSize = (100 / Gobchat.RangeFilterFadeOutLevels)
         const visibilityLevel = (visibility + (fadeOutStepSize - 1)) / fadeOutStepSize >> 0 //truncat decimals, makes the LSV an integer
         return `chat-msg-fadeout-${visibilityLevel}`
     }
 
     function getTriggerGroupBodyCssClass(message) {
-        if (message.triggerGroupId)
-            return `chat-msg-tg-b-${message.triggerGroupId}`
+        if (message.source.triggerGroupId)
+            return `chat-msg-tg-b-${message.source.triggerGroupId}`
         return null
     }
 
     function getTriggerGroupSenderCssClass(message) {
-        if (message.triggerGroupId)
-            return `chat-msg-tg-s-${message.triggerGroupId}`
+        if (message.source.triggerGroupId)
+            return `chat-msg-tg-s-${message.source.triggerGroupId}`
         return null
     }
 
     function getChannelCssClass(message) {
-        return `chat-msg-c-${ChannelLookup[message.channel]}`
+        const channelName = Gobchat.ChannelEnumToKey[message.channel]
+        const data = Gobchat.Channels[channelName]
+        return `chat-msg-c-${data.internalName}`
     }
 
     function getMessageSegmentCssClass(segmentType) {

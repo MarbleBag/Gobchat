@@ -29,12 +29,17 @@ var Gobchat = (function (Gobchat) {
         Object.entries(Gobchat.ChannelEnum).map(e => e[1])
     )
 
-    Gobchat.ChannelEnumToKey = Object.freeze(
-        _(Gobchat.Channels)
-            .mapKeys(function (v, k) { return v.chatChannel })
-            .mapValues(function (v, k) { return v.internalName })
-            .value()
-    )
+    function buildChannelEnumToKey() {
+        const result = {}
+        Object.entries(Gobchat.Channels).forEach(e => {
+            result[e[1].chatChannel] = e[0]
+        })
+        return result
+    }
+
+    Gobchat.ChannelEnumToKey = Object.freeze(buildChannelEnumToKey())
+
+    Gobchat.RangeFilterFadeOutLevels = 10
 
     return Gobchat
 }(Gobchat || {}));

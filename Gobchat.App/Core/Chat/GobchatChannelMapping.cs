@@ -77,8 +77,8 @@ namespace Gobchat.Core.Chat
             var expectedValues = Enum.GetValues(typeof(ChatChannel));
             foreach (ChatChannel expectedChannel in expectedValues)
             {
-                if (!ChatMapping.ContainsKey(expectedChannel))
-                    throw new ArgumentException($"Missing mapping for {expectedChannel}"); //TODO
+                if (!ChatMapping.ContainsKey(expectedChannel)) //if there is a ChatChannel, there needs to be a mapping for config data
+                    throw new ArgumentException($"No mapping for {expectedChannel}");
             }
         }
 
@@ -122,18 +122,14 @@ namespace Gobchat.Core.Chat
 
     public sealed class ChannelData
     {
-        private static string MakeTranslationId(ChatChannel chatChannel)
+        private static string MakeTranslationId(string chatChannel)
         {
-            var enumName = Enum.GetName(typeof(ChatChannel), chatChannel);
-            enumName = enumName.Replace("_", "-").ToLower(CultureInfo.InvariantCulture);
-            return $"main.chat.channel.{enumName}";
+            return $"main.chat.channel.{chatChannel}";
         }
 
-        private static string MakeConfigId(ChatChannel chatChannel)
+        private static string MakeConfigId(string chatChannel)
         {
-            var enumName = Enum.GetName(typeof(ChatChannel), chatChannel);
-            enumName = enumName.Replace("_", "-").ToLower(CultureInfo.InvariantCulture);
-            return $"style.channel.{enumName}";
+            return $"style.channel.{chatChannel}";
         }
 
         public ChatChannel ChatChannel { get; }
@@ -154,6 +150,7 @@ namespace Gobchat.Core.Chat
         public string ConfigId { get; private set; }
         public bool Relevant { get; private set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "app internal")]
         public ChannelData(ChatChannel chatChannel, bool relevant, string translationId = null, string configId = null, FFXIVChatChannel[] clientChannel = null)
         {
             ChatChannel = chatChannel;
@@ -162,8 +159,8 @@ namespace Gobchat.Core.Chat
             if (clientChannel != null)
                 ClientChannel = clientChannel;
 
-            TranslationId = (translationId ?? MakeTranslationId(chatChannel)).ToLowerInvariant();
-            ConfigId = (configId ?? MakeConfigId(chatChannel)).ToLowerInvariant();
+            TranslationId = (translationId ?? MakeTranslationId(InternalName)).ToLowerInvariant();
+            ConfigId = (configId ?? MakeConfigId(InternalName)).ToLowerInvariant();
         }
     }
 }

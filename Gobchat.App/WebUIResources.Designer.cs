@@ -1578,6 +1578,15 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to CWL1.
         /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL1.
+        /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_1_short {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.short", resourceCulture);
@@ -1599,6 +1608,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_2 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.abbreviation", resourceCulture);
             }
         }
         
@@ -1630,6 +1648,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL3.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_3_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl3.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_3_tooltip {
@@ -1644,6 +1671,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_4 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL4.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_4_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4.abbreviation", resourceCulture);
             }
         }
         
@@ -1666,6 +1702,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL5.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_5_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl5.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_5_tooltip {
@@ -1680,6 +1725,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_6 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL6.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_6_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6.abbreviation", resourceCulture);
             }
         }
         
@@ -1702,6 +1756,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL7.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_7_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl7.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_7_tooltip {
@@ -1716,6 +1779,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_8 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL8.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_8_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8.abbreviation", resourceCulture);
             }
         }
         
@@ -1846,6 +1918,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FC.
+        /// </summary>
+        internal static string main_chat_channel_guild_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.guild.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /fc.
         /// </summary>
         internal static string main_chat_channel_guild_tooltip {
@@ -1860,6 +1941,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_1 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L1.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_1_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-1.abbreviation", resourceCulture);
             }
         }
         
@@ -1882,6 +1972,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L2.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_2_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-2.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l2.
         /// </summary>
         internal static string main_chat_channel_linkshell_2_tooltip {
@@ -1896,6 +1995,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_3 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L3.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_3_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-3.abbreviation", resourceCulture);
             }
         }
         
@@ -1918,6 +2026,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L4.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_4_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-4.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l4.
         /// </summary>
         internal static string main_chat_channel_linkshell_4_tooltip {
@@ -1932,6 +2049,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_5 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L5.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_5_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-5.abbreviation", resourceCulture);
             }
         }
         
@@ -1954,6 +2080,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L6.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_6_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-6.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l6.
         /// </summary>
         internal static string main_chat_channel_linkshell_6_tooltip {
@@ -1972,6 +2107,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L7.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_7_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-7.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l7.
         /// </summary>
         internal static string main_chat_channel_linkshell_7_tooltip {
@@ -1986,6 +2130,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_8 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L8.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_8_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-8.abbreviation", resourceCulture);
             }
         }
         

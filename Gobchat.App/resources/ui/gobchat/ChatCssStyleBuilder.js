@@ -22,7 +22,7 @@ var Gobchat = (function (module) {
     }
 
     function buildTabClassSelector(id) {
-        return `chat-tab-${id}`
+        return `.chat-tab-${id}`
     }
 
     function buildStyle() {
@@ -36,15 +36,29 @@ var Gobchat = (function (module) {
         const style = gobconfig.get("style")
 
         let result = ""
+        // chat bachground
         result += toCss([".chat-panel-bg"], style.chatbox)
 
+        // channel
         result += toCss([`.chat-msg-c-base`], style.channel.base)
-        Object.entries(style.channel).forEach(e => {
-            result += toCss([`.chat-msg-text.chat-msg-c-${e[0]}`], e[1])
+        Object.entries(Gobchat.Channels).forEach(e => {
+            const channelName = e[1].internalName
+            if (channelName in style.channel)
+                result += toCss([`.chat-msg-text.chat-msg-c-${channelName}`], style.channel[channelName])
         })
 
         result += toCss([`.chat-msg-seg-link`], style.segment.link)
 
+        // trigger groups
+        {
+            const data = gobconfig.get("behaviour.groups.data")
+            Object.entries(data).forEach(e => {
+                result += toCss([`.chat-msg-tg-b-${e[1].id}`], e[1].style.body)
+                result += toCss([`.chat-msg-tg-s-${e[1].id}`], e[1].style.header)
+            })
+        }
+
+        // search
         result += toCss([".search-msg-marked:not(.search-msg-selected)"], style.chatsearch.marked)
         result += toCss([".search-msg-selected"], style.chatsearch.selected)
 
@@ -56,25 +70,56 @@ var Gobchat = (function (module) {
         const style = gobconfig.get("style")
 
         let result = ""
-        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `.${selector} .chat-msg-time`)
+
+        // timestamp
+        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `${selector} .chat-msg-time`)
         result += toCss(tabsWithoutTime, { "display": "none" })
 
-        const tabsWithMentions = getTabsWithMention(tabModels).map(selector => `.${selector} .chat-msg-seg-mention`)
+        // roleplay
+        const tabsWithMentions = getTabsWithMention(tabModels).map(selector => `${selector} .chat-msg-seg-mention`)
         result += toCss(tabsWithMentions, style.segment.mention)
 
         const tabsWithRoleplay = getTabsWithRoleplay(tabModels)
-        result += toCss(tabsWithRoleplay.map(selector => `.${selector} .chat-msg-seg-say`), style.segment.say, style.channel.say)
-        result += toCss(tabsWithRoleplay.map(selector => `.${selector} .chat-msg-seg-emote`), style.segment.emote, style.channel.emote)
-        result += toCss(tabsWithRoleplay.map(selector => `.${selector} .chat-msg-seg-ooc`), style.segment.ooc)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-say`), style.segment.say, style.channel.say)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-emote`), style.segment.emote, style.channel.emote)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-ooc`), style.segment.ooc)
 
-        Object.entries(tabModels).forEach(entry => {
-            const model = entry[1]
-            const tabSelector = buildTabClassSelector(model.id)
-            const invisibleChannels = _.difference(Gobchat.ChannelEnumValues, model.channel.visible)
+        // range filter
+        {
+            const tabsWithRangeFilter = getTabsWithRangefilter(tabModels)
+            result += toCss(tabsWithRangeFilter.map(selector => `${selector} .chat-msg-fadeout-0`), { "display": "none" })
 
-            const selectors = invisibleChannels.map(c => Gobchat.ChannelEnumToKey[c]).map(c => `.${tabSelector} .chat-msg-c-base.chat-msg-c-${c}`)
-            result += toCss(selectors, { "display": "none" })
-        })
+            const data = gobconfig.get("behaviour.rangefilter")
+            const startopacity = data.startopacity / 100.0
+            const endopacity = data.endopacity / 100.0
+            const opacityFactor = (startopacity - endopacity) / Gobchat.RangeFilterFadeOutLevels
+            for (let i = 1; i <= Gobchat.RangeFilterFadeOutLevels; ++i) {
+                result += toCss(
+                    tabsWithRangeFilter.map(selector => `${selector} .chat-msg-fadeout-${i}`),
+                    { "opacity": `${endopacity + (i - 1) * opacityFactor}` }
+                )
+            }
+        }
+
+        // channel visibility
+        {
+            function getChannelName(channelEnum) {
+                const key = Gobchat.ChannelEnumToKey[channelEnum]
+                return Gobchat.Channels[key].internalName
+            }
+
+            Object.entries(tabModels).forEach(entry => {
+                const model = entry[1]
+                const tabSelector = buildTabClassSelector(model.id)
+                const invisibleChannels = _.difference(Gobchat.ChannelEnumValues, model.channel.visible)
+
+                const selectors = invisibleChannels
+                    .map(c => getChannelName(c))
+                    .map(c => `${tabSelector} .chat-msg-c-base.chat-msg-c-${c}`)
+
+                result += toCss(selectors, { "display": "none" })
+            })
+        }
 
         return result
     }

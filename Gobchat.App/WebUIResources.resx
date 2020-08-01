@@ -632,6 +632,9 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
     <value>Cross-world Linkshell 1</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.abbreviation" xml:space="preserve">
+    <value>CWL1</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-1.short" xml:space="preserve">
     <value>CWL1</value>
   </data>
@@ -640,6 +643,9 @@ Restoration is final after clicking save.</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
     <value>Cross-world Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.abbreviation" xml:space="preserve">
+    <value>CWL2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.short" xml:space="preserve">
     <value>CWL2</value>
@@ -650,11 +656,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-3" xml:space="preserve">
     <value>Cross-world Linkshell 3</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-3.abbreviation" xml:space="preserve">
+    <value>CWL3</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-3.tooltip" xml:space="preserve">
     <value>/cwl3</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4" xml:space="preserve">
     <value>Cross-world Linkshell 4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4.abbreviation" xml:space="preserve">
+    <value>CWL4</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4.tooltip" xml:space="preserve">
     <value>/cwl4</value>
@@ -662,11 +674,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-5" xml:space="preserve">
     <value>Cross-world Linkshell 5</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-5.abbreviation" xml:space="preserve">
+    <value>CWL5</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-5.tooltip" xml:space="preserve">
     <value>/cwl5</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6" xml:space="preserve">
     <value>Cross-world Linkshell 6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6.abbreviation" xml:space="preserve">
+    <value>CWL6</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6.tooltip" xml:space="preserve">
     <value>/cwl6</value>
@@ -674,11 +692,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-7" xml:space="preserve">
     <value>Cross-world Linkshell 7</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-7.abbreviation" xml:space="preserve">
+    <value>CWL7</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-7.tooltip" xml:space="preserve">
     <value>/cwl7</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8" xml:space="preserve">
     <value>Cross-world Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8.abbreviation" xml:space="preserve">
+    <value>CWL8</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8.tooltip" xml:space="preserve">
     <value>/cwl8</value>
@@ -722,11 +746,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.guild" xml:space="preserve">
     <value>Free Company</value>
   </data>
+  <data name="main.chat.channel.guild.abbreviation" xml:space="preserve">
+    <value>FC</value>
+  </data>
   <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
     <value>/fc</value>
   </data>
   <data name="main.chat.channel.linkshell-1" xml:space="preserve">
     <value>Linkshell 1</value>
+  </data>
+  <data name="main.chat.channel.linkshell-1.abbreviation" xml:space="preserve">
+    <value>L1</value>
   </data>
   <data name="main.chat.channel.linkshell-1.tooltip" xml:space="preserve">
     <value>/l1</value>
@@ -734,11 +764,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.linkshell-2" xml:space="preserve">
     <value>Linkshell 2</value>
   </data>
+  <data name="main.chat.channel.linkshell-2.abbreviation" xml:space="preserve">
+    <value>L2</value>
+  </data>
   <data name="main.chat.channel.linkshell-2.tooltip" xml:space="preserve">
     <value>/l2</value>
   </data>
   <data name="main.chat.channel.linkshell-3" xml:space="preserve">
     <value>Linkshell 3</value>
+  </data>
+  <data name="main.chat.channel.linkshell-3.abbreviation" xml:space="preserve">
+    <value>L3</value>
   </data>
   <data name="main.chat.channel.linkshell-3.tooltip" xml:space="preserve">
     <value>/l3</value>
@@ -746,11 +782,17 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.linkshell-4" xml:space="preserve">
     <value>Linkshell 4</value>
   </data>
+  <data name="main.chat.channel.linkshell-4.abbreviation" xml:space="preserve">
+    <value>L4</value>
+  </data>
   <data name="main.chat.channel.linkshell-4.tooltip" xml:space="preserve">
     <value>/l4</value>
   </data>
   <data name="main.chat.channel.linkshell-5" xml:space="preserve">
     <value>Linkshell 5</value>
+  </data>
+  <data name="main.chat.channel.linkshell-5.abbreviation" xml:space="preserve">
+    <value>L5</value>
   </data>
   <data name="main.chat.channel.linkshell-5.tooltip" xml:space="preserve">
     <value>/l5</value>
@@ -758,17 +800,26 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.linkshell-6" xml:space="preserve">
     <value>Linkshell 6</value>
   </data>
+  <data name="main.chat.channel.linkshell-6.abbreviation" xml:space="preserve">
+    <value>L6</value>
+  </data>
   <data name="main.chat.channel.linkshell-6.tooltip" xml:space="preserve">
     <value>/l6</value>
   </data>
   <data name="main.chat.channel.linkshell-7" xml:space="preserve">
     <value>Linkshell 7</value>
   </data>
+  <data name="main.chat.channel.linkshell-7.abbreviation" xml:space="preserve">
+    <value>L7</value>
+  </data>
   <data name="main.chat.channel.linkshell-7.tooltip" xml:space="preserve">
     <value>/l7</value>
   </data>
   <data name="main.chat.channel.linkshell-8" xml:space="preserve">
     <value>Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.linkshell-8.abbreviation" xml:space="preserve">
+    <value>L8</value>
   </data>
   <data name="main.chat.channel.linkshell-8.tooltip" xml:space="preserve">
     <value>/l8</value>

@@ -10,7 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - It's now possible to change the background color of the chat in `Config / App`
 
 - Tabs
-  - You can have as many as you want
+  - They can be configurated in `Config / Chat tabs`
+  
+- More font sizes
+  - Smaller, larger and very large
   
 ### Changed
 - Swapped some old JS Dialogs with custom made ones

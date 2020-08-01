@@ -31,8 +31,7 @@ jQuery(function ($) {
             { channel: Gobchat.ChannelEnum.PARTY, message: '"Say that\'s divided by some *emote characters* but should still be displayed correctly."' },
             { channel: Gobchat.ChannelEnum.PARTY, message: '*An emote mixed with "for some important stuff" but contained in an emote*' },
             { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
-            { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
-            { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the enclosing character* was forgotten.' },
+            { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the scope enclosing character* is missing here' },
             { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types«, of symbols, »to see if they work«' },
             { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types», of symbols, «to see if they work»' },
             { channel: Gobchat.ChannelEnum.PARTY, message: 'Incomplete tokens(' },
@@ -42,7 +41,12 @@ jQuery(function ($) {
 
         textMessages.forEach(e => fireMessageEvent(e))
 
-        const fillMe = Array.from({ length: 20 }, (v, k) => `|Text1 | <Text 2> "Say" ((ooc)) *emote*   | oof |  Say, *emote* and ((ooc)) - ${k + 1} <emote> \u226Btext long\u226A`).map(e => { return { message: e, source: "Di'e I'of-oOdin" } })
+        Object.entries(Gobchat.Channels)
+            .filter(e => e[1].relevant)
+            .map(e => { return { message: `Channel test: ${e[0]}`, channel: e[1].chatChannel, source: "Test Code" } })
+            .forEach(e => fireMessageEvent(e))
+
+        const fillMe = Array.from({ length: 20 }, (v, k) => `"Just some text to fill the chat, this is line <${k + 1}>"`).map(e => { return { message: e, source: "Di'e I'of-oOdin", channel: Gobchat.ChannelEnum.SAY } })
         fillMe.forEach(e => fireMessageEvent(e))
     }
 

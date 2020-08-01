@@ -57,11 +57,17 @@ var Gobchat = (function (Gobchat) {
             GobConfigHelper.bindListener(this._databinding, "behaviour.chattabs.sorting", data => this._manageChatTabs(data))
             GobConfigHelper.bindListener(this._databinding, "behaviour.language", data => {
                 (async () => {
-                    const requestTranslation = Object.entries(Gobchat.Channels).map(e => e.abbreviationId).filter(e => e !== null && e !== undefined)
+                    const channels = Object.entries(Gobchat.Channels)
+                        .map(e => e[1])
+
+                    const requestTranslation = channels
+                        .map(data => data.abbreviationId)
+                        .filter(e => e !== null && e !== undefined)
+
                     const lookup = await goblocale.getAll(requestTranslation)
                     const result = {}
-                    Object.entries(Gobchat.Channels).forEach(entry => {
-                        const data = entry[1]
+
+                    channels.forEach(data => {
                         if (data.abbreviationId)
                             result[data.chatChannel] = lookup[data.abbreviationId]
                     })
