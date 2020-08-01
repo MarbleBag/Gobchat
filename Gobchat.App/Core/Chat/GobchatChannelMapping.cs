@@ -77,27 +77,27 @@ namespace Gobchat.Core.Chat
             var expectedValues = Enum.GetValues(typeof(ChatChannel));
             foreach (ChatChannel expectedChannel in expectedValues)
             {
-                if (!ChatMapping.ContainsKey(expectedChannel))
-                    throw new ArgumentException($"Missing mapping for {expectedChannel}"); //TODO
+                if (!ChatMapping.ContainsKey(expectedChannel)) //if there is a ChatChannel, there needs to be a mapping for config data
+                    throw new ArgumentException($"No mapping for {expectedChannel}");
             }
         }
 
         private static readonly IDictionary<ChatChannel, ChannelData> ChatMapping = new Dictionary<ChatChannel, ChannelData>();
         private static readonly IDictionary<FFXIVChatChannel, ChannelData> ClientMapping = new Dictionary<FFXIVChatChannel, ChannelData>();
 
-        private static ChannelData Map(ChatChannel chatChannel, bool relevant = true, string localeId = null, string configId = null)
+        private static ChannelData Map(ChatChannel chatChannel, bool relevant = true, string translationId = null, string configId = null)
         {
-            return Map(chatChannel, null, relevant, localeId, configId);
+            return Map(chatChannel: chatChannel, clientChannel: null, relevant: relevant, translationId: translationId, configId: configId);
         }
 
-        private static ChannelData Map(ChatChannel chatChannel, FFXIVChatChannel clientChannel, bool relevant = true, string localeId = null, string configId = null)
+        private static ChannelData Map(ChatChannel chatChannel, FFXIVChatChannel clientChannel, bool relevant = true, string translationId = null, string configId = null)
         {
-            return Map(chatChannel, new[] { clientChannel }, relevant, localeId, configId);
+            return Map(chatChannel: chatChannel, clientChannel: new[] { clientChannel }, relevant: relevant, translationId: translationId, configId: configId);
         }
 
-        private static ChannelData Map(ChatChannel chatChannel, FFXIVChatChannel[] clientChannel, bool relevant = true, string localeId = null, string configId = null)
+        private static ChannelData Map(ChatChannel chatChannel, FFXIVChatChannel[] clientChannel, bool relevant = true, string translationId = null, string configId = null)
         {
-            return new ChannelData(chatChannel, relevant, localeId, configId, clientChannel);
+            return new ChannelData(chatChannel: chatChannel, relevant: relevant, translationId: translationId, configId: configId, clientChannel: clientChannel);
         }
 
         public static ChannelData GetChannel(ChatChannel chatChannel)
@@ -122,27 +122,35 @@ namespace Gobchat.Core.Chat
 
     public sealed class ChannelData
     {
-        private static string MakeTranslationId(ChatChannel chatChannel)
+        private static string MakeTranslationId(string chatChannel)
         {
-            var enumName = Enum.GetName(typeof(ChatChannel), chatChannel);
-            enumName = enumName.Replace("_", "-").ToLower(CultureInfo.InvariantCulture);
-            return $"main.chat.channel.{enumName}";
+            return $"main.chat.channel.{chatChannel}";
         }
 
-        private static string MakeConfigId(ChatChannel chatChannel)
+        private static string MakeConfigId(string chatChannel)
         {
-            var enumName = Enum.GetName(typeof(ChatChannel), chatChannel);
-            enumName = enumName.Replace("_", "-").ToLower(CultureInfo.InvariantCulture);
-            return $"style.channel.{enumName}";
+            return $"style.channel.{chatChannel}";
         }
 
         public ChatChannel ChatChannel { get; }
         public FFXIVChatChannel[] ClientChannel { get; private set; } = Array.Empty<FFXIVChatChannel>();
 
+        public string InternalName
+        {
+            get
+            {
+                var enumName = Enum.GetName(typeof(ChatChannel), ChatChannel);
+                return enumName.Replace("_", "-").ToLower(CultureInfo.InvariantCulture);
+            }
+        }
+
         public string TranslationId { get; private set; }
+        public string TooltipId { get => $"{TranslationId}.tooltip"; }
+        public string AbbreviationId { get => $"{TranslationId}.abbreviation"; }
         public string ConfigId { get; private set; }
         public bool Relevant { get; private set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "app internal")]
         public ChannelData(ChatChannel chatChannel, bool relevant, string translationId = null, string configId = null, FFXIVChatChannel[] clientChannel = null)
         {
             ChatChannel = chatChannel;
@@ -151,8 +159,8 @@ namespace Gobchat.Core.Chat
             if (clientChannel != null)
                 ClientChannel = clientChannel;
 
-            TranslationId = (translationId ?? MakeTranslationId(chatChannel)).ToLowerInvariant();
-            ConfigId = (configId ?? MakeConfigId(chatChannel)).ToLowerInvariant();
+            TranslationId = (translationId ?? MakeTranslationId(InternalName)).ToLowerInvariant();
+            ConfigId = (configId ?? MakeConfigId(InternalName)).ToLowerInvariant();
         }
     }
 }

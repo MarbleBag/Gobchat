@@ -30,7 +30,6 @@ namespace Gobchat.Core.Config
 
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.visible", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
@@ -40,6 +39,9 @@ namespace Gobchat.Core.Config
                         if (JsonUtil.TryConvertValueToEnum<Chat.MessageSegmentType>(segment["type"], out var eValue))
                             segment["type"] = new JValue(eValue);
             });
+
+            foreach (var id in JsonUtil.GetKeysIfAvailable(json, "behaviour.chattabs.data"))
+                JsonUtil.ReplaceArrayIfAvailable(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
 
             return json;
         }
@@ -52,10 +54,9 @@ namespace Gobchat.Core.Config
             if (json == null)
                 return null;
 
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.visible", ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
             {
@@ -63,7 +64,7 @@ namespace Gobchat.Core.Config
                 {
                     foreach (var segment in data.Values())
                     {
-                        if (TryConvertEnumToString<Chat.MessageSegmentType>(segment["type"], out var name))
+                        if (JsonUtil.TryConvertEnumToString<Chat.MessageSegmentType>(segment["type"], out var name))
                             segment["type"] = name;
                         else
                             segment["type"] = "SAY";
@@ -71,55 +72,10 @@ namespace Gobchat.Core.Config
                 }
             });
 
+            foreach (var id in JsonUtil.GetKeysIfAvailable(json, "behaviour.chattabs.data"))
+                JsonUtil.ReplaceArrayIfAvailable(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+
             return json;
-        }
-
-        private static JArray ConvertEnumArrayToString<TEnum>(JArray array) where TEnum : struct, IConvertible
-        {
-            var typeT = typeof(TEnum);
-            if (!typeT.IsEnum)
-                throw new ArgumentException("Not an enum");
-            var newArray = new JArray();
-            foreach (var element in array)
-                if (TryConvertEnumToString<TEnum>(element, out var name))
-                    newArray.Add(name.ToUpperInvariant());
-            return newArray;
-        }
-
-        private static bool TryConvertEnumToString<TEnum>(JToken value, out string enumName) where TEnum : struct, IConvertible
-        {
-            enumName = null;
-
-            if (!(value is JValue jValue))
-                return false;
-
-            if (jValue.Value == null)
-                return false;
-
-            var eType = typeof(TEnum);
-
-            if (jValue.Type == JTokenType.Integer || jValue.Type == JTokenType.Bytes)
-            {
-                enumName = Enum.GetName(eType, (int)(long)jValue);
-                return true;
-            }
-
-            if (Enum.IsDefined(eType, jValue.Value))
-            {
-                enumName = Enum.GetName(eType, (int)(long)jValue);
-                return true;
-            }
-
-            if (jValue.Type == JTokenType.String)
-            {
-                if (int.TryParse((string)jValue, out var iValue))
-                {
-                    enumName = Enum.GetName(eType, iValue);
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 

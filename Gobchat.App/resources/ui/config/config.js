@@ -14,19 +14,19 @@
 'use strict';
 
 // import { buildNavigationElement } from "../gobchat/gob-navbar"
-jQuery(function ($) {
-    $("#cmain_saveconfig").on("click", function (e) {
+jQuery(function($) {
+    $("#cmain_saveconfig").on("click", function(e) {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
     });
 
-    $("#cmain_saveandexitconfig").on("click", function (e) {
+    $("#cmain_saveandexitconfig").on("click", function(e) {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
         window.close()
     });
 
-    $("#cmain_cancelconfig").on("click", function (e) {
+    $("#cmain_cancelconfig").on("click", function(e) {
         {
             (async () => {
                 const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.dialog.nav.cancel.text" })
@@ -38,7 +38,7 @@ jQuery(function ($) {
 
     {
         (async () => {
-            window.goblocale = new Gobchat.GobLocaleManager()
+            window.goblocale = new Gobchat.LocaleManager()
             window.goblocale.setLocale(gobconfig.get("behaviour.language"))
 
             const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
@@ -86,7 +86,7 @@ jQuery(function ($) {
         const $navElements = $navBar.find(`.gob-nav-element[${navAttribute}]`)
 
         const awaitPromises = []
-        $navElements.each(function () {
+        $navElements.each(function() {
             const $panelElement = $("<div class='gob-nav-panel-content' />").appendTo($navPanel)
             const pageToLoad = $(this).attr(navAttribute)
             $panelElement.attr(navIdAttribute, pageToLoad)
@@ -95,7 +95,7 @@ jQuery(function ($) {
             if ($(this).hasClass("active"))
                 $panelElement.addClass("active")
 
-            $(this).on("click", function () {
+            $(this).on("click", function() {
                 $navBar.find("> .gob-nav-element.active").removeClass("active")
                 $(this).addClass("active")
                 $navPanel.find("> .gob-nav-panel-content.active").removeClass("active")

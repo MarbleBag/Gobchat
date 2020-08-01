@@ -14,8 +14,6 @@
 'use strict';
 
 var GobConfigHelper = (function (GobConfigHelper, undefined) {
-    GobConfigHelper.ConfigKeyAttribute = "data-gob-configkey"
-
     GobConfigHelper.generateId = function (length, ids) {
         let id = null
         do {
@@ -206,14 +204,6 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
                 return true
             }
         })
-    }
-
-    GobConfigHelper.getConfigKey = function (element) {
-        return $(element).attr(GobConfigHelper.ConfigKeyAttribute)
-    }
-
-    GobConfigHelper.setConfigKey = function (element, configKey) {
-        return $(element).attr(GobConfigHelper.ConfigKeyAttribute, configKey)
     }
 
     GobConfigHelper.makeResetButton = function (element) {

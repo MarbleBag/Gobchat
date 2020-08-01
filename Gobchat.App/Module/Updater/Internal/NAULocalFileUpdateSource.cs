@@ -17,23 +17,23 @@ namespace Gobchat.Module.Updater.Internal
 {
     public sealed class NAULocalFileUpdateSource : NAppUpdate.Framework.Sources.IUpdateSource
     {
-        private string updateFolder;
+        private readonly string _updateFolder;
 
         public NAULocalFileUpdateSource(string updateFolder)
         {
-            this.updateFolder = updateFolder;
+            _updateFolder = updateFolder;
         }
 
         public bool GetData(string filePath, string basePath, Action<NAppUpdate.Framework.Common.UpdateProgressInfo> onProgress, ref string tempLocation)
         {
-            var targetFilePath = System.IO.Path.Combine(updateFolder, filePath);
+            var targetFilePath = System.IO.Path.Combine(_updateFolder, filePath);
             tempLocation = targetFilePath;
             return System.IO.File.Exists(tempLocation);
         }
 
         public string GetUpdatesFeed()
         {
-            return updateFolder;
+            return _updateFolder;
         }
     }
 }

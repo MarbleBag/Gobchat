@@ -78,18 +78,6 @@
 
         <div class="gob-config-group-item">
             <div>
-                <input type="checkbox" id="capp_showTimestamp"
-                       data-gob-configkey="behaviour.showTimestamp"
-                       data-gob-locale-title="config.app.ckb.showtime.tooltip" />
-                <div class=""
-                     data-gob-locale-text="config.app.ckb.showtime"
-                     data-gob-locale-title="config.app.ckb.showtime.tooltip">
-                </div>
-            </div>
-        </div>
-
-        <div class="gob-config-group-item">
-            <div>
                 <input type="checkbox" id="capp_hide"
                        data-gob-configkey="behaviour.hideOnMinimize"
                        data-gob-locale-title="config.app.ckb.autohide.tooltip" />
@@ -320,6 +308,34 @@
                 </tr>
             </table>
         </div>
+
+        <div class="gob-config-group-item">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div data-gob-locale-text="config.app.chatbox.backgroundcolor"
+                                 data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input id="capp_chatbox_backgroundcolor"
+                                       type="text"
+                                       data-gob-configkey="style.chatbox.background-color"
+                                       data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip" />
+                                <button id="capp_chatbox_backgroundcolor_reset"
+                                        class="gob-button-tertiary gob-button-reset"
+                                        data-gob-configkey="style.chatbox.background-color"
+                                        data-gob-locale-title="config.main.resetbutton.tooltip">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="gob-config-group">
@@ -347,15 +363,29 @@
             <div>
                 <div data-gob-locale-text="config.app.fontsize.label"
                      data-gob-locale-title="config.app.fontsize.tooltip"></div>
+
                 <select id="capp_font_size" class="gob-dropdown"
                         data-gob-configkey="style.channel.base.font-size"
                         data-gob-locale-title="config.app.fontsize.tooltip">
+                    <option value="smaller" data-gob-locale-text="config.app.fontsize.smaller"></option>
                     <option value="small" data-gob-locale-text="config.app.fontsize.small"></option>
                     <option value="medium" data-gob-locale-text="config.app.fontsize.medium"></option>
                     <option value="large" data-gob-locale-text="config.app.fontsize.large"></option>
+                    <option value="larger" data-gob-locale-text="config.app.fontsize.larger"></option>
+                    <option value="x-large" data-gob-locale-text="config.app.fontsize.verylarge"></option>
                 </select>
             </div>
         </div>
+
+        <!--
+            x-small: 0.625
+            small: 0.815
+            medium: 1
+            large: 1.125
+            larger: 1.2
+            x-large: 1.5
+            xx-large: 2
+        -->
     </div>
 
     <div class="gob-config-group">
