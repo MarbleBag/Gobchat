@@ -35,27 +35,16 @@ namespace Gobchat.Module.Updater.Internal
             var appContent = GetContent(GobchatContext.ApplicationLocation);
 
             // delete stuff if and only if both lists are not empty, otherwise stuff can really go sideway
-            /*
-             if (appContent.Count > 0 && updateContent.Count > 0)
-              {
-                  foreach (var file in appContent)
-                      if (!updateContent.Contains(file))
-                          // For some reason this task can crash the update process
-                          tasks.Add(new NAUDeleteTask()
-                          {
-                              LocalPath = Path.Combine(GobchatContext.ApplicationLocation, file)
-                          });
-              }
-              */
-
-            /*
-            foreach (var file in appContent)
+            if (appContent.Count > 0 && updateContent.Count > 0)
             {
-                var updateTask = new NAppUpdate.Framework.Tasks.FileUpdateTask();
-                updateTask.LocalPath = file;
-                tasks.Add(updateTask);
+                foreach (var file in appContent)
+                    if (!updateContent.Contains(file))
+                        // For some reason this task can crash the update process
+                        tasks.Add(new NAUDeleteTask()
+                        {
+                            LocalPath = file.Replace(feed, "").TrimStart('\\', ' ') // Path.Combine(GobchatContext.ApplicationLocation, file)
+                        });
             }
-            */
 
             var files = System.IO.Directory.EnumerateFiles(feed, "*", System.IO.SearchOption.AllDirectories)
              .GroupBy(s => System.IO.Path.GetDirectoryName(s));

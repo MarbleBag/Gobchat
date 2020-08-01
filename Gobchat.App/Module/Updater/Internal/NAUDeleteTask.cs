@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Runtime;
 using NAppUpdate.Framework;
 using NAppUpdate.Framework.Common;
 using NAppUpdate.Framework.Sources;
@@ -26,6 +27,7 @@ namespace Gobchat.Module.Updater.Internal
     internal sealed class NAUDeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
     {
         private string _backupPath;
+        private string _targetPath;
 
         [NauField("localPath", "The local path of the file to delete", true)]
         public string LocalPath { get; set; }
@@ -47,19 +49,21 @@ namespace Gobchat.Module.Updater.Internal
             if (string.IsNullOrEmpty(LocalPath))
                 return TaskExecutionStatus.Successful;
 
-            if (!coldRun)
-                return TaskExecutionStatus.RequiresAppRestart;
+            //  if (!coldRun)
+            //     return TaskExecutionStatus.RequiresAppRestart;
 
             _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, LocalPath);
-            if (Directory.Exists(LocalPath))
-                CopyDirectory(LocalPath, _backupPath);
-            else if (File.Exists(LocalPath))
-                CopyFile(LocalPath, _backupPath);
+            _targetPath = System.IO.Path.Combine(GobchatContext.ApplicationLocation, LocalPath);
 
-            if (Directory.Exists(LocalPath))
-                return DeleteFolder(LocalPath, coldRun);
-            else if (File.Exists(LocalPath))
-                return DeleteFile(LocalPath, coldRun);
+            if (Directory.Exists(_targetPath))
+                CopyDirectory(_targetPath, _backupPath);
+            else if (File.Exists(_targetPath))
+                CopyFile(_targetPath, _backupPath);
+
+            if (Directory.Exists(_targetPath))
+                return DeleteFolder(_targetPath, coldRun);
+            else if (File.Exists(_targetPath))
+                return DeleteFile(_targetPath, coldRun);
             else
                 return TaskExecutionStatus.Successful;
         }
@@ -122,18 +126,16 @@ namespace Gobchat.Module.Updater.Internal
             {
                 if (Directory.Exists(_backupPath))
                 {
-                    CopyDirectory(_backupPath, LocalPath);
+                    CopyDirectory(_backupPath, _targetPath);
                     if (Directory.Exists(_backupPath))
                         FileSystem.DeleteDirectory(_backupPath);
                 }
                 else if (File.Exists(_backupPath))
                 {
-                    CopyFile(_backupPath, LocalPath);
+                    CopyFile(_backupPath, _targetPath);
                     if (File.Exists(_backupPath))
                         File.Delete(_backupPath);
                 }
-
-                _backupPath = null;
             }
             catch (Exception)
             {
@@ -147,7 +149,7 @@ namespace Gobchat.Module.Updater.Internal
         {
             string destinationDir = Path.GetDirectoryName(destinationFile);
             FileSystem.CreateDirectoryStructure(destinationDir, false);
-            File.Copy(sourceFile, destinationFile);
+            File.Copy(sourceFile, destinationFile, true);
         }
 
         private static void CopyDirectory(string sourceDirectory, string targetDirectory)
