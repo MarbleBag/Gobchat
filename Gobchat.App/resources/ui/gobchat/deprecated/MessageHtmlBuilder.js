@@ -76,14 +76,14 @@ var Gobchat = (function (Gobchat) {
     }
 
     function getBodyGroupCSSClass(message) {
-        if (message.groupId)
-            return `message-group-body-${message.groupId}`
+        if (message.triggerGroupId)
+            return `message-group-body-${message.triggerGroupId}`
         return null
     }
 
     function getSenderGroupCSSClass(message) {
-        if (message.groupId)
-            return `message-group-sender-${message.groupId}`
+        if (message.triggerGroupId)
+            return `message-group-sender-${message.triggerGroupId}`
         return null
     }
 
@@ -226,7 +226,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         buildHtmlElement(message) {
-            setGroupId(this._config, message)
+            //setGroupId(this._config, message)
 
             const bodyElement = document.createElement("div")
             applyClass(bodyElement, "message-body-base")

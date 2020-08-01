@@ -8,7 +8,7 @@ generated_code  = true
 dotnet_diagnostic.IDE0069.severity = suggestion
 
 # CA1819: Properties should not return arrays
-dotnet_diagnostic.CA1819.severity = suggestion
+dotnet_diagnostic.CA1819.severity = silent
 
 [*.cs]
 

@@ -33,9 +33,6 @@
     const ckbUserMention = $("#capp_userMention")
     GobConfigHelper.bindCheckbox(binding, ckbUserMention)
 
-    const ckbTimestamp = $("#capp_showTimestamp")
-    GobConfigHelper.bindCheckbox(binding, ckbTimestamp)
-
     const ckbHide = $("#capp_hide")
     GobConfigHelper.bindCheckbox(binding, ckbHide)
 
@@ -152,7 +149,7 @@
     // setup profile copy
     const allFields = [
         dpdLanguage, dpdTheme,
-        ckbChatLog, ckbAutodetect, ckbUserMention, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
+        ckbChatLog, ckbAutodetect, ckbUserMention, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
         txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
         txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
         clrChatboxBackground,
@@ -169,3 +166,5 @@
             configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))
         })
 }());
+
+//# sourceURL=config_app.js

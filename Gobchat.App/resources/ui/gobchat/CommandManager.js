@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*******************************************************************************this._config
  * Copyright (C) 2019-2020 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -13,11 +13,9 @@
 
 'use strict'
 
-var Gobchat = (function (Gobchat, undefined) {
+var Gobchat = (function(Gobchat, undefined) {
     class CommandManager {
-        constructor(manager, config) {
-            this._manager = manager
-            this._config = config
+        constructor() {
             this._cmdMap = new Map()
             this._handlers = []
             this.registerCmdHandler(new PlayerGroupCommandHandler())
@@ -45,12 +43,16 @@ var Gobchat = (function (Gobchat, undefined) {
             }
         }
 
+        get config() {
+            return window.gobconfig
+        }
+
         async getTranslation(key) {
-            return await this._manager.localeManager.get(key)
+            return await goblocale.get(key)
         }
 
         async getTranslationAndFormat(key, params) {
-            return await this._manager.localeManager.getAndFormat(key, params)
+            return await goblocale.getAndFormat(key, params)
         }
 
         _getHandler(msg) {
@@ -128,7 +130,7 @@ var Gobchat = (function (Gobchat, undefined) {
                 return
             }
 
-            const gobconfig = commandManager._config
+            const gobconfig = commandManager.config
             const groupsorting = gobconfig.get("behaviour.groups.sorting")
             if (groupIdx <= 0 || groupsorting.length < groupIdx) {
                 commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [1, ${groupsorting.length}]`)
@@ -192,7 +194,7 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         execute(commandManager, commandName, args) {
-            const gobconfig = commandManager._config
+            const gobconfig = commandManager.config
             const profileIds = gobconfig.profiles
 
             if (!Gobchat.isString(args) || args.length == 0) {

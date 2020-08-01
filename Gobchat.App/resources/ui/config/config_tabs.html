@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <button class="gob-button-tertiary gob-button-copypage" id="ctabs_copyprofile"><i class="fas fa-clone"></i></button>
+
+    <div class="gob-config-group" style="overflow-x: auto;">
+        <div>
+            <button id="ctabs_newtab" class="gob-button-secondary">
+                <i class="fas fa-plus"></i>
+                <span data-gob-locale-text="config.tabs.btn.newtab"></span>
+            </button>
+        </div>
+        <table id="ctabs_tabs" class="gob-table gob-table-row-hover gob-table-t-chattab">
+            <thead>
+                <tr>
+                    <th data-gob-locale-text="config.tabs.tabtable.name"></th>
+                    <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
+                    <th data-gob-locale-text="config.tabs.tabtable.actions"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="gob-separator-vertical"></div>
+
+    <div class="gob-config-group" id="ctabs_tab_config">
+        <div class="gob-config-group-label">
+            <span data-gob-locale-text="config.tabs.tab.label"></span>
+            <span>: </span>
+            <span id="ctabs_config_tabname"></span>
+        </div>
+
+        <div class="gob-config-group-item">
+            <div>
+                <input type="checkbox" id="ctabs_formatting_mention"
+                       data-gob-configkey
+                       data-gob-locale-title="config.tabs.tab.mention.tooltip" />
+                <div data-gob-locale-text="config.tabs.tab.mention"
+                     data-gob-locale-title="config.tabs.tab.mention.tooltip">
+                </div>
+            </div>
+        </div>
+
+        <div class="gob-config-group-item">
+            <div>
+                <input type="checkbox" id="ctabs_formatting_roleplay"
+                       data-gob-configkey
+                       data-gob-locale-title="config.tabs.tab.roleplay.tooltip" />
+                <div data-gob-locale-text="config.tabs.tab.roleplay"
+                     data-gob-locale-title="config.tabs.tab.roleplay.tooltip">
+                </div>
+            </div>
+        </div>
+
+        <div class="gob-config-group-item">
+            <div>
+                <input type="checkbox" id="ctabs_formatting_timestamp"
+                       data-gob-configkey
+                       data-gob-locale-title="config.tabs.tab.timestamp.tooltip" />
+                <div data-gob-locale-text="config.tabs.tab.timestamp"
+                     data-gob-locale-title="config.tabs.tab.timestamp.tooltip">
+                </div>
+            </div>
+        </div>
+
+        <div class="gob-config-group-item">
+            <div>
+                <input type="checkbox" id="ctabs_formatting_rangefilter"
+                       data-gob-configkey
+                       data-gob-locale-title="config.tabs.tab.rangefilter.tooltip" />
+                <div data-gob-locale-text="config.tabs.tab.rangefilter"
+                     data-gob-locale-title="config.tabs.tab.rangefilter.tooltip">
+                </div>
+            </div>
+        </div>
+
+        <div class="gob-separator-vertical"></div>
+
+        <div class="gob-config-group" style="overflow-x: auto;">
+            <div class="gob-table-double">
+                <table id="ctabs_tab_channel1" class="gob-table gob-table-t-channel gob-table-row-hover gob-table-stripes-hrzt">
+                    <thead>
+                        <tr>
+                            <th data-gob-locale-text="config.tabs.tabtable.name"></th>
+                            <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <table id="ctabs_tab_channel2" class="gob-table gob-table-t-channel gob-table-row-hover gob-table-stripes-hrzt">
+                    <thead>
+                        <tr>
+                            <th data-gob-locale-text="config.tabs.tabtable.name"></th>
+                            <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <template id="ctabs_template_tblentry">
+        <tr data-gob-entryid>
+            <td>
+                <input type="text" class="tmp_entry_name" />
+            </td>
+            <td>
+                <input class="tmp_entry_visible" type="checkbox" />
+            </td>
+            <td>
+                <button class="gob-button-tertiary tmp_entry_action_config"
+                        data-gob-locale-title="config.tabs.tabtable.action.config">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="gob-button-tertiary tmp_entry_action_mup"
+                        data-gob-locale-title="config.tabs.tabtable.action.up">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="gob-button-tertiary tmp_entry_action_mdown"
+                        data-gob-locale-title="config.tabs.tabtable.action.down">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <button class="gob-button-tertiary tmp_entry_action_delete"
+                        data-gob-locale-title="config.tabs.tabtable.action.delete">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="ctabs_template_channelentry">
+        <tr>
+            <td>
+                <label class="entry-label"></label>
+            </td>
+            <td>
+                <input class="entry-visible" type="checkbox" />
+            </td>
+        </tr>
+    </template>
+
+    <script type="text/javascript" src="config_tabs.js"></script>
+</body>
+</html>

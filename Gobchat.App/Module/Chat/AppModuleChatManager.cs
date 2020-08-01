@@ -66,11 +66,13 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.chat.updateInterval", true, true, ConfigManager_UpdateChatInterval);
             _configManager.AddPropertyChangeListener("behaviour.channel", true, true, ConfigManager_UpdateChannelProperties);
             _configManager.AddPropertyChangeListener("behaviour.segment", true, true, ConfigManager_UpdateFormaterProperties);
+            _configManager.AddPropertyChangeListener("behaviour.groups", true, true, ConfigManager_UpdateTriggerGroupProperties);
             _configManager.AddPropertyChangeListener("behaviour.mentions", true, true, ConfigManager_UpdateMentions);
             _configManager.AddPropertyChangeListener("behaviour.chat.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
             _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
             _configManager.AddPropertyChangeListener("behaviour.mentions.userCanTriggerMention", true, true, ConfigManager_UpdateUserMentionProperties);
+            _configManager.AddPropertyChangeListener("behaviour.chattabs.data", true, true, ConfigManager_UpdateVisibleChannel);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -83,10 +85,12 @@ namespace Gobchat.Module.Chat
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChannelProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateAutodetectProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUserMentionProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateTriggerGroupProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateFormaterProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateVisibleChannel);
 
             _updater.Dispose();
 
@@ -163,10 +167,35 @@ namespace Gobchat.Module.Chat
         {
             try
             {
-                _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
+                // _chatManager.Config.VisibleChannels = config.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.FormatChannels = config.GetProperty<List<long>>("behaviour.channel.roleplay").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.MentionChannels = config.GetProperty<List<long>>("behaviour.channel.mention").Select(i => (ChatChannel)i).ToArray();
                 _chatManager.Config.CutOffChannels = config.GetProperty<List<long>>("behaviour.channel.rangefilter").Select(i => (ChatChannel)i).ToArray();
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
+        }
+
+        private void ConfigManager_UpdateVisibleChannel(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            try
+            {
+                var jTabs = config.GetProperty<JObject>("behaviour.chattabs.data")
+                .Properties()
+                .Select(p => p.Value)
+                .Where(tab => tab.Value<bool>("visible"))
+                .ToList();
+
+                var visibleChannels = jTabs.Select(tab => tab["channel"]["visible"]
+                    .ToObject<List<long>>())
+                    .Select(channel => channel.Select(i => (ChatChannel)i))
+                    .SelectMany(channel => channel)
+                    .ToArray();
+
+                _chatManager.Config.VisibleChannels = visibleChannels;
             }
             catch (Exception e1)
             {
@@ -223,6 +252,28 @@ namespace Gobchat.Module.Chat
             }
         }
 
+        private void ConfigManager_UpdateTriggerGroupProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            try
+            {
+                var ids = config.GetProperty<List<string>>("behaviour.groups.sorting");
+                var list = config.GetProperty<JToken>("behaviour.groups.data");
+                var newValues = new List<TriggerGroup>();
+                foreach (var id in ids)
+                {
+                    var data = list[id];
+                    var format = data.ToObject<TriggerGroup>();
+                    newValues.Add(format);
+                }
+                _chatManager.Config.TriggerGroups = newValues.ToArray();
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
+        }
+
         private void ConfigManager_UpdateMentions(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
             try
@@ -271,7 +322,6 @@ namespace Gobchat.Module.Chat
                 _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
                 _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.rangefilter.cutoff");
                 _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.rangefilter.fadeout");
-                //_chatManager.Config.CutOffConsiderMentions = config.GetProperty<bool>("behaviour.fadeout.mention");
             }
             catch (Exception e1)
             {

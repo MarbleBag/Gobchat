@@ -13,7 +13,7 @@
 
 'use strict'
 
-var GobConfigHelper = (function (GobConfigHelper, undefined) {
+var GobConfigHelper = (function (module, undefined) {
     //Wraps the given delegate inside a profile listener, which only propagates the call if active profile changes.
     function createProfileListener(delegate, profileId) {
         if (Gobchat.isString(profileId)) { //triggers only if the given profile is active
@@ -131,7 +131,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
             const defOptions = {
                 disabled: false,
                 elementKey: "change",
-                configKey: $element.attr(GobConfigHelper.ConfigKeyAttribute),
+                configKey: $element.attr(module.ConfigKeyAttribute),
                 elementGetAccessor: ($element) => $element.val(),
                 elementSetAccessor: ($element, value) => $element.val(value)
             }
@@ -237,15 +237,15 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         }
     }
 
-    GobConfigHelper.makeDatabinding = function (gobconfig) {
+    module.makeDatabinding = function (gobconfig) {
         return new GobconfigBindingContext(gobconfig)
     }
 
-    GobConfigHelper.bindElement = function (bindingContext, element, options) {
+    module.bindElement = function (bindingContext, element, options) {
         return bindingContext.bindElement(element, options)
     }
 
-    GobConfigHelper.bindText = function (bindingContext, element, options) {
+    module.bindText = function (bindingContext, element, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.text(),
             elementSetAccessor: ($element, value) => $element.text(value)
@@ -253,7 +253,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    GobConfigHelper.bindTextCollection = function (bindingContext, element, options) {
+    module.bindTextCollection = function (bindingContext, element, options) {
         const defOptions = {
             joinSequence: ", "
         }
@@ -274,7 +274,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, options)
     }
 
-    GobConfigHelper.bindCheckbox = function (bindingContext, element, options) {
+    module.bindCheckbox = function (bindingContext, element, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.prop("checked"),
             elementSetAccessor: ($element, value) => $element.prop("checked", value)
@@ -283,7 +283,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    GobConfigHelper.bindCheckboxValue = function (bindingContext, element, checkValue, uncheckValue, options) {
+    module.bindCheckboxValue = function (bindingContext, element, checkValue, uncheckValue, options) {
         const defOptions = {
             elementGetAccessor: ($element) => $element.prop("checked") ? checkValue : uncheckValue,
             elementSetAccessor: ($element, value) => $element.prop("checked", value === checkValue)
@@ -292,7 +292,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    GobConfigHelper.bindCheckboxArray = function (bindingContext, element, values, options) {
+    module.bindCheckboxArray = function (bindingContext, element, values, options) {
         const defOptions = {
             disabled: values === null || values === undefined || values.length === 0,
             elementGetAccessor: ($element, event, oldValues) => {
@@ -308,7 +308,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    GobConfigHelper.bindColorSelector = function (bindingContext, element, options) {
+    module.bindColorSelector = function (bindingContext, element, options) {
         const defOptions = {
             elementKey: null,
             elementGetAccessor: null,
@@ -320,14 +320,24 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         return bindingContext.bindElement(element, $.extend(defOptions, options))
     }
 
-    GobConfigHelper.bindDropdown = function (bindingContext, element, options) {
+    module.bindDropdown = function (bindingContext, element, options) {
         //const defOptions = {}
         return bindingContext.bindElement(element, options)
     }
 
-    GobConfigHelper.bindListener = function (bindingContext, configKey, callback) {
+    module.bindListener = function (bindingContext, configKey, callback) {
         return bindingContext.bindConfigListener(configKey, callback)
     }
 
-    return GobConfigHelper
+    module.ConfigKeyAttribute = "data-gob-configkey"
+
+    module.getConfigKey = function (element) {
+        return $(element).attr(module.ConfigKeyAttribute)
+    }
+
+    module.setConfigKey = function (element, configKey) {
+        return $(element).attr(module.ConfigKeyAttribute, configKey)
+    }
+
+    return module
 }(GobConfigHelper || {}));

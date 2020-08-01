@@ -10,6 +10,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
+
+@import "ffxiv_style.css";
+
 :root {
     --text-regular-color: #855b43;
     --text-regular-shadow: .5px 0px 1px #ffe8bf;
@@ -106,6 +109,10 @@
 
 .gob-table-row-hover > tbody > tr:hover {
     background-image: linear-gradient(135deg, #af631b7d, #af631b26 80%);
+}
+
+.gob-table > tbody > tr.active {
+    background-image: var(--element-selection-active);
 }
 
 /* button styles */

@@ -56,15 +56,15 @@ namespace Gobchat.Core.Chat
             {
                 var marker = new SegmentMarker();
                 replacer.Segment(marker, messageSegment.Type, messageSegment.Text);
+                marker.Finish();
 
-                var replaceSegments = marker.Count > 0;
-                if (!replaceSegments)
+                var anyReplacements = marker.Count > 0;
+                if (!anyReplacements) // no changes? Write unchanged message and skip rest of loop
                 {
                     message.Content.Add(messageSegment);
                     continue;
                 }
 
-                marker.Finish();
                 foreach (var mark in marker.Marks)
                 {
                     var substringStart = mark.Start;
@@ -97,7 +97,7 @@ namespace Gobchat.Core.Chat
 
         public Mark Mark { get; private set; }
 
-        public int Count { get => _marks.Count; }
+        public int Count { get => _marks.Count + (Mark == null ? 0 : 1); }
 
         private readonly List<Mark> _marks = new List<Mark>();
 
