@@ -72,7 +72,9 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
             _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
             _configManager.AddPropertyChangeListener("behaviour.mentions.userCanTriggerMention", true, true, ConfigManager_UpdateUserMentionProperties);
+
             _configManager.AddPropertyChangeListener("behaviour.chattabs.data", true, true, ConfigManager_UpdateVisibleChannel);
+            _configManager.AddPropertyChangeListener("behaviour.chattabs.data", true, true, ConfigManager_UpdateUpdateRangeFilterActive);
 
             _container.Register<IChatManager>((c, p) => _chatManager);
 
@@ -90,7 +92,9 @@ namespace Gobchat.Module.Chat
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
+
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateVisibleChannel);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUpdateRangeFilterActive);
 
             _updater.Dispose();
 
@@ -183,14 +187,9 @@ namespace Gobchat.Module.Chat
         {
             try
             {
-                var jTabs = config.GetProperty<JObject>("behaviour.chattabs.data")
-                .Properties()
-                .Select(p => p.Value)
-                .Where(tab => tab.Value<bool>("visible"))
-                .ToList();
-
-                var visibleChannels = jTabs.Select(tab => tab["channel"]["visible"]
-                    .ToObject<List<long>>())
+                var jTabs = GetVisibleChatTabs(config);
+                var visibleChannels = jTabs
+                    .Select(tab => tab["channel"]["visible"].ToObject<List<long>>())
                     .Select(channel => channel.Select(i => (ChatChannel)i))
                     .SelectMany(channel => channel)
                     .ToArray();
@@ -202,6 +201,30 @@ namespace Gobchat.Module.Chat
                 logger.Error(e1);
                 throw;
             }
+        }
+
+        private void ConfigManager_UpdateUpdateRangeFilterActive(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            try
+            {
+                var jTabs = GetVisibleChatTabs(config);
+                var activateRangeFilter = jTabs.Any(tab => tab["formatting"]["rangefilter"].ToObject<bool>());
+                _chatManager.Config.EnableCutOff = activateRangeFilter;
+            }
+            catch (Exception e1)
+            {
+                logger.Error(e1);
+                throw;
+            }
+        }
+
+        private static List<JToken> GetVisibleChatTabs(IConfigManager config)
+        {
+            return config.GetProperty<JObject>("behaviour.chattabs.data")
+               .Properties()
+               .Select(p => p.Value)
+               .Where(tab => tab.Value<bool>("visible"))
+               .ToList();
         }
 
         private void ConfigManager_UpdateAutodetectProperties(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
@@ -290,7 +313,7 @@ namespace Gobchat.Module.Chat
                 }
 
                 var newMentions = mentions.ToArray();
-                logger.Trace(() => $"Set mentions to: {newMentions}");
+                logger.Debug(() => $"Set mentions to: {newMentions}");
                 _chatManager.Config.Mentions = newMentions;
             }
             catch (Exception e1)
@@ -319,7 +342,7 @@ namespace Gobchat.Module.Chat
         {
             try
             {
-                _chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
+                //_chatManager.Config.EnableCutOff = config.GetProperty<bool>("behaviour.rangefilter.active");
                 _chatManager.Config.CutOffDistance = config.GetProperty<long>("behaviour.rangefilter.cutoff");
                 _chatManager.Config.FadeOutDistance = config.GetProperty<long>("behaviour.rangefilter.fadeout");
             }

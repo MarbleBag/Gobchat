@@ -29,6 +29,8 @@ namespace Gobchat.Core.Config
 
             JsonUtil.Remove(dst, "behaviour.channel.visible");
             JsonUtil.Remove(dst, "behaviour.showTimestamp");
+            JsonUtil.Remove(dst, "behaviour.rangefilter.active");
+
             JsonUtil.MoveIfAvailable(dst, "behaviour.autodetectEmoteInSay", dst, "behaviour.chat.autodetectEmoteInSay");
 
             return dst;

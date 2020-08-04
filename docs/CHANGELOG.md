@@ -2,14 +2,19 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## Unreleased
+### Changed
+- Rangefilter
+  - Removed setting to activate/deactivate in `Config / App`
+
 ## [1.8.0-1] - 2020.08.01
 ### Added
 - Chat
-  - It's now possible to change the background color of the chat in 'Config / App'
+  - It's now possible to change the background color of the chat in `Config / App`
 
 
 - Chat tabs
-  - Configuration can be found in 'Config / Chat tabs'
+  - Configuration can be found in `Config / Chat tabs`
   - Chat tab bar does currently not support scrolling, the number of tabs is limited by the width of the window
 
 

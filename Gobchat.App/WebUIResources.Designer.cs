@@ -195,7 +195,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclude mentions.
+        ///   Looks up a localized string similar to Exclude mentions from range filter.
         /// </summary>
         internal static string config_app_ckb_mentions {
             get {
@@ -209,24 +209,6 @@ namespace Gobchat {
         internal static string config_app_ckb_mentions_tooltip {
             get {
                 return ResourceManager.GetString("config.app.ckb.mentions.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range filter.
-        /// </summary>
-        internal static string config_app_ckb_rangefilter {
-            get {
-                return ResourceManager.GetString("config.app.ckb.rangefilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_rangefilter_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.rangefilter.tooltip", resourceCulture);
             }
         }
         
@@ -1423,6 +1405,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_mention_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.mention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply rangefilter.
         /// </summary>
         internal static string config_tabs_tab_rangefilter {
@@ -1432,11 +1423,29 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_rangefilter_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.rangefilter.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply roleplay formatting.
         /// </summary>
         internal static string config_tabs_tab_roleplay {
             get {
                 return ResourceManager.GetString("config.tabs.tab.roleplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_roleplay_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.roleplay.tooltip", resourceCulture);
             }
         }
         

@@ -130,7 +130,6 @@
       "userCanTriggerMention": false
     },
     "rangefilter": {
-      "active": false,
       "cutoff": 24,
       "fadeout": 16,
       "endopacity": 30,

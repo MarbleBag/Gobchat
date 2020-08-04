@@ -55,14 +55,6 @@
     const ckbActorActive = $("#capp_actor_updateActive")
     GobConfigHelper.bindCheckbox(binding, ckbActorActive)
 
-    const ckbRangeFilterActive = $("#capp_rangefilter_active")
-    GobConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
-
-    binding.bindConfigListener(GobConfigHelper.getConfigKey(ckbRangeFilterActive), value => {
-        //ckbRangeFilterMention.attr("disabled", !value)
-        $("[for='capp_rangefilter_active']").toggleClass("disabled", !value)
-    })
-
     const ckbRangeFilterMention = $("#capp_rangefilter_mention")
     GobConfigHelper.bindCheckbox(binding, ckbRangeFilterMention)
 
@@ -149,7 +141,7 @@
     // setup profile copy
     const allFields = [
         dpdLanguage, dpdTheme,
-        ckbChatLog, ckbAutodetect, ckbUserMention, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
+        ckbChatLog, ckbAutodetect, ckbUserMention, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterMention,
         txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
         txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
         clrChatboxBackground,

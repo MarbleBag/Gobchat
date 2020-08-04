@@ -162,10 +162,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt</value>
   </data>
   <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Erwähnungen nicht filtern</value>
-  </data>
-  <data name="config.app.ckb.rangefilter" xml:space="preserve">
-    <value>Reichweitenfilter</value>
+    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
