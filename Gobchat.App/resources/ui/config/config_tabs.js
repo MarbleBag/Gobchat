@@ -73,8 +73,10 @@
         const $entryVisible = $entry.find(".tmp_entry_visible")
         GobConfigHelper.setConfigKey($entryVisible, `${entryConfigKey}.visible`)
         GobConfigHelper.bindCheckbox(binding, $entryVisible)
+        $entryVisible.on("click", function (event) { event.stopPropagation() })
 
         $entry.find(".tmp_entry_action_config").on("click", function (event) {
+            event.stopPropagation()
             buildConfig(entryId)
         })
 
@@ -105,7 +107,8 @@
         const entryIds = gobconfig.get(keyTabsSorting)
         $entry.find(".tmp_entry_action_mup")
             .toggleClass("disabled", entryIds.indexOf(entryId) === 0)
-            .on("click", function () {
+            .on("click", function (event) {
+                event.stopPropagation()
                 const entryIds = gobconfig.get(keyTabsSorting)
                 const idx = entryIds.indexOf(entryId)
                 swapArrayIndex(entryIds, idx, idx - 1)
@@ -114,12 +117,18 @@
 
         $entry.find(".tmp_entry_action_mdown")
             .toggleClass("disabled", entryIds.indexOf(entryId) === entryIds.length - 1)
-            .on("click", function () {
+            .on("click", function (event) {
+                event.stopPropagation()
                 const entryIds = gobconfig.get(keyTabsSorting)
                 const idx = entryIds.indexOf(entryId)
                 swapArrayIndex(entryIds, idx, idx + 1)
                 gobconfig.set(keyTabsSorting, entryIds)
             })
+
+        $entry.on("click", function (event) {
+            event.stopPropagation()
+            buildConfig(entryId)
+        })
 
         binding.initialize()
     }
