@@ -643,7 +643,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
                 let indexOffset = propertyPath.length
                 while (true) {
-                    indexOffset = propertyPath.lastIndexOf(".", indexOffset)
+                    indexOffset = propertyPath.lastIndexOf(".", indexOffset - 1) // lastIndexOf includes the given end index
                     if (indexOffset === -1) break
                     const path = propertyPath.substring(0, indexOffset)
                     if (splitted.has(path)) break
