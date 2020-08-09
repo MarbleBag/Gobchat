@@ -19,6 +19,8 @@ namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessageBuilder
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly ChatChannel[] PlayerChannels = {
         ChatChannel.Say, ChatChannel.Emote, ChatChannel.Yell, ChatChannel.Shout, ChatChannel.TellSend, ChatChannel.TellRecieve, ChatChannel.Party, ChatChannel.Guild, ChatChannel.Alliance,
         ChatChannel.AnimatedEmote,
@@ -158,7 +160,15 @@ namespace Gobchat.Core.Chat
             if (scanForMentions)
             {
                 _mentionFinder.MarkMentions(chatMessage);
-                chatMessage.ContainsMentions = chatMessage.Content.Any(msg => msg.Type == MessageSegmentType.Mention);
+            }
+            else
+            {
+                logger.Debug(() =>
+                {
+                    var userReason = !ExcludeUserMention && chatMessage.Source.IsUser;
+                    var channelReason = !_mentionChannels.Contains(chatMessage.Channel);
+                    return $"No mention scanning reason: User={userReason}, Channel={channelReason}";
+                });
             }
 
             SetDefaultTypes(chatMessage);
