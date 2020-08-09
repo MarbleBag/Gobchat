@@ -13,6 +13,8 @@
 
 'use strict';
 
+// Custom element 'stacked-panel'
+// Will only show one of its children at any time and hides everything else. The child can either be specified via id or index.
 (function () {
     function getActiveElement($base) {
         return $base.children("active:visible")
@@ -210,7 +212,8 @@
     })
 }());
 
-(function () { // input field with drop down
+// input field with drop down
+(function () {
     const template = `
         <div class="wc-si-options" style="display:none;">
             <slot></slot>
