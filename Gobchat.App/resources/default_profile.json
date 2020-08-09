@@ -145,6 +145,10 @@
       "autodetectEmoteInSay": true
     },
     "chattabs": {
+      "effect": {
+        "message": 1,
+        "mention": 2
+      },
       "sorting": [ "chat", "sys" ],
       "data": {
         "chat": {
