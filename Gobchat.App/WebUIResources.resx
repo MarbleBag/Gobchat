@@ -569,6 +569,27 @@ Restoration is final after clicking save.</value>
   <data name="config.tabs.btn.newtab" xml:space="preserve">
     <value>Add new tab</value>
   </data>
+  <data name="config.tabs.effect.0" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="config.tabs.effect.1" xml:space="preserve">
+    <value>Highlight</value>
+  </data>
+  <data name="config.tabs.effect.2" xml:space="preserve">
+    <value>Blink</value>
+  </data>
+  <data name="config.tabs.effect.mention" xml:space="preserve">
+    <value>Effect on mention</value>
+  </data>
+  <data name="config.tabs.effect.mention.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.effect.message" xml:space="preserve">
+    <value>Effect on message</value>
+  </data>
+  <data name="config.tabs.effect.message.tooltip" xml:space="preserve">
+    <value />
+  </data>
   <data name="config.tabs.tab.label" xml:space="preserve">
     <value>Selected tab</value>
   </data>

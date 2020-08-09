@@ -1387,6 +1387,69 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string config_tabs_effect_0 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlight.
+        /// </summary>
+        internal static string config_tabs_effect_1 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blink.
+        /// </summary>
+        internal static string config_tabs_effect_2 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effect on mention.
+        /// </summary>
+        internal static string config_tabs_effect_mention {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_effect_mention_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.mention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effect on message.
+        /// </summary>
+        internal static string config_tabs_effect_message {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_effect_message_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.message.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected tab.
         /// </summary>
         internal static string config_tabs_tab_label {
