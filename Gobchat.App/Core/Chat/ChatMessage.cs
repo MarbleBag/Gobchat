@@ -22,7 +22,7 @@ namespace Gobchat.Core.Chat
         public ChatChannel Channel { get; set; } = ChatChannel.None;
         public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
 
-        public bool ContainsMentions { get; set; } = false;
+        public bool ContainsMentions { get => Content.Any(e => e.Type == MessageSegmentType.Mention); }
 
         public ChatMessage()
         {
@@ -30,7 +30,7 @@ namespace Gobchat.Core.Chat
 
         public override string ToString()
         {
-            return $"ChatMessage[{Source.Original}: {string.Join("", Content.Select(c => c.Text))}]";
+            return $"[{nameof(Source)}={Source}; {nameof(Timestamp)}={Timestamp}; {nameof(Channel)}={Channel}; {nameof(ContainsMentions)}={ContainsMentions}; {nameof(Content)}[{string.Join("", Content.Select(c => c.ToString()))}]]";
         }
     }
 
@@ -50,6 +50,11 @@ namespace Gobchat.Core.Chat
         {
             Original = source;
         }
+
+        public override string ToString()
+        {
+            return $"[{nameof(Original)}={Original}; {nameof(CharacterName)}={CharacterName}; {nameof(TriggerGroupId)}={TriggerGroupId}; {nameof(FfGroup)}={FfGroup}; {nameof(Party)}={Party}; {nameof(Alliance)}={Alliance}; {nameof(Visibility)}={Visibility}; {nameof(IsAPlayer)}={IsAPlayer}; {nameof(IsUser)}={IsUser}]";
+        }
     }
 
     public sealed class MessageSegment
@@ -65,7 +70,7 @@ namespace Gobchat.Core.Chat
 
         public override string ToString()
         {
-            return $"[{Type}] {Text}";
+            return $"[{Type}; {Text}]";
         }
     }
 }
