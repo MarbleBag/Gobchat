@@ -87,7 +87,7 @@ namespace Gobchat.Core.Config
             IConfigUpgrade bestUpgrade = null;
             foreach (var upgrade in _upgrades)
             {
-                if (upgrade.MinVersion < version || upgrade.MaxVersion > version)
+                if (version < upgrade.MinVersion || upgrade.MaxVersion < version)
                     continue;
 
                 if (bestUpgrade == null || bestUpgrade.TargetVersion < upgrade.TargetVersion)
