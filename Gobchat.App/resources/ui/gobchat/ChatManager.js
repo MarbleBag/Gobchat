@@ -14,14 +14,6 @@
 'use strict'
 
 var Gobchat = (function (Gobchat) {
-    function getChatPanel(base) {
-        return $(base).find(".chat-panel > *").first()
-    }
-
-    function getChatTabBar(base) {
-        return $(base).find(".chat-tabbar")
-    }
-
     class ChatboxManager {
         constructor() {
             this._initialized = false
@@ -49,12 +41,16 @@ var Gobchat = (function (Gobchat) {
             this._messageHtmlBuilder = new Gobchat.MessageHtmlBuilder(gobconfig)
             this._messageSound = new Gobchat.MessageSoundPlayer(gobconfig)
 
-            this._scrollControl = new ScrollControl()
-            this._scrollControl.control(getChatPanel(this._$target))
+            this._chatControl = new ChatTabControl(this._databinding)
+            this._chatControl.controls(
+                {
+                    navBar: this._$target.find(".js-chattabs"),
+                    navPanel: this._$target.find(".js-chat-history")
+                }
+            )
 
             this.updateStyle() //TODO
 
-            GobConfigHelper.bindListener(this._databinding, "behaviour.chattabs.sorting", data => this._manageChatTabs(data))
             GobConfigHelper.bindListener(this._databinding, "behaviour.language", data => {
                 (async () => {
                     const channels = Object.entries(Gobchat.Channels)
@@ -84,7 +80,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         scrollToBottomIfNeeded() {
-            this._scrollControl.scrollToBottomIfNeeded()
+            this._chatControl.scrollToBottomIfNeeded()
         }
 
         showGobInfo(value) {
@@ -93,93 +89,6 @@ var Gobchat = (function (Gobchat) {
 
         showGobError(value) {
             this._hideError = !value
-        }
-
-        _manageChatTabs(tabIds) {
-            const $tabBar = getChatTabBar(this._$target)
-            const $chatPanel = getChatPanel(this._$target)
-            const tabData = this._tabData
-            const scrollControl = this._scrollControl
-            const tabsModel = gobconfig.get("behaviour.chattabs.data")
-
-            tabIds = tabIds.filter(id => tabsModel[id].visible) //only show tabs which are visible
-
-            function activateChatTab(newTabId) {
-                const activeTabId = $chatPanel.attr("data-gob-activetab") || ""
-                storeTabSettings(activeTabId)
-                setTabActive(activeTabId, newTabId)
-                restoreTabSettings(newTabId)
-                $chatPanel.attr("data-gob-activetab", newTabId)
-            }
-
-            function storeTabSettings(tabId) {
-                if (tabId in tabData) {
-                    const data = tabData[tabId]
-                    data.scrollPosition = scrollControl.isScrolledToBottom ? -1 : scrollControl.scrollPosition
-                }
-            }
-
-            function setTabActive(oldTabId, newTabId) {
-                $chatPanel
-                    .removeClass(`chat-tab-${oldTabId}`)
-                    .addClass(`chat-tab-${newTabId}`)
-
-                $tabBar.children().removeClass("active")
-                $tabBar.children(`[data-gob-tab-id=${newTabId}]`).addClass("active")
-            }
-
-            function restoreTabSettings(tabId) {
-                if (tabId in tabData) {
-                    const data = tabData[tabId]
-                    if (data.scrollPosition < 0)
-                        scrollControl.scrollToBottom(true)
-                    else
-                        scrollControl.scrollToPosition(data.scrollPosition, true)
-                }
-            }
-
-            // remove old tabs data
-            {
-                const unusedTabs = Object.keys(tabData).filter(id => !_.includes(tabIds, id))
-                unusedTabs.forEach(id => delete tabData[id])
-            }
-
-            // add new tabs data
-            {
-                const activeTabIds = Object.keys(tabData)
-                const newTabIds = tabIds.filter(id => !_.includes(activeTabIds, id))
-                newTabIds.forEach(id => tabData[id] = {
-                    scrollPosition: -1 //a number below 0 means scroll to bottom on activation
-                })
-            }
-
-            //rebuild buttons in the correct order
-            {
-                $tabBar.empty()
-                tabIds.forEach(id => {
-                    $("<button/>")
-                        .appendTo($tabBar)
-                        .attr("data-gob-tab-id", id)
-                        .addClass("chat-tabnav-btn")
-                        .on("click", function () {
-                            const tabId = $(this).attr("data-gob-tab-id")
-                            activateChatTab(tabId)
-                        })
-                        .append(
-                            $("<span></span>").html(Gobchat.encodeHtmlEntities(tabsModel[id].name))
-                        )
-                })
-            }
-
-            // check if any tab is active, otherwise activate the first in order
-            {
-                let activeTab = $chatPanel.attr("data-gob-activetab") || ""
-                if (!(activeTab in tabData) && tabIds.length > 0) {
-                    activeTab = tabIds[0]
-                }
-                //ensure everything is set
-                activateChatTab(activeTab)
-            }
         }
 
         _onNewMessageEvent(event) {
@@ -203,14 +112,444 @@ var Gobchat = (function (Gobchat) {
             }
 
             const messageHtmlElement = this._messageHtmlBuilder.buildHtmlElement(message)
-            getChatPanel(this._$target).append(messageHtmlElement)
-            this._scrollControl.scrollToBottomIfNeeded()
+
+            this._chatControl.getChatPanel().append(messageHtmlElement)
+            this._chatControl.scrollToBottomIfNeeded()
+            this._chatControl.setButtonAnimation(message.channel, message.containsMentions)
 
             this._messageSound.checkForSound(message)
         }
     }
     Gobchat.ChatboxManager = ChatboxManager
 
+    class ChatTabControl {
+        // this class was not written with the intention to be ever removed from the stack
+
+        constructor(databinding) {
+            if (!databinding)
+                throw new Error("'databinding' can't be null")
+
+            this._$navBar = $()
+            this._$navPanel = $()
+
+            this._navPanelData = {}
+            this._channelToTabMap = {}
+
+            this._tabEffect = {
+                message: null,
+                mention: null
+            }
+
+            this._navBarControl = new TabBarControl()
+            this._scrollControl = new ScrollControl()
+
+            const control = this
+            this._$onTabActivation = function (evt) {
+                control._switchToTab(evt.detail.oldValue, evt.detail.newValue)
+            }
+
+            GobConfigHelper.bindListener(databinding, "behaviour.chattabs", config => this._updateNavbarContent(config))
+            GobConfigHelper.bindListener(databinding, "behaviour.chattabs.data", data => this._buildChannelToTabMap(data))
+            GobConfigHelper.bindListener(databinding, "behaviour.chattabs.data", data => this._updateNavPanelData(data))
+            GobConfigHelper.bindListener(databinding, "behaviour.chattabs.effect", data => this._updateTabEffects(data))
+        }
+
+        setButtonAnimation(channel, hasMention) {
+            const effectMessage = this._tabEffect.message
+            const effectMention = this._tabEffect.mention
+
+            const affectedTabs = this._channelToTabMap[channel] || []
+            affectedTabs.forEach(id => {
+                const $tabs = this._navBarControl.getTab(id)
+                    .filter(":not(.active)")
+
+                if ($tabs.length === 0)
+                    return
+
+                if (hasMention && effectMention) {
+                    $tabs
+                        .filter(`:not(.${effectMention})`)
+                        .addClass(effectMention)
+                        .on("click.tab.effects.mention", function () {
+                            $(this).off("click.tab.effects.mention")
+                                .removeClass(effectMention)
+                        })
+                    return //done
+                }
+
+                if (effectMessage) {
+                    $tabs
+                        .filter(`:not(.${effectMessage})`)
+                        .addClass(effectMessage)
+                        .on("click.tab.effects.message", function () {
+                            $(this).off("click.tab.effects.message")
+                                .removeClass(effectMessage)
+                        })
+                    return //done
+                }
+            })
+        }
+
+        getChatPanel() {
+            return this._$navPanel
+        }
+
+        scrollToBottomIfNeeded() {
+            this._scrollControl.scrollToBottomIfNeeded()
+        }
+
+        controls({ navBar, navPanel }) {
+            if (this._initialized)
+                this._unbindControls()
+
+            this._initialized = true
+
+            this._$navPanel = $(navPanel)
+            this._$navBar = $(navBar)
+
+            this._$navBar.on("change", this._$onTabActivation)
+
+            this._scrollControl.controls(this._$navPanel)
+            this._navBarControl.controls(this._$navBar)
+        }
+
+        _unbindControls() {
+            if (this._$navBar)
+                this._$navBar.off("change", this._$onTabActivation)
+
+            this._$navBar = $()
+            this._$navPanel = $()
+
+            this._scrollControl.controls(null)
+            this._navBarControl.controls(null)
+
+            this._navPanelData = {}
+
+            this._initialized = false
+        }
+
+        _switchToTab(deactivateId, activateId) {
+            // store old scroll position
+            if (deactivateId in this._navPanelData) {
+                const data = this._navPanelData[deactivateId]
+                data.scrollPosition = this._scrollControl.isScrolledToBottom ? -1 : this._scrollControl.scrollPosition
+            }
+
+            // set css class for formatting
+            this._$navPanel
+                .removeClass(`chat-tab-${deactivateId}`)
+                .addClass(`chat-tab-${activateId}`)
+
+            // restore new scroll position
+            if (activateId in this._navPanelData) {
+                const data = this._navPanelData[activateId]
+                if (data.scrollPosition < 0)
+                    this._scrollControl.scrollToBottom(true)
+                else
+                    this._scrollControl.scrollToPosition(data.scrollPosition, true)
+            }
+        }
+
+        _buildChannelToTabMap(tabModels) {
+            this._channelToTabMap = {}
+
+            Object.entries(tabModels).forEach(e => {
+                const model = e[1]
+                if (!model.visible)
+                    return
+
+                model.channel.visible.forEach(c => {
+                    if (c in this._channelToTabMap) {
+                        this._channelToTabMap[c].push(model.id)
+                    } else {
+                        this._channelToTabMap[c] = [model.id]
+                    }
+                })
+            })
+        }
+
+        _updateTabEffects(effects) {
+            function getCssClass(type) {
+                switch (type) {
+                    case 0: return null
+                    case 1: return "tab-effect-highligt"
+                    case 2: return "tab-effect-blink"
+                    default: return null
+                }
+            }
+
+            this._tabEffect.message = getCssClass(effects.message)
+            this._tabEffect.mention = getCssClass(effects.mention)
+        }
+
+        _updateNavPanelData(tabModels) {
+            const storedData = this._navPanelData;
+
+            // remove old tabs data
+            {
+                const unusedTabs = Object.keys(storedData).filter(id => !(id in tabModels))
+                unusedTabs.forEach(id => delete storedData[id])
+            }
+
+            // add new tabs data
+            {
+                const newTabIds = Object.keys(tabModels).filter(id => !(id in storedData))
+                newTabIds.forEach(id => storedData[id] = {
+                    scrollPosition: -1 //a number below 0 means scroll to bottom on activation
+                })
+            }
+        }
+
+        _updateNavbarContent(config) {
+            const models = config["data"]
+            const sorting = config["sorting"]
+
+            const entries = sorting
+                .filter(id => models[id].visible)
+                .map(id => { return { id: id, name: models[id].name } })
+
+            this._navBarControl.updateTabs(entries)
+        }
+    }
+
+    // Controls the content of a Tabbar, scrolling and animation.
+    // The controlled tabbar element will fire a 'change' event on any button press
+    class TabBarControl {
+        constructor() {
+            this._initialized = false
+
+            this._activeId = null
+            this._$element = $()
+            this._$btnPanel = $()
+
+            const control = this
+
+            this._$onWheel = function (evt) {
+                evt = evt.originalEvent
+                control._scrollTab(evt.deltaY > 0 ? 1 : -1)
+            } //turns a vertical scroll into horizontal
+
+            this._$onBtnScroll = function (evt) {
+                control._scrollTab($(this).hasClass("js-nav-right") ? 1 : -1)
+            }
+        }
+
+        controls(element) {
+            if (this._initialized)
+                this._unbindControls()
+
+            if (!element)
+                return
+
+            this._initialized = true
+            this._$element = $(element)
+            this._$btnPanel = $(element).find(".js-nav-content")
+
+            this._$element.on("wheel", this._$onWheel)
+            this._$element.find(".js-nav-left,.js-nav-right").on("click", this._$onBtnScroll)
+        }
+
+        getTab(idOrIndx) {
+            return this._getTab(idOrIndx)
+        }
+
+        removeTab(id) {
+            if (this._removeTab(id) && this.getActiveTab() === id)
+                this.activateTab(0)
+        }
+
+        removeAllTabs() {
+            this._removeAllTabs()
+            this.activateTab(0)
+        }
+
+        updateTabLabel(id, name) {
+            this._$btnPanel.find(`[data-gob-tab-id=${id}] > span`).html(Gobchat.encodeHtmlEntities(name))
+        }
+
+        updateTabs(entries) {
+            const activeTabId = this.getActiveTab()
+
+            // while more complex then a removeAll() and readding tabs, this preserves all changes to the tab buttons, including any animations
+
+            const updateIds = entries.map(e => e.id)
+            const allTabs = this.getAllTabIds()
+            const tabsToRemove = allTabs.filter(id => !_.includes(updateIds, id))
+
+            entries.forEach(entry => {
+                if (_.includes(allTabs, entry.id))
+                    this.updateTabLabel(entry.id, entry.name)
+                else
+                    this._addTab(entry.id, entry.name)
+            })
+
+            tabsToRemove.forEach(id => this._removeTab(id))
+
+            this.sortTabs(updateIds)
+
+            // this._removeAllTabs()
+            // entries.forEach(entry => this._addTab(entry.id, entry.name))
+
+            // if there was no active tab or it can't be reactivated, try to activate the first one
+            if (activeTabId === null || !this.activateTab(activeTabId))
+                this.activateTab(0)
+
+            this._scrollTab(0)
+        }
+
+        getAllTabIds() {
+            const result = []
+            this._$btnPanel.children().each(function () {
+                const id = $(this).attr("data-gob-tab-id")
+                result.push(id)
+            })
+            return result
+        }
+
+        getTabCount() {
+            return this._$btnPanel.children().length
+        }
+
+        getActiveTab() {
+            return this._activeId
+        }
+
+        // activates the tab with the given id or index, returns true if at least one tab can be activated
+        activateTab(idOrIdx) {
+            const $btn = this._getTab(idOrIdx)
+            this._activateTab($btn)
+            return $btn.length > 0
+        }
+
+        sortTabs(ids) {
+            const $tabBar = this._$btnPanel
+            const $buttons = $tabBar.children().detach()
+            const lookup = {}
+            $buttons.each(function () {
+                const id = $(this).attr("data-gob-tab-id")
+                lookup[id] = $(this)
+            })
+
+            ids.forEach(id => {
+                const $btn = lookup[id]
+                if ($btn) {
+                    $btn.appendTo($tabBar)
+                    delete lookup[id]
+                }
+            })
+
+            //Add unsorted btns to the end
+            Object.entries(lookup).forEach(e => $tabBar.append(e[1]))
+        }
+
+        //not perfect, it would be nice to be able to scroll to the 'next' element or to scroll an element into view
+        _scrollTab(direction) {
+            const $btnPanel = this._$btnPanel
+            const $element = this._$element
+            let position = $btnPanel.scrollLeft()
+
+            const scrollDistance = Math.max(10, (this._$btnPanel.width() / 2))
+
+            if (direction < 0)
+                position -= scrollDistance
+            else if (direction > 0)
+                position += scrollDistance
+
+            $btnPanel.animate({
+                scrollLeft: position
+            }, 50);
+
+            {
+                const isAtLeftBorder = position <= 0
+                $element.find(".js-nav-left")
+                    .toggleClass("disabled", isAtLeftBorder)
+            } // update left button
+
+            {
+                const scrollWidth = $btnPanel.prop("scrollWidth") || 0
+                const clientWidth = $btnPanel.prop("clientWidth") || 0
+                const isAtRightBorder = (scrollWidth - clientWidth) <= position
+                $element.find(".js-nav-right")
+                    .toggleClass("disabled", isAtRightBorder)
+            } // update right button
+        }
+
+        _getTab(idOrIdx) {
+            if (isFinite(idOrIdx))
+                return this._$btnPanel.children().eq(idOrIdx)
+            else
+                return this._$btnPanel.find(`[data-gob-tab-id=${idOrIdx}]`)
+        }
+
+        _removeAllTabs() {
+            this._$btnPanel.empty()
+        }
+
+        _addTab(id, name) {
+            const $buttons = this._$btnPanel
+            const control = this
+
+            if ($buttons.find(`[data-gob-tab-id=${id}]`).length > 0)
+                throw new Error(`Id ${id} already in use`)
+
+            $("<button/>")
+                .appendTo($buttons)
+                .attr("data-gob-tab-id", id)
+                .addClass("chat-tabnav-btn")
+                .append(
+                    $("<span></span>").html(Gobchat.encodeHtmlEntities(name))
+                )
+                .on("click", function () {
+                    control._activateTab(this)
+                }) //setup click event
+        }
+
+        _removeTab(id) {
+            return this._$btnPanel.find(`[data-gob-tab-id=${id}]`)
+                .remove()
+                .length > 0
+        }
+
+        _unbindControls() {
+            if (this._$btnPanel) {
+                this._$btnPanel.off("wheel", this._$onWheel)
+                this.removeAllTabs()
+            }
+
+            if (this._$element) {
+                this._$element.find(".js-nav-left,.js-nav-right").off("click", this._$onBtnScroll)
+            }
+
+            this._activeId = null
+            this._$element = $()
+            this._$btnPanel = $()
+            this._initialized = false
+        }
+
+        _activateTab(btn) {
+            this._$btnPanel.find(".active")
+                .removeClass("active")
+
+            const $newActive = $(btn)
+                .first()
+                .addClass("active")
+
+            const lastId = this._activeId
+            const newId = $newActive.attr("data-gob-tab-id") || null
+            this._activeId = newId
+
+            if (newId !== lastId)
+                this._dispatchActivation(newId, lastId)
+        }
+
+        _dispatchActivation(activeTabId, previousTabId) {
+            const evt = new Event("change")
+            evt.detail = { oldValue: previousTabId, newValue: activeTabId }
+            this._$element[0].dispatchEvent(evt)
+        }
+    }
+
+    // manages vertical scroll of the chat history
     class ScrollControl {
         constructor() {
             this._scrollToBottom = true
@@ -225,7 +564,7 @@ var Gobchat = (function (Gobchat) {
             }
         }
 
-        control(target) {
+        controls(target) {
             if (this._$target)
                 this._unbindTarget()
             this._bindTarget(target)
@@ -251,7 +590,7 @@ var Gobchat = (function (Gobchat) {
 
         scrollToBottom(scrollFast) {
             const $target = this._$target
-            const targetPosition = $target[0].scrollHeight - $target[0].clientHeight
+            const targetPosition = $target.prop("scrollHeight") - $target.prop("clientHeight")
             this.scrollToPosition(targetPosition, scrollFast)
         }
 
@@ -270,66 +609,6 @@ var Gobchat = (function (Gobchat) {
             if (!this._$target) return
             this._$target.off("scroll", this._$onScroll)
             this._$target = null
-        }
-    }
-
-    class TabControl {
-        constructor(tabId) {
-            if (tabId === null || tabId === undefined)
-                throw new Error("Id can't be null")
-
-            this._id = tabId
-
-            this._onStackedPanelChange = function (evt) {
-            }.bind(this)
-        }
-
-        get isActive() {
-            return this._$panel.hasClass("active")
-        }
-
-        showTab() {
-            if (this._id === null || this._id === undefined)
-                throw new Error("Object disposed")
-            this._stackedPanel.showPanel(this._id)
-            this._scrollControl.scrollToBottomIfNeeded(true)
-        }
-
-        remove() {
-            //$(this._stackedPanel).off("change", this._onStackedPanelChange)
-
-            this._id = null
-            this._$button.remove()
-            this._$panel.remove()
-            this._stackedPanel = null
-        }
-
-        controls(stackedPanel, tabButton) {
-            if (this._id === null || this._id === undefined)
-                throw new Error("Object disposed")
-
-            this._stackedPanel = stackedPanel
-            //$(stackedPanel).on("change", this._onStackedPanelChange)
-
-            this._$button = $(tabButton)
-
-            const panel = stackedPanel.getPanel(this._id)
-            if (!panel)
-                throw new Error("Panel not defined")
-            this._$panel = $(panel)
-
-            this._scrollControl = new ScrollControl()
-            this._scrollControl.control(this._$panel)
-        }
-
-        acceptsMessage(message) {
-            const model = gobconfig.get(`behaviour.chattabs.data.${this._id}`)
-            return _.includes(model.channel.visible, message.channel)
-        }
-
-        addMessage(htmlMessage) {
-            this._$panel.append(htmlMessage)
-            this._scrollControl.scrollToBottomIfNeeded()
         }
     }
 
