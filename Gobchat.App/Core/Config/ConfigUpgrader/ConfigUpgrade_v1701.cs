@@ -29,7 +29,6 @@ namespace Gobchat.Core.Config
         public JObject Upgrade(JObject src)
         {
             JObject dst = (JObject)src.DeepClone();
-            dst["version"] = 1701;
 
             JsonUtil.SetIfAvailable(dst, "behaviour.groups.data.group-ff-1.ffgroup", 0);
             JsonUtil.SetIfAvailable(dst, "behaviour.groups.data.group-ff-2.ffgroup", 1);
