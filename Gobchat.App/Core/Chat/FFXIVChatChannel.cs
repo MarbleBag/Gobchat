@@ -58,5 +58,7 @@ namespace Gobchat.Core.Chat
         LINKSHELL_6 = 0x0015,
         LINKSHELL_7 = 0x0016,
         LINKSHELL_8 = 0x0017,
+
+        LOGOUT = 0x2246
     }
 }
