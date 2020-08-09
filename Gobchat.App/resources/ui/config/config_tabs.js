@@ -66,21 +66,21 @@
             .data("configbinding", binding)
             .appendTo($tableTabs)
 
-        const $entryName = $entry.find(".tmp_entry_name")
+        const $entryName = $entry.find(".js-name")
         GobConfigHelper.setConfigKey($entryName, `${entryConfigKey}.name`)
         GobConfigHelper.bindElement(binding, $entryName)
 
-        const $entryVisible = $entry.find(".tmp_entry_visible")
+        const $entryVisible = $entry.find(".js-visible")
         GobConfigHelper.setConfigKey($entryVisible, `${entryConfigKey}.visible`)
         GobConfigHelper.bindCheckbox(binding, $entryVisible)
         $entryVisible.on("click", function (event) { event.stopPropagation() })
 
-        $entry.find(".tmp_entry_action_config").on("click", function (event) {
+        $entry.find(".js-action-config").on("click", function (event) {
             event.stopPropagation()
             buildConfig(entryId)
         })
 
-        $entry.find(".tmp_entry_action_delete")
+        $entry.find(".js-action-delete")
             .toggleClass("disabled", gobconfig.get(keyTabsSorting, []).length <= 1)
             .on("click", function (event) {
                 event.stopPropagation()
@@ -105,7 +105,7 @@
             })
 
         const entryIds = gobconfig.get(keyTabsSorting)
-        $entry.find(".tmp_entry_action_mup")
+        $entry.find(".js-action-mup")
             .toggleClass("disabled", entryIds.indexOf(entryId) === 0)
             .on("click", function (event) {
                 event.stopPropagation()
@@ -115,7 +115,7 @@
                 gobconfig.set(keyTabsSorting, entryIds)
             })
 
-        $entry.find(".tmp_entry_action_mdown")
+        $entry.find(".js-action-mdown")
             .toggleClass("disabled", entryIds.indexOf(entryId) === entryIds.length - 1)
             .on("click", function (event) {
                 event.stopPropagation()
@@ -181,11 +181,11 @@
             const $table = $tbl1.children().length <= $tbl2.children().length ? $tbl1 : $tbl2
             const $rowEntry = $($rowTemplate.html()).appendTo($table)
 
-            $rowEntry.find(".entry-label")
+            $rowEntry.find(".js-label")
                 .attr("data-gob-locale-text", `${channelData.translationId}`)
                 .attr("data-gob-locale-title", `${channelData.tooltipId}`)
 
-            const $chkVisible = $rowEntry.find(".entry-visible")
+            const $chkVisible = $rowEntry.find(".js-visible")
                 .databindKey(`${keyTabsData}.${id}.channel.visible`)
 
             const channelEnums = [].concat(channelData.chatChannel || [])
@@ -215,12 +215,15 @@
             buildConfig(null)
     })
 
+    GobConfigHelper.bindElement(pagebinding, $("#ctabs_effects_message"), { elementGetAccessor: ($element) => parseInt($element.val()) })
+    GobConfigHelper.bindElement(pagebinding, $("#ctabs_effects_mention"), { elementGetAccessor: ($element) => parseInt($element.val()) })
+
     pagebinding.initialize()
 
     //doesn't work. Old tabs are keept around?
     GobConfigHelper.makeCopyProfileButton($("#ctabs_copyprofile"),
         {
-            configKeys: [keyTabsData, keyTabsSorting]
+            configKeys: [keyTabsData, keyTabsSorting, "behaviour.chattabs.effect"]
         })
 })()
 

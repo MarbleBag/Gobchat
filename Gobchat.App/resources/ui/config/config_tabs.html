@@ -28,55 +28,96 @@
         </table>
     </div>
 
+    <div class="gob-config-group">
+        <div class="gob-config-group-item">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div data-gob-locale-text="config.tabs.effect.message"
+                                 data-gob-locale-title="config.tabs.effect.message.tooltip"></div>
+                        </td>
+                        <td>
+                            <select id="ctabs_effects_message" class="gob-dropdown"
+                                    data-gob-configkey="behaviour.chattabs.effect.message"
+                                    data-gob-locale-title="config.tabs.effect.message.tooltip">
+                                <option value="0" data-gob-locale-text="config.tabs.effect.0"></option>
+                                <option value="1" data-gob-locale-text="config.tabs.effect.1"></option>
+                                <option value="2" data-gob-locale-text="config.tabs.effect.2"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div data-gob-locale-text="config.tabs.effect.mention"
+                                 data-gob-locale-title="config.tabs.effect.mention.tooltip"></div>
+                        </td>
+                        <td>
+                            <select id="ctabs_effects_mention" class="gob-dropdown"
+                                    data-gob-configkey="behaviour.chattabs.effect.mention"
+                                    data-gob-locale-title="config.tabs.effect.mention.tooltip">
+                                <option value="0" data-gob-locale-text="config.tabs.effect.0"></option>
+                                <option value="1" data-gob-locale-text="config.tabs.effect.1"></option>
+                                <option value="2" data-gob-locale-text="config.tabs.effect.2"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="gob-separator-vertical"></div>
 
-    <div class="gob-config-group" id="ctabs_tab_config">
-        <div class="gob-config-group-label">
-            <span data-gob-locale-text="config.tabs.tab.label"></span>
-            <span>: </span>
-            <span id="ctabs_config_tabname"></span>
-        </div>
+    <div id="ctabs_tab_config">
+        <div class="gob-config-group">
+            <div class="gob-config-group-label">
+                <span data-gob-locale-text="config.tabs.tab.label"></span>
+                <span>: </span>
+                <span id="ctabs_config_tabname"></span>
+            </div>
 
-        <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" id="ctabs_formatting_mention"
-                       data-gob-configkey
-                       data-gob-locale-title="config.tabs.tab.mention.tooltip" />
-                <div data-gob-locale-text="config.tabs.tab.mention"
-                     data-gob-locale-title="config.tabs.tab.mention.tooltip">
+            <div class="gob-config-group-item">
+                <div>
+                    <input type="checkbox" id="ctabs_formatting_mention"
+                           data-gob-configkey
+                           data-gob-locale-title="config.tabs.tab.mention.tooltip" />
+                    <div data-gob-locale-text="config.tabs.tab.mention"
+                         data-gob-locale-title="config.tabs.tab.mention.tooltip">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" id="ctabs_formatting_roleplay"
-                       data-gob-configkey
-                       data-gob-locale-title="config.tabs.tab.roleplay.tooltip" />
-                <div data-gob-locale-text="config.tabs.tab.roleplay"
-                     data-gob-locale-title="config.tabs.tab.roleplay.tooltip">
+            <div class="gob-config-group-item">
+                <div>
+                    <input type="checkbox" id="ctabs_formatting_roleplay"
+                           data-gob-configkey
+                           data-gob-locale-title="config.tabs.tab.roleplay.tooltip" />
+                    <div data-gob-locale-text="config.tabs.tab.roleplay"
+                         data-gob-locale-title="config.tabs.tab.roleplay.tooltip">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" id="ctabs_formatting_timestamp"
-                       data-gob-configkey
-                       data-gob-locale-title="config.tabs.tab.timestamp.tooltip" />
-                <div data-gob-locale-text="config.tabs.tab.timestamp"
-                     data-gob-locale-title="config.tabs.tab.timestamp.tooltip">
+            <div class="gob-config-group-item">
+                <div>
+                    <input type="checkbox" id="ctabs_formatting_timestamp"
+                           data-gob-configkey
+                           data-gob-locale-title="config.tabs.tab.timestamp.tooltip" />
+                    <div data-gob-locale-text="config.tabs.tab.timestamp"
+                         data-gob-locale-title="config.tabs.tab.timestamp.tooltip">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" id="ctabs_formatting_rangefilter"
-                       data-gob-configkey
-                       data-gob-locale-title="config.tabs.tab.rangefilter.tooltip" />
-                <div data-gob-locale-text="config.tabs.tab.rangefilter"
-                     data-gob-locale-title="config.tabs.tab.rangefilter.tooltip">
+            <div class="gob-config-group-item">
+                <div>
+                    <input type="checkbox" id="ctabs_formatting_rangefilter"
+                           data-gob-configkey
+                           data-gob-locale-title="config.tabs.tab.rangefilter.tooltip" />
+                    <div data-gob-locale-text="config.tabs.tab.rangefilter"
+                         data-gob-locale-title="config.tabs.tab.rangefilter.tooltip">
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,25 +153,25 @@
     <template id="ctabs_template_tblentry">
         <tr data-gob-entryid>
             <td>
-                <input type="text" class="tmp_entry_name" />
+                <input type="text" class="js-name" />
             </td>
             <td>
-                <input class="tmp_entry_visible" type="checkbox" />
+                <input type="checkbox" class="js-visible" />
             </td>
             <td>
-                <button class="gob-button-tertiary tmp_entry_action_config"
+                <button class="gob-button-tertiary js-action-config"
                         data-gob-locale-title="config.tabs.tabtable.action.config">
                     <i class="fas fa-cog"></i>
                 </button>
-                <button class="gob-button-tertiary tmp_entry_action_mup"
+                <button class="gob-button-tertiary js-action-mup"
                         data-gob-locale-title="config.tabs.tabtable.action.up">
                     <i class="fas fa-arrow-up"></i>
                 </button>
-                <button class="gob-button-tertiary tmp_entry_action_mdown"
+                <button class="gob-button-tertiary js-action-mdown"
                         data-gob-locale-title="config.tabs.tabtable.action.down">
                     <i class="fas fa-arrow-down"></i>
                 </button>
-                <button class="gob-button-tertiary tmp_entry_action_delete"
+                <button class="gob-button-tertiary js-action-delete"
                         data-gob-locale-title="config.tabs.tabtable.action.delete">
                     <i class="fa fa-trash"></i>
                 </button>
@@ -141,10 +182,10 @@
     <template id="ctabs_template_channelentry">
         <tr>
             <td>
-                <label class="entry-label"></label>
+                <label class="js-label"></label>
             </td>
             <td>
-                <input class="entry-visible" type="checkbox" />
+                <input class="js-visible" type="checkbox" />
             </td>
         </tr>
     </template>
