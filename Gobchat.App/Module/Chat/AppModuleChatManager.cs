@@ -313,7 +313,7 @@ namespace Gobchat.Module.Chat
                 }
 
                 var newMentions = mentions.ToArray();
-                logger.Debug(() => $"Set mentions to: {newMentions}");
+                logger.Debug(() => $"Set mentions to: {string.Join(", ", newMentions)}");
                 _chatManager.Config.Mentions = newMentions;
             }
             catch (Exception e1)

@@ -130,9 +130,11 @@ namespace Gobchat.Module.Chat.Internal
 
                 try
                 {
+                    logger.Debug(() => $"Preprocess message: {message}");
                     _chatMessageActorData.SetActorData(message);
                     _chatMessageTriggerGroups.SetTriggerGroup(message);
                     _chatMessageBuilder.FormatChatMessage(message);
+                    logger.Debug(() => $"Postprocess message: {message}");
                     result.Add(message);
                 }
                 catch (Exception ex)
