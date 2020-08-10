@@ -315,6 +315,32 @@ namespace Gobchat.Core.Config
             return true;
         }
 
+        public static bool OverwriteIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
+        {
+            JToken result = null;
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+                result = node[propertyName];
+                found = true;
+            });
+
+            if (found)
+                return false;
+
+            JsonUtil.WalkJson(dst, dstPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+                node[propertyName] = result?.DeepClone();
+                found = true;
+            });
+
+            return found;
+        }
+
         public static bool MoveIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
         {
             if (CopyIfAvailable(src, srcPath, dst, dstPath))

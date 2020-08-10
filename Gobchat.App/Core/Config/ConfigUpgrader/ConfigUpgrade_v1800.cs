@@ -27,11 +27,11 @@ namespace Gobchat.Core.Config
         {
             JObject dst = (JObject)src.DeepClone();
 
-            JsonUtil.Remove(dst, "behaviour.channel.visible");
-            JsonUtil.Remove(dst, "behaviour.showTimestamp");
-            JsonUtil.Remove(dst, "behaviour.rangefilter.active");
-
             JsonUtil.MoveIfAvailable(dst, "behaviour.autodetectEmoteInSay", dst, "behaviour.chat.autodetectEmoteInSay");
+
+            JsonUtil.MoveIfAvailable(dst, "behaviour.channel.visible", dst, "behaviour.chattabs.data.chat.channel.visible");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.showTimestamp", dst, "behaviour.chattabs.data.chat.formatting.timestamps");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.rangefilter.active", dst, "behaviour.chattabs.data.chat.formatting.rangefilter");
 
             return dst;
         }
