@@ -467,6 +467,21 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="config.tabs.btn.newtab" xml:space="preserve">
     <value>Neuen Reiter hinzufügen</value>
   </data>
+  <data name="config.tabs.effect.0" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
+  <data name="config.tabs.effect.1" xml:space="preserve">
+    <value>Hervorheben</value>
+  </data>
+  <data name="config.tabs.effect.2" xml:space="preserve">
+    <value>Blinken</value>
+  </data>
+  <data name="config.tabs.effect.mention" xml:space="preserve">
+    <value>Reitereffekt bei neuer Erwähnung</value>
+  </data>
+  <data name="config.tabs.effect.message" xml:space="preserve">
+    <value>Reitereffekt bei neuer Nachricht</value>
+  </data>
   <data name="config.tabs.tab.label" xml:space="preserve">
     <value>Ausgewählter Reiter</value>
   </data>

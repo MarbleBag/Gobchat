@@ -579,13 +579,13 @@ Restoration is final after clicking save.</value>
     <value>Blink</value>
   </data>
   <data name="config.tabs.effect.mention" xml:space="preserve">
-    <value>Effect on mention</value>
+    <value>Tab effect on mention</value>
   </data>
   <data name="config.tabs.effect.mention.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.tabs.effect.message" xml:space="preserve">
-    <value>Effect on message</value>
+    <value>Tab effect on message</value>
   </data>
   <data name="config.tabs.effect.message.tooltip" xml:space="preserve">
     <value />

@@ -1414,7 +1414,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effect on mention.
+        ///   Looks up a localized string similar to Tab effect on mention.
         /// </summary>
         internal static string config_tabs_effect_mention {
             get {
@@ -1432,7 +1432,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effect on message.
+        ///   Looks up a localized string similar to Tab effect on message.
         /// </summary>
         internal static string config_tabs_effect_message {
             get {
