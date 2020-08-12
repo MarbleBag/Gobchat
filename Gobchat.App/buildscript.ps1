@@ -9,6 +9,12 @@ function DeleteIfExists([string] $Path){
 	}
 }
 
+function MakeDirectory([string] $Path){
+	if( -Not (Test-Path -Path $Path )){
+		New-Item -Path $Path -ItemType directory 
+	}
+}
+
 function MakeAndDeleteDirectory([string] $Path){
 	DeleteIfExists $Path
 	New-Item -Path $Path -ItemType directory
@@ -23,12 +29,17 @@ function RenameAndDeleteDirectory([string] $Path, [string] $NewName){
 
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+# Change if needed
 $7zipPath = "F:\Program Files\7-Zip\7z.exe"
 
 $releaseFolder = Join-Path $scriptPath (Join-Path  "bin" "Release")
 if(-Not (Test-Path $releaseFolder)){
 	Write-Error "No release found"
 	exit 1
+}
+
+if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
+    throw "7zip not found at '$7zipPath' Unable to pack release"
 }
 
 #Remove any old build
@@ -69,23 +80,32 @@ Get-ChildItem -Path $releaseFolder -Filter  *.pdb |
 	}
 
 try{
-	#copy documents to release
-	Write-Host "Filling docs with important stuff ..."
-	$rld = "$releaseFolder\docs"
+	Write-Host "Copying relevant data"
 	$ccc = @(
-	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.pdf";		dst="$rld\CHANGELOG.pdf"}),
-	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$rld\LICENSE.md"}),
-	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$rld\README.pdf"})
-	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$rld\README_de.pdf"})
-	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$rld\SHARLAYAN_LICENSE.md"})
+	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.pdf";		dst="$releaseFolder\docs\CHANGELOG.pdf"}),
+	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$releaseFolder\docs\LICENSE.md"}),
+	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$releaseFolder\docs\README.pdf"})
+	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$releaseFolder\docs\README_de.pdf"})
+	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$releaseFolder\docs\SHARLAYAN_LICENSE.md"})
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\CHANGELOG.pdf";		dst="$releaseFolder\resources\sharlayan\CHANGELOG.pdf"}),
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\LICENSE.md";			dst="$releaseFolder\resources\sharlayan\SHARLAYAN_LICENSE.md"})
 	)
-
-	New-Item -ItemType directory -Path $rld
+	
 	$ccc |
 		ForEach-Object {
-			Copy-Item $_.src $_.dst -errorAction stop
+			if( -Not (Test-Path -Path $_.src) ){
+				Write-Error "$_.src not found"
+				exit 1
+			}
+			
+			if( Test-Path -Path $_.src -PathType Container ){
+				MakeDirectory $_.dst
+				Copy-Item -Path $_.src -Destination $_.dst -Recurse -Container -errorAction stop
+			}else{
+				MakeDirectory (Split-Path -Path $_.dst)
+				Copy-Item -Path $_.src -Destination $_.dst -errorAction stop
+			}
 		}
-		
 }catch{
 	Write-Error $_
 	exit 1
@@ -133,11 +153,6 @@ Rename-Item -Path "$releaseFolder\NLog-Release.config" -NewName "NLog.config"
 #	-replace '<logger name="\*" minlevel=".+" writeTo="file" />', '<logger name="*" minlevel="info" writeTo="file" />' |
 #	Out-File $nlogFile -encoding utf8
   
-if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
-    throw "7zip not found at '$7zipPath' Unable to pack release"
-}
-#Set-Alias 7zip $7zipPath
-
 $archiveRelease = CreatePathSibling $releaseFolder "gobchat-$appVersion.zip"
 $archiveDebug = CreatePathSibling $debugFolder "gobchat-debug-$appVersion.zip"
 
