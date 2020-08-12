@@ -13,10 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ### Changed
 - Rangefilter
   - Removed setting to activate/deactivate in `Config / App`
-  
+
+
 - Config / chat tabs
   - Rows in the tab table can be clicked directly to open the tab config  
-  
+
 ### Fixed
 - Roleplay formatting
   - In some cases colors weren't applied correctly

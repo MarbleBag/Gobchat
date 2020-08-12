@@ -11,7 +11,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
 1. [Features](#features)
    1. [Smart Autoscroll](#smart-autoscroll)
    1. [Text formatting](#text-formatting)
-   1. [Chat tabs] (#chat-tabs)
+   1. [Chat tabs](#chat-tabs)
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Draggable and Resizeable](#draggable-and-resizeable)
    1. [Chat Log](#chat-Log)
