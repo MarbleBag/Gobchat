@@ -5,25 +5,25 @@
 function DeleteIfExists([string] $Path){
 	if(Test-Path $Path){
 		Write-Host "Deleting: $Path"
-		Remove-Item -Recurse   $Path
+		$null = Remove-Item -Recurse   $Path
 	}
 }
 
 function MakeDirectory([string] $Path){
 	if( -Not (Test-Path -Path $Path )){
-		New-Item -Path $Path -ItemType directory 
+		$null = New-Item -Path $Path -ItemType directory 
 	}
 }
 
 function MakeAndDeleteDirectory([string] $Path){
 	DeleteIfExists $Path
-	New-Item -Path $Path -ItemType directory
+	$null = New-Item -Path $Path -ItemType directory
 }
 
 function RenameAndDeleteDirectory([string] $Path, [string] $NewName){
 	$NewPath = CreatePathSibling $Path $NewName
 	DeleteIfExists $NewPath
-	Rename-Item -Path $Path -NewName $NewName
+	$null = Rename-Item -Path $Path -NewName $NewName
 	return $NewPath
 }
 
@@ -66,6 +66,7 @@ try{
 		Where-Object {$_.PsIsContainer -eq $true} |
 		ForEach-Object {
 			if(-Not ($allowedFolders -match $_.Name)){
+				Write-Host "Deleting: $(_.FullName)"
 				Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue
 			}
 		}
@@ -78,19 +79,22 @@ try{
 #Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
 
 #Remove all .log files
+Write-Host "Removing .log files ..."
 Get-ChildItem -Path $releaseFolder -Filter  *.log | 
 	ForEach-Object {
+		Write-Host "Deleting: $(_.FullName)"
 		Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue	
 	}
 	
 #Move any .pdb files
+Write-Host "Moving any .pdb files ..."
 Get-ChildItem -Path $releaseFolder -Filter  *.pdb | 
 	ForEach-Object {
 		Move-Item -Path $_.FullName -Destination $debugFolder -Force -ErrorAction SilentlyContinue
 	}
 
 try{
-	Write-Host "Copying relevant data"
+	Write-Host "Copying relevant data ..."
 	$ccc = @(
 	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.pdf";		dst="$releaseFolder\docs\CHANGELOG.pdf"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";			dst="$releaseFolder\docs\LICENSE.md"}),
