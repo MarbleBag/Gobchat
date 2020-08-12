@@ -12,6 +12,7 @@
  *******************************************************************************/
 :root {
     --button-background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
+    --tab-shadow-color: #868686
 }
 
 .gob-resize-active {
@@ -108,45 +109,47 @@
             cursor: pointer;
             font-weight: bold;
             padding: 0px 10px 0px 10px;
-            Xbox-shadow: inset -1px -1px 2px 0px #0000004d, inset 1px 1px 2px 0 #ffffff38;
-            box-shadow: inset 1px 0px 0px 0px #868686, inset -1px 0px 0px 0px #868686, inset 0px 1px 0px 0px #868686;
+            box-shadow: inset 1px 0px 0px 0px var(--tab-shadow-color), inset 0px 1px 0px 0px var(--tab-shadow-color);
             border-right: solid .5px #0000007a;
-            Xborder-left: solid .5px #ffffff3b;
-            xborder: solid .5px #868686;
-            xborder-bottom: none;
+            box-sizing: border-box;
         }
 
-            .gob-chatbox .chat-tabnav .chat-tabnav-btn:hover {
-                filter: brightness(110%);
+        .gob-chatbox .chat-tabnav .chat-tabbar .chat-tabnav-btn:last-child {
+            border-right: none;
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn:hover {
+            filter: brightness(110%);
+        }
+
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.active {
+            padding: 0px 10px 0px 5px;
+        }
+
+            .gob-chatbox .chat-tabnav .chat-tabnav-btn.active:before {
+                content: "";
+                background: #ffbc00;
+                border-radius: 50%;
+                width: 5px;
+                height: 5px;
+                position: relative;
+                left: -2px;
+                top: -8px;
+                display: inline-block;
+                box-shadow: 0px 0px 3px 0px #ffd358;
             }
 
-            .gob-chatbox .chat-tabnav .chat-tabnav-btn.active {
-                padding: 0px 10px 0px 5px;
-            }
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.tab-effect-highligt:not(.tab-effect-blink) {
+            background: rgba(255,255,255,0.1);
+        }
 
-                .gob-chatbox .chat-tabnav .chat-tabnav-btn.active:before {
-                    content: "";
-                    background: #ffbc00;
-                    border-radius: 50%;
-                    width: 5px;
-                    height: 5px;
-                    position: relative;
-                    left: -2px;
-                    top: -8px;
-                    display: inline-block;
-                    box-shadow: 0px 0px 3px 0px #ffd358;
-                }
-
-            .gob-chatbox .chat-tabnav .chat-tabnav-btn.tab-effect-highligt:not(.tab-effect-blink) {
-                background: rgba(255,255,255,0.1);
-            }
-
-            .gob-chatbox .chat-tabnav .chat-tabnav-btn.tab-effect-blink {
-                animation: subtile-blinker 1s linear infinite;
-            }
+        .gob-chatbox .chat-tabnav .chat-tabnav-btn.tab-effect-blink {
+            animation: subtile-blinker 1s linear infinite;
+        }
 
         .gob-chatbox .chat-tabnav .chat-tabnav-left {
             padding: 0px 5px 0px 10px;
+            box-shadow: inset 0px 1px 0px 0px var(--tab-shadow-color);
             border-left: none;
         }
 
