@@ -11,6 +11,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
 1. [Features](#features)
    1. [Smart Autoscroll](#smart-autoscroll)
    1. [Text formatting](#text-formatting)
+   1. [Chat tabs] (#chat-tabs)
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Draggable and Resizeable](#draggable-and-resizeable)
    1. [Chat Log](#chat-Log)
@@ -42,6 +43,9 @@ Enhance your chat experience with colors! They make it easier to follow other pe
 Will be turned into this:
 
 ![Enhanced chat overlay](screen_formated.jpg)
+
+### Chat tabs
+Create as many tabs as you like and control which channels are visible and what formatting to apply
 
 #### Roleplay specific formatting
 Gobchat applies specific colors to speech, emote and ooc comments
