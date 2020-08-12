@@ -159,6 +159,10 @@ var Gobchat = (function (Gobchat) {
             const effectMention = this._tabEffect.mention
 
             const affectedTabs = this._channelToTabMap[channel] || []
+            const activeTabId = this._navBarControl.getActiveTabId()
+            if (_.includes(affectedTabs, activeTabId))
+                return // done, message was visible on the active tab, don't apply any effects
+
             affectedTabs.forEach(id => {
                 const $tabs = this._navBarControl.getTab(id)
                     .filter(":not(.active)")
@@ -354,7 +358,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         removeTab(id) {
-            if (this._removeTab(id) && this.getActiveTab() === id)
+            if (this._removeTab(id) && this.getActiveTabId() === id)
                 this.activateTab(0)
         }
 
@@ -368,7 +372,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         updateTabs(entries) {
-            const activeTabId = this.getActiveTab()
+            const activeTabId = this.getActiveTabId()
 
             // while more complex then a removeAll() and readding tabs, this preserves all changes to the tab buttons, including any animations
 
@@ -410,7 +414,7 @@ var Gobchat = (function (Gobchat) {
             return this._$btnPanel.children().length
         }
 
-        getActiveTab() {
+        getActiveTabId() {
             return this._activeId
         }
 
