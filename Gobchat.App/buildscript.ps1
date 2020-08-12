@@ -43,10 +43,15 @@ if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
 }
 
 #Remove any old build
-Write-Host "Renaming release folder ..."
-$releaseFolder = RenameAndDeleteDirectory $releaseFolder "Gobchat"
-$debugFolder = CreatePathSibling $releaseFolder "GobchatDebug"
-MakeAndDeleteDirectory $debugFolder
+try{
+	Write-Host "Renaming release folder ..."
+	$releaseFolder = RenameAndDeleteDirectory $releaseFolder "Gobchat"
+	$debugFolder = CreatePathSibling $releaseFolder "GobchatDebug"
+	MakeAndDeleteDirectory $debugFolder
+}catch{
+	Write-Error $_
+	exit 1
+}
 
 if(-Not (Test-Path $releaseFolder)){
 	Write-Error "No gobchat folder"
@@ -54,16 +59,21 @@ if(-Not (Test-Path $releaseFolder)){
 }
 
 #Deletes all folders except for the ones named in #allowedFolders
-Write-Host "Deleting all the stuff no one cares about ..."
-$allowedFolders = @("resources", "de", "en")
-Get-ChildItem -Path $releaseFolder | 
-	Where-Object {$_.PsIsContainer -eq $true} |
-	ForEach-Object {
-		if(-Not ($allowedFolders -match $_.Name)){
-			Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue
+Write-Host "Cleaning up folders ..."
+try{
+	$allowedFolders = @("resources", "de", "en")
+	Get-ChildItem -Path $releaseFolder | 
+		Where-Object {$_.PsIsContainer -eq $true} |
+		ForEach-Object {
+			if(-Not ($allowedFolders -match $_.Name)){
+				Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue
+			}
 		}
-	}
-
+}catch{
+	Write-Error $_
+	exit 1
+}
+	
 #Delete downloadable content - not needed anymore	
 #Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
 
@@ -87,14 +97,14 @@ try{
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$releaseFolder\docs\README.pdf"})
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$releaseFolder\docs\README_de.pdf"})
 	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$releaseFolder\docs\SHARLAYAN_LICENSE.md"})
-	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\CHANGELOG.pdf";		dst="$releaseFolder\resources\sharlayan\CHANGELOG.pdf"}),
-	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\LICENSE.md";			dst="$releaseFolder\resources\sharlayan\SHARLAYAN_LICENSE.md"})
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\signatures-x64.json";		dst="$releaseFolder\resources\sharlayan\signatures-x64.json"}),
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\structures-x64.json";			dst="$releaseFolder\resources\sharlayan\structures-x64.json"})
 	)
 	
 	$ccc |
 		ForEach-Object {
 			if( -Not (Test-Path -Path $_.src) ){
-				Write-Error "$_.src not found"
+				Write-Error "$(_.src) not found"
 				exit 1
 			}
 			
