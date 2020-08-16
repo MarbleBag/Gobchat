@@ -30,17 +30,17 @@ namespace Gobchat.Core.Config
         private readonly string _defaultProfilePath;
         private IGobchatConfigProfile _globalProfile;
 
-        private readonly Dictionary<string, IGobchatConfigProfile> _profiles;
+        private readonly Dictionary<string, IGobchatConfigProfile> _profiles = new Dictionary<string, IGobchatConfigProfile>();
+        private readonly ISet<string> _changedProfiles = new HashSet<string>();
+        private readonly ISet<string> _deletedProfiles = new HashSet<string>();
 
-        private readonly ISet<string> _deletedProfiles;
         private GobchatConfigProfile _defaultConfig;
 
         private string _activeProfileId;
 
-        private readonly Dictionary<string, IList<PropertyChangedListener>> _allPropertyChangedListener;
-        private readonly Dictionary<string, IList<PropertyChangedListener>> _activePropertyChangedListener;
-
-        private readonly Dictionary<string, ISet<string>> _pendingPropertyChanges;
+        private readonly Dictionary<string, IList<PropertyChangedListener>> _allPropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+        private readonly Dictionary<string, IList<PropertyChangedListener>> _activePropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
+        private readonly Dictionary<string, ISet<string>> _pendingPropertyChanges = new Dictionary<string, ISet<string>>();
 
         #region public properties
 
@@ -85,14 +85,6 @@ namespace Gobchat.Core.Config
             _defaultProfilePath = defaultProfilePath ?? throw new ArgumentNullException(nameof(defaultProfilePath));
             ConfigFolderPath = configFolderPath ?? throw new ArgumentNullException(nameof(configFolderPath));
 
-            _profiles = new Dictionary<string, IGobchatConfigProfile>();
-            _deletedProfiles = new HashSet<string>();
-
-            _allPropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
-            _activePropertyChangedListener = new Dictionary<string, IList<PropertyChangedListener>>();
-
-            _pendingPropertyChanges = new Dictionary<string, ISet<string>>();
-
             OnActiveProfileChange += UpdateActiveListenerOnActiveProfileChange;
         }
 
@@ -107,7 +99,7 @@ namespace Gobchat.Core.Config
             logger.Info("Config manager loaded");
         }
 
-        private JsonConfigLoader GetProfileLoader()
+        private static JsonConfigLoader GetProfileLoader()
         {
             var loader = new JsonConfigLoader();
             loader.AddFunction(new JsonValidateIsProfile());
@@ -227,8 +219,18 @@ namespace Gobchat.Core.Config
 
             var finalizer = new JsonEnumToString();
 
+            ISet<string> changedProfiles = null;
+            lock (_synchronizationLock)
+            {
+                changedProfiles = new HashSet<string>(_changedProfiles);
+                _changedProfiles.Clear();
+            }
+
             foreach (var profile in _profiles.Values)
             {
+                if (!changedProfiles.Contains(profile.ProfileId))
+                    continue;
+
                 var profilePath = Path.Combine(outputFolder, $"profile_{profile.ProfileId}.json");
 
                 var json = profile.ToJson();
@@ -247,6 +249,10 @@ namespace Gobchat.Core.Config
                 catch (UnauthorizedAccessException ex)
                 {
                     logger.Fatal(ex);
+                    lock (_synchronizationLock)
+                    {
+                        _changedProfiles.Add(profile.ProfileId); // in case of an error write the copy back
+                    }
                 }
             }
 
@@ -490,6 +496,7 @@ namespace Gobchat.Core.Config
                     profiles.Add(profileId);
                 else
                     _pendingPropertyChanges.Add(e.PropertyKey, new HashSet<string>() { profileId });
+                _changedProfiles.Add(profileId);
             }
         }
 
