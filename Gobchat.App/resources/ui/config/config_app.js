@@ -68,7 +68,7 @@
 
     const parseNumber = ($element) => {
         const value = parseInt($element.val())
-        return Gobchat.isNumber(value) && value > 0 ? value : undefined
+        return Gobchat.isNumber(value) && value >= 0 ? value : undefined
     }
 
     const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")

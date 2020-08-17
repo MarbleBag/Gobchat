@@ -1414,6 +1414,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Green Text.
+        /// </summary>
+        internal static string config_tabs_effect_3 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tab effect on mention.
         /// </summary>
         internal static string config_tabs_effect_mention {

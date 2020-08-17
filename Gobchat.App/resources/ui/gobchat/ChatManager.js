@@ -173,6 +173,7 @@ var Gobchat = (function (Gobchat) {
                 if (hasMention && effectMention) {
                     $tabs
                         .filter(`:not(.${effectMention})`)
+                        .removeClass(effectMessage)
                         .addClass(effectMention)
                         .on("click.tab.effects.mention", function () {
                             $(this).off("click.tab.effects.mention")
@@ -184,6 +185,7 @@ var Gobchat = (function (Gobchat) {
                 if (effectMessage) {
                     $tabs
                         .filter(`:not(.${effectMessage})`)
+                        .filter(`:not(.${effectMention})`)
                         .addClass(effectMessage)
                         .on("click.tab.effects.message", function () {
                             $(this).off("click.tab.effects.message")
@@ -273,17 +275,8 @@ var Gobchat = (function (Gobchat) {
         }
 
         _updateTabEffects(effects) {
-            function getCssClass(type) {
-                switch (type) {
-                    case 0: return null
-                    case 1: return "tab-effect-highligt"
-                    case 2: return "tab-effect-blink"
-                    default: return null
-                }
-            }
-
-            this._tabEffect.message = getCssClass(effects.message)
-            this._tabEffect.mention = getCssClass(effects.mention)
+            this._tabEffect.message = effects.message > 0 ? "tab-effect-message" : null
+            this._tabEffect.mention = effects.mention > 0 ? "tab-effect-mention" : null
         }
 
         _updateNavPanelData(tabModels) {

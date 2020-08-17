@@ -578,6 +578,9 @@ Restoration is final after clicking save.</value>
   <data name="config.tabs.effect.2" xml:space="preserve">
     <value>Blink</value>
   </data>
+  <data name="config.tabs.effect.3" xml:space="preserve">
+    <value>Green Text</value>
+  </data>
   <data name="config.tabs.effect.mention" xml:space="preserve">
     <value>Tab effect on mention</value>
   </data>

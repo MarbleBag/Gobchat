@@ -121,6 +121,32 @@ var Gobchat = (function (module) {
             })
         }
 
+        //effects
+        {
+            function getCssObjectForType(type) {
+                switch (type) {
+                    case 0: return null
+                    case 1: // highlight
+                        return {
+                            "background": "rgba(245, 160, 0, 0.2)"
+                        }
+                    case 2: // blink
+                        return {
+                            "animation": "subtile-blinker 2s linear infinite"
+                        }
+                    case 3: // green text
+                        return {
+                            "color": "#73cf4b"
+                        }
+                    default: return null
+                }
+            }
+
+            const effects = gobconfig.get("behaviour.chattabs.effect")
+            result += toCss(".chat-tabnav-btn.tab-effect-mention", getCssObjectForType(effects.mention))
+            result += toCss(".chat-tabnav-btn.tab-effect-message", getCssObjectForType(effects.message))
+        }
+
         return result
     }
 
@@ -152,8 +178,10 @@ var Gobchat = (function (module) {
         return JSON.parse(JSON.stringify(object))
     }
 
+    // turns an object into a css string for the given selectors. Any additional parameter passed via args are localy merged into the first object
     function toCss(selectors, object) {
-        if (selectors.length === 0)
+        selectors = [].concat(selectors)
+        if (selectors.length === 0 || !object)
             return ""
 
         if (arguments.length > 2) {
@@ -174,9 +202,11 @@ var Gobchat = (function (module) {
             }
         }
 
-        return `${selectors.map(e => `.gob-chatbox ${e}`).join(",")}${objectToCss(object)}\n`
+        const allSelectors = selectors.map(e => `.gob-chatbox ${e}`).join(",")
+        return `${allSelectors}${objectToCss(object)}\n`
     }
 
+    // turns an object into a css string. The object properties and their values become css attributes
     function objectToCss(object) {
         return `{
             ${

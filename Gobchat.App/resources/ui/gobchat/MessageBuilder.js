@@ -94,11 +94,12 @@ var Gobchat = (function (Gobchat) {
     function packSenderAccordingToChannel(builder, channel, sender) {
         switch (channel) {
             case ChannelEnum.GOBCHATINFO:
-            case ChannelEnum.GOBCHATERROR: return `[${sender}]`
+            case ChannelEnum.GOBCHATERROR: return `[${sender}]`            
             case ChannelEnum.ECHO: return "Echo:"
             case ChannelEnum.EMOTE: return sender
             case ChannelEnum.TELLSEND: return `>> ${sender}:`
             case ChannelEnum.TELLRECIEVE: return `${sender} >>`
+            case ChannelEnum.ERROR: return null
             case ChannelEnum.ANIMATEDEMOTE: return null //source is set, but the animation message already contains the source name
             case ChannelEnum.PARTY: return `(${sender})`
             case ChannelEnum.ALLIANCE: return `<${sender}>`
