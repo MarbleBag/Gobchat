@@ -173,7 +173,7 @@ $archiveDebug = CreatePathSibling $debugFolder "gobchat-debug-$appVersion.zip"
 DeleteIfExists $archiveRelease
 DeleteIfExists $archiveDebug
 
-Write-Host "Packing release as $archiveName ..."
+Write-Host "Packing release as $archiveRelease ..."
 & $7zipPath a -mx=9 $archiveRelease $releaseFolder
 & $7zipPath a -mx=9 $archiveDebug $debugFolder
 
@@ -182,4 +182,4 @@ Write-Host "Moving package to $outputLocation ..."
 Move-Item -Path $archiveRelease -Destination $outputLocation -Force
 Move-Item -Path $archiveDebug -Destination $outputLocation -Force
 
-Write-Host "$archiveName ready for release"
+Write-Host "$archiveRelease ready for release"
