@@ -68,6 +68,10 @@
     margin-top: 10px;
 }
 
+.gob-config-group-label {
+    font-weight: bold;
+}
+
 .gob-nav-panel-content.active {
     margin-top: 15px;
 }
@@ -81,4 +85,8 @@
     background: #f6b93b;
     border-color: #f6b93b;
     transition: all 0.4s ease 0s;
+}
+
+.gob-table > tbody > tr.active {
+    background-color: #4caf50;
 }

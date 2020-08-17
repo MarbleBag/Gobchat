@@ -315,6 +315,32 @@ namespace Gobchat.Core.Config
             return true;
         }
 
+        public static bool OverwriteIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
+        {
+            JToken result = null;
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+                result = node[propertyName];
+                found = true;
+            });
+
+            if (found)
+                return false;
+
+            JsonUtil.WalkJson(dst, dstPath, JsonUtil.MissingElementHandling.Stop, (node, propertyName) =>
+            {
+                if (node == null)
+                    return;
+                node[propertyName] = result?.DeepClone();
+                found = true;
+            });
+
+            return found;
+        }
+
         public static bool MoveIfAvailable(JObject src, string srcPath, JObject dst, string dstPath)
         {
             if (CopyIfAvailable(src, srcPath, dst, dstPath))
@@ -348,6 +374,23 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public static List<string> GetKeysIfAvailable(JObject src, string srcPath)
+        {
+            var result = new List<string>();
+            AccessIfAvailable(src, srcPath, (node) =>
+            {
+                if (node is JObject jObject)
+                {
+                    result.AddRange(jObject.Properties().Select(p => p.Name));
+                }
+                else if (node is JArray jArray)
+                {
+                    result.AddRange(Enumerable.Range(0, jArray.Count).Select(x => x.ToString()));
+                }
+            });
+            return result;
+        }
+
         public static bool ReplaceArrayIfAvailable(JObject src, string srcPath, Func<JArray, JToken> converter)
         {
             var found = false;
@@ -360,6 +403,18 @@ namespace Gobchat.Core.Config
                     found = true;
                     node[key] = converter(array);
                 }
+            });
+            return found;
+        }
+
+        public static bool Remove(JObject src, string srcPath)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
+            {
+                if (node == null)
+                    return;
+                found = node.Remove(key);
             });
             return found;
         }
@@ -416,6 +471,54 @@ namespace Gobchat.Core.Config
                     newArray.Add(enumValue);
             }
             return newArray;
+        }
+
+        public static JArray ConvertEnumArrayToString<TEnum>(JArray array) where TEnum : struct, IConvertible
+        {
+            var typeT = typeof(TEnum);
+            if (!typeT.IsEnum)
+                throw new ArgumentException("Not an enum");
+            var newArray = new JArray();
+            foreach (var element in array)
+                if (TryConvertEnumToString<TEnum>(element, out var name))
+                    newArray.Add(name.ToUpperInvariant());
+            return newArray;
+        }
+
+        public static bool TryConvertEnumToString<TEnum>(JToken value, out string enumName) where TEnum : struct, IConvertible
+        {
+            enumName = null;
+
+            if (!(value is JValue jValue))
+                return false;
+
+            if (jValue.Value == null)
+                return false;
+
+            var eType = typeof(TEnum);
+
+            if (jValue.Type == JTokenType.Integer || jValue.Type == JTokenType.Bytes)
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (Enum.IsDefined(eType, jValue.Value))
+            {
+                enumName = Enum.GetName(eType, (int)(long)jValue);
+                return true;
+            }
+
+            if (jValue.Type == JTokenType.String)
+            {
+                if (int.TryParse((string)jValue, out var iValue))
+                {
+                    enumName = Enum.GetName(eType, iValue);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

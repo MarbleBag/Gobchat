@@ -138,7 +138,7 @@ namespace Gobchat.Memory
 
         private bool ConnectToFFXIV()
         {
-            if (!_processConnector.ConnectToFFXIV())
+            if (!_processConnector.ConnectToFirstFFXIV())
                 return false;
 
             var signaturesOfInterest = new string[] { Sharlayan.Signatures.ChatLogKey, Sharlayan.Signatures.CharacterMapKey };

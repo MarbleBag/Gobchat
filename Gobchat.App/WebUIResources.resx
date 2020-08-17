@@ -128,6 +128,12 @@ Looking for a way to contribute or just want to take a look into Gobchat's sourc
 Visit this project on github under https://github.com/MarbleBag/Gobchat
 &lt;/p&gt;</value>
   </data>
+  <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
+    <value>Chat background color</value>
+  </data>
+  <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
+    <value>Changes the background color of the chat. Don't go full transparent.</value>
+  </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
   </data>
@@ -162,21 +168,9 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>When direct speech is marked, everything else will be automatically flagged as emote</value>
   </data>
   <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Exclude mentions</value>
+    <value>Exclude mentions from range filter</value>
   </data>
   <data name="config.app.ckb.mentions.tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="config.app.ckb.rangefilter" xml:space="preserve">
-    <value>Range filter</value>
-  </data>
-  <data name="config.app.ckb.rangefilter.tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="config.app.ckb.showtime" xml:space="preserve">
-    <value>Show timestamp</value>
-  </data>
-  <data name="config.app.ckb.showtime.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
@@ -206,14 +200,23 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.fontsize.large" xml:space="preserve">
     <value>Large</value>
   </data>
+  <data name="config.app.fontsize.larger" xml:space="preserve">
+    <value>Larger</value>
+  </data>
   <data name="config.app.fontsize.medium" xml:space="preserve">
     <value>Medium</value>
   </data>
   <data name="config.app.fontsize.small" xml:space="preserve">
     <value>Small</value>
   </data>
+  <data name="config.app.fontsize.smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
   <data name="config.app.fontsize.tooltip" xml:space="preserve">
     <value />
+  </data>
+  <data name="config.app.fontsize.verylarge" xml:space="preserve">
+    <value>Very large</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Hide &amp;amp; show Gobchat</value>
@@ -359,6 +362,27 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.deletebutton.tooltip" xml:space="preserve">
     <value>Deletes this entry</value>
   </data>
+  <data name="config.main.dialog.btn.cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="config.main.dialog.btn.no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="config.main.dialog.btn.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="config.main.dialog.btn.yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
+    <value>Any unsaved changes will be lost.</value>
+  </data>
+  <data name="config.main.dialog.title.confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="config.main.dialog.title.error" xml:space="preserve">
+    <value>An error occured</value>
+  </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>About</value>
   </data>
@@ -391,6 +415,9 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
     <value>Set your active profile.</value>
+  </data>
+  <data name="config.main.nav.tabs" xml:space="preserve">
+    <value>Chat tabs</value>
   </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Copy this page from another profile</value>
@@ -446,12 +473,15 @@ Make sure to place any sound files you want to use in gobchat under 'resources/s
     <value>Missing '{0}'</value>
     <comment>0: resource id</comment>
   </data>
-  <data name="config.profiles.import.error" xml:space="preserve">
-    <value>Profile can't be loaded.&lt;br&gt;
-Either the format is not supported or the file can't be found/read!</value>
+  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
+    <value>Select a profile to copy</value>
   </data>
   <data name="config.profiles.importprofile" xml:space="preserve">
     <value>Import profile</value>
+  </data>
+  <data name="config.profiles.importprofile.error" xml:space="preserve">
+    <value>Profile can't be loaded.&lt;br&gt;
+Either the format is not supported or the file can't be found/read!</value>
   </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Create new profile</value>
@@ -477,6 +507,9 @@ Either the format is not supported or the file can't be found/read!</value>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="config.profiles.profile.delete.dialog.text" xml:space="preserve">
+    <value>Delete this profile? Deletion is final after clicking save.</value>
+  </data>
   <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
     <value>Delete this profile</value>
   </data>
@@ -489,6 +522,10 @@ Either the format is not supported or the file can't be found/read!</value>
   <data name="config.profiles.profile.reset" xml:space="preserve">
     <value>Reset</value>
   </data>
+  <data name="config.profiles.profile.reset.dialog.text" xml:space="preserve">
+    <value>Restore all settings for this profile to default?
+Restoration is final after clicking save.</value>
+  </data>
   <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
     <value>Restore defaults for this profile</value>
   </data>
@@ -497,11 +534,6 @@ Either the format is not supported or the file can't be found/read!</value>
   </data>
   <data name="config.profiles.profiles.name" xml:space="preserve">
     <value>Name</value>
-  </data>
-  <data name="config.profiles.reset.confirmation" xml:space="preserve">
-    <value>Restore all settings for this profile to default?
-Everything will be deleted!
-Press save afterwards.</value>
   </data>
   <data name="config.roleplay.entry.active" xml:space="preserve">
     <value>Active</value>
@@ -534,6 +566,84 @@ Press save afterwards.</value>
   <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
     <value>Reset entries</value>
   </data>
+  <data name="config.tabs.btn.newtab" xml:space="preserve">
+    <value>Add new tab</value>
+  </data>
+  <data name="config.tabs.effect.0" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="config.tabs.effect.1" xml:space="preserve">
+    <value>Highlight</value>
+  </data>
+  <data name="config.tabs.effect.2" xml:space="preserve">
+    <value>Blink</value>
+  </data>
+  <data name="config.tabs.effect.3" xml:space="preserve">
+    <value>Green Text</value>
+  </data>
+  <data name="config.tabs.effect.mention" xml:space="preserve">
+    <value>Tab effect on mention</value>
+  </data>
+  <data name="config.tabs.effect.mention.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.effect.message" xml:space="preserve">
+    <value>Tab effect on message</value>
+  </data>
+  <data name="config.tabs.effect.message.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tab.label" xml:space="preserve">
+    <value>Selected tab</value>
+  </data>
+  <data name="config.tabs.tab.mention" xml:space="preserve">
+    <value>Apply mentions</value>
+  </data>
+  <data name="config.tabs.tab.mention.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tab.rangefilter" xml:space="preserve">
+    <value>Apply rangefilter</value>
+  </data>
+  <data name="config.tabs.tab.rangefilter.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tab.roleplay" xml:space="preserve">
+    <value>Apply roleplay formatting</value>
+  </data>
+  <data name="config.tabs.tab.roleplay.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tab.timestamp" xml:space="preserve">
+    <value>Show timestamp</value>
+  </data>
+  <data name="config.tabs.tab.timestamp.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.tabs.tabtable.action.config" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
+    <value>Delete </value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
+    <value>Delete entry?</value>
+  </data>
+  <data name="config.tabs.tabtable.action.down" xml:space="preserve">
+    <value>Move one down</value>
+  </data>
+  <data name="config.tabs.tabtable.action.up" xml:space="preserve">
+    <value>Move one up</value>
+  </data>
+  <data name="config.tabs.tabtable.actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="config.tabs.tabtable.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.tabs.tabtable.visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
     <value>Alliance</value>
   </data>
@@ -549,11 +659,23 @@ Press save afterwards.</value>
   <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
     <value>Cross-world Linkshell 1</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.abbreviation" xml:space="preserve">
+    <value>CWL1</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.short" xml:space="preserve">
+    <value>CWL1</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
     <value>/cwl1</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
     <value>Cross-world Linkshell 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.abbreviation" xml:space="preserve">
+    <value>CWL2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.short" xml:space="preserve">
+    <value>CWL2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
     <value>/cwl2</value>
@@ -561,11 +683,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.crossworldlinkshell-3" xml:space="preserve">
     <value>Cross-world Linkshell 3</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-3.abbreviation" xml:space="preserve">
+    <value>CWL3</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-3.tooltip" xml:space="preserve">
     <value>/cwl3</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4" xml:space="preserve">
     <value>Cross-world Linkshell 4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4.abbreviation" xml:space="preserve">
+    <value>CWL4</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4.tooltip" xml:space="preserve">
     <value>/cwl4</value>
@@ -573,11 +701,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.crossworldlinkshell-5" xml:space="preserve">
     <value>Cross-world Linkshell 5</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-5.abbreviation" xml:space="preserve">
+    <value>CWL5</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-5.tooltip" xml:space="preserve">
     <value>/cwl5</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6" xml:space="preserve">
     <value>Cross-world Linkshell 6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6.abbreviation" xml:space="preserve">
+    <value>CWL6</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6.tooltip" xml:space="preserve">
     <value>/cwl6</value>
@@ -585,11 +719,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.crossworldlinkshell-7" xml:space="preserve">
     <value>Cross-world Linkshell 7</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-7.abbreviation" xml:space="preserve">
+    <value>CWL7</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-7.tooltip" xml:space="preserve">
     <value>/cwl7</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8" xml:space="preserve">
     <value>Cross-world Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8.abbreviation" xml:space="preserve">
+    <value>CWL8</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8.tooltip" xml:space="preserve">
     <value>/cwl8</value>
@@ -633,11 +773,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.guild" xml:space="preserve">
     <value>Free Company</value>
   </data>
+  <data name="main.chat.channel.guild.abbreviation" xml:space="preserve">
+    <value>FC</value>
+  </data>
   <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
     <value>/fc</value>
   </data>
   <data name="main.chat.channel.linkshell-1" xml:space="preserve">
     <value>Linkshell 1</value>
+  </data>
+  <data name="main.chat.channel.linkshell-1.abbreviation" xml:space="preserve">
+    <value>L1</value>
   </data>
   <data name="main.chat.channel.linkshell-1.tooltip" xml:space="preserve">
     <value>/l1</value>
@@ -645,11 +791,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.linkshell-2" xml:space="preserve">
     <value>Linkshell 2</value>
   </data>
+  <data name="main.chat.channel.linkshell-2.abbreviation" xml:space="preserve">
+    <value>L2</value>
+  </data>
   <data name="main.chat.channel.linkshell-2.tooltip" xml:space="preserve">
     <value>/l2</value>
   </data>
   <data name="main.chat.channel.linkshell-3" xml:space="preserve">
     <value>Linkshell 3</value>
+  </data>
+  <data name="main.chat.channel.linkshell-3.abbreviation" xml:space="preserve">
+    <value>L3</value>
   </data>
   <data name="main.chat.channel.linkshell-3.tooltip" xml:space="preserve">
     <value>/l3</value>
@@ -657,11 +809,17 @@ Press save afterwards.</value>
   <data name="main.chat.channel.linkshell-4" xml:space="preserve">
     <value>Linkshell 4</value>
   </data>
+  <data name="main.chat.channel.linkshell-4.abbreviation" xml:space="preserve">
+    <value>L4</value>
+  </data>
   <data name="main.chat.channel.linkshell-4.tooltip" xml:space="preserve">
     <value>/l4</value>
   </data>
   <data name="main.chat.channel.linkshell-5" xml:space="preserve">
     <value>Linkshell 5</value>
+  </data>
+  <data name="main.chat.channel.linkshell-5.abbreviation" xml:space="preserve">
+    <value>L5</value>
   </data>
   <data name="main.chat.channel.linkshell-5.tooltip" xml:space="preserve">
     <value>/l5</value>
@@ -669,17 +827,26 @@ Press save afterwards.</value>
   <data name="main.chat.channel.linkshell-6" xml:space="preserve">
     <value>Linkshell 6</value>
   </data>
+  <data name="main.chat.channel.linkshell-6.abbreviation" xml:space="preserve">
+    <value>L6</value>
+  </data>
   <data name="main.chat.channel.linkshell-6.tooltip" xml:space="preserve">
     <value>/l6</value>
   </data>
   <data name="main.chat.channel.linkshell-7" xml:space="preserve">
     <value>Linkshell 7</value>
   </data>
+  <data name="main.chat.channel.linkshell-7.abbreviation" xml:space="preserve">
+    <value>L7</value>
+  </data>
   <data name="main.chat.channel.linkshell-7.tooltip" xml:space="preserve">
     <value>/l7</value>
   </data>
   <data name="main.chat.channel.linkshell-8" xml:space="preserve">
     <value>Linkshell 8</value>
+  </data>
+  <data name="main.chat.channel.linkshell-8.abbreviation" xml:space="preserve">
+    <value>L8</value>
   </data>
   <data name="main.chat.channel.linkshell-8.tooltip" xml:space="preserve">
     <value>/l8</value>

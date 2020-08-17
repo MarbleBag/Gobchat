@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-'use strict'
+'use strict';
 
 var Gobchat = (function (Gobchat) {
     function getAttributes(source, fallback) {

@@ -2,6 +2,54 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.8.0] - 2020.08.17
+### Added
+- Chat tabs
+  - Configuration can be found in `Config / Chat tabs`
+  - Supports any number of tabs.
+    - To navigate all tabs either use the buttons on the side of the tab bar or a scroll wheel while hovering it (Remember: Gobchat needs focus to detect a scroll wheel)
+  - A yellow dot marks the active tab
+  - Inactive tabs change their appearance on new messages or mentions
+     - Can be changed in `Config / Chat tabs`  
+
+
+- Chat
+  - Color selector for chat frame background color in `Config / App`
+
+
+- More font sizes
+  - Smaller, larger and very large
+
+
+- More localization
+
+### Changed
+- Profile selection drop down shows its content sorted
+
+
+- Rangefilter
+  - Removed check box for activation in `Config / App`
+
+
+- Config / chat tabs
+  - Rows in the tab table can be clicked directly to open the tab config      
+
+
+- Javascript dialogs
+  - Replaced by proper html dialogs
+
+### Fixed
+- Roleplay formatting
+  - In some cases colors weren't applied correctly
+
+
+- FFXIV error messages
+  - Will no longer show up with an empty colon at the front
+
+
+- Chat position (X, Y) in `Config / App` will now accept 0 as a value
+
+
 ## [1.7.1] - 2020.07.18
 ### Fixed
 - Groups

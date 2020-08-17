@@ -78,6 +78,24 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat background color.
+        /// </summary>
+        internal static string config_app_chatbox_backgroundcolor {
+            get {
+                return ResourceManager.GetString("config.app.chatbox.backgroundcolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes the background color of the chat. Don&apos;t go full transparent..
+        /// </summary>
+        internal static string config_app_chatbox_backgroundcolor_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.chatbox.backgroundcolor.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
         internal static string config_app_ckb_actor {
@@ -177,7 +195,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclude mentions.
+        ///   Looks up a localized string similar to Exclude mentions from range filter.
         /// </summary>
         internal static string config_app_ckb_mentions {
             get {
@@ -191,42 +209,6 @@ namespace Gobchat {
         internal static string config_app_ckb_mentions_tooltip {
             get {
                 return ResourceManager.GetString("config.app.ckb.mentions.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range filter.
-        /// </summary>
-        internal static string config_app_ckb_rangefilter {
-            get {
-                return ResourceManager.GetString("config.app.ckb.rangefilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_rangefilter_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.rangefilter.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show timestamp.
-        /// </summary>
-        internal static string config_app_ckb_showtime {
-            get {
-                return ResourceManager.GetString("config.app.ckb.showtime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_showtime_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.showtime.tooltip", resourceCulture);
             }
         }
         
@@ -312,6 +294,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Larger.
+        /// </summary>
+        internal static string config_app_fontsize_larger {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.larger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
         internal static string config_app_fontsize_medium {
@@ -330,11 +321,29 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smaller.
+        /// </summary>
+        internal static string config_app_fontsize_smaller {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.smaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string config_app_fontsize_tooltip {
             get {
                 return ResourceManager.GetString("config.app.fontsize.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Very large.
+        /// </summary>
+        internal static string config_app_fontsize_verylarge {
+            get {
+                return ResourceManager.GetString("config.app.fontsize.verylarge", resourceCulture);
             }
         }
         
@@ -771,6 +780,69 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string config_main_dialog_btn_cancel {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string config_main_dialog_btn_no {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string config_main_dialog_btn_ok {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string config_main_dialog_btn_yes {
+            get {
+                return ResourceManager.GetString("config.main.dialog.btn.yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any unsaved changes will be lost..
+        /// </summary>
+        internal static string config_main_dialog_nav_cancel_text {
+            get {
+                return ResourceManager.GetString("config.main.dialog.nav.cancel.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string config_main_dialog_title_confirm {
+            get {
+                return ResourceManager.GetString("config.main.dialog.title.confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured.
+        /// </summary>
+        internal static string config_main_dialog_title_error {
+            get {
+                return ResourceManager.GetString("config.main.dialog.title.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string config_main_nav_about {
@@ -866,6 +938,15 @@ namespace Gobchat {
         internal static string config_main_nav_selectprofile_tooltip {
             get {
                 return ResourceManager.GetString("config.main.nav.selectprofile.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat tabs.
+        /// </summary>
+        internal static string config_main_nav_tabs {
+            get {
+                return ResourceManager.GetString("config.main.nav.tabs", resourceCulture);
             }
         }
         
@@ -1025,12 +1106,11 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
-        ///Either the format is not supported or the file can&apos;t be found/read!.
+        ///   Looks up a localized string similar to Select a profile to copy.
         /// </summary>
-        internal static string config_profiles_import_error {
+        internal static string config_profiles_dialog_copyprofilepage_title {
             get {
-                return ResourceManager.GetString("config.profiles.import.error", resourceCulture);
+                return ResourceManager.GetString("config.profiles.dialog.copyprofilepage.title", resourceCulture);
             }
         }
         
@@ -1040,6 +1120,16 @@ namespace Gobchat {
         internal static string config_profiles_importprofile {
             get {
                 return ResourceManager.GetString("config.profiles.importprofile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile can&apos;t be loaded.&lt;br&gt;
+        ///Either the format is not supported or the file can&apos;t be found/read!.
+        /// </summary>
+        internal static string config_profiles_importprofile_error {
+            get {
+                return ResourceManager.GetString("config.profiles.importprofile.error", resourceCulture);
             }
         }
         
@@ -1116,6 +1206,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete this profile? Deletion is final after clicking save..
+        /// </summary>
+        internal static string config_profiles_profile_delete_dialog_text {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.delete.dialog.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete this profile.
         /// </summary>
         internal static string config_profiles_profile_delete_tooltip {
@@ -1152,6 +1251,16 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore all settings for this profile to default?
+        ///Restoration is final after clicking save..
+        /// </summary>
+        internal static string config_profiles_profile_reset_dialog_text {
+            get {
+                return ResourceManager.GetString("config.profiles.profile.reset.dialog.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore defaults for this profile.
         /// </summary>
         internal static string config_profiles_profile_reset_tooltip {
@@ -1175,17 +1284,6 @@ namespace Gobchat {
         internal static string config_profiles_profiles_name {
             get {
                 return ResourceManager.GetString("config.profiles.profiles.name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore all settings for this profile to default?
-        ///Everything will be deleted!
-        ///Press save afterwards..
-        /// </summary>
-        internal static string config_profiles_reset_confirmation {
-            get {
-                return ResourceManager.GetString("config.profiles.reset.confirmation", resourceCulture);
             }
         }
         
@@ -1280,6 +1378,240 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new tab.
+        /// </summary>
+        internal static string config_tabs_btn_newtab {
+            get {
+                return ResourceManager.GetString("config.tabs.btn.newtab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string config_tabs_effect_0 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlight.
+        /// </summary>
+        internal static string config_tabs_effect_1 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blink.
+        /// </summary>
+        internal static string config_tabs_effect_2 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green Text.
+        /// </summary>
+        internal static string config_tabs_effect_3 {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tab effect on mention.
+        /// </summary>
+        internal static string config_tabs_effect_mention {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_effect_mention_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.mention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tab effect on message.
+        /// </summary>
+        internal static string config_tabs_effect_message {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_effect_message_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.effect.message.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected tab.
+        /// </summary>
+        internal static string config_tabs_tab_label {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply mentions.
+        /// </summary>
+        internal static string config_tabs_tab_mention {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.mention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_mention_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.mention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply rangefilter.
+        /// </summary>
+        internal static string config_tabs_tab_rangefilter {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.rangefilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_rangefilter_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.rangefilter.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply roleplay formatting.
+        /// </summary>
+        internal static string config_tabs_tab_roleplay {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.roleplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_roleplay_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.roleplay.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show timestamp.
+        /// </summary>
+        internal static string config_tabs_tab_timestamp {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tab_timestamp_tooltip {
+            get {
+                return ResourceManager.GetString("config.tabs.tab.timestamp.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_config {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete .
+        /// </summary>
+        internal static string config_tabs_tabtable_action_delete {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete entry?.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_delete_confirm {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.delete.confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move one down.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_down {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move one up.
+        /// </summary>
+        internal static string config_tabs_tabtable_action_up {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.action.up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        internal static string config_tabs_tabtable_actions {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string config_tabs_tabtable_name {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible.
+        /// </summary>
+        internal static string config_tabs_tabtable_visible {
+            get {
+                return ResourceManager.GetString("config.tabs.tabtable.visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alliance.
         /// </summary>
         internal static string main_chat_channel_alliance {
@@ -1325,6 +1657,24 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL1.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL1.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_1_short {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl1.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_1_tooltip {
@@ -1339,6 +1689,24 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_2 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL2.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_2_short {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.short", resourceCulture);
             }
         }
         
@@ -1361,6 +1729,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL3.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_3_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-3.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl3.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_3_tooltip {
@@ -1375,6 +1752,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_4 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL4.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_4_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-4.abbreviation", resourceCulture);
             }
         }
         
@@ -1397,6 +1783,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL5.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_5_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-5.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl5.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_5_tooltip {
@@ -1411,6 +1806,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_6 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL6.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_6_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-6.abbreviation", resourceCulture);
             }
         }
         
@@ -1433,6 +1837,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CWL7.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_7_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-7.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /cwl7.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_7_tooltip {
@@ -1447,6 +1860,15 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_8 {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CWL8.
+        /// </summary>
+        internal static string main_chat_channel_crossworldlinkshell_8_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-8.abbreviation", resourceCulture);
             }
         }
         
@@ -1577,6 +1999,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FC.
+        /// </summary>
+        internal static string main_chat_channel_guild_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.guild.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /fc.
         /// </summary>
         internal static string main_chat_channel_guild_tooltip {
@@ -1591,6 +2022,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_1 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L1.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_1_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-1.abbreviation", resourceCulture);
             }
         }
         
@@ -1613,6 +2053,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L2.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_2_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-2.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l2.
         /// </summary>
         internal static string main_chat_channel_linkshell_2_tooltip {
@@ -1627,6 +2076,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_3 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L3.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_3_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-3.abbreviation", resourceCulture);
             }
         }
         
@@ -1649,6 +2107,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L4.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_4_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-4.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l4.
         /// </summary>
         internal static string main_chat_channel_linkshell_4_tooltip {
@@ -1663,6 +2130,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_5 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L5.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_5_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-5.abbreviation", resourceCulture);
             }
         }
         
@@ -1685,6 +2161,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L6.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_6_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-6.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l6.
         /// </summary>
         internal static string main_chat_channel_linkshell_6_tooltip {
@@ -1703,6 +2188,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L7.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_7_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-7.abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /l7.
         /// </summary>
         internal static string main_chat_channel_linkshell_7_tooltip {
@@ -1717,6 +2211,15 @@ namespace Gobchat {
         internal static string main_chat_channel_linkshell_8 {
             get {
                 return ResourceManager.GetString("main.chat.channel.linkshell-8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L8.
+        /// </summary>
+        internal static string main_chat_channel_linkshell_8_abbreviation {
+            get {
+                return ResourceManager.GetString("main.chat.channel.linkshell-8.abbreviation", resourceCulture);
             }
         }
         

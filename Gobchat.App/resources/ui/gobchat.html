@@ -4,7 +4,7 @@
     <title></title>
 
     <script src="lib/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="jquery-ui-1.12.1.min.css">
+    <link rel="stylesheet" href="lib/jquery-ui-1.12.1.min.css">
     <script src="lib/jquery-ui-1.12.1.min.js"></script>
     <script src="lib/lodash.min.js"></script>
 
@@ -19,37 +19,46 @@
     <link rel="stylesheet" href="gobui_chat.css">
     <style id="custome_style_id" type="text/css"></style>
 
-    <script src="gobchat/CommonUtilFunctions.js"></script>
-    <script src="gobchat/DataChannel.js"></script>
-    <script src="gobchat/FFUnicodes.js"></script>
+    <script type="text/javascript" src="gobchat/CommonUtilFunctions.js"></script>
+    <script type="text/javascript" src="gobchat/GobchatConfig.js"></script>
+    <script type="text/javascript" src="gobchat/Databinding.js"></script>
+    <script type="text/javascript" src="gobchat/LocaleManager.js"></script>
 
-    <script src="gobchat/GobchatConfig.js"></script>
+    <script type="text/javascript" src="gobchat/web-components.js"></script>
 
-    <script src="gobchat/CommandManager.js"></script>
-    <script src="gobchat/StyleBuilder.js"></script>
+    <script type="text/javascript" src="gobchat/Constants.js"></script>
+    <script type="text/javascript" src="gobchat/FFUnicodes.js"></script>
 
-    <script src="gobchat/MessageSoundPlayer.js"></script>
-    <script src="gobchat/MessageHtmlBuilder.js"></script>
-    <script src="gobchat/GobchatManager.js"></script>
+    <script type="text/javascript" src="gobchat/CommandManager.js"></script>
 
-    <script src="gobchat/gob-locale.js"></script>
-    <script src="gobchat/gob-styleloader.js"></script>
+    <script type="text/javascript" src="gobchat/ChatCssStyleBuilder.js"></script>
+    <script type="text/javascript" src="gobchat/CssFileLoader.js"></script>
+
+    <script type="text/javascript" src="gobchat/MessageSoundPlayer.js"></script>
+    <script type="text/javascript" src="gobchat/MessageBuilder.js"></script>
+
+    <script type="text/javascript" src="gobchat/ChatManager.js"></script>
 </head>
 <body>
     <div id="container">
         <div id="chatbox" class="gob-chatbox">
-            <div id="chatbox_toolba_top" class="gob-chatbox-toolbar">
-                <button id="gobchat_showconfig" class="gob-chatbox-toolbar-button"><i class="fas fa-cog"></i></button>
-                <button id="gobchat_togglechatsearch" class="gob-chatbox-toolbar-button"><i class="fas fa-search"></i></button>
-                <div class="gob-tab-nav">
-                    <div class="gob-tab-nav-left"></div>
-                    <div class="gob-tab-nav gob-tab-nav-content"></div>
-                    <div class="gob-tab-nav-right"></div>
+            <div class="chat-toolbar chat-toolbar-top">
+                <button id="gobchat_showconfig" class="chat-toolbar-button"><i class="fas fa-cog"></i></button>
+                <button id="gobchat_togglechatsearch" class="chat-toolbar-button"><i class="fas fa-search"></i></button>
+                <div class="js-chattabs chat-tabnav">
+                    <button class="js-nav-left chat-tabnav-btn chat-tabnav-left">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="js-nav-content chat-tabbar"></div>
+                    <button class="js-nav-right chat-tabnav-btn chat-tabnav-right">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
-            <div id="chatbox_content" class="gob-chatbox-content chatbox-gen">
+            <div class="chat-panel chat-panel-bg">
+                <div class="js-chat-history"></div>
             </div>
-            <div id="chatbox_toolba_bot" class="gob-chatbox-toolbar chatbox-gen">
+            <div class="chat-toolbar chat-toolbar-bot chat-panel-bg">
                 <div id="chatbox_search">
                     <input id="chatbox_search_txt" />
                     <button id="chatbox_search_hits">0 / 0</button>
@@ -62,69 +71,8 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" src="gobchat.js"></script>
+    <script type="text/javascript" src="gobchat-test.js"></script>
 </body>
-
-<script src="gobchat/gob-main-chatsearch.js"></script>
-<script src="gobchat/gob-main-openconfig.js"></script>
-
-<script>
-    'use strict'
-    //window.addEventListener('message', event => {})
-
-    //$(window).on("message", function(e){
-    //	console.log()
-    //	for(let k in e){
-    //		console.log(k + " | " + e[k])
-    //	}
-    //})
-
-    document.addEventListener("OverlayStateUpdate", function (e) {
-        if (!e.detail.isLocked)
-            document.documentElement.classList.add("gob-resize-active");
-        else
-            document.documentElement.classList.remove("gob-resize-active");
-    });
-
-    jQuery(function ($) {
-        window.chatManager = new Gobchat.GobchatManager("chatbox_content")
-        window.chatManager.init()
-
-        // test
-        function runTest() {
-            function fireMessageEvent(e) {
-                const msg = { channel: e.channel || Gobchat.ChannelEnum.PARTY, source: e.source || "Browser", message: e.message || "Empty" }
-                GobchatAPI.sendChatMessage(msg.channel, msg.source, msg.message)
-            }
-
-            const textMessages = [
-                { channel: Gobchat.ChannelEnum.PARTY, message: '"Say" ((ooc)) *emote* mention' }, //base test
-                { channel: Gobchat.ChannelEnum.PARTY, message: '"Mention contained in say"' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '((Mention contained in ooc))' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '*Mention contained in emote*' },
-                { channel: Gobchat.ChannelEnum.SAY, message: '"Some speech", followed by an emote, "and some more speech."' },
-                { channel: Gobchat.ChannelEnum.SAY, message: 'Display of some special html characters: < > | <<  ≫ « »' },
-                { channel: Gobchat.ChannelEnum.EMOTE, message: 'Display of some special ffxiv characters: \uE0BB' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '"Say that\'s divided by some *emote characters* but should still be displayed correctly."' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '*An emote mixed with "for some important stuff" but contained in an emote*' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: 'Ooc mixed inbetween "some ((ooc)) say" *or ((ooc)) emote*' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '"Mixed stuff *inbetween but the enclosing character* was forgotten.' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '»Say mixed with different types«, of symbols, »to see if they work«' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '«Say mixed with different types», of symbols, «to see if they work»' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: 'Incomplete tokens(' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: 'Incomplete tokens)' },
-                { channel: Gobchat.ChannelEnum.PARTY, message: '((Incomplete tokens)' },
-            ]
-
-            textMessages.forEach(e => fireMessageEvent(e))
-
-            const fillMe = Array.from({ length: 20 }, (v, k) => `|Text1 | <Text 2> "Say" ((ooc)) *emote*   | oof |  Say, *emote* and ((ooc)) - ${k + 1} <emote> \u226Btext long\u226A`).map(e => { return { message: e, source: "Di'e I'of-oOdin" } })
-            fillMe.forEach(e => fireMessageEvent(e))
-        }
-
-        //window.setTimeout(runTest, 10000);
-
-        GobchatAPI.setUIReady(true)
-    })
-</script>
 </html>

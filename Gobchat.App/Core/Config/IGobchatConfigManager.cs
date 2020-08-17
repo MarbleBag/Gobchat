@@ -57,7 +57,7 @@ namespace Gobchat.Core.Config
 
         void CopyProfile(string srcProfileId, string dstProfileId);
 
-        JToken ParseProfile(string path);
+        JObject ParseProfile(string path);
 
         #region property handling
 
@@ -75,7 +75,7 @@ namespace Gobchat.Core.Config
 
         #endregion property handling
 
-        JToken AsJson();
+        JObject AsJson();
 
         void Synchronize(JToken json);
     }

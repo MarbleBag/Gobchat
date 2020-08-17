@@ -411,9 +411,11 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         //TODO remove later
-        loadFromLocalStore() {
+        loadFromLocalStore(keepLocaleStore) {
             const json = window.localStorage.getItem("gobchat-config")
-            window.localStorage.removeItem("gobchat-config")
+            if (!keepLocaleStore)
+                window.localStorage.removeItem("gobchat-config")
+
             if (json === undefined || json === null)
                 return
 
@@ -450,6 +452,20 @@ var Gobchat = (function (Gobchat, undefined) {
             if (!this._activeProfile)
                 throw new Error("No active profile")
             return this._activeProfile.get(key, defaultValue)
+        }
+
+        getDefault(key, defaultValue) {
+            try {
+                const value = resolvePath(key, this._defaultProfile)
+                return value === undefined ? defaultValue : value !== null ? copyByJson(value) : value
+            } catch (error) {
+                if (defaultValue !== undefined) {
+                    if (error instanceof InvalidKeyError) {
+                        return defaultValue
+                    }
+                }
+                throw error
+            }
         }
 
         set(key, value) {
@@ -627,7 +643,7 @@ var Gobchat = (function (Gobchat, undefined) {
 
                 let indexOffset = propertyPath.length
                 while (true) {
-                    indexOffset = propertyPath.lastIndexOf(".", indexOffset)
+                    indexOffset = propertyPath.lastIndexOf(".", indexOffset - 1) // lastIndexOf includes the given end index
                     if (indexOffset === -1) break
                     const path = propertyPath.substring(0, indexOffset)
                     if (splitted.has(path)) break

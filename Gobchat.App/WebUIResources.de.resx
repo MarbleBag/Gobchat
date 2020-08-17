@@ -162,13 +162,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt</value>
   </data>
   <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Erwähnungen nicht filtern</value>
-  </data>
-  <data name="config.app.ckb.rangefilter" xml:space="preserve">
-    <value>Reichweitenfilter</value>
-  </data>
-  <data name="config.app.ckb.showtime" xml:space="preserve">
-    <value>Zeitstempel anzeigen</value>
+    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
@@ -188,11 +182,20 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.app.fontsize.large" xml:space="preserve">
     <value>Groß</value>
   </data>
+  <data name="config.app.fontsize.larger" xml:space="preserve">
+    <value>Größer</value>
+  </data>
   <data name="config.app.fontsize.medium" xml:space="preserve">
     <value>Mittel</value>
   </data>
   <data name="config.app.fontsize.small" xml:space="preserve">
     <value>Klein</value>
+  </data>
+  <data name="config.app.fontsize.smaller" xml:space="preserve">
+    <value>Kleiner</value>
+  </data>
+  <data name="config.app.fontsize.verylarge" xml:space="preserve">
+    <value>Sehr groß</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Gobchat ein- &amp;amp; ausblenden </value>
@@ -314,6 +317,24 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.main.deletebutton.tooltip" xml:space="preserve">
     <value>Lösche diesen Eintrag</value>
   </data>
+  <data name="config.main.dialog.btn.cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="config.main.dialog.btn.no" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="config.main.dialog.btn.yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
+    <value>Alle nicht gespeicherten Änderungen gehen verloren.</value>
+  </data>
+  <data name="config.main.dialog.title.confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="config.main.dialog.title.error" xml:space="preserve">
+    <value>Fehler!</value>
+  </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>Info</value>
   </data>
@@ -340,6 +361,9 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   </data>
   <data name="config.main.nav.saveandexit" xml:space="preserve">
     <value>Speichern &amp;amp; Schließen</value>
+  </data>
+  <data name="config.main.nav.tabs" xml:space="preserve">
+    <value>Chat Reiter</value>
   </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Kopiere diese Seite von einem anderen Profil</value>
@@ -379,6 +403,12 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
     <value>Lautstärke</value>
   </data>
+  <data name="config.profiles.importprofile" xml:space="preserve">
+    <value>Importiere Profil</value>
+  </data>
+  <data name="config.profiles.importprofile.error" xml:space="preserve">
+    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft.</value>
+  </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Neues Profil</value>
   </data>
@@ -394,18 +424,21 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="config.profiles.profile.delete.dialog.text" xml:space="preserve">
+    <value>Profil löschen? Die Löschung kann nicht mehr rückgängig gemacht werden, wenn gespeichert wird.</value>
+  </data>
   <data name="config.profiles.profile.export" xml:space="preserve">
     <value>Exportieren</value>
   </data>
   <data name="config.profiles.profile.reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
-  <data name="config.profiles.profiles.actions" xml:space="preserve">
-    <value>Aktionen</value>
-  </data>
-  <data name="config.profiles.reset.confirmation" xml:space="preserve">
+  <data name="config.profiles.profile.reset.dialog.text" xml:space="preserve">
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
+  </data>
+  <data name="config.profiles.profiles.actions" xml:space="preserve">
+    <value>Aktionen</value>
   </data>
   <data name="config.roleplay.entry.active" xml:space="preserve">
     <value>Aktiv</value>
@@ -431,6 +464,66 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
     <value>Alle Einträge auf standard zurücksetzen</value>
   </data>
+  <data name="config.tabs.btn.newtab" xml:space="preserve">
+    <value>Neuen Reiter hinzufügen</value>
+  </data>
+  <data name="config.tabs.effect.0" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
+  <data name="config.tabs.effect.1" xml:space="preserve">
+    <value>Hervorheben</value>
+  </data>
+  <data name="config.tabs.effect.2" xml:space="preserve">
+    <value>Blinken</value>
+  </data>
+  <data name="config.tabs.effect.3" xml:space="preserve">
+    <value>Grüner Text</value>
+  </data>
+  <data name="config.tabs.effect.mention" xml:space="preserve">
+    <value>Reitereffekt bei neuer Erwähnung</value>
+  </data>
+  <data name="config.tabs.effect.message" xml:space="preserve">
+    <value>Reitereffekt bei neuer Nachricht</value>
+  </data>
+  <data name="config.tabs.tab.label" xml:space="preserve">
+    <value>Ausgewählter Reiter</value>
+  </data>
+  <data name="config.tabs.tab.mention" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.tabs.tab.rangefilter" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.tabs.tab.roleplay" xml:space="preserve">
+    <value>Rollenspiel</value>
+  </data>
+  <data name="config.tabs.tab.timestamp" xml:space="preserve">
+    <value>Zeitstempel anzeigen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.config" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
+    <value>Eintrag löschen?</value>
+  </data>
+  <data name="config.tabs.tabtable.action.down" xml:space="preserve">
+    <value>Eins nach unten</value>
+  </data>
+  <data name="config.tabs.tabtable.action.up" xml:space="preserve">
+    <value>Eins nach oben</value>
+  </data>
+  <data name="config.tabs.tabtable.actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="config.tabs.tabtable.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.tabs.tabtable.visible" xml:space="preserve">
+    <value>Sichtbar</value>
+  </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
     <value>Allianz</value>
   </data>
@@ -440,11 +533,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.crossworldlinkshell-1" xml:space="preserve">
     <value>Weltenkontaktkreis 1</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-1.abbreviation" xml:space="preserve">
+    <value>WKK1</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
     <value>/wkk1</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2" xml:space="preserve">
     <value>Weltenkontaktkreis 2</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-2.abbreviation" xml:space="preserve">
+    <value>WKK2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
     <value>/wkk2</value>
@@ -452,11 +551,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.crossworldlinkshell-3" xml:space="preserve">
     <value>Weltenkontaktkreis 3</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-3.abbreviation" xml:space="preserve">
+    <value>WKK3</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-3.tooltip" xml:space="preserve">
     <value>/wkk3</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4" xml:space="preserve">
     <value>Weltenkontaktkreis 4</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-4.abbreviation" xml:space="preserve">
+    <value>WKK4</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-4.tooltip" xml:space="preserve">
     <value>/wkk4</value>
@@ -464,11 +569,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.crossworldlinkshell-5" xml:space="preserve">
     <value>Weltenkontaktkreis 5</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-5.abbreviation" xml:space="preserve">
+    <value>WKK5</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-5.tooltip" xml:space="preserve">
     <value>/wkk5</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6" xml:space="preserve">
     <value>Weltenkontaktkreis 6</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-6.abbreviation" xml:space="preserve">
+    <value>WKK6</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-6.tooltip" xml:space="preserve">
     <value>/wkk6</value>
@@ -476,11 +587,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.crossworldlinkshell-7" xml:space="preserve">
     <value>Weltenkontaktkreis 7</value>
   </data>
+  <data name="main.chat.channel.crossworldlinkshell-7.abbreviation" xml:space="preserve">
+    <value>WKK7</value>
+  </data>
   <data name="main.chat.channel.crossworldlinkshell-7.tooltip" xml:space="preserve">
     <value>/wkk7</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8" xml:space="preserve">
     <value>Weltenkontaktkreis 8</value>
+  </data>
+  <data name="main.chat.channel.crossworldlinkshell-8.abbreviation" xml:space="preserve">
+    <value>WKK8</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-8.tooltip" xml:space="preserve">
     <value>/wkk8</value>
@@ -500,11 +617,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.guild" xml:space="preserve">
     <value>Freie Gesellschaft</value>
   </data>
+  <data name="main.chat.channel.guild.abbreviation" xml:space="preserve">
+    <value>FG</value>
+  </data>
   <data name="main.chat.channel.guild.tooltip" xml:space="preserve">
     <value>/fg</value>
   </data>
   <data name="main.chat.channel.linkshell-1" xml:space="preserve">
     <value>Kontaktkreis 1</value>
+  </data>
+  <data name="main.chat.channel.linkshell-1.abbreviation" xml:space="preserve">
+    <value>KK1</value>
   </data>
   <data name="main.chat.channel.linkshell-1.tooltip" xml:space="preserve">
     <value>/kk1</value>
@@ -512,11 +635,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.linkshell-2" xml:space="preserve">
     <value>Kontaktkreis 2</value>
   </data>
+  <data name="main.chat.channel.linkshell-2.abbreviation" xml:space="preserve">
+    <value>KK2</value>
+  </data>
   <data name="main.chat.channel.linkshell-2.tooltip" xml:space="preserve">
     <value>/kk2</value>
   </data>
   <data name="main.chat.channel.linkshell-3" xml:space="preserve">
     <value>Kontaktkreis 3</value>
+  </data>
+  <data name="main.chat.channel.linkshell-3.abbreviation" xml:space="preserve">
+    <value>KK3</value>
   </data>
   <data name="main.chat.channel.linkshell-3.tooltip" xml:space="preserve">
     <value>/kk3</value>
@@ -524,11 +653,17 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.linkshell-4" xml:space="preserve">
     <value>Kontaktkreis 4</value>
   </data>
+  <data name="main.chat.channel.linkshell-4.abbreviation" xml:space="preserve">
+    <value>KK4</value>
+  </data>
   <data name="main.chat.channel.linkshell-4.tooltip" xml:space="preserve">
     <value>/kk4</value>
   </data>
   <data name="main.chat.channel.linkshell-5" xml:space="preserve">
     <value>Kontaktkreis 5</value>
+  </data>
+  <data name="main.chat.channel.linkshell-5.abbreviation" xml:space="preserve">
+    <value>KK5</value>
   </data>
   <data name="main.chat.channel.linkshell-5.tooltip" xml:space="preserve">
     <value>/kk5</value>
@@ -536,17 +671,26 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.linkshell-6" xml:space="preserve">
     <value>Kontaktkreis 6</value>
   </data>
+  <data name="main.chat.channel.linkshell-6.abbreviation" xml:space="preserve">
+    <value>KK6</value>
+  </data>
   <data name="main.chat.channel.linkshell-6.tooltip" xml:space="preserve">
     <value>/kk6</value>
   </data>
   <data name="main.chat.channel.linkshell-7" xml:space="preserve">
     <value>Kontaktkreis 7</value>
   </data>
+  <data name="main.chat.channel.linkshell-7.abbreviation" xml:space="preserve">
+    <value>KK7</value>
+  </data>
   <data name="main.chat.channel.linkshell-7.tooltip" xml:space="preserve">
     <value>/kk7</value>
   </data>
   <data name="main.chat.channel.linkshell-8" xml:space="preserve">
     <value>Kontaktkreis 8</value>
+  </data>
+  <data name="main.chat.channel.linkshell-8.abbreviation" xml:space="preserve">
+    <value>KK8</value>
   </data>
   <data name="main.chat.channel.linkshell-8.tooltip" xml:space="preserve">
     <value>/kk8</value>

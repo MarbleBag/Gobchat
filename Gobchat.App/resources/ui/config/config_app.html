@@ -28,11 +28,6 @@
                         </td>
                         <td>
                             <select class="gob-dropdown" id="capp_theme" data-gob-configkey="style.theme">
-                                <!--
-                                <option value="ffxiv_dark_style">FFXIV Dark</option>
-                                <option value="ffxiv_light_style">FFXIV Light</option>
-                                <option value="gobchat_style">Gobchat</option>
-                                 -->
                             </select>
                         </td>
                     </tr>
@@ -61,7 +56,7 @@
         <div class="gob-config-group-item">
             <div>
                 <input type="checkbox" id="capp_autodetectemote"
-                       data-gob-configkey="behaviour.autodetectEmoteInSay"
+                       data-gob-configkey="behaviour.chat.autodetectEmoteInSay"
                        data-gob-locale-title="config.app.ckb.emoteinsay.tooltip" />
                 <div class=""
                      data-gob-locale-text="config.app.ckb.emoteinsay"
@@ -77,18 +72,6 @@
                        data-gob-locale-title="config.app.ckb.usermention.tooltip" />
                 <div data-gob-locale-text="config.app.ckb.usermention"
                      data-gob-locale-title="config.app.ckb.usermention.tooltip">
-                </div>
-            </div>
-        </div>
-
-        <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" id="capp_showTimestamp"
-                       data-gob-configkey="behaviour.showTimestamp"
-                       data-gob-locale-title="config.app.ckb.showtime.tooltip" />
-                <div class=""
-                     data-gob-locale-text="config.app.ckb.showtime"
-                     data-gob-locale-title="config.app.ckb.showtime.tooltip">
                 </div>
             </div>
         </div>
@@ -148,24 +131,12 @@
 
         <div class="gob-config-group-item">
             <div>
-                <input type="checkbox" id="capp_rangefilter_active"
-                       data-gob-configkey="behaviour.rangefilter.active"
-                       data-gob-locale-title="config.app.ckb.rangefilter.tooltip" />
+                <input type="checkbox" id="capp_rangefilter_mention"
+                       data-gob-configkey="behaviour.rangefilter.ignoreMention"
+                       data-gob-locale-title="config.app.ckb.mentions.tooltip" />
                 <div class=""
-                     data-gob-locale-text="config.app.ckb.rangefilter"
-                     data-gob-locale-title="config.app.ckb.rangefilter.tooltip">
-                </div>
-            </div>
-
-            <div class="gob-config-group-item" for="capp_rangefilter_active">
-                <div>
-                    <input type="checkbox" id="capp_rangefilter_mention"
-                           data-gob-configkey="behaviour.rangefilter.ignoreMention"
-                           data-gob-locale-title="config.app.ckb.mentions.tooltip" />
-                    <div class=""
-                         data-gob-locale-title="config.app.ckb.mentions.tooltip"
-                         data-gob-locale-text="config.app.ckb.mentions">
-                    </div>
+                     data-gob-locale-title="config.app.ckb.mentions.tooltip"
+                     data-gob-locale-text="config.app.ckb.mentions">
                 </div>
             </div>
         </div>
@@ -325,6 +296,34 @@
                 </tr>
             </table>
         </div>
+
+        <div class="gob-config-group-item">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div data-gob-locale-text="config.app.chatbox.backgroundcolor"
+                                 data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input id="capp_chatbox_backgroundcolor"
+                                       type="text"
+                                       data-gob-configkey="style.chatbox.background-color"
+                                       data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip" />
+                                <button id="capp_chatbox_backgroundcolor_reset"
+                                        class="gob-button-tertiary gob-button-reset"
+                                        data-gob-configkey="style.chatbox.background-color"
+                                        data-gob-locale-title="config.main.resetbutton.tooltip">
+                                    <i class='fas fa-undo-alt'></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="gob-config-group">
@@ -352,15 +351,29 @@
             <div>
                 <div data-gob-locale-text="config.app.fontsize.label"
                      data-gob-locale-title="config.app.fontsize.tooltip"></div>
+
                 <select id="capp_font_size" class="gob-dropdown"
                         data-gob-configkey="style.channel.base.font-size"
                         data-gob-locale-title="config.app.fontsize.tooltip">
+                    <option value="smaller" data-gob-locale-text="config.app.fontsize.smaller"></option>
                     <option value="small" data-gob-locale-text="config.app.fontsize.small"></option>
                     <option value="medium" data-gob-locale-text="config.app.fontsize.medium"></option>
                     <option value="large" data-gob-locale-text="config.app.fontsize.large"></option>
+                    <option value="larger" data-gob-locale-text="config.app.fontsize.larger"></option>
+                    <option value="x-large" data-gob-locale-text="config.app.fontsize.verylarge"></option>
                 </select>
             </div>
         </div>
+
+        <!--
+            x-small: 0.625
+            small: 0.815
+            medium: 1
+            large: 1.125
+            larger: 1.2
+            x-large: 1.5
+            xx-large: 2
+        -->
     </div>
 
     <div class="gob-config-group">
@@ -530,161 +543,6 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        'use strict';
-
-        (async function () {
-            const binding = GobConfigHelper.makeDatabinding(gobconfig)
-
-            // setup language
-            const dpdLanguage = $("#capp_language")
-            GobConfigHelper.bindElement(binding, dpdLanguage)
-
-            const dpdTheme = $("#capp_theme")
-            GobConfigHelper.bindElement(binding, dpdTheme)
-
-            // setup checkboxes
-            const ckbChatLog = $("#capp_makechatlog")
-            GobConfigHelper.bindCheckbox(binding, ckbChatLog)
-
-            const ckbAutodetect = $("#capp_autodetectemote")
-            GobConfigHelper.bindCheckbox(binding, ckbAutodetect)
-
-            const ckbUserMention = $("#capp_userMention")
-            GobConfigHelper.bindCheckbox(binding, ckbUserMention)
-
-            const ckbTimestamp = $("#capp_showTimestamp")
-            GobConfigHelper.bindCheckbox(binding, ckbTimestamp)
-
-            const ckbHide = $("#capp_hide")
-            GobConfigHelper.bindCheckbox(binding, ckbHide)
-
-            const ckbUpdate = $("#capp_checkupdates")
-            GobConfigHelper.bindCheckbox(binding, ckbUpdate)
-
-            binding.bindConfigListener(GobConfigHelper.getConfigKey(ckbUpdate), value => {
-                //ckbBetaUpdate.attr("disabled", !value)
-                $("[for='capp_checkupdates']").toggleClass("disabled", !value)
-            })
-
-            const ckbBetaUpdate = $("#capp_checkbetaupdates")
-            GobConfigHelper.bindCheckbox(binding, ckbBetaUpdate)
-
-            {
-                const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
-                $("#capp_characterlocations_feature").toggle(!available)
-            }
-
-            const ckbActorActive = $("#capp_actor_updateActive")
-            GobConfigHelper.bindCheckbox(binding, ckbActorActive)
-
-            const ckbRangeFilterActive = $("#capp_rangefilter_active")
-            GobConfigHelper.bindCheckbox(binding, ckbRangeFilterActive)
-
-            binding.bindConfigListener(GobConfigHelper.getConfigKey(ckbRangeFilterActive), value => {
-                //ckbRangeFilterMention.attr("disabled", !value)
-                $("[for='capp_rangefilter_active']").toggleClass("disabled", !value)
-            })
-
-            const ckbRangeFilterMention = $("#capp_rangefilter_mention")
-            GobConfigHelper.bindCheckbox(binding, ckbRangeFilterMention)
-
-            // setup font group
-            // setup font family
-            const txtFontFamily = $("#capp_font_family")
-            GobConfigHelper.bindElement(binding, txtFontFamily)
-
-            const btnFontFamilyReset = $("#capp_font_family_reset")
-            GobConfigHelper.makeResetButton(btnFontFamilyReset)
-
-            const parseNumber = ($element) => {
-                const value = parseInt($element.val())
-                return Gobchat.isNumber(value) && value > 0 ? value : undefined
-            }
-
-            const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
-            GobConfigHelper.makeResetButton($("#capp_rangefilter_cutoff_reset"))
-
-            const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
-            GobConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
-
-            const txtRangeFilterStartOpacity = $("#capp_rangefilter_startopacity")
-            GobConfigHelper.makeResetButton($("#capp_rangefilter_startopacity_reset"))
-            const txtRangeFilterEndOpacity = $("#capp_rangefilter_endopacity")
-            GobConfigHelper.makeResetButton($("#capp_rangefilter_endopacity_reset"))
-
-            GobConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
-
-            const txtFrameX = $("#capp_frame_x")
-            const txtFrameY = $("#capp_frame_y")
-            const txtFrameHeight = $("#capp_frame_height")
-            const txtFrameWidth = $("#capp_frame_width")
-
-            GobConfigHelper.bindElement(binding, txtFrameX, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtFrameY, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtFrameHeight, { elementGetAccessor: parseNumber })
-            GobConfigHelper.bindElement(binding, txtFrameWidth, { elementGetAccessor: parseNumber })
-
-            // setup font size
-            const dpdFontSize = $("#capp_font_size")
-            GobConfigHelper.bindElement(binding, dpdFontSize, {
-                elementGetAccessor: ($element) => Gobchat.isNumber($element.val()) ? Math.round($element.val()) + "px" : ($element.val() || "medium")
-            })
-
-            const clrSearchMarked = $("#capp_search_marked")
-            GobConfigHelper.makeColorSelector(clrSearchMarked)
-            GobConfigHelper.bindColorSelector(binding, clrSearchMarked)
-
-            const btnSearchMarkedReset = $("#capp_search_marked_reset")
-            GobConfigHelper.makeResetButton(btnSearchMarkedReset)
-
-            const clrSearchSelected = $("#capp_search_selected")
-            GobConfigHelper.makeColorSelector(clrSearchSelected)
-            GobConfigHelper.bindColorSelector(binding, clrSearchSelected)
-
-            const btnSearchSelectedReset = $("#capp_search_selected_reset")
-            GobConfigHelper.makeResetButton(btnSearchSelectedReset)
-
-            // setup hotkey group
-            // setup hotkey field
-            const txtHotkeyShow = $("#capp_hotkey_show")
-            const getHotkey = ($element, event) => GobConfigHelper.decodeHotkey(event, true)
-            GobConfigHelper.bindElement(binding, txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
-
-            // setup ungrouped
-            const txtChatUpdateInterval = $("#capp_chat_updateInterval")
-            GobConfigHelper.bindElement(binding, txtChatUpdateInterval, { elementGetAccessor: parseNumber })
-            GobConfigHelper.makeResetButton($("#capp_chat_updateInterval_reset"))
-
-            const txtActorUpdateInterval = $("#capp_actor_updateInterval")
-            GobConfigHelper.bindElement(binding, txtActorUpdateInterval, { elementGetAccessor: parseNumber })
-            GobConfigHelper.makeResetButton($("capp_actor_updateInterval_reset"))
-
-            // activate bindings
-            binding.initialize()
-
-            // setup profile copy
-            const allFields = [
-                dpdLanguage, dpdTheme,
-                ckbChatLog, ckbAutodetect, ckbUserMention, ckbTimestamp, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterActive, ckbRangeFilterMention,
-                txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
-                txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
-                txtFontFamily, dpdFontSize,
-                txtHotkeyShow,
-                txtChatUpdateInterval, txtActorUpdateInterval,
-                ckbActorActive
-            ]
-
-            const btnCopyProfile = $("#capp_copyprofile")
-            GobConfigHelper.makeCopyProfileButton(btnCopyProfile,
-                {
-                    configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))
-                })
-
-        }());
-    </script>
+    <script type="text/javascript" src="config_app.js"></script>
 </body>
 </html>

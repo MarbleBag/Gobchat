@@ -34,17 +34,17 @@ namespace Gobchat.Module.Updater.Internal
             var updateContent = GetContent(feed);
             var appContent = GetContent(GobchatContext.ApplicationLocation);
 
-            // For some reason this tasks crashes the update, seems like I need to fork that project and check out what's going wrong
-            // foreach (var file in appContent)
-            //     if (!updateContent.Contains(file))
-            //         tasks.Add(new DeleteTask(Path.Combine(GobchatApplicationContext.ApplicationLocation, file)));
-
+            // delete stuff if and only if both lists are not empty, otherwise stuff can really go sideway
             /*
-            foreach (var file in appContent)
+            if (appContent.Count > 0 && updateContent.Count > 0)
             {
-                var updateTask = new NAppUpdate.Framework.Tasks.FileUpdateTask();
-                updateTask.LocalPath = file;
-                tasks.Add(updateTask);
+                foreach (var file in appContent)
+                    if (!updateContent.Contains(file))
+                        // For some reason this task can crash the update process
+                        tasks.Add(new NAUDeleteTask()
+                        {
+                            LocalPath = file.Replace(feed, "").TrimStart('\\', ' ') // Path.Combine(GobchatContext.ApplicationLocation, file)
+                        });
             }
             */
 
@@ -52,15 +52,13 @@ namespace Gobchat.Module.Updater.Internal
              .GroupBy(s => System.IO.Path.GetDirectoryName(s));
 
             foreach (var folder in files)
-            {
                 foreach (var file in folder)
-                {
-                    var fileToPatch = file.Replace(feed, "").TrimStart('\\', ' ');
-                    var updateTask = new NAppUpdate.Framework.Tasks.FileUpdateTask();
-                    updateTask.LocalPath = fileToPatch;
-                    tasks.Add(updateTask);
-                }
-            }
+                    tasks.Add(
+                        new NAppUpdate.Framework.Tasks.FileUpdateTask()
+                        {
+                            LocalPath = file.Replace(feed, "").TrimStart('\\', ' ')
+                        }
+                    );
 
             return tasks;
         }

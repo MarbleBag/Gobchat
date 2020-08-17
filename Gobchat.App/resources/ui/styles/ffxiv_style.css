@@ -91,24 +91,26 @@
         margin-top: -2px;
     }
 
-.gob-table-channel {
+/* table styles */
+
+.gob-table {
     border-spacing: 0px;
     text-align: center;
 }
 
-    .gob-table-channel > thead > tr > th {
-        text-align: left;
-        padding: 10px 5px 0px 10px;
+.gob-table-t-channel > thead > tr > th {
+    text-align: left;
+    padding: 10px 5px 0px 10px;
+}
+
+    .gob-table-t-channel > thead > tr > th:nth-child(1) { /*remove padding from first header*/
+        padding-left: 0px;
     }
 
-        .gob-table-channel > thead > tr > th:nth-child(1) {
-            padding-left: 0px;
-        }
-
-    .gob-table-channel > tbody > tr > td:nth-child(1) {
-        text-align: left;
-        padding-right: 15px;
-    }
+.gob-table-t-channel > tbody > tr > td:nth-child(1) {
+    text-align: left;
+    padding-right: 15px;
+}
 
 /* button styles */
 

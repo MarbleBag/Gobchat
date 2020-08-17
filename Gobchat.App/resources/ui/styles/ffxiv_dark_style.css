@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+@import "ffxiv_style.css";
+
 :root {
     --text-regular-color: #ded2b8;
     --text-regular-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
@@ -88,18 +90,23 @@
     color: var(--text-header-color);
 }
 
+/* table styles */
 .gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
 .gob-table-stripes-hrzt > thead > tr > th:nth-child(even) {
     background-color: #13131350;
 }
 
-.gob-table-channel > thead > tr > th {
+.gob-table > thead > tr > th {
     color: var(--text-header-color);
     text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
 }
 
-.gob-table-channel > tbody > tr:hover {
+.gob-table-row-hover > tbody > tr:hover {
     background-image: linear-gradient(135deg, #131313, #13131310 80%);
+}
+
+.gob-table > tbody > tr.active {
+    background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
 }
 
 /* icon styles */
@@ -224,8 +231,14 @@ input[type="range"] {
         background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
         color: #eeeeee;
         border: 1px solid #141414;
+        outline: none;
     }
 
     .ui-dialog ui-dialog-buttonset > button:active {
         border: 1px solid var(--color-gold);
+    }
+
+    .ui-dialog .ui-dialog-buttonset > button:focus {
+        border: 1px solid var(--color-gold);
+        /*outline: var(--color-gold) solid 1px;*/
     }

@@ -10,6 +10,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
+
+@import "ffxiv_style.css";
+
 :root {
     --text-regular-color: #855b43;
     --text-regular-shadow: .5px 0px 1px #ffe8bf;
@@ -93,17 +96,23 @@
     text-shadow: unset;
 }
 
+/* table styles */
+
 .gob-table-stripes-hrzt > tbody > tr > td:nth-child(even),
 .gob-table-stripes-hrzt > thead > tr > th:nth-child(even) {
     background-color: #13131350;
 }
 
-.gob-table-channel > thead > tr > th {
+.gob-table > thead > tr > th {
     color: var(--text-header-color);
 }
 
-.gob-table-channel > tbody > tr:hover {
+.gob-table-row-hover > tbody > tr:hover {
     background-image: linear-gradient(135deg, #af631b7d, #af631b26 80%);
+}
+
+.gob-table > tbody > tr.active {
+    background-image: var(--element-selection-active);
 }
 
 /* button styles */
@@ -224,11 +233,16 @@ input[type="range"] {
         background: var(--button-color);
         color: #eeeeee;
         border: 1px solid #b8a084;
+        outline: none;
     }
 
-    .ui-dialog ui-dialog-buttonset > button:active {
-        border: 1px solid #cc9f5e;
-    }
+        .ui-dialog .ui-dialog-buttonset > button:active {
+            border: 1px solid #cc9f5e;
+        }
+
+        .ui-dialog .ui-dialog-buttonset > button:focus {
+            border: 1px solid #cc9f5e;
+        }
 
 /* spectrum */
 

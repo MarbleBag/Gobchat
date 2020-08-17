@@ -56,7 +56,7 @@ var Gobchat = (function (Gobchat) {
         }
 
         isAutodetectEmoteInSay(channelEnum) {
-            return (channelEnum === ChannelEnum.SAY) && this._config.get("behaviour.autodetectEmoteInSay")
+            return (channelEnum === ChannelEnum.SAY) && this._config.get("behaviour.chat.autodetectEmoteInSay")
         }
 
         getMentions() {

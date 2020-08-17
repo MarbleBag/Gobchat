@@ -14,6 +14,7 @@
 using Sharlayan;
 using Sharlayan.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -36,13 +37,24 @@ namespace Gobchat.Memory
         {
         }
 
-        public bool ConnectToFFXIV()
+        public List<int> GetAllFFXIVProcesses()
+        {
+            var processes = Process.GetProcessesByName("ffxiv_dx11");
+            return processes.Select(p => p.Id).ToList();
+        }
+
+        public bool ConnectToFFXIV(int processId)
         {
             if (FFXIVProcessValid)
-                return true;
+            {
+                if (FFXIVProcessId == processId)
+                    return true;
+                else
+                    Disconnect();
+            }
 
-            var process = Process.GetProcessesByName("ffxiv_dx11").FirstOrDefault();
-            if (process == null)
+            var process = Process.GetProcessById(processId);
+            if (process == null || !process.ProcessName.Equals("ffxiv_dx11"))
                 return false;
 
             ConnectTo(process);
@@ -52,6 +64,14 @@ namespace Gobchat.Memory
             FFXIVProcessValid = true;
 
             return FFXIVProcessValid;
+        }
+
+        public bool ConnectToFirstFFXIV()
+        {
+            var processes = GetAllFFXIVProcesses();
+            if (processes.Count > 0)
+                return ConnectToFFXIV(processes[0]);
+            return false;
         }
 
         public void Disconnect()

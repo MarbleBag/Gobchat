@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Core.Runtime;
 using NAppUpdate.Framework;
 using NAppUpdate.Framework.Common;
 using NAppUpdate.Framework.Sources;
@@ -25,108 +26,91 @@ namespace Gobchat.Module.Updater.Internal
     [UpdateTaskAlias("Delete")]
     internal sealed class NAUDeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
     {
-        private readonly string _path;
         private string _backupPath;
-        private bool isFolder;
-        private bool isFile;
+        private string _targetPath;
 
-        public string TargetPath
-        {
-            get => _path;
-        }
+        [NauField("localPath", "The local path of the file to delete", true)]
+        public string LocalPath { get; set; }
 
-        public NAUDeleteTask(string targetPath)
+        public NAUDeleteTask()
         {
-            _path = targetPath;
         }
 
         public override void Prepare(IUpdateSource source)
         {
-            if (string.IsNullOrEmpty(TargetPath))
-            {
-                UpdateManager.Instance.Logger.Log(Logger.SeverityLevel.Warning, $"DeleteTask: {nameof(TargetPath)} is empty, task is a noop");
-                return;
-            }
-
-            UpdateManager.Instance.Logger.Log($"DeleteTask: Checking path '{TargetPath}'");
-            isFolder = Directory.Exists(TargetPath);
-            isFile = File.Exists(TargetPath);
+            if (string.IsNullOrEmpty(LocalPath))
+                UpdateManager.Instance.Logger.Log(Logger.SeverityLevel.Warning, $"DeleteTask: {nameof(LocalPath)} is empty, task is a noop");
+            else
+                UpdateManager.Instance.Logger.Log($"DeleteTask: Checking path '{LocalPath}'");
         }
 
         public override TaskExecutionStatus Execute(bool coldRun)
         {
-            if (!isFolder && !isFile)
+            if (string.IsNullOrEmpty(LocalPath))
                 return TaskExecutionStatus.Successful;
 
-            if (!coldRun)
-                return TaskExecutionStatus.RequiresAppRestart;
+            //  if (!coldRun)
+            //     return TaskExecutionStatus.RequiresAppRestart;
 
-            if (_backupPath == null)
-            {
-                _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, TargetPath);
-                if (isFolder)
-                    CopyDirectory(TargetPath, _backupPath);
-                else if (isFile)
-                    CopyFile(TargetPath, _backupPath);
-            }
+            _backupPath = System.IO.Path.Combine(UpdateManager.Instance.Config.BackupFolder, LocalPath);
+            _targetPath = System.IO.Path.Combine(GobchatContext.ApplicationLocation, LocalPath);
 
-            if (isFolder)
-            {
-                return DeleteFolder(coldRun);
-            }
-            else if (isFile)
-            {
-                return DeleteFile(coldRun);
-            }
+            if (Directory.Exists(_targetPath))
+                CopyDirectory(_targetPath, _backupPath);
+            else if (File.Exists(_targetPath))
+                CopyFile(_targetPath, _backupPath);
+
+            if (Directory.Exists(_targetPath))
+                return DeleteFolder(_targetPath, coldRun);
+            else if (File.Exists(_targetPath))
+                return DeleteFile(_targetPath, coldRun);
             else
-            {
                 return TaskExecutionStatus.Successful;
-            }
         }
 
-        private TaskExecutionStatus DeleteFile(bool coldRun)
+        private TaskExecutionStatus DeleteFile(string path, bool coldRun)
         {
-            if (File.Exists(TargetPath))
-                FileLockWait();
+            if (File.Exists(path))
+                FileLockWait(path);
 
             try
             {
-                File.Delete(TargetPath);
+                File.Delete(path);
             }
             catch (Exception ex)
             {
                 if (coldRun)
                 {
                     ExecutionStatus = TaskExecutionStatus.Failed;
-                    throw new UpdateProcessFailedException($"Unable to delete fike: {TargetPath}", ex);
+                    throw new UpdateProcessFailedException($"Unable to delete file: {path}", ex);
                 }
             }
 
-            if (File.Exists(TargetPath))
-                if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(TargetPath))
+            if (File.Exists(path))
+                if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(path))
                     return TaskExecutionStatus.RequiresAppRestart;
                 else
                     return TaskExecutionStatus.RequiresPrivilegedAppRestart;
             return TaskExecutionStatus.Successful;
         }
 
-        private TaskExecutionStatus DeleteFolder(bool coldRun)
+        private TaskExecutionStatus DeleteFolder(string path, bool coldRun)
         {
             try
             {
-                FileSystem.DeleteDirectory(TargetPath);
+                FileSystem.DeleteDirectory(path);
             }
             catch (Exception ex)
             {
                 if (coldRun)
                 {
                     ExecutionStatus = TaskExecutionStatus.Failed;
-                    throw new UpdateProcessFailedException($"Unable to delete folder: {TargetPath}", ex);
+                    throw new UpdateProcessFailedException($"Unable to delete folder: {path}", ex);
                 }
             }
 
-            if (Directory.Exists(TargetPath))
-                if (PermissionsCheck.HaveWritePermissionsForFolder(TargetPath))
+            if (Directory.Exists(path))
+                if (PermissionsCheck.HaveWritePermissionsForFolder(path))
                     return TaskExecutionStatus.RequiresAppRestart;
                 else
                     return TaskExecutionStatus.RequiresPrivilegedAppRestart;
@@ -135,10 +119,29 @@ namespace Gobchat.Module.Updater.Internal
 
         public override bool Rollback()
         {
-            if (isFolder)
-                CopyDirectory(_backupPath, TargetPath);
-            if (isFile)
-                CopyFile(_backupPath, TargetPath);
+            if (_backupPath == null)
+                return true;
+
+            try
+            {
+                if (Directory.Exists(_backupPath))
+                {
+                    CopyDirectory(_backupPath, _targetPath);
+                    if (Directory.Exists(_backupPath))
+                        FileSystem.DeleteDirectory(_backupPath);
+                }
+                else if (File.Exists(_backupPath))
+                {
+                    CopyFile(_backupPath, _targetPath);
+                    if (File.Exists(_backupPath))
+                        File.Delete(_backupPath);
+                }
+            }
+            catch (Exception)
+            {
+                throw; //TODO
+            }
+
             return true;
         }
 
@@ -146,7 +149,7 @@ namespace Gobchat.Module.Updater.Internal
         {
             string destinationDir = Path.GetDirectoryName(destinationFile);
             FileSystem.CreateDirectoryStructure(destinationDir, false);
-            File.Move(sourceFile, destinationFile);
+            File.Copy(sourceFile, destinationFile, true);
         }
 
         private static void CopyDirectory(string sourceDirectory, string targetDirectory)
@@ -172,17 +175,15 @@ namespace Gobchat.Module.Updater.Internal
             }
         }
 
-        private void FileLockWait()
+        private static void FileLockWait(string path)
         {
             int attempt = 0;
-            while (FileSystem.IsFileLocked(new FileInfo(TargetPath)))
+            while (FileSystem.IsFileLocked(new FileInfo(path)))
             {
                 System.Threading.Thread.Sleep(500);
                 attempt++;
                 if (attempt == 10)
-                {
-                    throw new UpdateProcessFailedException("Failed to update, the file is locked: " + TargetPath);
-                }
+                    throw new UpdateProcessFailedException("Failed to update, the file is locked: " + path);
             }
         }
     }

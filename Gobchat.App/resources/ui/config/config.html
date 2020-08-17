@@ -21,23 +21,21 @@
 
     <link rel="stylesheet" href="../gobui_default.css">
 
-    <script src="config.js"></script>
-    <script src="../gobchat/gob-databinding.js"></script>
-    <script src="../gobchat/gob-jquery-loadthen.js"></script>
+    <script type="text/javascript" src="gob-confighelper.js"></script>
+    <script type="text/javascript" src="../gobchat/Databinding.js"></script>
+    <script type="text/javascript" src="../gobchat/jQuery-extension.js"></script>
+    <script type="text/javascript" src="../gobchat/web-components.js"></script>
 </head>
 <body class="gob-config-dialog">
     <script type="text/javascript">
         'use strict';
 
-        //if (window.opener) {
         window.GobchatAPI = window.opener.GobchatAPI
         window.Gobchat = window.opener.Gobchat
         window.console = window.opener.console
 
         window.gobconfig = new Gobchat.GobchatConfig()
-        window.gobconfig.loadFromLocalStore()
-
-        //}
+        window.gobconfig.loadFromLocalStore(true)
     </script>
 
     <div class="gob-config-dialog-panel" style="display: flex; flex-direction:column; overflow:hidden;">
@@ -45,7 +43,7 @@
             Gobchat Configuration
         </div>
         <div class="gob-separator-horizontal"></div>
-        <div style="display: inline-flex; overflow:hidden;">
+        <div style="display: inline-flex; overflow:hidden; height:100%">
             <div id="cmain_navbar" class="gob-column-navigation" data-gob-nav-target="cmain_config_content">
                 <select id="cmain_profileselect"></select>
                 <div class="gob-separator-horizontal"></div>
@@ -63,6 +61,9 @@
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_groups.html">
                     <div class="" data-gob-locale-text="config.main.nav.groups"></div>
+                </div>
+                <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_tabs.html">
+                    <div class="" data-gob-locale-text="config.main.nav.tabs"></div>
                 </div>
                 <div class="gob-nav-element gob-selectable-element" data-gob-nav-target="config_roleplay.html">
                     <div class="" data-gob-locale-text="config.main.nav.roleplay"></div>
@@ -92,123 +93,19 @@
         </div>
     </div>
 
-    <div id="config_copyprofiledialog" title="Select a profile" hidden>
-        <select></select>
-    </div>
+    <template id="template_config_dialog">
+        <div title="test">
+            <p>
+                <span style="float:left; margin:24px 24px 20px 0;">
+                    <span id="icon_warning" hidden>
+                        <i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i>
+                    </span>
+                </span>
+                <span id="text"></span>
+            </p>
+        </div>
+    </template>
 
-    <div id="config_dialog_error" title="An error occured" hidden>
-        <p>
-            <span style="float:left; margin:24px 24px 20px 0;"><i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i></span>
-            <span id="config_dialog_error_text">hello</span>
-        </p>
-    </div>
-
-    <script type="text/javascript">
-
-        // import { buildNavigationElement } from "../gobchat/gob-navbar"
-        jQuery(function ($) {
-            $("#cmain_saveconfig").on("click", function (e) {
-                window.gobconfig.saveToLocalStore()
-                window.saveConfig()
-                //window.close()
-                //window.opener.postMessage("Done", '*')
-            });
-
-            $("#cmain_saveandexitconfig").on("click", function (e) {
-                window.gobconfig.saveToLocalStore()
-                window.saveConfig()
-                //window.gobresult = "save"
-                window.close()
-                //window.opener.postMessage("Done", '*')
-            });
-
-            $("#cmain_resetconfig").on("click", function (e) {
-                if (window.confirm("Restore current settings to default?\nEverything will be deleted!\nPress save afterwards.")) {
-                    window.gobconfig.resetProfile()
-                    window.gobconfig.saveToLocalStore()
-                    window.location.reload(false);
-                }
-            });
-
-            $("#cmain_cancelconfig").on("click", function (e) {
-                if (window.confirm("Cancel? Any unsaved changes will be lost.")) {
-                    //window.gobresult = "cancel"
-                    window.close()
-                    //window.opener.postMessage("Done", '*')
-                }
-            });
-
-            // $(".ui-btn-copyprofile ").attr("title", "Copy all settings on this page from another profile")
-
-            {
-                (async () => {
-                    window.goblocale = new Gobchat.GobLocaleManager()
-                    window.goblocale.setLocale(gobconfig.get("behaviour.language"))
-
-                    const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
-
-                    generalBinding.bindConfigListener("behaviour.language", (value) => {
-                        window.goblocale.setLocale(value)
-                        window.goblocale.updateElement($(document))
-                    })
-
-                    await makeNavigationElement($("#cmain_navbar"))
-
-                    const styleLoader = new Gobchat.StyleLoader(document.head, "..")
-                    await styleLoader.loadStyles()
-
-                    try {
-                        const dpdThemes = $("#capp_theme")
-                        dpdThemes.empty()
-                        for (let style of styleLoader.styles) {
-                            $('<option>', {
-                                text: style,
-                                value: style
-                            }).appendTo(dpdThemes)
-                        }
-                    } catch (e1) {
-                        console.log(e1)
-                    }
-
-                    generalBinding.bindConfigListener("style.theme", (value) => {
-                        $("body").hide()
-                        styleLoader.activateStyle(value)
-                        $("#capp_theme").val(value)
-                        $("body").show("fast") //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
-                    })
-
-                    generalBinding.initialize()
-                })()
-            }
-        });
-
-        async function makeNavigationElement(navigationElement) {
-            const navAttribute = "data-gob-nav-target"
-            const navIdAttribute = "data-gob-nav-id"
-            const $navBar = $(navigationElement)
-            const $navPanel = $(`#${navigationElement.attr(navAttribute)}`)
-
-            $navElements = $navBar.find(`.gob-nav-element[${navAttribute}]`)
-
-            const awaitPromises = []
-            $navElements.each(function () {
-                const $panelElement = $("<div class='gob-nav-panel-content' />").appendTo($navPanel)
-                const pageToLoad = $(this).attr(navAttribute)
-                $panelElement.attr(navIdAttribute, pageToLoad)
-                awaitPromises.push($panelElement.loadThen(pageToLoad))
-
-                if ($(this).hasClass("active"))
-                    $panelElement.addClass("active")
-
-                $(this).on("click", function () {
-                    $navBar.find("> .gob-nav-element.active").removeClass("active")
-                    $(this).addClass("active")
-                    $navPanel.find("> .gob-nav-panel-content.active").removeClass("active")
-                    $panelElement.addClass("active")
-                })
-            })
-            await Promise.all(awaitPromises)
-        }
-    </script>
+    <script type="text/javascript" src="config.js"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
 
 'use strict'
 
-var Gobchat = (function (Gobchat) {
+var Gobchat = (function(Gobchat) {
     const DataAttributeText = "data-gob-locale-text"
     const DataAttributeTitle = "data-gob-locale-title"
     const LocaleClass = "gob-localized"
@@ -26,7 +26,7 @@ var Gobchat = (function (Gobchat) {
 
         const stringIds = []
 
-        selectedElements.each(function () {
+        selectedElements.each(function() {
             const $this = $(this)
             if ($this.attr(DataAttributeText)) stringIds.push($this.attr(DataAttributeText))
             if ($this.attr(DataAttributeTitle)) stringIds.push($this.attr(DataAttributeTitle))
@@ -37,7 +37,7 @@ var Gobchat = (function (Gobchat) {
 
         const lookup = await GobchatAPI.getLocalizedStrings(locale, stringIds)
 
-        selectedElements.each(function () {
+        selectedElements.each(function() {
             const $this = $(this)
 
             if ($this.attr(DataAttributeText)) {
@@ -54,19 +54,19 @@ var Gobchat = (function (Gobchat) {
         })
     }
 
-    async function getLocalizedString(locale, key) {
-        const lookup = await GobchatAPI.getLocalizedStrings(locale, [key])
-        return lookup[key]
-    }
-
-    class GobLocaleManager {
+    class LocaleManager {
         setLocale(locale) {
             this._locale = locale
         }
 
         async get(key) {
-            const value = await getLocalizedString(this._locale, key)
-            return value
+            const lookup = await this.getAll([key])
+            return lookup[key]
+        }
+
+        async getAll(keys) {
+            const lookup = await GobchatAPI.getLocalizedStrings(this._locale, keys || [])
+            return lookup
         }
 
         async getAndFormat(key, params) {
@@ -80,7 +80,7 @@ var Gobchat = (function (Gobchat) {
         }
     }
 
-    Gobchat.GobLocaleManager = GobLocaleManager
+    Gobchat.LocaleManager = LocaleManager
 
     return Gobchat
 }(Gobchat || {}));

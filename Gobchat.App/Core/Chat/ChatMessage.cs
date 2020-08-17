@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System.Linq;
+
 namespace Gobchat.Core.Chat
 {
     public sealed class ChatMessage
@@ -20,10 +22,15 @@ namespace Gobchat.Core.Chat
         public ChatChannel Channel { get; set; } = ChatChannel.None;
         public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
 
-        public bool ContainsMentions { get; set; } = false;
+        public bool ContainsMentions { get => Content.Any(e => e.Type == MessageSegmentType.Mention); }
 
         public ChatMessage()
         {
+        }
+
+        public override string ToString()
+        {
+            return $"[{nameof(Source)}={Source}; {nameof(Timestamp)}={Timestamp}; {nameof(Channel)}={Channel}; {nameof(ContainsMentions)}={ContainsMentions}; {nameof(Content)}[{string.Join("", Content.Select(c => c.ToString()))}]]";
         }
     }
 
@@ -31,6 +38,7 @@ namespace Gobchat.Core.Chat
     {
         public string Original { get; }
         public string CharacterName { get; set; } = null;
+        public string TriggerGroupId { get; internal set; } = null;
         public int FfGroup { get; set; } = -1;
         public int Party { get; set; } = -1;
         public int Alliance { get; set; } = -1;
@@ -41,6 +49,11 @@ namespace Gobchat.Core.Chat
         public ChatMessageSource(string source)
         {
             Original = source;
+        }
+
+        public override string ToString()
+        {
+            return $"[{nameof(Original)}={Original}; {nameof(CharacterName)}={CharacterName}; {nameof(TriggerGroupId)}={TriggerGroupId}; {nameof(FfGroup)}={FfGroup}; {nameof(Party)}={Party}; {nameof(Alliance)}={Alliance}; {nameof(Visibility)}={Visibility}; {nameof(IsAPlayer)}={IsAPlayer}; {nameof(IsUser)}={IsUser}]";
         }
     }
 
@@ -53,6 +66,11 @@ namespace Gobchat.Core.Chat
         {
             this.Type = type;
             this.Text = message;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Type}; {Text}]";
         }
     }
 }
