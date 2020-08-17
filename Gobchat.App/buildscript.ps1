@@ -66,7 +66,7 @@ try{
 		Where-Object {$_.PsIsContainer -eq $true} |
 		ForEach-Object {
 			if(-Not ($allowedFolders -match $_.Name)){
-				Write-Host "Deleting: $(_.FullName)"
+				Write-Host "Deleting: $($_.FullName)"
 				Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue
 			}
 		}
@@ -82,7 +82,7 @@ try{
 Write-Host "Removing .log files ..."
 Get-ChildItem -Path $releaseFolder -Filter  *.log | 
 	ForEach-Object {
-		Write-Host "Deleting: $(_.FullName)"
+		Write-Host "Deleting: $($_.FullName)"
 		Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue	
 	}
 	
@@ -108,7 +108,7 @@ try{
 	$ccc |
 		ForEach-Object {
 			if( -Not (Test-Path -Path $_.src) ){
-				Write-Error "$(_.src) not found"
+				Write-Error "$($_.src) not found"
 				exit 1
 			}
 			
