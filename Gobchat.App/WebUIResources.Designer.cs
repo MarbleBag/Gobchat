@@ -771,6 +771,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh its value(s).
+        /// </summary>
+        internal static string config_main_button_refresh_tooltip {
+            get {
+                return ResourceManager.GetString("config.main.button.refresh.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resets its value to its default.
         /// </summary>
         internal static string config_main_button_reset_tooltip {
