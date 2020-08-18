@@ -771,6 +771,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resets its value to its default.
+        /// </summary>
+        internal static string config_main_button_reset_tooltip {
+            get {
+                return ResourceManager.GetString("config.main.button.reset.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deletes this entry.
         /// </summary>
         internal static string config_main_deletebutton_tooltip {
@@ -956,15 +965,6 @@ namespace Gobchat {
         internal static string config_main_profile_copypage {
             get {
                 return ResourceManager.GetString("config.main.profile.copypage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Resets its value to its default.
-        /// </summary>
-        internal static string config_main_resetbutton_tooltip {
-            get {
-                return ResourceManager.GetString("config.main.resetbutton.tooltip", resourceCulture);
             }
         }
         

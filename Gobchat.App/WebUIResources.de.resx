@@ -368,7 +368,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Kopiere diese Seite von einem anderen Profil</value>
   </data>
-  <data name="config.main.resetbutton.tooltip" xml:space="preserve">
+  <data name="config.main.button.reset.tooltip" xml:space="preserve">
     <value>Wert zurücksetzen</value>
   </data>
   <data name="config.mentions.audio.interval" xml:space="preserve">

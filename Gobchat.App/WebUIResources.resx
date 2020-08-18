@@ -359,6 +359,9 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>New group</value>
   </data>
+  <data name="config.main.button.reset.tooltip" xml:space="preserve">
+    <value>Resets its value to its default</value>
+  </data>
   <data name="config.main.deletebutton.tooltip" xml:space="preserve">
     <value>Deletes this entry</value>
   </data>
@@ -421,9 +424,6 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Copy this page from another profile</value>
-  </data>
-  <data name="config.main.resetbutton.tooltip" xml:space="preserve">
-    <value>Resets its value to its default</value>
   </data>
   <data name="config.mentions.audio.interval" xml:space="preserve">
     <value>Time between plays</value>
