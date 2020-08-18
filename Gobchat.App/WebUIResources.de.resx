@@ -314,7 +314,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>Neue Gruppe</value>
   </data>
-  <data name="config.main.deletebutton.tooltip" xml:space="preserve">
+  <data name="config.main.button.delete.tooltip" xml:space="preserve">
     <value>Lösche diesen Eintrag</value>
   </data>
   <data name="config.main.dialog.btn.cancel" xml:space="preserve">
