@@ -59,6 +59,53 @@ namespace Gobchat.Core.Chat
         LINKSHELL_7 = 0x0016,
         LINKSHELL_8 = 0x0017,
 
-        LOGOUT = 0x2246
+        LOGOUT = 0x2246,
+
+        // 57 - Engage!
+
+        // 313 - Battle commencing in 15 seconds!
+
+        // 2091 - You use Summon III / You cast Ruin III
+        // 2092 - You uses a serving of stuffed highland cabbage
+        // 2105 - The Epic of Alexander (Ultimate) has begun. / Your item level has been synced to 475 / Topaz Carbuncle withdraws from the battlefield.
+        // 2106 - You give Topaz Carbuncle the order “Place.”
+        // 2222 - You gain the effect of / Meal benefit duration extended
+        // 2224 - You lose the effect of Nocturnal Balance
+        // 2731 - You begin casting Ruin III
+        // 2729 - Critical direct hit! The living liquid takes 22483 damage
+        // 2859 - You begin casting Ruin III
+        // 2874 - You are defeated by the jagd doll
+
+        // 4139 - Gota'to Nhabo Zodiark uses Diurnal Sect. (Ability?)
+        // 4140 - Kaito Asagi Odin uses a serving of stuffed highland cabbage
+        // 4269 - You recover 8514 HP
+        // 4270 - You gain the effect of Diurnal Opposition
+        // 4397 - Gota'to Nhabo Zodiark recovers 800 MP
+        // 4398 - Kaito Asagi Odin gains the effect of
+        // 4400 - Gota'to Nhabo Zodiark loses the effect of
+        // 4777 - Direct Hit (from other player)
+        // 4777 - Critical direct hit! (from other player)
+        // 4777 - The living liquid takes 8135 (+66%) damage
+        // 4783 - The living liquid suffers the effect of Dia
+        // 4922 - is defeated by the living liquid
+
+        // 10283 - The living liquid uses Fluid Swing
+        // 10409 - You take 75601 damage
+        // 10537 - The living liquid hits Dave Tribale Odin for 18702 damage
+        // 10543 - Dave Tribale Odin suffers the effect of Water Resistance Down II
+        // 10929 - The living liquid recovers from the effect of Reprisal
+
+        // 12585 - Artemis Junior Odin takes 0 damage.
+        // 12591 - Artemis Junior Odin suffers the effect of Water Resistance Down II
+
+        // 16427 - Your pet uses an action - Topaz Carbuncle casts Burning Strike
+        // 16558 - Your pet buffs you - You gain the effect of Devotion
+        // 16686 - Your pet buffs players - Dave Tribale Odin gains the effect of Devotion
+        // 17065 - Your pet does damage - Critical direct hit! The living liquid takes 7404 damage
+        // 17071 - Your pet debuffs a mob - The living liquid suffers the effect of Inferno
+
+        // 18475 - Other player pet uses an action - The bunshin uses Aeolian Edge.
+        // 19113 - Other player's pet does damage - The living liquid takes 6546 damage.
+        // 19632 - Other player's pet loses buff - The Earthly Star loses the effect of Devotion
     }
 }
