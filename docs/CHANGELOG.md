@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ## Unreleased
+### Removed
+- Limit of 10 chat entries per update
 
 ### Fixed
 - LogConverter
