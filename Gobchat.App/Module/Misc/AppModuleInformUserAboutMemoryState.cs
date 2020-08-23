@@ -48,13 +48,13 @@ namespace Gobchat.Module.Misc
             _memoryReader = _container.Resolve<IMemoryReaderManager>();
 
             _reportError = true; //report error on startup
-            _memoryReader.OnConnectionState += MemoryReader_OnConnectionState;
+            _memoryReader.OnConnectionStateChanged += MemoryReader_OnConnectionState;
             Report(_memoryReader.ConnectionState);
         }
 
         public void Dispose()
         {
-            _memoryReader.OnConnectionState -= MemoryReader_OnConnectionState;
+            _memoryReader.OnConnectionStateChanged -= MemoryReader_OnConnectionState;
 
             _chatManager = null;
             _container = null;

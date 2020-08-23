@@ -22,28 +22,35 @@ using System.Threading;
 namespace Gobchat.Memory
 {
     /// <summary>
-    /// Checks for an active FFXIV process and sets the process id for Sharlayan
+    /// Provides functionality to search, connect and monitor FFXIV processes for the Sharlayan framework.
+    /// While this class itself is not a singleton, Sharlayan is and thus this class itself becomes one because it's not possible to connect to more than one FFXIV process per app process.
     /// </summary>
-    internal sealed class FFXIVProcessConnector
+    internal sealed class ProcessConnector
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public bool FFXIVProcessValid { get; private set; }
+
         public int FFXIVProcessId { get; private set; } = 0;
 
         public event EventHandler OnConnectionLost;
 
-        public FFXIVProcessConnector()
+        public ProcessConnector()
         {
         }
 
-        public List<int> GetAllFFXIVProcesses()
+        public List<int> GetFFXIVProcesses()
         {
             var processes = Process.GetProcessesByName("ffxiv_dx11");
             return processes.Select(p => p.Id).ToList();
         }
 
-        public bool ConnectToFFXIV(int processId)
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="processId"></param>
+        /// <returns>true if the connection to the given process id is still valid or was successful created</returns>
+        public bool ConnectToProcess(int processId)
         {
             if (FFXIVProcessValid)
             {
@@ -64,14 +71,6 @@ namespace Gobchat.Memory
             FFXIVProcessValid = true;
 
             return FFXIVProcessValid;
-        }
-
-        public bool ConnectToFirstFFXIV()
-        {
-            var processes = GetAllFFXIVProcesses();
-            if (processes.Count > 0)
-                return ConnectToFFXIV(processes[0]);
-            return false;
         }
 
         public void Disconnect()

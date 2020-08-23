@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace Gobchat.Module.MemoryReader.Internal
 {
-    internal sealed class MemoryReaderManager : IMemoryReaderManager, IDisposable
+    internal sealed class FFXIVMemoryManager : IMemoryReaderManager, IDisposable
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -31,8 +31,9 @@ namespace Gobchat.Module.MemoryReader.Internal
         private IDIContext _container;
         private IndependendBackgroundWorker _worker;
         private volatile ConnectionState _connectionState = ConnectionState.NotInitialized;
+        private volatile int _preferredFFXIVProcess = -1;
 
-        public MemoryReaderManager(IDIContext container)
+        public FFXIVMemoryManager(IDIContext container)
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             _worker = new IndependendBackgroundWorker();
@@ -66,7 +67,10 @@ namespace Gobchat.Module.MemoryReader.Internal
         #region public properties
 
         public ConnectionState ConnectionState => _connectionState;
+
         public bool IsConnected => _connectionState == ConnectionState.Connected;
+
+        public int ConnectedProcessId => _memoryReader.FFXIVProcessId;
 
         public bool ChatLogAvailable => _memoryReader.ChatLogAvailable;
 
@@ -78,9 +82,14 @@ namespace Gobchat.Module.MemoryReader.Internal
             set => _memoryReader.ObserveGameWindow = value;
         }
 
-        public event EventHandler<ConnectionEventArgs> OnConnectionState;
+        public event EventHandler<ConnectionEventArgs> OnConnectionStateChanged;
 
         public event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
+
+        public List<int> GetFFXIVProcesses()
+        {
+            return _memoryReader.GetFFXIVProcesses();
+        }
 
         #endregion public properties
 
@@ -111,7 +120,7 @@ namespace Gobchat.Module.MemoryReader.Internal
         {
             while (!cancellationToken.IsCancellationRequested && !_memoryReader.FFXIVProcessValid)
             {
-                _memoryReader.CheckFFXIVProcess();
+                _memoryReader.TryConnectingToFFXIV(_preferredFFXIVProcess);
                 if (_memoryReader.FFXIVProcessValid)
                     break;
 
@@ -130,7 +139,7 @@ namespace Gobchat.Module.MemoryReader.Internal
             if (_connectionState == state)
                 return;
             _connectionState = state;
-            OnConnectionState?.Invoke(this, new ConnectionEventArgs(state));
+            OnConnectionStateChanged?.Invoke(this, new ConnectionEventArgs(state));
         }
 
         public List<PlayerCharacter> GetPlayerCharacters()

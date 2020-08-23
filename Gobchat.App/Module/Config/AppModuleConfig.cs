@@ -34,7 +34,7 @@ namespace Gobchat.Module.Config
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             var resourceLocation = GobchatContext.ResourceLocation;
-            var userLocation = GobchatContext.UserConfigLocation;
+            var userLocation = GobchatContext.AppConfigLocation;
 
             var defaultConfigPath = System.IO.Path.Combine(resourceLocation, @"default_profile.json");
 

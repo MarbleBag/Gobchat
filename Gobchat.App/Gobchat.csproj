@@ -244,6 +244,7 @@
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
     <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1900.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1800.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
@@ -320,7 +321,7 @@
     <Compile Include="Module\Actor\IActorManager.cs" />
     <Compile Include="Module\Language\AppModuleLanguage.cs" />
     <Compile Include="Module\MemoryReader\IMemoryReaderManager.cs" />
-    <Compile Include="Module\MemoryReader\Internal\MemoryReaderManager.cs" />
+    <Compile Include="Module\MemoryReader\Internal\FFXIVMemoryManager.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
     <Compile Include="Module\UI\Connector\AppModuleActorToUI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
@@ -333,6 +334,7 @@
     <Compile Include="Module\Hotkey\AppModuleHotkeyManager.cs" />
     <Compile Include="Module\Misc\AppModuleHideOnMinimize.cs" />
     <Compile Include="Module\UI\Connector\AppModuleConfigToUI.cs" />
+    <Compile Include="Module\UI\Connector\AppModuleMemoryToUI.cs" />
     <Compile Include="Module\UI\Initialize\AppModuleLoadUI.cs" />
     <Compile Include="Module\Misc\AppModuleShowHideHotkey.cs" />
     <Compile Include="Module\UI\SynchronizeConfigWebEvent.cs" />
@@ -610,10 +612,13 @@
     <EmbeddedResource Include="Core\UI\ProgressDisplayForm.resx">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WebUIResources.de.resx" />
+    <EmbeddedResource Include="WebUIResources.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="WebUIResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>WebUIResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

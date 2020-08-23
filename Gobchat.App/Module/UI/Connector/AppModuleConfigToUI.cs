@@ -32,6 +32,7 @@ namespace Gobchat.Module.UI
         /// <summary>
         /// Requires: <see cref="IBrowserAPIManager"/> <br></br>
         /// Requires: <see cref="IConfigManager"/> <br></br>
+        /// Requires: <see cref="IChatManager"/> <br></br>
         /// <br></br>
         /// </summary>
         public AppModuleConfigToUI()

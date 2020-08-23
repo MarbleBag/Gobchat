@@ -23,7 +23,7 @@ namespace Gobchat.Module.MemoryReader
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private IDIContext _container;
-        private MemoryReaderManager _memoryReaderManager;
+        private FFXIVMemoryManager _memoryReaderManager;
 
         /// <summary>
         /// Requires: <see cref="IUISynchronizer"/> <br></br>
@@ -36,7 +36,7 @@ namespace Gobchat.Module.MemoryReader
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
-            _memoryReaderManager = new MemoryReaderManager(container);
+            _memoryReaderManager = new FFXIVMemoryManager(container);
 
             _container.Register<IMemoryReaderManager>((c, p) => _memoryReaderManager);
         }

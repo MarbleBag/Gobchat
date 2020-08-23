@@ -65,6 +65,8 @@ namespace Gobchat.Module.UI.Internal
                 return await task.ConfigureAwait(false);
             }
 
+            #region chat
+
             public async Task SendChatMessage(int channel, string source, string message)
             {
                 await _browserAPIManager.ChatHandler.SendChatMessage(channel, source, message).ConfigureAwait(false);
@@ -79,6 +81,10 @@ namespace Gobchat.Module.UI.Internal
             {
                 await _browserAPIManager.ChatHandler.SendErrorChatMessage(message).ConfigureAwait(false);
             }
+
+            #endregion chat
+
+            #region config
 
             public async Task<string> GetConfigAsJson()
             {
@@ -97,15 +103,32 @@ namespace Gobchat.Module.UI.Internal
                 await _browserAPIManager.ConfigHandler.SynchronizeConfig(jToken).ConfigureAwait(false);
             }
 
-            public async Task<string> GetAppVersion()
+            public async Task<string> ImportProfile()
             {
-                return GobchatContext.ApplicationVersion.ToString();
+                var file = await OpenFileDialog("Json files (*.json)|*.json").ConfigureAwait(false);
+                if (file == null || file.Trim().Length == 0)
+                    return null;
+                var result = await _browserAPIManager.ConfigHandler.ParseProfile(file).ConfigureAwait(false);
+                return result?.ToString();
             }
 
-            public async Task CloseGobchat()
+            #endregion config
+
+            #region files
+
+            public async Task<string> OpenDirectoryDialog(string path = null)
             {
-                logger.Info("User requests shutdown");
-                GobchatApplicationContext.ExitGobchat();
+                string selectedElement = "";
+                _browserAPIManager._synchronizer.RunSync(() =>
+                {
+                    using (var dialog = new FolderBrowserDialog())
+                    {
+                        dialog.SelectedPath = path == null || path.Length == 0 ? GobchatContext.ResourceLocation : path;
+                        if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            selectedElement = dialog.SelectedPath;
+                    }
+                });
+                return selectedElement;
             }
 
             public async Task<string> OpenFileDialog(string filter)
@@ -159,14 +182,9 @@ namespace Gobchat.Module.UI.Internal
                 return System.IO.File.ReadAllText(file);
             }
 
-            public async Task<string> ImportProfile()
-            {
-                var file = await OpenFileDialog("Json files (*.json)|*.json").ConfigureAwait(false);
-                if (file == null || file.Trim().Length == 0)
-                    return null;
-                var result = await _browserAPIManager.ConfigHandler.ParseProfile(file).ConfigureAwait(false);
-                return result?.ToString();
-            }
+            #endregion files
+
+            #region player data
 
             public async Task<bool> IsFeaturePlayerLocationAvailable()
             {
@@ -206,6 +224,32 @@ namespace Gobchat.Module.UI.Internal
                 return result.Select(e => $"{e.Name}: {e.Distance.ToString("0.00", CultureInfo.InvariantCulture)}").ToArray();
             }
 
+            #endregion player data
+
+            #region process functions
+
+            public async Task<int[]> GetAttachableFFXIVProcesses()
+            {
+                return await _browserAPIManager.MemoryHandler.GetAttachableFFXIVProcesses().ConfigureAwait(false);
+            }
+
+            public async Task<(bool connected, int id)> GetAttachedFFXIVProcess()
+            {
+                return await _browserAPIManager.MemoryHandler.GetAttachedFFXIVProcess().ConfigureAwait(false);
+            }
+
+            public async Task<bool> AttachToFFXIVProcess(int id)
+            {
+                return await _browserAPIManager.MemoryHandler.AttachToFFXIVProcess(id).ConfigureAwait(false);
+            }
+
+            #endregion process functions
+
+            public async Task<string> GetAppVersion()
+            {
+                return GobchatContext.ApplicationVersion.ToString();
+            }
+
             public async Task<Dictionary<string, string>> GetLocalizedStrings(string locale, string[] requestedIds)
             {
                 if (requestedIds == null)
@@ -231,6 +275,20 @@ namespace Gobchat.Module.UI.Internal
                 }
 
                 return result;
+            }
+
+            public async Task CloseGobchat()
+            {
+                logger.Info("User requests shutdown");
+                GobchatApplicationContext.ExitGobchat();
+            }
+
+            public async Task<string> ComputeAppDataPath(string path)
+            {
+                if (Path.IsPathRooted(path))
+                    return path;
+
+                return Path.Combine(GobchatContext.AppDataLocation, path);
             }
         }
     }
