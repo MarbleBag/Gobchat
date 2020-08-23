@@ -2,7 +2,18 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## Unreleased
+## [1.9.0] - Unreleased
+### Added
+- Hotkeys
+  - Button to remove hotkeys
+  
+- Support for multiple instances FFXIV
+  - By default Gobchat will shows the chat of the first instance of FFXIV it can find
+  - It's possible to select another instance of FFXIV in `Config / App`
+
+- Chat log
+  - The output folder of chat logs can be changed on a profile level in `Config / App`  
+  
 ### Removed
 - Limit of 10 chat entries per update
 
