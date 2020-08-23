@@ -86,35 +86,60 @@
     GobConfigHelper.makeResetButton($("#capp_font_family_reset"))
 
     const $dpdProcessSelector = $("#capp_process_selector")
-
     $("#capp_process_selector_refresh").on("click", function () {
-        $("#capp_process_selector_refresh").find("svg").addClass("fa-spin")
-        {
-            (async () => {
-                const defaultElement = $dpdProcessSelector.find("[value='-1']")
-                $dpdProcessSelector.empty().append(defaultElement)
+        (async () => {
+            $(this).find("svg").addClass("fa-spin")
 
-                const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
-                for (const processId of availableProcesses)
-                    $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId))
+            const defaultElement = $dpdProcessSelector.find("[value='-1']")
+            const previousSelected = $dpdProcessSelector.val()
+            $dpdProcessSelector.empty().append(defaultElement)
 
-                var connectionInfo = await GobchatAPI.getAttachedFFXIVProcess()
-                if (connectionInfo.Item1) {
-                    $("#capp_process_info").text(`Connected to ${connectionInfo.Item2}`); //TODO localize
-                } else {
-                    $("#capp_process_info").text("Not connected"); //TODO localize                    
-                }
+            const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
+            for (const processId of availableProcesses)
+                $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId))
 
-                $("#capp_process_selector_refresh").find("svg").removeClass("fa-spin")
-            })()
-        }
+            $dpdProcessSelector.val(previousSelected)
+
+            $(this).find("svg").removeClass("fa-spin")
+        })();
     })
 
-    $dpdProcessSelector.on("change", function () {
-        {
-            (async () => {
-            })()
-        }
+    let process_IntervalTimer = 0
+    $("#capp_process_selector_link").on("click", function () {
+        (async () => {
+            $("#capp_process_selector_link").find("svg").addClass("fa-spin")
+
+            const processId = $dpdProcessSelector.val()
+            if (processId != null && processId != undefined)
+                GobchatAPI.attachToFFXIVProcess(parseInt(processId))
+
+            if (process_IntervalTimer)
+                clearInterval(process_IntervalTimer)
+
+            const txtSearch = await goblocale.get("config.app.process.info.search")
+            const txtNotConnected = await goblocale.get("config.app.process.info.notconnected")
+            const txtConnectedTo = await goblocale.get("config.app.process.info.connected")
+
+            async function updateLabel() {
+                const connectionInfo = await GobchatAPI.getAttachedFFXIVProcess()
+                const connectionState = connectionInfo.Item1 //0 - none, 1 - connected, 2 - not found, 3 - searching
+                const processId = connectionInfo.Item2
+
+                if (connectionState === 0) {
+                } else if (connectionState === 1) {
+                    $("#capp_process_info").text(Gobchat.formatString(txtConnectedTo, processId));
+                    $("#capp_process_selector_link").find("svg").removeClass("fa-spin")
+                    clearInterval(process_IntervalTimer)
+                    process_IntervalTimer = 0
+                } else if (connectionState === 2) {
+                    $("#capp_process_info").text(txtNotConnected);
+                } else if (connectionState === 3) {
+                    $("#capp_process_info").text(txtSearch);
+                }
+            }
+
+            process_IntervalTimer = setInterval(updateLabel, 1000)
+        })();
     })
 
     const parseNumber = ($element) => {
