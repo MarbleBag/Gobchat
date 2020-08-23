@@ -61,6 +61,8 @@ namespace Gobchat.Core.Chat
 
         LOGOUT = 0x2246,
 
+        LINKSHELL_JOIN = 0x2239,
+
         // 57 - Engage!
 
         // 313 - Battle commencing in 15 seconds!
