@@ -21,6 +21,8 @@ namespace Gobchat.Core.Chat
         IEnumerable<ChatChannel> LogChannels { get; set; }
         bool Active { get; set; }
 
+        string LogFolder { get; set; }
+
         void Log(ChatMessage message);
 
         void Flush();

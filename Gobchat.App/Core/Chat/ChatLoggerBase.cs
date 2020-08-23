@@ -26,7 +26,11 @@ namespace Gobchat.Core.Chat
     {
         private readonly Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
         private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();
+        private string _logFolder;
+
         private string _fileHandle;
+
+        protected readonly object _synchronizationLock = new object();
 
         abstract protected string LoggerId { get; }
 
@@ -38,6 +42,28 @@ namespace Gobchat.Core.Chat
 
         public bool Active { get; set; }
 
+        public string LogFolder
+        {
+            get => _logFolder;
+            set
+            {
+                if (value == null || value.Length == 0)
+                    throw new ArgumentNullException(nameof(LogFolder));
+
+                if (value.Equals(_logFolder))
+                    return;
+
+                lock (_synchronizationLock)
+                {
+                    if (_fileHandle != null)
+                        Flush();
+
+                    _fileHandle = null;
+                    _logFolder = value;
+                }
+            }
+        }
+
         public ChatLoggerBase()
         {
         }
@@ -45,7 +71,8 @@ namespace Gobchat.Core.Chat
         public void Log(ChatMessage message)
         {
             if (Active && _logChannels.Contains(message.Channel))
-                _pendingMessages.Enqueue(message);
+                lock (_synchronizationLock)
+                    _pendingMessages.Enqueue(message);
         }
 
         public void Flush()
@@ -53,20 +80,22 @@ namespace Gobchat.Core.Chat
             if (_pendingMessages.Count < 1)
                 return;
 
-            if (_fileHandle == null)
+            lock (_synchronizationLock)
             {
-                var logFolder = GobchatContext.UserLogLocation;
-                Directory.CreateDirectory(logFolder);
-                var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
-                var fileName = $"chatlog_{timestamp}.log";
-                _fileHandle = Path.Combine(logFolder, fileName);
+                if (_fileHandle == null)
+                {
+                    Directory.CreateDirectory(_logFolder);
+                    var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
+                    var fileName = $"chatlog_{timestamp}.log";
+                    _fileHandle = Path.Combine(_logFolder, fileName);
 
-                if (!File.Exists(_fileHandle))
-                    File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" }, System.Text.Encoding.UTF8);
+                    if (!File.Exists(_fileHandle))
+                        File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" }, System.Text.Encoding.UTF8);
+                }
+
+                var logLines = _pendingMessages.DequeueAll().Select(e => FormatLine(e));
+                File.AppendAllLines(_fileHandle, logLines, System.Text.Encoding.UTF8);
             }
-
-            var logLines = _pendingMessages.DequeueAll().Select(e => FormatLine(e));
-            File.AppendAllLines(_fileHandle, logLines, System.Text.Encoding.UTF8);
         }
 
         abstract protected string FormatLine(ChatMessage msg);
