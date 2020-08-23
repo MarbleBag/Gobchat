@@ -60,23 +60,52 @@ namespace Gobchat.Memory
                     Disconnect();
             }
 
-            var process = Process.GetProcessById(processId);
-            if (process == null || !process.ProcessName.Equals("ffxiv_dx11"))
+            try
+            {
+                var process = GetProcessById(processId);
+                if (process == null)
+                    return false;
+
+                ConnectTo(process);
+
+                process.EnableRaisingEvents = true;
+                process.Exited += Process_Exited;
+                FFXIVProcessValid = true;
+            }
+            catch (Exception e)
+            {
+                logger.Error(e);
                 return false;
-
-            ConnectTo(process);
-
-            process.EnableRaisingEvents = true;
-            process.Exited += Process_Exited;
-            FFXIVProcessValid = true;
+            }
 
             return FFXIVProcessValid;
         }
 
-        public void Disconnect()
+        private Process GetProcessById(int processId)
         {
+            try
+            {
+                var process = Process.GetProcessById(processId);
+                if (process != null && process.ProcessName.Equals("ffxiv_dx11"))
+                    return process;
+                return null;
+            }
+            catch (ArgumentException) // fires if there is no process with the given id
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns>true if the previous process was valid before disconnecting</returns>
+        public bool Disconnect()
+        {
+            var wasConnected = FFXIVProcessValid;
             MemoryHandler.Instance.UnsetProcess();
             FFXIVProcessValid = false;
+            return wasConnected;
         }
 
         private void ConnectTo(Process process)

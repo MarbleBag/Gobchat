@@ -13,6 +13,7 @@
 
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Util;
+using Gobchat.Module.MemoryReader;
 using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
@@ -233,7 +234,7 @@ namespace Gobchat.Module.UI.Internal
                 return await _browserAPIManager.MemoryHandler.GetAttachableFFXIVProcesses().ConfigureAwait(false);
             }
 
-            public async Task<(bool connected, int id)> GetAttachedFFXIVProcess()
+            public async Task<(ConnectionState state, int id)> GetAttachedFFXIVProcess()
             {
                 return await _browserAPIManager.MemoryHandler.GetAttachedFFXIVProcess().ConfigureAwait(false);
             }

@@ -25,7 +25,11 @@ namespace Gobchat.Module.MemoryReader
 
         bool IsConnected { get; }
 
+        void ConnectTo(int processId);
+
         int ConnectedProcessId { get; }
+
+        List<int> GetProcessIds();
 
         bool ChatLogAvailable { get; }
 
@@ -36,8 +40,6 @@ namespace Gobchat.Module.MemoryReader
         event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
 
         event EventHandler<ConnectionEventArgs> OnConnectionStateChanged;
-
-        List<int> GetFFXIVProcesses();
 
         List<PlayerCharacter> GetPlayerCharacters();
 

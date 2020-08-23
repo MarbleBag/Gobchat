@@ -64,35 +64,6 @@ namespace Gobchat.Module.MemoryReader.Internal
             _container = null;
         }
 
-        #region public properties
-
-        public ConnectionState ConnectionState => _connectionState;
-
-        public bool IsConnected => _connectionState == ConnectionState.Connected;
-
-        public int ConnectedProcessId => _memoryReader.FFXIVProcessId;
-
-        public bool ChatLogAvailable => _memoryReader.ChatLogAvailable;
-
-        public bool PlayerCharactersAvailable => _memoryReader.PlayerCharactersAvailable;
-
-        public bool ObserveGameWindow
-        {
-            get => _memoryReader.ObserveGameWindow;
-            set => _memoryReader.ObserveGameWindow = value;
-        }
-
-        public event EventHandler<ConnectionEventArgs> OnConnectionStateChanged;
-
-        public event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
-
-        public List<int> GetFFXIVProcesses()
-        {
-            return _memoryReader.GetFFXIVProcesses();
-        }
-
-        #endregion public properties
-
         #region event handler
 
         private void MemoryReader_OnProcessChanged(object sender, ProcessChangeEventArgs e)
@@ -118,7 +89,7 @@ namespace Gobchat.Module.MemoryReader.Internal
 
         private void Task_ConnectMemoryReader(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested && !_memoryReader.FFXIVProcessValid)
+            while (!cancellationToken.IsCancellationRequested && !_memoryReader.IsConnectedTo(_preferredFFXIVProcess))
             {
                 _memoryReader.TryConnectingToFFXIV(_preferredFFXIVProcess);
                 if (_memoryReader.FFXIVProcessValid)
@@ -142,6 +113,44 @@ namespace Gobchat.Module.MemoryReader.Internal
             OnConnectionStateChanged?.Invoke(this, new ConnectionEventArgs(state));
         }
 
+        #region interface
+
+        public ConnectionState ConnectionState => _connectionState;
+
+        public bool IsConnected => _connectionState == ConnectionState.Connected;
+
+        public int ConnectedProcessId => _memoryReader.FFXIVProcessId;
+
+        public bool ChatLogAvailable => _memoryReader.ChatLogAvailable;
+
+        public bool PlayerCharactersAvailable => _memoryReader.PlayerCharactersAvailable;
+
+        public bool ObserveGameWindow
+        {
+            get => _memoryReader.ObserveGameWindow;
+            set => _memoryReader.ObserveGameWindow = value;
+        }
+
+        public event EventHandler<ConnectionEventArgs> OnConnectionStateChanged;
+
+        public event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
+
+        public List<int> GetProcessIds()
+        {
+            return _memoryReader.GetFFXIVProcesses();
+        }
+
+        public void ConnectTo(int processId)
+        {
+            if (_memoryReader.IsConnectedTo(processId))
+                return;
+
+            _worker.Stop(true);
+
+            _preferredFFXIVProcess = processId;
+            _worker.Start(Task_ConnectMemoryReader);
+        }
+
         public List<PlayerCharacter> GetPlayerCharacters()
         {
             return _memoryReader.GetPlayerCharacters();
@@ -151,5 +160,7 @@ namespace Gobchat.Module.MemoryReader.Internal
         {
             return _memoryReader.GetNewestChatlog();
         }
+
+        #endregion interface
     }
 }

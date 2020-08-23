@@ -60,6 +60,7 @@ namespace Gobchat.Memory
         /// </summary>
         public event EventHandler<ProcessChangeEventArgs> OnProcessChanged;
 
+        [Obsolete]
         public event EventHandler OnProcessScanned;
 
         /// <summary>
@@ -129,24 +130,36 @@ namespace Gobchat.Memory
             return _processConnector.GetFFXIVProcesses();
         }
 
+        public bool IsConnectedTo(int processId = -1)
+        {
+            return FFXIVProcessValid && (processId <= 0 || processId == FFXIVProcessId);
+        }
+
         public bool TryConnectingToFFXIV(int processId = -1)
         {
-            if (_processConnector.FFXIVProcessValid)
-                if (processId <= 0 || processId == _processConnector.FFXIVProcessId)
-                    return true; //nothing to do
+            if (IsConnectedTo(processId))
+                return true; //do nothing if it's already connected to the correct process or if any process is valid
 
             if (processId <= 0)
-            {
                 processId = _processConnector.GetFFXIVProcesses().FirstOrDefault();
-                if (processId <= 0)
-                    return false;
+
+            if (processId <= 0) // no process available
+            {
+                if (_processConnector.Disconnect()) //ensure it's disconnected
+                    OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+                return false;
             }
 
-            var isConnected = ConnectToFFXIV(processId);
-            OnProcessScanned?.Invoke(this, new EventArgs());
-            if (isConnected)
+            if (ConnectToFFXIV(processId))
                 OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
-            return isConnected;
+            return FFXIVProcessValid; // either connected or not
+        }
+
+        public bool DisconnectFromFFXIV()
+        {
+            if (_processConnector.Disconnect())
+                OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+            return !FFXIVProcessValid;
         }
 
         private bool ConnectToFFXIV(int processId)

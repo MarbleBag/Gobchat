@@ -61,21 +61,22 @@ namespace Gobchat.Module.UI
                 _module = module ?? throw new ArgumentNullException(nameof(module));
             }
 
-            public Task<bool> AttachToFFXIVProcess(int id)
+            public async Task<bool> AttachToFFXIVProcess(int id)
             {
-                throw new NotImplementedException();
+                _module._memoryManager.ConnectTo(id);
+                return true;
             }
 
             public async Task<int[]> GetAttachableFFXIVProcesses()
             {
-                return _module._memoryManager.GetFFXIVProcesses().ToArray();
+                return _module._memoryManager.GetProcessIds().ToArray();
             }
 
-            public async Task<(bool connected, int id)> GetAttachedFFXIVProcess()
+            public async Task<(ConnectionState state, int id)> GetAttachedFFXIVProcess()
             {
-                var isAttached = _module._memoryManager.IsConnected;
+                var state = _module._memoryManager.ConnectionState;
                 var processId = _module._memoryManager.ConnectedProcessId;
-                return (isAttached, processId);
+                return (state, processId);
             }
         }
     }

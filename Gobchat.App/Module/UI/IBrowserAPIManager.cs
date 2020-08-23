@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Module.MemoryReader;
 using Gobchat.UI.Web;
 using Newtonsoft.Json.Linq;
 using System;
@@ -80,7 +81,7 @@ namespace Gobchat.Module.UI
     {
         Task<int[]> GetAttachableFFXIVProcesses();
 
-        Task<(bool connected, int id)> GetAttachedFFXIVProcess();
+        Task<(ConnectionState state, int id)> GetAttachedFFXIVProcess();
 
         Task<bool> AttachToFFXIVProcess(int id);
     }
