@@ -54,12 +54,14 @@
                          data-gob-locale-title="config.app.ckb.chatlog.tooltip">
                     </div>
                 </div>
+
                 <div class="gob-config-group-item">
                     <div>
                         <div data-gob-locale-text="config.app.chatlog.path"
                              data-gob-locale-title="config.app.chatlog.path.tooltip">
                         </div>
                         <input type="text" id="capp_chatlog_path"
+                               style="width:400px;"
                                data-gob-configkey="behaviour.chatlog.path"
                                data-gob-locale-title="config.app.chatlog.path.tooltip" />
                         <button class="gob-button-tertiary"
@@ -184,7 +186,7 @@
                     <select type="text" class="gob-dropdown"
                             id="capp_process_selector"
                             data-gob-locale-title="config.app.process.selector.tooltip">
-                        <option value="-1">First FFXIV process</option>
+                        <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option>
                     </select>
                     <button class="gob-button-tertiary"
                             id="capp_process_selector_link"
@@ -595,10 +597,10 @@
                                 <div>Ignore outdated messages (In seconds)</div>
                             </td>
                             <td>
-                                <input type="checkbox" id="capp_" data-gob-configkey="behaviour.outdatedMessages.ignore" title="" />
+                                <input type="checkbox" id="capp_" data-gob-configkey-x="behaviour.outdatedMessages.ignore" title="" />
                             </td>
                             <td>
-                                <input type="number" id="capp_" min="5" data-gob-configkey="behaviour.outdatedMessages.timelimit" title="" />
+                                <input type="number" id="capp_" min="5" data-gob-configkey-x="behaviour.outdatedMessages.timelimit" title="" />
                             </td>
                         </tr>
                         <tr>
@@ -606,7 +608,7 @@
                                 <div>Show number of outdated messages</div>
                             </td>
                             <td>
-                                <input type="checkbox" title="" id="capp_" data-gob-configkey="behaviour.outdatedMessages.showUser" />
+                                <input type="checkbox" title="" id="capp_" data-gob-configkey-x="behaviour.outdatedMessages.showUser" />
                             </td>
                         </tr>
                     </tbody>

@@ -25,32 +25,42 @@
 
     const $txtChatlogPath = $("#capp_chatlog_path")
     $txtChatlogPath.on("change", function () {
-        //  const newPath = $txtChatlogPath.val()
-        //  gobconfig.set(GobConfigHelper.getConfigKey(), newPath)
-
-        {
-            (async () => {
-            })()
-        }
+        (async () => {
+            try {
+                let newPath = $txtChatlogPath.val()
+                const parsedPath = await GobchatAPI.getRelativeChatLogPath(newPath)
+                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), parsedPath)
+                newPath = await GobchatAPI.getAbsoluteChatLogPath(parsedPath)
+                $txtChatlogPath.val(newPath)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
     })
 
-    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), value => {
-        {
-            (async () => {
-                //    let path = gobconfig.get(GobConfigHelper.getConfigKey())
-                //    path = await GobchatAPI.ComputeAppDataPath(path)
-                //    $txtChatlogPath.val(path)
-            })()
-        }
+    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), path => {
+        (async () => {
+            try {
+                path = await GobchatAPI.getAbsoluteChatLogPath(path)
+                $txtChatlogPath.val(path)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
     })
 
     $("#capp_chatlog_path_select").on("click", function () {
-        {
-            (async () => {
-                const path = GobchatAPI.openDirectoryDialog()
-                console.log("selected folder: " + path)
-            })()
-        }
+        (async () => {
+            try {
+                let oldPath = gobconfig.get(GobConfigHelper.getConfigKey($txtChatlogPath))
+                oldPath = await GobchatAPI.getAbsoluteChatLogPath(oldPath)
+                let newPath = await GobchatAPI.openDirectoryDialog(oldPath)
+                newPath = await GobchatAPI.getRelativeChatLogPath(newPath)
+                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), newPath)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
     })
 
     GobConfigHelper.makeResetButton($("#capp_logging_path_reset"))
@@ -87,58 +97,89 @@
 
     const $dpdProcessSelector = $("#capp_process_selector")
     $("#capp_process_selector_refresh").on("click", function () {
+        const $icon = $("#capp_process_selector_refresh").find("svg");
+
         (async () => {
-            $(this).find("svg").addClass("fa-spin")
+            try {
+                //$icon.addClass("fa-spin")
 
-            const defaultElement = $dpdProcessSelector.find("[value='-1']")
-            const previousSelected = $dpdProcessSelector.val()
-            $dpdProcessSelector.empty().append(defaultElement)
+                const defaultElement = $dpdProcessSelector.find("[value='-1']")
+                const previousSelected = $dpdProcessSelector.val()
+                $dpdProcessSelector.empty().append(defaultElement)
 
-            const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
-            for (const processId of availableProcesses)
-                $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId))
+                const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
+                for (const processId of availableProcesses)
+                    $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId))
 
-            $dpdProcessSelector.val(previousSelected)
+                if ($dpdProcessSelector.find(`[value='${previousSelected}'`).length > 0) {
+                    $dpdProcessSelector.val(previousSelected)
+                } else {
+                    $dpdProcessSelector.val("-1")
+                    await GobchatAPI.attachToFFXIVProcess(-1)
+                }
 
-            $(this).find("svg").removeClass("fa-spin")
+                //$icon.removeClass("fa-spin")
+
+                await process_UpdateLabel()
+            } catch (e) {
+                console.error(e)
+            }
         })();
     })
 
     let process_IntervalTimer = 0
-    $("#capp_process_selector_link").on("click", function () {
-        (async () => {
-            $("#capp_process_selector_link").find("svg").addClass("fa-spin")
-
-            const processId = $dpdProcessSelector.val()
-            if (processId != null && processId != undefined)
-                GobchatAPI.attachToFFXIVProcess(parseInt(processId))
-
-            if (process_IntervalTimer)
-                clearInterval(process_IntervalTimer)
-
+    async function process_UpdateLabel() {
+        try {
             const txtSearch = await goblocale.get("config.app.process.info.search")
             const txtNotConnected = await goblocale.get("config.app.process.info.notconnected")
             const txtConnectedTo = await goblocale.get("config.app.process.info.connected")
 
-            async function updateLabel() {
-                const connectionInfo = await GobchatAPI.getAttachedFFXIVProcess()
-                const connectionState = connectionInfo.Item1 //0 - none, 1 - connected, 2 - not found, 3 - searching
-                const processId = connectionInfo.Item2
+            const $txtLabel = $("#capp_process_info")
+            const $icon = $("#capp_process_selector_link").find("svg")
 
-                if (connectionState === 0) {
-                } else if (connectionState === 1) {
-                    $("#capp_process_info").text(Gobchat.formatString(txtConnectedTo, processId));
-                    $("#capp_process_selector_link").find("svg").removeClass("fa-spin")
-                    clearInterval(process_IntervalTimer)
-                    process_IntervalTimer = 0
-                } else if (connectionState === 2) {
-                    $("#capp_process_info").text(txtNotConnected);
-                } else if (connectionState === 3) {
-                    $("#capp_process_info").text(txtSearch);
+            async function updateLabel() {
+                try {
+                    const connectionInfo = await GobchatAPI.getAttachedFFXIVProcess()
+                    const connectionState = connectionInfo.Item1 //0 - none, 1 - connected, 2 - not found, 3 - searching
+                    const processId = connectionInfo.Item2
+
+                    if (connectionState === 0) {
+                    } else if (connectionState === 1) {
+                        $txtLabel.text(Gobchat.formatString(txtConnectedTo, processId));
+                        $icon.removeClass("fa-spin")
+                        clearInterval(process_IntervalTimer)
+                        process_IntervalTimer = 0
+                    } else if (connectionState === 2) {
+                        $txtLabel.text(txtNotConnected);
+                    } else if (connectionState === 3) {
+                        $txtLabel.text(txtSearch);
+                    }
+                } catch (e) {
+                    console.error(e)
                 }
             }
 
+            clearInterval(process_IntervalTimer)
             process_IntervalTimer = setInterval(updateLabel, 1000)
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    $("#capp_process_selector_link").on("click", function () {
+        (async () => {
+            try {
+                $("#capp_process_selector_link").find("svg").addClass("fa-spin")
+
+                const processId = $dpdProcessSelector.val()
+                if (processId != null && processId != undefined)
+                    GobchatAPI.attachToFFXIVProcess(parseInt(processId))
+
+                await process_UpdateLabel()
+            } catch (e) {
+                console.error(e)
+            }
         })();
     })
 
@@ -217,7 +258,7 @@
     */
 
     const configKeys = []
-    $(`#capp [${GobConfigHelper.ConfigKeyAttribute}]`).each(function () {
+    $(`#capp [${GobConfigHelper.ConfigKeyAttribute}]:not(.button)`).each(function () {
         const key = GobConfigHelper.getConfigKey(this)
         if (key !== null && key !== undefined && key.length > 0 && !_.includes(configKeys, key))
             configKeys.push(key)

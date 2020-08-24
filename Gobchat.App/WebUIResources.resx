@@ -134,6 +134,15 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
     <value>Changes the background color of the chat. Don't go full transparent.</value>
   </data>
+  <data name="config.app.chatlog.path" xml:space="preserve">
+    <value>Chat log destination folder (wip)</value>
+  </data>
+  <data name="config.app.chatlog.path.tooltip" xml:space="preserve">
+    <value>(wip)</value>
+  </data>
+  <data name="config.app.chatlog.pathselect.tooltip" xml:space="preserve">
+    <value>Browse file system (wip)</value>
+  </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
   </data>
@@ -259,6 +268,31 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.app.position.y" xml:space="preserve">
     <value>Y</value>
+  </data>
+  <data name="config.app.process.info.connected" xml:space="preserve">
+    <value>Connected to process {0}</value>
+    <comment>o: process id</comment>
+  </data>
+  <data name="config.app.process.info.initialize" xml:space="preserve">
+    <value>Click 'refresh' for update</value>
+  </data>
+  <data name="config.app.process.info.notconnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="config.app.process.info.search" xml:space="preserve">
+    <value>Searching ...</value>
+  </data>
+  <data name="config.app.process.link.tooltip" xml:space="preserve">
+    <value>Connect to process</value>
+  </data>
+  <data name="config.app.process.selector" xml:space="preserve">
+    <value>Which FFXIV process should be used (wip)</value>
+  </data>
+  <data name="config.app.process.selector.default" xml:space="preserve">
+    <value>First process (wip)</value>
+  </data>
+  <data name="config.app.process.selector.tooltip" xml:space="preserve">
+    <value>Allows to specify which FFXIV should be used (wip)</value>
   </data>
   <data name="config.app.rangefilter.cutoff" xml:space="preserve">
     <value>Cut off (yalm)</value>

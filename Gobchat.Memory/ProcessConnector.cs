@@ -35,6 +35,8 @@ namespace Gobchat.Memory
 
         public event EventHandler OnConnectionLost;
 
+        private Process _connectedTo = null;
+
         public ProcessConnector()
         {
         }
@@ -70,6 +72,8 @@ namespace Gobchat.Memory
 
                 process.EnableRaisingEvents = true;
                 process.Exited += Process_Exited;
+
+                _connectedTo = process;
                 FFXIVProcessValid = true;
             }
             catch (Exception e)
@@ -104,6 +108,10 @@ namespace Gobchat.Memory
         {
             var wasConnected = FFXIVProcessValid;
             MemoryHandler.Instance.UnsetProcess();
+            if (_connectedTo != null)
+                _connectedTo.Exited -= Process_Exited;
+            _connectedTo = null;
+
             FFXIVProcessValid = false;
             return wasConnected;
         }
@@ -127,8 +135,14 @@ namespace Gobchat.Memory
 
         private void Process_Exited(object sender, EventArgs e)
         {
-            Disconnect();
-            OnConnectionLost?.Invoke(this, new EventArgs());
+            if (sender is Process process)
+            {
+                if (process.Id == FFXIVProcessId)
+                {
+                    Disconnect();
+                    OnConnectionLost?.Invoke(this, new EventArgs());
+                }
+            }
         }
     }
 }

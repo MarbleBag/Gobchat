@@ -125,6 +125,7 @@ namespace Gobchat.Module.UI.Internal
                     using (var dialog = new FolderBrowserDialog())
                     {
                         dialog.SelectedPath = path == null || path.Length == 0 ? GobchatContext.ResourceLocation : path;
+
                         if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                             selectedElement = dialog.SelectedPath;
                     }
@@ -284,12 +285,24 @@ namespace Gobchat.Module.UI.Internal
                 GobchatApplicationContext.ExitGobchat();
             }
 
-            public async Task<string> ComputeAppDataPath(string path)
+            public async Task<string> GetAbsoluteChatLogPath(string path)
             {
                 if (Path.IsPathRooted(path))
                     return path;
 
                 return Path.Combine(GobchatContext.AppDataLocation, path);
+            }
+
+            public async Task<string> GetRelativeChatLogPath(string path)
+            {
+                if (Path.IsPathRooted(path))
+                    if (path.StartsWith(GobchatContext.AppDataLocation))
+                        path = path.Substring(GobchatContext.AppDataLocation.Length);
+
+                while (path.StartsWith("" + Path.DirectorySeparatorChar))
+                    path = path.Substring(1);
+
+                return path;
             }
         }
     }

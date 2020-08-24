@@ -96,6 +96,33 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat log destination folder (wip).
+        /// </summary>
+        internal static string config_app_chatlog_path {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (wip).
+        /// </summary>
+        internal static string config_app_chatlog_path_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.path.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse file system (wip).
+        /// </summary>
+        internal static string config_app_chatlog_pathselect_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.pathselect.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
         internal static string config_app_ckb_actor {
@@ -470,6 +497,78 @@ namespace Gobchat {
         internal static string config_app_position_y {
             get {
                 return ResourceManager.GetString("config.app.position.y", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to process {0}.
+        /// </summary>
+        internal static string config_app_process_info_connected {
+            get {
+                return ResourceManager.GetString("config.app.process.info.connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click &apos;refresh&apos; for update.
+        /// </summary>
+        internal static string config_app_process_info_initialize {
+            get {
+                return ResourceManager.GetString("config.app.process.info.initialize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        internal static string config_app_process_info_notconnected {
+            get {
+                return ResourceManager.GetString("config.app.process.info.notconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching ....
+        /// </summary>
+        internal static string config_app_process_info_search {
+            get {
+                return ResourceManager.GetString("config.app.process.info.search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect to process.
+        /// </summary>
+        internal static string config_app_process_link_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.process.link.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which FFXIV process should be used (wip).
+        /// </summary>
+        internal static string config_app_process_selector {
+            get {
+                return ResourceManager.GetString("config.app.process.selector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First process (wip).
+        /// </summary>
+        internal static string config_app_process_selector_default {
+            get {
+                return ResourceManager.GetString("config.app.process.selector.default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows to specify which FFXIV should be used (wip).
+        /// </summary>
+        internal static string config_app_process_selector_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.process.selector.tooltip", resourceCulture);
             }
         }
         

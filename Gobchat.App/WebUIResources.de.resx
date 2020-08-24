@@ -753,4 +753,28 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
     <value>Spieler in der Umgebung: {0}</value>
   </data>
+  <data name="config.app.process.info.connected" xml:space="preserve">
+    <value>Verbunden mit {0}</value>
+  </data>
+  <data name="config.app.process.info.initialize" xml:space="preserve">
+    <value>Klick 'Aktualisieren' zum updaten</value>
+  </data>
+  <data name="config.app.process.info.notconnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="config.app.process.info.search" xml:space="preserve">
+    <value>Suche ...</value>
+  </data>
+  <data name="config.app.process.link.tooltip" xml:space="preserve">
+    <value>Verbinde zu</value>
+  </data>
+  <data name="config.app.process.selector" xml:space="preserve">
+    <value>Welcher FFXIV Prozess soll genutzt werden (wip)</value>
+  </data>
+  <data name="config.app.process.selector.tooltip" xml:space="preserve">
+    <value>Erlaubt es den Prozess mit dem sich Gobchat verbindet auszusuchen, wird ein anderer Prozess als der Erste gewählt, ist bei einem Neustart von FFXIV darauf zu achten, die Verbindung erneut herzustellen, da Gobchat nach der Alten suchen wird! (wip)</value>
+  </data>
+  <data name="config.app.process.selector.default" xml:space="preserve">
+    <value>Erste Prozess (wip)</value>
+  </data>
 </root>
