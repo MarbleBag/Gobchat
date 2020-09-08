@@ -17,7 +17,7 @@ namespace Gobchat.Core.Config
 {
     internal sealed class ConfigUpgrade_v1900 : IConfigUpgrade
     {
-        public int MinVersion => 1801;
+        public int MinVersion => 1800;
 
         public int MaxVersion => 1899;
 
