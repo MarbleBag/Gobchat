@@ -134,7 +134,7 @@ namespace Gobchat.Core.Config
             {
                 var userProfile = ParseProfile(userProfileFile);
                 if (userProfile != null)
-                    StoreNewProfile(userProfile, false);
+                    StoreNewProfile(userProfile, false, false);
             }
         }
 
@@ -350,11 +350,11 @@ namespace Gobchat.Core.Config
             newConfig["profile"]["id"] = profileId;
             newConfig["profile"]["name"] = $"Profile {this.Profiles.Count + 1}";
 
-            StoreNewProfile(newConfig, false);
+            StoreNewProfile(newConfig, false, true);
             return profileId;
         }
 
-        private void StoreNewProfile(JObject profile, bool synchronizing)
+        private void StoreNewProfile(JObject profile, bool synchronizing, bool save)
         {
             var config = new GobchatConfigProfile(profile, true, _globalProfile);
 
@@ -374,6 +374,8 @@ namespace Gobchat.Core.Config
             config.OnPropertyChange += OnEvent_Config_OnPropertyChange;
             _profiles.Add(config.ProfileId, config);
             _deletedProfiles.Remove(config.ProfileId);
+            if (save)
+                _changedProfiles.Add(config.ProfileId);
             OnProfileChange?.Invoke(this, new ProfileChangedEventArgs(config.ProfileId, ProfileChangedEventArgs.Type.New, synchronizing));
         }
 
@@ -418,7 +420,7 @@ namespace Gobchat.Core.Config
                 var removedProfiles = storedProfiles.Where(p => !profileIds.Contains(p));
 
                 foreach (var profileId in newProfiles)
-                    StoreNewProfile(configJson["profiles"][profileId] as JObject, true);
+                    StoreNewProfile(configJson["profiles"][profileId] as JObject, true, true);
 
                 foreach (var profileId in availableProfiles)
                 {

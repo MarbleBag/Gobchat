@@ -23,20 +23,13 @@ namespace Gobchat.Memory
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly FFXIVProcessConnector _processConnector = new FFXIVProcessConnector();
+        private readonly ProcessConnector _processConnector = new ProcessConnector();
 
         private readonly Chat.ChatlogMemoryReader _chatlogProcessor = new Chat.ChatlogMemoryReader();
         private readonly Actor.PlayerLocationMemoryReader _locationProcessor = new Actor.PlayerLocationMemoryReader();
 
         private readonly Window.WindowObserver _windowScanner = new Window.WindowObserver();
         private bool _windowVisible = true;
-
-        public bool FFXIVProcessValid { get { return _processConnector.FFXIVProcessValid; } }
-
-        public int FFXIVProcessId { get { return _processConnector.FFXIVProcessId; } }
-
-        public bool ChatLogAvailable { get { return _chatlogProcessor.ChatLogAvailable; } }
-        public bool PlayerCharactersAvailable { get { return _locationProcessor.LocationAvailable; } }
 
         public bool ObserveGameWindow
         {
@@ -67,6 +60,7 @@ namespace Gobchat.Memory
         /// </summary>
         public event EventHandler<ProcessChangeEventArgs> OnProcessChanged;
 
+        [Obsolete]
         public event EventHandler OnProcessScanned;
 
         /// <summary>
@@ -125,20 +119,52 @@ namespace Gobchat.Memory
             }
         }
 
-        public void CheckFFXIVProcess()
-        {
-            if (_processConnector.FFXIVProcessValid)
-                return; //nothing to do
+        #region process handling
 
-            var connected = ConnectToFFXIV();
-            OnProcessScanned?.Invoke(this, new EventArgs());
-            if (connected)
-                OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+        public bool FFXIVProcessValid { get { return _processConnector.FFXIVProcessValid; } }
+
+        public int FFXIVProcessId { get { return _processConnector.FFXIVProcessId; } }
+
+        public List<int> GetFFXIVProcesses()
+        {
+            return _processConnector.GetFFXIVProcesses();
         }
 
-        private bool ConnectToFFXIV()
+        public bool IsConnectedTo(int processId = -1)
         {
-            if (!_processConnector.ConnectToFirstFFXIV())
+            return FFXIVProcessValid && (processId <= 0 || processId == FFXIVProcessId);
+        }
+
+        public bool TryConnectingToFFXIV(int processId = -1)
+        {
+            if (IsConnectedTo(processId))
+                return true; //do nothing if it's already connected to the correct process or if any process is valid
+
+            if (processId <= 0)
+                processId = _processConnector.GetFFXIVProcesses().FirstOrDefault();
+
+            if (processId <= 0) // no process available
+            {
+                if (_processConnector.Disconnect()) //ensure it's disconnected
+                    OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+                return false;
+            }
+
+            if (ConnectToFFXIV(processId))
+                OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+            return FFXIVProcessValid; // either connected or not
+        }
+
+        public bool DisconnectFromFFXIV()
+        {
+            if (_processConnector.Disconnect())
+                OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
+            return !FFXIVProcessValid;
+        }
+
+        private bool ConnectToFFXIV(int processId)
+        {
+            if (!_processConnector.ConnectToProcess(processId))
                 return false;
 
             var signaturesOfInterest = new string[] { Sharlayan.Signatures.ChatLogKey, Sharlayan.Signatures.CharacterMapKey };
@@ -154,6 +180,12 @@ namespace Gobchat.Memory
             OnProcessChanged?.Invoke(this, new ProcessChangeEventArgs(FFXIVProcessValid, FFXIVProcessId));
         }
 
+        #endregion process handling
+
+        #region feature - chat log
+
+        public bool ChatLogAvailable { get { return _chatlogProcessor.ChatLogAvailable; } }
+
         public List<Chat.ChatlogItem> GetNewestChatlog()
         {
             if (!FFXIVProcessValid)
@@ -161,11 +193,19 @@ namespace Gobchat.Memory
             return _chatlogProcessor.GetNewestChatlog();
         }
 
+        #endregion feature - chat log
+
+        #region feature - character data
+
+        public bool PlayerCharactersAvailable { get { return _locationProcessor.LocationAvailable; } }
+
         public List<Actor.PlayerCharacter> GetPlayerCharacters()
         {
             if (!FFXIVProcessValid)
                 return new List<Actor.PlayerCharacter>();
             return _locationProcessor.GetPlayerCharacters();
         }
+
+        #endregion feature - character data
     }
 }

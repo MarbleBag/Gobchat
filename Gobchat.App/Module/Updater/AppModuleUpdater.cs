@@ -275,9 +275,9 @@ namespace Gobchat.Module.Updater
                     return null;
                 return updateDescription;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO
+                logger.Error(e);
                 return null;
             }
         }

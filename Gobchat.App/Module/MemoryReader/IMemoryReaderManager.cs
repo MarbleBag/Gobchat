@@ -24,13 +24,22 @@ namespace Gobchat.Module.MemoryReader
         ConnectionState ConnectionState { get; }
 
         bool IsConnected { get; }
+
+        void ConnectTo(int processId);
+
+        int ConnectedProcessId { get; }
+
+        List<int> GetProcessIds();
+
         bool ChatLogAvailable { get; }
+
         bool PlayerCharactersAvailable { get; }
+
         bool ObserveGameWindow { get; set; }
 
         event EventHandler<WindowFocusChangedEventArgs> OnWindowFocusChanged;
 
-        event EventHandler<ConnectionEventArgs> OnConnectionState;
+        event EventHandler<ConnectionEventArgs> OnConnectionStateChanged;
 
         List<PlayerCharacter> GetPlayerCharacters();
 

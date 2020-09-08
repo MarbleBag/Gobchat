@@ -23,12 +23,12 @@
         clearGroupTable()
 
         const groupIds = gobconfig.get(ConfigKeyGroupSorting)
-        groupIds.forEach(groupId => addGroupToTable(groupId))
+        groupIds.forEach(async groupId => await addGroupToTable(groupId))
 
         tblGroups.sortable("refresh")
         tblGroups.accordion("refresh")
 
-        tblGroups.find(".tmpl-header-index").each(function (idx) {
+        tblGroups.find(".js-group-index").each(function (idx) {
             $(this).text(idx + 1)
         })
 
@@ -43,7 +43,7 @@
     }
 
     const tmplGroupEntry = $("#cgroups_template_groupentry")
-    function addGroupToTable(groupId) {
+    async function addGroupToTable(groupId) {
         const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
         const groupConfigKey = `${ConfigKeyGroups}.${groupId}`
@@ -55,48 +55,56 @@
         groupEntry.attr(GroupIdAttribute, groupId)
         groupEntry.data("configbinding", binding)
 
-        const lblGroupName = groupEntry.find(".tmpl-header-name")
+        const lblGroupName = groupEntry.find(".js-group-name")
         GobConfigHelper.setConfigKey(lblGroupName, groupConfigKey + ".name")
         GobConfigHelper.bindText(binding, lblGroupName)
 
-        const btnDeleteGroup = groupEntry.find(".tmpl-delete-group")
+        const btnDeleteGroup = groupEntry.find(".js-delete-group")
         btnDeleteGroup.on("click", (event) => {
-            event.stopPropagation()
-            {
-                (async () => {
-                    const result = await GobConfigHelper.showConfirmationDialog({
-                        dialogText: "config.groups.entry.deleteconfirm",
-                    })
+            event.stopPropagation();
+            (async () => {
+                const result = await GobConfigHelper.showConfirmationDialog({
+                    dialogText: "config.groups.entry.deleteconfirm",
+                })
 
-                    if (result === 1) {
-                        try {
-                            gobconfig.remove(groupConfigKey)
-                            const order = gobconfig.get(ConfigKeyGroupSorting)
-                            _.remove(order, e => e === groupId)
-                            gobconfig.set(ConfigKeyGroupSorting, order)
-                        } catch (e1) {
-                            console.error(e1)
-                        }
+                if (result === 1) {
+                    try {
+                        gobconfig.remove(groupConfigKey)
+                        const order = gobconfig.get(ConfigKeyGroupSorting)
+                        _.remove(order, e => e === groupId)
+                        gobconfig.set(ConfigKeyGroupSorting, order)
+                    } catch (e1) {
+                        console.error(e1)
                     }
-                })()
-            }
+                }
+            })();
         })
 
         const isFFGroup = "ffgroup" in groupData
         if (isFFGroup)
-            btnDeleteGroup.attr("disabled", true).hide()
+            btnDeleteGroup.attr("disabled", true).hide() //ff groups can't be deleted
 
-        const txtGroupName = groupEntry.find(".tmpl-group-name")
+        if (isFFGroup) {
+            GobConfigHelper.bindListener(binding, "behaviour.language", async (value) => {
+                const $label = groupEntry.find(".js-ffgroup")
+                const localization = await goblocale.get($label.attr("data-gob-locale-id-text"), value)
+                const name = gobconfig.get(`${groupConfigKey}.hiddenName`, "")
+                const txt = Gobchat.formatString(localization, name)
+                $label.text(txt)
+            })
+        }
+
+        const txtGroupName = groupEntry.find(".js-txt-name")
         GobConfigHelper.setConfigKey(txtGroupName, groupConfigKey + ".name")
         GobConfigHelper.bindElement(binding, txtGroupName)
 
-        const btnGroupName = groupEntry.find(".tmpl-group-name-reset")
-        GobConfigHelper.setConfigKey(btnGroupName, GobConfigHelper.getConfigKey(txtGroupName))
-        GobConfigHelper.makeResetButton(btnGroupName)
+        const btnGroupNameReset = groupEntry.find(".js-txt-name-reset")
+        GobConfigHelper.setConfigKey(btnGroupNameReset, GobConfigHelper.getConfigKey(txtGroupName))
+        GobConfigHelper.makeResetButton(btnGroupNameReset)
         if (!isFFGroup)
-            btnGroupName.attr("disabled", true).hide()
+            btnGroupNameReset.attr("disabled", true).hide()
 
-        const ckbIsActive = groupEntry.find(".tmpl-group-active")
+        const ckbIsActive = groupEntry.find(".js-chk-active")
         GobConfigHelper.setConfigKey(ckbIsActive, groupConfigKey + ".active")
         GobConfigHelper.bindCheckbox(binding, ckbIsActive)
 
@@ -114,21 +122,23 @@
                 resetButton.hide()
         }
 
-        makeColorSelector("tmpl-sender-fgcolor", groupConfigKey + ".style.header.color")
-        makeColorSelector("tmpl-sender-bgcolor", groupConfigKey + ".style.header.background-color")
-        makeColorSelector("tmpl-msg-bgcolor", groupConfigKey + ".style.body.background-color")
+        makeColorSelector("js-sender-fgcolor", groupConfigKey + ".style.header.color")
+        makeColorSelector("js-sender-bgcolor", groupConfigKey + ".style.header.background-color")
+        makeColorSelector("js-msg-bgcolor", groupConfigKey + ".style.body.background-color")
 
-        const txtTriggers = groupEntry.find(".tmpl-group-triggers")
-        if (!isFFGroup) {
-            txtTriggers.val(gobconfig.get(groupConfigKey + ".trigger").join(", "))
-            txtTriggers.on("change", (event) => {
-                let words = (event.target.value || "").split(",")
-                words = words.filter(w => w !== null && w !== undefined).map(w => w.toLowerCase().trim()).filter(w => w.length > 0)
-                gobconfig.set(groupConfigKey + ".trigger", words)
-                event.target.value = words.join(", ")
-            })
-        } else {
-            txtTriggers.closest("tr").hide().prev().hide()
+        const txtTriggers = groupEntry.find(".js-group-triggers")
+        txtTriggers.val(gobconfig.get(groupConfigKey + ".trigger", []).join(", "))
+        txtTriggers.on("change", (event) => {
+            let words = (event.target.value || "").split(",")
+            words = words.filter(w => w !== null && w !== undefined).map(w => w.toLowerCase().trim()).filter(w => w.length > 0)
+            gobconfig.set(groupConfigKey + ".trigger", words)
+            event.target.value = words.join(", ")
+        })
+
+        if (isFFGroup) { // hide custom nodes
+            groupEntry.find(".js-mode-custom").hide()
+        } else { // hide non custom nodes
+            groupEntry.find(".js-mode-noncustom").hide()
         }
 
         binding.initialize()
@@ -192,17 +202,13 @@
             }
         });
 
-    gobconfig.addProfileEventListener((event) => {
-        (async () => {
-            if (event.type === "active")
-                await populateGroupTable()
-        })()
+    gobconfig.addProfileEventListener(async (event) => {
+        if (event.type === "active")
+            await populateGroupTable()
     })
-    gobconfig.addPropertyEventListener(ConfigKeyGroupSorting, (event) => {
-        (async () => {
-            if (event.isActive)
-                await populateGroupTable()
-        })()
+    gobconfig.addPropertyEventListener(ConfigKeyGroupSorting, async (event) => {
+        if (event.isActive)
+            await populateGroupTable()
     })
 
     await populateGroupTable()

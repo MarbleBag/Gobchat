@@ -17,9 +17,14 @@ using Gobchat.Core.Chat;
 
 namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
+    // This logger is no longer functional
     public sealed class ChatLoggerACTType : ChatLoggerBase
     {
         protected override string LoggerId => "ACT1v";
+
+        public ChatLoggerACTType() : base()
+        {
+        }
 
         protected override string FormatLine(ChatMessage msg)
         {

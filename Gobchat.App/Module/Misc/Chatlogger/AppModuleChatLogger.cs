@@ -18,6 +18,7 @@ using Gobchat.Module.Chat;
 using Gobchat.Module.Misc.Chatlogger.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Gobchat.Module.Misc.Chatlogger
@@ -50,7 +51,9 @@ namespace Gobchat.Module.Misc.Chatlogger
             _chatLogger.LogChannels = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>(); //will log everything that comes from the chat manager
 
             _configManager = _container.Resolve<IConfigManager>();
-            _configManager.AddPropertyChangeListener("behaviour.writeChatLog", true, true, ConfigManager_UpdateWriteLog);
+            _configManager.AddPropertyChangeListener("behaviour.chatlog.active", true, true, ConfigManager_UpdateWriteLog);
+            _configManager.AddPropertyChangeListener("behaviour.chatlog.path", true, true, ConfigManager_UpdateLogPath);
+
             // _configManager.AddPropertyChangeListener("behaviour.channel.visible", true, true, ConfigManager_UpdateLogChannels);
 
             _chatManager = _container.Resolve<IChatManager>();
@@ -60,7 +63,9 @@ namespace Gobchat.Module.Misc.Chatlogger
         public void Dispose()
         {
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateWriteLog);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLogPath);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLogChannels);
+
             _configManager = null;
 
             _chatManager.OnChatMessage -= ChatManager_ChatMessageEvent;
@@ -74,7 +79,20 @@ namespace Gobchat.Module.Misc.Chatlogger
 
         private void ConfigManager_UpdateWriteLog(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatLogger.Active = sender.GetProperty<bool>("behaviour.writeChatLog");
+            _chatLogger.Active = sender.GetProperty<bool>("behaviour.chatlog.active");
+        }
+
+        private void ConfigManager_UpdateLogPath(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            var path = sender.GetProperty<string>("behaviour.chatlog.path");
+
+            if (path == null || path.Length == 0)
+                path = Path.Combine(GobchatContext.AppDataLocation, "log");
+
+            if (!Path.IsPathRooted(path))
+                path = Path.Combine(GobchatContext.AppDataLocation, path);
+
+            _chatLogger.LogFolder = path;
         }
 
         private void ConfigManager_UpdateLogChannels(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)

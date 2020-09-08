@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="External\ChatChannel.cs" />
     <Compile Include="External\Extensions.cs" />
+    <Compile Include="External\FFXIVChatChannel.cs" />
+    <Compile Include="External\GobchatChannelMapping.cs" />
     <Compile Include="External\GobchatContext.cs" />
     <Compile Include="External\IProgressMonitor.cs" />
     <Compile Include="External\ProgressMonitorAdapter.cs" />

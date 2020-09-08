@@ -128,7 +128,7 @@
 
             .gob-chatbox .chat-tabnav .chat-tabnav-btn.active:before {
                 content: "";
-                background: #ffbc00;
+                background: #fffbf7;
                 border-radius: 50%;
                 width: 5px;
                 height: 5px;
@@ -136,7 +136,7 @@
                 left: -2px;
                 top: -8px;
                 display: inline-block;
-                box-shadow: 0px 0px 3px 0px #ffd358;
+                box-shadow: 0px 0px 4px 1px #c79300;
             }
 
         .gob-chatbox .chat-tabnav .chat-tabnav-left {

@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
 using System.Globalization;
 using System.Text;
 using Gobchat.Core.Chat;
@@ -20,6 +21,10 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
     public sealed class ChatLoggerFormated : ChatLoggerBase
     {
         private readonly StringBuilder _builder = new StringBuilder();
+
+        public ChatLoggerFormated() : base()
+        {
+        }
 
         protected override string LoggerId => "FCLv1";
 

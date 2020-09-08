@@ -39,14 +39,14 @@ namespace Gobchat.Module.Misc
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
             var memoryReader = _container.Resolve<IMemoryReaderManager>();
-            memoryReader.OnConnectionState += MemoryReader_OnConnectionState;
+            memoryReader.OnConnectionStateChanged += MemoryReader_OnConnectionState;
             OnConnection(memoryReader.ConnectionState);
         }
 
         public void Dispose()
         {
             var memoryReader = _container.Resolve<IMemoryReaderManager>();
-            memoryReader.OnConnectionState -= MemoryReader_OnConnectionState;
+            memoryReader.OnConnectionStateChanged -= MemoryReader_OnConnectionState;
             _container = null;
         }
 

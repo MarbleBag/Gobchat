@@ -2,6 +2,35 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.9.0-1] - 2020.08.25
+### Added
+- Hotkeys
+  - Button to remove hotkeys
+
+
+- Support for multi-boxing
+  - By default Gobchat shows the chat of the first process of FFXIV it can find
+  - It's possible to select a specific process of FFXIV in `Config / App / Multi-boxing`
+
+
+- Chat log
+  - The output folder of chat logs can be changed on a profile level in `Config / App`
+
+  
+- Config
+  - Button to close Gobchat
+    - Gobchat can now be closed via config, tray icon (right click) or chat command (/e gc close)
+  
+  
+### Removed
+- Limit of 10 chat entries per update
+  - It no longer chokes on battle logs
+
+### Fixed
+- LogConverter
+
+- Newly created profiles were not saved without changes to the config
+
 ## [1.8.0] - 2020.08.17
 ### Added
 - Chat tabs

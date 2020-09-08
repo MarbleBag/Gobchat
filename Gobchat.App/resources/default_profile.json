@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1800,
+  "version": 1900,
   "profile": {
     "id": null,
     "name": null,
@@ -233,8 +233,11 @@
       "checkOnline": true,
       "acceptBeta": false
     },
+    "chatlog": {
+      "active": false,
+      "path": "log"
+    },
     "hideOnMinimize": false,
-    "writeChatLog": false,
     "hotkeys": {
       "showhide": ""
     },
@@ -243,6 +246,7 @@
       "data": {
         "group-ff-1": {
           "name": "\u2605",
+          "hiddenName": "\u2605",
           "active": true,
           "ffgroup": 0,
           "id": "group-ff-1",
@@ -256,6 +260,7 @@
         },
         "group-ff-2": {
           "name": "\u25CF",
+          "hiddenName": "\u25CF",
           "active": true,
           "ffgroup": 1,
           "id": "group-ff-2",
@@ -269,6 +274,7 @@
         },
         "group-ff-3": {
           "name": "\u25B2",
+          "hiddenName": "\u25B2",
           "active": true,
           "ffgroup": 2,
           "id": "group-ff-3",
@@ -282,6 +288,7 @@
         },
         "group-ff-4": {
           "name": "\u2666",
+          "hiddenName": "\u2666",
           "active": true,
           "ffgroup": 3,
           "id": "group-ff-4",
@@ -295,6 +302,7 @@
         },
         "group-ff-5": {
           "name": "\u2665",
+          "hiddenName": "\u2665",
           "active": true,
           "ffgroup": 4,
           "id": "group-ff-5",
@@ -308,6 +316,7 @@
         },
         "group-ff-6": {
           "name": "\u2660",
+          "hiddenName": "\u2660",
           "active": true,
           "ffgroup": 5,
           "id": "group-ff-6",
@@ -321,6 +330,7 @@
         },
         "group-ff-7": {
           "name": "\u2663",
+          "hiddenName": "\u2663",
           "active": true,
           "ffgroup": 6,
           "id": "group-ff-7",

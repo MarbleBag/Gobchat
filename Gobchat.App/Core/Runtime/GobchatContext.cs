@@ -13,7 +13,7 @@ namespace Gobchat.Core.Runtime
             get { return System.IO.Path.Combine(ApplicationLocation, @"resources"); }
         }
 
-        public static string UserDataLocation
+        public static string AppDataLocation
         {
 #if DEBUG
             get { return System.IO.Path.Combine(ApplicationLocation, "DebugConfig"); }
@@ -22,14 +22,9 @@ namespace Gobchat.Core.Runtime
 #endif
         }
 
-        public static string UserLogLocation
+        public static string AppConfigLocation
         {
-            get { return System.IO.Path.Combine(UserDataLocation, "log"); }
-        }
-
-        public static string UserConfigLocation
-        {
-            get { return System.IO.Path.Combine(UserDataLocation, "config"); }
+            get { return System.IO.Path.Combine(AppDataLocation, "config"); }
         }
 
         public static string ApplicationLocation

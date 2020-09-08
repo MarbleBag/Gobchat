@@ -11,9 +11,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using Gobchat.Module.MemoryReader;
 using Gobchat.UI.Web;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gobchat.Module.UI
@@ -22,9 +24,12 @@ namespace Gobchat.Module.UI
     {
         bool IsUIReady { get; }
         IBrowserChatHandler ChatHandler { get; set; }
+
         IBrowserConfigHandler ConfigHandler { get; set; }
 
         IBrowserActorHandler ActorHandler { get; set; }
+
+        IBrowserMemoryHandler MemoryHandler { get; set; }
 
         event EventHandler<UIReadChangedEventArgs> OnUIReadyChanged;
 
@@ -70,5 +75,14 @@ namespace Gobchat.Module.UI
         Task<string[]> GetPlayersNearby();
 
         Task<float> GetDistanceToPlayer(string name);
+    }
+
+    public interface IBrowserMemoryHandler
+    {
+        Task<int[]> GetAttachableFFXIVProcesses();
+
+        Task<(ConnectionState state, int id)> GetAttachedFFXIVProcess();
+
+        Task<bool> AttachToFFXIVProcess(int id);
     }
 }

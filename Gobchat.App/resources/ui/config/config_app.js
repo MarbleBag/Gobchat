@@ -16,88 +16,194 @@
 (async function () {
     const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
-    // setup language
-    const dpdLanguage = $("#capp_language")
-    GobConfigHelper.bindElement(binding, dpdLanguage)
+    GobConfigHelper.bindElement(binding, $("#capp_language"))
 
-    const dpdTheme = $("#capp_theme")
-    GobConfigHelper.bindElement(binding, dpdTheme)
+    GobConfigHelper.bindElement(binding, $("#capp_theme"))
 
     // setup checkboxes
-    const ckbChatLog = $("#capp_makechatlog")
-    GobConfigHelper.bindCheckbox(binding, ckbChatLog)
+    GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
 
-    const ckbAutodetect = $("#capp_autodetectemote")
-    GobConfigHelper.bindCheckbox(binding, ckbAutodetect)
+    const $txtChatlogPath = $("#capp_chatlog_path")
+    $txtChatlogPath.on("change", function () {
+        (async () => {
+            try {
+                let newPath = $txtChatlogPath.val()
+                const parsedPath = await GobchatAPI.getRelativeChatLogPath(newPath)
+                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), parsedPath)
+                newPath = await GobchatAPI.getAbsoluteChatLogPath(parsedPath)
+                $txtChatlogPath.val(newPath)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
+    })
 
-    const ckbUserMention = $("#capp_userMention")
-    GobConfigHelper.bindCheckbox(binding, ckbUserMention)
+    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), path => {
+        (async () => {
+            try {
+                path = await GobchatAPI.getAbsoluteChatLogPath(path)
+                $txtChatlogPath.val(path)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
+    })
 
-    const ckbHide = $("#capp_hide")
-    GobConfigHelper.bindCheckbox(binding, ckbHide)
+    $("#capp_chatlog_path_select").on("click", function () {
+        (async () => {
+            try {
+                let oldPath = gobconfig.get(GobConfigHelper.getConfigKey($txtChatlogPath))
+                oldPath = await GobchatAPI.getAbsoluteChatLogPath(oldPath)
+                let newPath = await GobchatAPI.openDirectoryDialog(oldPath)
+                newPath = await GobchatAPI.getRelativeChatLogPath(newPath)
+                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), newPath)
+            } catch (e) {
+                console.error(e)
+            }
+        })();
+    })
+
+    GobConfigHelper.makeResetButton($("#capp_logging_path_reset"))
+
+    GobConfigHelper.bindCheckbox(binding, $("#capp_autodetectemote"))
+
+    GobConfigHelper.bindCheckbox(binding, $("#capp_userMention"))
+
+    GobConfigHelper.bindCheckbox(binding, $("#capp_hide"))
 
     const ckbUpdate = $("#capp_checkupdates")
     GobConfigHelper.bindCheckbox(binding, ckbUpdate)
-
     binding.bindConfigListener(GobConfigHelper.getConfigKey(ckbUpdate), value => {
         //ckbBetaUpdate.attr("disabled", !value)
         $("[for='capp_checkupdates']").toggleClass("disabled", !value)
     })
 
-    const ckbBetaUpdate = $("#capp_checkbetaupdates")
-    GobConfigHelper.bindCheckbox(binding, ckbBetaUpdate)
+    GobConfigHelper.bindCheckbox(binding, $("#capp_checkbetaupdates"))
 
     {
         const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
         $("#capp_characterlocations_feature").toggle(!available)
     }
 
-    const ckbActorActive = $("#capp_actor_updateActive")
-    GobConfigHelper.bindCheckbox(binding, ckbActorActive)
+    GobConfigHelper.bindCheckbox(binding, $("#capp_actor_updateActive"))
 
-    const ckbRangeFilterMention = $("#capp_rangefilter_mention")
-    GobConfigHelper.bindCheckbox(binding, ckbRangeFilterMention)
+    GobConfigHelper.bindCheckbox(binding, $("#capp_rangefilter_mention"))
 
     // setup font group
     // setup font family
-    const txtFontFamily = $("#capp_font_family")
-    GobConfigHelper.bindElement(binding, txtFontFamily)
+    GobConfigHelper.bindElement(binding, $("#capp_font_family"))
 
-    const btnFontFamilyReset = $("#capp_font_family_reset")
-    GobConfigHelper.makeResetButton(btnFontFamilyReset)
+    GobConfigHelper.makeResetButton($("#capp_font_family_reset"))
+
+    const $dpdProcessSelector = $("#capp_process_selector")
+    $("#capp_process_selector_refresh").on("click", function () {
+        const $icon = $("#capp_process_selector_refresh").find("svg");
+
+        (async () => {
+            try {
+                //$icon.addClass("fa-spin")
+
+                const defaultElement = $dpdProcessSelector.find("[value='-1']")
+                const previousSelected = $dpdProcessSelector.val()
+                $dpdProcessSelector.empty().append(defaultElement)
+
+                const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
+                for (const processId of availableProcesses)
+                    $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId))
+
+                if ($dpdProcessSelector.find(`[value='${previousSelected}'`).length > 0) {
+                    $dpdProcessSelector.val(previousSelected)
+                } else {
+                    $dpdProcessSelector.val("-1")
+                    await GobchatAPI.attachToFFXIVProcess(-1)
+                }
+
+                //$icon.removeClass("fa-spin")
+
+                await process_UpdateLabel()
+            } catch (e) {
+                console.error(e)
+            }
+        })();
+    })
+
+    let process_IntervalTimer = 0
+    async function process_UpdateLabel() {
+        try {
+            const txtSearch = await goblocale.get("config.app.process.info.search")
+            const txtNotConnected = await goblocale.get("config.app.process.info.notconnected")
+            const txtConnectedTo = await goblocale.get("config.app.process.info.connected")
+
+            const $txtLabel = $("#capp_process_info")
+            const $icon = $("#capp_process_selector_link").find("svg")
+
+            async function updateLabel() {
+                try {
+                    const connectionInfo = await GobchatAPI.getAttachedFFXIVProcess()
+                    const connectionState = connectionInfo.Item1 //0 - none, 1 - connected, 2 - not found, 3 - searching
+                    const processId = connectionInfo.Item2
+
+                    if (connectionState === 0) {
+                    } else if (connectionState === 1) {
+                        $txtLabel.text(Gobchat.formatString(txtConnectedTo, processId));
+                        $icon.removeClass("fa-spin")
+                        clearInterval(process_IntervalTimer)
+                        process_IntervalTimer = 0
+                    } else if (connectionState === 2) {
+                        $txtLabel.text(txtNotConnected);
+                    } else if (connectionState === 3) {
+                        $txtLabel.text(txtSearch);
+                    }
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+
+            clearInterval(process_IntervalTimer)
+            process_IntervalTimer = setInterval(updateLabel, 1000)
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    $("#capp_process_selector_link").on("click", function () {
+        (async () => {
+            try {
+                $("#capp_process_selector_link").find("svg").addClass("fa-spin")
+
+                const processId = $dpdProcessSelector.val()
+                if (processId != null && processId != undefined)
+                    GobchatAPI.attachToFFXIVProcess(parseInt(processId))
+
+                await process_UpdateLabel()
+            } catch (e) {
+                console.error(e)
+            }
+        })();
+    })
 
     const parseNumber = ($element) => {
         const value = parseInt($element.val())
         return Gobchat.isNumber(value) && value >= 0 ? value : undefined
     }
 
-    const txtRangeFilterCutOff = $("#capp_rangefilter_cutoff")
-    GobConfigHelper.bindElement(binding, txtRangeFilterCutOff, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_rangefilter_cutoff"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_cutoff_reset"))
 
-    const txtRangeFilterFadeOut = $("#capp_rangefilter_fadeout")
-    GobConfigHelper.bindElement(binding, txtRangeFilterFadeOut, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_rangefilter_fadeout"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_fadeout_reset"))
 
-    const txtRangeFilterStartOpacity = $("#capp_rangefilter_startopacity")
-    GobConfigHelper.bindElement(binding, txtRangeFilterStartOpacity, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_rangefilter_startopacity"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_startopacity_reset"))
 
-    const txtRangeFilterEndOpacity = $("#capp_rangefilter_endopacity")
-    GobConfigHelper.bindElement(binding, txtRangeFilterEndOpacity, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_rangefilter_endopacity"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_rangefilter_endopacity_reset"))
 
-    const txtFrameX = $("#capp_frame_x")
-    GobConfigHelper.bindElement(binding, txtFrameX, { elementGetAccessor: parseNumber })
-
-    const txtFrameY = $("#capp_frame_y")
-    GobConfigHelper.bindElement(binding, txtFrameY, { elementGetAccessor: parseNumber })
-
-    const txtFrameHeight = $("#capp_frame_height")
-    GobConfigHelper.bindElement(binding, txtFrameHeight, { elementGetAccessor: parseNumber })
-
-    const txtFrameWidth = $("#capp_frame_width")
-    GobConfigHelper.bindElement(binding, txtFrameWidth, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_frame_x"), { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_frame_y"), { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_frame_height"), { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_frame_width"), { elementGetAccessor: parseNumber })
 
     const clrChatboxBackground = $("#capp_chatbox_backgroundcolor")
     GobConfigHelper.makeColorSelector(clrChatboxBackground)
@@ -105,8 +211,7 @@
     GobConfigHelper.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
 
     // setup font size
-    const dpdFontSize = $("#capp_font_size")
-    GobConfigHelper.bindElement(binding, dpdFontSize, {
+    GobConfigHelper.bindElement(binding, $("#capp_font_size"), {
         elementGetAccessor: ($element) => Gobchat.isNumber($element.val()) ? Math.round($element.val()) + "px" : ($element.val() || "medium")
     })
 
@@ -122,23 +227,22 @@
 
     // setup hotkey group
     // setup hotkey field
-    const txtHotkeyShow = $("#capp_hotkey_show")
     const getHotkey = ($element, event) => GobConfigHelper.decodeHotkey(event, true)
-    GobConfigHelper.bindElement(binding, txtHotkeyShow, { elementKey: "keydown", elementGetAccessor: getHotkey })
+    GobConfigHelper.bindElement(binding, $("#capp_hotkey_show"), { elementKey: "keydown", elementGetAccessor: getHotkey })
+    GobConfigHelper.makeResetButton($("#capp_hotkey_show_reset"))
 
     // setup ungrouped
-    const txtChatUpdateInterval = $("#capp_chat_updateInterval")
-    GobConfigHelper.bindElement(binding, txtChatUpdateInterval, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_chat_updateInterval"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("#capp_chat_updateInterval_reset"))
 
-    const txtActorUpdateInterval = $("#capp_actor_updateInterval")
-    GobConfigHelper.bindElement(binding, txtActorUpdateInterval, { elementGetAccessor: parseNumber })
+    GobConfigHelper.bindElement(binding, $("#capp_actor_updateInterval"), { elementGetAccessor: parseNumber })
     GobConfigHelper.makeResetButton($("capp_actor_updateInterval_reset"))
 
     // activate bindings
     binding.initialize()
 
     // setup profile copy
+    /*
     const allFields = [
         dpdLanguage, dpdTheme,
         ckbChatLog, ckbAutodetect, ckbUserMention, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterMention,
@@ -151,11 +255,20 @@
         txtChatUpdateInterval, txtActorUpdateInterval,
         ckbActorActive
     ]
+    */
+
+    const configKeys = []
+    $(`#capp [${GobConfigHelper.ConfigKeyAttribute}]:not(.button)`).each(function () {
+        const key = GobConfigHelper.getConfigKey(this)
+        if (key !== null && key !== undefined && key.length > 0 && !_.includes(configKeys, key))
+            configKeys.push(key)
+    })
 
     const btnCopyProfile = $("#capp_copyprofile")
     GobConfigHelper.makeCopyProfileButton(btnCopyProfile,
         {
-            configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))
+            //configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))
+            configKeys: configKeys
         })
 }());
 

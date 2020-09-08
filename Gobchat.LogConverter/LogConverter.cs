@@ -178,7 +178,7 @@ namespace Gobchat.LogConverter
     {
         public DateTime Time { get; set; }
 
-        public ChatChannel Channel { get; set; } = ChatChannel.NONE;
+        public ChatChannel Channel { get; set; } = ChatChannel.None;
 
         public string Source { get; set; } = "";
 
@@ -220,11 +220,12 @@ namespace Gobchat.LogConverter
             var channelGroup = match.Groups["channel"];
             var sourceGroup = match.Groups["source"];
             var messageGroup = match.Groups["msg"];
+            var channelValue = Int32.Parse(channelGroup.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 
             var entry = new Entry()
             {
                 Time = DateTime.ParseExact(timeGroup.Value, "o", CultureInfo.InvariantCulture),
-                Channel = (ChatChannel)Int32.Parse(channelGroup.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)
+                Channel = GetChannel(channelValue)
             };
 
             if (sourceGroup.Success)
@@ -233,6 +234,19 @@ namespace Gobchat.LogConverter
                 entry.Message = messageGroup.Value;
 
             _results.Add(entry);
+        }
+
+        private static ChatChannel GetChannel(int value)
+        {
+            // special cases, they were removed from FFXIVChatChannel, because they are Gobchat specific
+            if (value == 0x01FFFF)
+                return ChatChannel.GobchatInfo;
+            if (value == 0x02FFFF)
+                return ChatChannel.GobchatError;
+
+            var ffxivChannel = (FFXIVChatChannel)value;
+            var data = GobchatChannelMapping.GetChannel(ffxivChannel);
+            return data.ChatChannel;
         }
     }
 
@@ -267,7 +281,7 @@ namespace Gobchat.LogConverter
                 _entry = new Entry()
                 {
                     Time = DateTime.ParseExact(timeGroup.Value, "yyyy'-'MM'-'dd' 'HH':'mm':'ssK", CultureInfo.InvariantCulture),
-                    Channel = (ChatChannel)Enum.Parse(typeof(ChatChannel), channelGroup.Value, true)
+                    Channel = GetChannel(channelGroup.Value)
                 };
 
                 if (sourceGroup.Success)
@@ -279,6 +293,29 @@ namespace Gobchat.LogConverter
                 _results.Add(_entry);
                 _entry = null;
             }
+        }
+
+        private static ChatChannel GetChannel(string value)
+        {
+            if (value == null || value.Length == 0)
+                return ChatChannel.None;
+
+            value = value.ToUpperInvariant();
+
+            if (Enum.TryParse<ChatChannel>(value, true, out var gobChannel)) // will work for all logs which uses the new channel names
+                return gobChannel;
+
+            // special cases, they were removed from FFXIVChatChannel, because they are Gobchat specific
+            if ("GOBCHAT_INFO".Equals(value))
+                return ChatChannel.GobchatInfo;
+            if ("GOBCHAT_ERROR".Equals(value))
+                return ChatChannel.GobchatError;
+
+            if (!Enum.TryParse<FFXIVChatChannel>(value, true, out var ffxivChannel)) // logs before 1.7.0 use the ffxiv chat channel names
+                return ChatChannel.None; //no clue what's going on, may be corrupt
+
+            var data = GobchatChannelMapping.GetChannel(ffxivChannel);
+            return data.ChatChannel;
         }
     }
 
@@ -318,7 +355,24 @@ namespace Gobchat.LogConverter
     {
         public string Format(Entry entry)
         {
-            return $"00|{entry.Time.ToString("o", CultureInfo.InvariantCulture)}|{((int)entry.Channel).ToString("x4", CultureInfo.InvariantCulture)}|{entry.Source}|{entry.Message}|";
+            var channel = GetChannel(entry.Channel); // loss of data in some cases
+            return $"00|{entry.Time.ToString("o", CultureInfo.InvariantCulture)}|{((int)channel).ToString("x4", CultureInfo.InvariantCulture)}|{entry.Source}|{entry.Message}|";
+        }
+
+        public static int GetChannel(ChatChannel channel)
+        {
+            switch (channel)
+            {
+                case ChatChannel.GobchatInfo:
+                    return 0x01FFFF;
+
+                case ChatChannel.GobchatError:
+                    return 0x02FFFF;
+
+                default:
+                    var channelData = GobchatChannelMapping.GetChannel(channel); // loss of data in some cases
+                    return (int)(channelData.ClientChannel.Length == 0 ? 0 : channelData.ClientChannel[0]);
+            }
         }
     }
 

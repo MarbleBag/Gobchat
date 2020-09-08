@@ -24,7 +24,7 @@ namespace Gobchat.Module.Chat.Internal
 {
     internal sealed partial class ChatManager : IChatManager
     {
-        private const int MAX_NUMBER_OF_MESSAGES_PER_UPDATE = 10;
+        private const int MAX_NUMBER_OF_MESSAGES_PER_UPDATE = int.MaxValue;
 
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

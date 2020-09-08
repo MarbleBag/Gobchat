@@ -135,17 +135,17 @@
             entry.find(".tmpl-endTokens-unicode").text(toUnicodeString(value))
             updateEntryHeader()
         })
+        GobConfigHelper.bindListener(binding, "behaviour.language", (value) => {
+            updateEntryHeader(value)
+        })
 
-        function updateEntryHeader() {
-            {
-                (async () => {
-                    const txtStart = gobconfig.get(GobConfigHelper.getConfigKey(txtStartTokens)).join(" or ")
-                    const txtEnd = gobconfig.get(GobConfigHelper.getConfigKey(txtEndTokens)).join(" or ")
-                    const txtType = dpdSegmentType.find("option:selected").text()
-                    const label = await goblocale.getAndFormat("config.roleplay.entry.header", [txtType, txtStart, txtEnd])
-                    entry.find(".tmpl-header-name").text(label)
-                })()
-            }
+        async function updateEntryHeader(locale) {
+            const txtStart = gobconfig.get(GobConfigHelper.getConfigKey(txtStartTokens)).join(" or ")
+            const txtEnd = gobconfig.get(GobConfigHelper.getConfigKey(txtEndTokens)).join(" or ")
+            const txtType = dpdSegmentType.find("option:selected").text()
+            const localization = await goblocale.get("config.roleplay.entry.header", locale)
+            const label = Gobchat.formatString(localization, [txtType, txtStart, txtEnd])
+            entry.find(".tmpl-header-name").text(label)
         }
 
         binding.initialize()

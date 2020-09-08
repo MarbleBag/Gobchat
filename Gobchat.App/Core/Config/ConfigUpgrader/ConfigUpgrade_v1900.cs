@@ -11,20 +11,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
-namespace Gobchat.Core.Chat
+namespace Gobchat.Core.Config
 {
-    public interface IChatLogger : IDisposable
+    internal sealed class ConfigUpgrade_v1900 : IConfigUpgrade
     {
-        IEnumerable<ChatChannel> LogChannels { get; set; }
-        bool Active { get; set; }
+        public int MinVersion => 1800;
 
-        string LogFolder { get; set; }
+        public int MaxVersion => 1899;
 
-        void Log(ChatMessage message);
+        public int TargetVersion => 1900;
 
-        void Flush();
+        public JObject Upgrade(JObject src)
+        {
+            JObject dst = (JObject)src.DeepClone();
+
+            JsonUtil.MoveIfAvailable(dst, "behaviour.writeChatLog", dst, "behaviour.chatlog.active");
+
+            return dst;
+        }
     }
 }
