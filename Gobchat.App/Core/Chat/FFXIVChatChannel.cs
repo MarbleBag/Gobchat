@@ -39,7 +39,7 @@ namespace Gobchat.Core.Chat
         RANDOM_OTHER = 0x204A,
 
         TELEPORT = 0x001f,
-        SYSTEM = 0x0039,
+        SYSTEM = 0x0039, // online status, gear set equipped, triple triad allowed/disallowed, buy from npc, custom deliveries
 
         WORLD_LINKSHELL_1 = 0x0025,
         WORLD_LINKSHELL_2 = 0x0065,
@@ -67,10 +67,15 @@ namespace Gobchat.Core.Chat
 
         // 313 - Battle commencing in 15 seconds!
 
+        //All around YOU
         // 2091 - You use Summon III / You cast Ruin III
         // 2092 - You uses a serving of stuffed highland cabbage
-        // 2105 - The Epic of Alexander (Ultimate) has begun. / Your item level has been synced to 475 / Topaz Carbuncle withdraws from the battlefield.
+        // 2105 - The Epic of Alexander (Ultimate) has begun. / Your item level has been synced to 475 / Topaz Carbuncle withdraws from the battlefield. / Class change / recieve gil
+        // 2110 - You obtained XYZ
         // 2106 - You give Topaz Carbuncle the order “Place.”
+        // 2218 - The attack misses
+        // 2219 - You ready Teleport / You begin casting
+        // 2221 - You recover X HP
         // 2222 - You gain the effect of / Meal benefit duration extended
         // 2224 - You lose the effect of Nocturnal Balance
         // 2731 - You begin casting Ruin III
@@ -78,6 +83,7 @@ namespace Gobchat.Core.Chat
         // 2859 - You begin casting Ruin III
         // 2874 - You are defeated by the jagd doll
 
+        //All around Party Members
         // 4139 - Gota'to Nhabo Zodiark uses Diurnal Sect. (Ability?)
         // 4140 - Kaito Asagi Odin uses a serving of stuffed highland cabbage
         // 4269 - You recover 8514 HP
