@@ -29,9 +29,21 @@ jQuery(function ($) {
     $("#cmain_cancelconfig").on("click", function (e) {
         {
             (async () => {
-                const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.dialog.nav.cancel.text" })
+                const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
                 if (result)
                     window.close()
+            })()
+        }
+    });
+
+    $("#cmain_closegobchat").on("click", function (e) {
+        {
+            (async () => {
+                const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
+                if (result) {
+                    window.close()
+                    GobchatAPI.closeGobchat()
+                }
             })()
         }
     });
@@ -63,14 +75,20 @@ jQuery(function ($) {
                     }).appendTo(dpdThemes)
                 }
             } catch (e1) {
-                console.log(e1)
+                console.error(e1)
             }
 
             generalBinding.bindConfigListener("style.theme", (value) => {
-                $("body").hide()
-                styleLoader.activateStyle(value)
-                $("#capp_theme").val(value)
-                $("body").show("fast") //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+                (async () => {
+                    try {
+                        $("body").hide()
+                        await styleLoader.activateStyle(value)
+                        $("#capp_theme").val(value)
+                        $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+                    } catch (e1) {
+                        console.error(e1)
+                    }
+                })();
             })
 
             generalBinding.initialize()
