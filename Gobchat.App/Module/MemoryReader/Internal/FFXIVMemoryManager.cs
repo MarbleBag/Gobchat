@@ -89,11 +89,17 @@ namespace Gobchat.Module.MemoryReader.Internal
 
         private void Task_ConnectMemoryReader(CancellationToken cancellationToken)
         {
+            long specificProcessTimeout = DateTimeOffset.Now.Ticks + TimeSpan.FromSeconds(20).Ticks;
+
             while (!cancellationToken.IsCancellationRequested && !_memoryReader.IsConnectedTo(_preferredFFXIVProcess))
             {
                 _memoryReader.TryConnectingToFFXIV(_preferredFFXIVProcess);
                 if (_memoryReader.FFXIVProcessValid)
                     break;
+
+                if (_preferredFFXIVProcess > 0)
+                    if (specificProcessTimeout <= DateTimeOffset.Now.Ticks)
+                        _preferredFFXIVProcess = -1;
 
                 SetConnectionState(ConnectionState.Searching);
                 Thread.Sleep(1000);
