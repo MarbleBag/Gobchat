@@ -96,7 +96,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chat log destination folder (wip).
+        ///   Looks up a localized string similar to Chat log path.
         /// </summary>
         internal static string config_app_chatlog_path {
             get {
@@ -105,7 +105,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (wip).
+        ///   Looks up a localized string similar to Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won&apos;t be moved..
         /// </summary>
         internal static string config_app_chatlog_path_tooltip {
             get {
@@ -114,7 +114,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse file system (wip).
+        ///   Looks up a localized string similar to Select a folder.
         /// </summary>
         internal static string config_app_chatlog_pathselect_tooltip {
             get {
@@ -132,7 +132,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV.
+        ///   Looks up a localized string similar to Character locations are not available. Unable to retrieve information from FFXIV..
         /// </summary>
         internal static string config_app_ckb_actor_label {
             get {
@@ -141,7 +141,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work.
+        ///   Looks up a localized string similar to If activated Gobchat collects positional data about other characters to calculate the in-game distance between you and them. Some features require this data to work..
         /// </summary>
         internal static string config_app_ckb_actor_tooltip {
             get {
@@ -159,7 +159,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized.
+        ///   Looks up a localized string similar to Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized..
         /// </summary>
         internal static string config_app_ckb_autohide_tooltip {
             get {
@@ -195,7 +195,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gobchat saves the chat log under &apos;AppData\Roaming\Gobchat\log&apos; as text.
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string config_app_ckb_chatlog_tooltip {
             get {
@@ -267,7 +267,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.
+        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
         /// </summary>
         internal static string config_app_ckb_usermention_tooltip {
             get {
@@ -294,7 +294,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace.
+        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
         /// </summary>
         internal static string config_app_fonts_tooltip {
             get {
@@ -402,6 +402,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to App Internal.
+        /// </summary>
+        internal static string config_app_internal_label {
+            get {
+                return ResourceManager.GetString("config.app.internal.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Character location update interval (ms).
         /// </summary>
         internal static string config_app_intervals_actor {
@@ -411,7 +420,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
         internal static string config_app_intervals_actor_tooltip {
             get {
@@ -429,7 +438,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.
+        ///   Looks up a localized string similar to Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second..
         /// </summary>
         internal static string config_app_intervals_chat_tooltip {
             get {
@@ -537,6 +546,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multi-boxing.
+        /// </summary>
+        internal static string config_app_process_label {
+            get {
+                return ResourceManager.GetString("config.app.process.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect to process.
         /// </summary>
         internal static string config_app_process_link_tooltip {
@@ -546,7 +564,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Which FFXIV process should be used (wip).
+        ///   Looks up a localized string similar to Select which FFXIV process should be used.
         /// </summary>
         internal static string config_app_process_selector {
             get {
@@ -555,7 +573,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First process (wip).
+        ///   Looks up a localized string similar to First process.
         /// </summary>
         internal static string config_app_process_selector_default {
             get {
@@ -564,7 +582,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows to specify which FFXIV should be used (wip).
+        ///   Looks up a localized string similar to If you run more than one process of FFXIV, select here to which process Gobchat should connect. Hit the refresh button to the left of this field, select your process or any and hit the connect button to the right..
         /// </summary>
         internal static string config_app_process_selector_tooltip {
             get {
@@ -582,7 +600,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hides other players&apos; messages at this distance.
+        ///   Looks up a localized string similar to Hides other players&apos; messages at this distance..
         /// </summary>
         internal static string config_app_rangefilter_cutoff_tooltip {
             get {
@@ -600,7 +618,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starts reducing opacity of other players&apos; messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it.
+        ///   Looks up a localized string similar to Starts reducing opacity of other players&apos; messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it..
         /// </summary>
         internal static string config_app_rangefilter_fadeout_tooltip {
             get {
@@ -627,7 +645,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Final opacity at cut off distance.
+        ///   Looks up a localized string similar to Final opacity at cut off distance..
         /// </summary>
         internal static string config_app_rangefilter_transparencyend_tooltip {
             get {
@@ -645,7 +663,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial opacity at fade out distance.
+        ///   Looks up a localized string similar to Initial opacity at fade out distance..
         /// </summary>
         internal static string config_app_rangefilter_transparencystart_tooltip {
             get {
@@ -798,6 +816,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This group represents an in-game group and will be applied to any player you have marked with {0}.
+        /// </summary>
+        internal static string config_groups_group_ffgroup_info {
+            get {
+                return ResourceManager.GetString("config.groups.group.ffgroup.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message background.
         /// </summary>
         internal static string config_groups_group_message_background {
@@ -852,11 +879,20 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name.
+        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name..
         /// </summary>
         internal static string config_groups_group_trigger_tooltip {
             get {
                 return ResourceManager.GetString("config.groups.group.trigger.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by player name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
+        /// </summary>
+        internal static string config_groups_info {
+            get {
+                return ResourceManager.GetString("config.groups.info", resourceCulture);
             }
         }
         
@@ -933,15 +969,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any unsaved changes will be lost..
-        /// </summary>
-        internal static string config_main_dialog_nav_cancel_text {
-            get {
-                return ResourceManager.GetString("config.main.dialog.nav.cancel.text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string config_main_dialog_title_confirm {
@@ -987,11 +1014,38 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any unsaved changes will be lost..
+        /// </summary>
+        internal static string config_main_nav_cancel_dialog {
+            get {
+                return ResourceManager.GetString("config.main.nav.cancel.dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Channels.
         /// </summary>
         internal static string config_main_nav_channels {
             get {
                 return ResourceManager.GetString("config.main.nav.channels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Gobchat.
+        /// </summary>
+        internal static string config_main_nav_closegobchat {
+            get {
+                return ResourceManager.GetString("config.main.nav.closegobchat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Gobchat. Are your sure?.
+        /// </summary>
+        internal static string config_main_nav_closegobchat_dialog {
+            get {
+                return ResourceManager.GetString("config.main.nav.closegobchat.dialog", resourceCulture);
             }
         }
         

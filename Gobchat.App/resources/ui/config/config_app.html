@@ -172,34 +172,6 @@
             </div>
         </div>
 
-        <div class="gob-config-group">
-            <div class="gob-config-group-item">
-                <div>
-                    <div data-gob-locale-text="config.app.process.selector"
-                         data-gob-locale-title="config.app.process.selector.tooltip">
-                    </div>
-                    <button class="gob-button-tertiary"
-                            id="capp_process_selector_refresh"
-                            data-gob-locale-title="config.main.button.refresh.tooltip">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <select type="text" class="gob-dropdown"
-                            id="capp_process_selector"
-                            data-gob-locale-title="config.app.process.selector.tooltip">
-                        <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option>
-                    </select>
-                    <button class="gob-button-tertiary"
-                            id="capp_process_selector_link"
-                            data-gob-locale-title="config.app.process.link.tooltip">
-                        <i class="fas fa-link"></i>
-                    </button>
-                    <label id="capp_process_info"
-                           data-gob-locale-text="config.app.process.info.initialize">
-                    </label>
-                </div>
-            </div>
-        </div>
-
         <!--Rangefilter-->
         <div class="gob-config-group">
             <div class="gob-config-group-label"
@@ -437,6 +409,39 @@
             -->
         </div>
 
+        <!-- Multiboxing -->
+        <div class="gob-config-group">
+            <div class="gob-config-group-label"
+                 data-gob-locale-text="config.app.process.label">
+            </div>
+
+            <div class="gob-config-group-item">
+                <div>
+                    <div data-gob-locale-text="config.app.process.selector"
+                         data-gob-locale-title="config.app.process.selector.tooltip">
+                    </div>
+                    <button class="gob-button-tertiary"
+                            id="capp_process_selector_refresh"
+                            data-gob-locale-title="config.main.button.refresh.tooltip">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <select type="text" class="gob-dropdown"
+                            id="capp_process_selector"
+                            data-gob-locale-title="config.app.process.selector.tooltip">
+                        <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option>
+                    </select>
+                    <button class="gob-button-tertiary"
+                            id="capp_process_selector_link"
+                            data-gob-locale-title="config.app.process.link.tooltip">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <label id="capp_process_info"
+                           data-gob-locale-text="config.app.process.info.initialize">
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <!--Search-->
         <div class="gob-config-group">
             <div class="gob-config-group-label">
@@ -538,8 +543,8 @@
 
         <!--Update intervals-->
         <div class="gob-config-group">
-            <div class="gob-config-group-label">
-                <div></div>
+            <div class="gob-config-group-label"
+                 data-gob-locale-text="config.app.internal.label">
             </div>
 
             <div class="gob-config-group-item">

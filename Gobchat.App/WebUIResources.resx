@@ -135,28 +135,28 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Changes the background color of the chat. Don't go full transparent.</value>
   </data>
   <data name="config.app.chatlog.path" xml:space="preserve">
-    <value>Chat log destination folder (wip)</value>
+    <value>Chat log path</value>
   </data>
   <data name="config.app.chatlog.path.tooltip" xml:space="preserve">
-    <value>(wip)</value>
+    <value>Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won't be moved.</value>
   </data>
   <data name="config.app.chatlog.pathselect.tooltip" xml:space="preserve">
-    <value>Browse file system (wip)</value>
+    <value>Select a folder</value>
   </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
   </data>
   <data name="config.app.ckb.actor.label" xml:space="preserve">
-    <value>Character locations are not available. Unable to retrieve information from FFXIV</value>
+    <value>Character locations are not available. Unable to retrieve information from FFXIV.</value>
   </data>
   <data name="config.app.ckb.actor.tooltip" xml:space="preserve">
-    <value>If activated Gobchat collects positional data about other characters to compute the in-game distance between you and them. Some features require this data to work</value>
+    <value>If activated Gobchat collects positional data about other characters to calculate the in-game distance between you and them. Some features require this data to work.</value>
   </data>
   <data name="config.app.ckb.autohide" xml:space="preserve">
     <value>Hide when FF is minimized</value>
   </data>
   <data name="config.app.ckb.autohide.tooltip" xml:space="preserve">
-    <value>Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized</value>
+    <value>Hides Gobchat when FFXIV gets minimized and shows Gobchat when FFXIV gets maximized.</value>
   </data>
   <data name="config.app.ckb.betaupdate" xml:space="preserve">
     <value>Allow beta updates</value>
@@ -168,7 +168,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Save chat log</value>
   </data>
   <data name="config.app.ckb.chatlog.tooltip" xml:space="preserve">
-    <value>Gobchat saves the chat log under 'AppData\Roaming\Gobchat\log' as text</value>
+    <value />
   </data>
   <data name="config.app.ckb.emoteinsay" xml:space="preserve">
     <value>Autodetect emotes in say channel</value>
@@ -192,7 +192,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Check own messages for mentions</value>
   </data>
   <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
-    <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself</value>
+    <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.</value>
   </data>
   <data name="config.app.ckblabel" xml:space="preserve">
     <value>Settings</value>
@@ -201,7 +201,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Fonts</value>
   </data>
   <data name="config.app.fonts.tooltip" xml:space="preserve">
-    <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace</value>
+    <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.</value>
   </data>
   <data name="config.app.fontsize.label" xml:space="preserve">
     <value>Font size</value>
@@ -236,17 +236,20 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.hotkeys.label" xml:space="preserve">
     <value>Hotkeys</value>
   </data>
+  <data name="config.app.internal.label" xml:space="preserve">
+    <value>App Internal</value>
+  </data>
   <data name="config.app.intervals.actor" xml:space="preserve">
     <value>Character location update interval (ms)</value>
   </data>
   <data name="config.app.intervals.actor.tooltip" xml:space="preserve">
-    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second</value>
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
   </data>
   <data name="config.app.intervals.chat" xml:space="preserve">
     <value>Chat update interval (ms)</value>
   </data>
   <data name="config.app.intervals.chat.tooltip" xml:space="preserve">
-    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second</value>
+    <value>Amount of milliseconds to wait between two updates. A value of 1000 means one update per second. A value of 2000 means one update every two seconds. A value of 500 means two updates per second.</value>
   </data>
   <data name="config.app.language" xml:space="preserve">
     <value>Language</value>
@@ -282,29 +285,32 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.process.info.search" xml:space="preserve">
     <value>Searching ...</value>
   </data>
+  <data name="config.app.process.label" xml:space="preserve">
+    <value>Multi-boxing</value>
+  </data>
   <data name="config.app.process.link.tooltip" xml:space="preserve">
     <value>Connect to process</value>
   </data>
   <data name="config.app.process.selector" xml:space="preserve">
-    <value>Which FFXIV process should be used (wip)</value>
+    <value>Select which FFXIV process should be used</value>
   </data>
   <data name="config.app.process.selector.default" xml:space="preserve">
-    <value>First process (wip)</value>
+    <value>First process</value>
   </data>
   <data name="config.app.process.selector.tooltip" xml:space="preserve">
-    <value>Allows to specify which FFXIV should be used (wip)</value>
+    <value>If you run more than one process of FFXIV, select here to which process Gobchat should connect. Hit the refresh button to the left of this field, select your process or any and hit the connect button to the right.</value>
   </data>
   <data name="config.app.rangefilter.cutoff" xml:space="preserve">
     <value>Cut off (yalm)</value>
   </data>
   <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
-    <value>Hides other players' messages at this distance</value>
+    <value>Hides other players' messages at this distance.</value>
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
     <value>Fade out (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
-    <value>Starts reducing opacity of other players' messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it</value>
+    <value>Starts reducing opacity of other players' messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it.</value>
   </data>
   <data name="config.app.rangefilter.label" xml:space="preserve">
     <value>Range filter</value>
@@ -313,13 +319,13 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Opacity end (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value>Final opacity at cut off distance</value>
+    <value>Final opacity at cut off distance.</value>
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
     <value>Opacity start (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
-    <value>Initial opacity at fade out distance</value>
+    <value>Initial opacity at fade out distance.</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Border for current result</value>
@@ -369,6 +375,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.groups.group.delete.tooltip" xml:space="preserve">
     <value>Deletes group</value>
   </data>
+  <data name="config.groups.group.ffgroup.info" xml:space="preserve">
+    <value>This group represents an in-game group and will be applied to any player you have marked with {0}</value>
+    <comment>0: icon</comment>
+  </data>
   <data name="config.groups.group.message.background" xml:space="preserve">
     <value>Message background</value>
   </data>
@@ -388,7 +398,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Players belonging to this group</value>
   </data>
   <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
-    <value>Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name</value>
+    <value>Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name.</value>
+  </data>
+  <data name="config.groups.info" xml:space="preserve">
+    <value>Groups are processed from top to bottom. If a group matches, either by player name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
   </data>
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>New group</value>
@@ -414,9 +427,6 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.dialog.btn.yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
-    <value>Any unsaved changes will be lost.</value>
-  </data>
   <data name="config.main.dialog.title.confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
@@ -432,8 +442,17 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="config.main.nav.cancel.dialog" xml:space="preserve">
+    <value>Any unsaved changes will be lost.</value>
+  </data>
   <data name="config.main.nav.channels" xml:space="preserve">
     <value>Channels</value>
+  </data>
+  <data name="config.main.nav.closegobchat" xml:space="preserve">
+    <value>Close Gobchat</value>
+  </data>
+  <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
+    <value>Close Gobchat. Are your sure?</value>
   </data>
   <data name="config.main.nav.groups" xml:space="preserve">
     <value>Groups</value>

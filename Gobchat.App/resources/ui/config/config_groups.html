@@ -8,6 +8,14 @@
 <body>
     <button class="gob-button-tertiary gob-button-copypage" id="cgroups_copyprofile"><i class="fas fa-clone"></i></button>
 
+    <div class="gob-config-group">
+        <div class="gob-config-group-item">
+            <div>
+                <div data-gob-locale-text="config.groups.info"></div>
+            </div>
+        </div>
+    </div>
+
     <div>
         <button id="cgroups_addnewgrouptop"
                 class="gob-button-secondary">
@@ -32,12 +40,12 @@
             <h4>
                 <span class="ui-gc-group-header">
                     <span>
-                        <span class="tmpl-header-index"></span>
-                        <span class="tmpl-header-prefix">. <span data-gob-locale-text="config.groups.group.naming"></span>: </span>
-                        <span class="tmpl-header-name"></span>
+                        <span class="js-group-index"></span>
+                        <span>. <span data-gob-locale-text="config.groups.group.naming"></span>: </span>
+                        <span class="js-group-name"></span>
                     </span>
                     <span style="float:right;">
-                        <button class="tmpl-delete-group gob-button-tertiary gob-button-delete"
+                        <button class="js-delete-group gob-button-tertiary gob-button-delete"
                                 data-gob-locale-title="config.groups.group.delete.tooltip">
                             <i class="fa fa-trash"></i>
                         </button>
@@ -47,11 +55,21 @@
             <div>
                 <div class="group-body">
                     <div class="gob-config-group">
+                        <div class="gob-config-group-item js-mode-noncustom">
+                            <div>
+                                <span class="js-ffgroup"
+                                      data-gob-locale-id-text="config.groups.group.ffgroup.info">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gob-config-group">
                         <div class="gob-config-group-item">
                             <div>
                                 <div data-gob-locale-text="config.groups.group.name"></div>
-                                <input type="text" class="tmpl-group-name" />
-                                <button class="tmpl-group-name-reset gob-button-tertiary gob-button-reset"
+                                <input type="text" class="js-txt-name" />
+                                <button class="js-txt-name-reset gob-button-tertiary gob-button-reset"
                                         data-gob-locale-title="config.main.button.reset.tooltip">
                                     <i class='fas fa-undo-alt'></i>
                                 </button>
@@ -59,7 +77,7 @@
                         </div>
                         <div class="gob-config-group-item">
                             <div>
-                                <input type="checkbox" class="tmpl-group-active" />
+                                <input type="checkbox" class="js-chk-active" />
                                 <div data-gob-locale-text="config.groups.group.active"></div>
                             </div>
                         </div>
@@ -75,8 +93,8 @@
                             </td>
                             <td>
                                 <div>
-                                    <input type="text" class="tmpl-sender-fgcolor" />
-                                    <button class="tmpl-sender-fgcolor-reset gob-button-tertiary gob-button-reset"
+                                    <input type="text" class="js-sender-fgcolor" />
+                                    <button class="js-sender-fgcolor-reset gob-button-tertiary gob-button-reset"
                                             data-gob-locale-title="config.main.button.reset.tooltip">
                                         <i class='fas fa-undo-alt'></i>
                                     </button>
@@ -90,8 +108,8 @@
                             </td>
                             <td>
                                 <div>
-                                    <input type="text" class="tmpl-sender-bgcolor" />
-                                    <button class="tmpl-sender-bgcolor-reset gob-button-tertiary gob-button-reset"
+                                    <input type="text" class="js-sender-bgcolor" />
+                                    <button class="js-sender-bgcolor-reset gob-button-tertiary gob-button-reset"
                                             data-gob-locale-title="config.main.button.reset.tooltip">
                                         <i class='fas fa-undo-alt'></i>
                                     </button>
@@ -107,15 +125,15 @@
                             </td>
                             <td>
                                 <div>
-                                    <input type="text" class="tmpl-msg-bgcolor" />
-                                    <button class="tmpl-msg-bgcolor-reset gob-button-tertiary gob-button-reset"
+                                    <input type="text" class="js-msg-bgcolor" />
+                                    <button class="js-msg-bgcolor-reset gob-button-tertiary gob-button-reset"
                                             data-gob-locale-title="config.main.button.reset.tooltip">
                                         <i class='fas fa-undo-alt'></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="js-mode-custom">
                             <td colspan="4">
                                 <label>
                                     <span data-gob-locale-text="config.groups.group.trigger"
@@ -123,9 +141,9 @@
                                 </label>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="js-mode-custom">
                             <td colspan="4">
-                                <textarea class="tmpl-group-triggers" rows="5" style="width:100%;" data-gob-locale-title="config.groups.group.trigger.tooltip"></textarea>
+                                <textarea class="js-group-triggers" rows="5" style="width:100%;" data-gob-locale-title="config.groups.group.trigger.tooltip"></textarea>
                             </td>
                         </tr>
                     </table>

@@ -141,25 +141,25 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Ausblenden wenn FFXIV minimiert wird</value>
   </data>
   <data name="config.app.ckb.autohide.tooltip" xml:space="preserve">
-    <value>Blende Gobchat aus bzw. ein, wenn FFXIV minimiert bzw. maximiert wird</value>
+    <value>Blende Gobchat aus bzw. ein, wenn FFXIV minimiert bzw. maximiert wird.</value>
   </data>
   <data name="config.app.ckb.betaupdate" xml:space="preserve">
     <value>Erlaube Beta Updates</value>
   </data>
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
-    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert</value>
+    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert.</value>
   </data>
   <data name="config.app.ckb.chatlog" xml:space="preserve">
     <value>Chatverlauf speichern</value>
   </data>
   <data name="config.app.ckb.chatlog.tooltip" xml:space="preserve">
-    <value>Hält den Chatverlauf in einer Textdatei fest, welche unter 'AppData\Roaming\Gobchat\log' zu finden ist</value>
+    <value />
   </data>
   <data name="config.app.ckb.emoteinsay" xml:space="preserve">
     <value>Erkenne Emotes im Sagen Kanal</value>
   </data>
   <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
-    <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt</value>
+    <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt.</value>
   </data>
   <data name="config.app.ckb.mentions" xml:space="preserve">
     <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
@@ -201,7 +201,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Gobchat ein- &amp;amp; ausblenden </value>
   </data>
   <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
-    <value>Mit dieser Taste kann Gobchat ein- oder ausgeblendet werden</value>
+    <value>Mit dieser Taste kann Gobchat ein- oder ausgeblendet werden.</value>
   </data>
   <data name="config.app.hotkeys.label" xml:space="preserve">
     <value>Tastenkürzel</value>
@@ -225,13 +225,13 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Ausblenden (yalm)</value>
   </data>
   <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt</value>
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt.</value>
   </data>
   <data name="config.app.rangefilter.fadeout" xml:space="preserve">
     <value>Verblassen (yalm)</value>
   </data>
   <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird</value>
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird.</value>
   </data>
   <data name="config.app.rangefilter.label" xml:space="preserve">
     <value>Reichweitenfilter</value>
@@ -240,7 +240,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Sichtbarkeit fern (%)</value>
   </data>
   <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'</value>
+    <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'.</value>
   </data>
   <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
     <value>Sichtbarkeit nah (%)</value>
@@ -252,7 +252,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Markierung</value>
   </data>
   <data name="config.app.search.border.tooltip" xml:space="preserve">
-    <value>Ausgewähltes Suchergebnis wird mit dieser Farbe umrandet</value>
+    <value>Ausgewähltes Suchergebnis wird mit dieser Farbe umrandet.</value>
   </data>
   <data name="config.app.search.label" xml:space="preserve">
     <value>Suche</value>
@@ -261,7 +261,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Farbhinterlegung</value>
   </data>
   <data name="config.app.search.results.tooltip" xml:space="preserve">
-    <value>Nicht ausgewählte Suchergebnisse werden mit dieser Farbe hinterlegt</value>
+    <value>Nicht ausgewählte Suchergebnisse werden mit dieser Farbe hinterlegt.</value>
   </data>
   <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
     <value>Hintergrundfarbe</value>
@@ -326,7 +326,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
   <data name="config.main.dialog.btn.yes" xml:space="preserve">
     <value>Ja</value>
   </data>
-  <data name="config.main.dialog.nav.cancel.text" xml:space="preserve">
+  <data name="config.main.nav.cancel.dialog" xml:space="preserve">
     <value>Alle nicht gespeicherten Änderungen gehen verloren.</value>
   </data>
   <data name="config.main.dialog.title.confirm" xml:space="preserve">
@@ -381,13 +381,13 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Audiodatei</value>
   </data>
   <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
-    <value>Die Audiodatei muss sich im 'sound' Ordner von Gobchat befinden</value>
+    <value>Die Audiodatei muss sich im 'sound' Ordner von Gobchat befinden.</value>
   </data>
   <data name="config.mentions.audio.play" xml:space="preserve">
     <value>Audio abspielen</value>
   </data>
   <data name="config.mentions.audio.play.tooltip" xml:space="preserve">
-    <value>Spiel die Audiodatei ab wann immer eine Nachricht eine oder mehrere Erwähnungen enthält</value>
+    <value>Spiel die Audiodatei ab wann immer eine Nachricht eine oder mehrere Erwähnungen enthält.</value>
   </data>
   <data name="config.mentions.audio.select.tooltip" xml:space="preserve">
     <value>Datei auswählen</value>
@@ -708,7 +708,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Zufallszahlen-Benachrichtigung</value>
   </data>
   <data name="main.chat.channel.random.tooltip" xml:space="preserve">
-    <value>/zufall, nutze /würfeln um NUR im aktuellen Kanal eine Zufallszahl zu erhalten</value>
+    <value>/zufall, nutze /würfeln um NUR im aktuellen Kanal eine Zufallszahl zu erhalten.</value>
   </data>
   <data name="main.chat.channel.say" xml:space="preserve">
     <value>Sagen</value>
@@ -757,7 +757,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Verbunden mit {0}</value>
   </data>
   <data name="config.app.process.info.initialize" xml:space="preserve">
-    <value>Klick 'Aktualisieren' zum updaten</value>
+    <value>Klick 'Aktualisieren' für Status</value>
   </data>
   <data name="config.app.process.info.notconnected" xml:space="preserve">
     <value>Nicht verbunden</value>
@@ -769,12 +769,36 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Verbinde zu</value>
   </data>
   <data name="config.app.process.selector" xml:space="preserve">
-    <value>Welcher FFXIV Prozess soll genutzt werden (wip)</value>
+    <value>Wähle welcher FFXIV Prozess Gobchat anzeigen soll</value>
   </data>
   <data name="config.app.process.selector.tooltip" xml:space="preserve">
-    <value>Erlaubt es den Prozess mit dem sich Gobchat verbindet auszusuchen, wird ein anderer Prozess als der Erste gewählt, ist bei einem Neustart von FFXIV darauf zu achten, die Verbindung erneut herzustellen, da Gobchat nach der Alten suchen wird! (wip)</value>
+    <value>Erlaubt es den Prozess mit dem sich Gobchat verbindet auszusuchen. Klicke auf den Aktualisierungsknopf links von diesem Feld, wähle den gewünschten Prozess und klicke dann auf den Verbindungsknopf rechts von diesem Feld.</value>
   </data>
   <data name="config.app.process.selector.default" xml:space="preserve">
-    <value>Erste Prozess (wip)</value>
+    <value>Erster Prozess</value>
+  </data>
+  <data name="config.app.chatlog.path" xml:space="preserve">
+    <value>Chatverlauf Speicherpfad</value>
+  </data>
+  <data name="config.app.chatlog.path.tooltip" xml:space="preserve">
+    <value>Hier werden die Chatverläufe als Textdateien gespeichert. Alte Dateien werden bei Änderung nicht verschoben.</value>
+  </data>
+  <data name="config.app.chatlog.pathselect.tooltip" xml:space="preserve">
+    <value>Ordner aussuchen</value>
+  </data>
+  <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
+    <value>Gobchat hebt normalerweise nur die Erwähnungen in den Nachrichten von anderen hervor. Wird diese Option gewählt, durchsucht Gobchat auch die Nachrichten des Spielers nach Erwähnungen.</value>
+  </data>
+  <data name="config.groups.group.ffgroup.info" xml:space="preserve">
+    <value>Diese Gruppe repräsentiert die Freundesgruppe aus dem Spiel und wird all jenen Spielern zugeordnet, die im Spiel mit dem Symbol {0} markiert sind.</value>
+  </data>
+  <data name="config.groups.info" xml:space="preserve">
+    <value>Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den  Spielernamen oder ein Symbol der Freundesgruppen aus dem Spiel, wird auf den Chat-Text die Formatierung der zuerst gefundenen Gruppe angewandt. Um die Reihenfolge der Gruppen zu ändern, kann die Box mit dem Gruppen-Namen per Drag and Drop verschoben werden.</value>
+  </data>
+  <data name="config.main.nav.closegobchat" xml:space="preserve">
+    <value>Gobchat beenden</value>
+  </data>
+  <data name="config.main.nav.closegobchat.confirm" xml:space="preserve">
+    <value />
   </data>
 </root>

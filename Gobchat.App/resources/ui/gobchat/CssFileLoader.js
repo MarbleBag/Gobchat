@@ -22,7 +22,7 @@ var Gobchat = (function (Gobchat) {
             this._activeStyle = null
             this._styles = {}
             this._styleSheets = []
-            this._target = $(target)
+            this._$target = $(target)
             this._prefix = filePrefix ? filePrefix : null
         }
 
@@ -61,7 +61,7 @@ var Gobchat = (function (Gobchat) {
             return this._activeStyle
         }
 
-        activateStyle(styleName) {
+        async activateStyle(styleName) {
             const styleKey = styleName.toLowerCase()
             const selectedStyle = this._styles[styleKey]
             if (!selectedStyle) {
@@ -70,28 +70,35 @@ var Gobchat = (function (Gobchat) {
             }
 
             this._activeStyle = styleName
-
+            const $styleSheets = this._$target
             const styleFiles = selectedStyle.files;
-            if (styleFiles.length < this._styleSheets.length) {
-                const deleteSheets = this._styleSheets.splice(styleFiles.length)
-                for (let sheetId of deleteSheets)
-                    this._target.find(`#${sheetId}`).remove()
-            }
+            const awaitPromises = []
 
-            while (styleFiles.length > this._styleSheets.length) {
-                const styleSheetId = Gobchat.generateId(8)
-                $(`<link rel="stylesheet" id="${styleSheetId}" href="">`).appendTo(this._target)
-                this._styleSheets.push(styleSheetId)
-            }
+            for (let sheetId of this._styleSheets) //remove all, onload is only triggered once for any link element
+                $styleSheets.find(`#${sheetId}`).remove()
+            this._styleSheets = []
 
             for (let i = 0; i < styleFiles.length; ++i) {
-                const styleSheetId = this._styleSheets[i]
-                const styleSheet = this._target.find(`#${styleSheetId}`)
                 const styleFile = styleFiles[i]
+
+                const styleSheetId = `dcssstyle-${Gobchat.generateId(8)}`
+                const $styleSheet = $(`<link rel="stylesheet" type="text/css" id="${styleSheetId}" href="">`)
+                this._styleSheets.push(styleSheetId)
+
+                awaitPromises.push(new Promise(function (resolve, reject) {
+                    $styleSheet.one("load", () => resolve())
+                    $styleSheet.one("error", () => reject())
+                }))
+
                 const path = this._prefix ? `${this._prefix}/${styleFile}` : styleFile
-                styleSheet.attr("href", path)
+                $styleSheet.attr("href", path).appendTo($styleSheets)
             }
 
+            awaitPromises.push(new Promise((resolve, reject) => {
+                window.requestAnimationFrame(() => resolve())
+            }))
+
+            await Promise.all(awaitPromises)
             return true
         }
     }

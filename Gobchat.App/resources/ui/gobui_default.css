@@ -103,6 +103,7 @@ stacked-panel > [data-gob-panel-id] {
 
     .gob-config-group-item > * {
         display: flex;
+        align-items: center;
     }
 
         .gob-config-group-item > * > * ~ * {
