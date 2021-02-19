@@ -29,10 +29,10 @@ namespace Gobchat.Core.Config
 
         private event EventHandler<PropertyChangedEventArgs> _onPropertyChange;
 
-        private bool _canLinkParent;
+        private readonly bool _canLinkParent;
         private bool _isParentLinked;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         public GobchatConfigProfile(JObject data, bool writable) : this(data, writable, null)
         {
