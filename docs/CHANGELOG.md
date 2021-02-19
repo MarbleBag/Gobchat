@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.9.0-1] - 2020.08.25
+## [1.9.0] - 2020.09.08
 ### Added
 - Hotkeys
   - Button to remove hotkeys
@@ -16,12 +16,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Chat log
   - The output folder of chat logs can be changed on a profile level in `Config / App`
 
-  
+
 - Config
   - Button to close Gobchat
     - Gobchat can now be closed via config, tray icon (right click) or chat command (/e gc close)
-  
-  
+
+
 ### Removed
 - Limit of 10 chat entries per update
   - It no longer chokes on battle logs
