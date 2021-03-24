@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.9.1] - Unreleased
+### fixed
+- Rangefilter
+  - Now utilizes the whole range from start to end opacity
+
 ## [1.9.0] - 2020.09.08
 ### Added
 - Hotkeys
