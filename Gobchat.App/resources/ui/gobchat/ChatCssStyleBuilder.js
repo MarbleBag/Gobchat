@@ -92,11 +92,14 @@ var Gobchat = (function (module) {
             const data = gobconfig.get("behaviour.rangefilter")
             const startopacity = data.startopacity / 100.0
             const endopacity = data.endopacity / 100.0
-            const opacityFactor = (startopacity - endopacity) / Gobchat.RangeFilterFadeOutLevels
+            const opacityByLevel = (startopacity - endopacity) / (Gobchat.RangeFilterFadeOutLevels - 1)
+
+            //map levels [1, Gobchat.RangeFilterFadeOutLevels] to opacity [endopacity, startopacity]
+            //the higher the level, the higher the opacity
             for (let i = 1; i <= Gobchat.RangeFilterFadeOutLevels; ++i) {
                 result += toCss(
                     tabsWithRangeFilter.map(selector => `${selector} .chat-msg-fadeout-${i}`),
-                    { "opacity": `${endopacity + (i - 1) * opacityFactor}` }
+                    { "opacity": `${(i - 1) * opacityByLevel + endopacity}` }
                 )
             }
         }

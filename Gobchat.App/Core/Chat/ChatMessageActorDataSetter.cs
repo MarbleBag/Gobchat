@@ -24,6 +24,8 @@ namespace Gobchat.Core.Chat
 
         private float _cutOffDistance;
         private float _fadeOutDistance;
+        private float _cutOffDistanceSquared;
+        private float _fadeOutDistanceSquared;
 
         private ChatChannel[] _channels = Array.Empty<ChatChannel>();
 
@@ -40,7 +42,8 @@ namespace Gobchat.Core.Chat
             set
             {
                 if (value < 0f) throw new ArgumentException("Must be a value greater than or equal to 0", nameof(CutOffDistance));
-                _cutOffDistance = value * value; //use the squared value
+                _cutOffDistance = value;
+                _cutOffDistanceSquared = value * value;
             }
         }
 
@@ -50,7 +53,8 @@ namespace Gobchat.Core.Chat
             set
             {
                 if (value < 0f) throw new ArgumentException("Must be a value greater than or equal to 0", nameof(FadeOutDistance));
-                _fadeOutDistance = value * value; //use the squared value
+                _fadeOutDistance = value;
+                _fadeOutDistanceSquared = value * value;
             }
         }
 
@@ -89,11 +93,16 @@ namespace Gobchat.Core.Chat
                 message.Source.Visibility = CalculateVisibility(distance);
         }
 
+        /// <summary>
+        /// Calculates the visibility in a range of [0,100] based on the squared distance
+        /// </summary>
+        /// <param name="distance">Squared distance</param>
+        /// <returns>A value from [0,100]</returns>
         private int CalculateVisibility(float distance)
         {
-            if (distance > _cutOffDistance) return 0;
-            if (distance < _fadeOutDistance) return MaxVisibility;
-            var percentage = 1 - (distance - _fadeOutDistance) / (_cutOffDistance - _fadeOutDistance);
+            if (distance > _cutOffDistanceSquared) return 0;
+            if (distance < _fadeOutDistanceSquared) return MaxVisibility;
+            var percentage = 1 - (distance - _fadeOutDistanceSquared) / (_cutOffDistanceSquared - _fadeOutDistanceSquared);
             return (int)Math.Round(MaxVisibility * percentage);
         }
     }

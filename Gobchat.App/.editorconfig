@@ -8,7 +8,10 @@ generated_code  = true
 dotnet_diagnostic.IDE0069.severity = suggestion
 
 # CA1819: Properties should not return arrays
-dotnet_diagnostic.CA1819.severity = silent
+dotnet_diagnostic.CA1819.severity = none
+
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = none
 
 [*.cs]
 
