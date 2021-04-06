@@ -2611,7 +2611,99 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Players nearby: {0}.
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_cmdmanager_cmd_config_reset_frame {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.config.reset.frame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added {0} to group [{1}]{2}.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_add {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is already in group [{1}]{2}.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_grouped {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.grouped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command &apos;group&apos; expects: 
+        ///group groupnumber add/remove playername
+        ///group groupnumber clear.
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_invalid_cmd {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.invalid.cmd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group number needs to be a number from [1, {0}]..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_invalid_grpidx {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.invalid.grpidx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to read player name &apos;{0}&apos;..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_invalid_name {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.invalid.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group [{0}]{1} does not support player names..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_invalid_nosupport {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.invalid.nosupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not in group [{1}]{2}..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_notgrouped {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.notgrouped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed {0} to group [{1}]{2}..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_remove {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed all players from group [{0}]{1}..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_group_remove_all {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.group.remove.all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players nearby: {0}..
         /// </summary>
         internal static string main_cmdmanager_cmd_playercount {
             get {
@@ -2620,7 +2712,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance to {0} is {1}.
+        ///   Looks up a localized string similar to Distance to {0} is {1}..
         /// </summary>
         internal static string main_cmdmanager_cmd_playerdistance {
             get {
@@ -2629,7 +2721,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Players nearby: {0}.
+        ///   Looks up a localized string similar to Players nearby: {0}..
         /// </summary>
         internal static string main_cmdmanager_cmd_playerlist {
             get {
@@ -2638,7 +2730,25 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Activate profile {0}..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_profile_load {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.profile.load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile command needs a valid profile name. Available profiles are: {0}..
+        /// </summary>
+        internal static string main_cmdmanager_cmd_profile_load_invalid {
+            get {
+                return ResourceManager.GetString("main.cmdmanager.cmd.profile.load.invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing &apos;{0}&apos;..
         /// </summary>
         internal static string main_label_missing {
             get {

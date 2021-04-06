@@ -59,6 +59,36 @@ var Gobchat = (function (Gobchat) {
             this._locale = locale
         }
 
+        async load(keys, params, lookup, language) {
+            keys = [].concat(keys)
+            language = language || this._locale
+
+            var missingKeys = keys
+            if (lookup)
+                missingKeys = keys.filter(e => !(lookup[e] === undefined || lookup[e] === null))
+
+            if (missingKeys.length > 0) {
+                const localization = await GobchatAPI.getLocalizedStrings(language, missingKeys)
+                if (lookup)
+                    Object.entries(localization).forEach((k, v) => lookup[k] = v)
+                else
+                    lookup = localization
+            }
+
+            var results = lookup
+            if (Object.keys(lookup).length !== keys.length)
+                results = keys.map(e => lookup[e])
+
+            if (params && params.length > 0)
+                for (var key in Object.keys(results))
+                    results[key] = Gobchat.formatString(results[key], params)
+
+            if (keys.length === 1)
+                return results[keys[0]]
+
+            return results
+        }
+
         async get(key, language) {
             const lookup = await this.getAll([key], language)
             return lookup[key]

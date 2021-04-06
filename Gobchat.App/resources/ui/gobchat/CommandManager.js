@@ -13,14 +13,16 @@
 
 'use strict'
 
-var Gobchat = (function(Gobchat, undefined) {
+var Gobchat = (function (Gobchat, undefined) {
     class CommandManager {
         constructor() {
             this._cmdMap = new Map()
             this._handlers = []
             this.registerCmdHandler(new PlayerGroupCommandHandler())
-            this.registerCmdHandler(new ProfileCommandHandler())
+            this.registerCmdHandler(new ProfileSwitchCommandHandler())
             this.registerCmdHandler(new CloseCommandHandler())
+            this.registerCmdHandler(new ConfigOpenCommandHandler())
+            this.registerCmdHandler(new ConfigResetCommandHandler())
             this.registerCmdHandler(new PlayerCountCommandHandler())
             this.registerCmdHandler(new PlayerListCommandHandler())
             this.registerCmdHandler(new PlayerDistanceCommandHandler())
@@ -49,6 +51,10 @@ var Gobchat = (function(Gobchat, undefined) {
 
         async getTranslation(key) {
             return await goblocale.get(key)
+        }
+
+        async getTranslations(keys) {
+            return await goblocale.getAll(keys)
         }
 
         async getTranslationAndFormat(key, params) {
@@ -104,10 +110,16 @@ var Gobchat = (function(Gobchat, undefined) {
             return ["group", "g"]
         }
 
-        execute(commandManager, commandName, args) {
+        async execute(commandManager, commandName, args) {
+            const localization = await commandManager.getTranslations([
+                "main.cmdmanager.cmd.group.invalid.cmd", "main.cmdmanager.cmd.group.invalid.grpidx", "main.cmdmanager.cmd.group.invalid.nosupport", "main.cmdmanager.cmd.group.invalid.name",
+                "main.cmdmanager.cmd.group.grouped", "main.cmdmanager.cmd.group.notgrouped",
+                "main.cmdmanager.cmd.group.add", "main.cmdmanager.cmd.group.remove", "main.cmdmanager.cmd.group.remove.all"
+            ])
+
             const result = playerGroupRegEx.exec(args)
             if (!result) {
-                commandManager.sendErrorMessage("Command 'group' expects: \ngroup groupnumber add/remove playername\ngroup groupnumber clear")
+                commandManager.sendErrorMessage(localization["main.cmdmanager.cmd.group.invalid.cmd"])
                 return
             }
 
@@ -126,14 +138,16 @@ var Gobchat = (function(Gobchat, undefined) {
             }
 
             if ((task === "add" || task === "remove") && !isAvailable(getMatchingGroup(result, 3))) { //add and remove also need a target name
-                commandManager.sendErrorMessage("Command 'group' expects: \ngroup groupnumber add/remove playername\ngroup groupnumber clear")
+                commandManager.sendErrorMessage(localization["main.cmdmanager.cmd.group.invalid.cmd"])
                 return
             }
 
             const gobconfig = commandManager.config
             const groupsorting = gobconfig.get("behaviour.groups.sorting")
             if (groupIdx <= 0 || groupsorting.length < groupIdx) {
-                commandManager.sendErrorMessage(`Command 'group' expects: groupnumber needs to be a number from [1, ${groupsorting.length}]`)
+                commandManager.sendErrorMessage(
+                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.invalid.grpidx"], groupsorting.length)
+                )
                 return
             }
 
@@ -141,13 +155,17 @@ var Gobchat = (function(Gobchat, undefined) {
             const group = gobconfig.get(`behaviour.groups.data.${groupId}`)
 
             if (!("trigger" in group)) {
-                commandManager.sendErrorMessage(`Command 'group' expects: group [${groupIdx}]${group.name} does not support player names`)
+                commandManager.sendErrorMessage(
+                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.invalid.nosupport"], groupIdx, group.name)
+                )
                 return
             }
 
             if (task === "clear") {
                 gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, [])
-                commandManager.sendInfoMessage(`Removed all players from group [${groupIdx}]${group.name}`)
+                commandManager.sendInfoMessage(
+                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.remove.all"], groupIdx, group.name)
+                )
                 gobconfig.saveConfig()
                 return //done
             }
@@ -162,7 +180,9 @@ var Gobchat = (function(Gobchat, undefined) {
             playerNameAndServer = playerNameAndServer.toLowerCase().replace(/\s\s+/g, ' ')
 
             if (playerNameAndServer.length === 0) {
-                commandManager.sendErrorMessage(`Command 'group' unable to read player name '${playerNameAndServer}'`)
+                commandManager.sendErrorMessage(
+                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.invalid.name"], playerNameAndServer)
+                )
                 return
             }
 
@@ -170,52 +190,60 @@ var Gobchat = (function(Gobchat, undefined) {
                 if (!_.includes(group.trigger, playerNameAndServer)) {
                     group.trigger.push(playerNameAndServer)
                     gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, group.trigger)
-                    commandManager.sendInfoMessage(`Added ${playerNameAndServer} to group [${groupIdx}]${group.name}`)
+                    commandManager.sendInfoMessage(
+                        Gobchat.formatString(localization["main.cmdmanager.cmd.group.add"], playerNameAndServer, groupIdx, group.name)
+                    )
                     gobconfig.saveConfig()
                 } else {
-                    commandManager.sendInfoMessage(`${playerNameAndServer} is already in group [${groupIdx}]${group.name}`)
+                    commandManager.sendInfoMessage(
+                        Gobchat.formatString(localization["main.cmdmanager.cmd.group.grouped"], playerNameAndServer, groupIdx, group.name)
+                    )
                 }
             } else if (task === "remove") {
                 if (_.includes(group.trigger, playerNameAndServer)) {
                     _.remove(group.trigger, (i) => { return i === playerNameAndServer })
                     gobconfig.set(`behaviour.groups.data.${groupId}.trigger`, group.trigger)
-                    commandManager.sendInfoMessage(`Removed ${playerNameAndServer} from group [${groupIdx}]${group.name}`)
+                    commandManager.sendInfoMessage(
+                        Gobchat.formatString(localization["main.cmdmanager.cmd.group.remove"], playerNameAndServer, groupIdx, group.name)
+                    )
                     gobconfig.saveConfig()
                 } else {
-                    commandManager.sendInfoMessage(`${playerNameAndServer} is not in group [${groupIdx}]${group.name}`)
+                    commandManager.sendInfoMessage(
+                        Gobchat.formatString(localization["main.cmdmanager.cmd.group.notgrouped"], playerNameAndServer, groupIdx, group.name)
+                    )
                 }
             }
         }
     }
 
-    class ProfileCommandHandler extends CommandHandler {
+    class ProfileSwitchCommandHandler extends CommandHandler {
         get acceptedCommandNames() {
-            return ["profile"]
+            return ["profile load"]
         }
 
-        execute(commandManager, commandName, args) {
+        async execute(commandManager, commandName, args) {
             const gobconfig = commandManager.config
             const profileIds = gobconfig.profiles
 
-            if (!Gobchat.isString(args) || args.length == 0) {
-                const sprofiles = profileIds.map(e => gobconfig.getProfile(e)).map(e => e.profileName).join(", ")
-                commandManager.sendErrorMessage(`Profile command needs a valid profile name. Available profiles are: ${sprofiles}`)
-                return
-            }
-
-            args = args.toUpperCase()
-            const profileNames = []
-            for (var profileId of profileIds) {
-                const profile = gobconfig.getProfile(profileId)
-                if (args === profile.profileName.toUpperCase()) {
-                    gobconfig.activeProfile = profile.profileId
-                    commandManager.sendInfoMessage(`Activate profile ${profile.profileName}`)
-                    return
+            if (Gobchat.isString(args) && args.length > 0) {
+                args = args.toUpperCase()
+                for (var profileId of profileIds) {
+                    const profile = gobconfig.getProfile(profileId)
+                    if (args === profile.profileName.toUpperCase()) {
+                        gobconfig.activeProfile = profile.profileId
+                        commandManager.sendInfoMessage(
+                            await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.profile.load", profile.profileName)
+                        )
+                        return
+                    }
                 }
-                profileNames.push(profile.profileName)
             }
 
-            commandManager.sendErrorMessage(`Profile command needs a valid profile name. Available profiles are: ${profileNames.join(", ")}`)
+            // args wasn't a valid argument
+            const sprofiles = profileIds.map(e => gobconfig.getProfile(e)).map(e => e.profileName).join(", ")
+            commandManager.sendErrorMessage(
+                await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.profile.load.invalid", sprofiles)
+            )
         }
     }
 
@@ -283,12 +311,28 @@ var Gobchat = (function(Gobchat, undefined) {
         }
     }
 
-    class ShowHideChannelHandler extends CommandHandler {
+    class ConfigOpenCommandHandler extends CommandHandler {
         get acceptedCommandNames() {
-            return ["channel"]
+            return ["config open"]
         }
 
         async execute(commandManager, commandName, args) {
+            window.openGobconfig()
+        }
+    }
+
+    class ConfigResetCommandHandler extends CommandHandler {
+        get acceptedCommandNames() {
+            return ["config reset frame"]
+        }
+
+        async execute(commandManager, commandName, args) {
+            gobconfig.reset(`behaviour.frame.chat.size`)
+            gobconfig.reset(`behaviour.frame.chat.position`)
+            await gobconfig.saveConfig()
+
+            const msg = await commandManager.getTranslation("main.cmdmanager.cmd.config.reset.frame")
+            commandManager.sendInfoMessage(msg)
         }
     }
 
