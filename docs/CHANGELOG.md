@@ -2,10 +2,29 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.9.1] - Unreleased
-### fixed
+## [1.10.0] - Unreleased
+### Added
+- Chat command: `config open`
+  - Opens the `Config` dialog
+
+
+- Chat command: `config reset frame` ?
+  - Resets the overlay position to 0, 0 and its size
+
+
+- More localization (`Config`, `Chat commands`)
+
+
+- Off screen protection
+  - If moved off screen, Gobchat reverts back to its last position
+  - If it still off screen, Gobchat resets position and size
+
+### Changed
+- Chat command: `profile` changed to `profile load`
+
+### Fixed
 - Rangefilter
-  - Now utilizes the whole range from start to end opacity
+  - Now utilizes the whole opacity range from start to end
 
 ## [1.9.0] - 2020.09.08
 ### Added
