@@ -69,6 +69,8 @@ namespace Gobchat.Core.Config
 
         void SetProperty(string key, object value);
 
+        void DeleteProperty(string key);
+
         void SetGlobalProperty(string key, object value);
 
         void DispatchChangeEvents();

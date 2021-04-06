@@ -477,6 +477,14 @@ namespace Gobchat.Core.Config
             }
         }
 
+        public void DeleteProperty(string key)
+        {
+            lock (_synchronizationLock)
+            {
+                ActiveProfile.DeleteProperty(key);
+            }
+        }
+
         public void SetGlobalProperty(string key, object value)
         {
             lock (_synchronizationLock)
