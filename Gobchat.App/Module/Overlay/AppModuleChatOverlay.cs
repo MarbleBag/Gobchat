@@ -66,18 +66,32 @@ namespace Gobchat.Module.Overlay
 
             _moveCallback = new DelayedCallback(TimeSpan.FromSeconds(1), () =>
             {
-                var chatLocation = _overlay.Location;
-                _configManager.SetProperty("behaviour.frame.chat.position.x", chatLocation.X);
-                _configManager.SetProperty("behaviour.frame.chat.position.y", chatLocation.Y);
-                _configManager.DispatchChangeEvents();
+                var location = _overlay.Location;
+                if (IsFrameOnScreens(_overlay.DesktopBounds))
+                {
+                    _configManager.SetProperty("behaviour.frame.chat.position.x", location.X);
+                    _configManager.SetProperty("behaviour.frame.chat.position.y", location.Y);
+                    _configManager.DispatchChangeEvents();
+                }
+                else // restore last location and size from config
+                {
+                    UpdateFormPosition();
+                }
             });
 
             _resizeCallback = new DelayedCallback(TimeSpan.FromSeconds(1), () =>
             {
-                var chatSize = _overlay.Size;
-                _configManager.SetProperty("behaviour.frame.chat.size.width", chatSize.Width);
-                _configManager.SetProperty("behaviour.frame.chat.size.height", chatSize.Height);
-                _configManager.DispatchChangeEvents();
+                var size = _overlay.Size;
+                if (IsFrameOnScreens(_overlay.DesktopBounds))
+                {
+                    _configManager.SetProperty("behaviour.frame.chat.size.width", size.Width);
+                    _configManager.SetProperty("behaviour.frame.chat.size.height", size.Height);
+                    _configManager.DispatchChangeEvents();
+                }
+                else // restore last location and size from config
+                {
+                    UpdateFormPosition();
+                }
             });
 
             _overlay.Move += (s, e) => _moveCallback.Call();
@@ -105,6 +119,10 @@ namespace Gobchat.Module.Overlay
                 menuItemReload.Click += (s, e) => _overlay.Reload();
                 trayIcon.AddMenu("overlay.reload", menuItemReload);
 
+                var menuItemFrameReset = new ToolStripMenuItem(Resources.Module_NotifyIcon_UI_Reset);
+                menuItemFrameReset.Click += (s, e) => ResetFrameToDefaultLocation();
+                trayIcon.AddMenu("overlay.reset", menuItemFrameReset);
+
 #if DEBUG
                 var menuItemDevTool = new ToolStripMenuItem("DevTool");
                 menuItemDevTool.Click += (s, e) => _overlay.Browser.ShowDevTools();
@@ -117,41 +135,67 @@ namespace Gobchat.Module.Overlay
 
         private void OnEvent_ConfigManager_PositionChange(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _manager.UISynchronizer.RunSync(UpdateFormPosition);
+            UpdateFormPosition();
         }
 
         private void UpdateFormPosition()
         {
+            _manager.UISynchronizer.RunSync(UpdateFormPositionOnUIThread);
+        }
+
+        private void UpdateFormPositionOnUIThread()
+        {
             try
             {
-                if (_configManager.HasProperty("behaviour.frame.chat.position.x") &&
-                    _configManager.HasProperty("behaviour.frame.chat.position.y"))
-                {
-                    var posX = _configManager.GetProperty<long>("behaviour.frame.chat.position.x");
-                    var posY = _configManager.GetProperty<long>("behaviour.frame.chat.position.y");
-                    var newLocation = new System.Drawing.Point((int)posX, (int)posY);
-                    if (!newLocation.Equals(_overlay.Location))
-                        _overlay.Location = newLocation;
+                var posX = _configManager.GetProperty<long>("behaviour.frame.chat.position.x");
+                var posY = _configManager.GetProperty<long>("behaviour.frame.chat.position.y");
+                var width = _configManager.GetProperty<long>("behaviour.frame.chat.size.width");
+                var height = _configManager.GetProperty<long>("behaviour.frame.chat.size.height");
+
+                var location = new System.Drawing.Point((int)posX, (int)posY);
+                var size = new System.Drawing.Size((int)width, (int)height);
+
+                if (!IsFrameOnScreens(new System.Drawing.Rectangle(location, size)))
+                { // location and size invalid, fallback to default location
+                    logger.Info("Overlay off screen, reseting position and size");
+                    ResetFrameToDefaultLocation();
+                    return;
                 }
 
-                if (_configManager.HasProperty("behaviour.frame.chat.size.width") &&
-                _configManager.HasProperty("behaviour.frame.chat.size.height"))
-                {
-                    var width = _configManager.GetProperty<long>("behaviour.frame.chat.size.width");
-                    var height = _configManager.GetProperty<long>("behaviour.frame.chat.size.height");
-                    var newSize = new System.Drawing.Size((int)width, (int)height);
-                    if (!newSize.Equals(_overlay.Size))
-                        _overlay.Size = newSize;
-                }
+                if (!location.Equals(_overlay.Location))
+                    _overlay.Location = location;
+
+                if (!size.Equals(_overlay.Size))
+                    _overlay.Size = size;
             }
             catch (Exception ex)
             {
                 logger.Warn(ex);
             }
+        }
 
-            //TODO make sure chat is not outside of display
-            //TODO make sure chat is not too small
-            //TODO make sure chat is not too big
+        private bool IsFrameOnScreens(System.Drawing.Rectangle frameArea, float minCoverage = 0.2f)
+        {
+            var coveredPixels = 0;
+            foreach (var screen in Screen.AllScreens)
+            {
+                var screenArea = screen.WorkingArea;
+                if (screenArea.IntersectsWith(frameArea))
+                {
+                    var intersection = new System.Drawing.Rectangle(frameArea.Location, frameArea.Size);
+                    intersection.Intersect(screenArea);
+                    coveredPixels += intersection.Width * intersection.Height;
+                }
+            }
+            var coverage = coveredPixels / (frameArea.Width * frameArea.Height * 1f);
+            return coverage >= minCoverage;
+        }
+
+        private void ResetFrameToDefaultLocation()
+        {
+            _configManager.DeleteProperty("behaviour.frame.chat.position");
+            _configManager.DeleteProperty("behaviour.frame.chat.size");
+            _configManager.DispatchChangeEvents();
         }
 
         public void Dispose()
