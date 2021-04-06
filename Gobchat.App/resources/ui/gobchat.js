@@ -56,13 +56,13 @@ jQuery(function ($) {
         }
     }
 
-    $("#gobchat_showconfig").on("click", function (e) {
-        const isConfigOpen = localStorage.getItem("gobchat-config-open") || "false"
+    function openGobchatConfig() {
+        const isConfigOpen = window.localStorage.getItem("gobchat-config-open") || "false"
 
         if (isConfigOpen === "true")
             return
 
-        localStorage.setItem("gobchat-config-open", "true")
+        window.localStorage.setItem("gobchat-config-open", "true")
 
         window.gobconfig.saveToLocalStore()
 
@@ -77,10 +77,13 @@ jQuery(function ($) {
         const timer = setInterval(function () {
             if (handle.closed) {
                 clearInterval(timer);
-                localStorage.removeItem("gobchat-config-open")
+                window.localStorage.removeItem("gobchat-config-open")
             }
         }, 1000);
-    })
+    }
+
+    $("#gobchat_showconfig").on("click", openGobchatConfig)
+    window.openGobconfig = openGobchatConfig
 })
 
 // feature - chat search
