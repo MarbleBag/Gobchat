@@ -15,9 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - More localization (`Config`, `Chat commands`)
 
 
-- Off screen protection
-  - If moved off screen, Gobchat reverts back to its last position
-  - If it still off screen, Gobchat resets position and size
+- Off-screen protection
+  - If moved off-screen, Gobchat reverts back to its last position
+  - If it's still off-screen, Gobchat resets position and size
 
 ### Changed
 - Chat command: `profile` changed to `profile load`
