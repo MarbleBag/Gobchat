@@ -181,13 +181,11 @@ namespace Gobchat.Module.Updater.Internal
                     //    continue;
 
                     var isMarkedPreRelease = (bool)jRelease["prerelease"];
-                    //if (isMarkedPreRelease) //TODO remove comment later
-                    //    continue;
 
                     if (!GobVersion.TryParse(jRelease["tag_name"].ToString(), out var version))
                         continue;
 
-                    // they are sorted from newest to oldest, so it can stop if it reaches a version which is older or equal to this one
+                    // releases are sorted from newest to oldest, stop if we reach the current or an older release
                     if (version <= _currentVersion)
                         break;
 
