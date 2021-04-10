@@ -153,7 +153,7 @@
     <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="buildscript.ps1" />
+    <None Include="pack-release.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
     <None Include="move-cef-redists.bat" />
