@@ -13,7 +13,7 @@
 
 'use strict'
 
-var Gobchat = (function (Gobchat, undefined) {
+var Gobchat = (function(Gobchat, undefined) {
     class CommandManager {
         constructor() {
             this._cmdMap = new Map()
@@ -264,8 +264,9 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const count = await GobchatAPI.getPlayerCount()
-            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playercount", count)
-            commandManager.sendInfoMessage(msg)
+            commandManager.sendInfoMessage(
+                await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playercount", count)
+            )
         }
     }
 
@@ -276,8 +277,9 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const list = await GobchatAPI.getPlayersAndDistance()
-            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerlist", list.join(", "))
-            commandManager.sendInfoMessage(msg)
+            commandManager.sendInfoMessage(
+                await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerlist", list.join(", "))
+            )
         }
     }
 
@@ -288,8 +290,9 @@ var Gobchat = (function (Gobchat, undefined) {
 
         async execute(commandManager, commandName, args) {
             const distance = await GobchatAPI.getPlayerDistance(args)
-            const msg = await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerdistance", `${distance.toFixed(2)}y`)
-            commandManager.sendInfoMessage(msg)
+            commandManager.sendInfoMessage(
+                await commandManager.getTranslationAndFormat("main.cmdmanager.cmd.playerdistance", `${distance.toFixed(2)}y`)
+            )
         }
     }
 
@@ -327,12 +330,13 @@ var Gobchat = (function (Gobchat, undefined) {
         }
 
         async execute(commandManager, commandName, args) {
+            commandManager.sendInfoMessage(
+                await commandManager.getTranslation("main.cmdmanager.cmd.config.reset.frame")
+            )
+
             gobconfig.reset(`behaviour.frame.chat.size`)
             gobconfig.reset(`behaviour.frame.chat.position`)
             await gobconfig.saveConfig()
-
-            const msg = await commandManager.getTranslation("main.cmdmanager.cmd.config.reset.frame")
-            commandManager.sendInfoMessage(msg)
         }
     }
 
