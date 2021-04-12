@@ -832,7 +832,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value />
   </data>
   <data name="main.cmdmanager.cmd.config.reset.frame" xml:space="preserve">
-    <value />
+    <value>Größe und Position vom Overlay wird zurückgesetzt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
     <value>{0} zur Gruppe [{1}]{2} hinzugefügt.</value>

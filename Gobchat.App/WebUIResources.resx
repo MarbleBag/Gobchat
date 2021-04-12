@@ -981,7 +981,7 @@ Restoration is final after clicking save.</value>
     <comment>0: list of cmds</comment>
   </data>
   <data name="main.cmdmanager.cmd.config.reset.frame" xml:space="preserve">
-    <value />
+    <value>Reset overlay size and position.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
     <value>Added {0} to group [{1}]{2}</value>

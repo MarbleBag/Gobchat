@@ -2611,7 +2611,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Reset overlay size and position..
         /// </summary>
         internal static string main_cmdmanager_cmd_config_reset_frame {
             get {
