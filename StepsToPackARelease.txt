@@ -6,11 +6,13 @@
 	4. Open in chrome
 	5. Print as pdf to /docs
 4. Run pack-release.bat
-5. The new release will be moved to the root folder (gobchat-{version}.zip) alongside a debug release (debugging symbols)
-6. Upload a new release on github.com
+5. The pattern for {version} is: {Major}.{Minor}.{Patch}(-{PreRelease})?
+	1. A version with a PreRelease is a beta release
+6. The new release will be moved to the root folder (gobchat-{version}.zip) alongside a debug release (debugging symbols)
+7. Upload a new release on github.com
 	1. Release title is v{version}
 	2. Description is used for patch notes
 	3. Updater will download the gobchat-{version}.zip attachment
-	4. Updater will mark pre-releases as 'beta'
-	5. The pattern for {version} is: {Major}.{Minor}.{Patch}-{PreRelease}
+	
+	
 
