@@ -2,14 +2,14 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.10.0] - Unreleased
+## [1.10.0-1] Beta - 2021.04.12
 ### Added
 - Chat command: `config open`
   - Opens the `Config` dialog
 
 
-- Chat command: `config reset frame` ?
-  - Resets the overlay position to 0, 0 and its size
+- Chat command: `config reset frame`
+  - Resets the overlay position and size to default
 
 
 - More localization (`Config`, `Chat commands`)
@@ -19,8 +19,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - If moved off-screen, Gobchat reverts back to its last position
   - If it's still off-screen, Gobchat resets position and size
 
+
+- Tray icon
+  - Button to reset overlay position and size to default
+
+### Removed
+- Message culling for 'outdated' messages
+  - Gobchat no longer removes messages with an outdated timestamp (if your system clock goes ahead, every message was outdated, until the game caught up)
+  - Needs to be tested
+
 ### Changed
 - Chat command: `profile` changed to `profile load`
+
+
+- `Config / App / Chat position and size`
+  - Fields `X & Y` allow negative values
 
 ### Fixed
 - Rangefilter
