@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2020 MarbleBag
+ * Copyright (C) 2019-2021 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -474,6 +474,14 @@ namespace Gobchat.Core.Config
             lock (_synchronizationLock)
             {
                 ActiveProfile.SetProperty(key, value);
+            }
+        }
+
+        public void DeleteProperty(string key)
+        {
+            lock (_synchronizationLock)
+            {
+                ActiveProfile.DeleteProperty(key);
             }
         }
 

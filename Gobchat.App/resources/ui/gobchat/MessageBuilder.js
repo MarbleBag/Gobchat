@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2020 MarbleBag
+ * Copyright (C) 2019-2021 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -37,7 +37,7 @@ var Gobchat = (function (Gobchat) {
             return null
 
         const fadeOutStepSize = (100 / Gobchat.RangeFilterFadeOutLevels)
-        const visibilityLevel = (visibility + (fadeOutStepSize - 1)) / fadeOutStepSize >> 0 //truncat decimals, makes the LSV an integer
+        const visibilityLevel = ((visibility + fadeOutStepSize - 1) / fadeOutStepSize) >> 0 //truncat decimals, makes the LSV an integer
         return `chat-msg-fadeout-${visibilityLevel}`
     }
 
@@ -94,7 +94,7 @@ var Gobchat = (function (Gobchat) {
     function packSenderAccordingToChannel(builder, channel, sender) {
         switch (channel) {
             case ChannelEnum.GOBCHATINFO:
-            case ChannelEnum.GOBCHATERROR: return `[${sender}]`            
+            case ChannelEnum.GOBCHATERROR: return `[${sender}]`
             case ChannelEnum.ECHO: return "Echo:"
             case ChannelEnum.EMOTE: return sender
             case ChannelEnum.TELLSEND: return `>> ${sender}:`
@@ -125,6 +125,7 @@ var Gobchat = (function (Gobchat) {
                 if (sender !== null && sender !== undefined) {
                     return sender + ":"
                 }
+                return null
         }
     }
 

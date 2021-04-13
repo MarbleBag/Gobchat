@@ -98,6 +98,7 @@ Gobchat supports the following chat commands:
 - [profile](#chat-command-profile)
 - [close](#chat-command-close)
 - [player](#chat-command-player)
+- [config](#chat-command-config)
 - [info/error](#chat-command-info--error)
 
 ***
@@ -142,34 +143,39 @@ Examples:
 
 
 #### Chat command Profile
-Usage:
-- `/e gc profile profilename`
-
+Usage: `/e gc profile load profilename`\
 This chat command can be used to change the active profile and can be easily embedded in a macro, especially useful if you already use a macro to activate your rp flag!
 
 Examples:
-- `/e gc profile Favorite Profile` this will activate the profile with the name `Favorite Profile`
+- `/e gc profile load Favorite Profile`\
+this will activate the profile with the name `Favorite Profile`
 
 #### Chat command Close
-Usage:
-- `/e gc close`
-
+Usage: `/e gc close`\
 This chat command will close Gobchat and provides an alternative way to right-clicking the Gobchat Icon in the tray-icon bar and clicking close.
 
 #### Chat command Player
-Usage:
-- `/e gc player count`
-- `/e gc player list`
-- `/e gc player distance <t>`
-
 ##### count
+Usage: `/e gc player count`\
 Returns the number of characters nearby. The definition of nearby depends on the total amount of characters close to you. The client will only display up to 100 characters.
 
 ##### list
+Usage: `/e gc player list`\
 Returns a list of character names and their current distance to you.
 
 ##### distance
+Usage: `/e gc player distance <t>`\
 Returns the distance in yalms to your current target.
+
+#### Chat command config
+##### open
+Usage: `/e gc config open`\
+This allows to open the config dialog via chat command
+Usage:
+
+##### reset frame
+Usage: `/e gc config reset frame`\
+Resets size and position of the overlay to its default value
 
 #### Chat command info / error
 Usage:

@@ -217,8 +217,8 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CEF not found. Without Gobchat will not work.
-        ///Should it be downloaded and installed for Gobchat?.
+        ///   Looks up a localized string similar to The UI requires additional components (CEF). They will be downloaded and unpacked.
+        ///Continue?.
         /// </summary>
         internal static string Module_Cef_Dialog_CefMissing_Text {
             get {
@@ -347,6 +347,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset overlay.
+        /// </summary>
+        internal static string Module_NotifyIcon_UI_Reset {
+            get {
+                return ResourceManager.GetString("Module.NotifyIcon.UI.Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show.
         /// </summary>
         internal static string Module_NotifyIcon_UI_Show {
@@ -356,7 +365,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save profiles to disk. See debug log for more informations..
+        ///   Looks up a localized string similar to Unable to save profiles to disk. See debug log for more information..
         /// </summary>
         internal static string Module_UI_Connector_Config_Profile_Error {
             get {

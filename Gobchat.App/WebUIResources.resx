@@ -980,19 +980,67 @@ Restoration is final after clicking save.</value>
     <value>Available commands: {0}</value>
     <comment>0: list of cmds</comment>
   </data>
+  <data name="main.cmdmanager.cmd.config.reset.frame" xml:space="preserve">
+    <value>Reset overlay size and position.</value>
+  </data>
+  <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
+    <value>Added {0} to group [{1}]{2}</value>
+    <comment>0: player name, 1: group idx, 2: group name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.grouped" xml:space="preserve">
+    <value>{0} is already in group [{1}]{2}</value>
+    <comment>0: player name, 1: group idx, 2: group name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.invalid.cmd" xml:space="preserve">
+    <value>Command 'group' expects: 
+group groupnumber add/remove playername
+group groupnumber clear</value>
+  </data>
+  <data name="main.cmdmanager.cmd.group.invalid.grpidx" xml:space="preserve">
+    <value>Group number needs to be a number from [1, {0}].</value>
+    <comment>0: number of groups</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.invalid.name" xml:space="preserve">
+    <value>Unable to read player name '{0}'.</value>
+    <comment>0: player name &amp; server</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.invalid.nosupport" xml:space="preserve">
+    <value>Group [{0}]{1} does not support player names.</value>
+    <comment>0: group index, 1: group name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.notgrouped" xml:space="preserve">
+    <value>{0} is not in group [{1}]{2}.</value>
+    <comment>0: player name, 1: group idx, 2: group name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.remove" xml:space="preserve">
+    <value>Removed {0} to group [{1}]{2}.</value>
+    <comment>0: player name, 1: group idx, 2: group name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.group.remove.all" xml:space="preserve">
+    <value>Removed all players from group [{0}]{1}.</value>
+    <comment>0: group idx, 1: group name</comment>
+  </data>
   <data name="main.cmdmanager.cmd.playercount" xml:space="preserve">
-    <value>Players nearby: {0}</value>
+    <value>Players nearby: {0}.</value>
     <comment>0: number of players</comment>
   </data>
   <data name="main.cmdmanager.cmd.playerdistance" xml:space="preserve">
-    <value>Distance to {0} is {1}</value>
+    <value>Distance to {0} is {1}.</value>
     <comment>0: target name, 1: distance to target</comment>
   </data>
   <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
-    <value>Players nearby: {0}</value>
+    <value>Players nearby: {0}.</value>
     <comment>0: list of players</comment>
   </data>
+  <data name="main.cmdmanager.cmd.profile.load" xml:space="preserve">
+    <value>Activate profile {0}.</value>
+    <comment>0: profile name</comment>
+  </data>
+  <data name="main.cmdmanager.cmd.profile.load.invalid" xml:space="preserve">
+    <value>Profile command needs a valid profile name. Available profiles are: {0}.</value>
+    <comment>0: list of profiles</comment>
+  </data>
   <data name="main.label.missing" xml:space="preserve">
-    <value>Missing '{0}'</value>
+    <value>Missing '{0}'.</value>
   </data>
 </root>

@@ -175,8 +175,8 @@
     <value>resources\GobTrayIconOn.Ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Module.Cef.Dialog.CefMissing.Text" xml:space="preserve">
-    <value>CEF not found. Without Gobchat will not work.
-Should it be downloaded and installed for Gobchat?</value>
+    <value>The UI requires additional components (CEF). They will be downloaded and unpacked.
+Continue?</value>
   </data>
   <data name="Module.Cef.Dialog.InstallFailed.Text" xml:space="preserve">
     <value>CEF installation failed. Reason:
@@ -224,11 +224,14 @@ Retry or install CEF manually for gobchat.</value>
   <data name="Module.NotifyIcon.UI.Reload" xml:space="preserve">
     <value>Reload</value>
   </data>
+  <data name="Module.NotifyIcon.UI.Reset" xml:space="preserve">
+    <value>Reset overlay</value>
+  </data>
   <data name="Module.NotifyIcon.UI.Show" xml:space="preserve">
     <value>Show</value>
   </data>
   <data name="Module.UI.Connector.Config.Profile.Error" xml:space="preserve">
-    <value>Unable to save profiles to disk. See debug log for more informations.</value>
+    <value>Unable to save profiles to disk. See debug log for more information.</value>
   </data>
   <data name="Module.UI.Connector.Config.Profile.Saved" xml:space="preserve">
     <value>Profiles saved.</value>

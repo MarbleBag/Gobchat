@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2020 MarbleBag
+ * Copyright (C) 2019-2021 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -40,7 +40,7 @@ namespace Gobchat.Module.Chat.Internal
 
         private ChatChannel[] _visibleChannels = Array.Empty<ChatChannel>();
 
-        public bool FilterOutdatedMessages { get; set; } = true;
+        public bool FilterOutdatedMessages { get; set; } = false;
 
         public TimeSpan OutdatedMessageFilter
         {
@@ -153,12 +153,8 @@ namespace Gobchat.Module.Chat.Internal
             var chatMessages = PollMessages();
             var lastAcceptedTimstamp = _lastDispatchedMessage.Subtract(_outdatedMessageFilter);
 
-            chatMessages = chatMessages.Where(msg =>
-            {
-                if (FilterOutdatedMessages && msg.Timestamp < lastAcceptedTimstamp)
-                    return false;
-                return true;
-            }).ToList();
+            if (FilterOutdatedMessages)
+                chatMessages = chatMessages.Where(msg => msg.Timestamp < lastAcceptedTimstamp).ToList();
 
             _lastDispatchedMessage = chatMessages.Select(msg => msg.Timestamp).DefaultIfEmpty(_lastDispatchedMessage).Max();
 

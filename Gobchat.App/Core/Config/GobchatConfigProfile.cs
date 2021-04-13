@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2020 MarbleBag
+ * Copyright (C) 2019-2021 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -29,10 +29,10 @@ namespace Gobchat.Core.Config
 
         private event EventHandler<PropertyChangedEventArgs> _onPropertyChange;
 
-        private bool _canLinkParent;
+        private readonly bool _canLinkParent;
         private bool _isParentLinked;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         public GobchatConfigProfile(JObject data, bool writable) : this(data, writable, null)
         {

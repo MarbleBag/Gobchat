@@ -2,7 +2,44 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.9.0-1] - 2020.08.25
+## [1.10.0] - 2021.04.14
+### Added
+- Chat command: `config open`
+  - Opens the `Config` dialog
+
+
+- Chat command: `config reset frame`
+  - Resets the overlay position and size to default
+
+
+- More localization (`Config`, `Chat commands`)
+
+
+- Off-screen protection
+  - If moved off-screen, Gobchat reverts back to its last position
+  - If it's still off-screen, Gobchat resets position and size
+
+
+- Tray icon
+  - Button to reset overlay position and size to default
+
+### Removed
+- Message culling for 'outdated' messages
+  - Gobchat no longer removes messages with an outdated timestamp (if your system clock goes ahead, every message was outdated, until the game caught up)
+  - Needs to be tested
+
+### Changed
+- Chat command: `profile` changed to `profile load`
+
+
+- `Config / App / Chat position and size`
+  - Fields `X & Y` allow negative values
+
+### Fixed
+- Rangefilter
+  - Now utilizes the whole opacity range from start to end
+
+## [1.9.0] - 2020.09.08
 ### Added
 - Hotkeys
   - Button to remove hotkeys
@@ -16,12 +53,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Chat log
   - The output folder of chat logs can be changed on a profile level in `Config / App`
 
-  
+
 - Config
   - Button to close Gobchat
     - Gobchat can now be closed via config, tray icon (right click) or chat command (/e gc close)
-  
-  
+
+
 ### Removed
 - Limit of 10 chat entries per update
   - It no longer chokes on battle logs

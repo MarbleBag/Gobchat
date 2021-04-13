@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Module.Cef.Dialog.CefMissing.Text" xml:space="preserve">
+    <value>Für die UI müssen noch weitere Bestandteile (CEF) heruntergeladen und entpackt werden.
+Fortfahren?</value>
+  </data>
   <data name="Module.Hotkey.ConfigHotkeyUpdater.InvalidHotkey" xml:space="preserve">
     <value>Ungültiger Hotkey für {0} wegen {1}</value>
   </data>
@@ -138,8 +142,17 @@
   <data name="Module.NotifyIcon.UI.Reload" xml:space="preserve">
     <value>Neu laden</value>
   </data>
+  <data name="Module.NotifyIcon.UI.Reset" xml:space="preserve">
+    <value>Overlay zurücksetzen</value>
+  </data>
   <data name="Module.NotifyIcon.UI.Show" xml:space="preserve">
     <value>Zeigen</value>
+  </data>
+  <data name="Module.UI.Connector.Config.Profile.Error" xml:space="preserve">
+    <value>Profil konnte nicht gespeichert werden. Siehe debug.log für mehr Informationen.</value>
+  </data>
+  <data name="Module.UI.Connector.Config.Profile.Saved" xml:space="preserve">
+    <value>Profil gespeichert.</value>
   </data>
   <data name="Module.Updater.Dialog.ManualInstall.Text" xml:space="preserve">
     <value>Bei Bestätigung mit 'Ja' wird Gobchat geschlossen und eine Webseite geöffnet, auf welcher die neuste Version von Gobchat verfügbar ist.

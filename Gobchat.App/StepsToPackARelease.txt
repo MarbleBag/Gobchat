@@ -1,7 +1,0 @@
-1. Start atom
-2. Load readme.md as markdown preview
-3. Export as html
-4. Open export in chrome
-5. Print as pdf
-6. Run buildscript.bat
-7. done
