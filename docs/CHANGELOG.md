@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.10.0-1] Beta - 2021.04.12
+## [1.10.0] - 2021.04.14
 ### Added
 - Chat command: `config open`
   - Opens the `Config` dialog
