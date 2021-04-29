@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Gobchat.Core.Chat;
@@ -49,6 +50,11 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             {
                 _builder.Clear();
             }
+        }
+
+        protected override IEnumerable<string> OnFileCreation()
+        {
+            return null;
         }
     }
 }

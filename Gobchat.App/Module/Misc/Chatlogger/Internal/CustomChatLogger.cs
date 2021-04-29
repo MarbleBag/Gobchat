@@ -11,31 +11,52 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Linq;
-using System.Globalization;
-using Gobchat.Core.Chat;
 using System.Collections.Generic;
+using System.Text;
+using Gobchat.Core.Chat;
 
 namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
-    // This logger is no longer functional
-    public sealed class ChatLoggerACTType : ChatLoggerBase
+    public sealed class CustomChatLogger : ChatLoggerBase
     {
-        protected override string LoggerId => "ACT1v";
+        private readonly StringBuilder _builder = new StringBuilder();
 
-        public ChatLoggerACTType() : base()
+        private string _messageFormat = ""; //default
+
+        public string MessageFormat
+        {
+            get
+            {
+                return _messageFormat;
+            }
+            set
+            {
+                _messageFormat = value;
+                //TODO parse format                
+            }
+        }
+
+        public CustomChatLogger() : base()
         {
         }
 
-        protected override string FormatLine(ChatMessage msg)
-        {
-            // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
-            return $"00|{msg.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{((int)msg.Channel).ToString("x4", CultureInfo.InvariantCulture)}|{msg.Source}|{msg.Content.Select(e => e.Text)}|";
-        }
+        protected override string LoggerId => "CCLv1";
 
         protected override IEnumerable<string> OnFileCreation()
         {
             return null;
         }
+
+        protected void ParseMessageFormat(string format)
+        {
+            //TODO parse
+            //TODO write to file
+        }
+
+        protected override string FormatLine(ChatMessage msg)
+        {
+            return null;
+        }
+
     }
 }

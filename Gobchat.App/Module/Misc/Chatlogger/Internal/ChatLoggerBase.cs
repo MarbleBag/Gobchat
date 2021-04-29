@@ -15,16 +15,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Gobchat.Core.Runtime;
 using System.Globalization;
+using Gobchat.Core.Chat;
 using Gobchat.Core.Util.Extension;
 using Gobchat.Core.Util.Extension.Queue;
 
-namespace Gobchat.Core.Chat
+
+namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
     public abstract class ChatLoggerBase : IChatLogger
     {
-        private readonly Queue<ChatMessage> _pendingMessages = new Queue<ChatMessage>();
+        private readonly Queue<string> _pendingMessages = new Queue<string>();
+
         private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();
         private string _logFolder;
 
@@ -72,6 +74,13 @@ namespace Gobchat.Core.Chat
         {
             if (Active && _logChannels.Contains(message.Channel))
                 lock (_synchronizationLock)
+                    _pendingMessages.Enqueue(FormatLine(message));
+        }
+
+        public void Log(string message)
+        {
+            if(Active)
+                lock (_synchronizationLock)
                     _pendingMessages.Enqueue(message);
         }
 
@@ -90,13 +99,29 @@ namespace Gobchat.Core.Chat
                     _fileHandle = Path.Combine(_logFolder, fileName);
 
                     if (!File.Exists(_fileHandle))
-                        File.AppendAllLines(_fileHandle, new string[] { $"Chatlogger Id: {LoggerId}" }, System.Text.Encoding.UTF8);
+                    {
+                        WriteLines($"Chatlogger Id: {LoggerId}");
+                        WriteLines(OnFileCreation());
+                    }
                 }
 
-                var logLines = _pendingMessages.DequeueAll().Select(e => FormatLine(e));
-                File.AppendAllLines(_fileHandle, logLines, System.Text.Encoding.UTF8);
+                WriteLines(_pendingMessages.DequeueAll());
             }
         }
+
+        private void WriteLines(string line)
+        {
+            if (line != null && line.Length>0)
+                WriteLines(new string[] { line });
+        }
+
+        private void WriteLines(IEnumerable<string> lines)
+        {
+            if(lines!=null)
+                File.AppendAllLines(_fileHandle, lines, System.Text.Encoding.UTF8);
+        }
+
+        abstract protected IEnumerable<string> OnFileCreation();
 
         abstract protected string FormatLine(ChatMessage msg);
 

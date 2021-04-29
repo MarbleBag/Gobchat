@@ -249,7 +249,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Chat\ChatLoggerBase.cs" />
+    <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
     <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
@@ -332,6 +332,7 @@
     <Compile Include="Module\Language\AppModuleLanguage.cs" />
     <Compile Include="Module\MemoryReader\IMemoryReaderManager.cs" />
     <Compile Include="Module\MemoryReader\Internal\FFXIVMemoryManager.cs" />
+    <Compile Include="Module\Misc\Chatlogger\Internal\CustomChatLogger.cs" />
     <Compile Include="Module\UI\BrowserAPI\Internal\BrowserAPIManager.cs" />
     <Compile Include="Module\UI\Connector\AppModuleActorToUI.cs" />
     <Compile Include="Module\UI\Connector\AppModuleChatToUI.cs" />
@@ -339,7 +340,7 @@
     <Compile Include="Module\Misc\Chatlogger\AppModuleChatLogger.cs" />
     <Compile Include="Core\Util\Extension\ToArrayOrEmptyExtension.cs" />
     <Compile Include="Module\Chat\IChatManager.cs" />
-    <Compile Include="Core\Chat\IChatLogger.cs" />
+    <Compile Include="Module\Misc\Chatlogger\Internal\IChatLogger.cs" />
     <Compile Include="Module\Misc\AppModuleInformUserAboutMemoryState.cs" />
     <Compile Include="Module\Hotkey\AppModuleHotkeyManager.cs" />
     <Compile Include="Module\Misc\AppModuleHideOnMinimize.cs" />
