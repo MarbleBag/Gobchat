@@ -31,6 +31,7 @@ namespace Gobchat.Core.Config
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.log", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
             {
@@ -57,6 +58,7 @@ namespace Gobchat.Core.Config
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
             JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.log", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
             {
