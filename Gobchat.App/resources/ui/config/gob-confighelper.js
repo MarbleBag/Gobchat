@@ -206,10 +206,13 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         })
     }
 
-    GobConfigHelper.makeResetButton = function (element) {
+    GobConfigHelper.makeResetButton = function (element, targetElement) {
         $(element).addClass("gob-button-tertiary ")
         $(element).addClass("gob-button-reset")
-        $(element).on("click", () => gobconfig.reset(GobConfigHelper.getConfigKey(element)))
+        const keyFunction = (targetElement != null || targetElement != undefined) ?
+            () => GobConfigHelper.getConfigKey(targetElement) :
+            () => GobConfigHelper.getConfigKey(element)
+        $(element).on("click", () => gobconfig.reset(keyFunction()))
     }
 
     GobConfigHelper.makeCopyProfileButton = function (element, options) {
