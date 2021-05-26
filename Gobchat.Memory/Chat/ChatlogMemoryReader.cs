@@ -14,6 +14,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gobchat.Memory.Chat
 {
@@ -23,6 +24,10 @@ namespace Gobchat.Memory.Chat
 
         private readonly Chat.ChatlogReader _reader = new Chat.ChatlogReader();
         private readonly Chat.ChatlogBuilder _builder = new Chat.ChatlogBuilder();
+
+        private static readonly TimeSpan TimestampEpsilon = TimeSpan.FromSeconds(5);
+        private DateTime _lastTimestamp = default;
+        private bool _timestampRead = false;
 
         public bool ChatLogAvailable => _reader.ChatLogAvailable;
 
@@ -44,6 +49,16 @@ namespace Gobchat.Memory.Chat
                     logger.Error(() => $"Chat Item {rawLog.Line}");
                     logger.Error(e);
                 }
+            }
+
+            if (result.Count > 0)
+            {
+                if (_timestampRead)                
+                    result = result.Where(e => _lastTimestamp < e.TimeStamp).ToList();                
+                else                
+                    _timestampRead = true;                
+
+                _lastTimestamp = result.Select(e => e.TimeStamp).Max().Subtract(TimestampEpsilon);
             }
 
             return result;
