@@ -21,9 +21,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
     // This logger is no longer functional
     public sealed class ChatLoggerACTType : ChatLoggerBase
     {
-        protected override string LoggerId => "ACT1v";
-
-        public ChatLoggerACTType() : base()
+        public ChatLoggerACTType() : base("ACT1v")
         {
         }
 
@@ -31,11 +29,6 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
         {
             // until a new chatlog cleaner is written, keep it compatible with https://github.com/MarbleBag/FF14-Chatlog-Cleaner
             return $"00|{msg.Timestamp.ToString("o", CultureInfo.InvariantCulture)}|{((int)msg.Channel).ToString("x4", CultureInfo.InvariantCulture)}|{msg.Source}|{msg.Content.Select(e => e.Text)}|";
-        }
-
-        protected override IEnumerable<string> OnFileCreation()
-        {
-            return null;
         }
     }
 }

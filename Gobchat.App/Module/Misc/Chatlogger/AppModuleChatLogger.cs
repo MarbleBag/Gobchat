@@ -30,7 +30,7 @@ namespace Gobchat.Module.Misc.Chatlogger
         private IDIContext _container;
         private IConfigManager _configManager;
 
-        private IChatLogger _chatLogger;
+        private CustomChatLogger _chatLogger;
         private IChatManager _chatManager;
 
         /// <summary>
@@ -47,14 +47,14 @@ namespace Gobchat.Module.Misc.Chatlogger
         {
             _container = container ?? throw new ArgumentNullException(nameof(container));
 
-            _chatLogger = new ChatLoggerFormated();
-            _chatLogger.LogChannels = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>(); //will log everything that comes from the chat manager
+            _chatLogger = new CustomChatLogger();
+            //_chatLogger.LogChannels = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>(); //will log everything that comes from the chat manager
 
             _configManager = _container.Resolve<IConfigManager>();
             _configManager.AddPropertyChangeListener("behaviour.chatlog.active", true, true, ConfigManager_UpdateWriteLog);
             _configManager.AddPropertyChangeListener("behaviour.chatlog.path", true, true, ConfigManager_UpdateLogPath);
-
-            // _configManager.AddPropertyChangeListener("behaviour.channel.visible", true, true, ConfigManager_UpdateLogChannels);
+            _configManager.AddPropertyChangeListener("behaviour.chatlog.format", true, true, ConfigManager_UpdateLogFormat);
+            _configManager.AddPropertyChangeListener("behaviour.channel.log", true, true, ConfigManager_UpdateLogChannels);
 
             _chatManager = _container.Resolve<IChatManager>();
             _chatManager.OnChatMessage += ChatManager_ChatMessageEvent;
@@ -65,13 +65,13 @@ namespace Gobchat.Module.Misc.Chatlogger
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateWriteLog);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLogPath);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLogChannels);
-
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLogFormat);
             _configManager = null;
 
             _chatManager.OnChatMessage -= ChatManager_ChatMessageEvent;
             _chatManager = null;
 
-            _chatLogger.Dispose();
+            _chatLogger?.Dispose();
             _chatLogger = null;
 
             _container = null;
@@ -79,25 +79,61 @@ namespace Gobchat.Module.Misc.Chatlogger
 
         private void ConfigManager_UpdateWriteLog(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            _chatLogger.Active = sender.GetProperty<bool>("behaviour.chatlog.active");
+            try
+            {
+                _chatLogger.Active = sender.GetProperty<bool>("behaviour.chatlog.active");
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex);
+            }
         }
 
         private void ConfigManager_UpdateLogPath(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            var path = sender.GetProperty<string>("behaviour.chatlog.path");
+            try
+            {
+                var path = sender.GetProperty<string>("behaviour.chatlog.path");
 
-            if (path == null || path.Length == 0)
-                path = Path.Combine(GobchatContext.AppDataLocation, "log");
+                if (path == null || path.Length == 0)
+                    path = Path.Combine(GobchatContext.AppDataLocation, "log");
 
-            if (!Path.IsPathRooted(path))
-                path = Path.Combine(GobchatContext.AppDataLocation, path);
+                if (!Path.IsPathRooted(path))
+                    path = Path.Combine(GobchatContext.AppDataLocation, path);
 
-            _chatLogger.LogFolder = path;
+                _chatLogger.SetLogFolder(path);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
+        }
+
+        private void ConfigManager_UpdateLogFormat(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
+        {
+            try
+            {
+                _chatLogger.SetLogFormat(sender.GetProperty<string>("behaviour.chatlog.format"));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
         }
 
         private void ConfigManager_UpdateLogChannels(IConfigManager sender, ProfilePropertyChangedCollectionEventArgs evt)
         {
-            // _chatLogger.LogChannels = sender.GetProperty<List<long>>("behaviour.channel.visible").Select(i => (ChatChannel)i).ToList();
+            try
+            {
+                var logChannels = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>();
+                var excludeFromLogging = sender.GetProperty<List<long>>("behaviour.channel.log").Select(i => (ChatChannel)i);
+                //the profile defines which channels shouldn't be logged
+                _chatLogger.LogChannels = logChannels.Except(excludeFromLogging);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
         }
 
         private void ChatManager_ChatMessageEvent(object sender, ChatMessageEventArgs e)

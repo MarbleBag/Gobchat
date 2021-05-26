@@ -23,11 +23,9 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
     {
         private readonly StringBuilder _builder = new StringBuilder();
 
-        public ChatLoggerFormated() : base()
+        public ChatLoggerFormated() : base("FCLv1")
         {
         }
-
-        protected override string LoggerId => "FCLv1";
 
         protected override string FormatLine(ChatMessage msg)
         {
@@ -50,11 +48,6 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             {
                 _builder.Clear();
             }
-        }
-
-        protected override IEnumerable<string> OnFileCreation()
-        {
-            return null;
         }
     }
 }

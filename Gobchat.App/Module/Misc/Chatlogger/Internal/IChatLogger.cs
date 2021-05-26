@@ -24,7 +24,9 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
         bool Active { get; set; }
 
-        string LogFolder { get; set; }
+        string LogFolder { get; }
+
+        void SetLogFolder(string folder);
 
         void Log(ChatMessage message);
 
