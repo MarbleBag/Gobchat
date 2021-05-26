@@ -22,12 +22,12 @@ namespace Gobchat.Core.Chat
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static readonly ChatChannel[] PlayerChannels = {
-        ChatChannel.Say, ChatChannel.Emote, ChatChannel.Yell, ChatChannel.Shout, ChatChannel.TellSend, ChatChannel.TellRecieve, ChatChannel.Party, ChatChannel.Guild, ChatChannel.Alliance,
-        ChatChannel.AnimatedEmote,
-        ChatChannel.CrossWorldLinkShell_1, ChatChannel.CrossWorldLinkShell_2, ChatChannel.CrossWorldLinkShell_3, ChatChannel.CrossWorldLinkShell_4,
-        ChatChannel.CrossWorldLinkShell_5, ChatChannel.CrossWorldLinkShell_6, ChatChannel.CrossWorldLinkShell_7, ChatChannel.CrossWorldLinkShell_8,
-        ChatChannel.LinkShell_1, ChatChannel.LinkShell_2, ChatChannel.LinkShell_3, ChatChannel.LinkShell_4,
-        ChatChannel.LinkShell_5, ChatChannel.LinkShell_6, ChatChannel.LinkShell_7, ChatChannel.LinkShell_8,
+            ChatChannel.Say, ChatChannel.Emote, ChatChannel.Yell, ChatChannel.Shout, ChatChannel.TellSend, ChatChannel.TellRecieve, ChatChannel.Party, ChatChannel.Guild, ChatChannel.Alliance,
+            ChatChannel.AnimatedEmote,
+            ChatChannel.CrossWorldLinkShell_1, ChatChannel.CrossWorldLinkShell_2, ChatChannel.CrossWorldLinkShell_3, ChatChannel.CrossWorldLinkShell_4,
+            ChatChannel.CrossWorldLinkShell_5, ChatChannel.CrossWorldLinkShell_6, ChatChannel.CrossWorldLinkShell_7, ChatChannel.CrossWorldLinkShell_8,
+            ChatChannel.LinkShell_1, ChatChannel.LinkShell_2, ChatChannel.LinkShell_3, ChatChannel.LinkShell_4,
+            ChatChannel.LinkShell_5, ChatChannel.LinkShell_6, ChatChannel.LinkShell_7, ChatChannel.LinkShell_8,
         };
 
         private static readonly int[] GroupUnicodes = FFXIVUnicodes.GroupUnicodes.Select(e => e.Value).ToArray();
