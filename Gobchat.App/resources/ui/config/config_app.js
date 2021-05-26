@@ -24,6 +24,8 @@
     GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
 
     const $txtChatlogPath = $("#capp_chatlog_path")
+    GobConfigHelper.makeResetButton($("#capp_chatlog_path_reset"), $txtChatlogPath)
+
     $txtChatlogPath.on("change", function () {
         (async () => {
             try {
@@ -63,7 +65,8 @@
         })();
     })
 
-    GobConfigHelper.makeResetButton($("#capp_logging_path_reset"))
+    GobConfigHelper.bindElement(binding, $("#capp_chatlog_format"))
+    GobConfigHelper.makeResetButton($("#capp_chatlog_format_reset"), $("#capp_chatlog_format"))
 
     GobConfigHelper.bindCheckbox(binding, $("#capp_autodetectemote"))
 
@@ -92,13 +95,11 @@
     // setup font group
     // setup font family
     GobConfigHelper.bindElement(binding, $("#capp_font_family"))
-
     GobConfigHelper.makeResetButton($("#capp_font_family_reset"))
 
     const $dpdProcessSelector = $("#capp_process_selector")
     $("#capp_process_selector_refresh").on("click", function () {
         const $icon = $("#capp_process_selector_refresh").find("svg");
-
         (async () => {
             try {
                 //$icon.addClass("fa-spin")
