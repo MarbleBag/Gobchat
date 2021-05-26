@@ -74,10 +74,10 @@ namespace Gobchat.Core.Chat
                     ClientMapping.Add(c, channel);
             }
 
-            var expectedValues = Enum.GetValues(typeof(ChatChannel));
-            foreach (ChatChannel expectedChannel in expectedValues)
-            {
-                if (!ChatMapping.ContainsKey(expectedChannel)) //if there is a ChatChannel, there needs to be a mapping for config data
+            //Every ChatChannel must be mapped. This is not done automatically to account for any configuration that needs to be done for that channel.
+            foreach (ChatChannel expectedChannel in Enum.GetValues(typeof(ChatChannel)))
+            {                
+                if (!ChatMapping.ContainsKey(expectedChannel)) 
                     throw new ArgumentException($"No mapping for {expectedChannel}");
             }
         }
@@ -122,16 +122,6 @@ namespace Gobchat.Core.Chat
 
     public sealed class ChannelData
     {
-        private static string MakeTranslationId(string chatChannel)
-        {
-            return $"main.chat.channel.{chatChannel}";
-        }
-
-        private static string MakeConfigId(string chatChannel)
-        {
-            return $"style.channel.{chatChannel}";
-        }
-
         public ChatChannel ChatChannel { get; }
         public FFXIVChatChannel[] ClientChannel { get; private set; } = Array.Empty<FFXIVChatChannel>();
 
@@ -148,6 +138,9 @@ namespace Gobchat.Core.Chat
         public string TooltipId { get => $"{TranslationId}.tooltip"; }
         public string AbbreviationId { get => $"{TranslationId}.abbreviation"; }
         public string ConfigId { get; private set; }
+        /// <summary>
+        /// Non-relevant channels won't show up on the config ui
+        /// </summary>
         public bool Relevant { get; private set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "app internal")]
@@ -159,8 +152,8 @@ namespace Gobchat.Core.Chat
             if (clientChannel != null)
                 ClientChannel = clientChannel;
 
-            TranslationId = (translationId ?? MakeTranslationId(InternalName)).ToLowerInvariant();
-            ConfigId = (configId ?? MakeConfigId(InternalName)).ToLowerInvariant();
+            TranslationId = (translationId ?? $"main.chat.channel.{InternalName}").ToLowerInvariant();
+            ConfigId = (configId ?? $"style.channel.{InternalName}").ToLowerInvariant();
         }
     }
 }
