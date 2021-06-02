@@ -66,7 +66,6 @@
             this.ckbReplaceOldLog.Size = new System.Drawing.Size(267, 14);
             this.ckbReplaceOldLog.TabIndex = 1;
             this.ckbReplaceOldLog.UseVisualStyleBackColor = true;
-            this.ckbReplaceOldLog.CheckedChanged += new System.EventHandler(this.OnEvent_ckbReplaceOldLog_CheckedChanged);
             // 
             // btnConvert
             // 
@@ -109,7 +108,6 @@
             this.txtFileSelection.Name = "txtFileSelection";
             this.txtFileSelection.Size = new System.Drawing.Size(491, 20);
             this.txtFileSelection.TabIndex = 6;
-            this.txtFileSelection.TextChanged += new System.EventHandler(this.OnEvent_txtFileSelection_TextChanged);
             // 
             // tableLayoutPanel1
             // 

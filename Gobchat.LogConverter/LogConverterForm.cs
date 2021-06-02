@@ -20,21 +20,16 @@ namespace Gobchat.LogConverter
 {
     public partial class LogConverterForm : Form
     {
-        private readonly Dictionary<string, string> _formater = new Dictionary<string, string>()
-        {
-            {"ACT","ACTv1" },
-            {"Simplified","FCLv1" }
-        };
+        private readonly LogConverterManager _manager;
 
         public LogConverterForm()
         {
             InitializeComponent();
+            _manager = new LogConverterManager();
 
-            foreach (var formater in _formater)
-            {
-                cbFormater.Items.Add(formater.Key);
-            }
-            cbFormater.SelectedIndex = _formater.Count - 1;
+            foreach (var id in _manager.GetFormaters())
+                cbFormater.Items.Add(id);
+            cbFormater.SelectedIndex = cbFormater.Items.Count - 1;
 
             this.Text = $"Log Converter (v{GobchatContext.InnerApplicationVersion})";
         }
@@ -75,16 +70,9 @@ namespace Gobchat.LogConverter
             txtFileSelection.Text = selectedFile;
         }
 
-        private void OnEvent_txtFileSelection_TextChanged(object sender, EventArgs e)
-        {
-        }
-
         private void OnEvent_cbFormater_SelectedIndexChanged(object sender, EventArgs e)
         {
-        }
-
-        private void OnEvent_ckbReplaceOldLog_CheckedChanged(object sender, EventArgs e)
-        {
+            //TODO show settings!
         }
 
         private void OnEvent_btnCancel_Clicked(object sender, EventArgs e)
@@ -106,32 +94,32 @@ namespace Gobchat.LogConverter
 
             try
             {
-                var progressMonitor = new ProgressMonitorAdapter(this);
-                var logConverterOptions = new LogConverterOptions()
+                using (var progressMonitor = new ProgressMonitorAdapter(this))
                 {
-                    ReplaceOldLog = ckbReplaceOldLog.Checked,
-                };
+                    var logConverterOptions = new LogConverterOptions()
+                    {
+                        ReplaceOldLog = ckbReplaceOldLog.Checked,
+                    };
 
-                if (cbFormater.Text != null && cbFormater.Text.Length > 0)
-                    if (_formater.TryGetValue(cbFormater.Text, out var formater))
-                        logConverterOptions.ConvertTo = formater;
+                    logConverterOptions.ConvertTo = cbFormater.Text;
 
-                var selectedFile = txtFileSelection.Text ?? "";
-                selectedFile = selectedFile.Trim();
-                if (selectedFile.Length == 0)
-                {
-                    AppendLog("No file selected");
-                    return;
+                    var selectedFile = txtFileSelection.Text ?? "";
+                    selectedFile = selectedFile.Trim();
+                    if (selectedFile.Length == 0)
+                    {
+                        AppendLog("No file selected");
+                        return;
+                    }
+
+                    if (!File.Exists(selectedFile))
+                    {
+                        AppendLog($"File not found: {selectedFile}");
+                        return;
+                    }
+
+                    var converter = new LogConverter(_manager);
+                    converter.ConvertLog(selectedFile, logConverterOptions, progressMonitor);
                 }
-
-                if (!File.Exists(selectedFile))
-                {
-                    AppendLog($"File not found: {selectedFile}");
-                    return;
-                }
-
-                var converter = new LogConverter();
-                converter.ConvertLog(selectedFile, logConverterOptions, progressMonitor);
             }
             catch (Exception ex)
             {

@@ -16,15 +16,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Gobchat.LogConverter
 {
-    internal sealed class LogConverter
+    public sealed class LogConverter
     {
+        private readonly LogConverterManager _manager;
+
         private ILogParser _parser;
         private ILogFormater _formater;
+       
+        public LogConverter(LogConverterManager manager)
+        {
+            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+        }
 
         public void ConvertLog(string file, LogConverterOptions options, ProgressMonitorAdapter monitor)
         {
@@ -58,8 +66,8 @@ namespace Gobchat.LogConverter
                 return;
             }
 
-            _parser = GetParser(loggerId);
-            _formater = GetFormater(options.ConvertTo);
+            _parser = _manager.GetParser(loggerId);
+            _formater = _manager.GetFormater(options.ConvertTo);
 
             if (_parser == null)
             {
@@ -135,46 +143,69 @@ namespace Gobchat.LogConverter
         {
             var idx = line.IndexOf(":");
             return line.Substring(idx + 1).Trim();
-        }
-
-        private ILogParser GetParser(string id)
-        {
-            switch (id)
-            {
-                case "ACTv1":
-                    return new ACTv1LogParser();
-
-                case "FCLv1":
-                    return new FCLv1LogParser();
-
-                default:
-                    return null;
-            }
-        }
-
-        private ILogFormater GetFormater(string id)
-        {
-            switch (id)
-            {
-                case "ACTv1":
-                    return new ACTv1Formater();
-
-                case "FCLv1":
-                    return new FCLv1Formater();
-
-                default:
-                    return null;
-            }
-        }
+        }     
     }
 
-    internal sealed class LogConverterOptions
+    public sealed class LogConverterManager
+    {
+        private readonly IDictionary<string, Func<ILogParser>> _parsers = new Dictionary<string, Func<ILogParser>>();
+        private readonly IDictionary<string, Func<ILogFormater>> _formaters = new Dictionary<string, Func<ILogFormater>>();
+
+        public LogConverterManager()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var selection = from type in assembly.GetTypes().AsParallel()
+                            where type.Namespace != null && type.Namespace.StartsWith("Gobchat.LogConverter.Logs")
+                            let attributes = type.GetCustomAttributes(typeof(LogAttribute), true)
+                            where attributes != null && attributes.Length > 0
+                            select new { Type = type, Attributes = attributes.Cast<LogAttribute>() };
+
+
+            foreach (var value in selection)
+            {
+                if(typeof(ILogFormater).IsAssignableFrom(value.Type))
+                {
+                    var factory = Expression.Lambda<Func<ILogFormater>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
+                    foreach (var attribute in value.Attributes)
+                        _formaters.Add(attribute.LoggerId, factory);                    
+                }
+                if(typeof(ILogParser).IsAssignableFrom(value.Type))
+                {
+                    var factory = Expression.Lambda<Func<ILogParser>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
+                    foreach (var attribute in value.Attributes)
+                        _parsers.Add(attribute.LoggerId, factory);
+                }
+            }
+        }
+
+        public string[] GetFormaters()
+        {
+            return _formaters.Keys.ToArray();
+        }
+
+        public ILogFormater GetFormater(string id)
+        {
+            if (_formaters.TryGetValue(id, out var factory))
+                return factory.Invoke();
+            return null;            
+        }
+
+        public ILogParser GetParser(string id)
+        {
+            if (_parsers.TryGetValue(id, out var factory))
+                return factory.Invoke();
+            return null;
+        }
+
+    }
+
+    public sealed class LogConverterOptions
     {
         public bool ReplaceOldLog { get; set; } = false;
         public string ConvertTo { get; set; } = "FCLv1";
     }
 
-    internal sealed class Entry
+    public sealed class Entry
     {
         public DateTime Time { get; set; }
 
@@ -185,9 +216,24 @@ namespace Gobchat.LogConverter
         public string Message { get; set; } = "";
     }
 
-    #region parser
+   
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+    public class LogAttribute : Attribute
+    {
+        public string LoggerId { get; }
 
-    internal interface ILogParser
+        public LogAttribute(string loggerId)
+        {
+            LoggerId = loggerId;
+        }
+    }
+
+    public interface ILogFormater
+    {
+        string Format(Entry entry);
+    }
+
+    public interface ILogParser
     {
         bool NeedMore { get; }
 
@@ -196,185 +242,9 @@ namespace Gobchat.LogConverter
         IEnumerable<Entry> GetResults();
     }
 
-    internal sealed class ACTv1LogParser : ILogParser
-    {
-        private List<Entry> _results = new List<Entry>();
-        private readonly Regex _regex = new Regex(@"^\d{2}\|(?<time>.+)\|(?<channel>[0-9a-fA-F]+)\|(?<source>.+)?\|(?<msg>.+)?\|$");
 
-        public bool NeedMore { get; private set; } = false;
 
-        public IEnumerable<Entry> GetResults()
-        {
-            var results = _results;
-            _results = new List<Entry>();
-            return results;
-        }
 
-        public void Read(string line)
-        {
-            var match = _regex.Match(line);
-            if (!match.Success)
-                return;
 
-            var timeGroup = match.Groups["time"];
-            var channelGroup = match.Groups["channel"];
-            var sourceGroup = match.Groups["source"];
-            var messageGroup = match.Groups["msg"];
-            var channelValue = Int32.Parse(channelGroup.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 
-            var entry = new Entry()
-            {
-                Time = DateTime.ParseExact(timeGroup.Value, "o", CultureInfo.InvariantCulture),
-                Channel = GetChannel(channelValue)
-            };
-
-            if (sourceGroup.Success)
-                entry.Source = sourceGroup.Value;
-            if (messageGroup.Success)
-                entry.Message = messageGroup.Value;
-
-            _results.Add(entry);
-        }
-
-        private static ChatChannel GetChannel(int value)
-        {
-            // special cases, they were removed from FFXIVChatChannel, because they are Gobchat specific
-            if (value == 0x01FFFF)
-                return ChatChannel.GobchatInfo;
-            if (value == 0x02FFFF)
-                return ChatChannel.GobchatError;
-
-            var ffxivChannel = (FFXIVChatChannel)value;
-            var data = GobchatChannelMapping.GetChannel(ffxivChannel);
-            return data.ChatChannel;
-        }
-    }
-
-    internal sealed class FCLv1LogParser : ILogParser
-    {
-        private List<Entry> _results = new List<Entry>();
-        private Entry _entry;
-
-        private readonly Regex _headerRegex = new Regex(@"^(?<channel>[a-zA-Z0-9_]+)\s+\[(?<time>.*)\]\s+(?<source>.*)?:$");
-
-        public bool NeedMore { get => _entry != null; }
-
-        public IEnumerable<Entry> GetResults()
-        {
-            var results = _results;
-            _results = new List<Entry>();
-            return results;
-        }
-
-        public void Read(string line)
-        {
-            if (_entry == null)
-            {
-                var match = _headerRegex.Match(line);
-                if (!match.Success)
-                    return;
-
-                var timeGroup = match.Groups["time"];
-                var channelGroup = match.Groups["channel"];
-                var sourceGroup = match.Groups["source"];
-
-                _entry = new Entry()
-                {
-                    Time = DateTime.ParseExact(timeGroup.Value, "yyyy'-'MM'-'dd' 'HH':'mm':'ssK", CultureInfo.InvariantCulture),
-                    Channel = GetChannel(channelGroup.Value)
-                };
-
-                if (sourceGroup.Success)
-                    _entry.Source = sourceGroup.Value;
-            }
-            else
-            {
-                _entry.Message = line;
-                _results.Add(_entry);
-                _entry = null;
-            }
-        }
-
-        private static ChatChannel GetChannel(string value)
-        {
-            if (value == null || value.Length == 0)
-                return ChatChannel.None;
-
-            value = value.ToUpperInvariant();
-
-            if (Enum.TryParse<ChatChannel>(value, true, out var gobChannel)) // will work for all logs which uses the new channel names
-                return gobChannel;
-
-            // special cases, they were removed from FFXIVChatChannel, because they are Gobchat specific
-            if ("GOBCHAT_INFO".Equals(value))
-                return ChatChannel.GobchatInfo;
-            if ("GOBCHAT_ERROR".Equals(value))
-                return ChatChannel.GobchatError;
-
-            if (!Enum.TryParse<FFXIVChatChannel>(value, true, out var ffxivChannel)) // logs before 1.7.0 use the ffxiv chat channel names
-                return ChatChannel.None; //no clue what's going on, may be corrupt
-
-            var data = GobchatChannelMapping.GetChannel(ffxivChannel);
-            return data.ChatChannel;
-        }
-    }
-
-    #endregion parser
-
-    #region formater
-
-    internal interface ILogFormater
-    {
-        string Format(Entry entry);
-    }
-
-    internal class FCLv1Formater : ILogFormater
-    {
-        private readonly StringBuilder _builder = new StringBuilder();
-
-        public string Format(Entry entry)
-        {
-            try
-            {
-                _builder.Append(entry.Channel).Append(" ");
-                var timeConverted = entry.Time.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ssK", CultureInfo.InvariantCulture);
-                _builder.Append("[").Append(timeConverted).Append("] ");
-                _builder.Append(entry.Source).AppendLine(":");
-                _builder.AppendLine(entry.Message);
-                var formatedLine = _builder.ToString();
-                return formatedLine;
-            }
-            finally
-            {
-                _builder.Clear();
-            }
-        }
-    }
-
-    internal class ACTv1Formater : ILogFormater
-    {
-        public string Format(Entry entry)
-        {
-            var channel = GetChannel(entry.Channel); // loss of data in some cases
-            return $"00|{entry.Time.ToString("o", CultureInfo.InvariantCulture)}|{((int)channel).ToString("x4", CultureInfo.InvariantCulture)}|{entry.Source}|{entry.Message}|";
-        }
-
-        public static int GetChannel(ChatChannel channel)
-        {
-            switch (channel)
-            {
-                case ChatChannel.GobchatInfo:
-                    return 0x01FFFF;
-
-                case ChatChannel.GobchatError:
-                    return 0x02FFFF;
-
-                default:
-                    var channelData = GobchatChannelMapping.GetChannel(channel); // loss of data in some cases
-                    return (int)(channelData.ClientChannel.Length == 0 ? 0 : channelData.ClientChannel[0]);
-            }
-        }
-    }
-
-    #endregion formater
 }
