@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gobchat.Core.Chat;
@@ -58,6 +59,36 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             }
         }
 
+        private sealed class ChannelNamePaddedLeftFormater : IFormater
+        {
+            private static readonly int _characters;
+
+            static ChannelNamePaddedLeftFormater()
+            {
+                _characters = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>().Select(e => e.ToString().Length).Max();
+            }
+
+            public string Format(ChatMessage msg)
+            {
+                return msg.Channel.ToString().PadLeft(_characters);
+            }
+        }
+
+        private sealed class ChannelNamePaddedRightFormater : IFormater
+        {
+            private static readonly int _characters;
+
+            static ChannelNamePaddedRightFormater()
+            {
+                _characters = Enum.GetValues(typeof(ChatChannel)).Cast<ChatChannel>().Select(e => e.ToString().Length).Max();
+            }
+
+            public string Format(ChatMessage msg)
+            {
+                return msg.Channel.ToString().PadRight(_characters);
+            }
+        }
+
         private sealed class SenderFormater : IFormater
         {
             public string Format(ChatMessage msg)
@@ -93,6 +124,8 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             FormaterByName.Add("TIME-FULL", new TimeFullFormater());
             FormaterByName.Add("DATE", new DateFormater());
             FormaterByName.Add("CHANNEL", new ChannelNameFormater());
+            FormaterByName.Add("CHANNEL-PADL", new ChannelNamePaddedLeftFormater());
+            FormaterByName.Add("CHANNEL-PADR", new ChannelNamePaddedRightFormater());
             FormaterByName.Add("SENDER", new SenderFormater());
             FormaterByName.Add("MESSAGE", new MessageFormater());
             FormaterByName.Add("BREAK", new BreakFormater());
@@ -119,7 +152,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
                 Flush();
 
-                var matches = Regex.Matches(format, @"\$(?<name>[\w_-]+)");
+                var matches = Regex.Matches(format, @"\$(?<name>\w+([_-]\w+)*)");
                 var formaters = new List<IFormater>();
 
                 var templateBuilder = new StringBuilder();
