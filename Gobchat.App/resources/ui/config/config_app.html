@@ -57,44 +57,56 @@
                 </div>
 
                 <div class="gob-config-group-item">
-                    <div>
-                        <div data-gob-locale-text="config.app.chatlog.path"
-                             data-gob-locale-title="config.app.chatlog.path.tooltip">
-                        </div>
-                        <input type="text" id="capp_chatlog_path"
-                               style="width:400px;"
-                               data-gob-configkey="behaviour.chatlog.path"
-                               data-gob-locale-title="config.app.chatlog.path.tooltip" />
-                        <button class="gob-button-tertiary" id="capp_chatlog_path_select"
-                                data-gob-locale-title="config.app.chatlog.pathselect.tooltip">
-                            <i class="fas fa-file"></i>
-                        </button>
-                        <button class="gob-button-tertiary gob-button-reset" id="capp_chatlog_path_reset"
-                                data-gob-locale-title="config.main.button.reset.tooltip">
-                            <i class="fas fa-undo-alt"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="gob-config-group-item">
-                    <div>
-                        <div data-gob-locale-text="config.app.chatlog.format"
-                             data-gob-locale-title="config.app.chatlog.format.tooltip">
-                        </div>
-                        <input type="text" id="capp_chatlog_format"
-                               style="width:400px;"
-                               data-gob-configkey="behaviour.chatlog.format"
-                               data-gob-locale-title="config.app.chatlog.format.tooltip" />
-                        <button class="gob-button-tertiary gob-button-reset" id="capp_chatlog_format_reset"
-                                data-gob-locale-title="config.main.button.reset.tooltip">
-                            <i class="fas fa-undo-alt"></i>
-                        </button>
-                        <select type="text" class="gob-dropdown" id="capp_chatlog_format_selector"
-                                data-gob-configkey="behaviour.chatlog.format"
-                                data-gob-locale-title="config.app.chatlog.format.tooltip">
-                            <!-- <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option> -->
-                        </select>
-                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <div data-gob-locale-text="config.app.chatlog.path"
+                                     data-gob-locale-title="config.app.chatlog.path.tooltip">
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" id="capp_chatlog_path"
+                                       style="width:400px;"
+                                       data-gob-configkey="behaviour.chatlog.path"
+                                       data-gob-locale-title="config.app.chatlog.path.tooltip" />
+                            </td>
+                            <td>
+                                <button class="gob-button-tertiary" id="capp_chatlog_path_select"
+                                        data-gob-locale-title="config.app.chatlog.pathselect.tooltip">
+                                    <i class="fas fa-file"></i>
+                                </button>
+                                <button class="gob-button-tertiary gob-button-reset" id="capp_chatlog_path_reset"
+                                        data-gob-locale-title="config.main.button.reset.tooltip">
+                                    <i class="fas fa-undo-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div data-gob-locale-text="config.app.chatlog.format"
+                                     data-gob-locale-title="config.app.chatlog.format.tooltip">
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" id="capp_chatlog_format"
+                                       style="width:400px;"
+                                       data-gob-configkey="behaviour.chatlog.format"
+                                       data-gob-locale-title="config.app.chatlog.format.tooltip" />
+                            </td>
+                            <td>
+                                <select type="text" class="gob-dropdown" id="capp_chatlog_format_selector"
+                                        data-gob-configkey="behaviour.chatlog.format"
+                                        data-gob-locale-title="config.app.chatlog.format.tooltip">
+                                    <option value="" data-gob-locale-text="config.app.chatlog.format.selector.custom"></option>
+                                    <option value="$channel [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.default"></option>
+                                    <option value="$channel [$date $time] $sender:$break$message" data-gob-locale-text="config.app.chatlog.format.selector.newline"></option>
+                                    <option value="$channel-padl [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.padleft"></option>
+                                    <option value="$channel-padr [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.padright"></option>
+                                    <!-- <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option> -->
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 
