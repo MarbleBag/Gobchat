@@ -60,9 +60,6 @@ namespace Gobchat.Memory
         /// </summary>
         public event EventHandler<ProcessChangeEventArgs> OnProcessChanged;
 
-        [Obsolete]
-        public event EventHandler OnProcessScanned;
-
         /// <summary>
         /// Fired when the currently tracked FFXIV window is moved into the foreground or into the background
         /// </summary>
