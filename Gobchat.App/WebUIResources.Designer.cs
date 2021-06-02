@@ -63,7 +63,7 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;
         ///A chat overlay for FFXIV with the goal to provide a better experience for roleplayers. &lt;br/&gt;
-        ///For FFXIV 5.2
+        ///For FFXIV 5.5
         ///&lt;/p&gt;&lt;p&gt;
         ///Contact via github.
         ///&lt;/p&gt;&lt;p&gt;
@@ -92,6 +92,69 @@ namespace Gobchat {
         internal static string config_app_chatbox_backgroundcolor_tooltip {
             get {
                 return ResourceManager.GetString("config.app.chatbox.backgroundcolor.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log format.
+        /// </summary>
+        internal static string config_app_chatlog_format {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom format.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_custom {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default format.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_default {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New line.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_newline {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.newline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel name padded left.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_padleft {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.padleft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel name padded right.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_padright {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.padright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_app_chatlog_format_tooltip {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.tooltip", resourceCulture);
             }
         }
         
@@ -731,6 +794,15 @@ namespace Gobchat {
         internal static string config_channel_tbl_backgroundcolor {
             get {
                 return ResourceManager.GetString("config.channel.tbl.backgroundcolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        internal static string config_channel_tbl_log {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.log", resourceCulture);
             }
         }
         
@@ -2620,7 +2692,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added {0} to group [{1}]{2}.
+        ///   Looks up a localized string similar to Added {0} to group [{1}] {2}.
         /// </summary>
         internal static string main_cmdmanager_cmd_group_add {
             get {
@@ -2629,7 +2701,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is already in group [{1}]{2}.
+        ///   Looks up a localized string similar to {0} is already in group [{1}] {2}.
         /// </summary>
         internal static string main_cmdmanager_cmd_group_grouped {
             get {
@@ -2667,7 +2739,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group [{0}]{1} does not support player names..
+        ///   Looks up a localized string similar to Group [{0}] {1} does not support player names..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_invalid_nosupport {
             get {
@@ -2676,7 +2748,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is not in group [{1}]{2}..
+        ///   Looks up a localized string similar to {0} is not in group [{1}] {2}..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_notgrouped {
             get {
@@ -2685,7 +2757,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed {0} to group [{1}]{2}..
+        ///   Looks up a localized string similar to Removed {0} to group [{1}] {2}..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_remove {
             get {
@@ -2694,7 +2766,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed all players from group [{0}]{1}..
+        ///   Looks up a localized string similar to Removed all players from group [{0}] {1}..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_remove_all {
             get {

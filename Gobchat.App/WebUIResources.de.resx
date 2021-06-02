@@ -120,12 +120,12 @@
   <data name="config.about.text" xml:space="preserve">
     <value>&lt;p&gt;
 Ein Chat Overlay für FFXIV, mit dem Ziel eine bessere Chat-Übersicht für Rollenspieler zu bieten. &lt;br/&gt; 
-Für FFXIV 5.2
+Für FFXIV 5.5
 &lt;/p&gt;&lt;p&gt;
 Kontakt über Github.
 &lt;/p&gt;&lt;p&gt;
 Willst du selbst etwas beitragen oder einen Blick auf den Quellcode von Gobchat werfen? &lt;br/&gt;
-Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobchat
+Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
 &lt;/p&gt;</value>
   </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
@@ -835,10 +835,10 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Größe und Position vom Overlay wird zurückgesetzt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
-    <value>{0} zur Gruppe [{1}]{2} hinzugefügt.</value>
+    <value>{0} zur Gruppe [{1}] {2} hinzugefügt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.grouped" xml:space="preserve">
-    <value>{0} ist bereits in Gruppe [{1}]{2}.</value>
+    <value>{0} ist bereits in Gruppe [{1}] {2}.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.cmd" xml:space="preserve">
     <value>Kommando 'group' wie folgt verwenden: 
@@ -852,16 +852,16 @@ group Gruppen-Nummer clear</value>
     <value>Spieler '{0}' nicht erkannt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.nosupport" xml:space="preserve">
-    <value>Der Gruppe [{0}]{1} können keine Spieler hinzugefügt werden.</value>
+    <value>Der Gruppe [{0}] {1} können keine Spieler hinzugefügt werden.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.notgrouped" xml:space="preserve">
-    <value>{0} ist nicht in Gruppe [{1}]{2}.</value>
+    <value>{0} ist nicht in Gruppe [{1}] {2}.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.remove" xml:space="preserve">
-    <value>{0} aus Gruppe [{1}]{2} entfernt.</value>
+    <value>{0} aus Gruppe [{1}] {2} entfernt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.remove.all" xml:space="preserve">
-    <value>Alle Charakter aus Gruppe [{0}]{1} entfernt.</value>
+    <value>Alle Charakter aus Gruppe [{0}] {1} entfernt.</value>
   </data>
   <data name="main.cmdmanager.cmd.profile.load" xml:space="preserve">
     <value>Aktiviere Profil {0}.</value>
