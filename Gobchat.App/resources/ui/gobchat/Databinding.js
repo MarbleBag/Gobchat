@@ -185,6 +185,12 @@ var GobConfigHelper = (function (module, undefined) {
         }
 
         bindConfigListener(configKey, callback) {
+            if (typeof configKey !== 'string')
+                configKey = module.getConfigKey(configKey)
+
+            if (configKey === null || configKey === undefined)
+                throw new Error("'configKey' is null")
+
             const config = this._config
             const onConfigChange = () => callback(config.get(configKey, null))
 
