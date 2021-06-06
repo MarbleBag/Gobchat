@@ -130,13 +130,13 @@ namespace Gobchat.LogConverter.Logs.CCL
                             regexBuilder.Append(@"(?<date>\d{4}-\d{2}-\d{2})");
                             break;
                         case "CHANNEL":
-                            regexBuilder.Append(@"(?<channel>[\w_]+)");
+                            regexBuilder.Append(@"(?<channel>[\w_]+?)");
                             break;
                         case "CHANNEL-PADL":
-                            regexBuilder.Append(@"\s*?(?<channel>[\w_]+)");
+                            regexBuilder.Append(@"\s*?(?<channel>[\w_]+?)");
                             break;
                         case "CHANNEL-PADR":
-                            regexBuilder.Append(@"(?<channel>[\w_]+)\s*?");
+                            regexBuilder.Append(@"(?<channel>[\w_]+?)\s*?");
                             break;
                         case "SENDER":
                             regexBuilder.Append(@"(?<sender>.+?)");
