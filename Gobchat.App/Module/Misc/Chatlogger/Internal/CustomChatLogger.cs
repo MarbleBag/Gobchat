@@ -35,6 +35,14 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             }
         }
 
+        private sealed class TimeShortFormater : IFormater
+        {
+            public string Format(ChatMessage msg)
+            {
+                return msg.Timestamp.ToString("HH':'mm", System.Globalization.CultureInfo.InvariantCulture);
+            }
+        }
+
         private sealed class TimeFullFormater : IFormater
         {
             public string Format(ChatMessage msg)
@@ -121,6 +129,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
         static CustomChatLogger()
         {
             FormaterByName.Add("TIME", new TimeFormater());
+            FormaterByName.Add("TIME-SHORT", new TimeShortFormater());            
             FormaterByName.Add("TIME-FULL", new TimeFullFormater());
             FormaterByName.Add("DATE", new DateFormater());
             FormaterByName.Add("CHANNEL", new ChannelNameFormater());
@@ -152,7 +161,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
                 Flush();
 
-                var matches = Regex.Matches(format, @"\$(?<name>\w+([_-]\w+)*)");
+                var matches = Regex.Matches(format, @"{(?<name>\w+([_-]\w+)*)}");
                 var formaters = new List<IFormater>();
 
                 var templateBuilder = new StringBuilder();
