@@ -139,7 +139,7 @@ namespace Gobchat.LogConverter.Logs.CCL
                             regexBuilder.Append(@"(?<channel>[\w_]+)\s*?");
                             break;
                         case "SENDER":
-                            regexBuilder.Append(@"(?<sender>[\w -]+)");
+                            regexBuilder.Append(@"(?<sender>.+?)");
                             break;
                         case "MESSAGE":
                             regexBuilder.Append(@"(?<msg>.+?)");
