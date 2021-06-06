@@ -118,7 +118,20 @@ namespace Gobchat.LogConverter
                     }
 
                     var converter = new LogConverter(_manager);
-                    converter.ConvertLog(selectedFile, logConverterOptions, progressMonitor);
+                    var formater = _manager.GetFormater(cbFormater.Text);
+                    var result = converter.ConvertLog(selectedFile, formater, progressMonitor);
+
+                    if (!ckbReplaceOldLog.Checked)
+                    {
+                        var idx = selectedFile.LastIndexOf(".");
+                        if (idx < 0)
+                            selectedFile += $".{formater.Id}.log";
+                        else
+                            selectedFile = selectedFile.Substring(0, idx) + $".{formater.Id}" + selectedFile.Substring(idx);
+                    }
+
+                    progressMonitor.Log($"Saving log: {selectedFile}");
+                    File.WriteAllLines(selectedFile, result, System.Text.Encoding.UTF8);
                 }
             }
             catch (Exception ex)
