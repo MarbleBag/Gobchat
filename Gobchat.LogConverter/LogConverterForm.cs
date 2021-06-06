@@ -21,6 +21,7 @@ namespace Gobchat.LogConverter
     public partial class LogConverterForm : Form
     {
         private readonly LogConverterManager _manager;
+        private LogFormaterContainer _chosenFormater;
 
         public LogConverterForm()
         {
@@ -72,7 +73,15 @@ namespace Gobchat.LogConverter
 
         private void OnEvent_cbFormater_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //TODO show settings!
+            this.SuspendLayout();
+            settingPanel.Controls.Clear();
+            _chosenFormater = _manager.GetFormater(cbFormater.Text);
+            if (_chosenFormater.Settings != null)
+            {
+                //_chosenFormater.Settings.Dock = System.Windows.Forms.DockStyle.Fill;
+                settingPanel.Controls.Add(_chosenFormater.Settings);
+            }
+            this.ResumeLayout(true);
         }
 
         private void OnEvent_btnCancel_Clicked(object sender, EventArgs e)
@@ -96,13 +105,6 @@ namespace Gobchat.LogConverter
             {
                 using (var progressMonitor = new ProgressMonitorAdapter(this))
                 {
-                    var logConverterOptions = new LogConverterOptions()
-                    {
-                        ReplaceOldLog = ckbReplaceOldLog.Checked,
-                    };
-
-                    logConverterOptions.ConvertTo = cbFormater.Text;
-
                     var selectedFile = txtFileSelection.Text ?? "";
                     selectedFile = selectedFile.Trim();
                     if (selectedFile.Length == 0)
@@ -118,16 +120,15 @@ namespace Gobchat.LogConverter
                     }
 
                     var converter = new LogConverter(_manager);
-                    var formater = _manager.GetFormater(cbFormater.Text);
-                    var result = converter.ConvertLog(selectedFile, formater, progressMonitor);
+                    var result = converter.ConvertLog(selectedFile, _chosenFormater, progressMonitor);
 
                     if (!ckbReplaceOldLog.Checked)
                     {
                         var idx = selectedFile.LastIndexOf(".");
                         if (idx < 0)
-                            selectedFile += $".{formater.Id}.log";
+                            selectedFile += $".{_chosenFormater.Id}.log";
                         else
-                            selectedFile = selectedFile.Substring(0, idx) + $".{formater.Id}" + selectedFile.Substring(idx);
+                            selectedFile = selectedFile.Substring(0, idx) + $".{_chosenFormater.Id}" + selectedFile.Substring(idx);
                     }
 
                     progressMonitor.Log($"Saving log: {selectedFile}");

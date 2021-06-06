@@ -71,11 +71,21 @@
     <Compile Include="LogConverterForm.Designer.cs">
       <DependentUpon>LogConverterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logs\CCL\CCLv1.cs" />
+    <Compile Include="Logs\CCL\Settings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Logs\CCL\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logs\FCL\FCLv1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="LogConverterForm.resx">
       <DependentUpon>LogConverterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Logs\CCL\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

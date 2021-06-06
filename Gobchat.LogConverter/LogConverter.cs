@@ -19,6 +19,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Gobchat.LogConverter
 {
@@ -26,130 +27,124 @@ namespace Gobchat.LogConverter
     {
         private readonly LogConverterManager _manager;
 
-        private ILogParser _parser;
-        private ILogFormater _formater;
-       
+        private string _file;
+        private ProgressMonitorAdapter _monitor;
+
+        private LogParserContainer _parserContainer;
+        private LogFormaterContainer _formaterContainer;
+
+        private IList<string> _result;
+
         public LogConverter(LogConverterManager manager)
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
         }
 
-        public void ConvertLog(string file, LogConverterOptions options, ProgressMonitorAdapter monitor)
+        public IEnumerable<string> ConvertLog(string file, LogFormaterContainer formater, ProgressMonitorAdapter monitor)
         {
-            if (file == null) throw new ArgumentNullException(nameof(file));
-            if (options == null) throw new ArgumentNullException(nameof(options));
-            if (monitor == null) throw new ArgumentNullException(nameof(monitor));
+            _file = file ?? throw new ArgumentNullException(nameof(file));
+            _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            _formaterContainer = formater ?? throw new ArgumentNullException(nameof(formater));
 
-            monitor.Progress = 0;
-            monitor.Log("Read file");
+            try
+            {
+                ConvertLog();
+                var result = _result;
+                return result;
+            }
+            finally
+            {
+                _file = null;
+                _monitor = null;
+                _parserContainer = null;
+                _formaterContainer = null;
+                _result = null;
+            }
+        }
 
-            var lines = File.ReadAllLines(file);
-            monitor.Log($"{lines.Length} lines read");
+        private void ConvertLog()
+        {
+            _result = new List<string>();
+            _monitor.Progress = 0;
+
+            var lines = ReadFile();
             if (lines.Length == 0)
-            {
-                monitor.Log("File empty");
                 return;
-            }
 
-            var startIdx = 0;
-            var loggerId = "ACTv1";
+            _result.Add($"Chatlogger Id: {_formaterContainer.Id}");
+            _parserContainer = _manager.GetParser("ACTv1"); //act logs don't have an id, so this will be the default parser.
 
-            if (HasLoggerId(lines[0]))
+            for (var lineIdx = 0; lineIdx < lines.Length; ++lineIdx)
             {
-                startIdx = 1;
-                loggerId = GetLoggerId(lines[0]);
-            }
+                _monitor.Progress = lineIdx / lines.Length;
+                var line = lines[lineIdx];
 
-            if (loggerId.Equals(options.ConvertTo))
-            {
-                monitor.Log("Log already converted");
-                return;
-            }
-
-            _parser = _manager.GetParser(loggerId);
-            _formater = _manager.GetFormater(options.ConvertTo);
-
-            if (_parser == null)
-            {
-                monitor.Log($"No parser for logger type: {loggerId}");
-                return;
-            }
-
-            if (_formater == null)
-            {
-                monitor.Log($"No formater for logger type: {options.ConvertTo}");
-                return;
-            }
-
-            monitor.Log($"Converting from {loggerId} to {options.ConvertTo} ...");
-            var workRemaining = lines.Length - startIdx;
-            var workDone = 0;
-            var result = new List<string>()
-            {
-                $"Chatlogger Id: {options.ConvertTo}"
-            };
-
-            var lineIdx = 0;
-            foreach (var line in lines.Skip(startIdx))
-            {
                 try
                 {
-                    _parser.Read(line);
-                    workDone += 1;
+                    if (CheckForParseCommands(line))
+                        continue;
 
-                    if (!_parser.NeedMore)
-                    {
-                        var parsedLines = _parser.GetResults();
-                        foreach (var parsedLine in parsedLines)
-                        {
-                            var linesToWrite = _formater.Format(parsedLine);
-                            result.Add(linesToWrite);
-                        }
-                    }
+                    if (_parserContainer == null)
+                        continue;                    
 
-                    monitor.Progress = workDone / workRemaining;
-                    lineIdx += 1;
+                    var parser = _parserContainer.Parser;
+                    var formater = _formaterContainer.Formater;
+
+                    parser.Read(line);
+
+                    if (!parser.NeedMore)                    
+                        foreach (var parsedLine in parser.GetResults().Select(e => formater.Format(e)).SelectMany(e => e))
+                            _result.Add(parsedLine);                    
+
+                    if (parser.ReparseLines > 0)
+                        lineIdx = Math.Max(0, lineIdx - parser.ReparseLines);
                 }
                 catch (Exception ex)
                 {
-                    monitor.Log($"Error in line {lineIdx}: {line}");
+                    _monitor.Log($"Error in line {lineIdx}: {line}");
+                    _monitor.Log(ex.Message);
                     throw;
                 }
             }
 
-            if (_parser.NeedMore)
-                monitor.Log("Log incomplete");
+            if (_parserContainer.Parser.NeedMore)
+                _monitor.Log("Log incomplete");
 
-            var targetFile = file;
-            if (!options.ReplaceOldLog)
+            _monitor.Progress = 1;
+        }
+
+        private string[] ReadFile()
+        {
+            _monitor.Progress = 0;
+            _monitor.Log("Read file");
+            var fileLines = File.ReadAllLines(_file);
+            _monitor.Log($"{fileLines.Length} lines read");
+            if (fileLines.Length == 0)            
+                _monitor.Log("File empty");
+            return fileLines;
+        }
+
+        private bool CheckForParseCommands(string line)
+        {
+            if (line.StartsWith("Chatlogger Id:"))
             {
-                var idx = targetFile.LastIndexOf(".");
-                if (idx < 0)
-                    targetFile += $".{options.ConvertTo}.log";
+                var parserId = line.Substring(line.IndexOf(":") + 1).Trim();
+                _parserContainer = _manager.GetParser(parserId);
+                if (_parserContainer == null)                
+                    _monitor.Log($"No parser for chatlogger id: {parserId}");
                 else
-                    targetFile = targetFile.Substring(0, idx) + $".{options.ConvertTo}" + targetFile.Substring(idx);
+                    _monitor.Log($"Converting from {_formaterContainer.Id} to {_parserContainer.Id} ...");
+                return true;
             }
 
-            monitor.Log($"Saving log: {targetFile}");
-            File.WriteAllLines(targetFile, result, System.Text.Encoding.UTF8);
+            return false;
         }
-
-        private bool HasLoggerId(string line)
-        {
-            return line.StartsWith("Chatlogger Id:");
-        }
-
-        private string GetLoggerId(string line)
-        {
-            var idx = line.IndexOf(":");
-            return line.Substring(idx + 1).Trim();
-        }     
     }
 
     public sealed class LogConverterManager
     {
-        private readonly IDictionary<string, Func<ILogParser>> _parsers = new Dictionary<string, Func<ILogParser>>();
-        private readonly IDictionary<string, Func<ILogFormater>> _formaters = new Dictionary<string, Func<ILogFormater>>();
+        private readonly IDictionary<string, Func<IParser>> _parsers = new Dictionary<string, Func<IParser>>();
+        private readonly IDictionary<string, Func<IFormater>> _formaters = new Dictionary<string, Func<IFormater>>();
 
         public LogConverterManager()
         {
@@ -163,15 +158,15 @@ namespace Gobchat.LogConverter
 
             foreach (var value in selection)
             {
-                if(typeof(ILogFormater).IsAssignableFrom(value.Type))
+                if(typeof(IFormater).IsAssignableFrom(value.Type))
                 {
-                    var factory = Expression.Lambda<Func<ILogFormater>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
+                    var factory = Expression.Lambda<Func<IFormater>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
                     foreach (var attribute in value.Attributes)
                         _formaters.Add(attribute.LoggerId, factory);                    
                 }
-                if(typeof(ILogParser).IsAssignableFrom(value.Type))
+                if(typeof(IParser).IsAssignableFrom(value.Type))
                 {
-                    var factory = Expression.Lambda<Func<ILogParser>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
+                    var factory = Expression.Lambda<Func<IParser>>(Expression.New(value.Type.GetConstructor(Type.EmptyTypes))).Compile();
                     foreach (var attribute in value.Attributes)
                         _parsers.Add(attribute.LoggerId, factory);
                 }
@@ -183,26 +178,34 @@ namespace Gobchat.LogConverter
             return _formaters.Keys.ToArray();
         }
 
-        public ILogFormater GetFormater(string id)
+        public LogFormaterContainer GetFormater(string id)
         {
             if (_formaters.TryGetValue(id, out var factory))
-                return factory.Invoke();
+            {
+                var formater = factory.Invoke();
+                return new LogFormaterContainer()
+                {
+                    Formater = formater,
+                    Id = id,
+                    Settings = (formater as IFormaterWithSettings)?.GetSettingForm()
+                };
+            }
             return null;            
         }
 
-        public ILogParser GetParser(string id)
+        public LogParserContainer GetParser(string id)
         {
             if (_parsers.TryGetValue(id, out var factory))
-                return factory.Invoke();
+            {
+                return new LogParserContainer()
+                {
+                    Parser = factory.Invoke(),
+                    Id = id
+                };
+            }
             return null;
         }
 
-    }
-
-    public sealed class LogConverterOptions
-    {
-        public bool ReplaceOldLog { get; set; } = false;
-        public string ConvertTo { get; set; } = "FCLv1";
     }
 
     public sealed class Entry
@@ -220,7 +223,7 @@ namespace Gobchat.LogConverter
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public class LogAttribute : Attribute
     {
-        public string LoggerId { get; }
+        public string LoggerId { get; }        
 
         public LogAttribute(string loggerId)
         {
@@ -228,18 +231,49 @@ namespace Gobchat.LogConverter
         }
     }
 
-    public interface ILogFormater
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public class LogSettingAttribute : Attribute
     {
-        string Format(Entry entry);
+        public Type Control { get; }
+        public LogSettingAttribute(Type control)
+        {
+            Control = control ?? throw new ArgumentNullException(nameof(control));
+        }
     }
 
-    public interface ILogParser
+    public interface IFormater
+    {
+        IEnumerable<string> Format(Entry entry);
+    }
+
+    public interface IFormaterWithSettings : IFormater
+    {
+        System.Windows.Forms.Control GetSettingForm();
+    }
+
+    public sealed class LogFormaterContainer
+    {
+        public IFormater Formater { get; internal set; }
+        public string Id { get; internal set; }
+        public Control Settings { get; internal set; }
+    }
+
+    public interface IParser
     {
         bool NeedMore { get; }
+
+        int ReparseLines { get; }
 
         void Read(string line);
 
         IEnumerable<Entry> GetResults();
+    }
+
+    public sealed class LogParserContainer
+    {
+        public IParser Parser { get; internal set; }
+
+        public string Id { get; internal set; }
     }
 
 

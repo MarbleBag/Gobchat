@@ -42,6 +42,7 @@
             this.cbFormater = new System.Windows.Forms.ComboBox();
             this.lblFormater = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.settingPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -50,7 +51,7 @@
             // pgbProgress
             // 
             this.pgbProgress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgbProgress.Location = new System.Drawing.Point(3, 121);
+            this.pgbProgress.Location = new System.Drawing.Point(3, 127);
             this.pgbProgress.Maximum = 1000;
             this.pgbProgress.Name = "pgbProgress";
             this.pgbProgress.Size = new System.Drawing.Size(541, 23);
@@ -69,7 +70,7 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(3, 92);
+            this.btnConvert.Location = new System.Drawing.Point(3, 98);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(75, 23);
             this.btnConvert.TabIndex = 3;
@@ -80,12 +81,12 @@
             // txtLog
             // 
             this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLog.Location = new System.Drawing.Point(3, 150);
+            this.txtLog.Location = new System.Drawing.Point(3, 156);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(541, 321);
+            this.txtLog.Size = new System.Drawing.Size(541, 115);
             this.txtLog.TabIndex = 4;
             // 
             // btnFileSelector
@@ -118,10 +119,11 @@
             this.tableLayoutPanel1.Controls.Add(this.btnConvert, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.pgbProgress, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtLog, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.settingPanel, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -150,6 +152,7 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -213,10 +216,20 @@
             this.label1.Text = "Replace old log";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // settingPanel
+            // 
+            this.settingPanel.AutoSize = true;
+            this.settingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingPanel.Location = new System.Drawing.Point(3, 92);
+            this.settingPanel.Name = "settingPanel";
+            this.settingPanel.Size = new System.Drawing.Size(541, 1);
+            this.settingPanel.TabIndex = 11;
+            // 
             // LogConverterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(547, 274);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -247,6 +260,7 @@
         private System.Windows.Forms.ComboBox cbFormater;
         private System.Windows.Forms.Label lblFormater;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel settingPanel;
     }
 }
 

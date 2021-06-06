@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace Gobchat.LogConverter.Logs.FCL
 {
     [LogAttribute("FCLv1")]
-    internal sealed class FCLv1LogParser : ILogParser
+    internal sealed class FCLv1LogParser : IParser
     {
         private List<Entry> _results = new List<Entry>();
         private Entry _entry;
@@ -15,6 +15,8 @@ namespace Gobchat.LogConverter.Logs.FCL
         private readonly Regex _headerRegex = new Regex(@"^(?<channel>[a-zA-Z0-9_]+)\s+\[(?<time>.*)\]\s+(?<source>.*)?:$");
 
         public bool NeedMore { get => _entry != null; }
+
+        public int ReparseLines { get; } = 0;
 
         public IEnumerable<Entry> GetResults()
         {
@@ -77,11 +79,11 @@ namespace Gobchat.LogConverter.Logs.FCL
     }
 
     [LogAttribute("FCLv1")]
-    internal class FCLv1Formater : ILogFormater
+    internal class FCLv1Formater : IFormater
     {
         private readonly StringBuilder _builder = new StringBuilder();
 
-        public string Format(Entry entry)
+        public IEnumerable<string> Format(Entry entry)
         {
             try
             {
@@ -91,7 +93,7 @@ namespace Gobchat.LogConverter.Logs.FCL
                 _builder.Append(entry.Source).AppendLine(":");
                 _builder.AppendLine(entry.Message);
                 var formatedLine = _builder.ToString();
-                return formatedLine;
+                return new string[] { formatedLine };
             }
             finally
             {

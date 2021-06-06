@@ -19,12 +19,13 @@ using System.Text.RegularExpressions;
 namespace Gobchat.LogConverter.Logs.ACT
 {
     [LogAttribute("ACTv1")]
-    public sealed class ACTv1LogParser : ILogParser
+    public sealed class ACTv1Parser : IParser
     {
         private List<Entry> _results = new List<Entry>();
         private readonly Regex _regex = new Regex(@"^\d{2}\|(?<time>.+)\|(?<channel>[0-9a-fA-F]+)\|(?<source>.+)?\|(?<msg>.+)?\|$");
 
-        public bool NeedMore { get; private set; } = false;
+        public bool NeedMore { get; } = false;
+        public int ReparseLines { get; } = 0;
 
         public IEnumerable<Entry> GetResults()
         {
@@ -74,12 +75,12 @@ namespace Gobchat.LogConverter.Logs.ACT
     }
 
     [LogAttribute("ACTv1")]
-    public class ACTv1Formater : ILogFormater
+    public class ACTv1Formater : IFormater
     {
-        public string Format(Entry entry)
+        public IEnumerable<string> Format(Entry entry)
         {
             var channel = GetChannel(entry.Channel); // loss of data in some cases
-            return $"00|{entry.Time.ToString("o", CultureInfo.InvariantCulture)}|{((int)channel).ToString("x4", CultureInfo.InvariantCulture)}|{entry.Source}|{entry.Message}|";
+            return new string[] { $"00|{entry.Time.ToString("o", CultureInfo.InvariantCulture)}|{((int)channel).ToString("x4", CultureInfo.InvariantCulture)}|{entry.Source}|{entry.Message}|" };
         }
 
         public static int GetChannel(ChatChannel channel)
