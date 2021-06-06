@@ -238,7 +238,7 @@
     },
     "chatlog": {
       "active": false,
-      "format": "$channel [$date $time] $sender: $message",
+      "format": "{channel} [{date} {time-full}] {sender}: {message}",
       "path": "log"
     },
     "hideOnMinimize": false,
