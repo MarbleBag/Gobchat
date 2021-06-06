@@ -107,9 +107,9 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
-        internal static string config_app_chatlog_format_selector_compac {
+        internal static string config_app_chatlog_format_selector_compact {
             get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.compac", resourceCulture);
+                return ResourceManager.GetString("config.app.chatlog.format.selector.compact", resourceCulture);
             }
         }
         

@@ -929,7 +929,7 @@ group Gruppen-Nummer clear</value>
   <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
     <value>Kurz</value>
   </data>
-  <data name="config.app.chatlog.format.selector.compac" xml:space="preserve">
+  <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
     <value>Kompakt</value>
   </data>
 </root>

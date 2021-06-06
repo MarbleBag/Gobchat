@@ -1061,7 +1061,7 @@ group groupnumber clear</value>
   <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
     <value>Short</value>
   </data>
-  <data name="config.app.chatlog.format.selector.compac" xml:space="preserve">
+  <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
     <value>Compact</value>
   </data>
 </root>
