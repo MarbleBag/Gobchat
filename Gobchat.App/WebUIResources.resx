@@ -195,7 +195,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Autodetect emotes in say channel</value>
   </data>
   <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
-    <value>When direct speech is marked, everything else will be automatically flagged as emote</value>
+    <value>When direct speech is marked, everything else will be automatically flagged as emote.</value>
   </data>
   <data name="config.app.ckb.mentions" xml:space="preserve">
     <value>Exclude mentions from range filter</value>
@@ -252,7 +252,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Hide &amp;amp; show Gobchat</value>
   </data>
   <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
-    <value>Hides or shows Gobchat on keypress</value>
+    <value>Hides or shows Gobchat on keypress.</value>
   </data>
   <data name="config.app.hotkeys.label" xml:space="preserve">
     <value>Hotkeys</value>
@@ -400,7 +400,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Deletes group</value>
   </data>
   <data name="config.groups.group.ffgroup.info" xml:space="preserve">
-    <value>This group represents an in-game group and will be applied to any player you have marked with {0}</value>
+    <value>This group represents an in-game group and will be applied to any player you have marked with {0}.</value>
     <comment>0: icon</comment>
   </data>
   <data name="config.groups.group.message.background" xml:space="preserve">
@@ -455,7 +455,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Confirm</value>
   </data>
   <data name="config.main.dialog.title.error" xml:space="preserve">
-    <value>An error occured</value>
+    <value>An error occured!</value>
   </data>
   <data name="config.main.nav.about" xml:space="preserve">
     <value>About</value>
@@ -509,19 +509,19 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Time between plays</value>
   </data>
   <data name="config.mentions.audio.interval.tooltip" xml:space="preserve">
-    <value>Amount of seconds which need to pass before a sound will be played again</value>
+    <value>Amount of seconds which need to pass before a sound will be played again.</value>
   </data>
   <data name="config.mentions.audio.path" xml:space="preserve">
     <value>Audio file</value>
   </data>
   <data name="config.mentions.audio.path.tooltip" xml:space="preserve">
-    <value>The audio file needs to be located within the sound folder of gobchat</value>
+    <value>The audio file needs to be located within the sound folder of Gobchat.</value>
   </data>
   <data name="config.mentions.audio.play" xml:space="preserve">
     <value>Play audio</value>
   </data>
   <data name="config.mentions.audio.play.tooltip" xml:space="preserve">
-    <value>Play an audio file whenever a message contains one or more mentions</value>
+    <value>Play an audio file whenever a message contains one or more mentions.</value>
   </data>
   <data name="config.mentions.audio.select.tooltip" xml:space="preserve">
     <value>Select a file</value>
@@ -529,10 +529,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.mentions.audio.test.error" xml:space="preserve">
     <value>Audiofile can't be played.&lt;br/&gt;
 Either the format is not supported or the file can't be found!&lt;br/&gt;
-Make sure to place any sound files you want to use in gobchat under 'resources/sounds'</value>
+Make sure to place any sound files you want to use in Gobchat under 'resources/sounds'.</value>
   </data>
   <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
-    <value>Play audio</value>
+    <value>Play audio.</value>
   </data>
   <data name="config.mentions.audio.volume" xml:space="preserve">
     <value>Audio volume</value>
@@ -548,10 +548,6 @@ Make sure to place any sound files you want to use in gobchat under 'resources/s
   </data>
   <data name="config.mentions.trigger.tooltip" xml:space="preserve">
     <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention</value>
-  </data>
-  <data name="config.missing" xml:space="preserve">
-    <value>Missing '{0}'</value>
-    <comment>0: resource id</comment>
   </data>
   <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
     <value>Select a profile to copy</value>
@@ -570,19 +566,19 @@ Either the format is not supported or the file can't be found/read!</value>
     <value>Activate</value>
   </data>
   <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
-    <value>Makes this the active profile</value>
+    <value>Makes this the active profile.</value>
   </data>
   <data name="config.profiles.profile.clone" xml:space="preserve">
     <value>Clone</value>
   </data>
   <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
-    <value>Creates a copy of this profile</value>
+    <value>Creates a copy of this profile.</value>
   </data>
   <data name="config.profiles.profile.copy" xml:space="preserve">
     <value>Copy from</value>
   </data>
   <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
-    <value>Overwrites this profile with another profile</value>
+    <value>Overwrites this profile with another profile.</value>
   </data>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Delete</value>
@@ -591,7 +587,7 @@ Either the format is not supported or the file can't be found/read!</value>
     <value>Delete this profile? Deletion is final after clicking save.</value>
   </data>
   <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
-    <value>Delete this profile</value>
+    <value>Delete this profile.</value>
   </data>
   <data name="config.profiles.profile.export" xml:space="preserve">
     <value>Export</value>
@@ -607,7 +603,7 @@ Either the format is not supported or the file can't be found/read!</value>
 Restoration is final after clicking save.</value>
   </data>
   <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
-    <value>Restore defaults for this profile</value>
+    <value>Restore defaults for this profile.</value>
   </data>
   <data name="config.profiles.profiles.actions" xml:space="preserve">
     <value>Actions</value>
@@ -626,7 +622,7 @@ Restoration is final after clicking save.</value>
     <comment>0: type, 1: start tokens, 2: end tokens</comment>
   </data>
   <data name="config.roleplay.entry.info" xml:space="preserve">
-    <value>They will be processed from top to down. To reorder them drag and drop the header</value>
+    <value>They will be processed from top to down. To reorder them drag and drop the header.</value>
   </data>
   <data name="config.roleplay.entry.tokenend" xml:space="preserve">
     <value>End</value>
@@ -704,7 +700,7 @@ Restoration is final after clicking save.</value>
     <value>Settings</value>
   </data>
   <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
-    <value>Delete </value>
+    <value>Delete</value>
   </data>
   <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
     <value>Delete entry?</value>
@@ -742,9 +738,6 @@ Restoration is final after clicking save.</value>
   <data name="main.chat.channel.crossworldlinkshell-1.abbreviation" xml:space="preserve">
     <value>CWL1</value>
   </data>
-  <data name="main.chat.channel.crossworldlinkshell-1.short" xml:space="preserve">
-    <value>CWL1</value>
-  </data>
   <data name="main.chat.channel.crossworldlinkshell-1.tooltip" xml:space="preserve">
     <value>/cwl1</value>
   </data>
@@ -752,9 +745,6 @@ Restoration is final after clicking save.</value>
     <value>Cross-world Linkshell 2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.abbreviation" xml:space="preserve">
-    <value>CWL2</value>
-  </data>
-  <data name="main.chat.channel.crossworldlinkshell-2.short" xml:space="preserve">
     <value>CWL2</value>
   </data>
   <data name="main.chat.channel.crossworldlinkshell-2.tooltip" xml:space="preserve">
@@ -944,7 +934,7 @@ Restoration is final after clicking save.</value>
     <value>Random</value>
   </data>
   <data name="main.chat.channel.random.tooltip" xml:space="preserve">
-    <value>/random, use /dice to roll in current channel</value>
+    <value>/random, use /dice to roll in current channel.</value>
   </data>
   <data name="main.chat.channel.say" xml:space="preserve">
     <value>Say</value>
@@ -1001,18 +991,18 @@ Restoration is final after clicking save.</value>
     <value />
   </data>
   <data name="main.cmdmanager.availablecmds" xml:space="preserve">
-    <value>Available commands: {0}</value>
+    <value>Available commands: {0}.</value>
     <comment>0: list of cmds</comment>
   </data>
   <data name="main.cmdmanager.cmd.config.reset.frame" xml:space="preserve">
     <value>Reset overlay size and position.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
-    <value>Added {0} to group [{1}] {2}</value>
+    <value>Added {0} to group [{1}] {2}.</value>
     <comment>0: player name, 1: group idx, 2: group name</comment>
   </data>
   <data name="main.cmdmanager.cmd.group.grouped" xml:space="preserve">
-    <value>{0} is already in group [{1}] {2}</value>
+    <value>{0} is already in group [{1}] {2}.</value>
     <comment>0: player name, 1: group idx, 2: group name</comment>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.cmd" xml:space="preserve">
@@ -1064,7 +1054,14 @@ group groupnumber clear</value>
     <value>Profile command needs a valid profile name. Available profiles are: {0}.</value>
     <comment>0: list of profiles</comment>
   </data>
-  <data name="main.label.missing" xml:space="preserve">
+  <data name="localization.key.missing" xml:space="preserve">
     <value>Missing '{0}'.</value>
+    <comment>0: key id</comment>
+  </data>
+  <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.compac" xml:space="preserve">
+    <value>Compact</value>
   </data>
 </root>

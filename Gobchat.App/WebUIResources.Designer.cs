@@ -105,6 +105,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_compac {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.compac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom format.
         /// </summary>
         internal static string config_app_chatlog_format_selector_custom {
@@ -146,6 +155,15 @@ namespace Gobchat {
         internal static string config_app_chatlog_format_selector_padright {
             get {
                 return ResourceManager.GetString("config.app.chatlog.format.selector.padright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_short {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.short", resourceCulture);
             }
         }
         
@@ -276,7 +294,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote.
+        ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote..
         /// </summary>
         internal static string config_app_ckb_emoteinsay_tooltip {
             get {
@@ -447,7 +465,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hides or shows Gobchat on keypress.
+        ///   Looks up a localized string similar to Hides or shows Gobchat on keypress..
         /// </summary>
         internal static string config_app_hotkeys_hideshow_tooltip {
             get {
@@ -888,7 +906,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This group represents an in-game group and will be applied to any player you have marked with {0}.
+        ///   Looks up a localized string similar to This group represents an in-game group and will be applied to any player you have marked with {0}..
         /// </summary>
         internal static string config_groups_group_ffgroup_info {
             get {
@@ -1050,7 +1068,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured.
+        ///   Looks up a localized string similar to An error occured!.
         /// </summary>
         internal static string config_main_dialog_title_error {
             get {
@@ -1212,7 +1230,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again.
+        ///   Looks up a localized string similar to Amount of seconds which need to pass before a sound will be played again..
         /// </summary>
         internal static string config_mentions_audio_interval_tooltip {
             get {
@@ -1230,7 +1248,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The audio file needs to be located within the sound folder of gobchat.
+        ///   Looks up a localized string similar to The audio file needs to be located within the sound folder of Gobchat..
         /// </summary>
         internal static string config_mentions_audio_path_tooltip {
             get {
@@ -1248,7 +1266,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Play an audio file whenever a message contains one or more mentions.
+        ///   Looks up a localized string similar to Play an audio file whenever a message contains one or more mentions..
         /// </summary>
         internal static string config_mentions_audio_play_tooltip {
             get {
@@ -1268,7 +1286,7 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to Audiofile can&apos;t be played.&lt;br/&gt;
         ///Either the format is not supported or the file can&apos;t be found!&lt;br/&gt;
-        ///Make sure to place any sound files you want to use in gobchat under &apos;resources/sounds&apos;.
+        ///Make sure to place any sound files you want to use in Gobchat under &apos;resources/sounds&apos;..
         /// </summary>
         internal static string config_mentions_audio_test_error {
             get {
@@ -1277,7 +1295,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Play audio.
+        ///   Looks up a localized string similar to Play audio..
         /// </summary>
         internal static string config_mentions_audio_test_tooltip {
             get {
@@ -1331,15 +1349,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;{0}&apos;.
-        /// </summary>
-        internal static string config_missing {
-            get {
-                return ResourceManager.GetString("config.missing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select a profile to copy.
         /// </summary>
         internal static string config_profiles_dialog_copyprofilepage_title {
@@ -1386,7 +1395,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Makes this the active profile.
+        ///   Looks up a localized string similar to Makes this the active profile..
         /// </summary>
         internal static string config_profiles_profile_activate_tooltip {
             get {
@@ -1404,7 +1413,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a copy of this profile.
+        ///   Looks up a localized string similar to Creates a copy of this profile..
         /// </summary>
         internal static string config_profiles_profile_clone_tooltip {
             get {
@@ -1422,7 +1431,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overwrites this profile with another profile.
+        ///   Looks up a localized string similar to Overwrites this profile with another profile..
         /// </summary>
         internal static string config_profiles_profile_copy_tooltip {
             get {
@@ -1449,7 +1458,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete this profile.
+        ///   Looks up a localized string similar to Delete this profile..
         /// </summary>
         internal static string config_profiles_profile_delete_tooltip {
             get {
@@ -1495,7 +1504,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Restore defaults for this profile.
+        ///   Looks up a localized string similar to Restore defaults for this profile..
         /// </summary>
         internal static string config_profiles_profile_reset_tooltip {
             get {
@@ -1549,7 +1558,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header.
+        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
         /// </summary>
         internal static string config_roleplay_entry_info {
             get {
@@ -1783,7 +1792,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete .
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string config_tabs_tabtable_action_delete {
             get {
@@ -1846,6 +1855,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing &apos;{0}&apos;..
+        /// </summary>
+        internal static string localization_key_missing {
+            get {
+                return ResourceManager.GetString("localization.key.missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alliance.
         /// </summary>
         internal static string main_chat_channel_alliance {
@@ -1900,15 +1918,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CWL1.
-        /// </summary>
-        internal static string main_chat_channel_crossworldlinkshell_1_short {
-            get {
-                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-1.short", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to /cwl1.
         /// </summary>
         internal static string main_chat_channel_crossworldlinkshell_1_tooltip {
@@ -1932,15 +1941,6 @@ namespace Gobchat {
         internal static string main_chat_channel_crossworldlinkshell_2_abbreviation {
             get {
                 return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.abbreviation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CWL2.
-        /// </summary>
-        internal static string main_chat_channel_crossworldlinkshell_2_short {
-            get {
-                return ResourceManager.GetString("main.chat.channel.crossworldlinkshell-2.short", resourceCulture);
             }
         }
         
@@ -2503,7 +2503,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /random, use /dice to roll in current channel.
+        ///   Looks up a localized string similar to /random, use /dice to roll in current channel..
         /// </summary>
         internal static string main_chat_channel_random_tooltip {
             get {
@@ -2674,7 +2674,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Available commands: {0}.
+        ///   Looks up a localized string similar to Available commands: {0}..
         /// </summary>
         internal static string main_cmdmanager_availablecmds {
             get {
@@ -2692,7 +2692,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added {0} to group [{1}] {2}.
+        ///   Looks up a localized string similar to Added {0} to group [{1}] {2}..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_add {
             get {
@@ -2701,7 +2701,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is already in group [{1}] {2}.
+        ///   Looks up a localized string similar to {0} is already in group [{1}] {2}..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_grouped {
             get {
@@ -2816,15 +2816,6 @@ namespace Gobchat {
         internal static string main_cmdmanager_cmd_profile_load_invalid {
             get {
                 return ResourceManager.GetString("main.cmdmanager.cmd.profile.load.invalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;{0}&apos;..
-        /// </summary>
-        internal static string main_label_missing {
-            get {
-                return ResourceManager.GetString("main.label.missing", resourceCulture);
             }
         }
     }

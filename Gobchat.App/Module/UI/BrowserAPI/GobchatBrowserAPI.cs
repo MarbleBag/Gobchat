@@ -271,7 +271,7 @@ namespace Gobchat.Module.UI.Internal
 
                     var translation = manager.GetString(requestedId, selectedCulture);
                     if (translation == null)
-                        result.Add(requestedId, StringFormat.Format(WebUIResources.config_missing, requestedId));
+                        result.Add(requestedId, StringFormat.Format(WebUIResources.localization_key_missing, requestedId));
                     else
                         result.Add(requestedId, translation);
                 }

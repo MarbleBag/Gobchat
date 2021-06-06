@@ -147,7 +147,7 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
     <value>Erlaube Beta Updates</value>
   </data>
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
-    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert.</value>
+    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert!</value>
   </data>
   <data name="config.app.ckb.chatlog" xml:space="preserve">
     <value>Chatverlauf speichern</value>
@@ -198,7 +198,7 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
     <value>Sehr groß</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
-    <value>Gobchat ein- &amp;amp; ausblenden </value>
+    <value>Gobchat ein- &amp;amp; ausblenden</value>
   </data>
   <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
     <value>Mit dieser Taste kann Gobchat ein- oder ausgeblendet werden.</value>
@@ -407,7 +407,7 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
     <value>Importiere Profil</value>
   </data>
   <data name="config.profiles.importprofile.error" xml:space="preserve">
-    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft.</value>
+    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft!</value>
   </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Neues Profil</value>
@@ -798,9 +798,6 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="config.main.nav.closegobchat" xml:space="preserve">
     <value>Gobchat beenden</value>
   </data>
-  <data name="config.main.nav.closegobchat.confirm" xml:space="preserve">
-    <value>Gobchat wird beendet. Fortfahren?</value>
-  </data>
   <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
     <value>Chat Hintergrundfarbe</value>
   </data>
@@ -868,5 +865,71 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="main.cmdmanager.cmd.profile.load.invalid" xml:space="preserve">
     <value>Um ein Profil zu laden, wird der korrekte Namen benötigt. Verfügbare Profile: {0}.</value>
+  </data>
+  <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
+    <value>Gobchat wird beendet. Fortfahren?</value>
+  </data>
+  <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
+    <value>Audio abspielen.</value>
+  </data>
+  <data name="config.mentions.mentions.label" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
+    <value>Profil zum Kopieren auswählen</value>
+  </data>
+  <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
+    <value>Aktiviert dieses Profil.</value>
+  </data>
+  <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
+    <value>Erzeugt eine Kopie von diesem Profil.</value>
+  </data>
+  <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
+    <value>Überschreibt dieses Profil mit einem anderen.</value>
+  </data>
+  <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
+    <value>Lösche dieses profil.</value>
+  </data>
+  <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
+    <value>Setzt das Profil zurück.</value>
+  </data>
+  <data name="config.roleplay.entry.tokenend" xml:space="preserve">
+    <value>Ende</value>
+  </data>
+  <data name="config.roleplay.entry.tokenstart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="config.profiles.profiles.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.custom" xml:space="preserve">
+    <value>Benutzerdefiniertes Format</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.default" xml:space="preserve">
+    <value>Standardformat</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.newline" xml:space="preserve">
+    <value>Mit Umbruch</value>
+  </data>
+  <data name="config.app.chatlog.format" xml:space="preserve">
+    <value>Log Format</value>
+  </data>
+  <data name="config.main.dialog.btn.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="config.main.button.refresh.tooltip" xml:space="preserve">
+    <value>Werte updaten</value>
+  </data>
+  <data name="config.main.nav.app" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
+    <value>Aktives Profil auswählen.</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
+    <value>Kurz</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.compac" xml:space="preserve">
+    <value>Kompakt</value>
   </data>
 </root>
