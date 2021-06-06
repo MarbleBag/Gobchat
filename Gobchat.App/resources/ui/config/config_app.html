@@ -98,10 +98,12 @@
                                         data-gob-configkey="behaviour.chatlog.format"
                                         data-gob-locale-title="config.app.chatlog.format.tooltip">
                                     <option value="" data-gob-locale-text="config.app.chatlog.format.selector.custom"></option>
-                                    <option value="$channel [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.default"></option>
-                                    <option value="$channel [$date $time] $sender:$break$message" data-gob-locale-text="config.app.chatlog.format.selector.newline"></option>
-                                    <option value="$channel-padl [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.padleft"></option>
-                                    <option value="$channel-padr [$date $time] $sender: $message" data-gob-locale-text="config.app.chatlog.format.selector.padright"></option>
+                                    <option value="{channel} [{date} {time-full}] {sender}: {message}" data-gob-locale-text="config.app.chatlog.format.selector.default"></option>
+                                    <option value="{channel} [{date} {time}] {sender}: {message}" data-gob-locale-text="config.app.chatlog.format.selector.short"></option>
+                                    <option value="{channel} [{date} {time-full}] {sender}:{break}{message}{break}" data-gob-locale-text="config.app.chatlog.format.selector.newline"></option>
+                                    <option value="{channel-padl} [{date} {time-full}] {sender}: {message}" data-gob-locale-text="config.app.chatlog.format.selector.padleft"></option>
+                                    <option value="{channel-padr} [{date} {time-full}] {sender}: {message}" data-gob-locale-text="config.app.chatlog.format.selector.padright"></option>
+                                    <option value="[{time}] {sender}: {message}" data-gob-locale-text="config.app.chatlog.format.selector.compact"></option>
                                     <!-- <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option> -->
                                 </select>
                             </td>
