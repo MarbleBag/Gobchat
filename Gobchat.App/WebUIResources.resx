@@ -835,7 +835,7 @@ Restoration is final after clicking save.</value>
     <value />
   </data>
   <data name="main.chat.channel.gobchatinfo" xml:space="preserve">
-    <value>Gobchat infos</value>
+    <value>Gobchat info</value>
   </data>
   <data name="main.chat.channel.gobchatinfo.tooltip" xml:space="preserve">
     <value />

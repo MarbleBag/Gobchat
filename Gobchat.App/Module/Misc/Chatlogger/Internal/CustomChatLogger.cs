@@ -22,6 +22,8 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
     public sealed class CustomChatLogger : ChatLoggerBase
     {
+        #region formaters
+
         private interface IFormater
         {
             string Format(ChatMessage msg);
@@ -64,6 +66,15 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             public string Format(ChatMessage msg)
             {
                 return msg.Channel.ToString();
+            }
+        }
+
+        private sealed class ChannelNameTranslatedFormater : IFormater
+        {
+            public string Format(ChatMessage msg)
+            {
+                var data = GobchatChannelMapping.GetChannel(msg.Channel);
+                return WebUIResources.ResourceManager.GetString(data.TranslationId);
             }
         }
 
@@ -139,6 +150,8 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             FormaterByName.Add("MESSAGE", new MessageFormater());
             FormaterByName.Add("BREAK", new BreakFormater());
         }
+
+        #endregion
 
         private IFormater[] _formaters = Array.Empty<IFormater>();
         private object[] _logArgs = Array.Empty<object>();

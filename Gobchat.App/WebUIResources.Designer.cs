@@ -2206,7 +2206,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gobchat infos.
+        ///   Looks up a localized string similar to Gobchat info.
         /// </summary>
         internal static string main_chat_channel_gobchatinfo {
             get {

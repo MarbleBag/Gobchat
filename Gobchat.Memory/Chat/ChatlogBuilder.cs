@@ -150,7 +150,7 @@ namespace Gobchat.Memory.Chat
             var length = src[index] & 0xFF;
             return ExtractData(src, index + 1 /*skip length value*/, length /*always ends on 0x03*/);
         }
-
+        
         private byte[] ExtractData(byte[] src, int index, int length)
         {
             var copy = new byte[length];
