@@ -53,10 +53,15 @@ namespace Gobchat.Memory.Chat
 
             if (result.Count > 0)
             {
-                if (_timestampRead)                
-                    result = result.Where(e => _lastTimestamp < e.TimeStamp).ToList();                
-                else                
-                    _timestampRead = true;                
+                if (_timestampRead)
+                {
+                    var unfilteredCount = result.Count;
+                    result = result.Where(e => _lastTimestamp < e.TimeStamp).ToList();
+                    if (logger.IsDebugEnabled && unfilteredCount > 0 && unfilteredCount != result.Count)
+                        logger.Debug($"Removed {unfilteredCount - result.Count} messages due to expired timestamps");
+                }
+                else
+                    _timestampRead = true;
 
                 _lastTimestamp = result.Select(e => e.TimeStamp).Max().Subtract(TimestampEpsilon);
             }
