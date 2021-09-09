@@ -83,7 +83,7 @@ namespace Gobchat.Module.UI
 
         private sealed class BrowserConfigHandler : IBrowserConfigHandler
         {
-            private AppModuleConfigToUI _module;
+            private readonly AppModuleConfigToUI _module;
 
             public BrowserConfigHandler(AppModuleConfigToUI module)
             {
