@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-##  [1.11.0-1] - 2021.06.20
+##  [1.11.0] - 2021.09.09
 ### Added
 - Chat log
   - Change which channels are logged in `Config / Channel`
