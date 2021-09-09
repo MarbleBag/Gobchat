@@ -57,6 +57,7 @@ namespace Gobchat.Module.Language
                     Thread.CurrentThread.CurrentCulture = e.Locale;
                     Thread.CurrentThread.CurrentUICulture = e.Locale;
                     Resources.Culture = e.Locale;
+                    WebUIResources.Culture = e.Locale;
                 });
             };
 

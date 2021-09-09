@@ -17,11 +17,22 @@ namespace Gobchat.Core.Util.Extension.Queue
     {
         public static System.Collections.Generic.IEnumerable<T> DequeueMultiple<T>(this System.Collections.Concurrent.ConcurrentQueue<T> queue, uint size)
         {
-            for (uint i = 0u; i < size && queue.Count > 0; i++)
+            //  for (uint i = 0u; i < size && queue.Count > 0; i++)
+            //  {
+            //      if (queue.TryDequeue(out T value))
+            //          yield return value;
+            //  }
+
+            var length = (int)System.Math.Min(size, queue.Count);
+            var result = new System.Collections.Generic.List<T>(length);
+            for (int i = 0; i < length; i++)
             {
                 if (queue.TryDequeue(out T value))
-                    yield return value;
+                    result.Add(value);
+                else
+                    break;
             }
+            return result;
         }
     }
 
@@ -29,14 +40,24 @@ namespace Gobchat.Core.Util.Extension.Queue
     {
         public static System.Collections.Generic.IEnumerable<T> DequeueMultiple<T>(this System.Collections.Generic.Queue<T> queue, uint size)
         {
-            for (uint i = 0u; i < size && queue.Count > 0; i++)
-                yield return queue.Dequeue();
+            var result = new T[System.Math.Min(size, queue.Count)];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = queue.Dequeue();
+            return result;
         }
 
         public static System.Collections.Generic.IEnumerable<T> DequeueAll<T>(this System.Collections.Generic.Queue<T> queue)
         {
-            while (queue.Count > 0)
-                yield return queue.Dequeue();
+            var result = new T[queue.Count];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = queue.Dequeue();
+            return result;
+        }
+
+        public static void EnqueueAll<T>(this System.Collections.Generic.Queue<T> queue, System.Collections.Generic.IEnumerable<T> items)
+        {
+            foreach (var item in items)            
+                queue.Enqueue(item);
         }
     }
 }

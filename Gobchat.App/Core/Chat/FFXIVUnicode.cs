@@ -11,9 +11,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using System.Globalization;
-using System.Linq;
-
 namespace Gobchat.Core.Chat
 {
     public sealed class FFXIVUnicode

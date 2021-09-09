@@ -11,17 +11,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+
 using System;
 using System.Collections.Generic;
+using Gobchat.Core.Chat;
 
-namespace Gobchat.Core.Chat
+namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
     public interface IChatLogger : IDisposable
     {
         IEnumerable<ChatChannel> LogChannels { get; set; }
+
         bool Active { get; set; }
 
-        string LogFolder { get; set; }
+        string LogFolder { get; }
+
+        void SetLogFolder(string folder);
 
         void Log(ChatMessage message);
 

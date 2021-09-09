@@ -120,12 +120,12 @@
   <data name="config.about.text" xml:space="preserve">
     <value>&lt;p&gt;
 Ein Chat Overlay für FFXIV, mit dem Ziel eine bessere Chat-Übersicht für Rollenspieler zu bieten. &lt;br/&gt; 
-Für FFXIV 5.2
+Für FFXIV 5.5
 &lt;/p&gt;&lt;p&gt;
 Kontakt über Github.
 &lt;/p&gt;&lt;p&gt;
 Willst du selbst etwas beitragen oder einen Blick auf den Quellcode von Gobchat werfen? &lt;br/&gt;
-Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobchat
+Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
 &lt;/p&gt;</value>
   </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
@@ -147,7 +147,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Erlaube Beta Updates</value>
   </data>
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
-    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert.</value>
+    <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert!</value>
   </data>
   <data name="config.app.ckb.chatlog" xml:space="preserve">
     <value>Chatverlauf speichern</value>
@@ -198,7 +198,7 @@ Dann besuche dieses Projekt auf Github unter https://github.com/MarbleBag/Gobcha
     <value>Sehr groß</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
-    <value>Gobchat ein- &amp;amp; ausblenden </value>
+    <value>Gobchat ein- &amp;amp; ausblenden</value>
   </data>
   <data name="config.app.hotkeys.hideshow.tooltip" xml:space="preserve">
     <value>Mit dieser Taste kann Gobchat ein- oder ausgeblendet werden.</value>
@@ -407,7 +407,7 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
     <value>Importiere Profil</value>
   </data>
   <data name="config.profiles.importprofile.error" xml:space="preserve">
-    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft.</value>
+    <value>Profil kann nicht importiert werden.&lt;br/&gt;Das Format ist fehlerhaft!</value>
   </data>
   <data name="config.profiles.newprofile" xml:space="preserve">
     <value>Neues Profil</value>
@@ -798,9 +798,6 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="config.main.nav.closegobchat" xml:space="preserve">
     <value>Gobchat beenden</value>
   </data>
-  <data name="config.main.nav.closegobchat.confirm" xml:space="preserve">
-    <value>Gobchat wird beendet. Fortfahren?</value>
-  </data>
   <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
     <value>Chat Hintergrundfarbe</value>
   </data>
@@ -835,10 +832,10 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Größe und Position vom Overlay wird zurückgesetzt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.add" xml:space="preserve">
-    <value>{0} zur Gruppe [{1}]{2} hinzugefügt.</value>
+    <value>{0} zur Gruppe [{1}] {2} hinzugefügt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.grouped" xml:space="preserve">
-    <value>{0} ist bereits in Gruppe [{1}]{2}.</value>
+    <value>{0} ist bereits in Gruppe [{1}] {2}.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.cmd" xml:space="preserve">
     <value>Kommando 'group' wie folgt verwenden: 
@@ -852,21 +849,87 @@ group Gruppen-Nummer clear</value>
     <value>Spieler '{0}' nicht erkannt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.nosupport" xml:space="preserve">
-    <value>Der Gruppe [{0}]{1} können keine Spieler hinzugefügt werden.</value>
+    <value>Der Gruppe [{0}] {1} können keine Spieler hinzugefügt werden.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.notgrouped" xml:space="preserve">
-    <value>{0} ist nicht in Gruppe [{1}]{2}.</value>
+    <value>{0} ist nicht in Gruppe [{1}] {2}.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.remove" xml:space="preserve">
-    <value>{0} aus Gruppe [{1}]{2} entfernt.</value>
+    <value>{0} aus Gruppe [{1}] {2} entfernt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.remove.all" xml:space="preserve">
-    <value>Alle Charakter aus Gruppe [{0}]{1} entfernt.</value>
+    <value>Alle Charakter aus Gruppe [{0}] {1} entfernt.</value>
   </data>
   <data name="main.cmdmanager.cmd.profile.load" xml:space="preserve">
     <value>Aktiviere Profil {0}.</value>
   </data>
   <data name="main.cmdmanager.cmd.profile.load.invalid" xml:space="preserve">
     <value>Um ein Profil zu laden, wird der korrekte Namen benötigt. Verfügbare Profile: {0}.</value>
+  </data>
+  <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
+    <value>Gobchat wird beendet. Fortfahren?</value>
+  </data>
+  <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
+    <value>Audio abspielen.</value>
+  </data>
+  <data name="config.mentions.mentions.label" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
+    <value>Profil zum Kopieren auswählen</value>
+  </data>
+  <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
+    <value>Aktiviert dieses Profil.</value>
+  </data>
+  <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
+    <value>Erzeugt eine Kopie von diesem Profil.</value>
+  </data>
+  <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
+    <value>Überschreibt dieses Profil mit einem anderen.</value>
+  </data>
+  <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
+    <value>Lösche dieses profil.</value>
+  </data>
+  <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
+    <value>Setzt das Profil zurück.</value>
+  </data>
+  <data name="config.roleplay.entry.tokenend" xml:space="preserve">
+    <value>Ende</value>
+  </data>
+  <data name="config.roleplay.entry.tokenstart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="config.profiles.profiles.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.custom" xml:space="preserve">
+    <value>Benutzerdefiniertes Format</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.default" xml:space="preserve">
+    <value>Standardformat</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.newline" xml:space="preserve">
+    <value>Mit Umbruch</value>
+  </data>
+  <data name="config.app.chatlog.format" xml:space="preserve">
+    <value>Log Format</value>
+  </data>
+  <data name="config.main.dialog.btn.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="config.main.button.refresh.tooltip" xml:space="preserve">
+    <value>Werte updaten</value>
+  </data>
+  <data name="config.main.nav.app" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
+    <value>Aktives Profil auswählen.</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
+    <value>Kurz</value>
+  </data>
+  <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
+    <value>Kompakt</value>
   </data>
 </root>

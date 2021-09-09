@@ -20,21 +20,17 @@ namespace Gobchat.LogConverter
 {
     public partial class LogConverterForm : Form
     {
-        private readonly Dictionary<string, string> _formater = new Dictionary<string, string>()
-        {
-            {"ACT","ACTv1" },
-            {"Simplified","FCLv1" }
-        };
+        private readonly LogConverterManager _manager;
+        private LogFormaterContainer _chosenFormater;
 
         public LogConverterForm()
         {
             InitializeComponent();
+            _manager = new LogConverterManager();
 
-            foreach (var formater in _formater)
-            {
-                cbFormater.Items.Add(formater.Key);
-            }
-            cbFormater.SelectedIndex = _formater.Count - 1;
+            foreach (var id in _manager.GetFormaters())
+                cbFormater.Items.Add(id);
+            cbFormater.SelectedIndex = cbFormater.Items.Count - 1;
 
             this.Text = $"Log Converter (v{GobchatContext.InnerApplicationVersion})";
         }
@@ -75,16 +71,17 @@ namespace Gobchat.LogConverter
             txtFileSelection.Text = selectedFile;
         }
 
-        private void OnEvent_txtFileSelection_TextChanged(object sender, EventArgs e)
-        {
-        }
-
         private void OnEvent_cbFormater_SelectedIndexChanged(object sender, EventArgs e)
         {
-        }
-
-        private void OnEvent_ckbReplaceOldLog_CheckedChanged(object sender, EventArgs e)
-        {
+            this.SuspendLayout();
+            settingPanel.Controls.Clear();
+            _chosenFormater = _manager.GetFormater(cbFormater.Text);
+            if (_chosenFormater.Settings != null)
+            {
+                //_chosenFormater.Settings.Dock = System.Windows.Forms.DockStyle.Fill;
+                settingPanel.Controls.Add(_chosenFormater.Settings);
+            }
+            this.ResumeLayout(true);
         }
 
         private void OnEvent_btnCancel_Clicked(object sender, EventArgs e)
@@ -106,32 +103,37 @@ namespace Gobchat.LogConverter
 
             try
             {
-                var progressMonitor = new ProgressMonitorAdapter(this);
-                var logConverterOptions = new LogConverterOptions()
+                using (var progressMonitor = new ProgressMonitorAdapter(this))
                 {
-                    ReplaceOldLog = ckbReplaceOldLog.Checked,
-                };
+                    var selectedFile = txtFileSelection.Text ?? "";
+                    selectedFile = selectedFile.Trim();
+                    if (selectedFile.Length == 0)
+                    {
+                        AppendLog("No file selected");
+                        return;
+                    }
 
-                if (cbFormater.Text != null && cbFormater.Text.Length > 0)
-                    if (_formater.TryGetValue(cbFormater.Text, out var formater))
-                        logConverterOptions.ConvertTo = formater;
+                    if (!File.Exists(selectedFile))
+                    {
+                        AppendLog($"File not found: {selectedFile}");
+                        return;
+                    }
 
-                var selectedFile = txtFileSelection.Text ?? "";
-                selectedFile = selectedFile.Trim();
-                if (selectedFile.Length == 0)
-                {
-                    AppendLog("No file selected");
-                    return;
+                    var converter = new LogConverter(_manager);
+                    var result = converter.ConvertLog(selectedFile, _chosenFormater, progressMonitor);
+
+                    if (!ckbReplaceOldLog.Checked)
+                    {
+                        var idx = selectedFile.LastIndexOf(".");
+                        if (idx < 0)
+                            selectedFile += $".{_chosenFormater.Id}.log";
+                        else
+                            selectedFile = selectedFile.Substring(0, idx) + $".{_chosenFormater.Id}" + selectedFile.Substring(idx);
+                    }
+
+                    progressMonitor.Log($"Saving log: {selectedFile}");
+                    File.WriteAllLines(selectedFile, result, System.Text.Encoding.UTF8);
                 }
-
-                if (!File.Exists(selectedFile))
-                {
-                    AppendLog($"File not found: {selectedFile}");
-                    return;
-                }
-
-                var converter = new LogConverter();
-                converter.ConvertLog(selectedFile, logConverterOptions, progressMonitor);
             }
             catch (Exception ex)
             {

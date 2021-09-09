@@ -24,6 +24,8 @@
     GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
 
     const $txtChatlogPath = $("#capp_chatlog_path")
+    GobConfigHelper.makeResetButton($("#capp_chatlog_path_reset"), $txtChatlogPath)
+
     $txtChatlogPath.on("change", function () {
         (async () => {
             try {
@@ -63,7 +65,20 @@
         })();
     })
 
-    GobConfigHelper.makeResetButton($("#capp_logging_path_reset"))
+    GobConfigHelper.bindElement(binding, $("#capp_chatlog_format"))
+
+    binding.bindConfigListener($("#capp_chatlog_format"), value => {
+        $("#capp_chatlog_format_selector").val(value)
+        const selectedFormat = $("#capp_chatlog_format_selector").val()
+        if (selectedFormat === null)
+            $("#capp_chatlog_format_selector").val("")
+    })
+
+    $("#capp_chatlog_format_selector").on("change", function () {
+        const selectedFormat = $(this).val()
+        if (selectedFormat.length > 0)
+            $("#capp_chatlog_format").val(selectedFormat).change()
+    })
 
     GobConfigHelper.bindCheckbox(binding, $("#capp_autodetectemote"))
 
@@ -71,9 +86,9 @@
 
     GobConfigHelper.bindCheckbox(binding, $("#capp_hide"))
 
-    const ckbUpdate = $("#capp_checkupdates")
-    GobConfigHelper.bindCheckbox(binding, ckbUpdate)
-    binding.bindConfigListener(GobConfigHelper.getConfigKey(ckbUpdate), value => {
+    const $ckbUpdate = $("#capp_checkupdates")
+    GobConfigHelper.bindCheckbox(binding, $ckbUpdate)
+    binding.bindConfigListener(GobConfigHelper.getConfigKey($ckbUpdate), value => {
         //ckbBetaUpdate.attr("disabled", !value)
         $("[for='capp_checkupdates']").toggleClass("disabled", !value)
     })
@@ -92,13 +107,11 @@
     // setup font group
     // setup font family
     GobConfigHelper.bindElement(binding, $("#capp_font_family"))
-
     GobConfigHelper.makeResetButton($("#capp_font_family_reset"))
 
     const $dpdProcessSelector = $("#capp_process_selector")
     $("#capp_process_selector_refresh").on("click", function () {
         const $icon = $("#capp_process_selector_refresh").find("svg");
-
         (async () => {
             try {
                 //$icon.addClass("fa-spin")

@@ -185,6 +185,12 @@ var GobConfigHelper = (function (module, undefined) {
         }
 
         bindConfigListener(configKey, callback) {
+            if (typeof configKey !== 'string')
+                configKey = module.getConfigKey(configKey)
+
+            if (configKey === null || configKey === undefined)
+                throw new Error("'configKey' is null")
+
             const config = this._config
             const onConfigChange = () => callback(config.get(configKey, null))
 
@@ -302,6 +308,22 @@ var GobConfigHelper = (function (module, undefined) {
             elementSetAccessor: ($element, value) => {
                 const checked = _.every(values, (e) => _.includes(value, e))
                 $element.prop("checked", checked)
+            }
+        }
+
+        return bindingContext.bindElement(element, $.extend(defOptions, options))
+    }
+
+    module.bindCheckboxArrayInverse = function (bindingContext, element, values, options) {
+        const defOptions = {
+            disabled: values === null || values === undefined || values.length === 0,
+            elementGetAccessor: ($element, event, oldValues) => {
+                const checked = $element.prop("checked")
+                return setValuesInArray(oldValues, values, !checked) ? oldValues : undefined
+            },
+            elementSetAccessor: ($element, value) => {
+                const checked = _.every(values, (e) => _.includes(value, e))
+                $element.prop("checked", !checked)
             }
         }
 

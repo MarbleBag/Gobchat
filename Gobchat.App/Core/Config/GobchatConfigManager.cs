@@ -280,9 +280,11 @@ namespace Gobchat.Core.Config
             var appConfigPath = Path.Combine(ConfigFolderPath, "gobconfig.json");
             Directory.CreateDirectory(ConfigFolderPath);
 
-            var appConfigJson = new JObject();
-            appConfigJson["version"] = 2;
-            appConfigJson["activeProfile"] = ActiveProfileId;
+            var appConfigJson = new JObject
+            {
+                ["version"] = 2,
+                ["activeProfile"] = ActiveProfileId
+            };
 
             try
             {
@@ -344,11 +346,15 @@ namespace Gobchat.Core.Config
         {
             var profileId = GenerateProfileId();
 
-            var newConfig = new JObject();
-            newConfig["version"] = _defaultConfig.ProfileVersion;
-            newConfig["profile"] = new JObject();
-            newConfig["profile"]["id"] = profileId;
-            newConfig["profile"]["name"] = $"Profile {this.Profiles.Count + 1}";
+            var newConfig = new JObject
+            {
+                ["version"] = _defaultConfig.ProfileVersion,
+                ["profile"] = new JObject
+                {
+                    ["id"] = profileId,
+                    ["name"] = $"Profile {this.Profiles.Count + 1}"
+                }
+            };
 
             StoreNewProfile(newConfig, false, true);
             return profileId;
@@ -390,9 +396,11 @@ namespace Gobchat.Core.Config
 
         public JObject AsJson()
         {
-            var root = new JObject();
-            root["activeProfile"] = this.ActiveProfileId;
-            root["profiles"] = new JObject();
+            var root = new JObject
+            {
+                ["activeProfile"] = this.ActiveProfileId,
+                ["profiles"] = new JObject()
+            };
 
             var profiles = this.Profiles;
             var profileStore = root["profiles"];

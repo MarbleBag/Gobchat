@@ -129,7 +129,7 @@ namespace Gobchat.Module.UI.Internal
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    logger.Fatal(ex, $"On script execution: {script}");
                 }
             });
         }
@@ -144,7 +144,7 @@ namespace Gobchat.Module.UI.Internal
                  }
                  catch (Exception ex)
                  {
-                     logger.Fatal(ex);
+                     logger.Fatal(ex, $"On script execution: {script}");
                      return null;
                  }
              }).ConfigureAwait(false);

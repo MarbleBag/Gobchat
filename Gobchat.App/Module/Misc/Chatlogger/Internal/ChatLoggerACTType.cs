@@ -14,15 +14,14 @@
 using System.Linq;
 using System.Globalization;
 using Gobchat.Core.Chat;
+using System.Collections.Generic;
 
 namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
     // This logger is no longer functional
     public sealed class ChatLoggerACTType : ChatLoggerBase
     {
-        protected override string LoggerId => "ACT1v";
-
-        public ChatLoggerACTType() : base()
+        public ChatLoggerACTType() : base("ACT1v")
         {
         }
 

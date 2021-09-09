@@ -47,6 +47,8 @@
         "SAY",
         "EMOTE",
         "ANIMATEDEMOTE"
+      ],
+      "log": [
       ]
     },
     "segment": {
@@ -157,6 +159,7 @@
           "visible": true,
           "channel": {
             "visible": [
+              "ERROR",
               "SAY",
               "EMOTE",
               "YELL",
@@ -235,6 +238,7 @@
     },
     "chatlog": {
       "active": false,
+      "format": "{channel} [{date} {time-full}] {sender}: {message}",
       "path": "log"
     },
     "hideOnMinimize": false,

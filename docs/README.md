@@ -15,6 +15,7 @@ Die deutsche Version dieser Readme kann man [hier](README_de.md) finden.
    1. [Text-Highlighting](#text-highlighting-for-key-words---mentions)
    1. [Draggable and Resizeable](#draggable-and-resizeable)
    1. [Chat Log](#chat-Log)
+     1. [Customizable chat log format](#customizable-chat-log-format)
    1. [Range Filter](#range-filter)
    1. [Groups](#groups)
    1. [Chat Commands](#chat-commands)
@@ -72,7 +73,18 @@ Gobchat can write your chat history to a file, preserving informations you might
 They can be found under `AppData\Roaming\Gobchat`.
 
 Each time Gobchat is started it will create a new file.
-By default this feature is deactivated. If you want that Gobchat creates a log file, activate it in the settings.
+By default this feature is deactivated. If you want Gobchat to create log files, activate it in the settings under `Config / App`
+
+#### Customizable chat log format
+Gobchat provides a few pre-made formats from which you can choose. You can either modify these or create your own format. Gobchat uses the entered format string and replaces certain key-words.
+* __{channel}__ Channel id
+* __{sender}__ Sender name
+* __{date}__ Date in yyyy-mm-dd (year, month, day)
+* __{time}__ Time of message in hh:mm:ss (hour of day, minutes, seconds)
+* __{time-short}__ Time of message in hh:mm (hour of day, minutes)
+* __{time-full}__ Time in hh:mm:ssK (hour of day, minutes, seconds + local time zone)
+* __{message}__ Message
+* __{break}__ Line break
 
 ### Range filter
 Filter messages in various channels by distance to the writer. Remove them completely and/or fade them slowly out the farther away they are. The numbers are given in yalms (in game unit). And the degree of fade out effect is computed by the distance between fade out and cut off.

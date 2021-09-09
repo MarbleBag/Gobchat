@@ -26,6 +26,7 @@
         const chkMention = rowEntry.find(".entry-mention")
         const chkRoleplay = rowEntry.find(".entry-roleplay")
         const chkRangefilter = rowEntry.find(".entry-rangefilter")
+        const chkLog = rowEntry.find(".entry-log")
         const clrSelectorFG = rowEntry.find(".entry-color-forground")
         const btnResetFG = rowEntry.find(".entry-color-forground-reset")
         const clrSelectorBG = rowEntry.find(".entry-color-background")
@@ -37,16 +38,19 @@
         GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
         GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
         GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
+        GobConfigHelper.setConfigKey(chkLog, "behaviour.channel.log")
 
         const channelEnums = [].concat(channelData.chatChannel || [])
         if (channelEnums.length === 0) {
             chkMention.hide()
             chkRoleplay.hide()
             chkRangefilter.hide()
+            chkLog.hide()
         } else {
             GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
+            GobConfigHelper.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
         }
 
         if (channelData.configId === null) {
@@ -84,19 +88,15 @@
 
     binding.initialize()
 
-    const btnCopyProfile = $("#cchannel_copyprofile")
-    const copyKeys = ["behaviour.channel.mention", "behaviour.channel.roleplay", "behaviour.channel.rangefilter"]
-    copyKeys.push("style.channel.base" + ".color")
-    copyKeys.push("style.channel.base" + ".background-color")
 
-    Object.entries(Gobchat.Channels).forEach((entry) => {
-        const channelData = entry[1]
-        if (!channelData.relevant || channelData.configId == null) return
-        copyKeys.push(channelData.configId + ".color")
-        copyKeys.push(channelData.configId + ".background-color")
+    const copyKeys = ["behaviour.channel"]
+    table.find(".entry-color-forground, .entry-color-background").each(function () {
+        const configId = GobConfigHelper.getConfigKey(this)
+        if (configId !== undefined && configId !== null) 
+            copyKeys.push(configId)        
     })
 
-    GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: copyKeys })
+    GobConfigHelper.makeCopyProfileButton($("#cchannel_copyprofile"), { configKeys: copyKeys })
 }());
 
 //# sourceURL=config_channel.js

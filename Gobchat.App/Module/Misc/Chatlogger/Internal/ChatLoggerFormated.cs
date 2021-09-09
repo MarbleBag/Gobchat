@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Gobchat.Core.Chat;
@@ -22,11 +23,9 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
     {
         private readonly StringBuilder _builder = new StringBuilder();
 
-        public ChatLoggerFormated() : base()
+        public ChatLoggerFormated() : base("FCLv1")
         {
         }
-
-        protected override string LoggerId => "FCLv1";
 
         protected override string FormatLine(ChatMessage msg)
         {

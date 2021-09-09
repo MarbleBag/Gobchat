@@ -45,6 +45,7 @@ namespace Gobchat.Core.Chat
         public int Visibility { get; set; } = 100; //100 = full visible, 0 = invisible
         public bool IsAPlayer { get; set; } = false;
         public bool IsUser { get; set; } = false;
+        public bool IsApp { get; set; } = false;
 
         public ChatMessageSource(string source)
         {
@@ -53,7 +54,7 @@ namespace Gobchat.Core.Chat
 
         public override string ToString()
         {
-            return $"[{nameof(Original)}={Original}; {nameof(CharacterName)}={CharacterName}; {nameof(TriggerGroupId)}={TriggerGroupId}; {nameof(FfGroup)}={FfGroup}; {nameof(Party)}={Party}; {nameof(Alliance)}={Alliance}; {nameof(Visibility)}={Visibility}; {nameof(IsAPlayer)}={IsAPlayer}; {nameof(IsUser)}={IsUser}]";
+            return $"[{nameof(Original)}={Original}; {nameof(CharacterName)}={CharacterName}; {nameof(TriggerGroupId)}={TriggerGroupId}; {nameof(FfGroup)}={FfGroup}; {nameof(Party)}={Party}; {nameof(Alliance)}={Alliance}; {nameof(Visibility)}={Visibility}; {nameof(IsAPlayer)}={IsAPlayer}; {nameof(IsUser)}={IsUser}; {nameof(IsApp)}={IsApp}]";
         }
     }
 

@@ -32,6 +32,11 @@ namespace Gobchat.Core.Runtime
             get { return AppDomain.CurrentDomain.BaseDirectory; }
         }
 
+        public static string ApplicationName
+        {
+            get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Name; }
+        }
+
         public static GobVersion ApplicationVersion
         {
             get { return new GobVersion(InnerApplicationVersion); }
@@ -41,5 +46,6 @@ namespace Gobchat.Core.Runtime
         {
             get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version; }
         }
+
     }
 }
