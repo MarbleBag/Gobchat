@@ -194,6 +194,13 @@ namespace Gobchat.Core.Config
                 FirePropertyChange(key);
         }
 
+        private static JToken ToToken(object value)
+        {
+            if (value is JToken jToken)
+                return jToken;
+            return JToken.FromObject(value);
+        }
+
         public void SetProperty(string key, object value)
         {
             if (!_writable)
@@ -205,17 +212,9 @@ namespace Gobchat.Core.Config
 
             WalkJson(key, MissingElementHandling.Create, (node, propertyName) =>
             {
-                if (value is JToken jToken)
-                {
-                    changed = !jToken.Equals(node[propertyName]);
-                    node[propertyName] = jToken;
-                }
-                else
-                {
-                    var newValue = JToken.FromObject(value);
-                    changed = !newValue.Equals(node[propertyName]);
-                    node[propertyName] = newValue;
-                }
+                var token = ToToken(value);
+                changed = !token.Equals(node[propertyName]);
+                node[propertyName] = token;
             });
 
             if (changed)
