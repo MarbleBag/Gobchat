@@ -29,15 +29,11 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
         protected readonly string _loggerId;
         protected readonly object _synchronizationLock = new object();
+        
+        private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();        
+        private bool _hasNonInternalMessage;
 
-        private ChatChannel[] _logChannels = Array.Empty<ChatChannel>();
-        private string _fileHandle;
-        private bool _containsChatLogs;
-
-        public ChatLoggerBase(string loggerId)
-        {
-            _loggerId = loggerId ?? throw new ArgumentNullException(nameof(loggerId));
-        }
+        protected string FileHandle { get; private set; }
 
         public IEnumerable<ChatChannel> LogChannels
         {
@@ -49,11 +45,14 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
         public string LogFolder { get; private set; }
 
-        public ChatLoggerBase()
+        public ChatLoggerBase(string loggerId)
         {
+            _loggerId = loggerId ?? throw new ArgumentNullException(nameof(loggerId));
         }
 
-        abstract protected string FormatLine(ChatMessage msg);
+        abstract protected string FormatMessage(ChatMessage msg);
+
+        virtual protected void OnFileChange() { }
 
         public void SetLogFolder(string folder)
         {
@@ -65,10 +64,10 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
             lock (_synchronizationLock)
             {
-                if (_fileHandle != null)
+                if (FileHandle != null)
                     Flush();
 
-                _fileHandle = null;
+                FileHandle = null;
                 LogFolder = folder;
             }
         }
@@ -79,16 +78,22 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             {
                 lock (_synchronizationLock)
                 {
-                    _pendingMessages.Enqueue(FormatLine(message));
-                    _containsChatLogs = true;
+                    _pendingMessages.Enqueue(FormatMessage(message));
+                    _hasNonInternalMessage = true;
                 }
             }
         }
 
-        protected void InternalLog(string message)
+
+
+        private void CreateNewFile()
         {
-            lock (_synchronizationLock)
-                _pendingMessages.Enqueue(message);
+            Directory.CreateDirectory(LogFolder);
+            var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
+            var fileName = $"chatlog_{timestamp}.log";
+            FileHandle = Path.Combine(LogFolder, fileName);
+            WriteMessageToFile($"Chatlogger Id: {_loggerId}");
+            OnFileChange();
         }
 
         public void Flush()
@@ -98,35 +103,34 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
 
             lock (_synchronizationLock)
             {
-                if (_fileHandle == null)
+                if (FileHandle == null)
                 {
-                    if (!_containsChatLogs)
-                        return; //only create a file if there is at least one chat log!
-
-                    Directory.CreateDirectory(LogFolder);
-                    var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm", CultureInfo.InvariantCulture);
-                    var fileName = $"chatlog_{timestamp}.log";
-                    _fileHandle = Path.Combine(LogFolder, fileName);
-
-                    if (!File.Exists(_fileHandle))                    
-                        WriteLineToFile($"Chatlogger Id: {_loggerId}");                    
+                    if (!_hasNonInternalMessage)
+                        return; //only create a new file if there is at least one non internal message!
+                    CreateNewFile();
                 }
 
-                WriteLinesToFile(_pendingMessages.DequeueAll());
-                _containsChatLogs = false;
+                WriteMessagesToFile(_pendingMessages.DequeueAll());
+                _hasNonInternalMessage = false;
             }
         }
 
-        private void WriteLineToFile(string line)
+        protected void LogMessage(string message)
         {
-            if (line != null && line.Length > 0)
-                WriteLinesToFile(new string[] { line });
+            lock (_synchronizationLock)
+                _pendingMessages.Enqueue(message);
         }
 
-        private void WriteLinesToFile(IEnumerable<string> lines)
+        protected void WriteMessageToFile(string message)
         {
-            if (lines != null)
-                File.AppendAllLines(_fileHandle, lines, System.Text.Encoding.UTF8);
+            if (message != null && message.Length > 0)
+                WriteMessagesToFile(new string[] { message });
+        }
+
+        protected void WriteMessagesToFile(IEnumerable<string> messages)
+        {
+            if (messages != null)
+                File.AppendAllLines(FileHandle, messages, System.Text.Encoding.UTF8);
         }
 
         public void Dispose()

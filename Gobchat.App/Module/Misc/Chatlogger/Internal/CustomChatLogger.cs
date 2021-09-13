@@ -156,8 +156,9 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
         private IFormater[] _formaters = Array.Empty<IFormater>();
         private object[] _logArgs = Array.Empty<object>();
         private string _logTemplate = "";
+        private string _formatWrittenToFile;
 
-        public string LogFormat { get; private set; }
+        public string LogFormat { get; private set; } = null;
 
         public void SetLogFormat(string format)
         {
@@ -207,20 +208,39 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
                 _logTemplate = templateBuilder.ToString();
                 _formaters = formaters.ToArray();
                 _logArgs = new object[_formaters.Length];
-                InternalLog($"Chatlogger format:{LogFormat}");
+                OnNewLogFormat();          
             }
-
         }
 
         public CustomChatLogger() : base("CCLv1")
         {
         }
 
-        protected override string FormatLine(ChatMessage msg)
+        protected override string FormatMessage(ChatMessage msg)
         {
             for (var i = 0; i < _formaters.Length; ++i)
                 _logArgs[i] = _formaters[i].Format(msg);
             return string.Format(_logTemplate, _logArgs);
+        }
+
+        private void OnNewLogFormat()
+        {
+            if (FileHandle == null)
+                return;
+            if (_formatWrittenToFile == LogFormat)  // needs only to be written, if not already done
+                return;
+
+            LogMessage($"Chatlogger format:{LogFormat}");
+            _formatWrittenToFile = LogFormat;
+        }
+
+        override protected void OnFileChange()
+        {
+            if (LogFormat == null)
+                return;
+
+            WriteMessageToFile($"Chatlogger format:{LogFormat}");
+            _formatWrittenToFile = LogFormat;
         }
 
     }
