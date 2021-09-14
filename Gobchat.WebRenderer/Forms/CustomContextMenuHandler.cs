@@ -22,11 +22,34 @@ namespace Gobchat.UI.Forms
         void IContextMenuHandler.OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
         {
             // context menu doesn't show up when it has no entries.
+            // model.Clear();
+
+#if DEBUG
+            if (model.Count > 0)            
+                model.AddSeparator();            
+            model.AddItem((CefMenuCommand)26501, "Show DevTools");
+            model.AddItem((CefMenuCommand)26502, "Close DevTools");
+
+#else
+            // context menu doesn't show up when it has no entries.
             model.Clear();
+#endif
         }
 
         bool IContextMenuHandler.OnContextMenuCommand(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
         {
+            if (commandId == (CefMenuCommand)26501)
+            {
+                browser.GetHost().ShowDevTools();
+                return true;
+            }
+
+            if (commandId == (CefMenuCommand)26502)
+            {
+                browser.GetHost().CloseDevTools();
+                return true;
+            }
+
             return false;
         }
 
