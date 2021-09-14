@@ -303,7 +303,9 @@ var GobConfigHelper = (function (module, undefined) {
             disabled: values === null || values === undefined || values.length === 0,
             elementGetAccessor: ($element, event, oldValues) => {
                 const checked = $element.prop("checked")
-                return setValuesInArray(oldValues, values, checked) ? oldValues : undefined
+                const changed = setValuesInArray(oldValues, values, checked)
+                if (changed) oldValues.sort()
+                return changed ? oldValues : undefined
             },
             elementSetAccessor: ($element, value) => {
                 const checked = _.every(values, (e) => _.includes(value, e))
@@ -319,7 +321,9 @@ var GobConfigHelper = (function (module, undefined) {
             disabled: values === null || values === undefined || values.length === 0,
             elementGetAccessor: ($element, event, oldValues) => {
                 const checked = $element.prop("checked")
-                return setValuesInArray(oldValues, values, !checked) ? oldValues : undefined
+                const changed = setValuesInArray(oldValues, values, !checked)
+                if (changed) oldValues.sort()
+                return changed ? oldValues : undefined
             },
             elementSetAccessor: ($element, value) => {
                 const checked = _.every(values, (e) => _.includes(value, e))

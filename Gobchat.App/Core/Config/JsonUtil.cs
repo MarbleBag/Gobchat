@@ -199,8 +199,6 @@ namespace Gobchat.Core.Config
 
                 var listA = arrayA.ToObject<List<object>>();
                 var listB = arrayB.ToObject<List<object>>();
-                listA.Sort();
-                listB.Sort();
 
                 var overwrite = !listA.SequenceEqual(listB);
                 return overwrite;
