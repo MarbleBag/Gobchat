@@ -65,11 +65,8 @@
 
             GobConfigHelper.bindColorSelector(binding, clrSelectorFG)
             GobConfigHelper.bindColorSelector(binding, clrSelectorBG)
-
-            btnResetFG.attr("disabled", clrSelectorFG.attr("disabled"))
-            btnResetBG.attr("disabled", clrSelectorBG.attr("disabled"))
-            btnResetFG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorFG)))
-            btnResetBG.on("click", event => gobconfig.reset(GobConfigHelper.getConfigKey(clrSelectorBG)))
+            GobConfigHelper.makeResetButton(btnResetFG, clrSelectorFG)
+            GobConfigHelper.makeResetButton(btnResetBG, clrSelectorBG)
         }
     }
 
