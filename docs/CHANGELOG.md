@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.11.1] - 2021.09.30
+### Fixed
+- An issue where the order of elements, if changed without adding or removing, was not saved
+  - tabs, groups, etc.
+
+
+- An issue where the chat log format was not saved to a new log file
+
+
+- An issue where the reset button for channel colors didn't work
+
 ##  [1.11.0] - 2021.09.09
 ### Added
 - Chat log

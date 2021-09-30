@@ -27,7 +27,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
         {
         }
 
-        protected override string FormatLine(ChatMessage msg)
+        protected override string FormatMessage(ChatMessage msg)
         {
             // an improved logger based on https://github.com/MarbleBag/Gobchat/issues/48
             try

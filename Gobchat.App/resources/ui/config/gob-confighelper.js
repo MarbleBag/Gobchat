@@ -207,12 +207,17 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
     }
 
     GobConfigHelper.makeResetButton = function (element, targetElement) {
-        $(element).addClass("gob-button-tertiary ")
-        $(element).addClass("gob-button-reset")
-        const keyFunction = (targetElement != null || targetElement != undefined) ?
+        const $element = $(element)
+        $element.addClass("gob-button-tertiary")
+        $element.addClass("gob-button-reset")
+        const keyFunction = (targetElement != null && targetElement != undefined) ?
             () => GobConfigHelper.getConfigKey(targetElement) :
             () => GobConfigHelper.getConfigKey(element)
-        $(element).on("click", () => gobconfig.reset(keyFunction()))
+        if (targetElement != null && targetElement != undefined)
+            $element.attr("disabled", $(targetElement).attr("disabled"))
+        if ($element.attr("data-gob-locale-title") == null )
+            $element.attr("data-gob-locale-title", "config.main.button.reset.tooltip")
+        $element.on("click", () => gobconfig.reset(keyFunction()))
     }
 
     GobConfigHelper.makeCopyProfileButton = function (element, options) {
@@ -220,7 +225,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
         const defOptions = { callback: undefined, configKeys: [] }
         options = $.extend(defOptions, options)
 
-        $element.addClass("gob-button-tertiary ")
+        $element.addClass("gob-button-tertiary")
         $element.addClass("gob-button-copypage")
 
         function copyProfile(profileId) {
