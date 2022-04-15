@@ -63,7 +63,7 @@ namespace Gobchat {
         /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;
         ///A chat overlay for FFXIV with the goal to provide a better experience for roleplayers. &lt;br/&gt;
-        ///For FFXIV 5.5
+        ///For FFXIV 6.1
         ///&lt;/p&gt;&lt;p&gt;
         ///Contact via github.
         ///&lt;/p&gt;&lt;p&gt;
