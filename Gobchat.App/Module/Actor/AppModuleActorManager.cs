@@ -53,16 +53,16 @@ namespace Gobchat.Module.Actor
             _actorManager = new ActorManager();
             _updater = new IndependendBackgroundWorker();
 
-            _configManager.AddPropertyChangeListener("behaviour.actor.updateInterval", true, true, ConfigManager_UpdateChatInterval);
-            _configManager.AddPropertyChangeListener("behaviour.actor.active", true, true, ConfigManager_UpdateRangeFilter);
+            _configManager.AddPropertyChangeListener("behaviour.actor.updateInterval", true, true, ConfigManager_UpdateActorsUpdateInterval);
+            _configManager.AddPropertyChangeListener("behaviour.actor.active", true, true, ConfigManager_UpdateActorsEnabled);
 
             _container.Register<IActorManager>((c, p) => _actorManager);
         }
 
         public void Dispose()
         {
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateActorsUpdateInterval);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateActorsEnabled);
 
             _updater.Dispose();
 
@@ -118,12 +118,12 @@ namespace Gobchat.Module.Actor
             _actorManager.UpdateManager();
         }
 
-        private void ConfigManager_UpdateChatInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        private void ConfigManager_UpdateActorsUpdateInterval(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
             _updateInterval = config.GetProperty<long>("behaviour.actor.updateInterval");
         }
 
-        private void ConfigManager_UpdateRangeFilter(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
+        private void ConfigManager_UpdateActorsEnabled(IConfigManager config, ProfilePropertyChangedCollectionEventArgs evt)
         {
             var runManager = config.GetProperty<bool>("behaviour.actor.active");
             if (runManager)
