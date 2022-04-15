@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2021 MarbleBag
+ * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -109,6 +109,7 @@ namespace Gobchat.Module.Actor.Internal
                 {
                     if (_realm.TryGetValue(newData.Actor.Name, out var oldData))
                     {
+                        //if (newData.LastUpdateTime > oldData.LastUpdateTime)
                         if (newData.Actor.SquaredDistanceToPlayer < oldData.Actor.SquaredDistanceToPlayer)
                             _realm[newData.Actor.Name] = newData;
                     }
