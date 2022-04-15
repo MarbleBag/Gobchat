@@ -166,9 +166,9 @@ namespace Gobchat.Memory
 
             var signaturesOfInterest = new string[] { Sharlayan.Signatures.ChatLogKey, Sharlayan.Signatures.CharacterMapKey };
             var availableSignatures = Sharlayan.Scanner.Instance.Locations.Values.Select(e => e.Key).ToArray();
-            var foundSignatures = Array.FindAll(availableSignatures, (e) => signaturesOfInterest.Contains(e));
+            var foundSignatures = signaturesOfInterest.Intersect(availableSignatures);
             logger.Info($"Signatures found: {string.Join(", ", foundSignatures)}");
-
+            logger.Info($"Signatures not found: {string.Join(", ", signaturesOfInterest.Except(foundSignatures))}");
             return true;
         }
 
