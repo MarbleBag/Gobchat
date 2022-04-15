@@ -101,8 +101,8 @@ try{
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";			dst="$releaseFolder\docs\README.pdf"})
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";		dst="$releaseFolder\docs\README_de.pdf"})
 	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";	dst="$releaseFolder\docs\SHARLAYAN_LICENSE.md"})
-	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\signatures-x64.json";		dst="$releaseFolder\resources\sharlayan\signatures-x64.json"}),
-	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\structures-x64.json";		dst="$releaseFolder\resources\sharlayan\structures-x64.json"})
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\signatures-latest.json";		dst="$releaseFolder\resources\sharlayan\signatures-latest.json"}),
+	(New-Object PSObject -Property @{src="$releaseFolder\..\Debug\resources\sharlayan\structures-latest.json";		dst="$releaseFolder\resources\sharlayan\structures-latest.json"})
 	)
 	
 	$ccc |
