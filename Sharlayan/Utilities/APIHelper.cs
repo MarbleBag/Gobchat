@@ -31,26 +31,12 @@ namespace Sharlayan.Utilities
             Encoding = Encoding.UTF8
         };
 
-        public static void GetActions(ConcurrentDictionary<uint, ActionItem> actions, string patchVersion = "latest")
-        {
-            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, "actions.json");
-            if (File.Exists(file) && MemoryHandler.Instance.UseLocalCache)
-            {
-                EnsureDictionaryValues(actions, file);
-            }
-            else
-            {
-                // It will be either there or not
-                // APIResponseToDictionary(actions, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/actions.json");
-            }
-        }
+        private const string RESOURCE_URL = "https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/{0}/global/{1}.json";
+
 
         public static IEnumerable<Signature> GetSignatures(ProcessModel processModel, string patchVersion = "latest")
         {
-            var architecture = processModel.IsWin64
-                                   ? "x64"
-                                   : "x86";
-            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, $"signatures-{architecture}.json");
+            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, $"signatures-{patchVersion}.json");
             if (File.Exists(file) && MemoryHandler.Instance.UseLocalCache)
             {
                 var json = FileResponseToJSON(file);
@@ -58,13 +44,19 @@ namespace Sharlayan.Utilities
             }
             else
             {
-                var json = APIResponseToJSON($"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/signatures/{patchVersion}/{architecture}.json");
+                var json = APIResponseToJSON(string.Format(RESOURCE_URL, "signatures", patchVersion));
                 IEnumerable<Signature> resolved = JsonConvert.DeserializeObject<IEnumerable<Signature>>(json, Constants.SerializerSettings);
-
                 File.WriteAllText(file, JsonConvert.SerializeObject(resolved, Formatting.Indented, Constants.SerializerSettings), Encoding.GetEncoding(932));
-
                 return resolved;
             }
+        }
+
+        public static StructuresContainer GetStructures(ProcessModel processModel, string patchVersion = "latest")
+        {
+            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, $"structures-{patchVersion}.json");
+            if (File.Exists(file) && MemoryHandler.Instance.UseLocalCache)            
+                return EnsureClassValues<StructuresContainer>(file);            
+            return APIResponseToClass<StructuresContainer>(file, string.Format(RESOURCE_URL, "structures", patchVersion));
         }
 
         public static void GetStatusEffects(ConcurrentDictionary<uint, StatusItem> statusEffects, string patchVersion = "latest")
@@ -81,19 +73,20 @@ namespace Sharlayan.Utilities
             }
         }
 
-        public static StructuresContainer GetStructures(ProcessModel processModel, string patchVersion = "latest")
+        public static void GetActions(ConcurrentDictionary<uint, ActionItem> actions, string patchVersion = "latest")
         {
-            var architecture = processModel.IsWin64
-                                   ? "x64"
-                                   : "x86";
-            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, $"structures-{architecture}.json");
+            var file = Path.Combine(MemoryHandler.Instance.LocalCacheDirectory, "actions.json");
             if (File.Exists(file) && MemoryHandler.Instance.UseLocalCache)
             {
-                return EnsureClassValues<StructuresContainer>(file);
+                EnsureDictionaryValues(actions, file);
             }
-
-            return APIResponseToClass<StructuresContainer>(file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/structures/{patchVersion}/{architecture}.json");
+            else
+            {
+                // It will be either there or not
+                // APIResponseToDictionary(actions, file, $"https://raw.githubusercontent.com/FFXIVAPP/sharlayan-resources/master/xivdatabase/{patchVersion}/actions.json");
+            }
         }
+
 
         public static void GetZones(ConcurrentDictionary<uint, MapItem> mapInfos, string patchVersion = "latest")
         {
