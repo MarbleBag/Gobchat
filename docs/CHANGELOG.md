@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.11.2] - 2022.04.15
+### Fixed
+- Rangefilter
+  - memory signature updated
+
 ## [1.11.1] - 2021.09.30
 ### Fixed
 - An issue where the order of elements, if changed without adding or removing, was not saved
