@@ -309,7 +309,7 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
     <value>Absenderfarbe</value>
   </data>
   <data name="config.groups.group.trigger" xml:space="preserve">
-    <value>Spieler die zu dieser Gruppe gehören</value>
+    <value>Die zu dieser Gruppe gehörende Charaktere</value>
   </data>
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>Neue Gruppe</value>
@@ -793,7 +793,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Diese Gruppe repräsentiert die Freundesgruppe aus dem Spiel und wird all jenen Spielern zugeordnet, die im Spiel mit dem Symbol {0} markiert sind.</value>
   </data>
   <data name="config.groups.info" xml:space="preserve">
-    <value>Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den  Spielernamen oder ein Symbol der Freundesgruppen aus dem Spiel, wird auf den Chat-Text die Formatierung der zuerst gefundenen Gruppe angewandt. Um die Reihenfolge der Gruppen zu ändern, kann die Box mit dem Gruppen-Namen per Drag and Drop verschoben werden.</value>
+    <value>Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den Charakternamen oder ein Symbol der Freundesgruppen aus dem Spiel, wird auf den Chat-Text die Formatierung der zuerst gefundenen Gruppe angewandt. Um die Reihenfolge der Gruppen zu ändern, kann die Box mit dem Gruppen-Namen per Drag and Drop verschoben werden.</value>
   </data>
   <data name="config.main.nav.closegobchat" xml:space="preserve">
     <value>Gobchat beenden</value>
@@ -849,7 +849,7 @@ group Gruppen-Nummer clear</value>
     <value>Spieler '{0}' nicht erkannt.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.nosupport" xml:space="preserve">
-    <value>Der Gruppe [{0}] {1} können keine Spieler hinzugefügt werden.</value>
+    <value>Charakter konnte nicht hinzugefügt werden. Die Gruppe [{0}] {1} repräsentiert alle Charaktere, die du im Spiel mit {2} markiert hast. Das kann nur im Spiel selbst geändert werden. Du kannst aber auch eigene Gruppe in Gobchat anlegen unter Optionen -&gt; Gruppen.</value>
   </data>
   <data name="main.cmdmanager.cmd.group.notgrouped" xml:space="preserve">
     <value>{0} ist nicht in Gruppe [{1}] {2}.</value>
@@ -931,5 +931,8 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
     <value>Kompakt</value>
+  </data>
+  <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
+    <value>Charaktere die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden.</value>
   </data>
 </root>
