@@ -182,7 +182,7 @@ jQuery(function ($) {
         if (searchText.length === 0)
             return
 
-        GetChatHistory().find(".chat-msg-c-base:visible").each(function () {
+        GetChatHistory().find(".chat-entry:visible").each(function () {
             if ($(this).text().toUpperCase().indexOf(searchText) >= 0)
                 $(this).addClass(CssClass_Marked)
         })

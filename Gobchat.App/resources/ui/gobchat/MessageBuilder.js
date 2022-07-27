@@ -38,7 +38,13 @@ var Gobchat = (function (Gobchat) {
 
         const fadeOutStepSize = (100 / Gobchat.RangeFilterFadeOutLevels)
         const visibilityLevel = ((visibility + fadeOutStepSize - 1) / fadeOutStepSize) >> 0 //truncat decimals, makes the LSV an integer
-        return `chat-msg-fadeout-${visibilityLevel}`
+        return `chat-entry__fadeout-${visibilityLevel}`
+    }
+
+    function getTriggerGroupClassClass(message) {
+        if (message.source.triggerGroupId)
+            return `chat-entry-tg-${message.source.triggerGroupId}`
+        return null
     }
 
     function getTriggerGroupBodyCssClass(message) {
@@ -157,27 +163,27 @@ var Gobchat = (function (Gobchat) {
         }
 
         buildHtmlElement(message) {
-            const channelClass = getChannelCssClass(message)
-
             const $body = $("<div/>")
-                .addClass("chat-msg-c-base")
-                .addClass(channelClass)
+                .addClass("chat-entry")
+                .addClass(getChannelCssClass(message))
+                .addClass(getTriggerGroupClassClass(message))            
                 .addClass(getTriggerGroupBodyCssClass(message))
                 .addClass(getVisibilityCssClass(message))
 
             $(`<span>[${formatTime(message)}] </span>`)
                 .appendTo($body)
-                .addClass("chat-msg-time")
+                .addClass("chat-entry__time")
 
             const $content = $("<span/>")
                 .appendTo($body)
-                .addClass("chat-msg-text")
-                .addClass(channelClass)
+                .addClass("chat-entry__text")
+                .addClass(getChannelCssClass(message))
 
             const sender = formatSender(this, message)
             if (sender !== null) {
                 $(`<span>${sender} </span>`)
                     .appendTo($content)
+                    .addClass("chat-entry__sender")
                     .addClass(getTriggerGroupSenderCssClass(message))
             }
 
@@ -186,7 +192,7 @@ var Gobchat = (function (Gobchat) {
 
                 $(`<span>${innerHtml}</span>`)
                     .appendTo($content)
-                    .addClass("chat-msg-seg-base")
+                    .addClass("chat-entry__text__segment")
                     .addClass(getMessageSegmentCssClass(messageSegment.type))
             })
 

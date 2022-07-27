@@ -40,11 +40,11 @@ var Gobchat = (function (module) {
         result += toCss([".chat-panel-bg"], style.chatbox)
 
         // channel
-        result += toCss([`.chat-msg-c-base`], style.channel.base)
+        result += toCss([`.chat-entry`], style.channel.base)
         Object.entries(Gobchat.Channels).forEach(e => {
             const channelName = e[1].internalName
             if (channelName in style.channel)
-                result += toCss([`.chat-msg-text.chat-msg-c-${channelName}`], style.channel[channelName])
+                result += toCss([`.chat-entry__text.chat-msg-c-${channelName}`], style.channel[channelName])
         })
 
         result += toCss([`.chat-msg-seg-link`], style.segment.link)
@@ -72,7 +72,7 @@ var Gobchat = (function (module) {
         let result = ""
 
         // timestamp
-        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `${selector} .chat-msg-time`)
+        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `${selector} .chat-entry__time`)
         result += toCss(tabsWithoutTime, { "display": "none" })
 
         // roleplay
@@ -87,7 +87,7 @@ var Gobchat = (function (module) {
         // range filter
         {
             const tabsWithRangeFilter = getTabsWithRangefilter(tabModels)
-            result += toCss(tabsWithRangeFilter.map(selector => `${selector} .chat-msg-fadeout-0`), { "display": "none" })
+            result += toCss(tabsWithRangeFilter.map(selector => `${selector} .chat-entry__fadeout-0`), { "display": "none" })
 
             const data = gobconfig.get("behaviour.rangefilter")
             const startopacity = data.startopacity / 100.0
@@ -98,7 +98,7 @@ var Gobchat = (function (module) {
             //the higher the level, the higher the opacity
             for (let i = 1; i <= Gobchat.RangeFilterFadeOutLevels; ++i) {
                 result += toCss(
-                    tabsWithRangeFilter.map(selector => `${selector} .chat-msg-fadeout-${i}`),
+                    tabsWithRangeFilter.map(selector => `${selector} .chat-entry__fadeout-${i}`),
                     { "opacity": `${(i - 1) * opacityByLevel + endopacity}` }
                 )
             }
@@ -118,7 +118,7 @@ var Gobchat = (function (module) {
 
                 const selectors = invisibleChannels
                     .map(c => getChannelName(c))
-                    .map(c => `${tabSelector} .chat-msg-c-base.chat-msg-c-${c}`)
+                    .map(c => `${tabSelector} .chat-entry.chat-msg-c-${c}`)
 
                 result += toCss(selectors, { "display": "none" })
             })
