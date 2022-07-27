@@ -17,10 +17,10 @@ namespace Gobchat.Core.Util
 {
     public sealed class DelayedCallback : IDisposable
     {
-        private System.Threading.Timer _timer;
+        private readonly System.Threading.Timer _timer;        
+        private readonly TimeSpan _time;
+        private readonly Action _callback;
         private int _counter;
-        private TimeSpan _time;
-        private Action _callback;
 
         public DelayedCallback(TimeSpan time, Action callback)
         {
