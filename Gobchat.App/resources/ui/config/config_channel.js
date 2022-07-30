@@ -86,11 +86,11 @@
     binding.initialize()
 
 
-    const copyKeys = ["behaviour.channel.roleplay", "behaviour.channel.mention", "behaviour.channel.log"]
+    const copyKeys = ["behaviour.channel.roleplay", "behaviour.channel.mention"]
     table.find(".entry-color-forground, .entry-color-background").each(function () {
         const configId = GobConfigHelper.getConfigKey(this)
-        if (configId !== undefined && configId !== null) 
-            copyKeys.push(configId)        
+        if (configId !== undefined && configId !== null)
+            copyKeys.push(configId)
     })
 
     GobConfigHelper.makeCopyProfileButton($("#cchannel_copyprofile"), { configKeys: copyKeys })

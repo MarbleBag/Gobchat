@@ -33,65 +33,6 @@
     }
 
     // setup checkboxes
-    GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
-
-    const $txtChatlogPath = $("#capp_chatlog_path")
-    GobConfigHelper.makeResetButton($("#capp_chatlog_path_reset"), $txtChatlogPath)
-
-    $txtChatlogPath.on("change", function () {
-        (async () => {
-            try {
-                let newPath = $txtChatlogPath.val()
-                const parsedPath = await GobchatAPI.getRelativeChatLogPath(newPath)
-                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), parsedPath)
-                newPath = await GobchatAPI.getAbsoluteChatLogPath(parsedPath)
-                $txtChatlogPath.val(newPath)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
-    })
-
-    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), path => {
-        (async () => {
-            try {
-                path = await GobchatAPI.getAbsoluteChatLogPath(path)
-                $txtChatlogPath.val(path)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
-    })
-
-    $("#capp_chatlog_path_select").on("click", function () {
-        (async () => {
-            try {
-                let oldPath = gobconfig.get(GobConfigHelper.getConfigKey($txtChatlogPath))
-                oldPath = await GobchatAPI.getAbsoluteChatLogPath(oldPath)
-                let newPath = await GobchatAPI.openDirectoryDialog(oldPath)
-                newPath = await GobchatAPI.getRelativeChatLogPath(newPath)
-                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), newPath)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
-    })
-
-    GobConfigHelper.bindElement(binding, $("#capp_chatlog_format"))
-
-    binding.bindConfigListener($("#capp_chatlog_format"), value => {
-        $("#capp_chatlog_format_selector").val(value)
-        const selectedFormat = $("#capp_chatlog_format_selector").val()
-        if (selectedFormat === null)
-            $("#capp_chatlog_format_selector").val("")
-    })
-
-    $("#capp_chatlog_format_selector").on("change", function () {
-        const selectedFormat = $(this).val()
-        if (selectedFormat.length > 0)
-            $("#capp_chatlog_format").val(selectedFormat).change()
-    })
-
     GobConfigHelper.bindCheckbox(binding, $("#capp_autodetectemote"))
 
     GobConfigHelper.bindCheckbox(binding, $("#capp_userMention"))
