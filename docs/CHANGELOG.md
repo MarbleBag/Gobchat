@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.11.3] - ?
+### Added
+- Chat log
+  - A new keyword {sender-cha} which writes the sender name as seen in game. For example; tells will have their '>>', emote won't use colons, but say will, etc
+  
+### Changed
+- Chat log
+  - compact will now use {sender-cha} instead of {sender}
+
+### Fixed
+- Rangefilter
+  - The filter should no longer ignore names with hyphens
+
+
+- Mentions
+  - If your character name contained one or more hyphen, Gobchat was unable to match your name to your messages (The capitalization is different compared to what the game shows you)
+
 ## [1.11.2] - 2022.04.15
 ### Fixed
 - Rangefilter
