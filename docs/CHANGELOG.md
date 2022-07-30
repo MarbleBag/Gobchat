@@ -6,10 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ### Added
 - Chat log
   - A new keyword {sender-cha} which writes the sender name as seen in game. For example; tells will have their '>>', emote won't use colons, but say will, etc
+  - Added a new predefined log format wich will use {sender-cha}
   
-### Changed
-- Chat log
-  - compact will now use {sender-cha} instead of {sender}
 
 ### Fixed
 - Rangefilter

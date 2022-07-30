@@ -1067,4 +1067,7 @@ group groupnumber clear</value>
   <data name="main.chat.channel.npc-dialog.tooltip" xml:space="preserve">
     <value />
   </data>
+  <data name="config.app.chatlog.format.selector.ingame" xml:space="preserve">
+    <value>Ingame</value>
+  </data>
 </root>
