@@ -76,7 +76,7 @@ namespace Gobchat.Core.Chat
 
             var currentUser = _actorManager.GetActivePlayerName();
             if (currentUser != null && message.Source.IsAPlayer)
-                message.Source.IsUser = currentUser.Equals(message.Source.CharacterName, StringComparison.InvariantCulture);
+                message.Source.IsUser = currentUser.Equals(message.Source.CharacterName, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void SetVisibilityOnMessage(ChatMessage message)

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gobchat.Core.Chat;
+using Gobchat.Module.Language;
 
 namespace Gobchat.Module.Misc.Chatlogger.Internal
 {
@@ -116,6 +117,61 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
             }
         }
 
+        private sealed class ChannelSpecificSenderFormater : IFormater
+        {
+
+            private readonly ILocaleManager localeManager;
+
+            public string Format(ChatMessage msg)
+            {
+                var sender = msg.Source.Original;
+                switch (msg.Channel)
+                {
+                    case ChatChannel.GobchatInfo:
+                    case ChatChannel.GobchatError:
+                        return $"[{sender}]";
+                    case ChatChannel.Echo:
+                        return "Echo:";
+                    case ChatChannel.Emote:
+                        return sender;
+                    case ChatChannel.TellSend:
+                        return $">> {sender}:";
+                    case ChatChannel.TellRecieve:
+                        return $"{sender} >>";
+                    case ChatChannel.Error:
+                        return null;
+                    case ChatChannel.AnimatedEmote:
+                        return null;
+                    case ChatChannel.Party:
+                        return $"({sender})";
+                    case ChatChannel.Alliance:
+                        return $"<{sender}>";
+                    case ChatChannel.Guild:
+                    case ChatChannel.LinkShell_1:
+                    case ChatChannel.LinkShell_2:
+                    case ChatChannel.LinkShell_3:
+                    case ChatChannel.LinkShell_4:
+                    case ChatChannel.LinkShell_5:
+                    case ChatChannel.LinkShell_6:
+                    case ChatChannel.LinkShell_7:
+                    case ChatChannel.LinkShell_8:
+                    case ChatChannel.CrossWorldLinkShell_1:
+                    case ChatChannel.CrossWorldLinkShell_2:
+                    case ChatChannel.CrossWorldLinkShell_3:
+                    case ChatChannel.CrossWorldLinkShell_4:
+                    case ChatChannel.CrossWorldLinkShell_5:
+                    case ChatChannel.CrossWorldLinkShell_6:
+                    case ChatChannel.CrossWorldLinkShell_7:
+                    case ChatChannel.CrossWorldLinkShell_8:
+                        var abbreviationId = GobchatChannelMapping.GetChannel(msg.Channel).AbbreviationId;
+                        var abbreviation = WebUIResources.ResourceManager.GetString(abbreviationId);
+                        return $"[{abbreviation}]<{sender}>";
+                    default:
+                        return sender != null ? $"{sender}:" : null;
+                }
+            }
+        }
+
         private sealed class MessageFormater : IFormater
         {
             private readonly StringBuilder _builder = new StringBuilder();
@@ -140,12 +196,13 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
         static CustomChatLogger()
         {
             FormaterByName.Add("TIME", new TimeFormater());
-            FormaterByName.Add("TIME-SHORT", new TimeShortFormater());            
+            FormaterByName.Add("TIME-SHORT", new TimeShortFormater());
             FormaterByName.Add("TIME-FULL", new TimeFullFormater());
             FormaterByName.Add("DATE", new DateFormater());
             FormaterByName.Add("CHANNEL", new ChannelNameFormater());
             FormaterByName.Add("CHANNEL-PADL", new ChannelNamePaddedLeftFormater());
             FormaterByName.Add("CHANNEL-PADR", new ChannelNamePaddedRightFormater());
+            FormaterByName.Add("SENDER-CHA", new ChannelSpecificSenderFormater());
             FormaterByName.Add("SENDER", new SenderFormater());
             FormaterByName.Add("MESSAGE", new MessageFormater());
             FormaterByName.Add("BREAK", new BreakFormater());
@@ -208,7 +265,7 @@ namespace Gobchat.Module.Misc.Chatlogger.Internal
                 _logTemplate = templateBuilder.ToString();
                 _formaters = formaters.ToArray();
                 _logArgs = new object[_formaters.Length];
-                OnNewLogFormat();          
+                OnNewLogFormat();
             }
         }
 

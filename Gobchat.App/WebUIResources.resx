@@ -352,7 +352,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Border for current result</value>
   </data>
   <data name="config.app.search.border.tooltip" xml:space="preserve">
-    <value />
+    <value>Selected search result will be outlined with this color</value>
   </data>
   <data name="config.app.search.label" xml:space="preserve">
     <value>Search</value>
@@ -419,13 +419,13 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Sender text</value>
   </data>
   <data name="config.groups.group.trigger" xml:space="preserve">
-    <value>Players belonging to this group</value>
+    <value>Characters belonging to this group</value>
   </data>
   <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
-    <value>Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name.</value>
+    <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name.</value>
   </data>
   <data name="config.groups.info" xml:space="preserve">
-    <value>Groups are processed from top to bottom. If a group matches, either by player name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
+    <value>Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
   </data>
   <data name="config.groups.newgroup" xml:space="preserve">
     <value>New group</value>
@@ -817,7 +817,7 @@ Restoration is final after clicking save.</value>
     <value>/em</value>
   </data>
   <data name="main.chat.channel.error" xml:space="preserve">
-    <value>System error messages</value>
+    <value>System errors</value>
   </data>
   <data name="main.chat.channel.error.tooltip" xml:space="preserve">
     <value />
@@ -1019,7 +1019,7 @@ group groupnumber clear</value>
     <comment>0: player name &amp; server</comment>
   </data>
   <data name="main.cmdmanager.cmd.group.invalid.nosupport" xml:space="preserve">
-    <value>Group [{0}] {1} does not support player names.</value>
+    <value>Unable to add character. Group [{0}] {1} represents all characters you have marked with {2}. This can only be changed by the game. Or, you can create your own gobchat group under options -&gt; groups.</value>
     <comment>0: group index, 1: group name</comment>
   </data>
   <data name="main.cmdmanager.cmd.group.notgrouped" xml:space="preserve">
@@ -1063,5 +1063,11 @@ group groupnumber clear</value>
   </data>
   <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
     <value>Compact</value>
+  </data>
+  <data name="main.chat.channel.npc-dialog.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="config.app.chatlog.format.selector.ingame" xml:space="preserve">
+    <value>Ingame</value>
   </data>
 </root>

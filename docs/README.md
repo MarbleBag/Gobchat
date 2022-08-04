@@ -79,6 +79,7 @@ By default this feature is deactivated. If you want Gobchat to create log files,
 Gobchat provides a few pre-made formats from which you can choose. You can either modify these or create your own format. Gobchat uses the entered format string and replaces certain key-words.
 * __{channel}__ Channel id
 * __{sender}__ Sender name
+* __{sender-cha}__ Sender name with a channel specific formatting, which is similar to in game. Not supported by the log converter.
 * __{date}__ Date in yyyy-mm-dd (year, month, day)
 * __{time}__ Time of message in hh:mm:ss (hour of day, minutes, seconds)
 * __{time-short}__ Time of message in hh:mm (hour of day, minutes)
