@@ -45,7 +45,7 @@ namespace Gobchat.Core.Chat
                     return null;
             }
 
-            var searchName = message.Source.CharacterName != null ? message.Source.CharacterName : message.Source.Original;
+            var searchName = message.Source.CharacterName ?? message.Source.Original;
             searchName = searchName.ToLowerInvariant();
 
             foreach (var group in _groups)

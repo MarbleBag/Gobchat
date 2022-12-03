@@ -19,7 +19,7 @@ namespace Gobchat {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class WebUIResources {
@@ -762,7 +762,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Selected search result will be outlined with this color.
         /// </summary>
         internal static string config_app_search_border_tooltip {
             get {
@@ -960,7 +960,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Players belonging to this group.
+        ///   Looks up a localized string similar to Characters belonging to this group.
         /// </summary>
         internal static string config_groups_group_trigger {
             get {
@@ -969,7 +969,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Names of players which belong to this group. Names are separated by comma. If a player is from a different server, add [servername] to the end of its name..
+        ///   Looks up a localized string similar to A character belongs to this group if they&apos;re listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name..
         /// </summary>
         internal static string config_groups_group_trigger_tooltip {
             get {
@@ -978,7 +978,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by player name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
+        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
         /// </summary>
         internal static string config_groups_info {
             get {
@@ -2152,7 +2152,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System error messages.
+        ///   Looks up a localized string similar to System errors.
         /// </summary>
         internal static string main_chat_channel_error {
             get {
@@ -2476,6 +2476,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string main_chat_channel_npc_dialog_tooltip {
+            get {
+                return ResourceManager.GetString("main.chat.channel.npc-dialog.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Party.
         /// </summary>
         internal static string main_chat_channel_party {
@@ -2739,7 +2748,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group [{0}] {1} does not support player names..
+        ///   Looks up a localized string similar to Unable to add character. Group [{0}] {1} represents all characters you have marked with {2}. This can only be changed by the game. Or, you can create your own gobchat group under options -&gt; groups..
         /// </summary>
         internal static string main_cmdmanager_cmd_group_invalid_nosupport {
             get {

@@ -69,7 +69,7 @@ namespace Gobchat.Module.Actor.Internal
 
             lock (_realm)
             {
-                if (_realm.TryGetValue(name, out var storedData))
+                if (_realm.TryGetValue(name.ToUpperInvariant(), out var storedData))
                     return storedData.Actor.SquaredDistanceToPlayer;
                 return 0;
             }
@@ -107,15 +107,17 @@ namespace Gobchat.Module.Actor.Internal
 
                 foreach (var newData in _pendingUpdates)
                 {
-                    if (_realm.TryGetValue(newData.Actor.Name, out var oldData))
+                    var key = newData.Actor.Name.ToUpperInvariant(); // names can have a different capitalization than seen in the chat window!
+
+                    if (_realm.TryGetValue(key, out var oldData))
                     {
                         //if (newData.LastUpdateTime > oldData.LastUpdateTime)
                         if (newData.Actor.SquaredDistanceToPlayer < oldData.Actor.SquaredDistanceToPlayer)
-                            _realm[newData.Actor.Name] = newData;
+                            _realm[key] = newData;
                     }
                     else
                     {
-                        _realm[newData.Actor.Name] = newData;
+                        _realm[key] = newData;
                     }
 
                     if (newData.Actor.IsUser)

@@ -156,7 +156,7 @@ var Gobchat = (function(Gobchat, undefined) {
 
             if (!("trigger" in group)) {
                 commandManager.sendErrorMessage(
-                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.invalid.nosupport"], groupIdx, group.name)
+                    Gobchat.formatString(localization["main.cmdmanager.cmd.group.invalid.nosupport"], groupIdx, group.name, group.hiddenName)
                 )
                 return
             }
