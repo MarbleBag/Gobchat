@@ -40,21 +40,21 @@ var Gobchat = (function (module) {
         result += toCss([".chat-panel-bg"], style.chatbox)
 
         // channel
-        result += toCss([`.chat-entry`], style.channel.base)
+        result += toCss([`.gob-chat-entry`], style.channel.base)
         Object.entries(Gobchat.Channels).forEach(e => {
             const channelName = e[1].internalName
             if (channelName in style.channel)
-                result += toCss([`.chat-entry__text.chat-msg-c-${channelName}`], style.channel[channelName])
+                result += toCss([`.gob-chat-entry--channel-${channelName} .gob-chat-entry__text`], style.channel[channelName])
         })
 
-        result += toCss([`.chat-msg-seg-link`], style.segment.link)
+        result += toCss([`.gob-chat-entry__text__segment--link`], style.segment.link)
 
         // trigger groups
         {
             const data = gobconfig.get("behaviour.groups.data")
             Object.entries(data).forEach(e => {
-                result += toCss([`.chat-msg-tg-b-${e[1].id}`], e[1].style.body)
-                result += toCss([`.chat-msg-tg-s-${e[1].id}`], e[1].style.header)
+                result += toCss([`.gob-chat-entry--trigger-group-${e[1].id}`], e[1].style.body)
+                result += toCss([`.gob-chat-entry--trigger-group-${e[1].id} .gob-chat-entry__sender`], e[1].style.header)
             })
         }
 
@@ -72,22 +72,22 @@ var Gobchat = (function (module) {
         let result = ""
 
         // timestamp
-        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `${selector} .chat-entry__time`)
+        const tabsWithoutTime = getTabsWithoutTime(tabModels).map(selector => `${selector} .gob-chat-entry__time`)
         result += toCss(tabsWithoutTime, { "display": "none" })
 
         // roleplay
-        const tabsWithMentions = getTabsWithMention(tabModels).map(selector => `${selector} .chat-msg-seg-mention`)
+        const tabsWithMentions = getTabsWithMention(tabModels).map(selector => `${selector} .gob-chat-entry__text__segment--mention`)
         result += toCss(tabsWithMentions, style.segment.mention)
 
         const tabsWithRoleplay = getTabsWithRoleplay(tabModels)
-        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-say`), style.segment.say, style.channel.say)
-        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-emote`), style.segment.emote, style.channel.emote)
-        result += toCss(tabsWithRoleplay.map(selector => `${selector} .chat-msg-seg-ooc`), style.segment.ooc)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .gob-chat-entry__text__segment--say`), style.segment.say, style.channel.say)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .gob-chat-entry__text__segment--emote`), style.segment.emote, style.channel.emote)
+        result += toCss(tabsWithRoleplay.map(selector => `${selector} .gob-chat-entry__text__segment--ooc`), style.segment.ooc)
 
         // range filter
         {
             const tabsWithRangeFilter = getTabsWithRangefilter(tabModels)
-            result += toCss(tabsWithRangeFilter.map(selector => `${selector} .chat-entry__fadeout-0`), { "display": "none" })
+            result += toCss(tabsWithRangeFilter.map(selector => `${selector} .gob-chat-entry--fadeout-0`), { "display": "none" })
 
             const data = gobconfig.get("behaviour.rangefilter")
             const startopacity = data.startopacity / 100.0
@@ -98,7 +98,7 @@ var Gobchat = (function (module) {
             //the higher the level, the higher the opacity
             for (let i = 1; i <= Gobchat.RangeFilterFadeOutLevels; ++i) {
                 result += toCss(
-                    tabsWithRangeFilter.map(selector => `${selector} .chat-entry__fadeout-${i}`),
+                    tabsWithRangeFilter.map(selector => `${selector} .gob-chat-entry--fadeout-${i}`),
                     { "opacity": `${(i - 1) * opacityByLevel + endopacity}` }
                 )
             }
@@ -118,7 +118,7 @@ var Gobchat = (function (module) {
 
                 const selectors = invisibleChannels
                     .map(c => getChannelName(c))
-                    .map(c => `${tabSelector} .chat-entry.chat-msg-c-${c}`)
+                    .map(c => `${tabSelector} .gob-chat-entry--channel-${c}`)
 
                 result += toCss(selectors, { "display": "none" })
             })
