@@ -10,10 +10,6 @@
 
     <script defer src="lib/fontawesome/js/all.js"></script>
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-    <!--
-    <link rel="stylesheet" href="gobui_default.css">
-    <link rel="stylesheet" href="gobui_chat.css">
-    -->
 
     <link rel="stylesheet" href="gobui_default.css">
     <link rel="stylesheet" href="gobui_chat.css">
@@ -42,32 +38,32 @@
 <body>
     <div id="container">
         <div id="chatbox" class="gob-chatbox">
-            <div class="chat-toolbar chat-toolbar-top">
-                <button id="gobchat_showconfig" class="chat-toolbar-button"><i class="fas fa-cog"></i></button>
-                <button id="gobchat_togglechatsearch" class="chat-toolbar-button"><i class="fas fa-search"></i></button>
-                <div class="js-chattabs chat-tabnav">
-                    <button class="js-nav-left chat-tabnav-btn chat-tabnav-left">
+            <div class="gob-chatbox__toolbar">
+                <button id="gobchat_showconfig" class="gob-chatbox__toolbar__button"><i class="fas fa-cog"></i></button>
+                <button id="gobchat_togglechatsearch" class="gob-chatbox__toolbar__button"><i class="fas fa-search"></i></button>
+                <div class="js-chattabs gob-chatbox__chat-navi chat-tabnav">
+                    <button class="js-nav-left gob-chatbox__chat-navi__button gob-chatbox__chat-navi__button--left">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <div class="js-nav-content chat-tabbar"></div>
-                    <button class="js-nav-right chat-tabnav-btn chat-tabnav-right">
+                    <div class="js-nav-content gob-chatbox__chat-navi__bar"></div>
+                    <button class="js-nav-right gob-chatbox__chat-navi__button gob-chatbox__chat-navi__button--right">
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
-            <div class="chat-panel chat-panel-bg">
-                <div class="js-chat-history"></div>
-            </div>
-            <div class="chat-toolbar chat-toolbar-bot chat-panel-bg">
-                <div id="chatbox_search">
-                    <input id="chatbox_search_txt" />
-                    <button id="chatbox_search_hits">0 / 0</button>
-                    <button id="chatbox_search_up"><i class="fas fa-angle-up"></i></button>
-                    <button id="chatbox_search_down"><i class="fas fa-angle-down"></i></button>
-                    <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>
-                    <!--<input id="chatbox_search_advanced" type="checkbox" />-->
+            <div class="gob-chatbox__panel chat-panel-bg">
+                <div class="gob-chatbox__panel__history js-chat-history"></div>
+                <div class="gob-chatbox__toolbar">
+                    <div id="chatbox_search">
+                        <input id="chatbox_search_txt" />
+                        <button id="chatbox_search_hits">0 / 0</button>
+                        <button id="chatbox_search_up"><i class="fas fa-angle-up"></i></button>
+                        <button id="chatbox_search_down"><i class="fas fa-angle-down"></i></button>
+                        <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>
+                        <!--<input id="chatbox_search_advanced" type="checkbox" />-->
+                    </div>
+                    <!--<gobchat-chatsearch id="chatbox_search"></gobchat-chatsearch>-->
                 </div>
-                <!--<gobchat-chatsearch id="chatbox_search"></gobchat-chatsearch>-->
             </div>
         </div>
     </div>

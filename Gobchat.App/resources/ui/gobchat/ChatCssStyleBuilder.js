@@ -37,7 +37,7 @@ var Gobchat = (function (module) {
 
         let result = ""
         // chat bachground
-        result += toCss([".chat-panel-bg"], style.chatbox)
+        result += toCss([".gob-chatbox__panel"], style.chatbox)
 
         // channel
         result += toCss([`.gob-chat-entry`], style.channel.base)
@@ -146,8 +146,8 @@ var Gobchat = (function (module) {
             }
 
             const effects = gobconfig.get("behaviour.chattabs.effect")
-            result += toCss(".chat-tabnav-btn.tab-effect-mention", getCssObjectForType(effects.mention))
-            result += toCss(".chat-tabnav-btn.tab-effect-message", getCssObjectForType(effects.message))
+            result += toCss(".gob-chatbox__chat-navi__button.tab-effect-mention", getCssObjectForType(effects.mention))
+            result += toCss(".gob-chatbox__chat-navi__button.tab-effect-message", getCssObjectForType(effects.message))
         }
 
         return result

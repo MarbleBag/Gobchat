@@ -492,7 +492,7 @@ var Gobchat = (function (Gobchat) {
             $("<button/>")
                 .appendTo($buttons)
                 .attr("data-gob-tab-id", id)
-                .addClass("chat-tabnav-btn")
+                .addClass("gob-chatbox__chat-navi__button")
                 .append(
                     $("<span></span>").html(Gobchat.encodeHtmlEntities(name))
                 )
