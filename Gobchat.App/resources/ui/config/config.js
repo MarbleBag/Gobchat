@@ -18,67 +18,63 @@ jQuery(function ($) {
     $("#cmain_saveconfig").on("click", function (e) {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
-    });
+    })
 
     $("#cmain_saveandexitconfig").on("click", function (e) {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
         window.close()
-    });
+    })
 
-    $("#cmain_cancelconfig").on("click", function (e) {
-        {
-            (async () => {
-                const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
-                if (result)
-                    window.close()
-            })()
-        }
-    });
+    $("#cmain_cancelconfig").on("click", function (e) {        
+        (async () => {
+            const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
+            if (result)
+                window.close()
+        })()
+    })
 
-    $("#cmain_closegobchat").on("click", function (e) {
-        {
+    $("#cmain_closegobchat").on("click", function (e) {        
+        (async () => {
+            const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
+            if (result) {
+                window.close()
+                GobchatAPI.closeGobchat()
+            }
+        })()   
+    })
+
+    async function initializeGeneralDatabinding() {
+        const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+
+        window.gobLocale = new Gobchat.LocaleManager()
+
+        gobLocale.setLocale(gobconfig.get("behaviour.language"))
+        generalBinding.bindConfigListener("behaviour.language", (value) => {
+            gobLocale.setLocale(value)
+            gobLocale.updateElement($(document))
+        })
+
+        window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
+        await gobStyles.loadStyles()
+        generalBinding.bindConfigListener("style.theme", (value) => {
             (async () => {
-                const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
-                if (result) {
-                    window.close()
-                    GobchatAPI.closeGobchat()
+                try {
+                    $("body").hide()
+                    await gobStyles.activateStyle(value)
+                    $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+                } catch (e1) {
+                    console.error(e1)
                 }
             })()
-        }
-    });
+        })
 
-    {
-        (async () => {
-            const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+        await makeNavigationElement($("#cmain_navbar"))
 
-            window.gobLocale = new Gobchat.LocaleManager()
-            
-            gobLocale.setLocale(gobconfig.get("behaviour.language"))
-            generalBinding.bindConfigListener("behaviour.language", (value) => {
-                gobLocale.setLocale(value)
-                gobLocale.updateElement($(document))
-            })
+        generalBinding.initialize()
+    }   
 
-            window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
-            await gobStyles.loadStyles()
-            generalBinding.bindConfigListener("style.theme", (value) => {
-                (async () => {
-                    try {
-                        $("body").hide()
-                        await gobStyles.activateStyle(value)
-                        $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
-                    } catch (e1) {
-                        console.error(e1)
-                    }
-                })();
-            })
-
-            await makeNavigationElement($("#cmain_navbar"))
-
-            generalBinding.initialize()
-        })()
-    }
+    initializeGeneralDatabinding()
 
     async function makeNavigationElement(navBar) {
         const navAttribute = "data-gob-nav-target"
