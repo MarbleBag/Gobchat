@@ -18,8 +18,20 @@
 
     GobConfigHelper.bindElement(binding, $("#capp_language"))
 
-    GobConfigHelper.bindElement(binding, $("#capp_theme"))
-
+    try {
+        const dpdThemes = $("#capp_theme")
+        dpdThemes.empty()
+        for (let style of gobStyles.styles) {
+            $('<option>', {
+                text: style,
+                value: style
+            }).appendTo(dpdThemes)
+        }
+        GobConfigHelper.bindElement(binding, $("#capp_theme"))
+    } catch (e1) {
+        console.error(e1)
+    }
+   
     // setup checkboxes
     GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
 

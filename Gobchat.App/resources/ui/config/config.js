@@ -50,46 +50,31 @@ jQuery(function ($) {
 
     {
         (async () => {
-            window.goblocale = new Gobchat.LocaleManager()
-            window.goblocale.setLocale(gobconfig.get("behaviour.language"))
-
             const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
 
+            window.goblocale = new Gobchat.LocaleManager()
+            
+            goblocale.setLocale(gobconfig.get("behaviour.language"))
             generalBinding.bindConfigListener("behaviour.language", (value) => {
-                window.goblocale.setLocale(value)
-                window.goblocale.updateElement($(document))
+                goblocale.setLocale(value)
+                goblocale.updateElement($(document))
             })
 
-            await makeNavigationElement($("#cmain_navbar"))
-
-            const styleLoader = new Gobchat.StyleLoader(document.head, "..")
-            await styleLoader.loadStyles()
-
-            try {
-                const dpdThemes = $("#capp_theme")
-                dpdThemes.empty()
-                for (let style of styleLoader.styles) {
-                    $('<option>', {
-                        text: style,
-                        value: style
-                    }).appendTo(dpdThemes)
-                }
-            } catch (e1) {
-                console.error(e1)
-            }
-
+            window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
+            await gobStyles.loadStyles()
             generalBinding.bindConfigListener("style.theme", (value) => {
                 (async () => {
                     try {
                         $("body").hide()
-                        await styleLoader.activateStyle(value)
-                        $("#capp_theme").val(value)
+                        await gobStyles.activateStyle(value)
                         $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
                     } catch (e1) {
                         console.error(e1)
                     }
                 })();
             })
+
+            await makeNavigationElement($("#cmain_navbar"))
 
             generalBinding.initialize()
         })()
