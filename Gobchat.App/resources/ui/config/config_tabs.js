@@ -202,8 +202,8 @@
             buildChannelEntry(channelData)
         })
 
-        goblocale.updateElement($tbl1)
-        goblocale.updateElement($tbl2)
+        gobLocale.updateElement($tbl1)
+        gobLocale.updateElement($tbl2)
         binding.initialize()
     }
 

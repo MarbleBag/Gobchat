@@ -27,15 +27,15 @@ document.addEventListener("OverlayStateUpdate", function (e) {
             window.gobconfig = new Gobchat.GobchatConfig(true)
             await gobconfig.loadConfig()
 
-            window.goblocale = new Gobchat.LocaleManager()
-            goblocale.setLocale(gobconfig.get("behaviour.language"))
+            window.gobLocale = new Gobchat.LocaleManager()
+            gobLocale.setLocale(gobconfig.get("behaviour.language"))
             gobconfig.addProfileEventListener(event => {
                 if (event.type === "active")
-                    goblocale.setLocale(gobconfig.get("behaviour.language"))
+                    gobLocale.setLocale(gobconfig.get("behaviour.language"))
             })
             gobconfig.addPropertyEventListener("behaviour.language", event => {
                 if (event.isActive)
-                    goblocale.setLocale(gobconfig.get("behaviour.language"))
+                    gobLocale.setLocale(gobconfig.get("behaviour.language"))
             })
 
             window.chatManager = new Gobchat.ChatboxManager()

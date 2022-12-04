@@ -156,7 +156,7 @@
             if (gobconfig.profiles.length <= 1)
                 btnDeleteProfile.attr("disabled", true)
         })
-        await goblocale.updateElement(profileTable)
+        await gobLocale.updateElement(profileTable)
     }
 
     gobconfig.addProfileEventListener((event) => {

@@ -168,7 +168,7 @@
         clearTableTable()
         const ids = gobconfig.get(ConfigKeyOrder)
         ids.forEach(id => addEntryToTable(id))
-        await goblocale.updateElement(mentionTable)
+        await gobLocale.updateElement(mentionTable)
         /* deactivated til multiple mentions are really needed
         mentionTable.sortable("refresh")
         mentionTable.accordion("refresh")

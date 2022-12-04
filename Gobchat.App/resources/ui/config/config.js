@@ -52,12 +52,12 @@ jQuery(function ($) {
         (async () => {
             const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
 
-            window.goblocale = new Gobchat.LocaleManager()
+            window.gobLocale = new Gobchat.LocaleManager()
             
-            goblocale.setLocale(gobconfig.get("behaviour.language"))
+            gobLocale.setLocale(gobconfig.get("behaviour.language"))
             generalBinding.bindConfigListener("behaviour.language", (value) => {
-                goblocale.setLocale(value)
-                goblocale.updateElement($(document))
+                gobLocale.setLocale(value)
+                gobLocale.updateElement($(document))
             })
 
             window.gobStyles = new Gobchat.StyleLoader(document.head, "..")

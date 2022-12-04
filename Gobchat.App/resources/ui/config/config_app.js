@@ -155,9 +155,9 @@
     let process_IntervalTimer = 0
     async function process_UpdateLabel() {
         try {
-            const txtSearch = await goblocale.get("config.app.process.info.search")
-            const txtNotConnected = await goblocale.get("config.app.process.info.notconnected")
-            const txtConnectedTo = await goblocale.get("config.app.process.info.connected")
+            const txtSearch = await gobLocale.get("config.app.process.info.search")
+            const txtNotConnected = await gobLocale.get("config.app.process.info.notconnected")
+            const txtConnectedTo = await gobLocale.get("config.app.process.info.connected")
 
             const $txtLabel = $("#capp_process_info")
             const $icon = $("#capp_process_selector_link").find("svg")

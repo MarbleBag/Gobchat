@@ -50,15 +50,15 @@ var Gobchat = (function(Gobchat, undefined) {
         }
 
         async getTranslation(key) {
-            return await goblocale.get(key)
+            return await gobLocale.get(key)
         }
 
         async getTranslations(keys) {
-            return await goblocale.getAll(keys)
+            return await gobLocale.getAll(keys)
         }
 
         async getTranslationAndFormat(key, params) {
-            return await goblocale.getAndFormat(key, params)
+            return await gobLocale.getAndFormat(key, params)
         }
 
         _getHandler(msg) {

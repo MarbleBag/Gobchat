@@ -32,7 +32,7 @@
             $(this).text(idx + 1)
         })
 
-        await goblocale.updateElement(tblGroups)
+        await gobLocale.updateElement(tblGroups)
     }
 
     function clearGroupTable() {
@@ -87,7 +87,7 @@
         if (isFFGroup) {
             GobConfigHelper.bindListener(binding, "behaviour.language", async (value) => {
                 const $label = groupEntry.find(".js-ffgroup")
-                const localization = await goblocale.get($label.attr("data-gob-locale-id-text"), value)
+                const localization = await gobLocale.get($label.attr("data-gob-locale-id-text"), value)
                 const name = gobconfig.get(`${groupConfigKey}.hiddenName`, "")
                 const txt = Gobchat.formatString(localization, name)
                 $label.text(txt)

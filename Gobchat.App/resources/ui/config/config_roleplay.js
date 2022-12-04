@@ -143,7 +143,7 @@
             const txtStart = gobconfig.get(GobConfigHelper.getConfigKey(txtStartTokens)).join(" or ")
             const txtEnd = gobconfig.get(GobConfigHelper.getConfigKey(txtEndTokens)).join(" or ")
             const txtType = dpdSegmentType.find("option:selected").text()
-            const localization = await goblocale.get("config.roleplay.entry.header", locale)
+            const localization = await gobLocale.get("config.roleplay.entry.header", locale)
             const label = Gobchat.formatString(localization, [txtType, txtStart, txtEnd])
             entry.find(".tmpl-header-name").text(label)
         }
@@ -195,7 +195,7 @@
             $(this).text(idx + 1)
         })
 
-        goblocale.updateElement(tblSegments)
+        gobLocale.updateElement(tblSegments)
     }
 
     tblSegments.accordion({

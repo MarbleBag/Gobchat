@@ -116,7 +116,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
                     if (defOptions.dialogText.length > 0)
                         lookupKeys.push(defOptions.dialogText)
 
-                    const locales = await goblocale.getAll(lookupKeys)
+                    const locales = await gobLocale.getAll(lookupKeys)
                     defOptions.title = locales[defOptions.title]
                     defOptions.buttons = _.mapKeys(defOptions.buttons, (v, k) => locales[k])
 
@@ -124,7 +124,7 @@ var GobConfigHelper = (function (GobConfigHelper, undefined) {
                         defOptions.dialogText = locales[defOptions.dialogText]
 
                     if (defOptions.dialogContent)
-                        await goblocale.updateElement(defOptions.dialogContent)
+                        await gobLocale.updateElement(defOptions.dialogContent)
                 }
 
                 Object.entries(defOptions.buttons).forEach((entry) => {

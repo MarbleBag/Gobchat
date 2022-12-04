@@ -60,7 +60,7 @@ var Gobchat = (function (Gobchat) {
                         .map(data => data.abbreviationId)
                         .filter(e => e !== null && e !== undefined)
 
-                    const lookup = await goblocale.getAll(requestTranslation)
+                    const lookup = await gobLocale.getAll(requestTranslation)
                     const result = {}
 
                     channels.forEach(data => {
