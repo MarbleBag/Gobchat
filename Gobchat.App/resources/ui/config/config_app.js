@@ -31,7 +31,7 @@
     } catch (e1) {
         console.error(e1)
     }
-   
+
     // setup checkboxes
     GobConfigHelper.bindCheckbox(binding, $("#capp_chatlog_active"))
 
@@ -263,6 +263,8 @@
 
             $input.on('change', function () {
                 const value = $(this).val().match(regexValue) || gobconfig.get("style.base-font-size").match(regexValue)
+                if (value < 8)
+                    value = 8
                 $(this).val(value + " px")
             })
 
