@@ -235,10 +235,51 @@
     GobConfigHelper.bindColorSelector(binding, clrChatboxBackground)
     GobConfigHelper.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
 
-    // setup font size
-    GobConfigHelper.bindElement(binding, $("#capp_font_size"), {
-        elementGetAccessor: ($element) => Gobchat.isNumber($element.val()) ? Math.round($element.val()) + "px" : ($element.val() || "medium")
-    })
+    {
+        function makeFontSizeSelector($input, $selector) {
+            const regexValue = /\d+\.?\d*/
+
+            GobConfigHelper.bindElement(binding, $input)
+
+            binding.bindConfigListener($input, function (fontSize) {
+                fontSize = parseFloat(fontSize.match(regexValue))
+                const baseSize = parseFloat(gobconfig.get("style.base-font-size").match(regexValue))
+                const factor = fontSize / baseSize
+
+                $selector.val(factor + "")
+                if ($selector.val() === null)
+                    $selector.val("")
+            })
+
+            $input.on('focus', function () {
+                const value = $(this).val().match(regexValue)
+                $(this).val(value)
+            })
+
+            $input.on('blur', function () {
+                const value = $(this).val().match(regexValue)
+                $(this).val(value + " px")
+            })
+
+            $input.on('change', function () {
+                const value = $(this).val().match(regexValue) || gobconfig.get("style.base-font-size").match(regexValue)
+                $(this).val(value + " px")
+            })
+
+            $selector.on("change", function () {
+                const selectedFormat = $(this).val()
+                if (selectedFormat.length > 0) {
+                    const baseSize = parseFloat(gobconfig.get("style.base-font-size").match(regexValue))
+                    const factor = parseFloat(selectedFormat)
+                    $input.val(baseSize * factor).change()
+                }
+            })
+        }
+
+        makeFontSizeSelector($("#capp_chat_font-size"), $("#capp_chat_font-size_selector"))
+        makeFontSizeSelector($("#capp_chat-toolbar_font-size"), $("#capp_chat-toolbar_font-size_selector"))
+        makeFontSizeSelector($("#capp_config_font-size"), $("#capp_config_font-size_selector"))
+    }
 
     const clrSearchMarked = $("#capp_search_marked")
     GobConfigHelper.makeColorSelector(clrSearchMarked)
