@@ -15,33 +15,29 @@
 
 // import { buildNavigationElement } from "../gobchat/gob-navbar"
 jQuery(function ($) {
-    $("#cmain_saveconfig").on("click", function (e) {
+    $("#cmain_saveconfig").on("click", function () {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
     })
 
-    $("#cmain_saveandexitconfig").on("click", function (e) {
+    $("#cmain_saveandexitconfig").on("click", function () {
         window.gobconfig.saveToLocalStore()
         window.saveConfig()
         window.close()
     })
 
-    $("#cmain_cancelconfig").on("click", function (e) {        
-        (async () => {
-            const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
-            if (result)
-                window.close()
-        })()
+    $("#cmain_cancelconfig").on("click", async function () {        
+        const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
+        if (result)
+            window.close()
     })
 
-    $("#cmain_closegobchat").on("click", function (e) {        
-        (async () => {
-            const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
-            if (result) {
-                window.close()
-                GobchatAPI.closeGobchat()
-            }
-        })()   
+    $("#cmain_closegobchat").on("click", async function () {        
+        const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
+        if (result) {
+            window.close()
+            GobchatAPI.closeGobchat()
+        }
     })
 
     async function initializeGeneralDatabinding() {
@@ -57,16 +53,14 @@ jQuery(function ($) {
 
         window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
         await gobStyles.loadStyles()
-        generalBinding.bindConfigListener("style.theme", (value) => {
-            (async () => {
-                try {
-                    $("body").hide()
-                    await gobStyles.activateStyle(value)
-                    $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
-                } catch (e1) {
-                    console.error(e1)
-                }
-            })()
+        generalBinding.bindConfigListener("style.theme", async (value) => {
+            try {
+                $("body").hide()
+                await gobStyles.activateStyle(value)
+                $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+            } catch (e1) {
+                console.error(e1)
+            }
         })
 
         await makeNavigationElement($("#cmain_navbar"))
