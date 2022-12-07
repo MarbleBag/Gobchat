@@ -25,7 +25,7 @@
         const lblName = rowEntry.find(".entry-label")
         const chkMention = rowEntry.find(".entry-mention")
         const chkRoleplay = rowEntry.find(".entry-roleplay")
-        const chkRangefilter = rowEntry.find(".entry-rangefilter")
+        //const chkRangefilter = rowEntry.find(".entry-rangefilter")
         const chkLog = rowEntry.find(".entry-log")
         const clrSelectorFG = rowEntry.find(".entry-color-forground")
         const btnResetFG = rowEntry.find(".entry-color-forground-reset")
@@ -37,19 +37,19 @@
 
         GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
         GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
-        GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
+        //GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
         GobConfigHelper.setConfigKey(chkLog, "behaviour.channel.log")
 
         const channelEnums = [].concat(channelData.chatChannel || [])
         if (channelEnums.length === 0) {
             chkMention.hide()
             chkRoleplay.hide()
-            chkRangefilter.hide()
+            //chkRangefilter.hide()
             chkLog.hide()
         } else {
             GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
-            GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
+            //GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
             GobConfigHelper.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
         }
 
@@ -86,7 +86,7 @@
     binding.initialize()
 
 
-    const copyKeys = ["behaviour.channel"]
+    const copyKeys = ["behaviour.channel.roleplay", "behaviour.channel.mention", "behaviour.channel.log"]
     table.find(".entry-color-forground, .entry-color-background").each(function () {
         const configId = GobConfigHelper.getConfigKey(this)
         if (configId !== undefined && configId !== null) 

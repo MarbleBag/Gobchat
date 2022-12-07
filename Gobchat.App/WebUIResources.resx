@@ -197,10 +197,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>When direct speech is marked, everything else will be automatically flagged as emote.</value>
   </data>
-  <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Exclude mentions from range filter</value>
+  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
+    <value>Exclude messages with mentions from filtering</value>
   </data>
-  <data name="config.app.ckb.mentions.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.ckb.mentions.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
@@ -209,10 +209,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.update.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.app.ckb.usermention" xml:space="preserve">
+  <data name="config.rangefilter.ckb.usermention" xml:space="preserve">
     <value>Check own messages for mentions</value>
   </data>
-  <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.ckb.usermention.tooltip" xml:space="preserve">
     <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.</value>
   </data>
   <data name="config.app.ckblabel" xml:space="preserve">
@@ -321,31 +321,31 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.process.selector.tooltip" xml:space="preserve">
     <value>If you run more than one process of FFXIV, select here to which process Gobchat should connect. Hit the refresh button to the left of this field, select your process or any and hit the connect button to the right.</value>
   </data>
-  <data name="config.app.rangefilter.cutoff" xml:space="preserve">
-    <value>Cut off (yalm)</value>
+  <data name="config.rangefilter.cutoff" xml:space="preserve">
+    <value>Hide messages farther than  (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.cutoff.tooltip" xml:space="preserve">
     <value>Hides other players' messages at this distance.</value>
   </data>
-  <data name="config.app.rangefilter.fadeout" xml:space="preserve">
-    <value>Fade out (yalm)</value>
+  <data name="config.rangefilter.fadeout" xml:space="preserve">
+    <value>Start to fade out at (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.fadeout.tooltip" xml:space="preserve">
     <value>Starts reducing opacity of other players' messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it.</value>
   </data>
-  <data name="config.app.rangefilter.label" xml:space="preserve">
+  <data name="config.rangefilter.label" xml:space="preserve">
     <value>Range filter</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
+  <data name="config.rangefilter.transparency.end" xml:space="preserve">
     <value>Opacity end (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value>Final opacity at cut off distance.</value>
+  <data name="config.rangefilter.transparency.end.tooltip" xml:space="preserve">
+    <value>Final opacity at cut off distance, before it disappears completely.</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start" xml:space="preserve">
     <value>Opacity start (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start.tooltip" xml:space="preserve">
     <value>Initial opacity at fade out distance.</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
@@ -378,7 +378,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.channel.tbl.name" xml:space="preserve">
     <value>Channel name</value>
   </data>
-  <data name="config.channel.tbl.rangefilter" xml:space="preserve">
+  <data name="config.rangefilter.tbl.rangefilter" xml:space="preserve">
     <value>Range filter</value>
   </data>
   <data name="config.channel.tbl.roleplay" xml:space="preserve">
@@ -1069,5 +1069,14 @@ group groupnumber clear</value>
   </data>
   <data name="config.app.chatlog.format.selector.ingame" xml:space="preserve">
     <value>Ingame</value>
+  </data>
+  <data name="config.main.nav.rangefilter" xml:space="preserve">
+    <value>Range filter</value>
+  </data>
+  <data name="config.rangefilter.description" xml:space="preserve">
+    <value>HELP</value>
+  </data>
+  <data name="config.rangefilter.tbl.name" xml:space="preserve">
+    <value>Channel</value>
   </data>
 </root>
