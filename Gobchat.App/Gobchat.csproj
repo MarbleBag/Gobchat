@@ -249,7 +249,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-	<Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v2000.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v2000.cs" />
     <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
@@ -516,7 +516,6 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\Datacenters.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\Message.js">
