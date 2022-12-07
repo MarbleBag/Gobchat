@@ -161,13 +161,13 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt.</value>
   </data>
-  <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
+  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
+    <value>Reichweitenfilter nicht auf Nachrichten mit Erwähnungen anwenden</value>
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
   </data>
-  <data name="config.app.ckb.usermention" xml:space="preserve">
+  <data name="config.rangefilter.ckb.usermention" xml:space="preserve">
     <value>Prüfe eigene Nachrichten auf Erwähnungen</value>
   </data>
   <data name="config.app.fonts.label" xml:space="preserve">
@@ -221,31 +221,31 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.app.position.width" xml:space="preserve">
     <value>Breite</value>
   </data>
-  <data name="config.app.rangefilter.cutoff" xml:space="preserve">
+  <data name="config.rangefilter.cutoff" xml:space="preserve">
     <value>Ausblenden (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.cutoff.tooltip" xml:space="preserve">
     <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt.</value>
   </data>
-  <data name="config.app.rangefilter.fadeout" xml:space="preserve">
+  <data name="config.rangefilter.fadeout" xml:space="preserve">
     <value>Verblassen (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.fadeout.tooltip" xml:space="preserve">
     <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird.</value>
   </data>
-  <data name="config.app.rangefilter.label" xml:space="preserve">
+  <data name="config.rangefilter.label" xml:space="preserve">
     <value>Reichweitenfilter</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
+  <data name="config.rangefilter.transparency.end" xml:space="preserve">
     <value>Sichtbarkeit fern (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.transparency.end.tooltip" xml:space="preserve">
     <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'.</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start" xml:space="preserve">
     <value>Sichtbarkeit nah (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start.tooltip" xml:space="preserve">
     <value>Wie sichtbar soll eine Nachricht sein, wenn sie anfängt zu verblassen.</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
@@ -272,7 +272,7 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.channel.tbl.name" xml:space="preserve">
     <value>Kanalname</value>
   </data>
-  <data name="config.channel.tbl.rangefilter" xml:space="preserve">
+  <data name="config.rangefilter.tbl.rangefilter" xml:space="preserve">
     <value>Reichweitenfilter</value>
   </data>
   <data name="config.channel.tbl.roleplay" xml:space="preserve">
@@ -786,7 +786,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="config.app.chatlog.pathselect.tooltip" xml:space="preserve">
     <value>Ordner aussuchen</value>
   </data>
-  <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.ckb.usermention.tooltip" xml:space="preserve">
     <value>Gobchat hebt normalerweise nur die Erwähnungen in den Nachrichten von anderen hervor. Wird diese Option gewählt, durchsucht Gobchat auch die Nachrichten des Spielers nach Erwähnungen.</value>
   </data>
   <data name="config.groups.group.ffgroup.info" xml:space="preserve">
@@ -934,5 +934,11 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
     <value>Charaktere die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden.</value>
+  </data>
+  <data name="config.main.nav.rangefilter" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.rangefilter.tbl.name" xml:space="preserve">
+    <value>Kanal</value>
   </data>
 </root>

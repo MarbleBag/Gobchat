@@ -132,6 +132,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ingame.
+        /// </summary>
+        internal static string config_app_chatlog_format_selector_ingame {
+            get {
+                return ResourceManager.GetString("config.app.chatlog.format.selector.ingame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New line.
         /// </summary>
         internal static string config_app_chatlog_format_selector_newline {
@@ -303,24 +312,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclude mentions from range filter.
-        /// </summary>
-        internal static string config_app_ckb_mentions {
-            get {
-                return ResourceManager.GetString("config.app.ckb.mentions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_mentions_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.mentions.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check for updates on start.
         /// </summary>
         internal static string config_app_ckb_update {
@@ -335,24 +326,6 @@ namespace Gobchat {
         internal static string config_app_ckb_update_tooltip {
             get {
                 return ResourceManager.GetString("config.app.ckb.update.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check own messages for mentions.
-        /// </summary>
-        internal static string config_app_ckb_usermention {
-            get {
-                return ResourceManager.GetString("config.app.ckb.usermention", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
-        /// </summary>
-        internal static string config_app_ckb_usermention_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.usermention.tooltip", resourceCulture);
             }
         }
         
@@ -672,87 +645,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cut off (yalm).
-        /// </summary>
-        internal static string config_app_rangefilter_cutoff {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.cutoff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hides other players&apos; messages at this distance..
-        /// </summary>
-        internal static string config_app_rangefilter_cutoff_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.cutoff.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fade out (yalm).
-        /// </summary>
-        internal static string config_app_rangefilter_fadeout {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.fadeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starts reducing opacity of other players&apos; messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it..
-        /// </summary>
-        internal static string config_app_rangefilter_fadeout_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.fadeout.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range filter.
-        /// </summary>
-        internal static string config_app_rangefilter_label {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opacity end (%).
-        /// </summary>
-        internal static string config_app_rangefilter_transparencyend {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.transparencyend", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Final opacity at cut off distance..
-        /// </summary>
-        internal static string config_app_rangefilter_transparencyend_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.transparencyend.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opacity start (%).
-        /// </summary>
-        internal static string config_app_rangefilter_transparencystart {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.transparencystart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initial opacity at fade out distance..
-        /// </summary>
-        internal static string config_app_rangefilter_transparencystart_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.rangefilter.transparencystart.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Border for current result.
         /// </summary>
         internal static string config_app_search_border {
@@ -839,15 +731,6 @@ namespace Gobchat {
         internal static string config_channel_tbl_name {
             get {
                 return ResourceManager.GetString("config.channel.tbl.name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range filter.
-        /// </summary>
-        internal static string config_channel_tbl_rangefilter {
-            get {
-                return ResourceManager.GetString("config.channel.tbl.rangefilter", resourceCulture);
             }
         }
         
@@ -1163,6 +1046,15 @@ namespace Gobchat {
         internal static string config_main_nav_profiles {
             get {
                 return ResourceManager.GetString("config.main.nav.profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range filter.
+        /// </summary>
+        internal static string config_main_nav_rangefilter {
+            get {
+                return ResourceManager.GetString("config.main.nav.rangefilter", resourceCulture);
             }
         }
         
@@ -1527,6 +1419,150 @@ namespace Gobchat {
         internal static string config_profiles_profiles_name {
             get {
                 return ResourceManager.GetString("config.profiles.profiles.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude messages with mentions from filtering.
+        /// </summary>
+        internal static string config_rangefilter_ckb_mentions {
+            get {
+                return ResourceManager.GetString("config.rangefilter.ckb.mentions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_rangefilter_ckb_mentions_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.ckb.mentions.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check own messages for mentions.
+        /// </summary>
+        internal static string config_rangefilter_ckb_usermention {
+            get {
+                return ResourceManager.GetString("config.rangefilter.ckb.usermention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself..
+        /// </summary>
+        internal static string config_rangefilter_ckb_usermention_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.ckb.usermention.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide messages farther than  (yalm).
+        /// </summary>
+        internal static string config_rangefilter_cutoff {
+            get {
+                return ResourceManager.GetString("config.rangefilter.cutoff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hides other players&apos; messages at this distance..
+        /// </summary>
+        internal static string config_rangefilter_cutoff_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.cutoff.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HELP.
+        /// </summary>
+        internal static string config_rangefilter_description {
+            get {
+                return ResourceManager.GetString("config.rangefilter.description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start to fade out at (yalm).
+        /// </summary>
+        internal static string config_rangefilter_fadeout {
+            get {
+                return ResourceManager.GetString("config.rangefilter.fadeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starts reducing opacity of other players&apos; messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it..
+        /// </summary>
+        internal static string config_rangefilter_fadeout_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.fadeout.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range filter.
+        /// </summary>
+        internal static string config_rangefilter_label {
+            get {
+                return ResourceManager.GetString("config.rangefilter.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        internal static string config_rangefilter_tbl_name {
+            get {
+                return ResourceManager.GetString("config.rangefilter.tbl.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range filter.
+        /// </summary>
+        internal static string config_rangefilter_tbl_rangefilter {
+            get {
+                return ResourceManager.GetString("config.rangefilter.tbl.rangefilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opacity end (%).
+        /// </summary>
+        internal static string config_rangefilter_transparency_end {
+            get {
+                return ResourceManager.GetString("config.rangefilter.transparency.end", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final opacity at cut off distance, before it disappears completely..
+        /// </summary>
+        internal static string config_rangefilter_transparency_end_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.transparency.end.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opacity start (%).
+        /// </summary>
+        internal static string config_rangefilter_transparency_start {
+            get {
+                return ResourceManager.GetString("config.rangefilter.transparency.start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial opacity at fade out distance..
+        /// </summary>
+        internal static string config_rangefilter_transparency_start_tooltip {
+            get {
+                return ResourceManager.GetString("config.rangefilter.transparency.start.tooltip", resourceCulture);
             }
         }
         
