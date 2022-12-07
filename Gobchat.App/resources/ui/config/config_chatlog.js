@@ -16,107 +16,101 @@
 (function (undefined) {
     const binding = GobConfigHelper.makeDatabinding(gobconfig)
 
-    GobConfigHelper.bindCheckbox(binding, $("#cchatlog_active"))
+    GobConfigHelper.bindCheckbox(binding, $("#c_chatlog_active"))
 
-    const $txtChatlogPath = $("#cchatlog_path")
-    GobConfigHelper.makeResetButton($("#cchatlog_path_reset"), $txtChatlogPath)
+    const $txtChatlogPath = $("#c_chatlog_path")
+    GobConfigHelper.makeResetButton($("#c_chatlog_path_reset"), $txtChatlogPath)
 
-    $txtChatlogPath.on("change", function () {
-        (async () => {
-            try {
-                let newPath = $txtChatlogPath.val()
-                const parsedPath = await GobchatAPI.getRelativeChatLogPath(newPath)
-                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), parsedPath)
-                newPath = await GobchatAPI.getAbsoluteChatLogPath(parsedPath)
-                $txtChatlogPath.val(newPath)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
+    $txtChatlogPath.on("change", async function () {
+        try { // show absolute path to user, but if possible, only store a relative path and/or symbolic link
+            const currentPath = $txtChatlogPath.val()
+            const relCurrentPath = await GobchatAPI.getRelativeChatLogPath(currentPath)
+            gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), relCurrentPath)
+            const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(relCurrentPath)
+            $txtChatlogPath.val(absCurrentPath)
+        } catch (e) {
+            console.error(e)
+        }
     })
 
-    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), path => {
-        (async () => {
-            try {
-                path = await GobchatAPI.getAbsoluteChatLogPath(path)
-                $txtChatlogPath.val(path)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
+    binding.bindConfigListener(GobConfigHelper.getConfigKey($txtChatlogPath), async function(path) {
+        try { // show absolute path to user
+            const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(path)
+            $txtChatlogPath.val(absCurrentPath)
+        } catch (e) {
+            console.error(e)
+        }
     })
 
-    $("#cchatlog_path_select").on("click", function () {
-        (async () => {
-            try {
-                let oldPath = gobconfig.get(GobConfigHelper.getConfigKey($txtChatlogPath))
-                oldPath = await GobchatAPI.getAbsoluteChatLogPath(oldPath)
-                let newPath = await GobchatAPI.openDirectoryDialog(oldPath)
-                newPath = await GobchatAPI.getRelativeChatLogPath(newPath)
-                gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), newPath)
-            } catch (e) {
-                console.error(e)
-            }
-        })();
+    $("#c_chatlog_path_select").on("click", async function () {
+        try { // open directory selector in previously selected directory
+            const relCurrentPath = gobconfig.get(GobConfigHelper.getConfigKey($txtChatlogPath))
+            const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(relCurrentPath)
+
+            const absNewPath = await GobchatAPI.openDirectoryDialog(absCurrentPath)
+            const relNewPath = await GobchatAPI.getRelativeChatLogPath(absNewPath) // only store a relative path and/or symbolic link
+            gobconfig.set(GobConfigHelper.getConfigKey($txtChatlogPath), relNewPath)
+        } catch (e) {
+            console.error(e)
+        }
     })
 
-    GobConfigHelper.bindElement(binding, $("#cchatlog_format"))
+    GobConfigHelper.bindElement(binding, $("#c_chatlog_format"))
 
-    binding.bindConfigListener($("#cchatlog_format"), value => {
-        $("#cchatlog_format_selector").val(value)
-        const selectedFormat = $("#cchatlog_format_selector").val()
+    binding.bindConfigListener($("#c_chatlog_format"), value => {
+        $("#c_chatlog_format_selector").val(value)
+        const selectedFormat = $("#c_chatlog_format_selector").val()
         if (selectedFormat === null)
-            $("#cchatlog_format_selector").val("")
+            $("#c_chatlog_format_selector").val("")
     })
 
-    $("#cchatlog_format_selector").on("change", function () {
+    $("#c_chatlog_format_selector").on("change", function () {
         const selectedFormat = $(this).val()
         if (selectedFormat.length > 0)
-            $("#cchatlog_format").val(selectedFormat).change()
+            $("#c_chatlog_format").val(selectedFormat).change()
     })
 
 
-    const $tbl1 = $("#cchatlog_channels1 > tbody")
-    const $tbl2 = $("#cchatlog_channels2 > tbody")
-
-    const $rowTemplate = $('#cchatlog_table_template')
-
-    function buildChannelEntry(channelData) {
-        const $table = $tbl1.children().length <= $tbl2.children().length ? $tbl1 : $tbl2
-        const $rowEntry = $($rowTemplate.html()).appendTo($table)
-
-        const $lblName = $rowEntry.find(".js-label")
-        const $chkLog = $rowEntry.find(".js-log")
-
-        $lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
-        $lblName.attr("data-gob-locale-title", `${channelData.tooltipId}`)
-
-        GobConfigHelper.setConfigKey($chkLog, "behaviour.channel.log")
-
-        const channelEnums = [].concat(channelData.chatChannel || [])
-        if (channelEnums.length === 0) {
-            $chkLog.hide()
-        } else {
-            GobConfigHelper.bindCheckboxArrayInverse(binding, $chkLog, channelEnums)
-        }
-    }
-
-    buildChannelEntry({
-        translationId: "main.chat.channel.general",
-        configId: "style.channel.base",
-        relevant: true
-    })
+    const $table1 = $("#c_chatlog_table-1 > tbody")
+    const $table2 = $("#c_chatlog_table-2 > tbody")
+    const $tableEntryTemplate = $('#c_chatlog_template_tableentry')
 
     Object.entries(Gobchat.Channels).forEach((entry) => {
         const channelData = entry[1]
         if (!channelData.relevant)
             return
-        buildChannelEntry(channelData)
+        addEntryToTable(channelData)
     })
+
+    function addEntryToTable(channelData) {
+        const channelEnums = [].concat(channelData.chatChannel || [])
+        if (channelEnums.length === 0)
+            return // channel is not associated with any ingame channel
+
+        const $entry = $($tableEntryTemplate.html())
+        const $table = $table1.children().length <= $table2.children().length ? $table1 : $table2
+        $table.append($entry) // append alternately
+
+        $entry.find(".js-label")
+            .attr("data-gob-locale-text", `${channelData.translationId}`)
+            .attr("data-gob-locale-title", `${channelData.tooltipId}`)
+
+        const $chkLog = $entry.find(".js-log")
+            .databindKey("behaviour.channel.log")
+
+        GobConfigHelper.bindCheckboxArrayInverse(binding, $chkLog, channelEnums)        
+    }
 
     binding.initialize()
 
-    GobConfigHelper.makeCopyProfileButton($("#cchatlog_copyprofile"), { configKeys: ["behaviour.channel.log"] })
+    {
+        const configKeys = []
+        $(`#c_chatlog [${GobConfigHelper.ConfigKeyAttribute}]:not(.button)`).each(function () {
+            const key = GobConfigHelper.getConfigKey(this)
+            if (key !== null && key !== undefined && key.length > 0 && !_.includes(configKeys, key))
+                configKeys.push(key)
+        })
+        const btnCopyProfile = $("#c_cgatlog_copyprofile")
+        GobConfigHelper.makeCopyProfileButton(btnCopyProfile, { configKeys: configKeys })
+    }
 }());
-
-//# sourceURL=config_logging.js

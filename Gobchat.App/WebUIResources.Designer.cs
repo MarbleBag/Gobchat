@@ -96,123 +96,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log format.
-        /// </summary>
-        internal static string config_app_chatlog_format {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compact.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_compact {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.compact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom format.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_custom {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.custom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default format.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_default {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ingame.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_ingame {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.ingame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New line.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_newline {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.newline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channel name padded left.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_padleft {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.padleft", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channel name padded right.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_padright {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.padright", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short.
-        /// </summary>
-        internal static string config_app_chatlog_format_selector_short {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.selector.short", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_chatlog_format_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.format.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chat log path.
-        /// </summary>
-        internal static string config_app_chatlog_path {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won&apos;t be moved..
-        /// </summary>
-        internal static string config_app_chatlog_path_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.path.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select a folder.
-        /// </summary>
-        internal static string config_app_chatlog_pathselect_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.chatlog.pathselect.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Collect information about character locations.
         /// </summary>
         internal static string config_app_ckb_actor {
@@ -272,24 +155,6 @@ namespace Gobchat {
         internal static string config_app_ckb_betaupdate_tooltip {
             get {
                 return ResourceManager.GetString("config.app.ckb.betaupdate.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save chat log.
-        /// </summary>
-        internal static string config_app_ckb_chatlog {
-            get {
-                return ResourceManager.GetString("config.app.ckb.chatlog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_ckb_chatlog_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.chatlog.tooltip", resourceCulture);
             }
         }
         
@@ -762,6 +627,150 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save chat log.
+        /// </summary>
+        internal static string config_chatlog_active {
+            get {
+                return ResourceManager.GetString("config.chatlog.active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log format.
+        /// </summary>
+        internal static string config_chatlog_format {
+            get {
+                return ResourceManager.GetString("config.chatlog.format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        internal static string config_chatlog_format_selector_compact {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.compact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom format.
+        /// </summary>
+        internal static string config_chatlog_format_selector_custom {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default format.
+        /// </summary>
+        internal static string config_chatlog_format_selector_default {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingame.
+        /// </summary>
+        internal static string config_chatlog_format_selector_ingame {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.ingame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New line.
+        /// </summary>
+        internal static string config_chatlog_format_selector_newline {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.newline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel name padded left.
+        /// </summary>
+        internal static string config_chatlog_format_selector_padleft {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.padleft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel name padded right.
+        /// </summary>
+        internal static string config_chatlog_format_selector_padright {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.padright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short.
+        /// </summary>
+        internal static string config_chatlog_format_selector_short {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.selector.short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_chatlog_format_tooltip {
+            get {
+                return ResourceManager.GetString("config.chatlog.format.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat log path.
+        /// </summary>
+        internal static string config_chatlog_path {
+            get {
+                return ResourceManager.GetString("config.chatlog.path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won&apos;t be moved..
+        /// </summary>
+        internal static string config_chatlog_path_tooltip {
+            get {
+                return ResourceManager.GetString("config.chatlog.path.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a folder.
+        /// </summary>
+        internal static string config_chatlog_pathselect_tooltip {
+            get {
+                return ResourceManager.GetString("config.chatlog.pathselect.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write to file.
+        /// </summary>
+        internal static string config_chatlog_tbl_log {
+            get {
+                return ResourceManager.GetString("config.chatlog.tbl.log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        internal static string config_chatlog_tbl_name {
+            get {
+                return ResourceManager.GetString("config.chatlog.tbl.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group will be deleted. Are you sure?.
         /// </summary>
         internal static string config_groups_entry_deleteconfirm {
@@ -1001,6 +1010,15 @@ namespace Gobchat {
         internal static string config_main_nav_channels {
             get {
                 return ResourceManager.GetString("config.main.nav.channels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chatlog.
+        /// </summary>
+        internal static string config_main_nav_chatlog {
+            get {
+                return ResourceManager.GetString("config.main.nav.chatlog", resourceCulture);
             }
         }
         

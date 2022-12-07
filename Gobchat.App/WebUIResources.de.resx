@@ -939,6 +939,6 @@ group Gruppen-Nummer clear</value>
     <value>Diesen Kanal speichern</value>
   </data>
   <data name="config.chatlog.tbl.name" xml:space="preserve">
-    <value>Kanalname</value>
+    <value>Kanal</value>
   </data>
 </root>
