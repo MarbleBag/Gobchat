@@ -26,7 +26,7 @@
         const chkMention = rowEntry.find(".entry-mention")
         const chkRoleplay = rowEntry.find(".entry-roleplay")
         //const chkRangefilter = rowEntry.find(".entry-rangefilter")
-        const chkLog = rowEntry.find(".entry-log")
+        //const chkLog = rowEntry.find(".entry-log")
         const clrSelectorFG = rowEntry.find(".entry-color-forground")
         const btnResetFG = rowEntry.find(".entry-color-forground-reset")
         const clrSelectorBG = rowEntry.find(".entry-color-background")
@@ -38,19 +38,19 @@
         GobConfigHelper.setConfigKey(chkMention, "behaviour.channel.mention")
         GobConfigHelper.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
         //GobConfigHelper.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
-        GobConfigHelper.setConfigKey(chkLog, "behaviour.channel.log")
+        //GobConfigHelper.setConfigKey(chkLog, "behaviour.channel.log")
 
         const channelEnums = [].concat(channelData.chatChannel || [])
         if (channelEnums.length === 0) {
             chkMention.hide()
             chkRoleplay.hide()
             //chkRangefilter.hide()
-            chkLog.hide()
+            //chkLog.hide()
         } else {
             GobConfigHelper.bindCheckboxArray(binding, chkMention, channelEnums)
             GobConfigHelper.bindCheckboxArray(binding, chkRoleplay, channelEnums)
             //GobConfigHelper.bindCheckboxArray(binding, chkRangefilter, channelEnums)
-            GobConfigHelper.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
+            //GobConfigHelper.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
         }
 
         if (channelData.configId === null) {
@@ -86,11 +86,11 @@
     binding.initialize()
 
 
-    const copyKeys = ["behaviour.channel.roleplay", "behaviour.channel.mention", "behaviour.channel.log"]
+    const copyKeys = ["behaviour.channel.roleplay", "behaviour.channel.mention"]
     table.find(".entry-color-forground, .entry-color-background").each(function () {
         const configId = GobConfigHelper.getConfigKey(this)
-        if (configId !== undefined && configId !== null) 
-            copyKeys.push(configId)        
+        if (configId !== undefined && configId !== null)
+            copyKeys.push(configId)
     })
 
     GobConfigHelper.makeCopyProfileButton($("#cchannel_copyprofile"), { configKeys: copyKeys })
