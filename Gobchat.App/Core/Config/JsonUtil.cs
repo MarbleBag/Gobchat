@@ -405,28 +405,39 @@ namespace Gobchat.Core.Config
             return found;
         }
 
-        public static bool Remove(JObject src, string srcPath)
+        public static bool ModifyIfAvailable(JObject src, string srcPath, Func<JToken, JToken> converter)
         {
             var found = false;
             JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
             {
                 if (node == null)
                     return;
-                found = node.Remove(key);
+
+                found = true;
+                var newValue = converter(node[key]);
+                if (newValue == null)
+                    node.Remove(key);
+                else
+                    node[key] = newValue;
             });
             return found;
         }
 
+        public static bool Remove(JObject src, string srcPath) => DeleteIfAvailable(src, srcPath);
+
         public static bool AccessIfAvailable(JObject src, string srcPath, Action<JToken> action)
         {
-            var found = false;
-            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
-            {
-                if (node == null)
-                    return;
-                action(node[key]);
-            });
-            return found;
+            var token = src.SelectToken(srcPath);
+            if (token == null)
+                return false;
+            action(token);
+            return true;
+        }
+
+        public static bool TryGet(JObject src, string srcPath, out JToken token)
+        {
+            token = src.SelectToken(srcPath);
+            return token != null;
         }
 
         public static bool TryConvertValueToEnum<TEnum>(JToken value, out TEnum e) where TEnum : struct, IConvertible
