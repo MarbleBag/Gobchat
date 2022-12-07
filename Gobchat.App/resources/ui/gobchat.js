@@ -21,6 +21,28 @@ document.addEventListener("OverlayStateUpdate", function (e) {
         document.documentElement.classList.remove("gob-resize-active");
 });
 
+jQuery(async function ($) {
+    window.gobconfig = new Gobchat.GobchatConfig(true)
+    await gobconfig.loadConfig()
+
+    window.gobLocale = new Gobchat.LocaleManager()
+    gobLocale.setLocale(gobconfig.get("behaviour.language"))
+    gobconfig.addProfileEventListener(event => {
+        if (event.type === "active")
+            gobLocale.setLocale(gobconfig.get("behaviour.language"))
+    })
+    gobconfig.addPropertyEventListener("behaviour.language", event => {
+        if (event.isActive)
+            gobLocale.setLocale(gobconfig.get("behaviour.language"))
+    })
+
+    window.chatManager = new Gobchat.ChatboxManager()
+    await chatManager.control($("#chatbox"))
+
+    GobchatAPI.setUIReady(true)
+});
+
+/*
 (function () {
     jQuery(function ($) {
         (async () => {
@@ -45,6 +67,7 @@ document.addEventListener("OverlayStateUpdate", function (e) {
         })();
     });
 }());
+*/
 
 // feature - open config
 jQuery(function ($) {
@@ -66,7 +89,10 @@ jQuery(function ($) {
 
         window.gobconfig.saveToLocalStore()
 
-        const handle = window.open("config/config.html", 'Settings', 'width=1040,height=600')
+        const configWidth = gobconfig.get("behaviour.frame.config.size.width")
+        const configHeight = gobconfig.get("behaviour.frame.config.size.height")
+
+        const handle = window.open("config/config.html", 'Settings', `width=${configWidth},height=${configHeight}`)
         handle.saveConfig = function () {
             window.gobconfig.loadFromLocalStore()
             window.chatManager.updateStyle()
