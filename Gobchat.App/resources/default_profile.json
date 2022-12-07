@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1900,
+  "version": 1901,
   "profile": {
     "id": null,
     "name": null,
@@ -113,6 +113,12 @@
         "size": {
           "width": 400,
           "height": 400
+        }
+      },
+      "config": {
+        "size": {
+          "width": 1040,
+          "height": 600
         }
       }
     },
@@ -351,14 +357,24 @@
   },
   "style": {
     "theme": "FFXIV Dark",
+    "base-font-size": "16px",
     "chatbox": {
       "background-color": "rgba(20, 20, 20, 0.95)"
+    },
+    "config": {
+      "font-size": "16px"
+    },
+    "chat": {
+      "background-color": "rgba(20, 20, 20, 0.95)",
+      "font-size": "16px"
+    },
+    "chat-toolbar": {
+      "font-size": "16px"
     },
     "channel": {
       "base": {
         "color": "#DEDEDE",
         "font-family": "'Times New Roman', Times, sans-serif",
-        "font-size": "medium",
         "white-space": "pre-wrap"
       },
       "gobchatinfo": {
