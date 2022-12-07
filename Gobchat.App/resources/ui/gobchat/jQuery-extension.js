@@ -16,19 +16,19 @@
 jQuery.fn.loadThen = function (url, params) {
     const self = this
 
-    if (self.length <= 0) { //no element shortcut
-        return jQuery.Deferred().resolveWith(self, [""]);
-    }
+    if (self.length <= 0) //no element shortcut
+        return jQuery.Deferred().resolveWith(self, [""])
+    
 
     return jQuery.Deferred(function (promise) {
         self.load(url, params, function (responseText, textStatus, jqXHR) {
             if (textStatus == "error") {
-                promise.reject(this, jqXHR);
+                promise.reject(this, jqXHR)
             } else {
-                promise.resolve(this);
+                promise.resolve(this)
             }
         });
-    }).promise();
+    }).promise()
 }
 
 jQuery.fn.databindKey = function (key) {
