@@ -26,6 +26,18 @@ jQuery(function ($) {
         window.close()
     })
 
+    /*
+    window.addEventListener('resize', function (event) {
+        // values from outer width/Height are not correct.
+        const width = window.outerWidth
+        const height = window.innerHeight
+        if (width != null && width != undefined && width > 100)
+            gobconfig.set("behaviour.frame.config.size.width", width)
+        if (height != null && height != undefined && height > 100)
+            gobconfig.set("behaviour.frame.config.size.height", height)        
+    }, true);
+    */
+
     $("#cmain_cancelconfig").on("click", async function () {        
         const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
         if (result)
@@ -57,7 +69,9 @@ jQuery(function ($) {
             try {
                 $("body").hide()
                 await gobStyles.activateStyle(value)
-                $("body").show() //trigger reflow so new style gets applied everywhere (especially scrollbars!) What a shitty bug
+                // use hide / show to trigger a reflow, so the new loaded style gets applied everywhere.
+                // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
+                $("body").show()
             } catch (e1) {
                 console.error(e1)
             }
