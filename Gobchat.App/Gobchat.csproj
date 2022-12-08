@@ -163,8 +163,6 @@
     <None Include="pack-release.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
-    <None Include="move-cef-redists.bat" />
-    <None Include="move-cef-redists.ps1" />
     <None Include="NLog-Release.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -175,8 +173,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="pack-cef-redists.bat" />
-    <None Include="pack-cef-redists.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
