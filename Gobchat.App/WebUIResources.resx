@@ -1085,4 +1085,7 @@ group groupnumber clear</value>
   <data name="config.chatlog.tbl.log" xml:space="preserve">
     <value>Write to file</value>
   </data>
+  <data name="config.main.dialog.label" xml:space="preserve">
+    <value>Gobchat Configuration</value>
+  </data>
 </root>

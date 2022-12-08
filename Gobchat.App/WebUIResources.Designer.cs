@@ -1095,6 +1095,15 @@ namespace Gobchat {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Gobchat Configuration.
+        /// </summary>
+        internal static string config_main_dialog_label {
+            get {
+                return ResourceManager.GetString("config.main.dialog.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string config_main_dialog_title_confirm {
