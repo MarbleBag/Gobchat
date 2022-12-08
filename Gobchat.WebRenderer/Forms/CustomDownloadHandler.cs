@@ -22,6 +22,11 @@ namespace Gobchat.UI.Forms
 
         public event EventHandler<DownloadItem> OnDownloadUpdatedFired;
 
+        public bool CanDownload(IWebBrowser chromiumWebBrowser, IBrowser browser, string url, string requestMethod)
+        {
+            return false; // never
+        }
+
         public void OnBeforeDownload(IWebBrowser chromiumWebBrowser, IBrowser browser, DownloadItem downloadItem, IBeforeDownloadCallback callback)
         {
             OnBeforeDownloadFired?.Invoke(this, downloadItem);

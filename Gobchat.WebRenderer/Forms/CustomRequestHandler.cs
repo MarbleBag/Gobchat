@@ -38,6 +38,11 @@ namespace Gobchat.UI.Forms
             throw new System.NotImplementedException();
         }
 
+        public void OnDocumentAvailableInMainFrame(IWebBrowser chromiumWebBrowser, IBrowser browser)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture)
         {
             throw new System.NotImplementedException();

@@ -91,7 +91,9 @@ namespace Gobchat.UI.Web
 
             cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";
             cefSettings.CefCommandLineArgs["allow-file-access-from-files"] = "1";
+            cefSettings.CefCommandLineArgs["allow-universal-access-from-files"] = "1";
             cefSettings.CefCommandLineArgs["autoplay-policy"] = "no-user-gesture-required";
+            cefSettings.CefCommandLineArgs["plugin - policy"] = "block";
 
             cefSettings.EnableAudio();
 
