@@ -11,8 +11,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
 using System.Collections.Generic;
 using CefSharp;
+using CefSharp.Enums;
 using CefSharp.Structs;
 
 namespace Gobchat.UI.Forms
@@ -32,6 +34,11 @@ namespace Gobchat.UI.Forms
         public bool OnConsoleMessage(IWebBrowser chromiumWebBrowser, ConsoleMessageEventArgs consoleMessageArgs)
         {
             throw new System.NotImplementedException();
+        }
+
+        public bool OnCursorChange(IWebBrowser chromiumWebBrowser, IBrowser browser, IntPtr cursor, CursorType type, CursorInfo customCursorInfo)
+        {
+            throw new NotImplementedException();
         }
 
         public void OnFaviconUrlChange(IWebBrowser chromiumWebBrowser, IBrowser browser, IList<string> urls)

@@ -113,7 +113,7 @@ namespace Gobchat.UI.Forms
 
         public ManagedWebBrowser(string address = "", BrowserSettings browserSettings = null,
             RequestContext requestContext = null, CefOverlayForm form = null) :
-            base(address, browserSettings, requestContext, false)
+            base(address: address, browserSettings: browserSettings, requestContext: requestContext, automaticallyCreateBrowser: false)
         {
             Form = form;
 
@@ -200,12 +200,8 @@ namespace Gobchat.UI.Forms
 
             var cefBrowserSettings = new CefSharp.BrowserSettings();
             cefBrowserSettings.WindowlessFrameRate = 60;
-            cefBrowserSettings.FileAccessFromFileUrls = CefState.Enabled;
-            cefBrowserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
-            cefBrowserSettings.WebSecurity = CefState.Enabled;
             cefBrowserSettings.Javascript = CefState.Enabled;
             cefBrowserSettings.LocalStorage = CefState.Enabled;
-            cefBrowserSettings.Plugins = CefState.Disabled;
 
             CefBrowser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
         }
