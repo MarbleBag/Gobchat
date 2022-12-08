@@ -205,9 +205,9 @@ Will temporarily deactivate Gobchat's info and error messages.
 
 Install [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.7.2 or above
 
-Visual C++ Redistributable Packages
-Install [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) for 64-bit Windows
-Install [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) for 32-bit Windows
+Newest Visual C++ Redistributable Packages (download starts directly)
+Install [redistributables x64](https://aka.ms/vs/17/release/vc_redist.x64.exe) for 64-bit Windows
+Install [redistributables x84](https://aka.ms/vs/17/release/vc_redist.x86.exe) for 32-bit Windows
 
 ### Installing Gobchat
 
