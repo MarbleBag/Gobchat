@@ -56,7 +56,7 @@ function loadThen($element, url, params) {
     })
 }
 
-export default async function makeNavigationElement($element) {
+export async function makeControl($element) {
     const awaitPromises = []
 
     $element.each(function () {
@@ -105,9 +105,12 @@ export default async function makeNavigationElement($element) {
     })
 
     const results = await Promise.allSettled(awaitPromises)
+    const errorMsg = ""
     for (const result in results) {
         if (result.status === "rejected")
-            console.error(result.reason)
+            errorMsg += result.reason + '\n'
     }
+    if (errorMsg.length > 0)
+        throw new Error(errorMsg)
 }
 

@@ -13,31 +13,52 @@
 
 'use strict'
 
-/* Resize event handler display */
+import * as Databinding from './modules/Databinding.js'
+import * as Config from './modules/Config.js'
+import * as Locale from './modules/Locale.js'
+import * as Styles from './modules/Styles.js'
+import * as Chat from './modules/Chat.js'
+//import makeControl as makeChatSearchControl from './modules/ElementChatSearch.js'
+
+// Indicate that window resizing is possible
 document.addEventListener("OverlayStateUpdate", function (e) {
     if (!e.detail.isLocked)
-        document.documentElement.classList.add("gob-resize-active");
+        document.documentElement.classList.add("gob-chat_resize");
     else
-        document.documentElement.classList.remove("gob-resize-active");
+        document.documentElement.classList.remove("gob-chat_resize");
 });
 
+// initialize global variables
 jQuery(async function ($) {
-    window.gobconfig = new Gobchat.GobchatConfig(true)
-    await gobconfig.loadConfig()
+    window.gobConfig = new Config.GobchatConfig(true)
+    await gobConfig.loadConfig()
 
-    window.gobLocale = new Gobchat.LocaleManager()
-    gobLocale.setLocale(gobconfig.get("behaviour.language"))
-    gobconfig.addProfileEventListener(event => {
-        if (event.type === "active")
-            gobLocale.setLocale(gobconfig.get("behaviour.language"))
-    })
-    gobconfig.addPropertyEventListener("behaviour.language", event => {
-        if (event.isActive)
-            gobLocale.setLocale(gobconfig.get("behaviour.language"))
-    })
+    window.gobLocale = new Locale.LocaleManager()
 
-    window.chatManager = new Gobchat.ChatboxManager()
+    window.gobStyles = new Styles.StyleLoader(".")
+    await gobStyles.initialize()
+    
+    window.chatManager = new Chat.ChatManager()
     await chatManager.control($("#chatbox"))
+
+    const binding = new Databinding.BindingContext(gobConfig)
+
+    gobLocale.setLocale(gobConfig.get("behaviour.language"))
+    binding.bindConfigListener("behaviour.language", (value) => {
+        gobLocale.setLocale(value)
+        gobLocale.updateElement($(document))
+    })
+
+    binding.bindConfigListener("style.theme", async (value) => {
+        try {
+            await gobStyles.activateStyles(value)
+        } catch (e1) {
+            console.error(e1)
+            await gobStyles.activateStyles()
+        }
+    })
+
+    binding.initialize()
 
     GobchatAPI.setUIReady(true)
 });
@@ -74,27 +95,29 @@ jQuery(function ($) {
     const navEntries = performance.getEntriesByType("navigation");
     for (let i = 0; i < navEntries.length; ++i) {
         if (navEntries[i].type === "reload") {
-            localStorage.removeItem("gobchat-config-open")
+            window.localStorage.removeItem("gobchat-config-open")
             break
         }
     }
 
+    const localStorageKey = "gobchat-config-open"
+
     function openGobchatConfig() {
-        const isConfigOpen = window.localStorage.getItem("gobchat-config-open") || "false"
+        const isConfigOpen = window.localStorage.getItem(localStorageKey) || "false"
 
         if (isConfigOpen === "true")
             return
 
-        window.localStorage.setItem("gobchat-config-open", "true")
+        window.localStorage.setItem(localStorageKey, "true")
 
-        window.gobconfig.saveToLocalStore()
+        window.gobConfig.saveToLocalStore()
 
         const configWidth = gobconfig.get("behaviour.frame.config.size.width")
         const configHeight = gobconfig.get("behaviour.frame.config.size.height")
 
         const handle = window.open("config/config.html", 'Settings', `width=${configWidth},height=${configHeight}`)
         handle.saveConfig = function () {
-            window.gobconfig.loadFromLocalStore()
+            window.gobConfig.loadFromLocalStore()
             window.chatManager.updateStyle()
         }
 
@@ -103,7 +126,7 @@ jQuery(function ($) {
         const timer = setInterval(function () {
             if (handle.closed) {
                 clearInterval(timer);
-                window.localStorage.removeItem("gobchat-config-open")
+                window.localStorage.removeItem(localStorageKey)
             }
         }, 1000);
     }

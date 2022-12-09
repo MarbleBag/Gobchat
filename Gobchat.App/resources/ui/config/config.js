@@ -13,14 +13,14 @@
 
 'use strict';
 
-import * as Databinding from '../modules/Databinding.js';
-//import * as Config from '../modules/Config.js';
-import * as Locale from '../modules/Locale.js';
-//import * as Styles from '../modules/Styles.js';
-import makeNavigationElement from '../modules/ConfigNavigationElement.js'
+import * as Databinding from '../modules/Databinding.js'
+//import * as Config from '../modules/Config.js'
+import * as Locale from '../modules/Locale.js'
+//import * as Styles from '../modules/Styles.js'
+import { makeControl as makeNavControl } from '../modules/ConfigNavigationElement.js'
 
 // initialize global variables
-jQuery(function ($) {
+jQuery(async function ($) {
     window.GobchatAPI = window.opener.GobchatAPI
     window.Gobchat = window.opener.Gobchat
     window.console = window.opener.console
@@ -31,6 +31,29 @@ jQuery(function ($) {
     window.gobLocale = new Locale.LocaleManager()
 
     window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
+    await gobStyles.loadStyles()
+
+    const binding = new Databinding.BindingContext(gobConfig)
+
+    // update all text on language change
+    gobLocale.setLocale(gobConfig.get("behaviour.language"))
+    binding.bindConfigListener("behaviour.language", (value) => {
+        gobLocale.setLocale(value)
+        gobLocale.updateElement($(document))
+    })
+
+
+    binding.bindConfigListener("style.theme", async (value) => {
+        try {
+            await gobStyles.activateStyles(value)
+        } catch (e1) {
+            await gobStyles.activateStyles()
+        }
+    })
+
+    await makeNavControl($(".gob-config_navigation"))
+
+    binding.initialize()
 })
 
 // initialize main buttons
@@ -59,32 +82,4 @@ jQuery(function ($) {
             GobchatAPI.closeGobchat()
         }
     })
-})
-
-jQuery(async function ($) {
-    const binding = new Databinding.BindingContext(gobConfig)
-
-    // update all text on language change
-    gobLocale.setLocale(gobConfig.get("behaviour.language"))
-    binding.bindConfigListener("behaviour.language", (value) => {
-        gobLocale.setLocale(value)
-        gobLocale.updateElement($(document))
-    })
-
-    await gobStyles.loadStyles()
-    binding.bindConfigListener("style.theme", async (value) => {
-        try {
-            $("body").hide()
-            await gobStyles.activateStyle(value)
-            // use hide / show to trigger a reflow, so the new loaded style gets applied everywhere.
-            // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
-            $("body").show()
-        } catch (e1) {
-            console.error(e1)
-        }
-    })
-
-    await makeNavigationElement($(".gob-config_navigation"))
-
-    binding.initialize()
 })
