@@ -31,13 +31,16 @@
     <div class="gob-config_separator-horizontal"></div>
 
     <div class="gob-config_dialog_panel">
-        <div class="gob-config_navigation" data-gob-nav-target="c_main_nav_content">
+        <div class="gob-config_navigation" data-gob-nav-target="c_main_nav_content" data-gob-nav-template="c_main_nav_content_template">
+            <template id="c_main_nav_content_template">
+                <div class="gob-config_navigation_panel_entry" data-gob-nav-panel></div>
+            </template>
+
             <select id="c_main_profile-select"></select>
 
             <div class="gob-config_separator"></div>
 
-            <div class="gob-config_navigation_entry"
-                 data-gob-nav-default
+            <div class="gob-config_navigation_entry active"
                  data-gob-nav-target="config_app.html"
                  data-gob-locale-text="config.main.nav.app">
             </div>

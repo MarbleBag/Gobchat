@@ -14,8 +14,10 @@
 'use strict';
 
 import * as Databinding from '../modules/Databinding.js';
-import * as Config from '../modules/Config.js';
+//import * as Config from '../modules/Config.js';
 import * as Locale from '../modules/Locale.js';
+//import * as Styles from '../modules/Styles.js';
+import makeNavigationElement from '../modules/ConfigNavigationElement.js'
 
 // initialize global variables
 jQuery(function ($) {
@@ -23,10 +25,10 @@ jQuery(function ($) {
     window.Gobchat = window.opener.Gobchat
     window.console = window.opener.console
 
-    window.gobConfig = new Config.Config()
+    window.gobConfig = new Gobchat.GobchatConfig()
     window.gobConfig.loadFromLocalStore(true)
 
-    window.gobLocale = new Locale.Manager()
+    window.gobLocale = new Locale.LocaleManager()
 
     window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
 })
@@ -60,10 +62,10 @@ jQuery(function ($) {
 })
 
 jQuery(async function ($) {
-    const binding = GobConfigHelper.makeDatabinding(gobConfig)
+    const binding = new Databinding.BindingContext(gobConfig)
 
     // update all text on language change
-    gobLocale.setLocale(gobconfig.get("behaviour.language"))
+    gobLocale.setLocale(gobConfig.get("behaviour.language"))
     binding.bindConfigListener("behaviour.language", (value) => {
         gobLocale.setLocale(value)
         gobLocale.updateElement($(document))
@@ -82,50 +84,7 @@ jQuery(async function ($) {
         }
     })
 
-    buildConfigNavigation()
+    await makeNavigationElement($(".gob-config_navigation"))
 
     binding.initialize()
-})
-
-    async function initializeGeneralDatabinding() {
-        
-
-
-        
-
-
-        await makeNavigationElement($("#cmain_navbar"))
-
-        
-    }   
-
-    initializeGeneralDatabinding()
-
-    async function makeNavigationElement(navBar) {
-        const navAttribute = "data-gob-nav-target"
-        const navIdAttribute = "data-gob-nav-id"
-        const $navBar = $(navBar)
-        const $navPanel = $(`#${navBar.attr(navAttribute)}`)
-
-        const $navElements = $navBar.find(`.gob-nav-element[${navAttribute}]`)
-
-        const awaitPromises = []
-        $navElements.each(function () {
-            const $panelElement = $("<div class='gob-nav-panel-content' />").appendTo($navPanel)
-            const pageToLoad = $(this).attr(navAttribute)
-            $panelElement.attr(navIdAttribute, pageToLoad)
-            awaitPromises.push($panelElement.loadThen(pageToLoad))
-
-            if ($(this).hasClass("active"))
-                $panelElement.addClass("active")
-
-            $(this).on("click", function () {
-                $navBar.find("> .gob-nav-element.active").removeClass("active")
-                $(this).addClass("active")
-                $navPanel.find("> .gob-nav-panel-content.active").removeClass("active")
-                $panelElement.addClass("active")
-            })
-        })
-        await Promise.all(awaitPromises)
-    }
 })
