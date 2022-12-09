@@ -149,13 +149,13 @@
     <Content Include="resources\ui\modules\Locale.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_light_style.css">
+    <Content Include="resources\ui\old styles\ffxiv_light_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_style.css">
+    <Content Include="resources\ui\old styles\ffxiv_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_dark_style.css">
+    <Content Include="resources\ui\old styles\ffxiv_dark_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\graphics\ButtonActive.png" />
@@ -169,12 +169,37 @@
     <Content Include="resources\ui\graphics\noise.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\gobchat_v1_style.css">
+    <Content Include="resources\ui\old styles\gobchat_v1_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\styles\base.css">
+      <DependentUpon>base.scss</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_dark_style.css">
+      <DependentUpon>ffxiv_dark_style.scss</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_dark_style.min.css">
+      <DependentUpon>ffxiv_dark_style.css</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_style.css">
+      <DependentUpon>ffxiv_style.scss</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_style.min.css">
+      <DependentUpon>ffxiv_style.css</DependentUpon>
+    </Content>
+    <None Include="resources\ui\styles\ffxiv_dark_style.scss" />
+    <None Include="resources\ui\styles\base.scss" />
+    <None Include="resources\ui\styles\ffxiv_style.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="pack-release.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
@@ -215,9 +240,14 @@
     <Content Include="resources\ui\modules\Databinding.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="resources\ui\old styles\styles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="sassconfig.json" />
+    <None Include="sassconfig.json.defaults" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
