@@ -13,73 +13,90 @@
 
 'use strict';
 
-// import { buildNavigationElement } from "../gobchat/gob-navbar"
+import * as Databinding from '../modules/Databinding.js';
+import * as Config from '../modules/Config.js';
+import * as Locale from '../modules/Locale.js';
+
+// initialize global variables
 jQuery(function ($) {
-    $("#cmain_saveconfig").on("click", function () {
-        window.gobconfig.saveToLocalStore()
+    window.GobchatAPI = window.opener.GobchatAPI
+    window.Gobchat = window.opener.Gobchat
+    window.console = window.opener.console
+
+    window.gobConfig = new Config.Config()
+    window.gobConfig.loadFromLocalStore(true)
+
+    window.gobLocale = new Locale.Manager()
+
+    window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
+})
+
+// initialize main buttons
+jQuery(function ($) {
+    $("#c_main_save-config").on("click", function () {
+        window.gobConfig.saveToLocalStore()
         window.saveConfig()
     })
 
-    $("#cmain_saveandexitconfig").on("click", function () {
-        window.gobconfig.saveToLocalStore()
+    $("#c_main_save-and-exit-config").on("click", function () {
+        window.gobConfig.saveToLocalStore()
         window.saveConfig()
         window.close()
     })
 
-    /*
-    window.addEventListener('resize', function (event) {
-        // values from outer width/Height are not correct.
-        const width = window.outerWidth
-        const height = window.innerHeight
-        if (width != null && width != undefined && width > 100)
-            gobconfig.set("behaviour.frame.config.size.width", width)
-        if (height != null && height != undefined && height > 100)
-            gobconfig.set("behaviour.frame.config.size.height", height)        
-    }, true);
-    */
-
-    $("#cmain_cancelconfig").on("click", async function () {        
+    $("#c_main_cancel-config").on("click", async function () {
         const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.cancel.dialog" })
         if (result)
             window.close()
     })
 
-    $("#cmain_closegobchat").on("click", async function () {        
+    $("#c_main_close-gobchat").on("click", async function () {
         const result = await GobConfigHelper.showConfirmationDialog({ dialogText: "config.main.nav.closegobchat.dialog" })
         if (result) {
             window.close()
             GobchatAPI.closeGobchat()
         }
     })
+})
+
+jQuery(async function ($) {
+    const binding = GobConfigHelper.makeDatabinding(gobConfig)
+
+    // update all text on language change
+    gobLocale.setLocale(gobconfig.get("behaviour.language"))
+    binding.bindConfigListener("behaviour.language", (value) => {
+        gobLocale.setLocale(value)
+        gobLocale.updateElement($(document))
+    })
+
+    await gobStyles.loadStyles()
+    binding.bindConfigListener("style.theme", async (value) => {
+        try {
+            $("body").hide()
+            await gobStyles.activateStyle(value)
+            // use hide / show to trigger a reflow, so the new loaded style gets applied everywhere.
+            // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
+            $("body").show()
+        } catch (e1) {
+            console.error(e1)
+        }
+    })
+
+    buildConfigNavigation()
+
+    binding.initialize()
+})
 
     async function initializeGeneralDatabinding() {
-        const generalBinding = GobConfigHelper.makeDatabinding(gobconfig)
+        
 
-        window.gobLocale = new Gobchat.LocaleManager()
 
-        gobLocale.setLocale(gobconfig.get("behaviour.language"))
-        generalBinding.bindConfigListener("behaviour.language", (value) => {
-            gobLocale.setLocale(value)
-            gobLocale.updateElement($(document))
-        })
+        
 
-        window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
-        await gobStyles.loadStyles()
-        generalBinding.bindConfigListener("style.theme", async (value) => {
-            try {
-                $("body").hide()
-                await gobStyles.activateStyle(value)
-                // use hide / show to trigger a reflow, so the new loaded style gets applied everywhere.
-                // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
-                $("body").show()
-            } catch (e1) {
-                console.error(e1)
-            }
-        })
 
         await makeNavigationElement($("#cmain_navbar"))
 
-        generalBinding.initialize()
+        
     }   
 
     initializeGeneralDatabinding()
@@ -111,4 +128,4 @@ jQuery(function ($) {
         })
         await Promise.all(awaitPromises)
     }
-});
+})
