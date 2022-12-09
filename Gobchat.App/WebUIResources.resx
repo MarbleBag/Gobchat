@@ -351,8 +351,8 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.channel.tbl.name" xml:space="preserve">
     <value>Channel name</value>
   </data>
-  <data name="config.rangefilter.tbl.rangefilter" xml:space="preserve">
-    <value>Range filter</value>
+  <data name="config.rangefilter.tbl.col.rangefilter" xml:space="preserve">
+    <value>Apply filter</value>
   </data>
   <data name="config.channel.tbl.roleplay" xml:space="preserve">
     <value>Roleplay</value>
@@ -1044,7 +1044,7 @@ group groupnumber clear</value>
     <value>HELP</value>
   </data>
   <data name="config.rangefilter.tbl.name" xml:space="preserve">
-    <value>Channel</value>
+    <value>Range filter</value>
   </data>
   <data name="config.main.nav.chatlog" xml:space="preserve">
     <value>Chatlog</value>
@@ -1087,5 +1087,8 @@ group groupnumber clear</value>
   </data>
   <data name="config.main.dialog.label" xml:space="preserve">
     <value>Gobchat Configuration</value>
+  </data>
+  <data name="config.rangefilter.tbl.col.name" xml:space="preserve">
+    <value>Channel</value>
   </data>
 </root>
