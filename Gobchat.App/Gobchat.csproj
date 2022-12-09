@@ -177,21 +177,15 @@
     </Content>
     <Content Include="resources\ui\styles\base.css">
       <DependentUpon>base.scss</DependentUpon>
-    </Content>
-    <Content Include="resources\ui\styles\base.min.css">
-      <DependentUpon>base.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\styles\ffxiv_dark_style.css">
       <DependentUpon>ffxiv_dark_style.scss</DependentUpon>
-    </Content>
-    <Content Include="resources\ui\styles\ffxiv_dark_style.min.css">
-      <DependentUpon>ffxiv_dark_style.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\styles\ffxiv_style.css">
       <DependentUpon>ffxiv_style.scss</DependentUpon>
-    </Content>
-    <Content Include="resources\ui\styles\ffxiv_style.min.css">
-      <DependentUpon>ffxiv_style.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="resources\ui\styles\ffxiv_dark_style.scss" />
     <None Include="resources\ui\styles\base.scss" />
@@ -246,8 +240,6 @@
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="sassconfig.json" />
-    <None Include="sassconfig.json.defaults" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
