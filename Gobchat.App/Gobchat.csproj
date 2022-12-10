@@ -151,7 +151,7 @@
     <Content Include="resources\ui\modules\Config.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\modules\ConfigNavigationElement.js">
+    <Content Include="resources\ui\modules\MenuNavigationComponent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\Constants.js">
@@ -483,6 +483,9 @@
     <Compile Include="Core\UI\ProgressDisplayForm.Designer.cs">
       <DependentUpon>ProgressDisplayForm.cs</DependentUpon>
     </Compile>
+    <Content Include="resources\ui\modules\ChatSearchComponent.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="WebUIResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

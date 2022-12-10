@@ -78,7 +78,7 @@ export class StyleLoader {
             const randomIdPrefix = Utility.generateId(8)
 
             for (let file of style.files) {
-                const id = `gobstyle-${randomIdPrefix}-${file.replace('\s+', '_')}`
+                const id = `gobstyle-${randomIdPrefix}-${file.replace(/[\s\\/]+/g, '_').replace(/[^-\.\w]+/g,'')}`
 
                 const $link = $(`<link rel="stylesheet" type="text/css" href="">`).attr('id', id)
                 this._activeStyleSheetIds.push(id)

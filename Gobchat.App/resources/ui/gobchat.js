@@ -23,9 +23,9 @@ import * as Chat from './modules/Chat.js'
 // Indicate that window resizing is possible
 document.addEventListener("OverlayStateUpdate", function (e) {
     if (!e.detail.isLocked)
-        document.documentElement.classList.add("gob-chat_resize");
+        document.documentElement.classList.add("gob-document--resize");
     else
-        document.documentElement.classList.remove("gob-chat_resize");
+        document.documentElement.classList.remove("gob-document--resize");
 });
 
 // initialize global variables
@@ -39,7 +39,7 @@ jQuery(async function ($) {
     await gobStyles.initialize()
     
     window.chatManager = new Chat.ChatManager()
-    await chatManager.control($("#chatbox"))
+    await chatManager.control($(".gob-chat_box"))
 
     const binding = new Databinding.BindingContext(gobConfig)
 
@@ -110,15 +110,15 @@ jQuery(function ($) {
 
         window.localStorage.setItem(localStorageKey, "true")
 
-        window.gobConfig.saveToLocalStore()
+        gobConfig.saveToLocalStore()
 
-        const configWidth = gobconfig.get("behaviour.frame.config.size.width")
-        const configHeight = gobconfig.get("behaviour.frame.config.size.height")
+        const configWidth = gobConfig.get("behaviour.frame.config.size.width")
+        const configHeight = gobConfig.get("behaviour.frame.config.size.height")
 
         const handle = window.open("config/config.html", 'Settings', `width=${configWidth},height=${configHeight}`)
         handle.saveConfig = function () {
-            window.gobConfig.loadFromLocalStore()
-            window.chatManager.updateStyle()
+            gobConfig.loadFromLocalStore()
+            chatManager.updateStyle()
         }
 
         handle.focus()
@@ -131,7 +131,7 @@ jQuery(function ($) {
         }, 1000);
     }
 
-    $("#gobchat_showconfig").on("click", openGobchatConfig)
+    $("#gob_show_config").on("click", openGobchatConfig)
     window.openGobconfig = openGobchatConfig
 })
 

@@ -18,58 +18,28 @@
 <body>
     <div class="gob-chat_box">
         <div class="gob-chat_toolbar">
-            <button class="gob-chat_toolbar_button" id="gob_show_config"><i class="fas fa-cog"></i></button>
-            <button class="gob-chat_toolbar_button" id="gob_toggle_search"><i class="fas fa-search"></i></button>
-            <div class="gob-chat_tabbar">
-                <button class="gob-chat_tabbar_button-left js-left"><i class="fas fa-arrow-left"></i></button>
-                <div class="gob-chat_tabbar_content js-content"></div>
-                <button class="gob-chat_tabbar_button-right js-right"><i class="fas fa-arrow-right"></i></button>
+            <button class="gob-chat_toolbar_icon-button" id="gob_show_config"><i class="fas fa-cog"></i></button>
+            <button class="gob-chat_toolbar_icon-button" id="gob_toggle_search"><i class="fas fa-search"></i></button>
+            <div class="gob-chat_tabs">
+                <button class="gob-chat_tabs_button gob-chat_tabs_button--left js-left"><i class="fas fa-arrow-left"></i></button>
+                <div class="gob-chat_tabs_bar js-content">
+                    <button class="gob-chat_tabs_bar_tab is-active">Chat</button>
+                    <button class="gob-chat_tabs_bar_tab">Sys</button>
+                </div>
+                <button class="gob-chat_tabs_button gob-chat_tabs_button--right js-right"><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
-        <div class="gob-chat_panel">
-            <div class="js-history"></div>
+        <div class="gob-chat_history js-history">
         </div>
         <div class="gob-chat_toolbar">
             <div class="gob-chat_toolbar_search">
                 <input class="gob-chat_toolbar_search_input js-input" />
-                <button class="gob-chat_toolbar_search_hits js-hits">0 / 0</button>
-                <button class="gob-chat_toolbar_search_button js-up"><i class="fas fa-angle-up"></i></button>
-                <button class="gob-chat_toolbar_search_button js-down"><i class="fas fa-angle-down"></i></button>
-                <button class="gob-chat_toolbar_search_button js-reset"><i class="fas fa-undo-alt"></i></button>
+                <button class="gob-chat_toolbar_button js-hits">0 / 0</button>
+                <button class="gob-chat_toolbar_icon-button js-up"><i class="fas fa-angle-up"></i></button>
+                <button class="gob-chat_toolbar_icon-button js-down"><i class="fas fa-angle-down"></i></button>
+                <button class="gob-chat_toolbar_icon-button js-reset"><i class="fas fa-undo-alt"></i></button>
             </div>
         </div>
     </div>
-
-    <!--
-    <div id="container">
-        <div id="chatbox" class="gob-chatbox">
-            <div class="gob-chatbox__toolbar">
-                <button id="gobchat_showconfig" class="gob-chatbox__toolbar__button"><i class="fas fa-cog"></i></button>
-                <button id="gobchat_togglechatsearch" class="gob-chatbox__toolbar__button"><i class="fas fa-search"></i></button>
-                <div class="js-chattabs gob-chatbox__chat-navi chat-tabnav">
-                    <button class="js-nav-left gob-chatbox__chat-navi__button gob-chatbox__chat-navi__button--left">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <div class="js-nav-content gob-chatbox__chat-navi__bar"></div>
-                    <button class="js-nav-right gob-chatbox__chat-navi__button gob-chatbox__chat-navi__button--right">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="gob-chatbox__panel chat-panel-bg">
-                <div class="gob-chatbox__panel__history js-chat-history"></div>
-                <div class="gob-chatbox__toolbar">
-                    <div id="chatbox_search">
-                        <input id="chatbox_search_txt" />
-                        <button id="chatbox_search_hits">0 / 0</button>
-                        <button id="chatbox_search_up"><i class="fas fa-angle-up"></i></button>
-                        <button id="chatbox_search_down"><i class="fas fa-angle-down"></i></button>
-                        <button id="chatbox_search_delete"><i class="fas fa-undo-alt"></i></button>                        
-                    </div>                    
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
 </body>
 </html>

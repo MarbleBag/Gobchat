@@ -50,6 +50,11 @@ export const PlayerChannel = Object.freeze([
     Gobchat.ChannelEnum.LINKSHELL_5, Gobchat.ChannelEnum.LINKSHELL_6, Gobchat.ChannelEnum.LINKSHELL_7, Gobchat.ChannelEnum.LINKSHELL_8,
 ])
 
+export const FFGroupUnicodes = Object.freeze([
+    Gobchat.FFUnicode.GROUP_1, Gobchat.FFUnicode.GROUP_2, Gobchat.FFUnicode.GROUP_3, Gobchat.FFUnicode.GROUP_4,
+    Gobchat.FFUnicode.GROUP_5, Gobchat.FFUnicode.GROUP_6, Gobchat.FFUnicode.GROUP_7
+])
+
 export const ChannelEnumValues = Object.freeze(
     Object.entries(Gobchat.ChannelEnum).map(e => e[1])
 )
@@ -63,4 +68,5 @@ export const ChannelEnumToKey = (() => {
 }
 )()
 
+/** used to dynamically generate css classes which */
 export const RangeFilterFadeOutLevels = 10

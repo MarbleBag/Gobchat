@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+'use strict'
+
 const attributeNavTarget = "data-gob-nav-target"
 const attributeNavId = "data-gob-nav-id"
 const attributePanel = "data-gob-nav-panel"

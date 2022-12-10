@@ -14,10 +14,10 @@
 'use strict';
 
 import * as Databinding from '../modules/Databinding.js'
-//import * as Config from '../modules/Config.js'
+import * as Config from '../modules/Config.js'
 import * as Locale from '../modules/Locale.js'
-//import * as Styles from '../modules/Styles.js'
-import { makeControl as makeNavControl } from '../modules/ConfigNavigationElement.js'
+import * as Styles from '../modules/Styles.js'
+import { makeControl as makeNavControl } from '../modules/MenuNavigationComponent.js'
 
 // initialize global variables
 jQuery(async function ($) {
@@ -25,13 +25,13 @@ jQuery(async function ($) {
     window.Gobchat = window.opener.Gobchat
     window.console = window.opener.console
 
-    window.gobConfig = new Gobchat.GobchatConfig()
+    window.gobConfig = new Config.GobchatConfig()
     window.gobConfig.loadFromLocalStore(true)
 
     window.gobLocale = new Locale.LocaleManager()
 
-    window.gobStyles = new Gobchat.StyleLoader(document.head, "..")
-    await gobStyles.loadStyles()
+    window.gobStyles = new Styles.StyleLoader("..")
+    await gobStyles.initialize()
 
     const binding = new Databinding.BindingContext(gobConfig)
 
@@ -41,7 +41,6 @@ jQuery(async function ($) {
         gobLocale.setLocale(value)
         gobLocale.updateElement($(document))
     })
-
 
     binding.bindConfigListener("style.theme", async (value) => {
         try {
