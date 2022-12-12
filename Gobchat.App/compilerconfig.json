@@ -14,5 +14,9 @@
   {
     "outputFile": "resources/ui/styles/ffxiv_style.css",
     "inputFile": "resources/ui/styles/ffxiv_style.scss"
+  },
+  {
+    "outputFile": "resources/ui/styles/ffxiv_dark.css",
+    "inputFile": "resources/ui/styles/ffxiv_dark.scss"
   }
 ]
