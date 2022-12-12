@@ -1,22 +1,4 @@
-﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the Free
- * Software Foundation, version 3.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>
- *
- * SPDX-License-Identifier: AGPL-3.0-only
- *******************************************************************************/
-
-:root {
-    --button-background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
-    --tab-shadow-color: #868686
-}
-
-body, html {
+﻿body, html {
     margin: 0;
     height: 100%;
     width: 100%;
@@ -50,45 +32,13 @@ body, html {
     flex-direction: row;
 }
 
-@mixin gob-chat_toolbar_clickable {
-    height: 1.5em;
-    min-width: 1.5em;
-    line-height: 1;    
-    text-shadow: -0.0625em 0 black, 0 0.0625em black, 0.0625em 0 black, 0 -0.0625em black;
-    background-image: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
-    white-space: nowrap;
-    border: none;
-    font-size: inherit; // overrides button
-    cursor: pointer; // overrides button
-
-    &:hover {
-        filter: brightness(115%);
-    }
-}
-
-.gob-chat_toolbar_button {
-    @include gob-chat_toolbar_clickable;
-    padding: 0 0.625em;
-    color: #cfc4ac;
-
-    &.is-disabled {
-        color: #756f62;
-    }
-}
-
-.gob-chat_toolbar_icon-button {
-    @include gob-chat_toolbar_clickable;
-    width: 1.5em;
-    padding: 0.18em;
-    border-radius: 50%;
-    color: #c0c0c0;
-
-    &.is-disabled {
-        color: #7e7e7e;
-    }
-}
-
 .gob-chat_tabs {
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.gob-chat_tabs_bar {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -98,57 +48,14 @@ body, html {
     }
 }
 
-.gob-chat_tabs_button {
-    @extend .gob-chat_toolbar_button;
-    border-right: solid 0.03125em #0000007a;
-    box-shadow: inset 0.0625em 0 0 0 #868686, inset 0 0.0625em 0 0 #868686;
-}
-
-.gob-chat_tabs_button--left {
-    padding-right: 0.3125em;
-    border-radius: 50% 0 0 50%;
-    box-shadow: inset 0 0.0625em 0 0 #868686;
-}
-
-.gob-chat_tabs_button--right {
-    padding-left: 0.3125em;
-    border-right: none;
-    border-radius: 0 50% 50% 0;
-}
-
-.gob-chat_tabs_bar {
-    display: flex;
-    flex-direction: row;
-}
-
 .gob-chat_tabs_bar_tab {
-    @extend .gob-chat_tabs_button;
-
-    font-weight: bold;
-
-    &.is-active:before {
-        content: "";
-        background: #fffbf7;
-        border-radius: 50%;
-        width: 0.375em;
-        height: 0.375em;
-        position: relative;
-        left: -0.125em;
-        top: -0.5em;
-        display: inline-block;
-        box-shadow: 0px 0px 0.25em 0.0625em #c79300;
-    }
-}
-
-@keyframes subtile-blinker {
-    50% {
-        background: rgba(245, 160, 0, 0.25);
-    }
+    min-width: auto;
 }
 
 .gob-chat_toolbar_search {
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
 }
 
 .gob-chat_history {
@@ -159,111 +66,10 @@ body, html {
     padding: 0.125em;
     font-size: 16px; // configurable
     background: rgba(20, 20, 20, 0.95); // configurable
+}
 
-    ::-webkit-scrollbar {
-        width: 11px;
-        height: 11px;
-    }
-
-    ::-webkit-scrollbar-button {
-        width: 4px;
-        height: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #f0f4ce;
-        border: 1px inset #ddd391;
-        border-radius: 0px;
-
-        &:hover {
-            background: #f0f4ce;
-        }
-
-        &:active {
-            background: #f0f4ce;
-        }
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #666666;
-        border: 4px solid #202020;
-        border-radius: 0px;
-
-        &:hover {
-            background: #666666;
-        }
-
-        &:active {
-            background: #333333;
-        }
-    }
-
-    ::-webkit-scrollbar-corner {
-        background: transparent;
+@keyframes subtile-blinker {
+    50% {
+        background: rgba(245, 160, 0, 0.25);
     }
 }
-
-.gob-chat_entry {
-}
-
-.gob-chat_entry--fadeout {
-}
-
-.gob-chat_entry--channel {
-}
-
-.gob-chat_entry_time {
-}
-
-.gob-chat_entry_sender {
-}
-
-.gob-chat_entry_text {
-}
-
-.gob-chat_entry_text_segment {
-}
-
-.gob-chat_entry_text_segment--say {
-}
-
-.gob-chat_entry_text_segment--emote {
-}
-
-.gob-chat_entry_text_segment--ooc {
-}
-
-.gob-chat_entry_text_segment--mention {
-}
-
-.gob-chat_entry_text_segment--link {
-}
-
-
-
-::-webkit-scrollbar {
-}
-
-::-webkit-scrollbar-button {
-}
-
-::-webkit-scrollbar-thumb {
-
-    &:hover {
-    }
-
-    &:active {
-    }
-}
-
-::-webkit-scrollbar-track {
-
-    &:hover {
-    }
-
-    &:active {
-    }
-}
-
-::-webkit-scrollbar-corner {
-    }

@@ -1,0 +1,43 @@
+﻿:root {
+    --noise-texture: url("../graphics/noise.png");
+    --color-gold: #cc9f5e;
+}
+
+::-webkit-scrollbar {
+    //font-size:1rem; // copies body-tag font-size
+    width: .75em;
+}
+
+::-webkit-scrollbar-button {
+    height: .25em;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f0f4ce;
+    border: .0626em inset #ddd391;
+
+    &:hover {
+        background: #f0f4ce;
+    }
+
+    &:active {
+        background: #f0f4ce;
+    }
+}
+
+::-webkit-scrollbar-track {
+    background: #666666;
+    border: .25em solid #202020;
+
+    &:hover {
+        background: #666666;
+    }
+
+    &:active {
+        background: #333333;
+    }
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
