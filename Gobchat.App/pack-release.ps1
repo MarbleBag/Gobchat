@@ -74,6 +74,14 @@ try{
 	Write-Error $_
 	exit 1
 }
+
+Write-Host "Cleanup resources: styles"
+#Remove all non css files
+Get-ChildItem -Path "$releaseFolder\resources\styles" -Exclude *.css, *.json | 
+	ForEach-Object {
+		Write-Host "Deleting: $($_.FullName)"
+		Remove-Item -Recurse -Force  $_.FullName -ErrorAction SilentlyContinue	
+	}
 	
 #Delete downloadable content - not needed anymore	
 #Remove-Item -Recurse -Force "$releaseFolder\resources\sharlayan" -ErrorAction SilentlyContinue
