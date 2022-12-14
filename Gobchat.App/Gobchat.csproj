@@ -120,8 +120,7 @@
     <Content Include="resources\ui\config\config_groups.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="bundleconfig.json" />
-    <None Include="tsconfig.json" />
+    <None Include="resources\ui\tsconfig.json" />
     <TypeScriptCompile Include="resources\ui\config\config.ts" />
     <Content Include="resources\ui\config\config_app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -173,8 +172,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Dialog.ts" />
-    <TypeScriptCompile Include="resources\ui\%40types\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="resources\ui\%40types\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="resources\ui\modules\ChatMessage.ts" />
     <Content Include="resources\ui\modules\Command.js">
       <DependentUpon>Command.ts</DependentUpon>
@@ -192,7 +189,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\EventDispatcher.ts" />
-	<Content Include="resources\ui\modules\Style.js">
+    <Content Include="resources\ui\modules\Style.js">
       <DependentUpon>Style.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

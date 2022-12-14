@@ -28,7 +28,7 @@ declare global {
 }
 */
 // initialize global variables
-jQuery(async function ($) {
+jQuery(async function () {
     window.GobchatAPI = window.opener.GobchatAPI;
     window.Gobchat = window.opener.Gobchat;
     window.console = window.opener.console;

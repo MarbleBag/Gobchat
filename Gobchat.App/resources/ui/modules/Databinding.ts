@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,11 +20,11 @@ import * as Config from './Config.js'
 
 export const DataAttributeConfigKey = "data-gob-configkey"
 
-export function getConfigKey(element: HTMLElement | JQuery) {
+export function getConfigKey(element: Element) {
     return $(element).attr(DataAttributeConfigKey)
 }
 
-export function setConfigKey(element: HTMLElement | JQuery, configKey: string) {
+export function setConfigKey(element: Element, configKey: string) {
     return $(element).attr(DataAttributeConfigKey, configKey)
 }
 
@@ -338,7 +338,7 @@ export function bindCheckboxArrayInverse(bindingContext: BindingContext, element
     return bindingContext.bindElement(element, $.extend(defOptions, options))
 }
 
-export function bindColorSelector(bindingContext: BindingContext, element: HTMLElement | JQuery, options): BindingContext {
+export function bindColorSelector(bindingContext: BindingContext, element: HTMLElement | JQuery , options): BindingContext {
     const defOptions = {
         elementKey: null,
         elementGetAccessor: null,

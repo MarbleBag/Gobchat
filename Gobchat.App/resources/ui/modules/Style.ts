@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -57,7 +57,7 @@ export class StyleLoader {
         return [].concat(this.#activeStyles || [])
     }
 
-    async activateStyles(styleIds: string | string[]) {
+    async activateStyles(styleIds?: string | string[]) {
         styleIds = [].concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
 
         for (let styleId of styleIds)

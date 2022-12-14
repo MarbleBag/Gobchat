@@ -1,14 +1,30 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": false,
-    "target": "ES2021",
-    "skipLibCheck": true
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ]
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noEmitOnError": true,
+        "removeComments": false,
+        "sourceMap": false,
+        "target": "ES2021",
+        "module": "ES2015",
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "allowJs": false,
+        "allowUmdGlobalAccess": true,
+        "lib": [
+            "dom",
+            "ES2015",
+            "ES2016",
+            "ES2017",
+            "ES2018",
+            "ES2019",
+            "ES2020",
+            "ES2021",
+            "ES2022",
+            "ESNext"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "wwwroot"
+    ]
 }

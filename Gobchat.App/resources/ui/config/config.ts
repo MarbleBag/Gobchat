@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,7 @@ declare global {
 */
 
 // initialize global variables
-jQuery(async function ($) {
+jQuery(async function () {
     window.GobchatAPI = window.opener.GobchatAPI
     window.Gobchat = window.opener.Gobchat
     window.console = window.opener.console

@@ -1,10 +1,45 @@
-﻿// globals, create in js code
+// globals, create in js code
 declare var gobConfig: import("./modules/Config").GobchatConfig
 declare var gobChatManager: import("./modules/Chat").ChatManager
 declare var gobStyles: import("./modules/Style").StyleLoader
 declare var gobLocale: import("./modules/Locale").LocaleManager
 declare function openGobConfig(): void
 declare function saveConfig(): void
+
+declare var _: any
+declare var $: JQuery
+declare var jQuery: JQuery
+declare interface JQuery {
+    (a: any): JQuery
+    [i: number]: HTMLElement
+    remove(): JQuery
+    on(action: string, callback: Function): JQuery
+    off(action: string, callback: Function): JQuery
+    attr(key: string, value?: any): any
+    prop(key: string, value?: any): any
+    each(callback: (index: number, element: HTMLElement) => boolean): void
+    each(callback: (index: number, element: HTMLElement) => void): void
+    hide(): JQuery
+    show(): JQuery
+    html(val: any): JQuery
+    html(): string
+    text(val: string): JQuery
+    text(): string
+    val(val: string): JQuery
+    val(): string
+    find(selector: string): JQuery
+    addBack(selector?: string): JQuery
+    addClass(c: string): JQuery
+    removeClass(c: string): JQuery
+    index(a?: any): number
+    first(): JQuery
+    last(): JQuery
+    focus(): JQuery
+    animate(a: any): JQuery
+    prevAll(selector: string): JQuery
+    nextAll(selector: string): JQuery
+    extend(a:any, b:any): any
+}
 
 // should be included in es2021 ?!
 declare interface Object {
@@ -49,6 +84,10 @@ declare interface ChatMessagesEvent extends CustomEvent<{ messages: import("./mo
 }
 
 declare interface OverlayStateUpdateEvent extends CustomEvent<{ isLocked: boolean }> {
+
+}
+
+declare interface SynchronizeConfigEvent extends CustomEvent {
 
 }
 

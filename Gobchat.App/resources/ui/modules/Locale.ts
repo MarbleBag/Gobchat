@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -72,12 +72,12 @@ export class LocaleManager {
         return Utility.formatString(value, ...params)
     }
 
-    async updateElement(element: HTMLElement, language?: string) {
+    async updateElement(element: HTMLElement | JQuery, language?: string) {
         await updateDomTree(element, language || this.#locale)
     }
 }
 
-async function updateDomTree(htmlElement: HTMLElement, locale: string) {
+async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) {
     const selector = `[${AttributeTextKey}],[${AttributeTooltipKey}]` 
     const selectedElements = $(htmlElement).find(selector).addBack(selector)
     if (selectedElements.length == 0)

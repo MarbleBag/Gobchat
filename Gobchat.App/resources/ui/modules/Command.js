@@ -156,13 +156,13 @@ class ProfileSwitchCommandHandler {
         return ["profile load"];
     }
     async execute(commandManager, commandName, args) {
-        const profileIds = gobConfig.profiles;
+        const profileIds = gobConfig.profileIds;
         if (Utility.isString(args) && args.length > 0) {
             args = args.toLowerCase();
             for (var profileId of profileIds) {
                 const profile = gobConfig.getProfile(profileId);
                 if (args === profile.profileName.toLowerCase()) {
-                    gobConfig.activeProfile = profile.profileId;
+                    gobConfig.activeProfileId = profile.profileId;
                     GobchatAPI.sendInfoChatMessage(await gobLocale.getAndFormat("main.cmdmanager.cmd.profile.load", profile.profileName));
                     return;
                 }

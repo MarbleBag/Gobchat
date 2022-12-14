@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -193,14 +193,14 @@ class ProfileSwitchCommandHandler implements CommandHandler {
     }
 
     async execute(commandManager: CommandManager, commandName: string, args: string) {
-        const profileIds = gobConfig.profiles
+        const profileIds = gobConfig.profileIds
 
         if (Utility.isString(args) && args.length > 0) {
             args = args.toLowerCase()
             for (var profileId of profileIds) {
                 const profile = gobConfig.getProfile(profileId)
                 if (args === profile.profileName.toLowerCase()) {
-                    gobConfig.activeProfile = profile.profileId
+                    gobConfig.activeProfileId = profile.profileId
                     GobchatAPI.sendInfoChatMessage(
                         await gobLocale.getAndFormat("main.cmdmanager.cmd.profile.load", profile.profileName)
                     )

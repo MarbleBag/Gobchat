@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -120,7 +120,7 @@ export class ChatManager {
         this.control($(".gob-chat_box"))
     }
 
-    control(chatElement: HTMLElement | JQuery) {
+    control(chatElement: Element | JQuery) {
         if (this.#control !== null) {
 
         }

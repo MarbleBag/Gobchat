@@ -17,12 +17,17 @@
 import * as Utility from './CommonUtility.js'
 import { EventDispatcher } from './EventDispatcher.js'
 
+type JToken = JValue | JArray | JObject
+type JValue = number | string
+type JArray = [JToken]
+type JObject = {[key:string]:JToken}
+
 /**
  * 
  * @param map
  * @param allowedKeys
  */
-function removeInvalidKeys(map: object, allowedKeys: string[]) {
+function removeInvalidKeys(map: JObject, allowedKeys: string[]) {
     const availableKeys = Object.keys(map)
     const invalidKeys = availableKeys.filter((k) => { return _.indexOf(allowedKeys, k) === -1 })
     invalidKeys.forEach((k) => { delete map[k] }) //remove keys which are not allowed
@@ -33,7 +38,7 @@ function removeInvalidKeys(map: object, allowedKeys: string[]) {
  * @param data
  * @param extendedData
  */
-function retainChangesIterator(data: object, extendedData: object) {
+function retainChangesIterator(data: JObject, extendedData: JObject) {
     const callbackHelper = {
         onArray: function (data, extendedData) {
             //return _.isEqual(data,extendedData) //same objects can be removed
@@ -61,18 +66,18 @@ function retainChangesIterator(data: object, extendedData: object) {
  * @param destination
  * @param ignoreFunc
  */
-function removeMissingObjects(source: object, destination: object, ignoreFunc: (string) => boolean = null): [string[], boolean] {
+function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc: (key:string) => boolean = null): [changedKeys: string[], replaceTree: boolean] {
     var path: string[] = [];
     var changes = new Set<string>();
 
     const callbacks = {
-        onArray: function (source, destination) {
+        onArray: function (source: JArray, destination: JArray) {
             return false
         },
-        onCompare: function (source, destination) {
+        onCompare: function (source: JToken, destination: JToken) {
             return false
         },
-        onObject: function (source, destination) {
+        onObject: function (source: JObject, destination: JObject) {
             const availableKeys = Object.keys(destination)
             const allowedKeys = Object.keys(source)
             const keysToRemove = availableKeys.filter((k) => { return !_.includes(allowedKeys, k) })
@@ -111,18 +116,18 @@ function removeMissingObjects(source: object, destination: object, ignoreFunc: (
  * @param copyOnWrite
  * @param ignoreFunc
  */
-function writeObject(source: object, destination: object, copyOnWrite: boolean = false, ignoreFunc: (string) => boolean = null): [string[], boolean] {
+function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean = false, ignoreFunc: (key: string) => boolean = null): [string[], boolean] {
     var path: string[] = [];
     var changes = new Set<string>();
 
     const callbacks = {
-        onArray: function (source, destination) {
+        onArray: function (source: JArray, destination: JArray) {
             return true //lazy, just merge
         },
-        onCompare: function (source, destination) {
+        onCompare: function (source: JToken, destination: JToken) {
             return true //lazy, just merge
         },
-        onObject: function (source, destination) {
+        onObject: function (source: JObject, destination: JObject) {
             for (let key of Object.keys(source)) {
                 path.push(key)
                 const fullPath = path.join(".")
@@ -156,21 +161,21 @@ function writeObject(source: object, destination: object, copyOnWrite: boolean =
 }
 
 interface TreeIteratorCallback {
-    onArray: (a: object,b: object, c: TreeIteratorCallback) => boolean
-    onObject: (a: object, b: object, c: TreeIteratorCallback) => boolean
-    onCompare: (a: object, b: object, c: TreeIteratorCallback) => boolean
+    onArray(a: JArray,b: JArray, c: TreeIteratorCallback): boolean
+    onObject(a: JObject, b: JObject, c: TreeIteratorCallback): boolean
+    onCompare(a: JToken, b: JToken, c: TreeIteratorCallback): boolean
 }
 
 /**
  * 
- * @param {Object} objA
- * @param {Object} objB
- * @param {Function} callbacks
+ * @param objA
+ * @param objB
+ * @param callbacks
  */
-function objectTreeIteratorHelper(objA: object, objB: object, callbacks: TreeIteratorCallback) {
+function objectTreeIteratorHelper(objA: JToken, objB: JToken, callbacks: TreeIteratorCallback) {
     if (Utility.isArray(objA)) {
         if (Utility.isArray(objB)) {
-            return callbacks.onArray(objA, objB, callbacks)
+            return callbacks.onArray(objA as JArray, objB as JArray, callbacks)
         } else {
             return false //invalid
         }
@@ -178,7 +183,7 @@ function objectTreeIteratorHelper(objA: object, objB: object, callbacks: TreeIte
         return false //invalid
     } else if (Utility.isObject(objA)) {
         if (Utility.isObject(objB)) {
-            return callbacks.onObject(objA, objB, callbacks)
+            return callbacks.onObject(objA as JObject, objB as JObject, callbacks)
         } else {
             return false //invalid
         }
@@ -281,27 +286,27 @@ export class InvalidKeyError extends Error {
     }
 }
 
-interface A {
+export interface ActiveProfileConfigEvent {
     type: "profile"
     action: "active"
     oldProfileId: string
     newProfileId: string
 }
 
-interface B {
+export interface ModifyProfileConfigEvent {
     type: "profile"
     action: "new" | "delete"
     profileId: string
 }
 
-interface C {
+export interface PropertyConfigEvent {
     type: "property"
     key: string
     sourceProfileId: string
     isActiveProfile: boolean
 }
 
-export type GobchatConfigEvent = A | B | C
+export type GobchatConfigEvent = ActiveProfileConfigEvent | ModifyProfileConfigEvent | PropertyConfigEvent
 export type GobchatConfigListener = (evt: GobchatConfigEvent) => void
 
 /*
@@ -322,7 +327,7 @@ export type GobchatConfigEvent = {
 }
 */
 
-interface JsonConfigProfile {
+interface JsonConfigProfile extends JObject {
     profile: { id: string, name: string }
 }
 
@@ -331,7 +336,7 @@ export class GobchatConfig {
     #defaultProfile: JsonConfigProfile
     #activeProfile: ConfigProfile
     #activeProfileId: string    
-    #profiles: { [s: string]: ConfigProfile }
+    #profiles: { [id: string]: ConfigProfile }
     #isSynced: boolean = false
 
     constructor(isSynced: boolean = false) {
@@ -350,16 +355,19 @@ export class GobchatConfig {
         }
     }
 
-    #OnPropertyChange = (event) => { //binded to this
-        const isActiveProfile = event.source === this.activeProfile
+    #OnPropertyChange = (event: ConfigProfileEvent) => { //binded to this
+        const isActiveProfile = event.source === this.activeProfileId
         this.#eventDispatcher.dispatch(`property:${event.key}`, { type: "property", key: event.key, sourceProfileId: event.source, isActiveProfile: isActiveProfile })
     }
 
     #loadConfig(json: string) {
-        const data = JSON.parse(json)
+        const data = JSON.parse(json) as {
+            profiles: {[key:string]: JsonConfigProfile},
+            activeProfile: string
+        }
 
         const loadedProfileIds = Object.keys(data.profiles)
-        const availableProfileIds = this.profiles
+        const availableProfileIds = this.profileIds
         const newProfileIds = loadedProfileIds.filter(e => !_.includes(availableProfileIds, e))
         const changedProfileIds = loadedProfileIds.filter(e => _.includes(availableProfileIds, e))
         const deletedProfileIds = availableProfileIds.filter(e => !_.includes(loadedProfileIds, e))
@@ -371,7 +379,7 @@ export class GobchatConfig {
             this.#storeNewProfile(cleanProfile)
         })
 
-        this.activeProfile = data.activeProfile
+        this.activeProfileId = data.activeProfile
 
         deletedProfileIds.forEach(profileId => {
             this.deleteProfile(profileId)
@@ -388,7 +396,7 @@ export class GobchatConfig {
     }
 
     #generateId() : string {
-        const ids = this.profiles
+        const ids = this.profileIds
         let id = null
         do {
             id = Utility.generateId(8)
@@ -434,11 +442,11 @@ export class GobchatConfig {
         await GobchatAPI.synchronizeConfig(dataJson)
     }
 
-    get activeProfile(): string {
+    get activeProfileId(): string {
         return this.#activeProfileId
     }
 
-    set activeProfile(profileId: string) {
+    set activeProfileId(profileId: string) {
         if (this.#activeProfileId === profileId)
             return
 
@@ -455,11 +463,11 @@ export class GobchatConfig {
             GobchatAPI.setConfigActiveProfile(this.#activeProfileId)
     }
 
-    get profiles(): string[] {
+    get profileIds(): string[] {
         return Object.keys(this.#profiles)
     }
 
-    importProfile(profileJson: object) {
+    importProfile(profileJson: JsonConfigProfile) {
         const cleanProfile = copyByJson(this.#defaultProfile)
         writeObject(profileJson, cleanProfile, false, (p) => false)
         const profileId = this.#generateId()
@@ -472,7 +480,7 @@ export class GobchatConfig {
         const profileId = this.#generateId()
         const newProfileData = copyByJson(this.#defaultProfile)
         newProfileData.profile.id = profileId
-        newProfileData.profile.name = `Profile ${this.profiles.length + 1}`
+        newProfileData.profile.name = `Profile ${this.profileIds.length + 1}`
         this.#storeNewProfile(newProfileData)
         return profileId
     }
@@ -487,16 +495,16 @@ export class GobchatConfig {
     }
 
     deleteProfile(profileId: string) {
-        if (this.profiles.length <= 1)
+        if (this.profileIds.length <= 1)
             return
 
-        if (!_.includes(this.profiles, profileId))
+        if (!_.includes(this.profileIds, profileId))
             return
 
         delete this.#profiles[profileId]
 
-        if (this.activeProfile === profileId)
-            this.activeProfile = this.profiles[0]
+        if (this.activeProfileId === profileId)
+            this.activeProfileId = this.profileIds[0]
 
         this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "delete", profileId: profileId })
     }
@@ -611,8 +619,15 @@ export class GobchatConfig {
     }
 }
 
+interface ConfigProfileEvent {
+    key: string
+    source: string
+}
+
+type ConfigProfileEventListener = (evt: ConfigProfileEvent) => void
+
 class ConfigProfile {
-    #propertyListener: EventDispatcher<{key:string, source:string}> = null
+    #propertyListener: EventDispatcher<ConfigProfileEvent> = null
     #config: JsonConfigProfile = null
 
     constructor(config: JsonConfigProfile) {
@@ -715,11 +730,11 @@ class ConfigProfile {
         this.#firePropertyChange(key)
     }
 
-    addPropertyListener(topic: string, callback) {
+    addPropertyListener(topic: string, callback: ConfigProfileEventListener) {
         this.#propertyListener.on(topic, callback)
     }
 
-    removePropertyListener(topic: string, callback) {
+    removePropertyListener(topic: string, callback: ConfigProfileEventListener) {
         this.#propertyListener.off(topic, callback)
     }
 
@@ -760,7 +775,7 @@ class ConfigProfile {
         })
 
         sorted.forEach((propertyPath) => {
-            const data = { "key": propertyPath, "source": this.profileId }
+            const data: ConfigProfileEvent = { "key": propertyPath, "source": this.profileId }
             this.#propertyListener.dispatch(propertyPath, data)
             this.#propertyListener.dispatch("*", data)
         })
