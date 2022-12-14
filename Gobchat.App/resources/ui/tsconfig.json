@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": false,
+    "target": "ES2021",
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}

@@ -11,18 +11,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+// compiler doesn't recognize globals.d.ts for this file
+
 'use strict'
 
 import * as Databinding from './modules/Databinding.js'
 import * as Config from './modules/Config.js'
 import * as Locale from './modules/Locale.js'
-import * as Styles from './modules/Styles.js'
+import * as Style from './modules/Style.js'
 import * as Chat from './modules/Chat.js'
 import * as Search from './modules/ChatSearchComponent.js'
 
 // Indicate that window resizing is possible
-document.addEventListener("OverlayStateUpdate", function (e) {
-    if (!e.detail.isLocked)
+document.addEventListener("OverlayStateUpdate", function (event) {
+    if (!event.detail.isLocked)
         document.documentElement.classList.add("gob-document--resize");
     else
         document.documentElement.classList.remove("gob-document--resize");
@@ -32,14 +34,14 @@ document.addEventListener("OverlayStateUpdate", function (e) {
 jQuery(async function ($) {
     window.gobConfig = new Config.GobchatConfig(true)
     await gobConfig.loadConfig()
-
+    
     window.gobLocale = new Locale.LocaleManager()
 
-    window.gobStyles = new Styles.StyleLoader(".")
+    window.gobStyles = new Style.StyleLoader(".")
     await gobStyles.initialize()
     
-    window.chatManager = new Chat.ChatManager()
-    await chatManager.control($(".gob-chat_box"))
+    window.gobChatManager = new Chat.ChatManager()
+    await gobChatManager.control($(".gob-chat_box"))
 
     window.chatSearch = new Search.ChatSearch()
     chatSearch.control($(".gob-chat_toolbar_search"), $(".gob-chat_box"))
@@ -110,5 +112,5 @@ jQuery(function ($) {
     }
 
     $("#gob_show_config").on("click", openGobchatConfig)
-    window.openGobconfig = openGobchatConfig
+    window.openGobConfig = openGobchatConfig
 })

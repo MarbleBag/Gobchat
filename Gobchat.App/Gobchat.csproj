@@ -42,7 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <TypeScriptTarget>ES2016</TypeScriptTarget>
+    <TypeScriptTarget>ES2021</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
@@ -66,12 +66,12 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>false</DebugSymbols>
-    <TypeScriptTarget>ES2016</TypeScriptTarget>
+    <TypeScriptTarget>ES2021</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
@@ -120,9 +120,9 @@
     <Content Include="resources\ui\config\config_groups.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="bundleconfig.json" />
+    <None Include="tsconfig.json" />
+    <TypeScriptCompile Include="resources\ui\config\config.ts" />
     <Content Include="resources\ui\config\config_app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -168,6 +168,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\globals.d.ts" />
+    <Content Include="resources\ui\modules\ChatMessage.js">
+      <DependentUpon>ChatMessage.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Dialog.ts" />
+    <TypeScriptCompile Include="resources\ui\%40types\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="resources\ui\%40types\lodash\lodash.d.ts" />
+    <TypeScriptCompile Include="resources\ui\modules\ChatMessage.ts" />
+    <Content Include="resources\ui\modules\Command.js">
+      <DependentUpon>Command.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Command.ts" />
     <TypeScriptCompile Include="resources\ui\modules\CommonUtility.ts" />
     <Content Include="resources\ui\modules\Chat.js">
       <DependentUpon>Chat.ts</DependentUpon>
@@ -175,11 +188,15 @@
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Chat.ts" />
     <Content Include="resources\ui\modules\EventDispatcher.js">
+      <DependentUpon>EventDispatcher.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\modules\Styles.js">
+    <TypeScriptCompile Include="resources\ui\modules\EventDispatcher.ts" />
+	<Content Include="resources\ui\modules\Style.js">
+      <DependentUpon>Style.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\modules\Style.ts" />
     <Content Include="resources\ui\modules\Config.js">
       <DependentUpon>Config.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -193,8 +210,10 @@
     </Content>
     <Content Include="resources\ui\modules\GobModule.js" />
     <Content Include="resources\ui\modules\Locale.js">
+      <DependentUpon>Locale.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Locale.ts" />
     <Content Include="resources\ui\old styles\ffxiv_light_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -285,8 +304,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\Databinding.js">
+      <DependentUpon>Databinding.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Databinding.ts" />
     <None Include="resources\ui\old styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

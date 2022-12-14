@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -10,13 +10,5 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
-
-'use strict'
-
-export { Utility } from './CommonUtility.js'
-export { Databinding } from './Databinding.js'
-export { Constants } from './Constants.js'
-export { LocaleManager } from './Locale.js'
-export { ChatManager } from './Chat.js'
-export { GobConfig } from './Config.js'
-export { StyleManager } from './Style.js'
+'use strict';
+export default {};

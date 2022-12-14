@@ -19,10 +19,10 @@ import { EventDispatcher } from './EventDispatcher.js'
 
 /**
  * 
- * @param {Object} map
- * @param {Array} allowedKeys
+ * @param map
+ * @param allowedKeys
  */
-function removeInvalidKeys(map: Object, allowedKeys: string[]) {
+function removeInvalidKeys(map: object, allowedKeys: string[]) {
     const availableKeys = Object.keys(map)
     const invalidKeys = availableKeys.filter((k) => { return _.indexOf(allowedKeys, k) === -1 })
     invalidKeys.forEach((k) => { delete map[k] }) //remove keys which are not allowed
@@ -30,10 +30,10 @@ function removeInvalidKeys(map: Object, allowedKeys: string[]) {
 
 /**
  * removes every value from data that is the same as in 	extendedData
- * @param {Object} data
- * @param {Object} extendedData
+ * @param data
+ * @param extendedData
  */
-function retainChangesIterator(data: Object, extendedData: Object) {
+function retainChangesIterator(data: object, extendedData: object) {
     const callbackHelper = {
         onArray: function (data, extendedData) {
             //return _.isEqual(data,extendedData) //same objects can be removed
@@ -52,18 +52,18 @@ function retainChangesIterator(data: Object, extendedData: Object) {
         }
     }
 
-    //dataIteratorHelper(data, extendedData, callbackHelper)
+    objectTreeIteratorHelper(data, extendedData, callbackHelper)
 }
 
 /**
  * 
- * @param {Object} source
- * @param {Object} destination
- * @param {Function} ignoreFunc
+ * @param source
+ * @param destination
+ * @param ignoreFunc
  */
-function removeMissingObjects(source, destination, ignoreFunc = null) {
-    var path = [];
-    var changes = new Set();
+function removeMissingObjects(source: object, destination: object, ignoreFunc: (string) => boolean = null): [string[], boolean] {
+    var path: string[] = [];
+    var changes = new Set<string>();
 
     const callbacks = {
         onArray: function (source, destination) {
@@ -106,14 +106,14 @@ function removeMissingObjects(source, destination, ignoreFunc = null) {
 
 /**
  * Will merge every value from source into destination
- * @param {Object} source
- * @param {Object} destination
- * @param {Boolean} copyOnWrite
- * @param {Function} ignoreFunc
+ * @param source
+ * @param destination
+ * @param copyOnWrite
+ * @param ignoreFunc
  */
-function writeObject(source, destination, copyOnWrite = false, ignoreFunc = null) {
-    var path = [];
-    var changes = new Set();
+function writeObject(source: object, destination: object, copyOnWrite: boolean = false, ignoreFunc: (string) => boolean = null): [string[], boolean] {
+    var path: string[] = [];
+    var changes = new Set<string>();
 
     const callbacks = {
         onArray: function (source, destination) {
@@ -155,13 +155,19 @@ function writeObject(source, destination, copyOnWrite = false, ignoreFunc = null
     return [Array.from(changes), needsToBeReplaced]
 }
 
+interface TreeIteratorCallback {
+    onArray: (a: object,b: object, c: TreeIteratorCallback) => boolean
+    onObject: (a: object, b: object, c: TreeIteratorCallback) => boolean
+    onCompare: (a: object, b: object, c: TreeIteratorCallback) => boolean
+}
+
 /**
  * 
  * @param {Object} objA
  * @param {Object} objB
  * @param {Function} callbacks
  */
-function objectTreeIteratorHelper(objA, objB, callbacks) {
+function objectTreeIteratorHelper(objA: object, objB: object, callbacks: TreeIteratorCallback) {
     if (Utility.isArray(objA)) {
         if (Utility.isArray(objB)) {
             return callbacks.onArray(objA, objB, callbacks)
@@ -183,24 +189,22 @@ function objectTreeIteratorHelper(objA, objB, callbacks) {
     }
 }
 
-interface JsonProfileConfig {
-    profile: {id: string, name: string}
-}
+
 
 /**
- * @param {String} key
+ * @param key
  */
-function breakKeyDown(key) {
+function breakKeyDown(key: string): string[] {
     if (key == undefined || key == null || key.length === 0) return []
     const parts = key.split(".")
     return parts
 }
 
 /**
- * @param {String} key
- * @param {Object} config
+ * @param key
+ * @param config
  */
-function buildPath(key, config) {
+function buildPath(key: string, config: object) {
     let _config = config
     const keySteps = breakKeyDown(key)
     for (let i = 0; i < keySteps.length - 1; ++i) {
@@ -214,46 +218,45 @@ function buildPath(key, config) {
 
 /**
  * 
- * @param {String} key
- * @param {Object} config
- * @param {any} value
- * @param {Boolean} remove
+ * @param key
+ * @param config
+ * @param value
+ * @param remove
  */
-function resolvePath(key: string, config: object, value: object = undefined, remove: boolean = false) {
-    let _config = config
+function resolvePath(key: string, config: object, value: object = undefined, remove: boolean = false): any {
     const keySteps = breakKeyDown(key)
 
     for (let i = 0; i < keySteps.length - 1; ++i) {
         const keyStep = keySteps[i]
-        if (keyStep in _config) {
-            _config = _config[keyStep]
+        if (keyStep in config) {
+            config = config[keyStep]
         } else {
             throw new InvalidKeyError(`Config error. Key '${key}' invalid. Unable to ${remove !== undefined ? `set` : `get`} data at '${keyStep}'`);
         }
     }
 
     if (keySteps.length === 0) 
-        return _config
+        return config
     
 
     const targetKey = keySteps[keySteps.length - 1]
     if (value !== undefined) 
-        _config[targetKey] = value != null ? copyByJson(value) : null
+        config[targetKey] = value !== null ? copyByJson(value) : null
     
     if (remove) 
-        delete _config[targetKey]
+        delete config[targetKey]
     
-    return _config[targetKey]
+    return config[targetKey]
 }
 
 /**
  * 
- * @param {Object} source
- * @param {String} key
- * @param {Object} destination
- * @param {Boolean} doCopy
+ * @param source
+ * @param key
+ * @param destination
+ * @param doCopy
  */
-function copyValueForKey(source: GobchatConfig, key: string, destination, doCopy) {
+function copyValueForKey(source: object, key: string, destination: object, doCopy: boolean) {
     let val = resolvePath(key, source)
     if (doCopy)
         val = copyByJson(val)
@@ -263,9 +266,9 @@ function copyValueForKey(source: GobchatConfig, key: string, destination, doCopy
 
 /**
  * 
- * @param {Object} obj
+ * @param obj
  */
-function copyByJson(obj) {
+function copyByJson<T>(obj: T): T {
     if (obj === undefined || obj === null)
         throw new Error("Value is null")
     return JSON.parse(JSON.stringify(obj))
@@ -278,15 +281,58 @@ export class InvalidKeyError extends Error {
     }
 }
 
-export class GobchatConfig {
-    #eventDispatcher: EventDispatcher = null
-    #defaultProfile: object = null
-    #activeProfileId: string = null
-    #activeProfile: ConfigProfile = null
-    #profiles: object = {}
-    #isSynced: boolean = false
+interface A {
+    type: "profile"
+    action: "active"
+    oldProfileId: string
+    newProfileId: string
+}
 
-    #OnPropertyChange: Function = null
+interface B {
+    type: "profile"
+    action: "new" | "delete"
+    profileId: string
+}
+
+interface C {
+    type: "property"
+    key: string
+    sourceProfileId: string
+    isActiveProfile: boolean
+}
+
+export type GobchatConfigEvent = A | B | C
+export type GobchatConfigListener = (evt: GobchatConfigEvent) => void
+
+/*
+export type GobchatConfigEvent = {
+    type: "profile"
+    action: "active"
+    oldProfileId: string
+    newProfileId: string
+} | {
+    type: "profile"
+    action: "new" | "delete"
+    profileId: string
+} | {
+    type: "property"
+    key: string
+    sourceProfileId: string
+    isActiveProfile: boolean
+}
+*/
+
+interface JsonConfigProfile {
+    profile: { id: string, name: string }
+}
+
+export class GobchatConfig {
+    #eventDispatcher: EventDispatcher<GobchatConfigEvent>
+    #defaultProfile: JsonConfigProfile
+    #activeProfile: ConfigProfile
+    #activeProfileId: string    
+    #profiles: { [s: string]: ConfigProfile }
+    #isSynced: boolean = false
 
     constructor(isSynced: boolean = false) {
         this.#eventDispatcher = new EventDispatcher()
@@ -299,15 +345,14 @@ export class GobchatConfig {
         this.#profiles = {}
         this.#isSynced = isSynced
 
-        const self = this
-        this.#OnPropertyChange = function (event) { //used as an event listener, so we need to keep a ref to this around
-            const isActiveProfile = event.source === self.activeProfile
-            self.#eventDispatcher.dispatch(`property:${event.key}`, { "key": event.key, "source": event.source, "isActive": isActiveProfile })
-        }
-
         if (this.#isSynced) {
-            document.addEventListener("SynchronizeConfigEvent", (e) => { self.loadConfig() })
+            document.addEventListener("SynchronizeConfigEvent", (e) => { this.loadConfig() })
         }
+    }
+
+    #OnPropertyChange = (event) => { //binded to this
+        const isActiveProfile = event.source === this.activeProfile
+        this.#eventDispatcher.dispatch(`property:${event.key}`, { type: "property", key: event.key, sourceProfileId: event.source, isActiveProfile: isActiveProfile })
     }
 
     #loadConfig(json: string) {
@@ -333,11 +378,12 @@ export class GobchatConfig {
         })
 
         changedProfileIds.forEach(profileId => {
-            let cleanProfile = copyByJson(this.#defaultProfile)
+            const cleanProfile = copyByJson(this.#defaultProfile)
             const profileData = data.profiles[profileId]
             writeObject(profileData, cleanProfile, false, (p) => false)
-            cleanProfile = new ConfigProfile(cleanProfile)
-            this.getProfile(profileId).copyFrom(cleanProfile, "", true)
+
+            const readThis = new ConfigProfile(cleanProfile)
+            this.getProfile(profileId).copyFrom(readThis, "", true)
         })
     }
 
@@ -350,7 +396,7 @@ export class GobchatConfig {
         return id
     }
 
-    #saveConfig() {
+    #saveConfig(): string {
         const data = {
             activeProfile: this.#activeProfileId,
             profiles: {}
@@ -365,7 +411,7 @@ export class GobchatConfig {
         return json
     }
 
-    async loadConfig() {
+    async loadConfig(): Promise<void>  {
         const dataJson = await GobchatAPI.getConfigAsJson()
         this.#loadConfig(dataJson)
 
@@ -383,7 +429,7 @@ export class GobchatConfig {
         */
     }
 
-    async saveConfig() {
+    async saveConfig(): Promise<void> {
         const dataJson = this.#saveConfig()
         await GobchatAPI.synchronizeConfig(dataJson)
     }
@@ -403,7 +449,7 @@ export class GobchatConfig {
         this.#activeProfileId = profileId
         this.#activeProfile = this.#profiles[this.#activeProfileId]
 
-        this.#eventDispatcher.dispatch("profile:", { type: "active", detail: { old: previousId, new: this.#activeProfileId } })
+        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "active", oldProfileId: previousId, newProfileId: this.#activeProfileId })
 
         if (this.#isSynced)
             GobchatAPI.setConfigActiveProfile(this.#activeProfileId)
@@ -431,16 +477,16 @@ export class GobchatConfig {
         return profileId
     }
 
-    #storeNewProfile(data) {
+    #storeNewProfile(data: JsonConfigProfile) {
         const profile = new ConfigProfile(data)
         const profileId = profile.profileId
 
         profile.addPropertyListener("*", this.#OnPropertyChange)
         this.#profiles[profileId] = profile
-        this.#eventDispatcher.dispatch("profile:", { type: "new", detail: { id: profileId } })
+        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "new", profileId: profileId })
     }
 
-    deleteProfile(profileId) {
+    deleteProfile(profileId: string) {
         if (this.profiles.length <= 1)
             return
 
@@ -452,10 +498,10 @@ export class GobchatConfig {
         if (this.activeProfile === profileId)
             this.activeProfile = this.profiles[0]
 
-        this.#eventDispatcher.dispatch("profile:", { type: "delete", detail: { id: profileId } })
+        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "delete", profileId: profileId })
     }
 
-    copyProfile(sourceProfileId, destinationProfileId) {
+    copyProfile(sourceProfileId: string, destinationProfileId: string) {
         const sourceProfile = this.getProfile(sourceProfileId)
         const destinationProfile = this.getProfile(destinationProfileId)
         if (!sourceProfile || !destinationProfile)
@@ -463,7 +509,7 @@ export class GobchatConfig {
         destinationProfile.copyFrom(sourceProfile, "")
     }
 
-    getProfile(profileId): ConfigProfile {
+    getProfile(profileId: string): ConfigProfile {
         const profile = this.#profiles[profileId]
         if (profile === undefined)
             return null
@@ -477,7 +523,7 @@ export class GobchatConfig {
     }
 
     //TODO remove later
-    loadFromLocalStore(keepLocaleStore) {
+    loadFromLocalStore(keepLocaleStore: boolean) {
         const json = window.localStorage.getItem("gobchat-config")
         if (!keepLocaleStore)
             window.localStorage.removeItem("gobchat-config")
@@ -498,29 +544,29 @@ export class GobchatConfig {
             this.saveConfig()
     }
 
-    addProfileEventListener(callback) {
+    addProfileEventListener(callback: GobchatConfigListener): boolean {
         return this.#eventDispatcher.on("profile:", callback)
     }
 
-    removeProfileEventListener(callback) {
+    removeProfileEventListener(callback: GobchatConfigListener): boolean {
         return this.#eventDispatcher.off("profile:", callback)
     }
 
-    addPropertyEventListener(topic, callback) {
+    addPropertyEventListener(topic: string, callback: GobchatConfigListener): boolean {
         return this.#eventDispatcher.on("property:" + topic, callback)
     }
 
-    removePropertyEventListener(topic, callback) {
+    removePropertyEventListener(topic: string, callback: GobchatConfigListener): boolean {
         return this.#eventDispatcher.off("property:" + topic, callback)
     }
 
-    get(key: string, defaultValue) {
+    get(key: string, defaultValue?: any): any {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         return this.#activeProfile.get(key, defaultValue)
     }
 
-    getDefault(key: string, defaultValue) {
+    getDefault(key: string, defaultValue: any): any {
         try {
             const value = resolvePath(key, this.#defaultProfile)
             return value === undefined ? defaultValue : value !== null ? copyByJson(value) : value
@@ -534,13 +580,13 @@ export class GobchatConfig {
         }
     }
 
-    set(key: string, value) {
+    set(key: string, value: any) {
         if (!this.#activeProfile)
             throw new Error("No active profile")
-        return this.#activeProfile.set(key, value)
+        this.#activeProfile.set(key, value)
     }
 
-    has(key: string) {
+    has(key: string): boolean {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         return this.#activeProfile.has(key)
@@ -566,10 +612,10 @@ export class GobchatConfig {
 }
 
 class ConfigProfile {
-    #propertyListener: EventDispatcher = null
-    #config: JsonProfileConfig = null
+    #propertyListener: EventDispatcher<{key:string, source:string}> = null
+    #config: JsonConfigProfile = null
 
-    constructor(config: JsonProfileConfig) {
+    constructor(config: JsonConfigProfile) {
         if (config === undefined || config === null)
             throw new Error("config is null")
 
@@ -577,11 +623,11 @@ class ConfigProfile {
         this.#config = config
     }
 
-    get profileId() {
+    get profileId(): string {
         return this.#config.profile.id
     }
 
-    get profileName() {
+    get profileName(): string {
         return this.#config.profile.name
     }
 
@@ -589,7 +635,7 @@ class ConfigProfile {
         this.set("profile.name", name)
     }
 
-    get config() {
+    get config(): JsonConfigProfile {
         return this.#config
     }
 
@@ -624,7 +670,7 @@ class ConfigProfile {
         }
     }
 
-    get(key: string, defaultValue: object = null) {
+    get(key: string, defaultValue: any = null): any {
         if (key === null || key.length === 0) {
             return this.#config
         }
@@ -641,13 +687,13 @@ class ConfigProfile {
         }
     }
 
-    has(key: string) {
+    has(key: string): boolean {
         return this.get(key, undefined) !== undefined;
     }
 
     set(key: string, value: any) {
         if (key === null || key.length === 0) {
-            this.#config = <JsonProfileConfig> value
+            this.#config = <JsonConfigProfile> value
         }
         resolvePath(key, this.#config, value)
         this.#firePropertyChange(key)

@@ -43,7 +43,7 @@ export function generateId(length: number): string {
     return Math.random().toString(36).substr(2, Math.max(1, length))
 }
 
-export function formatString(text: string, ...args: string[]) {
+export function formatString(text: string, ...args: any[]) {
     for (let key in args) {
         text = text.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key])
     }    

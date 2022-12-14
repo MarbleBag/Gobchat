@@ -107,8 +107,8 @@ export async function makeControl($element) {
     })
 
     const results = await Promise.allSettled(awaitPromises)
-    const errorMsg = ""
-    for (const result in results) {
+    let errorMsg = ""
+    for (const result of results) {
         if (result.status === "rejected")
             errorMsg += result.reason + '\n'
     }

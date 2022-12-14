@@ -84,18 +84,19 @@ namespace Gobchat.Module.Chat
 
         public void Dispose()
         {
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChannelProperties);
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateAutodetectProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUpdateRangeFilterActive);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateVisibleChannel);
+
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUserMentionProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateAutodetectProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateMentions);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateTriggerGroupProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateFormaterProperties);
+            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChannelProperties);
             _configManager.RemovePropertyChangeListener(ConfigManager_UpdateChatInterval);
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateLanguage);
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateRangeFilter);
-
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateVisibleChannel);
-            _configManager.RemovePropertyChangeListener(ConfigManager_UpdateUpdateRangeFilterActive);
-
+            
             _updater.Dispose();
 
             _updater = null;

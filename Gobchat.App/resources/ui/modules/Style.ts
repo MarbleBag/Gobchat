@@ -16,15 +16,17 @@
 import * as Utility from './CommonUtility.js'
 
 export class StyleLoader {
-    constructor(filePrefix) {
-        this._styles = {}
-        this._activeStyles = []        
-        this._activeStyleSheetIds = []
-        this._filePrefix = filePrefix ? filePrefix : null
+    #styles: {[key:string]:{label:string, files:string[]}} = {}
+    #activeStyles: string[] = []
+    #activeStyleSheetIds: string[] = []
+    readonly #filePrefix: string
+
+    constructor(filePrefix: string) {
+        this.#filePrefix = filePrefix ? filePrefix : null
     }
 
     async initialize() {
-        this._styles = {}
+        this.#styles = {}
         
         const json = await GobchatAPI.readTextFromFile("ui/styles/styles.json")
         const styles = JSON.parse(json);
@@ -34,26 +36,32 @@ export class StyleLoader {
             if (styleKey.length == 0)
                 continue
 
-            this._styles[styleKey] = {
+            this.#styles[styleKey] = {
                 label: style.label,
                 files: [].concat(style.files || []).filter(e => Utility.isString(e)).map(e => e.trim()).filter(e => e.length > 0)
             }
         }
     }
 
-    get styles() {
-        return Object.keys(this._styles).map(key => { id = key, label = this._styles[key].label })
+    get styles(): {id:string, label:string}[] {
+        return Object.keys(this.#styles)
+            .map(key => {
+                return {
+                    id: key,
+                    label: this.#styles[key].label
+                }
+            })
     }
 
-    get activeStyles() {
-        return [].concat(this._activeStyles || [])
+    get activeStyles(): string[] {
+        return [].concat(this.#activeStyles || [])
     }
 
-    async activateStyles(styleIds) {
+    async activateStyles(styleIds: string | string[]) {
         styleIds = [].concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
 
         for (let styleId of styleIds)
-            if (!this._styles[styleId])
+            if (!this.#styles[styleId])
                 throw new Error(`Style with id '${styleId}' not available`)
 
         const $head = $("head")
@@ -63,32 +71,32 @@ export class StyleLoader {
         // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
         $body.hide()
 
-        for (let id of this._activeStyleSheetIds)
+        for (let id of this.#activeStyleSheetIds)
             $(`#${id}`).remove()
 
-        this._activeStyleSheetIds = []
-        this._activeStyles = []
+        this.#activeStyleSheetIds = []
+        this.#activeStyles = []
         
-        const awaitPromises = []
+        const awaitPromises: Promise<void>[] = []
         
         for (let styleId of styleIds) {
-            this._activeStyles.push(styleId)
+            this.#activeStyles.push(styleId)
 
-            const style = this._styles[styleId]
+            const style = this.#styles[styleId]
             const randomIdPrefix = Utility.generateId(8)
 
             for (let file of style.files) {
                 const id = `gobstyle-${randomIdPrefix}-${file.replace(/[\s\\/]+/g, '_').replace(/[^-\.\w]+/g,'')}`
 
                 const $link = $(`<link rel="stylesheet" type="text/css" href="">`).attr('id', id)
-                this._activeStyleSheetIds.push(id)
+                this.#activeStyleSheetIds.push(id)
 
                 awaitPromises.push(new Promise(function (resolve, reject) {
                     $link.one("load", () => resolve())
                     $link.one("error", () => reject())
                 }))
 
-                const path = this._filePrefix ? `${this._filePrefix}/${file}` : file
+                const path = this.#filePrefix ? `${this.#filePrefix}/${file}` : file
                 $link.attr("href", path).appendTo($head)
             }
         }
@@ -101,8 +109,8 @@ export class StyleLoader {
 
         $body.show()
 
-        const errorMsg = ""
-        for (const result in results) {
+        let errorMsg = ""
+        for (const result of results) {
             if (result.status === "rejected")
                 errorMsg += result.reason + '\n'
         }

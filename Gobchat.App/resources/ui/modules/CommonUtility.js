@@ -61,4 +61,3 @@ export function encodeUnicode(str) {
         .map((hex) => "U+" + "0000".substring(0, 4 - hex.length) + hex)
         .join("");
 }
-//# sourceMappingURL=CommonUtility.js.map

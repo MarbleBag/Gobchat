@@ -22,14 +22,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GobchatConfig_instances, _GobchatConfig_eventDispatcher, _GobchatConfig_defaultProfile, _GobchatConfig_activeProfileId, _GobchatConfig_activeProfile, _GobchatConfig_profiles, _GobchatConfig_isSynced, _GobchatConfig_OnPropertyChange, _GobchatConfig_loadConfig, _GobchatConfig_generateId, _GobchatConfig_saveConfig, _GobchatConfig_storeNewProfile, _ConfigProfile_instances, _ConfigProfile_propertyListener, _ConfigProfile_config, _ConfigProfile_firePropertyChange, _ConfigProfile_firePropertyChanges;
+var _GobchatConfig_instances, _GobchatConfig_eventDispatcher, _GobchatConfig_defaultProfile, _GobchatConfig_activeProfile, _GobchatConfig_activeProfileId, _GobchatConfig_profiles, _GobchatConfig_isSynced, _GobchatConfig_OnPropertyChange, _GobchatConfig_loadConfig, _GobchatConfig_generateId, _GobchatConfig_saveConfig, _GobchatConfig_storeNewProfile, _ConfigProfile_instances, _ConfigProfile_propertyListener, _ConfigProfile_config, _ConfigProfile_firePropertyChange, _ConfigProfile_firePropertyChanges;
 //requieres Gobchat.DefaultProfileConfig, uploaded by backend
 import * as Utility from './CommonUtility.js';
 import { EventDispatcher } from './EventDispatcher.js';
 /**
  *
- * @param {Object} map
- * @param {Array} allowedKeys
+ * @param map
+ * @param allowedKeys
  */
 function removeInvalidKeys(map, allowedKeys) {
     const availableKeys = Object.keys(map);
@@ -38,8 +38,8 @@ function removeInvalidKeys(map, allowedKeys) {
 }
 /**
  * removes every value from data that is the same as in 	extendedData
- * @param {Object} data
- * @param {Object} extendedData
+ * @param data
+ * @param extendedData
  */
 function retainChangesIterator(data, extendedData) {
     const callbackHelper = {
@@ -59,13 +59,13 @@ function retainChangesIterator(data, extendedData) {
             return Object.keys(data).length == 0; //if data is empty, it can be deleted
         }
     };
-    //dataIteratorHelper(data, extendedData, callbackHelper)
+    objectTreeIteratorHelper(data, extendedData, callbackHelper);
 }
 /**
  *
- * @param {Object} source
- * @param {Object} destination
- * @param {Function} ignoreFunc
+ * @param source
+ * @param destination
+ * @param ignoreFunc
  */
 function removeMissingObjects(source, destination, ignoreFunc = null) {
     var path = [];
@@ -106,10 +106,10 @@ function removeMissingObjects(source, destination, ignoreFunc = null) {
 }
 /**
  * Will merge every value from source into destination
- * @param {Object} source
- * @param {Object} destination
- * @param {Boolean} copyOnWrite
- * @param {Function} ignoreFunc
+ * @param source
+ * @param destination
+ * @param copyOnWrite
+ * @param ignoreFunc
  */
 function writeObject(source, destination, copyOnWrite = false, ignoreFunc = null) {
     var path = [];
@@ -185,7 +185,7 @@ function objectTreeIteratorHelper(objA, objB, callbacks) {
     }
 }
 /**
- * @param {String} key
+ * @param key
  */
 function breakKeyDown(key) {
     if (key == undefined || key == null || key.length === 0)
@@ -194,8 +194,8 @@ function breakKeyDown(key) {
     return parts;
 }
 /**
- * @param {String} key
- * @param {Object} config
+ * @param key
+ * @param config
  */
 function buildPath(key, config) {
     let _config = config;
@@ -210,38 +210,37 @@ function buildPath(key, config) {
 }
 /**
  *
- * @param {String} key
- * @param {Object} config
- * @param {any} value
- * @param {Boolean} remove
+ * @param key
+ * @param config
+ * @param value
+ * @param remove
  */
 function resolvePath(key, config, value = undefined, remove = false) {
-    let _config = config;
     const keySteps = breakKeyDown(key);
     for (let i = 0; i < keySteps.length - 1; ++i) {
         const keyStep = keySteps[i];
-        if (keyStep in _config) {
-            _config = _config[keyStep];
+        if (keyStep in config) {
+            config = config[keyStep];
         }
         else {
             throw new InvalidKeyError(`Config error. Key '${key}' invalid. Unable to ${remove !== undefined ? `set` : `get`} data at '${keyStep}'`);
         }
     }
     if (keySteps.length === 0)
-        return _config;
+        return config;
     const targetKey = keySteps[keySteps.length - 1];
     if (value !== undefined)
-        _config[targetKey] = value != null ? copyByJson(value) : null;
+        config[targetKey] = value !== null ? copyByJson(value) : null;
     if (remove)
-        delete _config[targetKey];
-    return _config[targetKey];
+        delete config[targetKey];
+    return config[targetKey];
 }
 /**
  *
- * @param {Object} source
- * @param {String} key
- * @param {Object} destination
- * @param {Boolean} doCopy
+ * @param source
+ * @param key
+ * @param destination
+ * @param doCopy
  */
 function copyValueForKey(source, key, destination, doCopy) {
     let val = resolvePath(key, source);
@@ -252,7 +251,7 @@ function copyValueForKey(source, key, destination, doCopy) {
 }
 /**
  *
- * @param {Object} obj
+ * @param obj
  */
 function copyByJson(obj) {
     if (obj === undefined || obj === null)
@@ -268,13 +267,16 @@ export class InvalidKeyError extends Error {
 export class GobchatConfig {
     constructor(isSynced = false) {
         _GobchatConfig_instances.add(this);
-        _GobchatConfig_eventDispatcher.set(this, null);
-        _GobchatConfig_defaultProfile.set(this, null);
-        _GobchatConfig_activeProfileId.set(this, null);
-        _GobchatConfig_activeProfile.set(this, null);
-        _GobchatConfig_profiles.set(this, {});
+        _GobchatConfig_eventDispatcher.set(this, void 0);
+        _GobchatConfig_defaultProfile.set(this, void 0);
+        _GobchatConfig_activeProfile.set(this, void 0);
+        _GobchatConfig_activeProfileId.set(this, void 0);
+        _GobchatConfig_profiles.set(this, void 0);
         _GobchatConfig_isSynced.set(this, false);
-        _GobchatConfig_OnPropertyChange.set(this, null);
+        _GobchatConfig_OnPropertyChange.set(this, (event) => {
+            const isActiveProfile = event.source === this.activeProfile;
+            __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch(`property:${event.key}`, { type: "property", key: event.key, sourceProfileId: event.source, isActiveProfile: isActiveProfile });
+        });
         __classPrivateFieldSet(this, _GobchatConfig_eventDispatcher, new EventDispatcher(), "f");
         if (Gobchat.DefaultProfileConfig === undefined || Gobchat.DefaultProfileConfig === null)
             throw new Error("Gobchat.DefaultProfileConfig is null");
@@ -283,13 +285,8 @@ export class GobchatConfig {
         __classPrivateFieldSet(this, _GobchatConfig_activeProfile, null, "f");
         __classPrivateFieldSet(this, _GobchatConfig_profiles, {}, "f");
         __classPrivateFieldSet(this, _GobchatConfig_isSynced, isSynced, "f");
-        const self = this;
-        __classPrivateFieldSet(this, _GobchatConfig_OnPropertyChange, function (event) {
-            const isActiveProfile = event.source === self.activeProfile;
-            __classPrivateFieldGet(self, _GobchatConfig_eventDispatcher, "f").dispatch(`property:${event.key}`, { "key": event.key, "source": event.source, "isActive": isActiveProfile });
-        }, "f");
         if (__classPrivateFieldGet(this, _GobchatConfig_isSynced, "f")) {
-            document.addEventListener("SynchronizeConfigEvent", (e) => { self.loadConfig(); });
+            document.addEventListener("SynchronizeConfigEvent", (e) => { this.loadConfig(); });
         }
     }
     async loadConfig() {
@@ -323,7 +320,7 @@ export class GobchatConfig {
         const previousId = __classPrivateFieldGet(this, _GobchatConfig_activeProfileId, "f");
         __classPrivateFieldSet(this, _GobchatConfig_activeProfileId, profileId, "f");
         __classPrivateFieldSet(this, _GobchatConfig_activeProfile, __classPrivateFieldGet(this, _GobchatConfig_profiles, "f")[__classPrivateFieldGet(this, _GobchatConfig_activeProfileId, "f")], "f");
-        __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "active", detail: { old: previousId, new: __classPrivateFieldGet(this, _GobchatConfig_activeProfileId, "f") } });
+        __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "profile", action: "active", oldProfileId: previousId, newProfileId: __classPrivateFieldGet(this, _GobchatConfig_activeProfileId, "f") });
         if (__classPrivateFieldGet(this, _GobchatConfig_isSynced, "f"))
             GobchatAPI.setConfigActiveProfile(__classPrivateFieldGet(this, _GobchatConfig_activeProfileId, "f"));
     }
@@ -354,7 +351,7 @@ export class GobchatConfig {
         delete __classPrivateFieldGet(this, _GobchatConfig_profiles, "f")[profileId];
         if (this.activeProfile === profileId)
             this.activeProfile = this.profiles[0];
-        __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "delete", detail: { id: profileId } });
+        __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "profile", action: "delete", profileId: profileId });
     }
     copyProfile(sourceProfileId, destinationProfileId) {
         const sourceProfile = this.getProfile(sourceProfileId);
@@ -427,7 +424,7 @@ export class GobchatConfig {
     set(key, value) {
         if (!__classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f"))
             throw new Error("No active profile");
-        return __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").set(key, value);
+        __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").set(key, value);
     }
     has(key) {
         if (!__classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f"))
@@ -450,7 +447,7 @@ export class GobchatConfig {
         __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").restoreDefaultConfig(false);
     }
 }
-_GobchatConfig_eventDispatcher = new WeakMap(), _GobchatConfig_defaultProfile = new WeakMap(), _GobchatConfig_activeProfileId = new WeakMap(), _GobchatConfig_activeProfile = new WeakMap(), _GobchatConfig_profiles = new WeakMap(), _GobchatConfig_isSynced = new WeakMap(), _GobchatConfig_OnPropertyChange = new WeakMap(), _GobchatConfig_instances = new WeakSet(), _GobchatConfig_loadConfig = function _GobchatConfig_loadConfig(json) {
+_GobchatConfig_eventDispatcher = new WeakMap(), _GobchatConfig_defaultProfile = new WeakMap(), _GobchatConfig_activeProfile = new WeakMap(), _GobchatConfig_activeProfileId = new WeakMap(), _GobchatConfig_profiles = new WeakMap(), _GobchatConfig_isSynced = new WeakMap(), _GobchatConfig_OnPropertyChange = new WeakMap(), _GobchatConfig_instances = new WeakSet(), _GobchatConfig_loadConfig = function _GobchatConfig_loadConfig(json) {
     const data = JSON.parse(json);
     const loadedProfileIds = Object.keys(data.profiles);
     const availableProfileIds = this.profiles;
@@ -468,11 +465,11 @@ _GobchatConfig_eventDispatcher = new WeakMap(), _GobchatConfig_defaultProfile = 
         this.deleteProfile(profileId);
     });
     changedProfileIds.forEach(profileId => {
-        let cleanProfile = copyByJson(__classPrivateFieldGet(this, _GobchatConfig_defaultProfile, "f"));
+        const cleanProfile = copyByJson(__classPrivateFieldGet(this, _GobchatConfig_defaultProfile, "f"));
         const profileData = data.profiles[profileId];
         writeObject(profileData, cleanProfile, false, (p) => false);
-        cleanProfile = new ConfigProfile(cleanProfile);
-        this.getProfile(profileId).copyFrom(cleanProfile, "", true);
+        const readThis = new ConfigProfile(cleanProfile);
+        this.getProfile(profileId).copyFrom(readThis, "", true);
     });
 }, _GobchatConfig_generateId = function _GobchatConfig_generateId() {
     const ids = this.profiles;
@@ -497,7 +494,7 @@ _GobchatConfig_eventDispatcher = new WeakMap(), _GobchatConfig_defaultProfile = 
     const profileId = profile.profileId;
     profile.addPropertyListener("*", __classPrivateFieldGet(this, _GobchatConfig_OnPropertyChange, "f"));
     __classPrivateFieldGet(this, _GobchatConfig_profiles, "f")[profileId] = profile;
-    __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "new", detail: { id: profileId } });
+    __classPrivateFieldGet(this, _GobchatConfig_eventDispatcher, "f").dispatch("profile:", { type: "profile", action: "new", profileId: profileId });
 };
 class ConfigProfile {
     constructor(config) {
@@ -627,4 +624,3 @@ _ConfigProfile_propertyListener = new WeakMap(), _ConfigProfile_config = new Wea
     });
     //this.#propertyListener.dispatch("*", { "key": "*", "source": this.profileId })
 };
-//# sourceMappingURL=Config.js.map
