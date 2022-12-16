@@ -69,7 +69,7 @@ namespace Gobchat.Module.Cef
 
         private bool AnyRedistributableLibraryLoadable()
         {
-            return AnyRedistributableLibraryLoadable(new string[] { "msvcp140.dll", "msvcr140.dll" });
+            return AnyRedistributableLibraryLoadable(new string[] { "msvcp140.dll", "msvcr140.dll", "msvcp170.dll", "msvcr170.dll" });
         }
 
         private bool AnyRedistributableLibraryLoadable(IEnumerable<string> libNames)
@@ -116,6 +116,7 @@ namespace Gobchat.Module.Cef
             {
                 private static readonly string[] displayNames = new string[]
                     {
+                        @"Microsoft Visual C++ 2015-2022 Redistributable",
                         @"Microsoft Visual C++ 2015-2019 Redistributable",
                         @"Microsoft Visual C++ 2017 Redistributable",
                         @"Microsoft Visual C++ 2015 Redistributable"

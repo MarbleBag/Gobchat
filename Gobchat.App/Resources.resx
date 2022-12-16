@@ -178,6 +178,9 @@
     <value>The UI requires additional components (CEF). They will be downloaded and unpacked.
 Continue?</value>
   </data>
+  <data name="Module.Cef.Dialog.CefUpdate.Text" xml:space="preserve">
+    <value>CEF requires an update. This will take a moment.</value>
+  </data>
   <data name="Module.Cef.Dialog.InstallFailed.Text" xml:space="preserve">
     <value>CEF installation failed. Reason:
 {0}
@@ -187,6 +190,10 @@ Retry or install CEF manually for gobchat.</value>
   </data>
   <data name="Module.Cef.Dialog.InstallFailed.Title" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="Module.Cef.Installer.Delete" xml:space="preserve">
+    <value>Delete CEF folder: {0}</value>
+    <comment>0: uri</comment>
   </data>
   <data name="Module.Cef.Installer.Download.DeleteIncomplete" xml:space="preserve">
     <value>Delete partially downloaded cef archive: {0}</value>

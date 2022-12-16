@@ -1,5 +1,8 @@
-param(
+[CmdletBinding()]
+Param(
+	[Parameter(Mandatory=$True, Position=1, ParameterSetName='CefSource')]
     [string]$CefSource, 
+	[Parameter(Mandatory=$True, Position=2, ParameterSetName='CefDestination')]
     [string]$CefDestination
     )
     

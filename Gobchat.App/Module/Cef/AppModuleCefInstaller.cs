@@ -43,24 +43,23 @@ namespace Gobchat.Module.Cef
             var cefFolder = Path.Combine(GobchatContext.ApplicationLocation, "libs", "cef");
             var patcherFolder = Path.Combine(GobchatContext.ApplicationLocation, "patch");
             var installer = new CefInstaller(cefFolder, patcherFolder);
-            if (installer.IsCefAvailable())
+            if (installer.IsCorrectCefVersionAvailable())
                 return;
 
-            //TODO message dialog
-            {
-                logger.Info("CEF missing");
-                var dialogResult = MessageBox.Show(
-                    Resources.Module_Cef_Dialog_CefMissing_Text,
-                    "Gobchat",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
+            var needUpdate = installer.DoesCefNeedAnUpdate();
 
-                if (dialogResult != DialogResult.Yes)
-                {
-                    handler.StopStartup = true;
-                    return;
-                }
+            logger.Info(needUpdate ? "CEF needs to be updated" : "CEF not available");
+            var dialogResult = MessageBox.Show(
+                needUpdate ? Resources.Module_Cef_Dialog_CefUpdate_Text : Resources.Module_Cef_Dialog_CefMissing_Text,
+                "Gobchat",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            );
+
+            if (dialogResult != DialogResult.OK)
+            {
+                handler.StopStartup = true;
+                return;
             }
 
             try
@@ -73,6 +72,18 @@ namespace Gobchat.Module.Cef
 
                 using (var progressMonitor = new ProgressMonitorAdapter(progressDisplay))
                 {
+                    if (needUpdate)
+                    {
+                        try
+                        {
+                            installer.RemoveCef(progressMonitor);
+                        }catch(Exception e)
+                        {
+                            logger.Log(LogLevel.Fatal, e, () => "CEF uninstall failed");
+                            throw;
+                        }
+                    }
+
                     try
                     {
                         installer.DownloadCef(progressMonitor);
