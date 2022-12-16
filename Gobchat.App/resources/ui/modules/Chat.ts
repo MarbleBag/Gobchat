@@ -81,7 +81,7 @@ export class ChatManager {
         document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
     }
 
-    #onNewMessageEvent = (event: ChatMessagesEvent) => { // bind
+    #onNewMessageEvent = (event: ChatMessagesEvent): void => { // bind
         if (!!event.detail.messages) {
             for (let message of event.detail.messages) {
                 this.#onNewMessage(message)
@@ -89,7 +89,7 @@ export class ChatManager {
         }
     }
 
-    #onNewMessage = (message: ChatMessage) => {
+    #onNewMessage = (message: ChatMessage): void => {
         if (this.#hideInfo && message.channel === Gobchat.ChannelEnum.GOBCHATINFO)
             return
 
@@ -108,19 +108,19 @@ export class ChatManager {
         this.#audioPlayer.playSoundIfAllowed(message)
     }
 
-    showGobInfo(on: boolean) {
-
+    showGobInfo(on: boolean): void {
+        this.#hideError = on
     }
 
-    showGobError(on: boolean) {
-
+    showGobError(on: boolean): void {
+        this.#hideInfo = on
     }
 
     test() {
         this.control($(".gob-chat_box"))
     }
 
-    control(chatElement: Element | JQuery) {
+    control(chatElement: Element | JQuery): void {
         if (this.#control !== null) {
 
         }
@@ -167,7 +167,7 @@ class AudioPlayer {
         this.#lastSoundPlayed = new Date()
     }
 
-    playSoundIfAllowed(message: ChatMessage) {
+    playSoundIfAllowed(message: ChatMessage): void {
         const data = gobConfig.get("behaviour.mentions.data.base")
         if (!data.playSound || data.volume <= 0 || !data.soundPath)
             return
@@ -191,7 +191,7 @@ class AudioPlayer {
         audio.play()
     }
 
-    playSound() {
+    playSound(): void {
         const data = gobConfig.get("behaviour.mentions.data.base")
         if (!data.playSound || data.volume <= 0 || !data.soundPath)
             return

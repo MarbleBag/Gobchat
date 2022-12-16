@@ -38,7 +38,11 @@ declare interface JQuery {
     animate(a: any): JQuery
     prevAll(selector: string): JQuery
     nextAll(selector: string): JQuery
-    extend(a:any, b:any): any
+    extend(a: any, b: any): any
+    append(e: any): JQuery
+    appendTo(e: any): JQuery
+    dialog(e: any): JQuery
+    parent(selector?: string): JQuery
 }
 
 // should be included in es2021 ?!

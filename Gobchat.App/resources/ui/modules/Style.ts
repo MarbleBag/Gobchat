@@ -25,7 +25,7 @@ export class StyleLoader {
         this.#filePrefix = filePrefix ? filePrefix : null
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         this.#styles = {}
         
         const json = await GobchatAPI.readTextFromFile("ui/styles/styles.json")
@@ -57,7 +57,7 @@ export class StyleLoader {
         return [].concat(this.#activeStyles || [])
     }
 
-    async activateStyles(styleIds?: string | string[]) {
+    async activateStyles(styleIds?: string | string[]): Promise<void> {
         styleIds = [].concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
 
         for (let styleId of styleIds)

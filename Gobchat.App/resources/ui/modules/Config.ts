@@ -467,7 +467,7 @@ export class GobchatConfig {
         return Object.keys(this.#profiles)
     }
 
-    importProfile(profileJson: JsonConfigProfile) {
+    importProfile(profileJson: JsonConfigProfile): string {
         const cleanProfile = copyByJson(this.#defaultProfile)
         writeObject(profileJson, cleanProfile, false, (p) => false)
         const profileId = this.#generateId()
@@ -485,7 +485,7 @@ export class GobchatConfig {
         return profileId
     }
 
-    #storeNewProfile(data: JsonConfigProfile) {
+    #storeNewProfile(data: JsonConfigProfile): void {
         const profile = new ConfigProfile(data)
         const profileId = profile.profileId
 
@@ -494,7 +494,7 @@ export class GobchatConfig {
         this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "new", profileId: profileId })
     }
 
-    deleteProfile(profileId: string) {
+    deleteProfile(profileId: string): void {
         if (this.profileIds.length <= 1)
             return
 
@@ -509,7 +509,7 @@ export class GobchatConfig {
         this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "delete", profileId: profileId })
     }
 
-    copyProfile(sourceProfileId: string, destinationProfileId: string) {
+    copyProfile(sourceProfileId: string, destinationProfileId: string): void {
         const sourceProfile = this.getProfile(sourceProfileId)
         const destinationProfile = this.getProfile(destinationProfileId)
         if (!sourceProfile || !destinationProfile)
@@ -525,13 +525,13 @@ export class GobchatConfig {
     }
 
     //TODO remove later
-    saveToLocalStore() {
+    saveToLocalStore(): void {
         const json = this.#saveConfig()
         window.localStorage.setItem("gobchat-config", json)
     }
 
     //TODO remove later
-    loadFromLocalStore(keepLocaleStore: boolean) {
+    loadFromLocalStore(keepLocaleStore: boolean): void {
         const json = window.localStorage.getItem("gobchat-config")
         if (!keepLocaleStore)
             window.localStorage.removeItem("gobchat-config")
@@ -588,7 +588,7 @@ export class GobchatConfig {
         }
     }
 
-    set(key: string, value: any) {
+    set(key: string, value: any): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         this.#activeProfile.set(key, value)
@@ -600,19 +600,19 @@ export class GobchatConfig {
         return this.#activeProfile.has(key)
     }
 
-    reset(key: string) {
+    reset(key: string): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
-        return this.#activeProfile.reset(key)
+        this.#activeProfile.reset(key)
     }
 
-    remove(key: string) {
+    remove(key: string): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
-        return this.#activeProfile.remove(key)
+        this.#activeProfile.remove(key)
     }
 
-    resetActiveProfile() {
+    resetActiveProfile(): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         this.#activeProfile.restoreDefaultConfig(false)
@@ -654,7 +654,7 @@ class ConfigProfile {
         return this.#config
     }
 
-    copyFrom(config: ConfigProfile, rootKey: string, copyAll: boolean = false) {
+    copyFrom(config: ConfigProfile, rootKey: string, copyAll: boolean = false): void {
         const srcValue = config.get(rootKey)
         const srcRoot = srcValue != null ? copyByJson(srcValue) : null
         if (!this.has(rootKey)) {
@@ -674,7 +674,7 @@ class ConfigProfile {
         this.#firePropertyChanges(changes)
     }
 
-    restoreDefaultConfig(fireChanges: boolean = true) {
+    restoreDefaultConfig(fireChanges: boolean = true): void {
         const oldConfig = this.#config
         this.#config = copyByJson(Gobchat.DefaultProfileConfig)
         this.#config.profile = copyByJson(oldConfig.profile)
@@ -706,7 +706,7 @@ class ConfigProfile {
         return this.get(key, undefined) !== undefined;
     }
 
-    set(key: string, value: any) {
+    set(key: string, value: any): void {
         if (key === null || key.length === 0) {
             this.#config = <JsonConfigProfile> value
         }
@@ -714,7 +714,7 @@ class ConfigProfile {
         this.#firePropertyChange(key)
     }
 
-    reset(key: string) {
+    reset(key: string): void {
         if (key === null || key.length === 0)
             return
 
@@ -723,26 +723,26 @@ class ConfigProfile {
         this.#firePropertyChange(key)
     }
 
-    remove(key: string) {
+    remove(key: string): void {
         if (key === null || key.length === 0)
             return
         resolvePath(key, this.#config, undefined, true)
         this.#firePropertyChange(key)
     }
 
-    addPropertyListener(topic: string, callback: ConfigProfileEventListener) {
+    addPropertyListener(topic: string, callback: ConfigProfileEventListener): void {
         this.#propertyListener.on(topic, callback)
     }
 
-    removePropertyListener(topic: string, callback: ConfigProfileEventListener) {
+    removePropertyListener(topic: string, callback: ConfigProfileEventListener): void {
         this.#propertyListener.off(topic, callback)
     }
 
-    #firePropertyChange(propertyPath: string) {
+    #firePropertyChange(propertyPath: string): void {
         this.#firePropertyChanges([propertyPath])
     }
 
-    #firePropertyChanges(propertyPaths: string[]) {
+    #firePropertyChanges(propertyPaths: string[]): void {
         const splitted = new Set<string>()
 
         propertyPaths.forEach(propertyPath => {
