@@ -10,7 +10,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
-'use strict';
+
+'use strict'
+
 export const FFUnicode = Object.freeze({
     GROUP_1: { char: '\u2605', value: 0 },
     GROUP_2: { char: '\u25CF', value: 0 },
@@ -31,15 +33,18 @@ export const FFUnicode = Object.freeze({
     RAID_B: { char: '\uE072', value: 0 },
     RAID_C: { char: '\uE073', value: 0 },
     ITEM_LINK: { char: '\uE0BB', value: 0 }, // replace that with \u2326
-});
-Object.keys(FFUnicode).forEach((e) => {
-    const tuple = FFUnicode[e];
-    tuple.value = tuple.char.codePointAt(0);
-});
+})
+
+Object.keys(FFUnicode).forEach((e) => { // autogenerate values
+    const tuple = FFUnicode[e]
+    tuple.value = tuple.char.codePointAt(0)
+})
+
 export const FFGroupUnicodes = Object.freeze([
     FFUnicode.GROUP_1, FFUnicode.GROUP_2, FFUnicode.GROUP_3, FFUnicode.GROUP_4,
     FFUnicode.GROUP_5, FFUnicode.GROUP_6, FFUnicode.GROUP_7
-]);
+])
+
 export const PlayerChannel = Object.freeze([
     Gobchat.ChannelEnum.SAY, Gobchat.ChannelEnum.EMOTE, Gobchat.ChannelEnum.YELL, Gobchat.ChannelEnum.SHOUT, Gobchat.ChannelEnum.TELL_SEND, Gobchat.ChannelEnum.TELL_RECIEVE, Gobchat.ChannelEnum.PARTY, Gobchat.ChannelEnum.GUILD, Gobchat.ChannelEnum.ALLIANCE,
     Gobchat.ChannelEnum.ANIMATED_EMOTE,
@@ -47,14 +52,20 @@ export const PlayerChannel = Object.freeze([
     Gobchat.ChannelEnum.WORLD_LINKSHELL_5, Gobchat.ChannelEnum.WORLD_LINKSHELL_6, Gobchat.ChannelEnum.WORLD_LINKSHELL_7, Gobchat.ChannelEnum.WORLD_LINKSHELL_8,
     Gobchat.ChannelEnum.LINKSHELL_1, Gobchat.ChannelEnum.LINKSHELL_2, Gobchat.ChannelEnum.LINKSHELL_3, Gobchat.ChannelEnum.LINKSHELL_4,
     Gobchat.ChannelEnum.LINKSHELL_5, Gobchat.ChannelEnum.LINKSHELL_6, Gobchat.ChannelEnum.LINKSHELL_7, Gobchat.ChannelEnum.LINKSHELL_8,
-]);
-export const ChannelEnumValues = Object.freeze(Object.entries(Gobchat.ChannelEnum).map(e => e[1]));
+])
+
+export const ChannelEnumValues = Object.freeze(
+    Object.entries(Gobchat.ChannelEnum).map(e => e[1])
+)
+
 export const ChannelEnumToKey = (() => {
-    const result = {};
+    const result = {}
     Object.entries(Gobchat.Channels).forEach(e => {
-        result[e[1].chatChannel] = e[0];
-    });
-    return Object.freeze(result);
-})();
+        result[e[1].chatChannel] = e[0]
+    })
+    return Object.freeze(result)
+}
+)()
+
 /** used to dynamically generate css classes which */
-export const RangeFilterFadeOutLevels = 10;
+export const RangeFilterFadeOutLevels = 10

@@ -1,4 +1,4 @@
-﻿@mixin gob-chat_toolbar_clickable {
+@mixin gob-chat_toolbar_clickable {
     height: 1.5em;
     min-width: 1.5em;
     line-height: 1;
@@ -36,26 +36,26 @@
     }
 }
 
-.gob-chat_tabs_button {
+.gob-chat_tabbar_button {
     @extend .gob-chat_toolbar_button;
     border-right: solid 0.03125em #0000007a;
     box-shadow: inset 0.0625em 0 0 0 #868686, inset 0 0.0625em 0 0 #868686;
 }
 
-.gob-chat_tabs_button--left {
+.gob-chat_tabbar_button--left {
     padding-right: 0.3125em;
     border-radius: 50% 0 0 50%;
     box-shadow: inset 0 0.0625em 0 0 #868686;
 }
 
-.gob-chat_tabs_button--right {
+.gob-chat_tabbar_button--right {
     padding-left: 0.3125em;
     border-right: none;
     border-radius: 0 50% 50% 0;
 }
 
-.gob-chat_tabs_bar_tab {
-    @extend .gob-chat_tabs_button;
+.gob-chat_tabbar_content_tab {
+    @extend .gob-chat_tabbar_button;
     font-weight: bold;
 
     &.is-active:before {
@@ -72,7 +72,7 @@
     }
 }
 
-@keyframes subtile-blinker {
+@keyframes gob-chat_tabbar_content_tab--blinker {
     50% {
         background: rgba(245, 160, 0, 0.25);
     }

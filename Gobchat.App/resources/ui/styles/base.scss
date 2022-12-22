@@ -1,4 +1,4 @@
-﻿body, html {
+body, html {
     margin: 0;
     height: 100%;
     width: 100%;
@@ -32,13 +32,13 @@
     flex-direction: row;
 }
 
-.gob-chat_tabs {
+.gob-chat_tabbar {
     display: flex;
     flex-direction: row;
     overflow-x: hidden;
 }
 
-.gob-chat_tabs_bar {
+.gob-chat_tabbar_content {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -48,7 +48,7 @@
     }
 }
 
-.gob-chat_tabs_bar_tab {
+.gob-chat_tabbar_content_tab {
     min-width: auto;
 }
 
@@ -68,7 +68,7 @@
     background: rgba(20, 20, 20, 0.95); // configurable
 }
 
-@keyframes subtile-blinker {
+@keyframes gob-chat_tabbar_content_tab--blinker {
     50% {
         background: rgba(245, 160, 0, 0.25);
     }

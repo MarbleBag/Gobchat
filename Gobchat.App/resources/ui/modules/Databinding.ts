@@ -20,8 +20,8 @@ import * as Config from './Config.js'
 
 export const DataAttributeConfigKey = "data-gob-configkey"
 
-export function getConfigKey(element: Element) {
-    return $(element).attr(DataAttributeConfigKey)
+export function getConfigKey(element: Element): string {
+    return $(element).attr(DataAttributeConfigKey) as string
 }
 
 export function setConfigKey(element: Element, configKey: string) {

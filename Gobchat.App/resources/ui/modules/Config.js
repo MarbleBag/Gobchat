@@ -434,12 +434,12 @@ export class GobchatConfig {
     reset(key) {
         if (!__classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f"))
             throw new Error("No active profile");
-        return __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").reset(key);
+        __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").reset(key);
     }
     remove(key) {
         if (!__classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f"))
             throw new Error("No active profile");
-        return __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").remove(key);
+        __classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f").remove(key);
     }
     resetActiveProfile() {
         if (!__classPrivateFieldGet(this, _GobchatConfig_activeProfile, "f"))

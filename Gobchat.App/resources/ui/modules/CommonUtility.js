@@ -31,6 +31,15 @@ export function isObject(value) {
     return Object.prototype.toString.call(value) === "[object Object]"; //only cross-window reliable solution
     //return value && typeof value === 'object' && value.constructor === Object;
 }
+export function toNumber(value, fallback) {
+    if (isNumber(value))
+        return value;
+    if (isString(value))
+        return parseFloat(value);
+    if (isBoolean(value))
+        return value ? 1 : 0;
+    return fallback !== undefined ? fallback : null;
+}
 export function generateId(length) {
     return Math.random().toString(36).substr(2, Math.max(1, length));
 }
@@ -60,4 +69,25 @@ export function encodeUnicode(str) {
         .map((v) => v.codePointAt(0).toString(16))
         .map((hex) => "U+" + "0000".substring(0, 4 - hex.length) + hex)
         .join("");
+}
+export function decodeKeyEventToText(keyEvent, ignoreEnter = true) {
+    if (ignoreEnter && keyEvent.keyCode == 13) // enter
+        return null;
+    if (keyEvent.keyCode === 16 || keyEvent.keyCode === 17 || keyEvent.keyCode === 18)
+        return "";
+    let msg = "";
+    if (keyEvent.shiftKey)
+        msg += "Shift + ";
+    if (keyEvent.altKey)
+        msg += "Alt + ";
+    if (keyEvent.ctrlKey)
+        msg += "Ctrl + ";
+    var keyEnum = Gobchat.KeyCodeToKeyEnum(keyEvent.keyCode);
+    if (keyEnum === null) {
+        msg = "";
+    }
+    else {
+        msg += keyEnum;
+    }
+    return msg;
 }

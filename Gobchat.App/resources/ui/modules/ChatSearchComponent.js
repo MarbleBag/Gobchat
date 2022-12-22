@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +35,10 @@ export class ChatSearch {
     constructor() {
     }
 
-    control($searchElement, $chatElement) {
+    control(searchElement, chatElement) {
+        const $searchElement = $(searchElement)
+        const $chatElement = $(chatElement)
+
         if (this.#searchElement !== null) {
             this.#searchElement.find(selector_input).off("keyup", this.#onInputEnter)
             this.#searchElement.find(selector_counter).off("click", this.scrollToSelection)
@@ -133,8 +136,6 @@ export class ChatSearch {
             scrollTop: position
         }, 100)
     }
-
-
 
     search = (text) => {
         this.#removeMessageMarkers()

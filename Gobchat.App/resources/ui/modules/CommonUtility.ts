@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,6 +39,19 @@ export function isObject(value: Object): boolean {
     //return value && typeof value === 'object' && value.constructor === Object;
 }
 
+export function toNumber(value: string | number | boolean, fallback?: number): number{
+    if(isNumber(value))
+        return value as number
+
+    if(isString(value))
+        return parseFloat(value as string) 
+
+    if(isBoolean(value))
+        return value as boolean ? 1 : 0
+
+    return fallback !== undefined ? fallback : null
+}
+
 export function generateId(length: number): string {
     return Math.random().toString(36).substr(2, Math.max(1, length))
 }
@@ -74,4 +87,25 @@ export function encodeUnicode(str: string): string {
         .map((v) => v.codePointAt(0).toString(16))
         .map((hex) => "U+" + "0000".substring(0, 4 - hex.length) + hex)
         .join("")
+}
+
+export function decodeKeyEventToText(keyEvent: KeyboardEvent, ignoreEnter: boolean = true): string {
+    if (ignoreEnter && keyEvent.keyCode == 13) // enter
+        return null
+
+    if (keyEvent.keyCode === 16 || keyEvent.keyCode === 17 || keyEvent.keyCode === 18)
+        return ""
+
+    let msg = ""
+    if (keyEvent.shiftKey) msg += "Shift + "
+    if (keyEvent.altKey) msg += "Alt + "
+    if (keyEvent.ctrlKey) msg += "Ctrl + "
+
+    var keyEnum = Gobchat.KeyCodeToKeyEnum(keyEvent.keyCode)
+    if (keyEnum === null) {
+        msg = ""
+    } else {
+        msg += keyEnum
+    }
+    return msg
 }

@@ -107,13 +107,13 @@ async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) 
         const $this = $(this)
 
         if ($this.attr(AttributeTextKey)) {
-            const id = $this.attr(AttributeTextKey)
+            const id = $this.attr(AttributeTextKey) as string
             const txt = lookup[id]
             $this.html(txt)
         }
 
         if ($this.attr(AttributeTooltipKey)) {
-            const id = $this.attr(AttributeTooltipKey)
+            const id = $this.attr(AttributeTooltipKey) as string
             const txt = lookup[id]            
             $this.prop(AttributeTooltip, txt)
             $this.prop("title", txt)

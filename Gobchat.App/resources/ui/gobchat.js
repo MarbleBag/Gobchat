@@ -39,8 +39,8 @@ jQuery(async function ($) {
 
     window.gobStyles = new Style.StyleLoader(".")
     await gobStyles.initialize()
-    
-    window.gobChatManager = new Chat.ChatManager()
+
+    window.gobChatManager = new Chat.ChatControl()
     await gobChatManager.control($(".gob-chat_box"))
 
     window.chatSearch = new Search.ChatSearch()
