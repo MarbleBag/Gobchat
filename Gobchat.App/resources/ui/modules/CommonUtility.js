@@ -28,7 +28,7 @@ export function isArray(value) {
     //return value && typeof value === 'object' && value.constructor === Array
 }
 export function isObject(value) {
-    return Object.prototype.toString.call(value) === "[object Object]"; //only cross-window reliable solution
+    return Object.prototype.toString.call(value) === "[object Object]";
     //return value && typeof value === 'object' && value.constructor === Object;
 }
 export function toNumber(value, fallback) {

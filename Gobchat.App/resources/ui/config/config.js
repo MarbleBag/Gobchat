@@ -17,16 +17,6 @@ import * as Locale from '../modules/Locale';
 import * as Styles from '../modules/Style';
 import * as Dialog from '../modules/Dialog';
 import { makeControl as makeNavControl } from '../modules/MenuNavigationComponent.js';
-/*
-declare global {
-    var GobchatAPI: any
-    var Gobchat: any
-    var gobConfig: any
-    var gobLocale: any
-    var gobStyles: any
-    function saveConfig()
-}
-*/
 // initialize global variables
 jQuery(async function () {
     window.GobchatAPI = window.opener.GobchatAPI;

@@ -79,6 +79,7 @@ export class ChatControl {
     #audioPlayer: AudioPlayer
     #tabControl: TabBarControl
 
+    #databinding: Databinding.BindingContext = null
     #chatBox: JQuery = null
 
     #hideInfo: boolean = false
@@ -136,11 +137,33 @@ export class ChatControl {
             document.removeEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
         }
 
+        this.#databinding?.clear()
+
         this.#chatBox = $(chatBox)
         this.#tabControl.control(this.#chatBox.find(ChatControl.selector_tabbar), this.#chatBox.find(ChatControl.selector_chat_history))
 
         if (this.#chatBox.length > 0)
             document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
+
+        this.#databinding = new Databinding.BindingContext(gobConfig)
+        Databinding.bindListener(this.#databinding, "behaviour.language", async (data) => {
+            const channels = Object.values(Gobchat.Channels)
+
+            const requestTranslation = channels.map(data => data.abbreviationId)
+                .filter(id => Utility.isString(id))
+
+            const translations = await gobLocale.getAll(requestTranslation)
+            const result = {}
+
+            const channelLookup = MessageBuilder.AbbreviationCache
+            channelLookup.length = 0
+
+            for(let data of channels){
+                if (data.abbreviationId)
+                    channelLookup[data.chatChannel] = translations[data.abbreviationId]
+            }
+        })
+        this.#databinding.initialize()
     }
 }
 
@@ -356,7 +379,8 @@ class TabBarControl {
     private static readonly AttributeTabId = "data-gob-tab-id"
 
     private static readonly CssNavBar = "gob-chat_tabbar"
-    private static readonly CssNavPanel = "gob-chat_history"   
+    private static readonly CssNavPanel = "gob-chat_history"
+    private static readonly CssNavPanelActiveTab = "gob-chat_history--tab-{0}" 
 
     private static readonly CssDisableScrollButton = "is-disabled"
     private static readonly CssActiveTabButton = "is-active"
@@ -365,19 +389,16 @@ class TabBarControl {
     private static readonly CssScrollRightButton = "gob-chat_tabbar_button--right"
     private static readonly CssTabBarContent = "gob-chat_tabbar_content"
     private static readonly CssTabButton = "gob-chat_tabbar_content_tab"
+    private static readonly CssTabButtonMentionEffect = "gob-chat_tabbar_content_tab--mention"
+    private static readonly CssTabButtonMessageEffect = "gob-chat_tabbar_content_tab--new-message"
 
-    private static readonly cssActiveTabId = "gob-chat_tab-{0}"
-
+  
     private static readonly selector_tabbar = `> .${TabBarControl.CssNavBar}`
-
     private static readonly selector_scrollLeftBtn = `> .${TabBarControl.CssScrollLeftButton}`
     private static readonly selector_scrollRightBtn = `> .${TabBarControl.CssScrollRightButton}`
     private static readonly selector_content = `> .${TabBarControl.CssTabBarContent}`
-
     private static readonly selector_activeTab = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}.${TabBarControl.CssActiveTabButton}`
-
     private static readonly selector_tabWithId = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}[${TabBarControl.AttributeTabId}={0}]`
-
     private static readonly selector_allTabs = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}`
 
     #databinding: Databinding.BindingContext = null
@@ -385,6 +406,8 @@ class TabBarControl {
     #navPanelData: { [tabId: string]: {
         scrollPosition:number
     }} = {}
+    #cssClassForMentionTabEffect: string = null
+    #cssClassForNewMessageTabEffect: string = null
     #isPanelScrolledToBottom: boolean = false
 
     #tabbar: JQuery = null
@@ -427,10 +450,15 @@ class TabBarControl {
         this.#navPanel = $navPanel
         this.#navPanel.on("scroll", this.#onPanelScroll)
 
+        this.#isPanelScrolledToBottom = true
+
         this.#databinding = new Databinding.BindingContext(gobConfig)
         Databinding.bindListener(this.#databinding, "behaviour.chattabs", config => this.#updateTabs(config))
-        Databinding.bindListener(this.#databinding, "behaviour.chattabs.data", config => { this.#buildChannelToTabMapping(config) })
-        Databinding.bindListener(this.#databinding, "behaviour.chattabs.effect", () => { })
+        Databinding.bindListener(this.#databinding, "behaviour.chattabs.data", config => this.#buildChannelToTabMapping(config))
+        Databinding.bindListener(this.#databinding, "behaviour.chattabs.effect", (effect) => { 
+            this.#cssClassForMentionTabEffect = effect.mention > 0 ? TabBarControl.CssTabButtonMentionEffect : null
+            this.#cssClassForNewMessageTabEffect = effect.message > 0 ? TabBarControl.CssTabButtonMessageEffect : null            
+        })
         this.#databinding.initialize()
     }
 
@@ -440,7 +468,35 @@ class TabBarControl {
         if(_.includes(affectedTabs, activeTabId))
             return // done, message was visible on active tab
 
-        //TODO
+        const cssClassForMentionEffect = this.#cssClassForMentionTabEffect
+        const cssClassForNewMessageEffect = this.#cssClassForNewMessageTabEffect
+
+        for(let tabId of affectedTabs){
+            if(tabId === activeTabId)
+                continue // do not apply any effects to the active tab
+
+            const $tab = this.#getTab(tabId)
+
+            if(hasMention && cssClassForMentionEffect){
+                $tab.removeClass(cssClassForNewMessageEffect)
+                    .addClass(cssClassForMentionEffect)
+                    .on("click.tab.effects.mention", function(){
+                        $(this).off("click.tab.effects.mention")
+                            .removeClass(cssClassForMentionEffect)
+                    })
+                continue //apply only one effect
+            }
+
+            if(cssClassForNewMessageEffect){
+                $tab.filter(`:not(.${cssClassForMentionEffect})`)
+                    .addClass(cssClassForNewMessageEffect)
+                    .on("click.tab.effects.message", function(){
+                        $(this).off("click.tab.effects.message")
+                            .removeClass(cssClassForNewMessageEffect)
+                    })
+                continue //apply only one effect
+            }            
+        }
     }
 
     scrollToBottomIfNeeded(scrollFast: boolean = false): void {
@@ -485,9 +541,21 @@ class TabBarControl {
         }
     }
 
-    #activateTab(idOrIndex: string | number): boolean {
+    #getTab(idOrIndex: string | number): JQuery {
         idOrIndex ??= 0
 
+        if (Utility.isNumber(idOrIndex)) {
+            const $childs = this.#tabbar.find(TabBarControl.selector_content).children()
+            const $nextTab = $childs.eq(Math.max(0, Math.min($childs.length, idOrIndex as number)))
+            return $nextTab
+        } else {
+            const selector = Utility.formatString(TabBarControl.selector_tabWithId, idOrIndex)
+            const $nextTab = this.#tabbar.find(selector)
+            return $nextTab         
+        }
+    }
+
+    #activateTab(idOrIndex: string | number): boolean {
         const lastActiveTabId = this.#activeTabId
 
         if(lastActiveTabId in this.#navPanelData){
@@ -498,27 +566,19 @@ class TabBarControl {
         this.#tabbar.find(TabBarControl.selector_activeTab).removeClass(TabBarControl.CssActiveTabButton)
 
         // find new active tab
-        if (Utility.isNumber(idOrIndex)) {
-            const $childs = this.#tabbar.find(TabBarControl.selector_content).children()
-            const $nextTab = $childs.eq(Math.max(0, Math.min($childs.length, idOrIndex as number)))
-            $nextTab.addClass(TabBarControl.CssActiveTabButton)
-        } else {
-            const selector = Utility.formatString(TabBarControl.selector_tabWithId, idOrIndex)
-            const $nextTab = this.#tabbar.find(selector)
+        const $tab = this.#getTab(idOrIndex)
+        $tab.addClass(TabBarControl.CssActiveTabButton)
 
-            if($nextTab.length === 0){ //there is no tab with this id
-                this.#activateTab(0) //fallback
-                return false
-            }
-
-            $nextTab.addClass(TabBarControl.CssActiveTabButton)            
-        }
+        if($tab.length === 0){ //there is no tab with this id
+            this.#activateTab(0) //fallback
+            return false
+        }        
         
         const newActiveTabId = this.#activeTabId
 
         this.#navPanel // used to filter messages depending on which tab is active
-            .removeClass(Utility.formatString(TabBarControl.cssActiveTabId, lastActiveTabId))
-            .addClass(Utility.formatString(TabBarControl.cssActiveTabId, newActiveTabId))
+            .removeClass(Utility.formatString(TabBarControl.CssNavPanelActiveTab, lastActiveTabId))
+            .addClass(Utility.formatString(TabBarControl.CssNavPanelActiveTab, newActiveTabId))
 
         // restore scroll position
         if(newActiveTabId in this.#navPanelData){

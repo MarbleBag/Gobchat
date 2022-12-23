@@ -41,16 +41,11 @@ jQuery(async function ($) {
     await gobStyles.initialize()
 
     window.gobChatManager = new Chat.ChatControl()
-    await gobChatManager.control($(".gob-chat_box"))
-
     window.chatSearch = new Search.ChatSearch()
-    chatSearch.control($(".gob-chat_toolbar_search"), $(".gob-chat_box"))
-    chatSearch.hide()
+
     $("#gob_toggle_search").on("click", () => chatSearch.toggle())
 
     const binding = new Databinding.BindingContext(gobConfig)
-
-    gobLocale.setLocale(gobConfig.get("behaviour.language"))
     binding.bindConfigListener("behaviour.language", (value) => {
         gobLocale.setLocale(value)
         gobLocale.updateElement($(document))
@@ -66,6 +61,10 @@ jQuery(async function ($) {
     })
 
     binding.initialize()
+    
+    gobChatManager.control($(".gob-chat_box"))
+    chatSearch.control($(".gob-chat_toolbar_search"), $(".gob-chat_box"))
+    chatSearch.hide()
 
     GobchatAPI.setUIReady(true)
 });

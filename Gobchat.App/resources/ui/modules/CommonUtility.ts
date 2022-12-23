@@ -35,7 +35,7 @@ export function isArray(value: Object): boolean {
 }
 
 export function isObject(value: Object): boolean {
-    return Object.prototype.toString.call(value) === "[object Object]" //only cross-window reliable solution
+    return Object.prototype.toString.call(value) === "[object Object]"
     //return value && typeof value === 'object' && value.constructor === Object;
 }
 

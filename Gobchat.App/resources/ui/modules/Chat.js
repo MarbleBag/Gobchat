@@ -22,7 +22,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _ChatControl_instances, _ChatControl_cmdManager, _ChatControl_msgBuilder, _ChatControl_audioPlayer, _ChatControl_tabControl, _ChatControl_chatBox, _ChatControl_hideInfo, _ChatControl_hideError, _ChatControl_onNewMessageEvent, _ChatControl_onNewMessage, _AudioPlayer_lastSoundPlayed, _TabBarControl_instances, _TabBarControl_tabbar, _TabBarControl_databinding, _TabBarControl_onScrollBtnClick, _TabBarControl_onWheelScroll, _TabBarControl_onTabClick, _TabBarControl_activateTab, _TabBarControl_activeTabId_get, _TabBarControl_updateTabs, _TabBarControl_sortTabs, _TabBarControl_scrollTabs, _ScrollControl_control, _ScrollControl_scrollToBottom, _ScrollControl_onScroll;
+var _ChatControl_instances, _ChatControl_cmdManager, _ChatControl_msgBuilder, _ChatControl_audioPlayer, _ChatControl_tabControl, _ChatControl_databinding, _ChatControl_chatBox, _ChatControl_hideInfo, _ChatControl_hideError, _ChatControl_onNewMessageEvent, _ChatControl_onNewMessage, _AudioPlayer_lastSoundPlayed, _TabBarControl_instances, _TabBarControl_databinding, _TabBarControl_channelToTab, _TabBarControl_navPanelData, _TabBarControl_cssClassForMentionTabEffect, _TabBarControl_cssClassForNewMessageTabEffect, _TabBarControl_isPanelScrolledToBottom, _TabBarControl_tabbar, _TabBarControl_navPanel, _TabBarControl_onNavBarBtnScroll, _TabBarControl_onNavBarWheelScroll, _TabBarControl_onPanelScroll, _TabBarControl_onTabClick, _TabBarControl_buildChannelToTabMapping, _TabBarControl_getTab, _TabBarControl_activateTab, _TabBarControl_activeTabId_get, _TabBarControl_updateTabs, _TabBarControl_scrollTabs, _TabBarControl_scrollPanelToBottom, _TabBarControl_scrollPanelToPosition, _TabBarControl_panelScrollPosition_get;
 import * as Cmd from './Command.js';
 import * as Constants from './Constants.js';
 import * as Databinding from './Databinding.js';
@@ -35,6 +35,7 @@ export class ChatControl {
         _ChatControl_msgBuilder.set(this, void 0);
         _ChatControl_audioPlayer.set(this, void 0);
         _ChatControl_tabControl.set(this, void 0);
+        _ChatControl_databinding.set(this, null);
         _ChatControl_chatBox.set(this, null);
         _ChatControl_hideInfo.set(this, false);
         _ChatControl_hideError.set(this, false);
@@ -63,13 +64,29 @@ export class ChatControl {
         if (__classPrivateFieldGet(this, _ChatControl_chatBox, "f")) {
             document.removeEventListener("ChatMessagesEvent", __classPrivateFieldGet(this, _ChatControl_onNewMessageEvent, "f"));
         }
+        __classPrivateFieldGet(this, _ChatControl_databinding, "f")?.clear();
         __classPrivateFieldSet(this, _ChatControl_chatBox, $(chatBox), "f");
-        __classPrivateFieldGet(this, _ChatControl_tabControl, "f").control(__classPrivateFieldGet(this, _ChatControl_chatBox, "f").find(ChatControl.selector_tabbar));
+        __classPrivateFieldGet(this, _ChatControl_tabControl, "f").control(__classPrivateFieldGet(this, _ChatControl_chatBox, "f").find(ChatControl.selector_tabbar), __classPrivateFieldGet(this, _ChatControl_chatBox, "f").find(ChatControl.selector_chat_history));
         if (__classPrivateFieldGet(this, _ChatControl_chatBox, "f").length > 0)
             document.addEventListener("ChatMessagesEvent", __classPrivateFieldGet(this, _ChatControl_onNewMessageEvent, "f"));
+        __classPrivateFieldSet(this, _ChatControl_databinding, new Databinding.BindingContext(gobConfig), "f");
+        Databinding.bindListener(__classPrivateFieldGet(this, _ChatControl_databinding, "f"), "behaviour.language", async (data) => {
+            const channels = Object.values(Gobchat.Channels);
+            const requestTranslation = channels.map(data => data.abbreviationId)
+                .filter(id => Utility.isString(id));
+            const translations = await gobLocale.getAll(requestTranslation);
+            const result = {};
+            const channelLookup = MessageBuilder.AbbreviationCache;
+            channelLookup.length = 0;
+            for (let data of channels) {
+                if (data.abbreviationId)
+                    channelLookup[data.chatChannel] = translations[data.abbreviationId];
+            }
+        });
+        __classPrivateFieldGet(this, _ChatControl_databinding, "f").initialize();
     }
 }
-_ChatControl_cmdManager = new WeakMap(), _ChatControl_msgBuilder = new WeakMap(), _ChatControl_audioPlayer = new WeakMap(), _ChatControl_tabControl = new WeakMap(), _ChatControl_chatBox = new WeakMap(), _ChatControl_hideInfo = new WeakMap(), _ChatControl_hideError = new WeakMap(), _ChatControl_onNewMessageEvent = new WeakMap(), _ChatControl_instances = new WeakSet(), _ChatControl_onNewMessage = function _ChatControl_onNewMessage(message) {
+_ChatControl_cmdManager = new WeakMap(), _ChatControl_msgBuilder = new WeakMap(), _ChatControl_audioPlayer = new WeakMap(), _ChatControl_tabControl = new WeakMap(), _ChatControl_databinding = new WeakMap(), _ChatControl_chatBox = new WeakMap(), _ChatControl_hideInfo = new WeakMap(), _ChatControl_hideError = new WeakMap(), _ChatControl_onNewMessageEvent = new WeakMap(), _ChatControl_instances = new WeakSet(), _ChatControl_onNewMessage = function _ChatControl_onNewMessage(message) {
     if (__classPrivateFieldGet(this, _ChatControl_hideInfo, "f") && message.channel === Gobchat.ChannelEnum.GOBCHATINFO)
         return;
     if (__classPrivateFieldGet(this, _ChatControl_hideError, "f") && message.channel === Gobchat.ChannelEnum.GOBCHATERROR)
@@ -78,10 +95,11 @@ _ChatControl_cmdManager = new WeakMap(), _ChatControl_msgBuilder = new WeakMap()
         const joinedMessageContent = message.content.map(e => e.text).join();
         __classPrivateFieldGet(this, _ChatControl_cmdManager, "f").processCommand(joinedMessageContent);
     }
-    __classPrivateFieldGet(this, _ChatControl_audioPlayer, "f").playSoundIfAllowed(message);
     const messageAsHtml = __classPrivateFieldGet(this, _ChatControl_msgBuilder, "f").build(message);
     __classPrivateFieldGet(this, _ChatControl_chatBox, "f").find(ChatControl.selector_chat_history).append(messageAsHtml);
-    //TODO
+    __classPrivateFieldGet(this, _ChatControl_tabControl, "f").scrollToBottomIfNeeded();
+    __classPrivateFieldGet(this, _ChatControl_tabControl, "f").applyAnimationToTab(message.channel, message.containsMentions);
+    __classPrivateFieldGet(this, _ChatControl_audioPlayer, "f").playSoundIfAllowed(message);
 };
 ChatControl.selector_chat_history = ".gob-chat_history";
 ChatControl.selector_tabbar = ".gob-chat_tabbar";
@@ -261,105 +279,205 @@ _AudioPlayer_lastSoundPlayed = new WeakMap();
 class TabBarControl {
     constructor() {
         _TabBarControl_instances.add(this);
-        _TabBarControl_tabbar.set(this, null);
         _TabBarControl_databinding.set(this, null);
-        _TabBarControl_onScrollBtnClick.set(this, (event) => {
-            const scrollDirection = $(event.target).hasClass(TabBarControl.cssScrollRightButton) ? 1 : -1;
+        _TabBarControl_channelToTab.set(this, {});
+        _TabBarControl_navPanelData.set(this, {});
+        _TabBarControl_cssClassForMentionTabEffect.set(this, null);
+        _TabBarControl_cssClassForNewMessageTabEffect.set(this, null);
+        _TabBarControl_isPanelScrolledToBottom.set(this, false);
+        _TabBarControl_tabbar.set(this, null);
+        _TabBarControl_navPanel.set(this, null);
+        _TabBarControl_onNavBarBtnScroll.set(this, (event) => {
+            const scrollDirection = $(event.target).hasClass(TabBarControl.CssScrollRightButton) ? 1 : -1;
             __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollTabs).call(this, scrollDirection);
         });
-        _TabBarControl_onWheelScroll.set(this, (event) => {
+        _TabBarControl_onNavBarWheelScroll.set(this, (event) => {
             const scrollDirection = event.originalEvent.deltaY > 0 ? 1 : -1;
             __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollTabs).call(this, scrollDirection);
         });
+        _TabBarControl_onPanelScroll.set(this, (event) => {
+            const $panel = $(event.target);
+            const panelBottom = $panel.scrollTop() + $panel.innerHeight();
+            const closeToBottm = panelBottom + TabBarControl.ScrollToleranceZone >= event.target.scrollHeight;
+            __classPrivateFieldSet(this, _TabBarControl_isPanelScrolledToBottom, closeToBottm, "f");
+        });
         _TabBarControl_onTabClick.set(this, (event) => {
-            const id = $(event.target).attr(TabBarControl.attributeTabId);
+            const id = $(event.target).attr(TabBarControl.AttributeTabId);
             __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_activateTab).call(this, id);
         });
     }
-    control(tabbar) {
+    control(navBar, navPanel) {
         if (__classPrivateFieldGet(this, _TabBarControl_tabbar, "f")) {
-            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").off("wheel", __classPrivateFieldGet(this, _TabBarControl_onWheelScroll, "f"));
-            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollLeftBtn).off("click", __classPrivateFieldGet(this, _TabBarControl_onScrollBtnClick, "f"));
-            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollRightBtn).off("click", __classPrivateFieldGet(this, _TabBarControl_onScrollBtnClick, "f"));
-            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content_allTabs).off("click", __classPrivateFieldGet(this, _TabBarControl_onTabClick, "f"));
-            __classPrivateFieldGet(this, _TabBarControl_databinding, "f")?.clear();
+            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").off("wheel", __classPrivateFieldGet(this, _TabBarControl_onNavBarWheelScroll, "f"));
+            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollLeftBtn).off("click", __classPrivateFieldGet(this, _TabBarControl_onNavBarBtnScroll, "f"));
+            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollRightBtn).off("click", __classPrivateFieldGet(this, _TabBarControl_onNavBarBtnScroll, "f"));
+            __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_allTabs).off("click", __classPrivateFieldGet(this, _TabBarControl_onTabClick, "f"));
         }
-        __classPrivateFieldSet(this, _TabBarControl_tabbar, $(tabbar), "f");
-        if (!__classPrivateFieldGet(this, _TabBarControl_tabbar, "f").hasClass(TabBarControl.cssTabbar))
-            throw new Error("Tabbar not found");
-        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").on("wheel", __classPrivateFieldGet(this, _TabBarControl_onWheelScroll, "f"));
-        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollLeftBtn).on("click", __classPrivateFieldGet(this, _TabBarControl_onScrollBtnClick, "f"));
-        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollRightBtn).on("click", __classPrivateFieldGet(this, _TabBarControl_onScrollBtnClick, "f"));
+        if (__classPrivateFieldGet(this, _TabBarControl_navPanel, "f")) {
+            __classPrivateFieldGet(this, _TabBarControl_navPanel, "f").off("scroll", __classPrivateFieldGet(this, _TabBarControl_onPanelScroll, "f"));
+        }
+        __classPrivateFieldGet(this, _TabBarControl_databinding, "f")?.clear();
+        __classPrivateFieldSet(this, _TabBarControl_tabbar, null, "f");
+        __classPrivateFieldSet(this, _TabBarControl_navPanel, null, "f");
+        const $navBar = $(navBar);
+        if (!$navBar.hasClass(TabBarControl.CssNavBar))
+            throw new Error("navBar not found");
+        const $navPanel = $(navPanel);
+        if (!$navPanel.hasClass(TabBarControl.CssNavPanel))
+            throw new Error("navPanel not found");
+        __classPrivateFieldSet(this, _TabBarControl_tabbar, $navBar, "f");
+        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").on("wheel", __classPrivateFieldGet(this, _TabBarControl_onNavBarWheelScroll, "f"));
+        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollLeftBtn).on("click", __classPrivateFieldGet(this, _TabBarControl_onNavBarBtnScroll, "f"));
+        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollRightBtn).on("click", __classPrivateFieldGet(this, _TabBarControl_onNavBarBtnScroll, "f"));
+        __classPrivateFieldSet(this, _TabBarControl_navPanel, $navPanel, "f");
+        __classPrivateFieldGet(this, _TabBarControl_navPanel, "f").on("scroll", __classPrivateFieldGet(this, _TabBarControl_onPanelScroll, "f"));
+        __classPrivateFieldSet(this, _TabBarControl_isPanelScrolledToBottom, true, "f");
         __classPrivateFieldSet(this, _TabBarControl_databinding, new Databinding.BindingContext(gobConfig), "f");
         Databinding.bindListener(__classPrivateFieldGet(this, _TabBarControl_databinding, "f"), "behaviour.chattabs", config => __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_updateTabs).call(this, config));
-        Databinding.bindListener(__classPrivateFieldGet(this, _TabBarControl_databinding, "f"), "behaviour.chattabs.data", () => { });
-        Databinding.bindListener(__classPrivateFieldGet(this, _TabBarControl_databinding, "f"), "behaviour.chattabs.effect", () => { });
+        Databinding.bindListener(__classPrivateFieldGet(this, _TabBarControl_databinding, "f"), "behaviour.chattabs.data", config => __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_buildChannelToTabMapping).call(this, config));
+        Databinding.bindListener(__classPrivateFieldGet(this, _TabBarControl_databinding, "f"), "behaviour.chattabs.effect", (effect) => {
+            __classPrivateFieldSet(this, _TabBarControl_cssClassForMentionTabEffect, effect.mention > 0 ? TabBarControl.CssTabButtonMentionEffect : null, "f");
+            __classPrivateFieldSet(this, _TabBarControl_cssClassForNewMessageTabEffect, effect.message > 0 ? TabBarControl.CssTabButtonMessageEffect : null, "f");
+        });
         __classPrivateFieldGet(this, _TabBarControl_databinding, "f").initialize();
     }
+    applyAnimationToTab(channel, hasMention) {
+        const affectedTabs = __classPrivateFieldGet(this, _TabBarControl_channelToTab, "f")[channel] || [];
+        const activeTabId = __classPrivateFieldGet(this, _TabBarControl_instances, "a", _TabBarControl_activeTabId_get);
+        if (_.includes(affectedTabs, activeTabId))
+            return; // done, message was visible on active tab
+        const cssClassForMentionEffect = __classPrivateFieldGet(this, _TabBarControl_cssClassForMentionTabEffect, "f");
+        const cssClassForNewMessageEffect = __classPrivateFieldGet(this, _TabBarControl_cssClassForNewMessageTabEffect, "f");
+        for (let tabId of affectedTabs) {
+            if (tabId === activeTabId)
+                continue; // do not apply any effects to the active tab
+            const $tab = __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_getTab).call(this, tabId);
+            if (hasMention && cssClassForMentionEffect) {
+                $tab.removeClass(cssClassForNewMessageEffect)
+                    .addClass(cssClassForMentionEffect)
+                    .on("click.tab.effects.mention", function () {
+                    $(this).off("click.tab.effects.mention")
+                        .removeClass(cssClassForMentionEffect);
+                });
+                continue; //apply only one effect
+            }
+            if (cssClassForNewMessageEffect) {
+                $tab.filter(`:not(.${cssClassForMentionEffect})`)
+                    .addClass(cssClassForNewMessageEffect)
+                    .on("click.tab.effects.message", function () {
+                    $(this).off("click.tab.effects.message")
+                        .removeClass(cssClassForNewMessageEffect);
+                });
+                continue; //apply only one effect
+            }
+        }
+    }
+    scrollToBottomIfNeeded(scrollFast = false) {
+        if (__classPrivateFieldGet(this, _TabBarControl_isPanelScrolledToBottom, "f"))
+            __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollPanelToBottom).call(this, scrollFast);
+    }
 }
-_TabBarControl_tabbar = new WeakMap(), _TabBarControl_databinding = new WeakMap(), _TabBarControl_onScrollBtnClick = new WeakMap(), _TabBarControl_onWheelScroll = new WeakMap(), _TabBarControl_onTabClick = new WeakMap(), _TabBarControl_instances = new WeakSet(), _TabBarControl_activateTab = function _TabBarControl_activateTab(idOrIndex) {
+_TabBarControl_databinding = new WeakMap(), _TabBarControl_channelToTab = new WeakMap(), _TabBarControl_navPanelData = new WeakMap(), _TabBarControl_cssClassForMentionTabEffect = new WeakMap(), _TabBarControl_cssClassForNewMessageTabEffect = new WeakMap(), _TabBarControl_isPanelScrolledToBottom = new WeakMap(), _TabBarControl_tabbar = new WeakMap(), _TabBarControl_navPanel = new WeakMap(), _TabBarControl_onNavBarBtnScroll = new WeakMap(), _TabBarControl_onNavBarWheelScroll = new WeakMap(), _TabBarControl_onPanelScroll = new WeakMap(), _TabBarControl_onTabClick = new WeakMap(), _TabBarControl_instances = new WeakSet(), _TabBarControl_buildChannelToTabMapping = function _TabBarControl_buildChannelToTabMapping(config) {
+    __classPrivateFieldSet(this, _TabBarControl_channelToTab, {}, "f");
+    for (let chatTab of Object.values(config)) {
+        if (!chatTab.visible)
+            return;
+        for (let channel of chatTab.channel.visible) {
+            if (channel in __classPrivateFieldGet(this, _TabBarControl_channelToTab, "f"))
+                __classPrivateFieldGet(this, _TabBarControl_channelToTab, "f")[channel].push(chatTab.id);
+            else
+                __classPrivateFieldGet(this, _TabBarControl_channelToTab, "f")[channel] = [chatTab.id];
+        }
+    }
+}, _TabBarControl_getTab = function _TabBarControl_getTab(idOrIndex) {
     idOrIndex ??= 0;
-    __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content_activeTab).removeClass(TabBarControl.cssActiveTabButton);
     if (Utility.isNumber(idOrIndex)) {
-        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content_allTabs).eq(idOrIndex).addClass(TabBarControl.cssActiveTabButton);
+        const $childs = __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content).children();
+        const $nextTab = $childs.eq(Math.max(0, Math.min($childs.length, idOrIndex)));
+        return $nextTab;
     }
     else {
-        const selector = Utility.formatString(TabBarControl.selector_content_tabWithid, idOrIndex);
-        __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(selector).addClass(TabBarControl.cssActiveTabButton);
+        const selector = Utility.formatString(TabBarControl.selector_tabWithId, idOrIndex);
+        const $nextTab = __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(selector);
+        return $nextTab;
     }
+}, _TabBarControl_activateTab = function _TabBarControl_activateTab(idOrIndex) {
+    const lastActiveTabId = __classPrivateFieldGet(this, _TabBarControl_instances, "a", _TabBarControl_activeTabId_get);
+    if (lastActiveTabId in __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")) {
+        __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")[lastActiveTabId].scrollPosition = __classPrivateFieldGet(this, _TabBarControl_isPanelScrolledToBottom, "f") ? -1 : __classPrivateFieldGet(this, _TabBarControl_instances, "a", _TabBarControl_panelScrollPosition_get);
+    }
+    // deactiate previous active tab
+    __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_activeTab).removeClass(TabBarControl.CssActiveTabButton);
+    // find new active tab
+    const $tab = __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_getTab).call(this, idOrIndex);
+    $tab.addClass(TabBarControl.CssActiveTabButton);
+    if ($tab.length === 0) { //there is no tab with this id
+        __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_activateTab).call(this, 0); //fallback
+        return false;
+    }
+    const newActiveTabId = __classPrivateFieldGet(this, _TabBarControl_instances, "a", _TabBarControl_activeTabId_get);
+    __classPrivateFieldGet(this, _TabBarControl_navPanel, "f") // used to filter messages depending on which tab is active
+        .removeClass(Utility.formatString(TabBarControl.CssNavPanelActiveTab, lastActiveTabId))
+        .addClass(Utility.formatString(TabBarControl.CssNavPanelActiveTab, newActiveTabId));
+    // restore scroll position
+    if (newActiveTabId in __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")) {
+        if (__classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")[newActiveTabId].scrollPosition < 0)
+            __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollPanelToBottom).call(this, true);
+        else
+            __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollPanelToPosition).call(this, __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")[newActiveTabId].scrollPosition, true);
+    }
+    return true;
 }, _TabBarControl_activeTabId_get = function _TabBarControl_activeTabId_get() {
-    return __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content_activeTab).attr(TabBarControl.attributeTabId);
+    return __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_activeTab).attr(TabBarControl.AttributeTabId);
 }, _TabBarControl_updateTabs = function _TabBarControl_updateTabs(config) {
     const configData = config["data"];
     const configSorting = config["sorting"];
-    const newTabs = configSorting
+    const newTabsInOrder = configSorting
         .filter(id => configData[id].visible)
         .map(id => { return { id: id, name: configData[id].name }; });
+    // remove old tabs and store them in a lookup table
     const $content = __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content);
-    const $oldTabs = $content.children();
-    const oldTabIds = [];
+    const $oldTabs = $content.children().detach();
+    const oldTabsLookup = {};
     for (let tab of $oldTabs) {
-        const id = $(tab).attr(TabBarControl.attributeTabId);
-        oldTabIds.push(id);
+        const id = tab.getAttribute(TabBarControl.AttributeTabId);
+        oldTabsLookup[id] = tab;
     }
-    const newTabIds = newTabs.map(e => e.id);
-    for (let entry of newTabs) {
-        if (_.includes(oldTabIds, entry.id)) {
-            $oldTabs.filter(`[${TabBarControl.attributeTabId}=${entry.id}]`).text(entry.name);
+    // add new tabs or reattach old tabs in order
+    for (let entry of newTabsInOrder) {
+        if (entry.id in oldTabsLookup) {
+            $(oldTabsLookup[entry.id])
+                .text(entry.name)
+                .appendTo($content);
         }
         else {
             $("<button></button>")
-                .addClass(TabBarControl.cssTabButton)
-                .attr(TabBarControl.attributeTabId, entry.id)
+                .addClass(TabBarControl.CssTabButton)
+                .attr(TabBarControl.AttributeTabId, entry.id)
                 .on("click", __classPrivateFieldGet(this, _TabBarControl_onTabClick, "f"))
                 .text(entry.name)
                 .appendTo($content);
         }
     }
-    const idsToRemove = oldTabIds.filter(id => !_.includes(newTabIds, id));
-    for (let id of idsToRemove)
-        $oldTabs.filter(`[${TabBarControl.attributeTabId}=${id}]`).remove();
-    __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_sortTabs).call(this, configSorting);
+    // remove old nav panel data
+    for (let tabId of Object.keys(__classPrivateFieldGet(this, _TabBarControl_navPanelData, "f"))) {
+        if (!_.includes(tabId, configSorting))
+            delete __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")[tabId];
+    }
+    // add new nav panel data
+    for (let tabId of configSorting) {
+        if (!(tabId in __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f"))) {
+            __classPrivateFieldGet(this, _TabBarControl_navPanelData, "f")[tabId] = {
+                scrollPosition: -1
+            };
+        }
+    }
+    // const idsToRemove = oldTabIds.filter(id => !_.includes(newTabIds, id))
+    // for (let id of idsToRemove)
+    //     $oldTabs.filter(`[${TabBarControl.attributeTabId}=${id}]`).remove()
     if (!__classPrivateFieldGet(this, _TabBarControl_instances, "a", _TabBarControl_activeTabId_get))
         __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_activateTab).call(this, 0);
     __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollTabs).call(this, 0); //update the scroll view
-}, _TabBarControl_sortTabs = function _TabBarControl_sortTabs(order) {
-    const $content = __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content);
-    const $tabs = $content.children().detach();
-    const lookup = {};
-    $tabs.each(function () {
-        const id = $(this).attr(TabBarControl.attributeTabId);
-        lookup[id] = $(this);
-    });
-    for (let id of order) {
-        const $tab = lookup[id];
-        if ($tab) {
-            $tab.appendTo($content);
-            delete lookup[id];
-        }
-    }
-    //Add unsorted elements to the end
-    Object.entries(lookup).forEach(e => $content.append(e[1]));
 }, _TabBarControl_scrollTabs = function _TabBarControl_scrollTabs(direction) {
     const $content = __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_content);
     const numberOfChilds = $content.children().length;
@@ -371,47 +489,45 @@ _TabBarControl_tabbar = new WeakMap(), _TabBarControl_databinding = new WeakMap(
     }, 50);
     const isAtLeftBorder = newPosition <= 0;
     __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollLeftBtn)
-        .toggleClass(TabBarControl.cssDisableScrollButton, isAtLeftBorder);
+        .toggleClass(TabBarControl.CssDisableScrollButton, isAtLeftBorder);
     const scrollWidth = Utility.toNumber($content.prop("scrollWidth"), 0);
     const clientWidth = Utility.toNumber($content.prop("clientWidth"), 0);
     const isAtRightBorder = (scrollWidth - clientWidth) <= newPosition;
     __classPrivateFieldGet(this, _TabBarControl_tabbar, "f").find(TabBarControl.selector_scrollRightBtn)
-        .toggleClass(TabBarControl.cssDisableScrollButton, isAtRightBorder);
+        .toggleClass(TabBarControl.CssDisableScrollButton, isAtRightBorder);
+}, _TabBarControl_scrollPanelToBottom = function _TabBarControl_scrollPanelToBottom(scrollFast) {
+    const navPanel = __classPrivateFieldGet(this, _TabBarControl_navPanel, "f")[0];
+    const position = navPanel.scrollHeight - navPanel.clientHeight;
+    __classPrivateFieldGet(this, _TabBarControl_instances, "m", _TabBarControl_scrollPanelToPosition).call(this, position, scrollFast);
+}, _TabBarControl_scrollPanelToPosition = function _TabBarControl_scrollPanelToPosition(position, scrollFast) {
+    if (scrollFast) {
+        __classPrivateFieldGet(this, _TabBarControl_navPanel, "f").scrollTop(position);
+    }
+    else {
+        __classPrivateFieldGet(this, _TabBarControl_navPanel, "f").animate({
+            scrollTop: position
+        }, 10);
+    }
+}, _TabBarControl_panelScrollPosition_get = function _TabBarControl_panelScrollPosition_get() {
+    return __classPrivateFieldGet(this, _TabBarControl_navPanel, "f").scrollTop();
 };
-TabBarControl.attributeTabId = "data-gob-tab-id";
-TabBarControl.cssDisableScrollButton = "is-disabled";
-TabBarControl.cssActiveTabButton = "is-active";
-TabBarControl.cssTabbar = "gob-chat_tabbar";
-TabBarControl.cssScrollLeftButton = "gob-chat_tabbar_button--left";
-TabBarControl.cssScrollRightButton = "gob-chat_tabbar_button--right";
-TabBarControl.cssTabBarContent = "gob-chat_tabbar_content";
-TabBarControl.cssTabButton = "gob-chat_tabbar_content_tab";
-TabBarControl.selector_scrollLeftBtn = `> .${TabBarControl.cssScrollLeftButton}`;
-TabBarControl.selector_scrollRightBtn = `> .${TabBarControl.cssScrollRightButton}`;
-TabBarControl.selector_content = `> .${TabBarControl.cssTabBarContent}`;
-TabBarControl.selector_content_activeTab = `> .${TabBarControl.cssTabBarContent} > .${TabBarControl.cssTabButton}.${TabBarControl.cssActiveTabButton}`;
-TabBarControl.selector_content_tabWithid = `> .${TabBarControl.cssTabBarContent} > .${TabBarControl.cssTabButton}[${TabBarControl.attributeTabId}={0}]`;
-TabBarControl.selector_content_allTabs = `> .${TabBarControl.cssTabBarContent} > .${TabBarControl.cssTabButton}`;
-class TabControl {
-    control() {
-        if (false) {
-        }
-    }
-}
-class ScrollControl {
-    constructor() {
-        _ScrollControl_control.set(this, null);
-        _ScrollControl_scrollToBottom.set(this, void 0);
-        _ScrollControl_onScroll.set(this, ($element) => {
-            //const $this = $(this)
-            //const closeToBottom = ($this.scrollTop() + $this.innerHeight() + 5 >= $this[0].scrollHeight) // +5px for 'being very close'
-            // this.#scrollToBottom = closeToBottom
-        });
-    }
-    control($element) {
-        if (__classPrivateFieldGet(this, _ScrollControl_control, "f") !== null) {
-            const x = $(document).on("scroll", __classPrivateFieldGet(this, _ScrollControl_onScroll, "f"));
-        }
-    }
-}
-_ScrollControl_control = new WeakMap(), _ScrollControl_scrollToBottom = new WeakMap(), _ScrollControl_onScroll = new WeakMap();
+TabBarControl.ScrollToleranceZone = 5;
+TabBarControl.AttributeTabId = "data-gob-tab-id";
+TabBarControl.CssNavBar = "gob-chat_tabbar";
+TabBarControl.CssNavPanel = "gob-chat_history";
+TabBarControl.CssNavPanelActiveTab = "gob-chat_history--tab-{0}";
+TabBarControl.CssDisableScrollButton = "is-disabled";
+TabBarControl.CssActiveTabButton = "is-active";
+TabBarControl.CssScrollLeftButton = "gob-chat_tabbar_button--left";
+TabBarControl.CssScrollRightButton = "gob-chat_tabbar_button--right";
+TabBarControl.CssTabBarContent = "gob-chat_tabbar_content";
+TabBarControl.CssTabButton = "gob-chat_tabbar_content_tab";
+TabBarControl.CssTabButtonMentionEffect = "gob-chat_tabbar_content_tab--mention";
+TabBarControl.CssTabButtonMessageEffect = "gob-chat_tabbar_content_tab--new-message";
+TabBarControl.selector_tabbar = `> .${TabBarControl.CssNavBar}`;
+TabBarControl.selector_scrollLeftBtn = `> .${TabBarControl.CssScrollLeftButton}`;
+TabBarControl.selector_scrollRightBtn = `> .${TabBarControl.CssScrollRightButton}`;
+TabBarControl.selector_content = `> .${TabBarControl.CssTabBarContent}`;
+TabBarControl.selector_activeTab = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}.${TabBarControl.CssActiveTabButton}`;
+TabBarControl.selector_tabWithId = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}[${TabBarControl.AttributeTabId}={0}]`;
+TabBarControl.selector_allTabs = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}`;

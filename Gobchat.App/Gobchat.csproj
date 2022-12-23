@@ -121,6 +121,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="resources\ui\tsconfig.json" />
+	<Content Include="resources\ui\config\config.js">
+      <DependentUpon>config.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <TypeScriptCompile Include="resources\ui\config\config.ts" />
     <Content Include="resources\ui\config\config_app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

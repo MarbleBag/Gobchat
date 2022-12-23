@@ -14,7 +14,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     [i: number]: T
     remove(): JQuery<T>
     on(action: string, callback: Function): JQuery<T>
-    off(action: string, callback: Function): JQuery<T>
+    off(action: string, callback?: Function): JQuery<T>
     one(action: string, callback: Function): JQuery<T>
     filter(selector: string): JQuery<T>
     remove(): JQuery<T>
