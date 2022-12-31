@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +30,7 @@ const selector_allActiveControls = `> .${cssNavControl}.${cssActive}`
 const selector_allButFirstActiveControl = `> .${cssNavControl}.${cssActive}:not(:first)`
 const selector_panelInTemplate = `[${attributePanel}]`
 
-function loadThen($element, url, params) {
+function loadThen($element: JQuery, url: string, params?: object): Promise<void> {
     if ($element.length <= 0)
         return Promise.resolve()
 
@@ -46,7 +46,7 @@ function loadThen($element, url, params) {
                     reject(error)
                 }
             })
-            .catch((error) => reject(error)
+            .catch((error) => reject(error) 
         */
 
         $element.load(url, params, (response, status, jqXHR) => {
@@ -58,8 +58,8 @@ function loadThen($element, url, params) {
     })
 }
 
-export async function makeControl($element) {
-    const awaitPromises = []
+export async function makeControl($element: JQuery): Promise<void> {
+    const awaitPromises: Promise<void>[] = []
 
     $element.each(function () {
         const $navigationBar = $(this)
@@ -75,7 +75,7 @@ export async function makeControl($element) {
 
         $navigationEntries.each(function () {
             const $control = $(this)
-            const navigationTarget = $control.attr(attributeNavTarget)
+            const navigationTarget = $control.attr(attributeNavTarget) as string
 
             const selector_panelWhichIsLinkedToTarget = `> .${cssPanelEntry}[${attributeNavId}="${navigationTarget}"]`
             let $panel = $panelStack.find(selector_panelWhichIsLinkedToTarget)

@@ -9,9 +9,10 @@ declare function saveConfig(): void
 declare var _: any
 declare var $: JQuery
 declare var jQuery: JQuery
-declare interface JQuery<T = HTMLElement> extends Iterable<T> {   
+declare interface JQuery<T = HTMLElement> extends Iterable<T> {     
     (a?: any): JQuery<T>
     [i: number]: T
+    load(url: string, params: object, arg2: (response: any, status: any, jqXHR: any) => void): unknown  
     remove(): JQuery<T>
     on(action: string, callback: Function): JQuery<T>
     off(action: string, callback?: Function): JQuery<T>

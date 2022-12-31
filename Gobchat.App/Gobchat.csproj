@@ -202,15 +202,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Config.ts" />
-    <Content Include="resources\ui\modules\MenuNavigationComponent.js">
+	<Content Include="resources\ui\modules\MenuNavigationComponent.js">
+      <DependentUpon>MenuNavigationComponent.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\modules\MenuNavigationComponent.ts" />
     <Content Include="resources\ui\modules\Constants.js">
       <DependentUpon>Constants.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Constants.ts" />
-    <Content Include="resources\ui\modules\GobModule.js" />
+    <TypeScriptCompile Include="resources\ui\modules\GobModule.ts" />
     <Content Include="resources\ui\modules\Locale.js">
       <DependentUpon>Locale.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
