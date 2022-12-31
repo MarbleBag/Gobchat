@@ -72,19 +72,30 @@
     }
 }
 
-@keyframes gob-chat_tabbar_content_tab--blinker {
-    50% {
-        background: rgba(245, 160, 0, 0.25);
+.gob-chat_tabbar_content_tab--mention-1,
+.gob-chat_tabbar_content_tab--new-message-1 {
+    position: relative;
+
+    &::before{
+        content: "";
+        position: absolute;
+        inset:0 0 0 0;
+        background: rgba(245, 160, 0, 0.2);
     }
 }
 
-.gob-chat_entry {
-    color:white;
+.gob-chat_tabbar_content_tab--mention-2,
+.gob-chat_tabbar_content_tab--new-message-2 {
+    animation: subtile-blinker 2s linear infinite;
 }
 
-.gob-chat_entry--marked-by-search{
-
+.gob-chat_tabbar_content_tab--mention-3,
+.gob-chat_tabbar_content_tab--new-message-3 {
+    color: #73cf4b;
 }
 
-.gob-chat_entry--selected-by-search {
+@keyframes subtile-blinker {
+    50% {
+        background: rgba(245, 160, 0, 0.25);
+    }
 }

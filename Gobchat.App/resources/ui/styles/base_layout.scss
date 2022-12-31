@@ -1,0 +1,60 @@
+:root{
+    --gob-font-size: 16px;
+    --gob-chat-history-font-size: 16px;
+}
+
+body, html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    font-size: var(--gob-font-size); // configurable, delete later
+}
+
+.gob-chat_box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.gob-chat_toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.gob-chat_tabbar {
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.gob-chat_tabbar_content {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.gob-chat_tabbar_content_tab {
+    min-width: auto;
+}
+
+.gob-chat_toolbar_search {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+}
+
+.gob-chat_history {
+    flex: auto; //take as much space as possible
+    display: flex;
+    flex-direction: column;
+    overflow: hidden scroll;
+    padding: 0.125em;
+    font-size: var(--gob-chat-history-font-size); // configurable, delete later
+}

@@ -9,8 +9,8 @@ declare function saveConfig(): void
 declare var _: any
 declare var $: JQuery
 declare var jQuery: JQuery
-declare interface JQuery<T = HTMLElement> extends Iterable<T> {
-    (a: any): JQuery<T>
+declare interface JQuery<T = HTMLElement> extends Iterable<T> {   
+    (a?: any): JQuery<T>
     [i: number]: T
     remove(): JQuery<T>
     on(action: string, callback: Function): JQuery<T>
@@ -60,9 +60,14 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     extend(a: any, b: any): any
     append(e: any): JQuery<T>
     appendTo(e: any): JQuery<T>
+    after(e: any): JQuery<T>
+    before(e: any): JQuery<T>
+    insertAfter(e: any): JQuery<T>
+    insertBefore(e: any): JQuery<T>
     dialog(e: any): JQuery<T>
     parent(selector?: string): JQuery<T>
     hasClass(selector: string): boolean
+    is(selector: string): boolean
     children(selector?: string): JQuery<T>
     parent(): JQuery<T>
     eq(e: any): JQuery<T>

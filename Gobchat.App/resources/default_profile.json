@@ -142,6 +142,8 @@
       "fadeout": 16,
       "endopacity": 30,
       "startopacity": 80,
+      "maxopacity": 100,
+      "opacitysteps": 10,
       "ignoreMention": true
     },
     "actor": {
@@ -358,18 +360,14 @@
   "style": {
     "theme": "FFXIV Dark",
     "base-font-size": "16px",
-    "chatbox": {
-      "background-color": "rgba(20, 20, 20, 0.95)"
+    "chat": {
+      "font-size": "16px"
     },
     "config": {
       "font-size": "16px"
     },
-    "chat": {
-      "background-color": "rgba(20, 20, 20, 0.95)",
-      "font-size": "16px"
-    },
-    "chat-toolbar": {
-      "font-size": "16px"
+    "chatbox": {
+      "background-color": "rgba(20, 20, 20, 0.95)"
     },
     "channel": {
       "base": {

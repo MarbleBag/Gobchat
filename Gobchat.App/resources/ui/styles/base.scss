@@ -1,10 +1,3 @@
-body, html {
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    font-size: 16px; // configurable
-}
-
 .is-hidden {
     display: none !important;
 }
@@ -19,57 +12,4 @@ body, html {
     background-repeat: no-repeat;
     //box-sizing: border-box;
     background-color: rgba(0, 0, 150, 0.2);
-}
-
-.gob-chat_box {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.gob-chat_toolbar {
-    display: flex;
-    flex-direction: row;
-}
-
-.gob-chat_tabbar {
-    display: flex;
-    flex-direction: row;
-    overflow-x: hidden;
-}
-
-.gob-chat_tabbar_content {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-}
-
-.gob-chat_tabbar_content_tab {
-    min-width: auto;
-}
-
-.gob-chat_toolbar_search {
-    display: flex;
-    flex-direction: row;
-    gap: 0.3em;
-}
-
-.gob-chat_history {
-    flex: auto; //take as much space as possible
-    display: flex;
-    flex-direction: column;
-    overflow: hidden scroll;
-    padding: 0.125em;
-    font-size: 16px; // configurable
-    background: rgba(20, 20, 20, 0.95); // configurable
-}
-
-@keyframes gob-chat_tabbar_content_tab--blinker {
-    50% {
-        background: rgba(245, 160, 0, 0.25);
-    }
 }

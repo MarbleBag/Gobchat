@@ -70,26 +70,58 @@ export interface ChatMessage {
 
 //#endregion
 
+export namespace CssClass {
+    export const Chat = "gob-chat_box"
+    export const Chat_Toolbar = "gob-chat_toolbar"
+
+    export const Chat_Tabs = "gob-chat_tabbar"
+    export const Chat_Tabs_Content = "gob-chat_tabbar_content"
+    export const Chat_Tabs_Content_Tab = "gob-chat_tabbar_content_tab"
+    export const Chat_Tabs_Content_Tab_Mention_Partial = "gob-chat_tabbar_content_tab--mention-{0}"
+    export const Chat_Tabs_Content_Tab_NewMessage_Partial = "gob-chat_tabbar_content_tab--new-message-{0}"
+
+    export const Chat_Search = "gob-chat_toolbar_search"
+
+    export const Chat_History = "gob-chat_history"
+    export const Chat_History_Tab_Partial = "gob-chat_history--tab-{0}"
+
+    export const ChatEntry = "gob-chat-entry"
+    export const ChatEntry_MarkedbySearch = "gob-chat_entry--marked-by-search"
+    export const ChatEntry_SelectedBySearch = "gob-chat_entry--selected-by-search"
+    export const ChatEntry_Sender = "gob-chat-entry__sender"
+    export const ChatEntry_Time = "gob-chat-entry__time"
+    export const ChatEntry_Text = "gob-chat-entry__text"
+    export const ChatEntry_FadeOut_Partial = "gob-chat-entry--fadeout-{0}"
+    export const ChatEntry_Channel_Partial = "gob-chat-entry--channel-{0}"
+    export const ChatEntry_TriggerGroup_Partial = "gob-chat-entry--trigger-group-{0}"
+    export const ChatEntry_Segment = "gob-chat_entry__text__segment"
+    export const ChatEntry_Segment_Say = "gob-chat-entry__text__segment--say"
+    export const ChatEntry_Segment_Emote = "gob-chat-entry__text__segment--emote"
+    export const ChatEntry_Segment_Ooc = "gob-chat-entry__text__segment--ooc"
+    export const ChatEntry_Segment_Mention = "gob-chat-entry__text__segment--mention"
+    export const ChatEntry_Segment_Link = "gob-chat-entry__text__segment--link"
+}
+
 export class ChatControl {
-    static readonly selector_chat_history = ".gob-chat_history"
-    static readonly selector_tabbar = ".gob-chat_tabbar"
+    static readonly selector_chat_history = `.${CssClass.Chat_History}`
+    static readonly selector_tabbar = `.${CssClass.Chat_Tabs}`
+    static readonly selector_search = `.${CssClass.Chat_Search}`
 
     #cmdManager: Cmd.CommandManager
-    #msgBuilder: MessageBuilder
-    #audioPlayer: AudioPlayer
     #tabControl: TabBarControl
+    #searchControl: ChatSearchControl
 
     #databinding: Databinding.BindingContext = null
-    #chatBox: JQuery = null
+    #chatBox: JQuery = $()
+    #chatHistory: JQuery = $()
 
     #hideInfo: boolean = false
     #hideError: boolean = false
 
     constructor() {
         this.#cmdManager = new Cmd.CommandManager()
-        this.#audioPlayer = new AudioPlayer()
-        this.#msgBuilder = new MessageBuilder()
         this.#tabControl = new TabBarControl()
+        this.#searchControl = new ChatSearchControl()
     }
 
     destructor() {
@@ -116,12 +148,12 @@ export class ChatControl {
             this.#cmdManager.processCommand(joinedMessageContent)
         }
 
-        const messageAsHtml = this.#msgBuilder.build(message)
-        this.#chatBox.find(ChatControl.selector_chat_history).append(messageAsHtml)
+        const messageAsHtml = MessageBuilder.build(message)
+        this.#chatHistory.append(messageAsHtml)
 
         this.#tabControl.scrollToBottomIfNeeded()
-        this.#tabControl.applyAnimationToTab(message.channel, message.containsMentions)
-        this.#audioPlayer.playSoundIfAllowed(message)
+        this.#tabControl.applyNewMessageAnimationToTabs(message.channel, message.containsMentions)
+        AudioPlayer.playMentionSoundIfPossible(message)
     }
 
     showGobInfo(on: boolean): void {
@@ -132,33 +164,44 @@ export class ChatControl {
         this.#hideInfo = on
     }
 
-    control(chatBox: HTMLElement | JQuery): void {
-        if (this.#chatBox) {
-            document.removeEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
-        }
+    toggleSearch(): void {
+        this.#searchControl.toggle()
+    }
 
+    hideSearch(): void {
+        this.#searchControl.hide()
+    }
+
+    showSearch(): void {
+        this.#searchControl.show()
+    }
+
+    control(chatBox: HTMLElement | JQuery): void {
+        // unbind
+        document.removeEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
         this.#databinding?.clear()
 
+        // rebind
         this.#chatBox = $(chatBox)
-        this.#tabControl.control(this.#chatBox.find(ChatControl.selector_tabbar), this.#chatBox.find(ChatControl.selector_chat_history))
+        this.#chatHistory = this.#chatBox.find(ChatControl.selector_chat_history)
+        this.#tabControl.control(this.#chatBox.find(ChatControl.selector_tabbar), this.#chatHistory)
+        this.#searchControl.control(this.#chatBox.find(ChatControl.selector_search), this.#chatHistory)
 
         if (this.#chatBox.length > 0)
             document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent)
 
         this.#databinding = new Databinding.BindingContext(gobConfig)
-        Databinding.bindListener(this.#databinding, "behaviour.language", async (data) => {
+        Databinding.bindListener(this.#databinding, "behaviour.language", async () => {
             const channels = Object.values(Gobchat.Channels)
 
             const requestTranslation = channels.map(data => data.abbreviationId)
                 .filter(id => Utility.isString(id))
 
             const translations = await gobLocale.getAll(requestTranslation)
-            const result = {}
-
             const channelLookup = MessageBuilder.AbbreviationCache
             channelLookup.length = 0
 
-            for(let data of channels){
+            for (let data of channels) {
                 if (data.abbreviationId)
                     channelLookup[data.chatChannel] = translations[data.abbreviationId]
             }
@@ -170,33 +213,33 @@ export class ChatControl {
 class MessageBuilder {
     public static AbbreviationCache: string[] = []
 
-    build(message: ChatMessage): HTMLElement {
+    public static build(message: ChatMessage): HTMLElement {
         const $body = $("<div></div>")
-            .addClass("gob-chat-entry")
+            .addClass(CssClass.ChatEntry)
             .addClass(MessageBuilder.getMessageChannelCssClass(message))
             .addClass(MessageBuilder.getMessageTriggerGroupCssClass(message))
             .addClass(MessageBuilder.getMessageVisibilityCssClass(message))
 
         $("<span></span>")
-            .addClass("gob-chat-entry__time")
+            .addClass(CssClass.ChatEntry_Time)
             .text(`[${MessageBuilder.getMessageTimestamp(message)}] `)
             .appendTo($body)
 
         const $content = $("<span></span>")
-            .addClass("gob-chat-entry__text")
+            .addClass(CssClass.ChatEntry_Text)
             .appendTo($body)
 
         const sender = MessageBuilder.getSender(message)
         if (sender !== null) {
             $("<span></span>")
-                .addClass("gob-chat-entry__sender")
+                .addClass(CssClass.ChatEntry_Sender)
                 .text(`${sender} `)
                 .appendTo($content)
         }
 
         for (let messageSegment of message.content) {
             $("<span></span>")
-                .addClass("gob-chat_entry__text__segment")
+                .addClass(CssClass.ChatEntry_Segment)
                 .addClass(MessageBuilder.getMessageSegmentClass(messageSegment.type))
                 .text(messageSegment.text)
                 .appendTo($content)
@@ -208,12 +251,13 @@ class MessageBuilder {
     static getMessageChannelCssClass(message: ChatMessage): string {
         const channelName = Constants.ChannelEnumToKey[message.channel]
         const data = Gobchat.Channels[channelName]
-        return `gob-chat-entry--channel-${data.internalName}`
+        return Utility.formatString(CssClass.ChatEntry_Channel_Partial, data.internalName)
+        // return Utility.formatString(CssClass.ChatEntry_Channel_Partial, message.channel.toString())
     }
 
     static getMessageTriggerGroupCssClass(message: ChatMessage): string {
         if (message.source.triggerGroupId)
-            return `gob-chat-entry--trigger-group-${message.source.triggerGroupId}`
+            return Utility.formatString(CssClass.ChatEntry_TriggerGroup_Partial, message.source.triggerGroupId)
         return null
     }
 
@@ -229,18 +273,20 @@ class MessageBuilder {
         if (ignoreDistance && message.containsMentions)
             return null
 
-        const fadeOutStepSize = (100 / Constants.RangeFilterFadeOutLevels)
+        const steps = gobConfig.get("behaviour.rangefilter.opacitysteps")
+
+        const fadeOutStepSize = (100 / steps)
         const visibilityLevel = ((visibility + fadeOutStepSize - 1) / fadeOutStepSize) >> 0 //truncat decimals, makes the LSV an integer
-        return `gob-chat-entry--fadeout-${visibilityLevel}`
+        return Utility.formatString(CssClass.ChatEntry_FadeOut_Partial, visibilityLevel)
     }
 
     static getMessageSegmentClass(segmentType: MessageSegmentEnum): string {
         switch (segmentType) {
-            case Gobchat.MessageSegmentEnum.SAY: return "gob-chat-entry__text__segment--say"
-            case Gobchat.MessageSegmentEnum.EMOTE: return "gob-chat-entry__text__segment--emote"
-            case Gobchat.MessageSegmentEnum.OOC: return "gob-chat-entry__text__segment--ooc"
-            case Gobchat.MessageSegmentEnum.MENTION: return "gob-chat-entry__text__segment--mention"
-            case Gobchat.MessageSegmentEnum.WEBLINK: return "gob-chat-entry__text__segment--link"
+            case Gobchat.MessageSegmentEnum.SAY: return CssClass.ChatEntry_Segment_Say
+            case Gobchat.MessageSegmentEnum.EMOTE: return CssClass.ChatEntry_Segment_Emote
+            case Gobchat.MessageSegmentEnum.OOC: return CssClass.ChatEntry_Segment_Ooc
+            case Gobchat.MessageSegmentEnum.MENTION: return CssClass.ChatEntry_Segment_Mention
+            case Gobchat.MessageSegmentEnum.WEBLINK: return CssClass.ChatEntry_Segment_Link
             default: return null
         }
     }
@@ -327,13 +373,12 @@ class MessageBuilder {
 }
 
 class AudioPlayer {
-    #lastSoundPlayed: Date
+    private static lastSoundPlayed: Date = new Date()
 
     constructor() {
-        this.#lastSoundPlayed = new Date()
     }
 
-    playSoundIfAllowed(message: ChatMessage): void {
+    public static playMentionSoundIfPossible(message: ChatMessage): void {
         const data = gobConfig.get("behaviour.mentions.data.base")
         if (!data.playSound || data.volume <= 0 || !data.soundPath)
             return
@@ -348,21 +393,21 @@ class AudioPlayer {
         }
 
         const time = new Date()
-        if (time.valueOf() - this.#lastSoundPlayed.valueOf() < data.soundInterval)
+        if (time.valueOf() - AudioPlayer.lastSoundPlayed.valueOf() < data.soundInterval)
             return
 
-        this.#lastSoundPlayed = time
+        AudioPlayer.lastSoundPlayed = time
         const audio = new Audio(data.soundPath)
         audio.volume = data.volume
         audio.play()
     }
 
-    playSound(): void {
+    public static playMentionSound(): void {
         const data = gobConfig.get("behaviour.mentions.data.base")
         if (!data.playSound || data.volume <= 0 || !data.soundPath)
             return
 
-        this.#lastSoundPlayed = new Date()
+        AudioPlayer.lastSoundPlayed = new Date()
         const audio = new Audio(data.soundPath)
         audio.volume = data.volume
         audio.play()
@@ -378,21 +423,21 @@ class TabBarControl {
 
     private static readonly AttributeTabId = "data-gob-tab-id"
 
-    private static readonly CssNavBar = "gob-chat_tabbar"
-    private static readonly CssNavPanel = "gob-chat_history"
-    private static readonly CssNavPanelActiveTab = "gob-chat_history--tab-{0}" 
+    private static readonly CssNavBar = CssClass.Chat_Tabs
+    private static readonly CssNavPanel = CssClass.Chat_History
+    private static readonly CssNavPanelActiveTab = CssClass.Chat_History_Tab_Partial
 
     private static readonly CssDisableScrollButton = "is-disabled"
     private static readonly CssActiveTabButton = "is-active"
- 
+
     private static readonly CssScrollLeftButton = "gob-chat_tabbar_button--left"
     private static readonly CssScrollRightButton = "gob-chat_tabbar_button--right"
-    private static readonly CssTabBarContent = "gob-chat_tabbar_content"
-    private static readonly CssTabButton = "gob-chat_tabbar_content_tab"
-    private static readonly CssTabButtonMentionEffect = "gob-chat_tabbar_content_tab--mention"
-    private static readonly CssTabButtonMessageEffect = "gob-chat_tabbar_content_tab--new-message"
+    private static readonly CssTabBarContent = CssClass.Chat_Tabs_Content
+    private static readonly CssTabButton = CssClass.Chat_Tabs_Content_Tab
+    private static readonly CssTabButtonMentionEffect = "gob-chat_tabbar_content_tab--mention-{0}"
+    private static readonly CssTabButtonMessageEffect = "gob-chat_tabbar_content_tab--new-message-{0}"
 
-  
+
     private static readonly selector_tabbar = `> .${TabBarControl.CssNavBar}`
     private static readonly selector_scrollLeftBtn = `> .${TabBarControl.CssScrollLeftButton}`
     private static readonly selector_scrollRightBtn = `> .${TabBarControl.CssScrollRightButton}`
@@ -403,9 +448,11 @@ class TabBarControl {
 
     #databinding: Databinding.BindingContext = null
     #channelToTab: { [channelId: number]: string[] } = {}
-    #navPanelData: { [tabId: string]: {
-        scrollPosition:number
-    }} = {}
+    #navPanelData: {
+        [tabId: string]: {
+            scrollPosition: number
+        }
+    } = {}
     #cssClassForMentionTabEffect: string = null
     #cssClassForNewMessageTabEffect: string = null
     #isPanelScrolledToBottom: boolean = false
@@ -425,7 +472,7 @@ class TabBarControl {
             this.#tabbar.find(TabBarControl.selector_allTabs).off("click", this.#onTabClick)
         }
 
-        if(this.#navPanel){
+        if (this.#navPanel) {
             this.#navPanel.off("scroll", this.#onPanelScroll)
         }
 
@@ -440,7 +487,7 @@ class TabBarControl {
 
         const $navPanel = $(navPanel)
         if (!$navPanel.hasClass(TabBarControl.CssNavPanel))
-            throw new Error("navPanel not found")    
+            throw new Error("navPanel not found")
 
         this.#tabbar = $navBar
         this.#tabbar.on("wheel", this.#onNavBarWheelScroll)
@@ -455,47 +502,47 @@ class TabBarControl {
         this.#databinding = new Databinding.BindingContext(gobConfig)
         Databinding.bindListener(this.#databinding, "behaviour.chattabs", config => this.#updateTabs(config))
         Databinding.bindListener(this.#databinding, "behaviour.chattabs.data", config => this.#buildChannelToTabMapping(config))
-        Databinding.bindListener(this.#databinding, "behaviour.chattabs.effect", (effect) => { 
-            this.#cssClassForMentionTabEffect = effect.mention > 0 ? TabBarControl.CssTabButtonMentionEffect : null
-            this.#cssClassForNewMessageTabEffect = effect.message > 0 ? TabBarControl.CssTabButtonMessageEffect : null            
+        Databinding.bindListener(this.#databinding, "behaviour.chattabs.effect", (effect) => {
+            this.#cssClassForMentionTabEffect = effect.mention > 0 ? Utility.formatString(TabBarControl.CssTabButtonMentionEffect, effect.mention) : null
+            this.#cssClassForNewMessageTabEffect = effect.message > 0 ? Utility.formatString(TabBarControl.CssTabButtonMessageEffect, effect.message) : null
         })
         this.#databinding.initialize()
     }
 
-    applyAnimationToTab(channel: number, hasMention: boolean): void {        
+    applyNewMessageAnimationToTabs(channel: number, hasMention: boolean): void {
         const affectedTabs = this.#channelToTab[channel] || []
         const activeTabId = this.#activeTabId
-        if(_.includes(affectedTabs, activeTabId))
+        if (_.includes(affectedTabs, activeTabId))
             return // done, message was visible on active tab
 
         const cssClassForMentionEffect = this.#cssClassForMentionTabEffect
         const cssClassForNewMessageEffect = this.#cssClassForNewMessageTabEffect
 
-        for(let tabId of affectedTabs){
-            if(tabId === activeTabId)
+        for (let tabId of affectedTabs) {
+            if (tabId === activeTabId)
                 continue // do not apply any effects to the active tab
 
             const $tab = this.#getTab(tabId)
 
-            if(hasMention && cssClassForMentionEffect){
+            if (hasMention && cssClassForMentionEffect) {
                 $tab.removeClass(cssClassForNewMessageEffect)
                     .addClass(cssClassForMentionEffect)
-                    .on("click.tab.effects.mention", function(){
+                    .on("click.tab.effects.mention", function () {
                         $(this).off("click.tab.effects.mention")
                             .removeClass(cssClassForMentionEffect)
                     })
                 continue //apply only one effect
             }
 
-            if(cssClassForNewMessageEffect){
+            if (cssClassForNewMessageEffect) {
                 $tab.filter(`:not(.${cssClassForMentionEffect})`)
                     .addClass(cssClassForNewMessageEffect)
-                    .on("click.tab.effects.message", function(){
+                    .on("click.tab.effects.message", function () {
                         $(this).off("click.tab.effects.message")
                             .removeClass(cssClassForNewMessageEffect)
                     })
                 continue //apply only one effect
-            }            
+            }
         }
     }
 
@@ -551,14 +598,14 @@ class TabBarControl {
         } else {
             const selector = Utility.formatString(TabBarControl.selector_tabWithId, idOrIndex)
             const $nextTab = this.#tabbar.find(selector)
-            return $nextTab         
+            return $nextTab
         }
     }
 
     #activateTab(idOrIndex: string | number): boolean {
         const lastActiveTabId = this.#activeTabId
 
-        if(lastActiveTabId in this.#navPanelData){
+        if (lastActiveTabId in this.#navPanelData) {
             this.#navPanelData[lastActiveTabId].scrollPosition = this.#isPanelScrolledToBottom ? -1 : this.#panelScrollPosition
         }
 
@@ -569,11 +616,11 @@ class TabBarControl {
         const $tab = this.#getTab(idOrIndex)
         $tab.addClass(TabBarControl.CssActiveTabButton)
 
-        if($tab.length === 0){ //there is no tab with this id
+        if ($tab.length === 0) { //there is no tab with this id
             this.#activateTab(0) //fallback
             return false
-        }        
-        
+        }
+
         const newActiveTabId = this.#activeTabId
 
         this.#navPanel // used to filter messages depending on which tab is active
@@ -581,8 +628,8 @@ class TabBarControl {
             .addClass(Utility.formatString(TabBarControl.CssNavPanelActiveTab, newActiveTabId))
 
         // restore scroll position
-        if(newActiveTabId in this.#navPanelData){
-            if(this.#navPanelData[newActiveTabId].scrollPosition < 0)
+        if (newActiveTabId in this.#navPanelData) {
+            if (this.#navPanelData[newActiveTabId].scrollPosition < 0)
                 this.#scrollPanelToBottom(true)
             else
                 this.#scrollPanelToPosition(this.#navPanelData[newActiveTabId].scrollPosition, true)
@@ -605,7 +652,7 @@ class TabBarControl {
         // remove old tabs and store them in a lookup table
         const $content = this.#tabbar.find(TabBarControl.selector_content)
         const $oldTabs = $content.children().detach()
-        const oldTabsLookup: {[id:string]:HTMLElement} = {}
+        const oldTabsLookup: { [id: string]: HTMLElement } = {}
         for (let tab of $oldTabs) {
             const id = tab.getAttribute(TabBarControl.AttributeTabId)
             oldTabsLookup[id] = tab
@@ -628,23 +675,23 @@ class TabBarControl {
         }
 
         // remove old nav panel data
-        for(let tabId of Object.keys(this.#navPanelData)){
-            if(!_.includes(tabId, configSorting))
+        for (let tabId of Object.keys(this.#navPanelData)) {
+            if (!_.includes(tabId, configSorting))
                 delete this.#navPanelData[tabId]
         }
 
         // add new nav panel data
-        for(let tabId of configSorting){
-            if(!(tabId in this.#navPanelData)){
+        for (let tabId of configSorting) {
+            if (!(tabId in this.#navPanelData)) {
                 this.#navPanelData[tabId] = {
                     scrollPosition: -1
                 }
             }
         }
 
-       // const idsToRemove = oldTabIds.filter(id => !_.includes(newTabIds, id))
-       // for (let id of idsToRemove)
-       //     $oldTabs.filter(`[${TabBarControl.attributeTabId}=${id}]`).remove()
+        // const idsToRemove = oldTabIds.filter(id => !_.includes(newTabIds, id))
+        // for (let id of idsToRemove)
+        //     $oldTabs.filter(`[${TabBarControl.attributeTabId}=${id}]`).remove()
 
         if (!this.#activeTabId)
             this.#activateTab(0)
@@ -678,13 +725,13 @@ class TabBarControl {
             .toggleClass(TabBarControl.CssDisableScrollButton, isAtRightBorder)
     }
 
-    #scrollPanelToBottom(scrollFast:boolean): void {
+    #scrollPanelToBottom(scrollFast: boolean): void {
         const navPanel = this.#navPanel[0]
         const position = navPanel.scrollHeight - navPanel.clientHeight
         this.#scrollPanelToPosition(position, scrollFast)
     }
 
-    #scrollPanelToPosition(position:number, scrollFast:boolean): void {
+    #scrollPanelToPosition(position: number, scrollFast: boolean): void {
         if (scrollFast) {
             this.#navPanel.scrollTop(position)
         } else {
@@ -694,7 +741,182 @@ class TabBarControl {
         }
     }
 
-    get #panelScrollPosition(): number{
+    get #panelScrollPosition(): number {
         return this.#navPanel.scrollTop()
+    }
+}
+
+class ChatSearchControl {
+    private static readonly cssMarkedbySearch = CssClass.ChatEntry_MarkedbySearch
+    private static readonly cssActiveSelection = CssClass.ChatEntry_SelectedBySearch
+    private static readonly cssChatMessage = CssClass.ChatEntry
+
+    private static readonly selector_input = "> .js-input"
+    private static readonly selector_counter = "> .js-counter"
+    private static readonly selector_up = "> .js-up"
+    private static readonly selector_down = "> .js-down"
+    private static readonly selector_reset = "> .js-reset"
+    private static readonly selector_markedBySearch = `.${this.cssMarkedbySearch}`
+    private static readonly selector_activeSelection = `.${this.cssActiveSelection}`
+    private static readonly selector_visible_messages = `.${this.cssChatMessage}:visible`
+
+    #searchElement = $()
+    #chatHistory = $()
+
+    constructor() {
+    }
+
+    control(searchElement: HTMLElement | JQuery, chatHistory: HTMLElement | JQuery): void {
+        // unbind
+        this.#searchElement.find(ChatSearchControl.selector_input).off("keyup", this.#onInputEnter)
+        this.#searchElement.find(ChatSearchControl.selector_counter).off("click", this.scrollToSelection)
+        this.#searchElement.find(ChatSearchControl.selector_up).off("click", this.moveSelectionUp)
+        this.#searchElement.find(ChatSearchControl.selector_down).off("click", this.moveSelectionDown)
+        this.#searchElement.find(ChatSearchControl.selector_reset).off("click", this.clearSearch)
+        this.#removeMessageMarkers()
+
+        // rebind
+        this.#searchElement = $(searchElement).first()
+        this.#chatHistory = $(chatHistory).first()
+
+        this.#searchElement.find(ChatSearchControl.selector_input).on("keyup", this.#onInputEnter)
+        this.#searchElement.find(ChatSearchControl.selector_counter).on("click", this.scrollToSelection)
+        this.#searchElement.find(ChatSearchControl.selector_up).on("click", this.moveSelectionUp)
+        this.#searchElement.find(ChatSearchControl.selector_down).on("click", this.moveSelectionDown)
+        this.#searchElement.find(ChatSearchControl.selector_reset).on("click", this.clearSearch)
+    }
+
+    #onInputEnter = (event) => {
+        if (event.keyCode === 13) // enter
+            this.startSearch()
+    }
+
+    #updateCounterValue = () => {
+        const $markedMessages = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch)
+        const $activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
+        const max = $markedMessages.length
+        const current = max > 0 ? $markedMessages.index($activeSelection) : 0
+        this.#searchElement.find(ChatSearchControl.selector_counter).text(`${max - current} / ${max}`)
+    }
+
+    #removeMessageMarkers = () => {
+        this.#chatHistory.find(ChatSearchControl.selector_markedBySearch).removeClass(ChatSearchControl.cssMarkedbySearch)
+        this.#chatHistory.find(ChatSearchControl.selector_activeSelection).removeClass(ChatSearchControl.cssActiveSelection)
+        this.#updateCounterValue()
+    }
+
+    hide = () => {
+        this.visible = false
+    }
+
+    show = () => {
+        this.visible = true
+    }
+
+    toggle = () => {
+        this.visible = !this.visible
+    }
+
+    get visible() {
+        return this.#searchElement.is(":visible")
+    }
+
+    set visible(value) {
+        if (value) {
+            this.#searchElement.show()
+            this.#searchElement.find(ChatSearchControl.selector_input).focus()
+        } else {
+            this.#searchElement.hide()
+            this.clearSearch()
+        }
+    }
+
+    clearSearch = () => {
+        this.#removeMessageMarkers()
+        this.#searchElement.find(ChatSearchControl.selector_input).val("").focus()
+    }
+
+    scrollToSelection = () => {
+        const $selectedElement = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
+        if ($selectedElement.length === 0)
+            return
+
+        const selectedElement = $selectedElement[0]
+        const scrollableFrame = this.#chatHistory[0]
+
+        const containerTop = scrollableFrame.scrollTop
+        const containerBot = scrollableFrame.clientHeight + containerTop
+        const elementTop = selectedElement.offsetTop - scrollableFrame.offsetTop
+        const elementBot = selectedElement.clientHeight + elementTop
+        const isVisible = containerTop <= elementTop && elementBot <= containerBot
+
+        if (isVisible)
+            return
+
+        const position = elementTop;
+
+        $(scrollableFrame).animate({
+            scrollTop: position
+        }, 100)
+    }
+
+    search = (text) => {
+        this.#removeMessageMarkers()
+
+        if (text === null || text === undefined)
+            return
+
+        text = text.trim().toLowerCase()
+        if (text.length === 0)
+            return
+
+        this.#chatHistory.find(ChatSearchControl.selector_visible_messages).each(function () {
+            if ($(this).text().toLowerCase().indexOf(text) >= 0)
+                $(this).addClass(ChatSearchControl.cssMarkedbySearch)
+        })
+
+        const $markedMessages = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch)
+
+        if ($markedMessages.length === 0) {
+            this.#updateCounterValue()
+        } else {
+            $markedMessages.last().addClass(ChatSearchControl.cssActiveSelection)
+            this.#updateCounterValue()
+            this.scrollToSelection()
+        }
+    }
+
+    startSearch = () => {
+        this.search(this.#searchElement.find(ChatSearchControl.selector_input).val())
+    }
+
+    moveSelectionUp = () => {
+        const $activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
+        $activeSelection.removeClass(ChatSearchControl.cssActiveSelection)
+
+        let $prevMarked = $activeSelection.prevAll(ChatSearchControl.selector_markedBySearch).first()
+
+        if ($prevMarked.length === 0) //wrap around
+            $prevMarked = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch).last()
+
+        $prevMarked.addClass(ChatSearchControl.cssActiveSelection)
+
+        this.#updateCounterValue()
+        this.scrollToSelection()
+    }
+
+    moveSelectionDown = () => {
+        const $activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
+        $activeSelection.removeClass(ChatSearchControl.cssActiveSelection)
+
+        let $nextMarked = $activeSelection.nextAll(ChatSearchControl.selector_markedBySearch).first()
+
+        if ($nextMarked.length === 0) //wrap around
+            $nextMarked = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch).first()
+
+        $nextMarked.addClass(ChatSearchControl.cssActiveSelection)
+
+        this.#updateCounterValue()
+        this.scrollToSelection()
     }
 }
