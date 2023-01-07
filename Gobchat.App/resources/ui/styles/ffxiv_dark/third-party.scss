@@ -1,0 +1,20 @@
+﻿/* spectrum */
+
+.sp-replacer {
+    background: var(--primary-button-background);
+    box-sizing: border-box;
+    color: var(--symbol-button-color);
+    border: calc(1em / 16) solid var(--symbol-button-color);
+    border-radius: calc(5em / 16);
+    box-shadow: inset calc(1em / 32) calc(1em / 32) 0 var(--color-button-boxshadow-color), inset calc(-1em / 32) calc(-1em / 32) 0 var(--color-button-boxshadow-color);
+
+    &:hover {
+        color: var(--symbol-button-color);
+        filter: brightness(110%);
+    }
+
+    &.sp-active {
+        color: var(--symbol-button-color);
+        box-shadow: inset calc(1em / 16) calc(1em / 16) calc(10em / 16) #020202a6;
+    }
+}

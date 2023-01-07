@@ -1,5 +1,20 @@
-const templateDialog = 
-`
+/*******************************************************************************
+ * Copyright (C) 2019-2023 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+import * as Utility from "./CommonUtility.js"
+
+const templateDialog =
+    `
 <div title="test">
     <p>
         <span style="float:left; margin:24px 24px 20px 0;">
@@ -11,46 +26,97 @@ const templateDialog =
     </p>
 </div>
 `
-
-export interface DialogOptions {
-    title?: string
-    dialogType?: "yesno" | "ok" | "okcancel" | "yes"
-    dialogIcon?: "" | "warning"
-    dialogText?: string
-    dialogContent?: HTMLElement | JQuery
-    buttons?: { [buttonText: string]: number }
-    modal?: boolean
-    autoOpen?: boolean    
-    localized?: boolean
-    height?: "auto" | number
-    width?: "auto" | number
-    resizable?: boolean
+interface DialogOptionTypes {
+    title: string
+    dialogType: "YesNo" | "Ok" | "OkCancel" | "Yes"
+    dialogIcon: "" | "Warning"
+    dialogText: string
+    dialogContent: HTMLElement | JQuery | null
+    buttons: { [buttonText: string]: number }
+    modal: boolean
+    autoOpen: boolean
+    localized: boolean
+    height: "Auto" | number
+    width: "Auto" | number
+    resizable: boolean
 }
 
+export type DialogOptions = Partial<DialogOptionTypes>
+export type ErrorDialogOptions = DialogOptions
+export type ConfirmationDialogOptions = DialogOptions
+export type MessageDialogOptions = DialogOptions
 
-export function showErrorDialog(options: DialogOptions): Promise<number> {
+export function showErrorDialog(options: ErrorDialogOptions): Promise<number> {
     const nonOptionalOptions: DialogOptions = {
         title: "config.main.dialog.title.error",
-        dialogType: "ok",
-        dialogIcon: "warning"
+        dialogType: "Ok",
+        dialogIcon: "Warning"
     }
     return _showMessageDialog(options, nonOptionalOptions)
 }
 
-export function showConfirmationDialog(options: DialogOptions): Promise<number> {
+export function showConfirmationDialog(options: ConfirmationDialogOptions): Promise<number> {
     const nonOptionalOptions: DialogOptions = {
         title: "config.main.dialog.title.confirm",
-        dialogType: "yesno",
-        dialogIcon: "warning"
+        dialogType: "YesNo",
+        dialogIcon: "Warning"
     }
     return _showMessageDialog(options, nonOptionalOptions)
 }
 
-export function showMessageDialog(options: DialogOptions): Promise<number> {
+export function showMessageDialog(options: MessageDialogOptions): Promise<number> {
     return _showMessageDialog(options, {})
 }
 
-interface JQueryUIDialogOptions {
+export function showProfileIdSelectionDialog(callback, options) {
+    {
+        (async () => {
+            let defOptions = { exclude: [] }
+            defOptions = $.extend(defOptions, options)
+
+            let profileIds = gobConfig.profileIds
+            if (defOptions.exclude)
+                profileIds = _.without(profileIds, defOptions.exclude)
+
+            const $selector = $("<select/>")
+            profileIds.forEach((profileId) => {
+                var profile = gobConfig.getProfile(profileId)
+                if (profile !== null)
+                    $selector.append(new Option(profile.profileName, profileId))
+            })
+
+            const result = await showMessageDialog(
+                {
+                    title: "config.profiles.dialog.copyprofilepage.title",
+                    dialogContent: $selector,
+                    dialogType: "OkCancel"
+                }
+            )
+
+            if (result === 1)
+                callback($selector.val())
+        })()
+    }
+}
+
+
+
+const DefaultDialogOptions: DialogOptionTypes = {
+    resizable: false,
+    width: 600,
+    modal: true,
+    autoOpen: false,
+    buttons: {},
+    dialogType: "Ok",
+    dialogIcon: "",
+    dialogText: "",
+    dialogContent: null,
+    localized: true,
+    title: "",
+    height: 0
+}
+
+interface JQueryDialogOptionTypes {
     title?: string
     resizable?: boolean
     classes?: { [key: string]: string } // "ui-dialog": "ui-corner-all", "ui-dialog-titlebar": "ui-corner-all"
@@ -62,28 +128,15 @@ interface JQueryUIDialogOptions {
     draggable?: boolean
 }
 
-const defaultUserOptions: DialogOptions = {
-    resizable: false,
-    width: 600,
-    modal: true,
-    autoOpen: false,
-    buttons: {},
-    dialogType: "ok",
-    dialogIcon: "",
-    dialogText: "",
-    dialogContent: null,
-    localized: true
-}
-
 function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogOptions): Promise<number> {
-    const mergedOptions: DialogOptions = { ...defaultUserOptions, ...userOptions, ...enforcedOptions }
+    const mergedOptions: DialogOptionTypes = Utility.extendObject({ ...DefaultDialogOptions }, [userOptions, enforcedOptions], false, true, "both")
 
     return new Promise<number>(async function (resolve, reject) {
         try {
             await processOptions(mergedOptions)
 
             const buttons = Object.keys(mergedOptions.buttons).map(text => {
-                const value = mergedOptions.buttons[text]
+                const value = mergedOptions.buttons![text]
                 return {
                     text: text,
                     click: function () {
@@ -92,21 +145,21 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
                     }
                 }
             })
-      
+
             const $dialog = $(templateDialog)
 
-            if (mergedOptions.dialogText.length > 0)
+            if (mergedOptions.dialogText === "string" && mergedOptions.dialogText.length > 0)
                 $dialog.find("#dialog_content").append($("<span/>").html(mergedOptions.dialogText))
 
             if (mergedOptions.dialogContent)
                 $dialog.find("#dialog_content").append($(mergedOptions.dialogContent))
 
-            const jqueryDialogOptions: JQueryUIDialogOptions = {
+            const jqueryDialogOptions: JQueryDialogOptionTypes = {
                 title: mergedOptions.title,
                 modal: mergedOptions.modal,
                 resizable: mergedOptions.resizable,
-                height: mergedOptions.height,
-                width: mergedOptions.width,
+                height: mergedOptions.height === "Auto" ? "auto" : mergedOptions.height,
+                width: mergedOptions.width === "Auto" ? "auto" : mergedOptions.width,
                 classes: { "ui-dialog-titlebar": "ui-dialog-titlebar-close--hide" },
                 closeOnEscape: false,
                 buttons: buttons
@@ -115,7 +168,7 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
             $dialog.dialog(jqueryDialogOptions)
 
             switch (mergedOptions.dialogIcon) {
-                case "warning":
+                case "Warning":
                     $dialog.find("#icon_warning").show()
                     break;
             }
@@ -133,27 +186,27 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
     })
 }
 
-async function processOptions(option: DialogOptions): Promise<void> {
-    if (Object.keys(option.buttons).length == 0) {        
+async function processOptions(option: DialogOptionTypes): Promise<void> {
+    if (Object.keys(option.buttons).length == 0) {
         switch (option.dialogType) {
-            case "yesno":
+            case "YesNo":
                 option.buttons = {
                     "config.main.dialog.btn.yes": 1,
                     "config.main.dialog.btn.no": 0
                 }
                 break;
-            case "okcancel":
+            case "OkCancel":
                 option.buttons = {
                     "config.main.dialog.btn.ok": 1,
                     "config.main.dialog.btn.cancel": 0
                 }
                 break;
-            case "yes":
+            case "Yes":
                 option.buttons = {
                     "config.main.dialog.btn.yes": 0
                 }
                 break;
-            case "ok":
+            case "Ok":
                 option.buttons = {
                     "config.main.dialog.btn.ok": 0
                 }
@@ -162,16 +215,23 @@ async function processOptions(option: DialogOptions): Promise<void> {
     }
 
     if (option.localized) {
-        const lookupKeys = [option.title].concat(Object.keys(option.buttons))
+        const lookupKeys = ([] as string[]).concat(Object.keys(option.buttons))
+
+        if (option.title.length > 0)
+            lookupKeys.push(option.title)
+
         if (option.dialogText.length > 0)
             lookupKeys.push(option.dialogText)
 
         const locales = await gobLocale.getAll(lookupKeys)
-        option.title = locales[option.title]
-        option.buttons = _.mapKeys(option.buttons, (v, k) => locales[k])
+
+        if (option.title.length > 0)
+            option.title = locales[option.title]
 
         if (option.dialogText.length > 0)
             option.dialogText = locales[option.dialogText]
+
+        option.buttons = _.mapKeys(option.buttons, (v, k) => locales[k])
 
         if (option.dialogContent)
             await gobLocale.updateElement(option.dialogContent)

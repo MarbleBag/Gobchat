@@ -359,12 +359,12 @@
   },
   "style": {
     "theme": "FFXIV Dark",
-    "base-font-size": "16px",
+    "base-font-size": "16",
     "chat": {
-      "font-size": "16px"
+      "font-size": "16"
     },
     "config": {
-      "font-size": "16px"
+      "font-size": "16"
     },
     "chatbox": {
       "background-color": "rgba(20, 20, 20, 0.95)"

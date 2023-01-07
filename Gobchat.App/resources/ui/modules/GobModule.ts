@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -13,10 +13,10 @@
 
 'use strict'
 
-export { Utility } from './CommonUtility.js'
-export { Databinding } from './Databinding.js'
-export { Constants } from './Constants.js'
-export { LocaleManager } from './Locale.js'
-export { ChatController } from './Chat.js'
-export { GobConfig } from './Config.js'
-export { StyleManager } from './Style.js'
+export * as Utility from './CommonUtility.js'
+export * as Databinding from './Databinding.js'
+export * as Constants from './Constants.js'
+export * as Locale from './Locale.js'
+export * as Chat from './Chat.js'
+export * as Config from './Config.js'
+export * as Style from './Style.js'

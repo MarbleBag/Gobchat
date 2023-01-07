@@ -18,11 +18,11 @@ const attributeNavId = "data-gob-nav-id"
 const attributePanel = "data-gob-nav-panel"
 const attributePanelTemplate = "data-gob-nav-template"
 
-const cssNav = "gob-config_navigation"
-const cssNavControl = "gob-config_navigation_entry"
-const cssPanel = "gob-config_navigation_panel"
-const cssPanelEntry = "gob-config_navigation_panel_entry"
-const cssActive = "active"
+const cssNav = "gob-config-navigation"
+const cssNavControl = "gob-config-navigation_entry"
+const cssPanel = "gob-config-navigation_panel"
+const cssPanelEntry = "gob-config-navigation-panel_entry"
+const cssActive = "is-active"
 
 const selector_controls = `> .${cssNavControl}`
 const selector_allActivePanels = `> .${cssPanelEntry}.${cssActive}`

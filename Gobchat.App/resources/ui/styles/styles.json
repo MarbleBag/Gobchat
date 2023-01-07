@@ -4,5 +4,11 @@
     "files": [
       "styles/ffxiv_dark.css"
     ]
+  },
+  {
+    "label": "FFXIV Light",
+    "files": [
+      "styles/ffxiv_light.css"
+    ]
   }
 ]

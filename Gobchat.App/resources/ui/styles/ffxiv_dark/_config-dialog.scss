@@ -1,0 +1,29 @@
+@use "config-divider";
+
+.gob-config-dialog {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    padding: 0.1rem;
+    color: var(--text-1-color);
+    text-shadow: var(--text-1-shadow);
+    background: var(--dialog-background);
+}
+
+.gob-config-dialog_header {
+    font-size: 1.5em;
+    margin: 0.1em 0 -0.2em 0.7em;
+    color: var(--text-2-color);
+    text-shadow: var(--text-2-shadow);
+}
+
+.gob-config-dialog_panel {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    height: 100%;
+    & > .gob-config-divider {
+        @extend .gob-config-divider--vertical;
+    }
+}

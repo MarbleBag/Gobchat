@@ -1,0 +1,56 @@
+.gob-chat-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.gob-chat-toolbar_element {
+    height: 1.5em;
+    min-width: 1.5em;
+    line-height: 1;
+    background-image: var(--primary-button-background);
+    white-space: nowrap;
+    border: none;
+}
+
+.gob-chat-toolbar_button {
+    @extend .gob-chat-toolbar_element;
+
+    font-size: inherit; // overrides button
+    cursor: pointer; // overrides button
+
+    padding: 0 0.625em;
+    color: var(--text-1-color);
+    text-shadow: var(--text-1-shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &.is-disabled {
+        color: var(--text-1-color-disabled);
+    }
+}
+
+.gob-chat-toolbar_icon-button {
+    @extend .gob-chat-toolbar_button;
+
+    width: 1.5em;
+    padding: 0.18em;
+    border-radius: 50%;
+    color: var(--text-2-color);
+    text-shadow: var(--text-2-shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &.is-disabled {
+        color: var(--text-2-color-disabled);
+    }
+}
+
+.gob-chat-toolbar_search {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+}

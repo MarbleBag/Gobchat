@@ -44,7 +44,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TypeScriptTarget>ES2021</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
-    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
@@ -68,7 +68,7 @@
     <DebugSymbols>false</DebugSymbols>
     <TypeScriptTarget>ES2021</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
-    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptModuleKind>ESNEXT</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
@@ -120,13 +120,22 @@
     <Content Include="resources\ui\config\config_groups.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="resources\ui\tsconfig.json" />
+    <Content Include="resources\ui\modules\Components.js">
+      <DependentUpon>Components.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light.css">
+      <DependentUpon>ffxiv_light.scss</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\tsconfig.json" />
     <Content Include="resources\ui\config\config.js">
       <DependentUpon>config.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config.ts" />
     <Content Include="resources\ui\config\config_app.js">
+      <DependentUpon>config_app.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_channel.js">
@@ -170,6 +179,8 @@
       <DependentUpon>CommonUtility.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
     <TypeScriptCompile Include="resources\ui\globals.d.ts" />
     <Content Include="resources\ui\modules\Dialog.js">
       <DependentUpon>Dialog.ts</DependentUpon>
@@ -202,16 +213,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Config.ts" />
-	<Content Include="resources\ui\modules\MenuNavigationComponent.js">
+    <Content Include="resources\ui\modules\MenuNavigationComponent.js">
       <DependentUpon>MenuNavigationComponent.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Components.ts" />
     <TypeScriptCompile Include="resources\ui\modules\MenuNavigationComponent.ts" />
     <Content Include="resources\ui\modules\Constants.js">
       <DependentUpon>Constants.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Constants.ts" />
+    <Content Include="resources\ui\modules\GobModule.js">
+      <DependentUpon>GobModule.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <TypeScriptCompile Include="resources\ui\modules\GobModule.ts" />
     <Content Include="resources\ui\modules\Locale.js">
       <DependentUpon>Locale.ts</DependentUpon>
@@ -252,20 +268,20 @@
       <DependentUpon>ffxiv_dark.scss</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_dark_style.css">
-      <DependentUpon>ffxiv_dark_style.scss</DependentUpon>
-    </Content>
-    <Content Include="resources\ui\styles\ffxiv_style.css">
-      <DependentUpon>ffxiv_style.scss</DependentUpon>
-    </Content>
+    <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark_3rd.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark_chat.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark_config.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark_base.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark_style.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\third-party.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\base.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\variables.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat-tabbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat-toolbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-button.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-dialog.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-divider.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-group.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-navigation.scss" />
     <None Include="resources\ui\styles\base.scss" />
-    <None Include="resources\ui\styles\ffxiv_style.scss" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -315,6 +331,8 @@
     <None Include="resources\ui\old styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="resources\ui\styles\ffxiv_dark\_input.scss" />
+    <None Include="resources\ui\styles\ffxiv_light.scss" />
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

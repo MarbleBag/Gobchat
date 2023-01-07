@@ -1,0 +1,91 @@
+@mixin font-sizes($base: 1em, $parts) {
+    @for $i from 1 to $parts + 1 {
+        --fsize-#{$i}-#{$parts}: #{$base * $i / $parts}; // calc(#{$base * $i} / #{$parts});
+    }
+}
+
+:root {
+    // generated at runtime. Only here for autocompletion
+
+    --gob-general-font-size: 16px;
+    --gob-chat-history-font-size: 16px;
+
+    //
+
+    --noise-texture: url("../graphics/noise.png");
+    --dialog-background: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 1.25em, #313131 3.25em);
+
+    --page-scrollbar-thumb: #f0f4ce;
+    --page-scrollbar-thumb-border: #ddd391;
+    --page-scrollbar-track: #666666;
+    --page-scrollbar-track-border: #202020;
+    --page-scrollbar-track-active: #222222;
+
+    --primary-button-color: var(--text-2-color);
+    --primary-button-icon-color: #e8a33f;
+    --primary-button-shadow-color: var(--text-2-shadow);
+    --primary-button-background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
+    --primary-button-border-color: #141414;
+    --primary-button-active-border-color: #e8a33f;
+
+    --symbol-button-color: #cc9f5e;
+    --symbol-button-shadow-color: black;
+    --symbol-button-background: #a43131;    
+    --symbol-button-size: calc(25em / 16);
+
+    --color-button-color: #cc9f5e;
+    --color-button-background: var(--primary-button-background);
+    --color-button-boxshadow-color: black;
+
+    --text-1-color: #ded2b8;
+    --text-1-shadow-color: black;
+    --text-1-shadow: calc(1rem / 16) 0 var(--text-1-shadow-color), calc(-1rem / 16) 0 var(--text-1-shadow-color),
+        0 calc(1rem / 16) var(--text-1-shadow-color), 0 calc(-1rem / 16) var(--text-1-shadow-color);
+    --text-1-color-disabled: #756f62;
+
+    --text-2-color: #cccccc;
+    --text-2-shadow-color: black;
+    --text-2-shadow: calc(1rem / 16) 0 var(--text-2-shadow-color), calc(-1rem / 16) 0 var(--text-2-shadow-color),
+        0 calc(1rem / 16) var(--text-2-shadow-color), 0 calc(-1rem / 16) var(--text-2-shadow-color);
+    --text-2-color-disabled: #7e7e7e;
+
+    --text-error-color: crimson;
+    --text-error-shadow-color: black;
+    --text-error-shadow: calc(1rem / 16) 0 var(--text-error-shadow-color),
+        calc(-1rem / 16) 0 var(--text-error-shadow-color), 0 calc(1rem / 16) var(--text-error-shadow-color),
+        0 calc(-1rem / 16) var(--text-error-shadow-color);
+
+    
+
+    --checkbox-size: 0.875em;
+    --checkbox-off-texture: url("../graphics/checkbox.png");
+    --checkbox-on-texture: url("../graphics/checkbox-checked.png");
+
+    --page-divider-color-1: black;
+    --page-divider-color-2: white;
+
+    --chat-active-tab-color: #c79300;
+
+    --active-selection-border-color: 0; // not good
+    --nonactive-selection-border-color: 0; // not good
+
+    // @include font-sizes(1em, 2);
+    // @include font-sizes(1em, 3);
+    // @include font-sizes(1em, 4);
+    // @include font-sizes(1em, 8);
+    // @include font-sizes(1em, 16);
+    // @include font-sizes(1em, 32);
+
+    // --text-regular-color: #cfc4ac;
+    // --text-bla-1-color-inactive: #756f62;
+
+    --color-gold: #cc9f5e;
+    --text-shadow: black;
+
+    --old-text-color-1: #cfc4ac;
+    --old-text-color-1-disabled: #756f62;
+
+    --text-color-2: #ded2b8;
+    --text-color-3: #cccccc;
+    --text-color-4: #cccccc;
+}

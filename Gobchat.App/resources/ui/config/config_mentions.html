@@ -1,5 +1,5 @@
-﻿
-<button class="gob-button-tertiary gob-button-copypage" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
+
+<button class="gob-config-icon-button gob-button-copypage" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
 
 <p>
     <div>
@@ -28,11 +28,11 @@
 <template id="cmention_template_mention">
     <div data-gob-entryid class="gob-config-group">
         <div>
-            <div class="gob-config-group-label"
-                    data-gob-locale-text="config.mentions.mentions.label">
+            <div class="gob-config-group_text"
+                 data-gob-locale-text="config.mentions.mentions.label">
             </div>
             <span>
-                <button hidden class="tmpl-delete-entry gob-button-tertiary gob-button-delete"
+                <button hidden class="tmpl-delete-entry gob-config-icon-button gob-button-delete"
                         data-gob-locale-title="config.main.button.delete.tooltip">
                     <i class="fa fa-trash"></i>
                 </button>
@@ -41,8 +41,8 @@
         <div class="gob-config-group-item">
             <div>
                 <textarea rows="3" class="tmpl-trigger"
-                            data-gob-configkey="behaviour.mentions.{0}.trigger"
-                            data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
+                          data-gob-configkey="behaviour.mentions.{0}.trigger"
+                          data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
             </div>
         </div>
         <!-- deactivated til multiple mentions are really needed
@@ -59,10 +59,10 @@
         <div class="gob-config-group-item">
             <div>
                 <input type="checkbox" class="tmpl-play-sound"
-                        data-gob-configkey="behaviour.mentions.{0}.playsound"
-                        data-gob-locale-title="config.mentions.audio.play.tooltip" />
+                       data-gob-configkey="behaviour.mentions.{0}.playsound"
+                       data-gob-locale-title="config.mentions.audio.play.tooltip" />
                 <div data-gob-locale-text="config.mentions.audio.play"
-                        data-gob-locale-title="config.mentions.audio.play.tooltip"></div>
+                     data-gob-locale-title="config.mentions.audio.play.tooltip"></div>
             </div>
         </div>
 
@@ -72,18 +72,18 @@
                     <tr>
                         <td>
                             <div data-gob-locale-text="config.mentions.audio.path"
-                                    data-gob-locale-title="config.mentions.audio.path.tooltip"></div>
+                                 data-gob-locale-title="config.mentions.audio.path.tooltip"></div>
                         </td>
                         <td>
                             <div>
                                 <input type="text" class="tmpl-sound-path"
-                                        data-gob-configkey="behaviour.mentions.{0}.sound"
-                                        data-gob-locale-title="config.mentions.audio.path.tooltip" />
-                                <button class="gob-button-tertiary tmpl-sound-selector"
+                                       data-gob-configkey="behaviour.mentions.{0}.sound"
+                                       data-gob-locale-title="config.mentions.audio.path.tooltip" />
+                                <button class="gob-config-icon-button tmpl-sound-selector"
                                         data-gob-locale-title="config.mentions.audio.select.tooltip">
                                     <i class="fas fa-file-audio"></i>
                                 </button>
-                                <button class="gob-button-tertiary tmpl-test-sound"
+                                <button class="gob-config-icon-button tmpl-test-sound"
                                         data-gob-locale-title="config.mentions.audio.test.tooltip">
                                     <i class="fas fa-play"></i>
                                 </button>
@@ -93,22 +93,22 @@
                     <tr>
                         <td>
                             <div data-gob-locale-text="config.mentions.audio.volume"
-                                    data-gob-locale-title="config.mentions.audio.volume.tooltip"></div>
+                                 data-gob-locale-title="config.mentions.audio.volume.tooltip"></div>
                         </td>
                         <td>
                             <input class="tmpl-sound-volume" type="range" min="0" max="100"
-                                    data-gob-locale-title="config.mentions.audio.volume.tooltip" />
+                                   data-gob-locale-title="config.mentions.audio.volume.tooltip" />
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div data-gob-locale-text="config.mentions.audio.interval"
-                                    data-gob-locale-title="config.mentions.audio.interval.tooltip"></div>
+                                 data-gob-locale-title="config.mentions.audio.interval.tooltip"></div>
                         </td>
                         <td>
                             <input class="tmpl-sound-rest" type="number" min="1"
-                                    style="width:50px;"
-                                    data-gob-locale-title="config.mentions.audio.interval.tooltip" />
+                                   style="width:50px;"
+                                   data-gob-locale-title="config.mentions.audio.interval.tooltip" />
                         </td>
                     </tr>
                 </table>
@@ -117,4 +117,4 @@
     </div>
 </template>
 
-<script type="text/javascript" src="config_mentions.js"></script>
+<!--<script defer type="module" src="config_mentions.js"></script>-->

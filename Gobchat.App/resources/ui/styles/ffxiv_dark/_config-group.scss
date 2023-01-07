@@ -1,0 +1,100 @@
+@use "input";
+
+$group-item-indention: 0.5em;
+
+.gob-config-page {
+    columns: auto 40em;
+    gap:1em;
+    column-rule: thin solid var(--page-divider-color-1);
+}
+
+.gob-config-group {
+    break-inside: avoid;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+
+    color: var(--text-1-color);
+    text-shadow: var(--text-1-shadow);
+    margin: calc(13em / 16) 0 calc(13em / 16) calc(5em / 16);
+}
+
+.gob-config-sub-group {
+    margin-left: calc(1.5 * var(--checkbox-size));
+}
+
+.gob-config-group_title {
+    font-size: 1.125em;
+    color: var(--text-2-color);
+    text-shadow: var(--text-2-shadow);
+}
+
+.gob-config-group_text {
+    &.is-error {
+        font-weight: bold;
+        color: var(--text-error-color);
+    }
+
+    &.is-disabled {
+        color: var(--text-1-color-disabled);
+    }
+}
+
+.gob-config-group_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4em;
+    margin-left: $group-item-indention;
+}
+
+.gob-config-group_item_label {
+    @extend .gob-config-group_text;
+}
+
+@mixin gob-config-group_small-columns($columns) {
+    display: inline-grid;
+    gap: 0.3em 0.4em;
+    grid-template-columns: repeat(#{$columns}, auto);
+    margin-left: $group-item-indention;
+    max-width: fit-content;
+    align-items: center;
+}
+
+.gob-config-group_small-columns-2 {
+    @include gob-config-group_small-columns(2);
+}
+
+.gob-config-group_small-columns-3 {
+    @include gob-config-group_small-columns(3);
+}
+
+.gob-config-group_small-columns-4 {
+    @include gob-config-group_small-columns(4);
+}
+
+.gob-config-group_small-columns-5 {
+    @include gob-config-group_small-columns(5);
+}
+
+.gob-config-group_item_checkbox {
+    @extend .gob-input-checkbox;
+}
+
+.gob-config-group_item_dropdown {
+    @extend .gob-input-dropdown;
+}
+
+.gob-config-group_item_numberbox {
+    @extend .gob-input-number;
+}
+
+
+.gob-config-group_item_textbox {
+    @extend .gob-input-text;
+}
+
+.gob-config-group_item_textarea {
+    @extend .gob-input-textarea;
+}

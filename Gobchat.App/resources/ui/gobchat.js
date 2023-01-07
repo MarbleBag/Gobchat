@@ -36,7 +36,7 @@ jQuery(async function ($) {
     
     window.gobLocale = new Locale.LocaleManager()
 
-    const gobStyles = new Style.StyleLoader(".")
+    window.gobStyles = new Style.StyleLoader(".")
     await gobStyles.initialize()
  
     window.gobChatManager = new Chat.ChatControl()

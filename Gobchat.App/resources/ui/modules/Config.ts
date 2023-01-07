@@ -20,7 +20,7 @@ import { EventDispatcher } from './EventDispatcher.js'
 type JToken = JValue | JArray | JObject
 type JValue = number | string
 type JArray = [JToken]
-type JObject = {[key:string]:JToken}
+type JObject = { [key: string]: JToken }
 
 /**
  * 
@@ -66,7 +66,7 @@ function retainChangesIterator(data: JObject, extendedData: JObject) {
  * @param destination
  * @param ignoreFunc
  */
-function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc: (key:string) => boolean = null): [changedKeys: string[], replaceTree: boolean] {
+function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc: (key: string) => boolean): [changedKeys: string[], replaceTree: boolean] {
     var path: string[] = [];
     var changes = new Set<string>();
 
@@ -116,7 +116,7 @@ function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc:
  * @param copyOnWrite
  * @param ignoreFunc
  */
-function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean = false, ignoreFunc: (key: string) => boolean = null): [string[], boolean] {
+function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean = false, ignoreFunc: (key: string) => boolean): [string[], boolean] {
     var path: string[] = [];
     var changes = new Set<string>();
 
@@ -161,7 +161,7 @@ function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean
 }
 
 interface TreeIteratorCallback {
-    onArray(a: JArray,b: JArray, c: TreeIteratorCallback): boolean
+    onArray(a: JArray, b: JArray, c: TreeIteratorCallback): boolean
     onObject(a: JObject, b: JObject, c: TreeIteratorCallback): boolean
     onCompare(a: JToken, b: JToken, c: TreeIteratorCallback): boolean
 }
@@ -199,8 +199,9 @@ function objectTreeIteratorHelper(objA: JToken, objB: JToken, callbacks: TreeIte
 /**
  * @param key
  */
-function breakKeyDown(key: string): string[] {
-    if (key == undefined || key == null || key.length === 0) return []
+function breakKeyDown(key: string | null): string[] {
+    if (key == undefined || key == null || key.length === 0)
+        return []
     const parts = key.split(".")
     return parts
 }
@@ -228,7 +229,7 @@ function buildPath(key: string, config: object) {
  * @param value
  * @param remove
  */
-function resolvePath(key: string, config: object, value: object = undefined, remove: boolean = false): any {
+function resolvePath(key: string | null, config: object, value?: object, remove: boolean = false): any {
     const keySteps = breakKeyDown(key)
 
     for (let i = 0; i < keySteps.length - 1; ++i) {
@@ -240,17 +241,17 @@ function resolvePath(key: string, config: object, value: object = undefined, rem
         }
     }
 
-    if (keySteps.length === 0) 
+    if (keySteps.length === 0)
         return config
-    
+
 
     const targetKey = keySteps[keySteps.length - 1]
-    if (value !== undefined) 
+    if (value !== undefined)
         config[targetKey] = value !== null ? copyByJson(value) : null
-    
-    if (remove) 
+
+    if (remove)
         delete config[targetKey]
-    
+
     return config[targetKey]
 }
 
@@ -289,7 +290,7 @@ export class InvalidKeyError extends Error {
 export interface ActiveProfileConfigEvent {
     type: "profile"
     action: "active"
-    oldProfileId: string
+    oldProfileId: string | null
     newProfileId: string
 }
 
@@ -306,8 +307,9 @@ export interface PropertyConfigEvent {
     isActiveProfile: boolean
 }
 
-export type GobchatConfigEvent = ActiveProfileConfigEvent | ModifyProfileConfigEvent | PropertyConfigEvent
-export type GobchatConfigListener = (evt: GobchatConfigEvent) => void
+export type ProfileConfigEvent = ActiveProfileConfigEvent | ModifyProfileConfigEvent
+export type GobchatConfigEvent = ProfileConfigEvent | PropertyConfigEvent
+export type GobchatConfigListener<A extends GobchatConfigEvent> = (evt: A) => void
 
 /*
 export type GobchatConfigEvent = {
@@ -334,8 +336,8 @@ interface JsonConfigProfile extends JObject {
 export class GobchatConfig {
     #eventDispatcher: EventDispatcher<GobchatConfigEvent>
     #defaultProfile: JsonConfigProfile
-    #activeProfile: ConfigProfile
-    #activeProfileId: string    
+    #activeProfile: ConfigProfile | null
+    #activeProfileId: string | null
     #profiles: { [id: string]: ConfigProfile }
     #isSynced: boolean = false
 
@@ -362,7 +364,7 @@ export class GobchatConfig {
 
     #loadConfig(json: string) {
         const data = JSON.parse(json) as {
-            profiles: {[key:string]: JsonConfigProfile},
+            profiles: { [key: string]: JsonConfigProfile },
             activeProfile: string
         }
 
@@ -391,13 +393,13 @@ export class GobchatConfig {
             writeObject(profileData, cleanProfile, false, (p) => false)
 
             const readThis = new ConfigProfile(cleanProfile)
-            this.getProfile(profileId).copyFrom(readThis, "", true)
+            this.getProfile(profileId)?.copyFrom(readThis, "", true)
         })
     }
 
-    #generateId() : string {
+    #generateId(): string {
         const ids = this.profileIds
-        let id = null
+        let id: string
         do {
             id = Utility.generateId(8)
         } while (_.includes(ids, id))
@@ -412,14 +414,15 @@ export class GobchatConfig {
 
         Object.keys(this.#profiles).forEach((profileId) => {
             const profile = this.getProfile(profileId)
-            data.profiles[profileId] = profile.config
+            if (profile)
+                data.profiles[profileId] = profile.config
         })
 
         const json = JSON.stringify(data)
         return json
     }
 
-    async loadConfig(): Promise<void>  {
+    async loadConfig(): Promise<void> {
         const dataJson = await GobchatAPI.getConfigAsJson()
         this.#loadConfig(dataJson)
 
@@ -442,12 +445,17 @@ export class GobchatConfig {
         await GobchatAPI.synchronizeConfig(dataJson)
     }
 
-    get activeProfileId(): string {
+
+    get activeProfile(): ConfigProfile | null {
+        return this.#activeProfile
+    }
+
+    get activeProfileId(): string | null {
         return this.#activeProfileId
     }
 
-    set activeProfileId(profileId: string) {
-        if (this.#activeProfileId === profileId)
+    set activeProfileId(profileId: string | null) {
+        if (this.#activeProfileId === profileId || profileId === null)
             return
 
         if (!this.#profiles[profileId])
@@ -517,10 +525,14 @@ export class GobchatConfig {
         destinationProfile.copyFrom(sourceProfile, "")
     }
 
-    getProfile(profileId: string): ConfigProfile {
+    getProfile(profileId: string | null): ConfigProfile | null {
+        if(profileId === null)
+            return null
+
         const profile = this.#profiles[profileId]
         if (profile === undefined)
             return null
+            
         return profile
     }
 
@@ -552,29 +564,29 @@ export class GobchatConfig {
             this.saveConfig()
     }
 
-    addProfileEventListener(callback: GobchatConfigListener): boolean {
-        return this.#eventDispatcher.on("profile:", callback)
+    addProfileEventListener(callback: GobchatConfigListener<ProfileConfigEvent>): boolean {
+        return this.#eventDispatcher.on("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
     }
 
-    removeProfileEventListener(callback: GobchatConfigListener): boolean {
-        return this.#eventDispatcher.off("profile:", callback)
+    removeProfileEventListener(callback: GobchatConfigListener<ProfileConfigEvent>): boolean {
+        return this.#eventDispatcher.off("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
     }
 
-    addPropertyEventListener(topic: string, callback: GobchatConfigListener): boolean {
-        return this.#eventDispatcher.on("property:" + topic, callback)
+    addPropertyEventListener(topic: string, callback: GobchatConfigListener<PropertyConfigEvent>): boolean {
+        return this.#eventDispatcher.on("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
     }
 
-    removePropertyEventListener(topic: string, callback: GobchatConfigListener): boolean {
-        return this.#eventDispatcher.off("property:" + topic, callback)
+    removePropertyEventListener(topic: string, callback: GobchatConfigListener<PropertyConfigEvent>): boolean {
+        return this.#eventDispatcher.off("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
     }
 
-    get(key: string, defaultValue?: any): any {
+    get(key: string | null, defaultValue?: any): any {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         return this.#activeProfile.get(key, defaultValue)
     }
 
-    getDefault(key: string, defaultValue: any): any {
+    getDefault(key: string | null, defaultValue: any): any {
         try {
             const value = resolvePath(key, this.#defaultProfile)
             return value === undefined ? defaultValue : value !== null ? copyByJson(value) : value
@@ -588,25 +600,25 @@ export class GobchatConfig {
         }
     }
 
-    set(key: string, value: any): void {
+    set(key: string | null, value: any): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         this.#activeProfile.set(key, value)
     }
 
-    has(key: string): boolean {
+    has(key: string | null): boolean {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         return this.#activeProfile.has(key)
     }
 
-    reset(key: string): void {
+    reset(key: string | null): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         this.#activeProfile.reset(key)
     }
 
-    remove(key: string): void {
+    remove(key: string | null): void {
         if (!this.#activeProfile)
             throw new Error("No active profile")
         this.#activeProfile.remove(key)
@@ -627,8 +639,8 @@ interface ConfigProfileEvent {
 type ConfigProfileEventListener = (evt: ConfigProfileEvent) => void
 
 class ConfigProfile {
-    #propertyListener: EventDispatcher<ConfigProfileEvent> = null
-    #config: JsonConfigProfile = null
+    #propertyListener: EventDispatcher<ConfigProfileEvent>
+    #config: JsonConfigProfile
 
     constructor(config: JsonConfigProfile) {
         if (config === undefined || config === null)
@@ -685,7 +697,7 @@ class ConfigProfile {
         }
     }
 
-    get(key: string, defaultValue: any = null): any {
+    get(key: string | null, defaultValue: any = null): any {
         if (key === null || key.length === 0) {
             return this.#config
         }
@@ -702,19 +714,19 @@ class ConfigProfile {
         }
     }
 
-    has(key: string): boolean {
+    has(key: string | null): boolean {
         return this.get(key, undefined) !== undefined;
     }
 
-    set(key: string, value: any): void {
+    set(key: string | null, value: any): void {
         if (key === null || key.length === 0) {
-            this.#config = <JsonConfigProfile> value
+            this.#config = <JsonConfigProfile>value
         }
         resolvePath(key, this.#config, value)
         this.#firePropertyChange(key)
     }
 
-    reset(key: string): void {
+    reset(key: string | null): void {
         if (key === null || key.length === 0)
             return
 
@@ -723,7 +735,7 @@ class ConfigProfile {
         this.#firePropertyChange(key)
     }
 
-    remove(key: string): void {
+    remove(key: string | null): void {
         if (key === null || key.length === 0)
             return
         resolvePath(key, this.#config, undefined, true)
@@ -738,8 +750,11 @@ class ConfigProfile {
         this.#propertyListener.off(topic, callback)
     }
 
-    #firePropertyChange(propertyPath: string): void {
-        this.#firePropertyChanges([propertyPath])
+    #firePropertyChange(propertyPath: string | null): void {
+        if(propertyPath === null)
+            this.#firePropertyChanges([])
+        else
+            this.#firePropertyChanges([propertyPath])
     }
 
     #firePropertyChanges(propertyPaths: string[]): void {

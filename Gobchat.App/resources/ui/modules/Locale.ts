@@ -20,38 +20,39 @@ export const AttributeTooltipKey = "data-gob-locale-tooltip"
 export const AttributeTooltip = "data-gob-tooltip"
 
 export class LocaleManager {
-    #locale: string
+    #locale: string = 'en'
 
     setLocale(locale: string) {
-        this.#locale = locale
+        this.#locale = locale ?? this.#locale
     }
 
-    async loadIntoLookup(keys: string | string[], params?: string[], lookup?: { [s: string]: string }, language?: string): Promise<{ [s: string]: string }> {
-        keys = [].concat(keys)
-        language = language || this.#locale
-
-        let missingKeys = keys
-        if (lookup)
-            missingKeys = keys.filter(e => !(lookup[e] === undefined || lookup[e] === null))
+    async loadIntoLookup(keys: string | string[], params?: string[] | null, lookup?: { [s: string]: string } | null, language?: string | null): Promise<{ [s: string]: string }> {
+        const keysToLoad = ([] as string[]).concat(keys)
+        let localeLookup = lookup ?? {}
+        language = language ?? this.#locale
+        
+        let missingKeys = keysToLoad
+        if (Object.keys(localeLookup).length > 0)
+            missingKeys = keysToLoad.filter(key => !(localeLookup[key] === undefined || localeLookup[key] === null))        
 
         if (missingKeys.length > 0) {
             const localization = await GobchatAPI.getLocalizedStrings(language, missingKeys)
-            if (lookup) {
+            if (localeLookup) {
                 for (let key in localization)
-                    lookup[key] = localization[key]
+                    localeLookup[key] = localization[key]
             }
             else {
-                lookup = localization
+                localeLookup = localization
             }                
         }
 
         const results = {}
         if (params && params.length > 0) {
-            for (let key of keys)
-                results[key] = Utility.formatString(lookup[key], params)
+            for (let key of keysToLoad)
+                results[key] = Utility.formatString(localeLookup[key], params)
         } else {
-            for (let key of keys)
-                results[key] = lookup[key]
+            for (let key of keysToLoad)
+                results[key] = localeLookup[key]
         }
         return results
     }
@@ -83,19 +84,19 @@ async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) 
     if (selectedElements.length == 0)
         return
 
-    const stringIds = []
+    const stringIds: string[] = []
 
     selectedElements.each(function () {
         const $this = $(this)
-        if ($this.attr(AttributeTextKey)) {
-            const textId = $this.attr(AttributeTextKey)
+        const textId = $this.attr(AttributeTextKey)
+        if (textId && typeof textId === "string") 
             // const tooltipId = `${textId}.tooltip` // needs to be streamlined to autodetect inputs and annotate them with the tooltip class
             stringIds.push(textId)
-            // stringIds.push(tooltipId)
-        }
+        
 
-        if ($this.attr(AttributeTooltipKey))
-            stringIds.push($this.attr(AttributeTooltipKey))
+        const tooltipId = $this.attr(AttributeTooltipKey)
+        if (tooltipId && typeof tooltipId === "string")
+            stringIds.push(tooltipId)
     })
 
     if (stringIds.length == 0)
@@ -106,15 +107,15 @@ async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) 
     selectedElements.each(function () {
         const $this = $(this)
 
-        if ($this.attr(AttributeTextKey)) {
-            const id = $this.attr(AttributeTextKey) as string
-            const txt = lookup[id]
+        const textId = $this.attr(AttributeTextKey)
+        if (textId && typeof textId === "string") {
+            const txt = lookup[textId]
             $this.html(txt)
         }
 
-        if ($this.attr(AttributeTooltipKey)) {
-            const id = $this.attr(AttributeTooltipKey) as string
-            const txt = lookup[id]            
+        const tooltipId = $this.attr(AttributeTooltipKey)
+        if (tooltipId && typeof tooltipId === "string") {
+            const txt = lookup[tooltipId]            
             $this.prop(AttributeTooltip, txt)
             $this.prop("title", txt)
         }

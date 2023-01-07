@@ -1,0 +1,40 @@
+@use "config-button";
+@use "config-divider";
+
+.gob-config-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1em / 8);
+    flex: 1;
+    & > .gob-config-divider {
+        @extend .gob-config-divider--horizontal;
+    }
+}
+
+.gob-config-navigation_entry {
+    cursor: pointer;
+    display: block;
+    border-radius: 1em;
+    padding: 0.07em 0.75em;
+    white-space: nowrap;
+    // margin: calc(2em / 16) 0 calc(2em / 16) calc(5em / 16);
+
+    &.is-active {
+        background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+    }
+
+    &:hover:not(.is-active) {
+        background-image: linear-gradient(135deg, #131313, #ffff0000 80%);
+    }
+}
+
+.gob-config-navigation_button {
+    @extend .gob-config-primary-button;
+    text-align: left;
+    padding: calc(3em / 16) calc(28em / 16);
+}
+
+.gob-config-navigation-panel {
+    width: 100%;
+    overflow: hidden auto;
+}

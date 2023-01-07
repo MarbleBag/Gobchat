@@ -1,0 +1,17 @@
+.gob-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.gob-chat_history {
+    flex: auto; //take as much space as possible
+    display: flex;
+    flex-direction: column;
+    overflow: hidden scroll;
+    padding: 0.125em;
+    font-size: var(--gob-chat-history-font-size);
+}
+
+
+

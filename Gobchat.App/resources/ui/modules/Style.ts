@@ -21,7 +21,7 @@ export class StyleLoader {
     #styles: { [key: string]: { label: string, files: string[] } } = {}
     #activeStyles: string[] = []
     #activeStyleSheetIds: string[] = []
-    readonly #filePrefix: string
+    readonly #filePrefix: string | null
 
     constructor(filePrefix: string) {
         this.#filePrefix = filePrefix ? filePrefix : null
@@ -38,9 +38,11 @@ export class StyleLoader {
             if (styleKey.length == 0)
                 continue
 
+            const files: string[] = [].concat(style.files || []).filter(file => Utility.isString(file))
+
             this.#styles[styleKey] = {
                 label: style.label,
-                files: [].concat(style.files || []).filter(e => Utility.isString(e)).map(e => e.trim()).filter(e => e.length > 0)
+                files: files.map(file => file.trim()).filter(file => file.length > 0)
             }
         }
     }
@@ -56,11 +58,11 @@ export class StyleLoader {
     }
 
     get activeStyles(): string[] {
-        return [].concat(this.#activeStyles || [])
+        return ([] as string[]).concat(this.#activeStyles || [])
     }
 
     async activateStyles(styleIds?: string | string[], target?: HTMLElement | JQuery, insertMod: "in"|"after"|"before" = "in"): Promise<void> {
-        styleIds = [].concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
+        styleIds = ([] as string[]).concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
 
         for (let styleId of styleIds)
             if (!this.#styles[styleId])
@@ -143,18 +145,20 @@ export class StyleBuilder {
         StyleBuilder.setStyleOnCurrentDocument(htmlStyleSheetId, rules)
     }
 
+    /*
     static { // template
         StyleBuilder.RuleGenerators.push(() => {
             return ""
         })
     }
+    */
 
     static { // font size
         StyleBuilder.RuleGenerators.push(() => {
             const baseFontSize = gobConfig.get("style.base-font-size")
             return StyleBuilder.toCss(":root", {
-                "--gob-font-size": gobConfig.get("style.config.font-size", baseFontSize),
-                "--gob-chat-history-font-size": gobConfig.get("style.config.font-size", baseFontSize),
+                "--gob-general-font-size": `max(8px, ${gobConfig.get("style.config.font-size", baseFontSize)}px)`,
+                "--gob-chat-history-font-size": `max(8px, ${gobConfig.get("style.chat.font-size", baseFontSize)}px)`,
             })
         })
     }
@@ -241,8 +245,12 @@ export class StyleBuilder {
             for (let i = 0; i <= configRangeFilter.opacitysteps; ++i) {
                 const rangeFilterClass = Utility.formatString(Chat.CssClass.ChatEntry_FadeOut_Partial, i)
                 const selectors = tabClasses.map(tabClass => `.${tabClass} .${rangeFilterClass}`)
-                const properties = i === 0 ? { "display": "none" } : { "opacity": `${(i - 1) * opacityByLevel + endopacity}` }
-                results.push(StyleBuilder.toCss(selectors, properties))
+
+                if(i === 0){
+                    results.push(StyleBuilder.toCss(selectors, { "display": "none" }))
+                }else{
+                    results.push(StyleBuilder.toCss(selectors, { "opacity": `${(i - 1) * opacityByLevel + endopacity}` }))
+                }                
             }
 
             return results.join("")
@@ -304,7 +312,7 @@ export class StyleBuilder {
     }
 
     private static toCss(selectors: string | string[], ...properties: { [property: string]: string }[]): string {
-        selectors = [].concat(selectors)
+        selectors = ([] as string[]).concat(selectors)
         if (selectors.length === 0 || !properties || properties.length === 0)
             return ""
 

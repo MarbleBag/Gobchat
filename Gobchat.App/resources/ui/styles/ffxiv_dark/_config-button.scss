@@ -1,0 +1,82 @@
+﻿.gob-config-primary-button {
+    appearance: none;
+    cursor: pointer;
+    font-size: 1em;
+    padding: unset;
+    color: var(--primary-button-color);
+    text-shadow: var(--primary-button-shadow-color);
+
+    background: var(--primary-button-background);
+    border: 0.05rem solid var(--primary-button-border-color);
+
+    border-radius: 1em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    // margin: 2px;
+    // word-spacing: normal;
+    // letter-spacing: normal;
+    // font-family: Arial;
+
+    // text-decoration: none;
+    // outline: none;
+    // width: 100%;
+    // height: 25px;
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:active {
+        border: 0.05rem solid var(--primary-button-active-border-color);
+    }
+
+    &.is-disabled {
+        filter: brightness(50%);
+    }
+
+    & > svg {
+        color: var(--primary-button-icon-color);
+    }
+}
+
+.gob-config-secondary-button{
+
+}
+
+.gob-config-icon-button {
+    font-size: 1em;
+    appearance: none;
+    cursor: pointer;
+    padding: unset;
+    width: 1.8em;
+    height: 1.8em;
+    border: 0.06em solid var(--symbol-button-color);
+    border-radius: 0.35em;
+    box-shadow: inset 0.05em 0.05em 0 var(--symbol-button-shadow-color),
+        inset -0.05em -0.05em 0 var(--symbol-button-shadow-color);
+    background: var(--symbol-button-background);
+    color: var(--symbol-button-color);
+    box-sizing: border-box;
+
+    & > * {
+        filter: drop-shadow(0.1em 0.1em 0.1em var(--symbol-button-shadow-color));
+    }
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &.is-disabled {
+        filter: brightness(50%);
+    }
+}
+
+.gob-config-copypage-button{
+    @extend .gob-config-icon-button;
+
+    position: absolute;
+    top: 0.1em;
+    right: 0.7em;
+}

@@ -1,0 +1,23 @@
+.gob-config-divider {
+    --blur-strengh: calc(2em / 16);
+    --blur-spread: calc(-1em / (16 * 3));
+    --thickness: calc(1em / 16);
+
+    flex-shrink: 0; // or min/max height/width
+}
+
+.gob-config-divider--horizontal {
+    margin: calc(5em / 16) calc(10em / 16);
+    height: var(--thickness);
+    background-color: var(--page-divider-color-1);
+    box-shadow: 0 calc(1em / 16) var(--blur-strengh) var(--blur-spread) var(--page-divider-color-2);
+}
+
+.gob-config-divider--vertical {
+    margin: calc(1em / 16) calc(5em / 16);
+    width: var(--thickness);
+    background-color: var(--page-divider-color-1);
+    box-shadow: calc(1em / 16) 0 var(--blur-strengh) var(--blur-spread) var(--page-divider-color-2);
+    // border-right: #{div(1em, 32)} solid var(--page-divider-color-1);
+    // box-shadow: #{div(1em, 32) 0 div(1.5em, 16) div(-0.3em, 16)} var(--page-divider-color-2);
+}

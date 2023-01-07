@@ -1,8 +1,19 @@
+// functional and not for styling
+
+body,
+html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-size: var(--gob-general-font-size);
+}
+
 .is-hidden {
     display: none !important;
 }
 
-[disabled], .is-disabled {
+[disabled],
+.is-disabled {
     pointer-events: none;
 }
 
@@ -12,4 +23,12 @@
     background-repeat: no-repeat;
     //box-sizing: border-box;
     background-color: rgba(0, 0, 150, 0.2);
+}
+
+.gob-config-navigation-panel_entry {
+    display: none;
+
+    &.is-active {
+        display: block;
+    }
 }

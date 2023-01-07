@@ -13,12 +13,12 @@
 
 'use strict';
 
-import * as Databinding from '../modules/Databinding.js'
-import * as Config from '../modules/Config.js'
-import * as Locale from '../modules/Locale.js'
-import * as Style from '../modules/Style.js'
-import * as Dialog from '../modules/Dialog.js'
-import { makeControl as makeNavControl } from '../modules/MenuNavigationComponent.js'
+// import * as Databinding from '../modules/Databinding.js'
+// import * as Config from '../modules/Config.js'
+// import * as Locale from '../modules/Locale.js'
+// import * as Style from '../modules/Style.js'
+// import * as Dialog from '../modules/Dialog.js'
+// import { makeControl as makeNavControl } from '../modules/MenuNavigationComponent.js'
 
 // initialize global variables
 jQuery(async function () {
@@ -26,12 +26,21 @@ jQuery(async function () {
     window.Gobchat = window.opener.Gobchat
     window.console = window.opener.console
 
+    // delay any imports until some globals on window are ready
+    const Databinding = await import('../modules/Databinding.js')
+    const Config = await import('../modules/Config.js')
+    const Locale = await import('../modules/Locale.js')
+    const Style = await import('../modules/Style.js')
+    const Dialog = await import('../modules/Dialog.js')
+    const NavControl = await import('../modules/MenuNavigationComponent.js')
+
+
     window.gobConfig = new Config.GobchatConfig()
     window.gobConfig.loadFromLocalStore(true)
 
     window.gobLocale = new Locale.LocaleManager()
 
-    const gobStyles = new Style.StyleLoader("..")
+    window.gobStyles = new Style.StyleLoader("..")
     await gobStyles.initialize()
 
     const binding = new Databinding.BindingContext(gobConfig)
@@ -60,13 +69,12 @@ jQuery(async function () {
         }
     })
 
-    await makeNavControl($(".gob-config_navigation"))
+    await NavControl.makeControl($(".gob-config-navigation"))
 
     binding.initialize()
-})
 
-// initialize main buttons
-jQuery(function () {
+    // initialize main buttons
+
     $("#c_main_save-config").on("click", function () {
         window.gobConfig.saveToLocalStore()
         window.saveConfig()

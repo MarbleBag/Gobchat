@@ -53,7 +53,7 @@ export class CommandManager {
         if (!message.startsWith(commandPrefix))
             return
 
-        const [cmdHandle, cmd, args] = this.#getHandler(message.substring(commandPrefix.length+1).trim())
+        const [cmdHandle, cmd, args] = this.#getHandler(message.substring(commandPrefix.length + 1).trim())
 
         if (cmdHandle) {
             await cmdHandle.execute(this, cmd, args)
@@ -63,12 +63,12 @@ export class CommandManager {
             GobchatAPI.sendInfoChatMessage(msg)
         }
     }
-    
-    #getHandler(msg: string): [CommandHandler, string, string] {
+
+    #getHandler(msg: string): [CommandHandler, string, string] | [null, null, null] {
         for (const handler of this.#handlers) {
             for (let cmd of handler.acceptedCommandNames) {
                 if (msg.startsWith(cmd)) {
-                    return [handler, cmd, msg.substring(cmd.length+1).trim()]
+                    return [handler, cmd, msg.substring(cmd.length + 1).trim()]
                 }
             }
         }
@@ -141,7 +141,7 @@ class PlayerGroupCommandHandler implements CommandHandler {
             return //done
         }
 
-        let playerNameAndServer = null
+        let playerNameAndServer: string
         if (serverName !== null) { //server is given in the form of '[server]'
             playerNameAndServer = playerNameComposite.trim() + " " + serverName.trim()
         } else {
@@ -199,7 +199,7 @@ class ProfileSwitchCommandHandler implements CommandHandler {
             args = args.toLowerCase()
             for (var profileId of profileIds) {
                 const profile = gobConfig.getProfile(profileId)
-                if (args === profile.profileName.toLowerCase()) {
+                if (profile && args === profile.profileName.toLowerCase()) {
                     gobConfig.activeProfileId = profile.profileId
                     GobchatAPI.sendInfoChatMessage(
                         await gobLocale.getAndFormat("main.cmdmanager.cmd.profile.load", profile.profileName)
@@ -210,9 +210,11 @@ class ProfileSwitchCommandHandler implements CommandHandler {
         }
 
         // args wasn't a valid argument
-        const sprofiles = profileIds.map(e => gobConfig.getProfile(e)).map(e => e.profileName).join(", ")
+        const profiles = profileIds.map(id => gobConfig.getProfile(id))
+            .filter(profile => profile !== null)
+            .map(profile => profile!.profileName).join(", ")
         GobchatAPI.sendErrorChatMessage(
-            await gobLocale.getAndFormat("main.cmdmanager.cmd.profile.load.invalid", sprofiles)
+            await gobLocale.getAndFormat("main.cmdmanager.cmd.profile.load.invalid", profiles)
         )
     }
 }
@@ -290,7 +292,7 @@ class ConfigOpenCommandHandler implements CommandHandler {
     }
 
     async execute(commandManager: CommandManager, commandName: string, args: string) {
-        window.openGobConfig()        
+        window.openGobConfig()
     }
 }
 

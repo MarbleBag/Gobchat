@@ -1,14 +1,16 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
         "noImplicitAny": false,
         "noEmitOnError": true,
         "removeComments": false,
         "sourceMap": false,
         "target": "ES2021",
-        "module": "ES2015",
+        "module": "ES2022",
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
-        "allowJs": false,
+        "allowJs": true,
+        "strict": true,
         "allowUmdGlobalAccess": true,
         "lib": [
             "dom",
@@ -23,6 +25,9 @@
             "ESNext"
         ]
     },
+    "include": [
+        "./**/*.ts"
+, "config/config_app.js"    ],
     "exclude": [
         "node_modules",
         "wwwroot"
