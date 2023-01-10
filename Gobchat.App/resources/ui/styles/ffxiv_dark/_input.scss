@@ -9,42 +9,60 @@
     margin: unset;
     padding: unset;
     border: unset;
-    
+
     // outline: none;
     background-image: var(--checkbox-off-texture);
 
     &:checked {
         background-image: var(--checkbox-on-texture);
     }
+
+    :disabled {
+    }
 }
 
 .gob-input-dropdown {
     font-size: 0.85em;
+    padding: 0 0.4em;
+    font-weight: bold;
     box-sizing: border-box;
+
+    :disabled {
+    }
 }
 
 .gob-input-text {
-    font-size: 1em;
+    font-size: 0.8em;
     font-weight: bold;
     box-sizing: border-box;
+
+    :disabled {
+    }
 }
 
 .gob-input-textarea {
-    font-size: 1em;
+    font-size: 0.8em;
     font-weight: bold;
     box-sizing: border-box;
     width: max(200px, 50%);
+
+    :disabled {
+    }
 }
 
 .gob-input-number {
-    font-size: 1em;
+    font-size: 0.8em;
+    padding-left: 0.4em;
     font-weight: bold;
     box-sizing: border-box;
-    width: 8em;    
+    width: 8em;
+
+    :disabled {
+    }
 }
 
 .gob-input-rangeslider {
-    font-size: 1em;
+    font-size: 0.8em;
     appearance: none;
     cursor: pointer;
     outline: none;
@@ -71,5 +89,8 @@
 
         border: 1px solid #484848;
         background: radial-gradient(circle at center, #e1e0e4, #ababab);
+    }
+
+    :disabled {
     }
 }

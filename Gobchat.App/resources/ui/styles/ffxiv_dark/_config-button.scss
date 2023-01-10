@@ -2,7 +2,7 @@
     appearance: none;
     cursor: pointer;
     font-size: 1em;
-    padding: unset;
+    padding: calc(3em / 16) calc(28em / 16);
     color: var(--primary-button-color);
     text-shadow: var(--primary-button-shadow-color);
 
@@ -32,7 +32,7 @@
         border: 0.05rem solid var(--primary-button-active-border-color);
     }
 
-    &.is-disabled {
+    &:disabled {
         filter: brightness(50%);
     }
 
@@ -41,8 +41,10 @@
     }
 }
 
-.gob-config-secondary-button{
-
+.gob-config-secondary-button {
+    @extend .gob-config-primary-button;
+    font-size: 0.8em;
+    padding: .15em 1em;
 }
 
 .gob-config-icon-button {
@@ -68,12 +70,12 @@
         filter: brightness(115%);
     }
 
-    &.is-disabled {
+    &:disabled {
         filter: brightness(50%);
     }
 }
 
-.gob-config-copypage-button{
+.gob-config-copypage-button {
     @extend .gob-config-icon-button;
 
     position: absolute;

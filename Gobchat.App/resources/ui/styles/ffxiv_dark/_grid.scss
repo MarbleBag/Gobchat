@@ -1,0 +1,29 @@
+.gob-grid {
+
+}
+
+.gob-grid_header {
+
+}
+
+.gob-grid_item {
+
+}
+
+@mixin gob-grid-small($columns) {
+    display: inline-grid;
+    gap: 0.3em 0.4em;
+    grid-template-columns: repeat(#{$columns}, auto);
+    max-width: fit-content;
+    align-items: center;
+}
+
+@mixin generate_small-grids($max){
+    @for $i from 2 to $max {
+        .gob-grid-small-#{$i} {
+            @include gob-grid-small($i);
+        }
+    }
+}
+
+@include generate_small-grids(8);

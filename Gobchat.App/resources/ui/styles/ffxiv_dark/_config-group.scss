@@ -1,10 +1,11 @@
 @use "input";
+@use "grid";
 
 $group-item-indention: 0.5em;
 
 .gob-config-page {
     columns: auto 40em;
-    gap:1em;
+    gap: 1em;
     column-rule: thin solid var(--page-divider-color-1);
 }
 
@@ -54,12 +55,8 @@ $group-item-indention: 0.5em;
 }
 
 @mixin gob-config-group_small-columns($columns) {
-    display: inline-grid;
-    gap: 0.3em 0.4em;
-    grid-template-columns: repeat(#{$columns}, auto);
+    @extend .gob-grid-small-#{$columns};
     margin-left: $group-item-indention;
-    max-width: fit-content;
-    align-items: center;
 }
 
 .gob-config-group_small-columns-2 {
@@ -78,6 +75,10 @@ $group-item-indention: 0.5em;
     @include gob-config-group_small-columns(5);
 }
 
+.gob-config-group_small-columns-6 {
+    @include gob-config-group_small-columns(6);
+}
+
 .gob-config-group_item_checkbox {
     @extend .gob-input-checkbox;
 }
@@ -89,7 +90,6 @@ $group-item-indention: 0.5em;
 .gob-config-group_item_numberbox {
     @extend .gob-input-number;
 }
-
 
 .gob-config-group_item_textbox {
     @extend .gob-input-text;

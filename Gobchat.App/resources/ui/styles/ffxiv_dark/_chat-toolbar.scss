@@ -26,7 +26,7 @@
         filter: brightness(115%);
     }
 
-    &.is-disabled {
+    &:disabled {
         color: var(--text-1-color-disabled);
     }
 }
@@ -44,7 +44,7 @@
         filter: brightness(115%);
     }
 
-    &.is-disabled {
+    &:disabled {
         color: var(--text-2-color-disabled);
     }
 }
