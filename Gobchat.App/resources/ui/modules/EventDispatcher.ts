@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -15,8 +15,8 @@
 
 type Callback<T> = (arg: T) => void
 
-export class EventDispatcher<T> {
-    #listenersByTopic: Map<string, Callback<T>[]> = new Map([])
+export class EventDispatcher<T = {}> {
+    #listenersByTopic = new Map<string, Callback<T>[]>([])
 
     constructor() {
     }
@@ -24,7 +24,7 @@ export class EventDispatcher<T> {
     dispatch(topic: string, data: T) {
         const listeners = this.#listenersByTopic[topic] //.get(topic)
         if (listeners) {
-            const callbacks = listeners.slice(0)
+            const callbacks = listeners.slice(0) // defensive copy
             callbacks.forEach((callback) => callback(data))
         }
     }
@@ -57,5 +57,9 @@ export class EventDispatcher<T> {
         }
 
         return false
+    }
+
+    clear(): void {
+        this.#listenersByTopic.clear()
     }
 }

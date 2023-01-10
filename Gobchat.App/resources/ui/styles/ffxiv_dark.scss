@@ -16,6 +16,7 @@
 @use "ffxiv_dark/third-party.scss";
 
 @use "ffxiv_dark/input";
+@use "ffxiv_dark/grid";
 
 @use "ffxiv_dark/chat";
 @use "ffxiv_dark/chat-toolbar";
@@ -26,3 +27,5 @@
 @use "ffxiv_dark/config-navigation";
 @use "ffxiv_dark/config-divider";
 @use "ffxiv_dark/config-group";
+
+@use "ffxiv_dark/config_profile";

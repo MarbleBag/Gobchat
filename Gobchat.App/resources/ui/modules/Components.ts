@@ -77,8 +77,8 @@ export function makeResetButton(element: HTMLElement | JQuery, targetElement?: H
     if ($element.attr("data-gob-locale-title") === null)
         $element.attr("data-gob-locale-title", "config.main.button.reset.tooltip")
 
-    if (targetElement && $(targetElement).hasClass("is-disabled"))
-        $element.addClass("is-disabled")
+    if (targetElement && ($(targetElement).hasClass("is-disabled") || $(targetElement).prop("disabled")) )
+        $element.addClass("is-disabled").prop("disabled", true)
 }
 
 interface CopyProfileOptionTypes {

@@ -17,8 +17,6 @@ import * as Dialog from "./../modules/Dialog.js"
 
 const AttributeProfileId = "data-profile-id"
 
-$("#cprofiles_copyprofiledialog").hide();
-
 //setup profile selector
 const profileSelectionDropdown = $("#cmain_profileselect")
 profileSelectionDropdown.on("change", function (event) {
@@ -81,11 +79,11 @@ $("#cprofiles_profile_import").on("click", function (event) {
     })()
 })
 
-const profileTable = $("#cprofiles_profiles > tbody")
+const profileTable = $("#cprofiles_profiles")
 const template = $("#cprofiles_template_profiles_entry")
 
 async function populateProfileTable() {
-    profileTable.empty()
+    profileTable.children(":not(.gob-config_profile-table_header)").remove()
     gobConfig.profileIds.forEach((profileId) => {
         const profile = gobConfig.getProfile(profileId)
         if (profile === null)
@@ -170,7 +168,7 @@ await populateProfileTable()
 gobConfig.addPropertyEventListener("profile.name", (event) => {
     const profile = gobConfig.getProfile(event.sourceProfileId)
     if (profile)
-        profileTable.find(`tr[${AttributeProfileId}='${profile.profileId}']`).find("#profile_name").val(profile.get("profile.name"))
+        profileTable.find(`.js-name[${AttributeProfileId}='${profile.profileId}']`).val(profile.get("profile.name"))
 })
 
 

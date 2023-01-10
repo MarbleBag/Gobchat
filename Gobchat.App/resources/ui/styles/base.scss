@@ -13,7 +13,8 @@ html {
 }
 
 [disabled],
-.is-disabled {
+.is-disabled,
+:disabled {
     pointer-events: none;
 }
 

@@ -13,26 +13,23 @@
 
 'use strict';
 
-// import * as Databinding from '../modules/Databinding.js'
-// import * as Config from '../modules/Config.js'
-// import * as Locale from '../modules/Locale.js'
-// import * as Style from '../modules/Style.js'
-// import * as Dialog from '../modules/Dialog.js'
-// import { makeControl as makeNavControl } from '../modules/MenuNavigationComponent.js'
+import * as Databinding from '/module/Databinding'
+//import * as Databinding from '../modules/Databinding.js'
+import * as Config from '../modules/Config.js'
+import * as Locale from '../modules/Locale.js'
+import * as Style from '../modules/Style.js'
+import * as Dialog from '../modules/Dialog.js'
+import * as NavControl from '../modules/MenuNavigationComponent.js'
 
 // initialize global variables
 jQuery(async function () {
-    window.GobchatAPI = window.opener.GobchatAPI
-    window.Gobchat = window.opener.Gobchat
-    window.console = window.opener.console
-
     // delay any imports until some globals on window are ready
-    const Databinding = await import('../modules/Databinding.js')
-    const Config = await import('../modules/Config.js')
-    const Locale = await import('../modules/Locale.js')
-    const Style = await import('../modules/Style.js')
-    const Dialog = await import('../modules/Dialog.js')
-    const NavControl = await import('../modules/MenuNavigationComponent.js')
+    // const Databinding = await import('../modules/Databinding.js')
+    // const Config = await import('../modules/Config.js')
+    // const Locale = await import('../modules/Locale.js')
+    // const Style = await import('../modules/Style.js')
+    // const Dialog = await import('../modules/Dialog.js')
+    // const NavControl = await import('../modules/MenuNavigationComponent.js')
 
 
     window.gobConfig = new Config.GobchatConfig()
@@ -72,6 +69,20 @@ jQuery(async function () {
     await NavControl.makeControl($(".gob-config-navigation"))
 
     binding.initialize()
+
+    const mutationObserver = new window.MutationObserver((mutations, observer) => {
+        for (let mutation of mutations) {
+            let updateElement = false
+            
+            if (mutation.type === 'attributes')
+                updateElement = mutation.attributeName === Locale.AttributeTextKey || mutation.attributeName === Locale.AttributeTooltipKey            
+
+            if (updateElement && mutation.target instanceof HTMLElement)
+                gobLocale.updateElement(mutation.target)
+        }
+    })
+
+    mutationObserver.observe(document.body, { childList: false, subtree: true, attributes: true })
 
     // initialize main buttons
 

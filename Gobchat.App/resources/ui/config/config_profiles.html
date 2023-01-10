@@ -1,37 +1,77 @@
-﻿<p>
-    <button id="cprofiles_profile_new" class="gob-config-primary-button">
-        <i class="fas fa-plus"></i>
-        <span data-gob-locale-text="config.profiles.newprofile"></span>
-    </button>
-    <button id="cprofiles_profile_import" class="gob-config-primary-button">
-        <i class="fas fa-file-import"></i>
-        <span data-gob-locale-text="config.profiles.importprofile"></span>
-    </button>
-</p>
+﻿<div class="gob-config-group">
+    <div class="gob-config-group_item">
+        <button id="cprofiles_profile_new" class="gob-config-secondary-button">
+            <i class="fas fa-plus"></i>
+            <span data-gob-locale-text="config.profiles.newprofile"></span>
+        </button>
+        <button id="cprofiles_profile_import" class="gob-config-secondary-button">
+            <i class="fas fa-file-import"></i>
+            <span data-gob-locale-text="config.profiles.importprofile"></span>
+        </button>
+    </div>
 
-<table id="cprofiles_profiles">
-    <thead>
-        <tr>
-            <th data-gob-locale-text="config.profiles.profiles.name"></th>
-            <th data-gob-locale-text="config.profiles.profiles.actions"></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+    <div class="gob-config_profile-table" id="cprofiles_profiles">
+        <div class="gob-config_profile-table_header" data-gob-locale-text="config.profiles.profiles.name"></div>
+        <div class="gob-config_profile-table_header" data-gob-locale-text="config.profiles.profiles.actions"></div>
+    </div>
 
-<div id="cprofiles_copyprofiledialog" title="Basic dialog">
-    <select id="cprofiles_copyprofiledialog_select"></select>
+    <!--<table id="cprofiles_profiles">
+        <thead>
+            <tr>
+                <th data-gob-locale-text="config.profiles.profiles.name"></th>
+                <th data-gob-locale-text="config.profiles.profiles.actions"></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>-->
 </div>
 
+<template id="cprofiles_template_profiles_entry">
+    <input data-profile-id class="gob-config_profile-table_profile-name js-name" type="text" />
+    <div data-profile-id class="gob-config_profile-table_profile-actions">
+        <button class="gob-config-secondary-button js-activate">
+            <i class="fas fa-check-square"></i>
+            <span data-gob-locale-text="config.profiles.profile.activate"></span>
+        </button>
+        <button type="button" class="gob-config-secondary-button js-export"
+            data-gob-locale-title="config.profiles.profile.export.tooltip">
+            <i class="fas fa-file-export"></i>
+            <span data-gob-locale-text="config.profiles.profile.export"></span>
+        </button>
+        <button class="gob-config-secondary-button js-clone"
+            data-gob-locale-title="config.profiles.profile.clone.tooltip">
+            <i class="fas fa-copy"></i>
+            <span data-gob-locale-text="config.profiles.profile.clone"></span>
+        </button>
+        <button class="gob-config-secondary-button js-copy"
+            data-gob-locale-title="config.profiles.profile.copy.tooltip">
+            <i class="fas fa-clone"></i>
+            <span data-gob-locale-text="config.profiles.profile.copy"></span>
+        </button>
+        <button class="gob-config-secondary-button js-reset"
+            data-gob-locale-title="config.profiles.profile.reset.tooltip">
+            <i class="fas fa-undo-alt"></i>
+            <span data-gob-locale-text="config.profiles.profile.reset"></span>
+        </button>
+        <button class="gob-config-secondary-button js-delete"
+            data-gob-locale-title="config.profiles.profile.delete.tooltip">
+            <i class="fas fa-eraser"></i>
+            <span data-gob-locale-text="config.profiles.profile.delete"></span>
+        </button>
+    </div>
+</template>
+
+
+<!--
 <template id="cprofiles_template_profiles_entry">
     <tr draggable="true" data-profile-id>
         <td>
             <input class="gob-input-text js-name" type="text" />
         </td>
         <td>
-            <button class="gob-config-primary-button js-activate">
+            <button class="gob-config-secondary-button js-activate">
                 <i class="fas fa-check-square"></i>
                 <span data-gob-locale-text="config.profiles.profile.activate"></span>
             </button>
@@ -40,37 +80,36 @@
             <table>
                 <tr>
                     <td>
-                        <button type="button"
-                                class="gob-config-primary-button js-export"
-                                data-gob-locale-title="config.profiles.profile.export.tooltip">
+                        <button type="button" class="gob-config-secondary-button js-export"
+                            data-gob-locale-title="config.profiles.profile.export.tooltip">
                             <i class="fas fa-file-export"></i>
                             <span data-gob-locale-text="config.profiles.profile.export"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="gob-config-primary-button js-clone"
-                                data-gob-locale-title="config.profiles.profile.clone.tooltip">
+                        <button class="gob-config-secondary-button js-clone"
+                            data-gob-locale-title="config.profiles.profile.clone.tooltip">
                             <i class="fas fa-copy"></i>
                             <span data-gob-locale-text="config.profiles.profile.clone"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="gob-config-primary-button js-copy"
-                                data-gob-locale-title="config.profiles.profile.copy.tooltip">
+                        <button class="gob-config-secondary-button js-copy"
+                            data-gob-locale-title="config.profiles.profile.copy.tooltip">
                             <i class="fas fa-clone"></i>
                             <span data-gob-locale-text="config.profiles.profile.copy"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="gob-config-primary-button js-reset"
-                                data-gob-locale-title="config.profiles.profile.reset.tooltip">
+                        <button class="gob-config-secondary-button js-reset"
+                            data-gob-locale-title="config.profiles.profile.reset.tooltip">
                             <i class="fas fa-undo-alt"></i>
                             <span data-gob-locale-text="config.profiles.profile.reset"></span>
                         </button>
                     </td>
                     <td>
-                        <button class="gob-config-primary-button js-delete"
-                                data-gob-locale-title="config.profiles.profile.delete.tooltip">
+                        <button class="gob-config-secondary-button js-delete"
+                            data-gob-locale-title="config.profiles.profile.delete.tooltip">
                             <i class="fas fa-eraser"></i>
                             <span data-gob-locale-text="config.profiles.profile.delete"></span>
                         </button>
@@ -80,5 +119,6 @@
         </td>
     </tr>
 </template>
+-->
 
 <script defer type="module" src="config_profiles.js"></script>

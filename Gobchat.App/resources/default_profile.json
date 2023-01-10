@@ -367,7 +367,8 @@
       "font-size": "16"
     },
     "chatbox": {
-      "background-color": "rgba(20, 20, 20, 0.95)"
+      "background-color": "rgba(20, 20, 20, 0.95)",
+      "gap": "0.1em"
     },
     "channel": {
       "base": {

@@ -427,7 +427,6 @@ class TabBarControl {
     private static readonly CssNavPanel = CssClass.Chat_History
     private static readonly CssNavPanelActiveTab = CssClass.Chat_History_Tab_Partial
 
-    private static readonly CssDisableScrollButton = "is-disabled"
     private static readonly CssActiveTabButton = "is-active"
 
     private static readonly CssScrollLeftButton = "gob-chat-tabbar_button--left"
@@ -710,13 +709,13 @@ class TabBarControl {
 
         const isAtLeftBorder = newPosition <= 0
         this.#tabbar.find(TabBarControl.selector_scrollLeftBtn)
-            .toggleClass(TabBarControl.CssDisableScrollButton, isAtLeftBorder)
+            .prop("disabled", isAtLeftBorder)
 
         const scrollWidth = Utility.toNumber($content.prop("scrollWidth"), 0)
         const clientWidth = Utility.toNumber($content.prop("clientWidth"), 0)
         const isAtRightBorder = (scrollWidth - clientWidth) <= newPosition
         this.#tabbar.find(TabBarControl.selector_scrollRightBtn)
-            .toggleClass(TabBarControl.CssDisableScrollButton, isAtRightBorder)
+            .prop("disabled", isAtRightBorder)
     }
 
     #scrollPanelToBottom(scrollFast: boolean): void {

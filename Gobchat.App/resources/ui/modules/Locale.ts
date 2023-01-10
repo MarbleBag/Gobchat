@@ -14,6 +14,7 @@
 'use strict'
 
 import * as Utility from './CommonUtility.js'
+import { EventDispatcher } from './EventDispatcher.js'
 
 export const AttributeTextKey = "data-gob-locale-text"
 export const AttributeTooltipKey = "data-gob-locale-tooltip"
@@ -21,10 +22,24 @@ export const AttributeTooltip = "data-gob-tooltip"
 
 export class LocaleManager {
     #locale: string = 'en'
+    #eventDispatcher: EventDispatcher = new EventDispatcher()
 
     setLocale(locale: string) {
+        const oldLocale = this.#locale
         this.#locale = locale ?? this.#locale
+        const localeChanged = oldLocale !== this.#locale
+        if (localeChanged)
+            this.#eventDispatcher.dispatch("change", {})
     }
+
+    addLocaleChangeListener(callback: () => void) {
+        this.#eventDispatcher.on("change", callback)
+    }
+
+    removeLocaleChangeListener(callback: () => void) {
+        this.#eventDispatcher.off("change", callback)
+    }
+
 
     async loadIntoLookup(keys: string | string[], params?: string[] | null, lookup?: { [s: string]: string } | null, language?: string | null): Promise<{ [s: string]: string }> {
         const keysToLoad = ([] as string[]).concat(keys)
@@ -109,15 +124,23 @@ async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) 
 
         const textId = $this.attr(AttributeTextKey)
         if (textId && typeof textId === "string") {
-            const txt = lookup[textId]
-            $this.html(txt)
+            const text = lookup[textId]
+            const elementHtml = $this.html()
+            if(elementHtml){
+                const html = $("<div></div>").html(text).html()
+                if(elementHtml !== html)
+                    $this.html(html)
+            }else{
+                $this.html(text)
+            }
         }
 
         const tooltipId = $this.attr(AttributeTooltipKey)
         if (tooltipId && typeof tooltipId === "string") {
-            const txt = lookup[tooltipId]            
-            $this.prop(AttributeTooltip, txt)
-            $this.prop("title", txt)
+            const text = lookup[tooltipId]            
+            if($this.attr("title") !== text)
+                $this.attr("title", text)
+            //$this.attr(AttributeTooltip, txt)            
         }
     })
 }

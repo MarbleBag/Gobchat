@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "resources/ui/lib/spectrum.min.js",
+    "inputFiles": [
+      "resources/ui/lib/spectrum.js"
+    ]
+  },
+  {
+    "outputFileName": "resources/ui/lib/spectrum.min.css",
+    "inputFiles": [
+      "resources/ui/lib/spectrum.css"
+    ]
+  }
+]

@@ -1,19 +1,7 @@
 ﻿[
   {
-    "outputFile": "resources/ui/styles/test.css",
-    "inputFile": "resources/ui/styles/test.scss"
-  },
-  {
     "outputFile": "resources/ui/styles/base.css",
     "inputFile": "resources/ui/styles/base.scss"
-  },
-  {
-    "outputFile": "resources/ui/styles/ffxiv_dark_style.css",
-    "inputFile": "resources/ui/styles/ffxiv_dark_style.scss"
-  },
-  {
-    "outputFile": "resources/ui/styles/ffxiv_style.css",
-    "inputFile": "resources/ui/styles/ffxiv_style.scss"
   },
   {
     "outputFile": "resources/ui/styles/ffxiv_dark.css",

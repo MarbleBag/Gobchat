@@ -145,7 +145,7 @@ export class BindingContext {
         const options = $.extend(defOptions, bindOptions)
 
         if (options.disabled || options.configKey === null || options.configKey.length === 0) {
-            $element.addClass("is-disabled").attr("disabled", "true")
+            $element.addClass("is-disabled").prop("disabled", true)
             return this //done
         }
 

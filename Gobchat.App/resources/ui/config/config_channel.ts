@@ -24,15 +24,15 @@ const rowTemplate = $('#cchannel_template_channelentry')
 function buildChannelEntry(channelData) {
     const rowEntry = $(rowTemplate.html()).appendTo(table)
 
-    const lblName = rowEntry.find(".entry-label")
-    const chkMention = rowEntry.find(".entry-mention")
-    const chkRoleplay = rowEntry.find(".entry-roleplay")
-    //const chkRangefilter = rowEntry.find(".entry-rangefilter")
-    //const chkLog = rowEntry.find(".entry-log")
-    const clrSelectorFG = rowEntry.find(".entry-color-forground")
-    const btnResetFG = rowEntry.find(".entry-color-forground-reset")
-    const clrSelectorBG = rowEntry.find(".entry-color-background")
-    const btnResetBG = rowEntry.find(".entry-color-background-reset")
+    const lblName = rowEntry.find(".js-name")
+    const chkMention = rowEntry.find(".js-mention")
+    const chkRoleplay = rowEntry.find(".js-roleplay")
+    //const chkRangefilter = rowEntry.find(".js-rangefilter")
+    //const chkLog = rowEntry.find(".js-log")
+    const clrSelectorFG = rowEntry.find(".js-color-forground")
+    const btnResetFG = rowEntry.find(".js-color-forground-reset")
+    const clrSelectorBG = rowEntry.find(".js-color-background")
+    const btnResetBG = rowEntry.find(".js-color-background-reset")
 
     lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
     lblName.attr("data-gob-locale-title", `${channelData.tooltipId}`)
@@ -86,7 +86,6 @@ Object.entries(Gobchat.Channels).forEach((entry) => {
 })
 
 binding.initialize()
-
 
 const copyKeys = new Set<string>(["behaviour.channel.roleplay", "behaviour.channel.mention"])
 table.find(".entry-color-forground, .entry-color-background").each(function () {

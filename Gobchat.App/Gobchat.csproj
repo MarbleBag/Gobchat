@@ -120,6 +120,14 @@
     <Content Include="resources\ui\config\config_groups.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\lib\spectrum.min.css">
+      <DependentUpon>spectrum.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\lib\spectrum.min.js">
+      <DependentUpon>spectrum.js</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\modules\Components.js">
       <DependentUpon>Components.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -180,6 +188,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
     <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
     <TypeScriptCompile Include="resources\ui\globals.d.ts" />
     <Content Include="resources\ui\modules\Dialog.js">
@@ -268,6 +278,9 @@
       <DependentUpon>ffxiv_dark.scss</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="bundleconfig.json" />
+    <None Include="resources\.gitignore" />
+    <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\third-party.scss" />
@@ -331,6 +344,8 @@
     <None Include="resources\ui\old styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="resources\ui\styles\ffxiv_dark\_config_profile.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_grid.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_input.scss" />
     <None Include="resources\ui\styles\ffxiv_light.scss" />
     <None Include="resources\ui\styles\styles.json">
@@ -703,12 +718,12 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\lib\spectrum.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\spectrum.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />

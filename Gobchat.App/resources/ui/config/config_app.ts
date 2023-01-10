@@ -45,7 +45,7 @@ Databinding.bindCheckbox(binding, $("#capp_hide"))
 const $ckbUpdate = $("#capp_checkupdates")
 Databinding.bindCheckbox(binding, $ckbUpdate)
 binding.bindConfigListener(Databinding.getConfigKey($ckbUpdate), value => {
-    $("[for='capp_checkupdates']").toggleClass("is-disabled", !value)
+    $(`[for='${$ckbUpdate.attr("id")}']`).toggleClass("is-disabled", !value)
 })
 
 Databinding.bindCheckbox(binding, $("#capp_checkbetaupdates"))
@@ -211,7 +211,6 @@ Components.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
         })
     }
 
-    makeFontSizeSelector($("#capp_base_font-size"), $())
     makeFontSizeSelector($("#capp_chat_font-size"), $("#capp_chat_font-size_selector"))
     makeFontSizeSelector($("#capp_config_font-size"), $("#capp_config_font-size_selector"))
 }
