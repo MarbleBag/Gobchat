@@ -9,7 +9,6 @@
         "module": "ES2022",
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
-        "allowJs": true,
         "strict": true,
         "allowUmdGlobalAccess": true,
         "lib": [
@@ -23,11 +22,16 @@
             "ES2021",
             "ES2022",
             "ESNext"
-        ]
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "@lib/*": ["lib/*"],
+            "/module/*": ["modules/*"]
+        }
     },
     "include": [
         "./**/*.ts"
-, "config/config_app.js"    ],
+    ],
     "exclude": [
         "node_modules",
         "wwwroot"

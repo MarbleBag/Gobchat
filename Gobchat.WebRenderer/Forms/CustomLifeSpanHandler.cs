@@ -21,20 +21,26 @@ namespace Gobchat.UI.Forms
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public CustomLifeSpanHandler()
+        {
+
+        }
+
         public bool DoClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
             return false;
         }
 
-        public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser)
+        public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser newBrowser)
+        {
+
+        }
+
+        public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser currentBrowser)
         {
         }
 
-        public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
-        {
-        }
-
-        public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
+        public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser currentBrowser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
             newBrowser = null;
             return false;

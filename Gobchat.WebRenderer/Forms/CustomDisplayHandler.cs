@@ -19,7 +19,7 @@ using CefSharp.Structs;
 
 namespace Gobchat.UI.Forms
 {
-    internal sealed class CustomDisplayHanler : IDisplayHandler
+    internal sealed class CustomDisplayHandler : IDisplayHandler
     {
         public void OnAddressChanged(IWebBrowser chromiumWebBrowser, AddressChangedEventArgs addressChangedArgs)
         {

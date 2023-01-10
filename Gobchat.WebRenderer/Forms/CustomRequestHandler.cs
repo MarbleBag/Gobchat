@@ -18,6 +18,9 @@ namespace Gobchat.UI.Forms
 {
     internal sealed class CustomRequestHandler : IRequestHandler
     {
+
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
         {
             throw new System.NotImplementedException();
@@ -25,12 +28,35 @@ namespace Gobchat.UI.Forms
 
         public IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
-            throw new System.NotImplementedException();
+            if (isDownload)
+            {
+                logger.Error($"Denied resource download request: {request.Url}");
+                disableDefaultHandling = true;
+                return null;
+            }
+
+            if (isNavigation)
+                return null;
+
+            if (request.Url.StartsWith("devtools://"))
+                return null;
+
+
+            if ("file://".Equals(requestInitiator))
+            {
+
+            }
+
+            return null;
         }
 
         public bool OnBeforeBrowse(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool userGesture, bool isRedirect)
         {
-            throw new System.NotImplementedException();
+            if (request.Url.StartsWith("file:///") || request.Url.Equals("devtools://devtools/devtools_app.html"))
+                return false;
+
+            logger.Error("Denied browser target", request.Url);
+            return true; // cancels
         }
 
         public bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback)
@@ -40,7 +66,6 @@ namespace Gobchat.UI.Forms
 
         public void OnDocumentAvailableInMainFrame(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            throw new System.NotImplementedException();
         }
 
         public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture)
@@ -60,12 +85,10 @@ namespace Gobchat.UI.Forms
 
         public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status)
         {
-            throw new System.NotImplementedException();
         }
 
         public void OnRenderViewReady(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            throw new System.NotImplementedException();
         }
 
         public bool OnSelectClientCertificate(IWebBrowser chromiumWebBrowser, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback)

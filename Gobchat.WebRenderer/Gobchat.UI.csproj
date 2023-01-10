@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\CustomContextMenuHandler.cs" />
-    <Compile Include="Forms\CustomDisplayHanler.cs" />
+    <Compile Include="Forms\CustomDisplayHandler.cs" />
     <Compile Include="Forms\CustomDownloadHandler.cs" />
     <Compile Include="Forms\CustomKeyboardHandler.cs" />
     <Compile Include="Forms\CustomLifeSpanHandler.cs" />
