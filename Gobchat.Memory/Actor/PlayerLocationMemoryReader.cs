@@ -25,7 +25,7 @@ namespace Gobchat.Memory.Actor
         {
             foreach (var actor in actors)
             {
-                if (!(actor.IsValid && actor.IsTargetable))
+                if (!(actor.IsValid && actor.Type == Sharlayan.Core.Enums.Actor.Type.PC))
                     continue;
 
                 var data = new PlayerCharacter()

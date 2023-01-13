@@ -57,7 +57,7 @@ namespace Sharlayan.Core {
 
         public byte GrandCompanyRank { get; set; }
 
-        public float Heading { get; set; }
+        public float Rotation { get; set; }
         
         public Actor.Icon Icon { get; set; }
 
@@ -128,6 +128,8 @@ namespace Sharlayan.Core {
         public Actor.Type Type { get; set; }
 
         public byte TypeID { get; set; }
+
+        public byte SubType { get; set; }
 
         public bool WeaponUnsheathed => (this.CombatFlags & (1 << 3)) != 0;
 

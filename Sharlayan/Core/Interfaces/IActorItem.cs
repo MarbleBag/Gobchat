@@ -58,7 +58,7 @@ namespace Sharlayan.Core.Interfaces {
 
         byte GrandCompanyRank { get; set; }
 
-        float Heading { get; set; }
+        float Rotation { get; set; }
 
         float HitBoxRadius { get; set; }
 
