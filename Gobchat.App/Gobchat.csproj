@@ -100,20 +100,28 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_rangefilter.js">
+      <DependentUpon>config_rangefilter.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
     <Content Include="resources\ui\config\config_chatlog.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_chatlog.js">
+      <DependentUpon>config_chatlog.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
     <Content Include="resources\ui\config\config_roleplay.js">
+      <DependentUpon>config_roleplay.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_roleplay.ts" />
     <Content Include="resources\ui\config\config_profiles.js">
+      <DependentUpon>config_profiles.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
     <Content Include="resources\ui\config\config_mentions.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -132,9 +140,15 @@
       <DependentUpon>Components.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\styles\ffxiv_dark.min.css">
+      <DependentUpon>ffxiv_dark.css</DependentUpon>
+    </Content>
     <Content Include="resources\ui\styles\ffxiv_light.css">
       <DependentUpon>ffxiv_light.scss</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light.min.css">
+      <DependentUpon>ffxiv_light.css</DependentUpon>
     </Content>
     <Content Include="resources\ui\tsconfig.json" />
     <Content Include="resources\ui\config\config.js">
@@ -146,9 +160,12 @@
       <DependentUpon>config_app.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
     <Content Include="resources\ui\config\config_channel.js">
+      <DependentUpon>config_channel.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
     <Content Include="resources\ui\config\config_groups_new.html" />
     <Content Include="resources\ui\config\config_tabs.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -187,10 +204,6 @@
       <DependentUpon>CommonUtility.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
-    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
-    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
-    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
     <TypeScriptCompile Include="resources\ui\globals.d.ts" />
     <Content Include="resources\ui\modules\Dialog.js">
       <DependentUpon>Dialog.ts</DependentUpon>
@@ -280,11 +293,18 @@
     </Content>
     <None Include="bundleconfig.json" />
     <None Include="resources\.gitignore" />
+    <None Include="resources\sharlayan\signatures-latest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\sharlayan\structures-latest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_chatlog.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_profile.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\third-party.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\base.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\variables.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-tabbar.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-toolbar.scss" />
@@ -344,9 +364,10 @@
     <None Include="resources\ui\old styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="resources\ui\styles\ffxiv_dark\_config_profile.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_grid.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_input.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_scrollbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_table.scss" />
     <None Include="resources\ui\styles\ffxiv_light.scss" />
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -719,11 +740,9 @@
     </Content>
     <Content Include="resources\ui\lib\spectrum.css">
       <DestinationFolder>resources\</DestinationFolder>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\spectrum.js">
       <DestinationFolder>resources\</DestinationFolder>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
     <Compile Include="Core\Resource\LocalFolderResourceResolver.cs" />
