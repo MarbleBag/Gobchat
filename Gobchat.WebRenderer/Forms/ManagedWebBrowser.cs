@@ -73,6 +73,8 @@ namespace Gobchat.UI.Forms
 
         public event EventHandler<BrowserAPIBindingEventArgs> OnResolveBrowserAPI;
 
+        public event EventHandler<RedirectResourceRequestEventArgs> OnRedirectableResourceRequests;
+
         event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.OnBrowserInitialized
         {
             //someone may register after the original event has already fired
@@ -127,7 +129,8 @@ namespace Gobchat.UI.Forms
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
             DownloadHandler = new CustomDownloadHandler();
            // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
-             RequestHandler = new CustomRequestHandler();
+             RequestHandler = new CustomRequestHandler(this);
+
 #if DEBUG
             KeyboardHandler = new CustomKeyboardHandler();
 #endif
@@ -191,6 +194,32 @@ namespace Gobchat.UI.Forms
         void CefSharp.Internals.IRenderWebBrowser.OnCursorChange(IntPtr cursor, CefSharp.Enums.CursorType type, CefSharp.Structs.CursorInfo customCursorInfo)
         {
             Form.InvokeSyncOnUI(f => f.Cursor = new Cursor(cursor));
+        }
+
+        internal bool RedirectableResourceRequests(IRequest request)
+        {
+            var uri = request.Url;
+            RedirectResourceRequestEventArgs.Type resourceType;
+            switch (request.ResourceType)
+            {
+                case ResourceType.Script:
+                    resourceType = RedirectResourceRequestEventArgs.Type.Script; break;
+                case ResourceType.Stylesheet:
+                    resourceType = RedirectResourceRequestEventArgs.Type.Stylesheet; break;
+                default:
+                    return false;
+            }
+
+            var eventArgs = new RedirectResourceRequestEventArgs(request.Url, resourceType);
+            OnRedirectableResourceRequests?.Invoke(this, eventArgs);
+
+            if(eventArgs.RedirectUri != null && eventArgs.RedirectUri.Trim().Length > 0)
+            {
+                request.Url = eventArgs.RedirectUri;
+                return true;
+            }
+
+            return false;
         }
 
         internal void StartBrowser(int width, int height)

@@ -12,14 +12,14 @@
 
 @mixin gob-grid-small($columns) {
     display: inline-grid;
-    gap: 0.3em 0.4em;
+    gap: 0.3em 0.5em;
     grid-template-columns: repeat(#{$columns}, auto);
     max-width: fit-content;
     align-items: center;
 }
 
 @mixin generate_small-grids($max){
-    @for $i from 2 to $max {
+    @for $i from 2 to $max+1 {
         .gob-grid-small-#{$i} {
             @include gob-grid-small($i);
         }

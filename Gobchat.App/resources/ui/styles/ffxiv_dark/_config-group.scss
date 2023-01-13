@@ -22,7 +22,24 @@ $group-item-indention: 0.5em;
 }
 
 .gob-config-sub-group {
+    break-inside: avoid;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+
     margin-left: calc(1.5 * var(--checkbox-size));
+}
+
+.gob-config-text {
+    &.is-error {
+        font-weight: bold;
+        color: var(--text-error-color);
+    }
+
+    &.is-disabled {
+        color: var(--text-1-color-disabled);
+    }
 }
 
 .gob-config-group_title {
@@ -31,7 +48,7 @@ $group-item-indention: 0.5em;
     text-shadow: var(--text-2-shadow);
 }
 
-.gob-config-group_text {
+.gob-config-group_text { // maybe removable
     &.is-error {
         font-weight: bold;
         color: var(--text-error-color);
@@ -43,14 +60,16 @@ $group-item-indention: 0.5em;
 }
 
 .gob-config-group_item {
+    break-inside: avoid;
+    margin-left: $group-item-indention;
+
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0.4em;
-    margin-left: $group-item-indention;
 }
 
-.gob-config-group_item_label {
+.gob-config-group_item_label { // maybe removable
     @extend .gob-config-group_text;
 }
 
@@ -59,42 +78,42 @@ $group-item-indention: 0.5em;
     margin-left: $group-item-indention;
 }
 
-.gob-config-group_small-columns-2 {
+.gob-config-group_item-2-small-columns {
     @include gob-config-group_small-columns(2);
 }
 
-.gob-config-group_small-columns-3 {
+.gob-config-group_item-3-small-columns {
     @include gob-config-group_small-columns(3);
 }
 
-.gob-config-group_small-columns-4 {
+.gob-config-group_item-4-small-columns {
     @include gob-config-group_small-columns(4);
 }
 
-.gob-config-group_small-columns-5 {
+.gob-config-group_item-5-small-columns {
     @include gob-config-group_small-columns(5);
 }
 
-.gob-config-group_small-columns-6 {
+.gob-config-group_item-6-small-columns {
     @include gob-config-group_small-columns(6);
 }
 
-.gob-config-group_item_checkbox {
+.gob-config-group_item_checkbox { // maybe removable
     @extend .gob-input-checkbox;
 }
 
-.gob-config-group_item_dropdown {
+.gob-config-group_item_dropdown { // maybe removable
     @extend .gob-input-dropdown;
 }
 
-.gob-config-group_item_numberbox {
+.gob-config-group_item_numberbox { // maybe removable
     @extend .gob-input-number;
 }
 
-.gob-config-group_item_textbox {
+.gob-config-group_item_textbox { // maybe removable
     @extend .gob-input-text;
 }
 
-.gob-config-group_item_textarea {
-    @extend .gob-input-textarea;
+.gob-config-group_item_textarea { // maybe removable
+    @extend .gob-input-textarea; 
 }

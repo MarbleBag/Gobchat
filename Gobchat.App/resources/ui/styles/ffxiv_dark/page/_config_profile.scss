@@ -1,5 +1,5 @@
-@use "input";
-@use "grid";
+@use "../input";
+@use "../grid";
 
 .gob-config_profile-table {
     @extend .gob-grid-small-2;

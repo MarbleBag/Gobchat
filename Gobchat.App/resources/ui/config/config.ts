@@ -11,27 +11,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-'use strict';
+'use strict'; 
 
 import * as Databinding from '/module/Databinding'
-//import * as Databinding from '../modules/Databinding.js'
-import * as Config from '../modules/Config.js'
-import * as Locale from '../modules/Locale.js'
-import * as Style from '../modules/Style.js'
-import * as Dialog from '../modules/Dialog.js'
-import * as NavControl from '../modules/MenuNavigationComponent.js'
+import * as Config from '/module/Config'
+import * as Locale from '/module/Locale'
+import * as Style from '/module/Style'
+import * as Dialog from '/module/Dialog'
+import * as NavControl from '/module/MenuNavigationComponent'
 
 // initialize global variables
 jQuery(async function () {
-    // delay any imports until some globals on window are ready
-    // const Databinding = await import('../modules/Databinding.js')
-    // const Config = await import('../modules/Config.js')
-    // const Locale = await import('../modules/Locale.js')
-    // const Style = await import('../modules/Style.js')
-    // const Dialog = await import('../modules/Dialog.js')
-    // const NavControl = await import('../modules/MenuNavigationComponent.js')
-
-
     window.gobConfig = new Config.GobchatConfig()
     window.gobConfig.loadFromLocalStore(true)
 

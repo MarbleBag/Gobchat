@@ -60,7 +60,7 @@ namespace Gobchat.Module.UI
             _container = null;
         }
 
-        private void BrowserAPIManager_OnUIReadyChanged(object sender, UIReadChangedEventArgs e)
+        private void BrowserAPIManager_OnUIReadyChanged(object sender, UIReadyChangedEventArgs e)
         {
             var chatManager = _chatManager;
             if (chatManager != null)

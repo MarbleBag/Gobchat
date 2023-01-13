@@ -1,0 +1,106 @@
+.gob-table-container {
+}
+
+.gob-table-container--split-on-20em {
+    columns: auto 20em;
+    gap: 1em;
+    column-rule: thin solid var(--page-divider-color-1);
+}
+
+.gob-table-container--split-on-30em {
+    columns: auto 30em;
+    gap: 1em;
+    column-rule: thin solid var(--page-divider-color-1);
+}
+
+.gob-table-container--split-on-40em {
+    columns: auto 40em;
+    gap: 1em;
+    column-rule: thin solid var(--page-divider-color-1);
+}
+
+.gob-table {
+    border-collapse: collapse;
+    border-spacing: 0px;
+    text-align: left;
+
+    & > thead {
+        break-inside: avoid;
+        color: var(--table-header-color);
+        text-shadow: var(--table-shadow);
+
+        & > tr {          
+            & > th {
+                text-align: center;
+                padding: 0 0.2em;
+            }
+        }
+    }
+
+    & > tbody > tr {
+        & > td {
+            padding: 0 0.5em;
+        }
+    }
+}
+
+.gob-table--strips-horizontal {
+    & > tbody > tr:nth-child(even),
+    & > thead > tr:nth-child(even) {
+        background: var(--table-stripped-background);
+    }
+}
+
+.gob-table--hoverable {
+    & > tbody > tr:hover {
+        background: var(--table-hover-background);
+    }
+}
+
+.gob-table--header--centered {
+    & > thead > tr > th {
+        text-align: center;
+    }
+}
+
+.gob-table--header--left {
+    & > thead > tr > th {
+        text-align: left;
+    }
+}
+
+.gob-table--header--right {
+    & > thead > tr > th {
+        text-align: right;
+    }
+}
+
+@mixin body_checkbox_rule($col){
+    .gob-table--checkbox-#{$col}{
+        & > tbody > tr > td:nth-child(#{$col}){
+            text-align: center;
+            padding-left: var(--checkbox-size);
+            padding-right: var(--checkbox-size);
+        }
+    }
+}
+
+@mixin header_alignment_rule($col, $align){
+    .gob-table--header-#{$col}--#{$align}{
+        & > thead > tr > th:nth-child(#{$col}){
+            text-align: #{$align};
+        }
+    }
+}
+
+@mixin table_rules($max_columns){
+    @for $i from 1 to $max_columns+1 {
+        @include body_checkbox_rule($i);
+
+        @include header_alignment_rule($i, left);
+        @include header_alignment_rule($i, center);
+        @include header_alignment_rule($i, right);
+    }
+}
+
+@include table_rules(8);

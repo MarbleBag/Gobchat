@@ -11,12 +11,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
  
-@use "ffxiv_dark/variables.scss";
-@use "ffxiv_dark/base.scss";
-@use "ffxiv_dark/third-party.scss";
+@use "ffxiv_dark/variables";
+@use "ffxiv_dark/third-party";
 
+@use "ffxiv_dark/scrollbar";
 @use "ffxiv_dark/input";
 @use "ffxiv_dark/grid";
+@use "ffxiv_dark/table";
 
 @use "ffxiv_dark/chat";
 @use "ffxiv_dark/chat-toolbar";
@@ -28,4 +29,5 @@
 @use "ffxiv_dark/config-divider";
 @use "ffxiv_dark/config-group";
 
-@use "ffxiv_dark/config_profile";
+@use "ffxiv_dark/page/config_profile";
+@use "ffxiv_dark/page/config_chatlog";

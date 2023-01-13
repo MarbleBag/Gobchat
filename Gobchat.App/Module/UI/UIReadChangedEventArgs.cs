@@ -15,11 +15,11 @@ using System;
 
 namespace Gobchat.Module.UI
 {
-    public sealed class UIReadChangedEventArgs : EventArgs
+    public sealed class UIReadyChangedEventArgs : EventArgs
     {
         public bool IsUIReady { get; }
 
-        public UIReadChangedEventArgs(bool value)
+        public UIReadyChangedEventArgs(bool value)
         {
             IsUIReady = value;
         }

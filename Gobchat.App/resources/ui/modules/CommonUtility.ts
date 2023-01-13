@@ -142,8 +142,15 @@ export function toNumber(value: string | number | boolean | undefined | null, fa
     return fallback !== null && fallback !== undefined ? fallback : null
 }
 
-export function generateId(length: number): string {
-    return Math.random().toString(36).substr(2, Math.max(1, length))
+export function generateId(length: number, exclude?:string[]): string {
+    if(!exclude)
+        return Math.random().toString(36).substr(2, Math.max(1, length))
+    
+    while(true){
+        const newKey = Math.random().toString(36).substr(2, Math.max(1, length))
+        if(exclude.every(e => e !== newKey))
+            return newKey
+    }
 }
 
 export function formatString(text: string, ...args: any[]) {

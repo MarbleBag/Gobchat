@@ -55,7 +55,12 @@
         calc(-1rem / 16) 0 var(--text-error-shadow-color), 0 calc(1rem / 16) var(--text-error-shadow-color),
         0 calc(-1rem / 16) var(--text-error-shadow-color);
 
-    
+    --table-header-color: var(--text-2-color);
+    --table-header-shadow-color: var(--text-2-shadow-color);
+    --table-shadow: calc(1rem / 16) 0 var(--table-shadow-color), calc(-1rem / 16) 0 var(--table-shadow-color),
+    0 calc(1rem / 16) var(--table-shadow-color), 0 calc(-1rem / 16) var(--table-shadow-color);
+    --table-stripped-background: #13131350;
+    --table-hover-background: linear-gradient(135deg, #131313, #13131310 80%);
 
     --checkbox-size: 0.875em;
     --checkbox-off-texture: url("../graphics/checkbox.png");
@@ -68,24 +73,4 @@
 
     --active-selection-border-color: 0; // not good
     --nonactive-selection-border-color: 0; // not good
-
-    // @include font-sizes(1em, 2);
-    // @include font-sizes(1em, 3);
-    // @include font-sizes(1em, 4);
-    // @include font-sizes(1em, 8);
-    // @include font-sizes(1em, 16);
-    // @include font-sizes(1em, 32);
-
-    // --text-regular-color: #cfc4ac;
-    // --text-bla-1-color-inactive: #756f62;
-
-    --color-gold: #cc9f5e;
-    --text-shadow: black;
-
-    --old-text-color-1: #cfc4ac;
-    --old-text-color-1-disabled: #756f62;
-
-    --text-color-2: #ded2b8;
-    --text-color-3: #cccccc;
-    --text-color-4: #cccccc;
 }

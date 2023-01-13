@@ -382,7 +382,7 @@ export function bindDropdown(bindingContext: BindingContext, element: HTMLElemen
     return bindingContext.bindElement(element, options)
 }
 
-export function bindListener(bindingContext: BindingContext, configKey: string, callback: (configValue: any) => void): BindingContext {
+export function bindListener(bindingContext: BindingContext, configKey: string | null, callback: (configValue: any) => void): BindingContext {
     return bindingContext.bindConfigListener(configKey, callback)
 }
 

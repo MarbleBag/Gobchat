@@ -10,5 +10,17 @@
     "inputFiles": [
       "resources/ui/lib/spectrum.css"
     ]
+  },
+  {
+    "outputFileName": "resources/ui/styles/ffxiv_dark.min.css",
+    "inputFiles": [
+      "resources/ui/styles/ffxiv_dark.css"
+    ]
+  },
+  {
+    "outputFileName": "resources/ui/styles/ffxiv_light.min.css",
+    "inputFiles": [
+      "resources/ui/styles/ffxiv_light.css"
+    ]
   }
 ]

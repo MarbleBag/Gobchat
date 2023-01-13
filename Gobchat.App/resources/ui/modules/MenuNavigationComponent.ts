@@ -84,7 +84,8 @@ export async function makeControl($element: JQuery): Promise<void> {
                 $panel = $($panelTemplate.html())
                     .addClass(cssPanelEntry)
                     .attr(attributeNavId, navigationTarget)
-                    .appendTo($panelStack)
+
+                $panel.appendTo($panelStack)
 
                 $control.on("click", function () {
                     $navigationBar.find(selector_allActiveControls).removeClass(cssActive)

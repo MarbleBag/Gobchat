@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -13,8 +13,8 @@
 
 'use strict';
 
-import * as Databinding from "./../modules/Databinding.js"
-import * as Components from "./../modules/Components.js"
+import * as Databinding from "/module/Databinding"
+import * as Components from "/module/Components"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
@@ -73,8 +73,7 @@ $("#c_chatlog_format_selector").on("change", function () {
 })
 
 
-const $table1 = $("#c_chatlog_table-1 > tbody")
-const $table2 = $("#c_chatlog_table-2 > tbody")
+const $table = $("#c_chatlog_table > tbody")
 const $tableEntryTemplate = $('#c_chatlog_template_tableentry')
 
 Object.entries(Gobchat.Channels).forEach((entry) => {
@@ -89,15 +88,19 @@ function addEntryToTable(channelData) {
     if (channelEnums.length === 0)
         return // channel is not associated with any ingame channel
 
+    const id = `c_chatlog_table_entry-${$table.children().length}`
+
     const $entry = $($tableEntryTemplate.html())
-    const $table = $table1.children().length <= $table2.children().length ? $table1 : $table2
-    $table.append($entry) // append alternately
+    $entry.appendTo($table)
 
     $entry.find(".js-label")
         .attr("data-gob-locale-text", `${channelData.translationId}`)
         .attr("data-gob-locale-title", `${channelData.tooltipId}`)
+        .attr("for", id)
 
-    const $chkLog = $entry.find(".js-log")
+    const $chkLog = $entry.find(".js-checkbox")
+        .attr("id", id)
+
     Databinding.setConfigKey($chkLog, "behaviour.channel.log")
 
     Databinding.bindCheckboxArrayInverse(binding, $chkLog, channelEnums)
@@ -112,5 +115,5 @@ binding.initialize()
         if (key !== null && key !== undefined && key.length > 0)
             configKeys.add(key)
     })
-    Components.makeCopyProfileButton($("#c_cgatlog_copyprofile"), { configKeys: Array.from(configKeys) })
+    Components.makeCopyProfileButton($("#c_chatlog_copyprofile"), { configKeys: Array.from(configKeys) })
 }

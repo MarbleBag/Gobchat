@@ -13,9 +13,9 @@
 
 'use strict';
 
-import * as Databinding from "./../modules/Databinding.js"
-import * as Components from "./../modules/Components.js"
-import * as Utility from "./../modules/CommonUtility.js"
+import * as Databinding from "/module/Databinding"
+import * as Components from "/module/Components"
+import * as Utility from "/module/CommonUtility"
 
 const binding = new Databinding.BindingContext(gobConfig);
 

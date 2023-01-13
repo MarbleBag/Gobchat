@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -13,16 +13,17 @@
 
 'use strict';
 
-import * as Databinding from "./../modules/Databinding.js"
-import * as Components from "./../modules/Components.js"
+import * as Databinding from "/module/Databinding"
+import * as Components from "/module/Components"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-const table = $("#cchannel_channels > tbody")
-const rowTemplate = $('#cchannel_template_channelentry')
+const table = $("#c_channel_channels > tbody")
+const rowTemplate = $('#c_channel_template_channelentry')
 
 function buildChannelEntry(channelData) {
-    const rowEntry = $(rowTemplate.html()).appendTo(table)
+    const rowEntry = $(rowTemplate.html())
+    rowEntry.appendTo(table)
 
     const lblName = rowEntry.find(".js-name")
     const chkMention = rowEntry.find(".js-mention")
@@ -94,6 +95,6 @@ table.find(".entry-color-forground, .entry-color-background").each(function () {
         copyKeys.add(configId)
 })
 
-Components.makeCopyProfileButton($("#cchannel_copyprofile"), { configKeys: Array.from(copyKeys) })
+Components.makeCopyProfileButton($("#c_channel_copyprofile"), { configKeys: Array.from(copyKeys) })
 
 //# sourceURL=config_channel.js

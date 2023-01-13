@@ -34,7 +34,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     toggle(val?: boolean): JQuery<T>
     html(val: any): JQuery<T>
     html(): string
-    text(val: string): JQuery<T>
+    text(val: string | number | boolean): JQuery<T>
     text(): string
     val(val: string | number | null): JQuery<T>
     val(): string
@@ -65,7 +65,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     extend<A, B>(a: A, b: B): A & B
     extend<A, B, C>(a: A, b: B, c: C): A & B & C
     append(e: any): JQuery<T>
-    appendTo(e: any): JQuery<T>
+    appendTo(e: any): void
     after(e: any): JQuery<T>
     before(e: any): JQuery<T>
     insertAfter(e: any): JQuery<T>
@@ -79,7 +79,9 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     eq(e: any): JQuery<T>
     detach(): JQuery<T>
     map<B>(fn: (element: T, index: number) => B): JQuery<B>
-    change()
+    change(): JQuery
+    data(key: string, value: any): JQuery
+    data<T>(key: string): T
 }
 
 declare interface JQuery<T = HTMLElement> extends Iterable<T> {
@@ -115,6 +117,21 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     spectrum(action: "set", color: string): void
     spectrum(action: "option", optionName: string): any
     spectrum(action: "option", optionName: string, newOptionValue: any): void
+}
+
+declare interface JQuery<T = HTMLElement> extends Iterable<T> {
+    accordion(action: "refresh"): JQuery<T>
+    accordion(options: Partial<{
+        heightStyle: "content",
+        header: string,
+    }>): JQuery<T>
+
+    sortable(action: "refresh"): JQuery<T>
+    sortable(options: Partial<{
+        axis: "y" | "x",
+        handle: string,
+        stop: (event, ui) => void
+    }>): JQuery<T>
 }
 
 // should be included in es2021 ?!

@@ -9,6 +9,8 @@
     color: var(--text-1-color);
     text-shadow: var(--text-1-shadow);
     background: var(--dialog-background);
+
+    font-size: min(var(--gob-general-font-size), 4vw);
 }
 
 .gob-config-dialog_header {

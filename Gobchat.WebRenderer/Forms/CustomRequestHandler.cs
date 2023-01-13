@@ -11,22 +11,49 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using CefSharp;
+using CefSharp.DevTools.Debugger;
 
 namespace Gobchat.UI.Forms
 {
-    internal sealed class CustomRequestHandler : IRequestHandler
+    internal sealed class CustomResourceRequestHandler : CefSharp.Handler.ResourceRequestHandler
+    {
+        private readonly ManagedWebBrowser  managedWebBrowser;
+
+        public CustomResourceRequestHandler(ManagedWebBrowser managedWebBrowser)
+        {
+            this.managedWebBrowser = managedWebBrowser;
+        }
+
+        private static string AppLocation { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+
+        protected override CefReturnValue OnBeforeResourceLoad(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
+        {
+            var isHandeld = managedWebBrowser.RedirectableResourceRequests(request);
+            if (isHandeld)
+                return CefReturnValue.Continue;
+            return base.OnBeforeResourceLoad(chromiumWebBrowser, browser, frame, request, callback);
+
+            
+        }
+    }
+
+    internal sealed class CustomRequestHandler : CefSharp.Handler.RequestHandler
     {
 
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly ManagedWebBrowser managedWebBrowser;
 
-        public bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
+        public CustomRequestHandler(ManagedWebBrowser managedWebBrowser)
         {
-            throw new System.NotImplementedException();
+            this.managedWebBrowser = managedWebBrowser;
         }
 
-        public IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
+        override protected IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
             if (isDownload)
             {
@@ -42,58 +69,27 @@ namespace Gobchat.UI.Forms
                 return null;
 
 
+
             if ("file://".Equals(requestInitiator))
             {
-
+                switch (request.ResourceType)
+                {
+                    case ResourceType.Stylesheet:
+                    case ResourceType.Script:
+                        return new CustomResourceRequestHandler(managedWebBrowser);
+                }
             }
 
             return null;
         }
 
-        public bool OnBeforeBrowse(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool userGesture, bool isRedirect)
+        override protected bool OnBeforeBrowse(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool userGesture, bool isRedirect)
         {
             if (request.Url.StartsWith("file:///") || request.Url.Equals("devtools://devtools/devtools_app.html"))
                 return false;
 
             logger.Error("Denied browser target", request.Url);
             return true; // cancels
-        }
-
-        public bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnDocumentAvailableInMainFrame(IWebBrowser chromiumWebBrowser, IBrowser browser)
-        {
-        }
-
-        public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPluginCrashed(IWebBrowser chromiumWebBrowser, IBrowser browser, string pluginPath)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool OnQuotaRequest(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, long newSize, IRequestCallback callback)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status)
-        {
-        }
-
-        public void OnRenderViewReady(IWebBrowser chromiumWebBrowser, IBrowser browser)
-        {
-        }
-
-        public bool OnSelectClientCertificate(IWebBrowser chromiumWebBrowser, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

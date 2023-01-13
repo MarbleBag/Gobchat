@@ -1,0 +1,15 @@
+@use "../table";
+@use "../input";
+
+.gob-config_chatlog_table-wrapper {
+    columns: 2 15em;
+    gap: 1em;
+    width: fit-content;
+}
+
+.gob-config_chatlog_table-wrapper_table {
+    @extend .gob-table;
+    @extend .gob-table--strips-horizontal;
+    @extend .gob-table--hoverable;
+    @extend .gob-table--checkbox-2;
+}

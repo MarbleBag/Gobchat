@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -13,7 +13,7 @@
 
 'use strict';
 
-import * as Dialog from "./../modules/Dialog.js"
+import * as Dialog from "/module/Dialog"
 
 const AttributeProfileId = "data-profile-id"
 
@@ -91,7 +91,8 @@ async function populateProfileTable() {
 
         const rowElement = $(template.html())
             .attr(AttributeProfileId, profile.profileId)
-            .appendTo(profileTable)
+
+        rowElement.appendTo(profileTable)
 
         const txtProfileName = rowElement.find(".js-name")
         const btnActiveProfile = rowElement.find(".js-activate")
