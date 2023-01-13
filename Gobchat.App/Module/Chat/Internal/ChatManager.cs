@@ -19,6 +19,7 @@ using Gobchat.Memory.Chat;
 using System.Collections.Concurrent;
 using Gobchat.Core.Util.Extension.Queue;
 using Gobchat.Module.Actor;
+using Gobchat.Core.Runtime;
 
 namespace Gobchat.Module.Chat.Internal
 {
@@ -105,7 +106,7 @@ namespace Gobchat.Module.Chat.Internal
         public void EnqueueMessage(SystemMessageType type, string message)
         {
             var channel = type == SystemMessageType.Error ? ChatChannel.GobchatError : ChatChannel.GobchatInfo;
-            EnqueueMessage(DateTime.Now, channel, APP_MESSAGE_SOURCE, message);
+            EnqueueMessage(DateTime.Now, channel, GobchatContext.ApplicationName, message);
         }
 
         public void EnqueueMessage(DateTime timestamp, ChatChannel channel, string source, string message)
@@ -113,7 +114,7 @@ namespace Gobchat.Module.Chat.Internal
             try
             {
                 var chatMessage = _chatMessageBuilder.BuildChatMessage(timestamp, channel, source, message);
-                chatMessage.Source.IsApp = APP_MESSAGE_SOURCE.Equals(source); //not the best solution
+                chatMessage.Source.IsApp = GobchatContext.ApplicationName.Equals(source); //not the best solution
                 _messageQueue.Enqueue(chatMessage);
             }
             catch (Exception ex)

@@ -58,7 +58,7 @@ namespace Sharlayan.Core.Interfaces {
 
         byte GrandCompanyRank { get; set; }
 
-        float Heading { get; set; }
+        float Rotation { get; set; }
 
         float HitBoxRadius { get; set; }
 
@@ -138,11 +138,11 @@ namespace Sharlayan.Core.Interfaces {
 
         bool WeaponUnsheathed { get; }
 
-        double X { get; set; }
+        float X { get; set; }
 
-        double Y { get; set; }
+        float Y { get; set; }
 
-        double Z { get; set; }
+        float Z { get; set; }
 
         ActorItem Clone();
     }

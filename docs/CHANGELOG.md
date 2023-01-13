@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.11.4] - 2023.01.13
+### Fixed
+With 6.3 Gobchat was unable to identify player characters from the game. While no error message was shown, features like rangefilter and `Check own messages for mentions` were not working previously.
+
+- Rangefilter
+
+- Mentions
+
 ## [1.11.3] - 2022.08.03
 ### Added
 - Chat log
