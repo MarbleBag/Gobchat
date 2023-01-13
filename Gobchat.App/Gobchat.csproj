@@ -99,8 +99,8 @@
     <Content Include="resources\ui\config\config_rangefilter.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_rangefilter.js">
-      <DependentUpon>config_rangefilter.ts</DependentUpon>
+	<Content Include="resources\ui\config\config_rangefilter.js">
+	  <DependentUpon>config_rangefilter.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
@@ -112,8 +112,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
-    <Content Include="resources\ui\config\config_roleplay.js">
-      <DependentUpon>config_roleplay.ts</DependentUpon>
+	<Content Include="resources\ui\config\config_roleplay.js">
+	  <DependentUpon>config_roleplay.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config_roleplay.ts" />
@@ -293,12 +293,6 @@
     </Content>
     <None Include="bundleconfig.json" />
     <None Include="resources\.gitignore" />
-    <None Include="resources\sharlayan\signatures-latest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="resources\sharlayan\structures-latest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
