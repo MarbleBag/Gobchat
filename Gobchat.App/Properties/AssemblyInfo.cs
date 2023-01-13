@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Pre-Release (Used for betas)
 //
-[assembly: AssemblyVersion("1.11.3.0")]
-[assembly: AssemblyFileVersion("1.11.3.0")]
+[assembly: AssemblyVersion("1.11.4.0")]
+[assembly: AssemblyFileVersion("1.11.4.0")]
