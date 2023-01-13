@@ -52,7 +52,11 @@ namespace Sharlayan.Utilities {
                 entry.GatheringStatus = source[MemoryHandler.Instance.Structures.ActorItem.GatheringStatus];
                 entry.SexID = source[MemoryHandler.Instance.Structures.ActorItem.Gender];
                 entry.Sex = (Actor.Sex)entry.SexID;
+
+                entry.Distance2 = source[MemoryHandler.Instance.Structures.ActorItem.Distance2];
+                entry.TargetStatus = source[MemoryHandler.Instance.Structures.ActorItem.TargetStatus];
                 entry.Distance = source[MemoryHandler.Instance.Structures.ActorItem.Distance];
+
 
                 entry.X = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.X + defaultBaseOffset);
                 entry.Z = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Z + defaultBaseOffset);

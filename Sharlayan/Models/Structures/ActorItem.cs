@@ -27,6 +27,8 @@ namespace Sharlayan.Models.Structures {
         public int Type { get; set; }
         public int SubType { get; set; }
         public int Gender { get; set; }
+        public int Distance2 { get; set; } // seems to be the same as Distance
+        public int TargetStatus { get; set; }
         public int Distance { get; set; }
         public int TargetFlags { get; set; }
 

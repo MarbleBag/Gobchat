@@ -13,6 +13,8 @@
     "Type": 140,
     "SubType": 141,
     "Gender": 142,
+    "Distance2": 144,
+    "TargetStatus":  145,
     "Distance": 146,
     "TargetFlags": 148,
 
