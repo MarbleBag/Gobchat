@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gobchat.Core.Util.Extension;
 
@@ -153,10 +154,12 @@ namespace Gobchat.Core.Chat
                 }
             }
 
-            var scanForMentions =
-                !(ExcludeUserMention && chatMessage.Source.IsUser) &&
-                _mentionChannels.Contains(chatMessage.Channel);
+            var channelHasMentionsEnabled = _mentionChannels.Contains(chatMessage.Channel);
 
+            var messageByUser = chatMessage.Source.IsUser;
+            var doNotScanUserMessage = ExcludeUserMention;
+
+            var scanForMentions = !(messageByUser && doNotScanUserMessage) && channelHasMentionsEnabled;
             if (scanForMentions)
             {
                 _mentionFinder.MarkMentions(chatMessage);
@@ -164,10 +167,17 @@ namespace Gobchat.Core.Chat
             else
             {
                 logger.Debug(() =>
-                {
-                    var userReason = !ExcludeUserMention && chatMessage.Source.IsUser;
-                    var channelReason = !_mentionChannels.Contains(chatMessage.Channel);
-                    return $"No mention scanning reason: User={userReason}, Channel={channelReason}";
+                {                    
+                    var msg = "Ignore mentions in message, because of: ";
+                    var reasons = new List<string>();
+
+                    if (!channelHasMentionsEnabled)
+                        reasons.Add("channel has mentions disabled");
+
+                    if (messageByUser && doNotScanUserMessage)
+                        reasons.Add("message is from user and should not be checked");
+
+                    return msg + string.Join(", ", reasons);
                 });
             }
 
