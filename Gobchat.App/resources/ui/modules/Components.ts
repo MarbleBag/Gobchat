@@ -127,7 +127,7 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
         })
     }
 
-    $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: gobConfig.activeProfile }))
+    $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: [gobConfig.activeProfileId ?? ""] }))
     $element.addClass("gob-button-copypage")
     $element.attr("data-gob-locale-title", "config.main.profile.copypage")
 

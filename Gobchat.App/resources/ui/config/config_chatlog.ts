@@ -18,10 +18,10 @@ import * as Components from "/module/Components"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-Databinding.bindCheckbox(binding, $("#c_chatlog_active"))
+Databinding.bindCheckbox(binding, $("#cp-chatlog_active"))
 
-const $txtChatlogPath = $("#c_chatlog_path")
-Components.makeResetButton($("#c_chatlog_path_reset"), $txtChatlogPath)
+const $txtChatlogPath = $("#cp-chatlog_path")
+Components.makeResetButton($("#cp-chatlog_path_reset"), $txtChatlogPath)
 
 $txtChatlogPath.on("change", async function () {
     try { // show absolute path to user, but if possible, only store a relative path and/or symbolic link
@@ -44,7 +44,7 @@ binding.bindConfigListener(Databinding.getConfigKey($txtChatlogPath), async func
     }
 })
 
-$("#c_chatlog_path_select").on("click", async function () {
+$("#cp-chatlog_path_select").on("click", async function () {
     try { // open directory selector in previously selected directory
         const relCurrentPath = gobConfig.get(Databinding.getConfigKey($txtChatlogPath))
         const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(relCurrentPath)
@@ -57,24 +57,24 @@ $("#c_chatlog_path_select").on("click", async function () {
     }
 })
 
-Databinding.bindElement(binding, $("#c_chatlog_format"))
+Databinding.bindElement(binding, $("#cp-chatlog_format"))
 
-binding.bindConfigListener($("#c_chatlog_format"), value => {
-    $("#c_chatlog_format_selector").val(value)
-    const selectedFormat = $("#c_chatlog_format_selector").val()
+binding.bindConfigListener($("#cp-chatlog_format"), value => {
+    $("#cp-chatlog_format_selector").val(value)
+    const selectedFormat = $("#cp-chatlog_format_selector").val()
     if (selectedFormat === null)
-        $("#c_chatlog_format_selector").val("")
+        $("#cp-chatlog_format_selector").val("")
 })
 
-$("#c_chatlog_format_selector").on("change", function () {
+$("#cp-chatlog_format_selector").on("change", function () {
     const selectedFormat = $(this).val()
     if (selectedFormat.length > 0)
-        $("#c_chatlog_format").val(selectedFormat).change()
+        $("#cp-chatlog_format").val(selectedFormat).change()
 })
 
 
-const $table = $("#c_chatlog_table > tbody")
-const $tableEntryTemplate = $('#c_chatlog_template_tableentry')
+const $table = $("#cp-chatlog_table > tbody")
+const $tableEntryTemplate = $('#cp-chatlog_template_table_entry')
 
 Object.entries(Gobchat.Channels).forEach((entry) => {
     const channelData = entry[1]
@@ -88,7 +88,7 @@ function addEntryToTable(channelData) {
     if (channelEnums.length === 0)
         return // channel is not associated with any ingame channel
 
-    const id = `c_chatlog_table_entry-${$table.children().length}`
+    const id = `cp-chatlog_table_entry-${$table.children().length}`
 
     const $entry = $($tableEntryTemplate.html())
     $entry.appendTo($table)
@@ -110,10 +110,10 @@ binding.initialize()
 
 {
     const configKeys = new Set<string>()
-    $(`#c_chatlog [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
+    $(`#cp-chatlog [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
         const key = Databinding.getConfigKey(this)
         if (key !== null && key !== undefined && key.length > 0)
             configKeys.add(key)
     })
-    Components.makeCopyProfileButton($("#c_chatlog_copyprofile"), { configKeys: Array.from(configKeys) })
+    Components.makeCopyProfileButton($("#cp-chatlog_copyprofile"), { configKeys: Array.from(configKeys) })
 }

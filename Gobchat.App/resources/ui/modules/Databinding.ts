@@ -60,11 +60,11 @@ function createConfigListener(delegate: (propertyKey: string | null) => void, pr
  * @param {Boolean} doSet If true, adds values to array
  * @returns {Boolean} true, if the content of array changed
  */
-function setValuesInArray<T, A extends T>(array: T[], values: A[], doSet: boolean) {
+function setValuesInArray<T>(array: T[], values: T[], doSet: boolean) {
     let changed = false
 
     if (doSet) {
-        values.forEach((value) => {
+        values.forEach(value => {
             if (!_.includes(array, value)) {
                 array.push(value)
                 changed = true
@@ -72,7 +72,7 @@ function setValuesInArray<T, A extends T>(array: T[], values: A[], doSet: boolea
         })
     } else {
         const removedElements =
-            _.remove(array, (arrayValue) => {
+            _.remove(array, arrayValue => {
                 return _.includes(values, arrayValue)
             })
 

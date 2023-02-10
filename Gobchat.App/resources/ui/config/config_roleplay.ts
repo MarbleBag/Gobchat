@@ -18,7 +18,6 @@ import * as Components from "/module/Components"
 import * as Utility from "/module/CommonUtility"
 import * as Dialog from "/module/Dialog"
 
-
 const tblRoleplayContent = [
     { styleId: "style.segment.say", translationId: "main.chat.segment.type.say" },
     { styleId: "style.segment.emote", translationId: "main.chat.segment.type.emote" },
@@ -26,10 +25,16 @@ const tblRoleplayContent = [
     { styleId: "style.segment.ooc", translationId: "main.chat.segment.type.ooc" },
 ]
 
+const ConfigKeyData = "behaviour.segment.data"
+const ConfigKeyOrder = "behaviour.segment.order"
+const SegmentDatabindingKey = "ConfigBinding"
+const DataAttributeElementId = "data-gob-entryid"
+
+
 const binding = new Databinding.BindingContext(gobConfig)
 
-const $tblRoleplay = $("#c_roleplay_color-table")
-const $rowTemplate = $('#c_roleplay_template_color-table_entry')
+const $tblRoleplay = $("#cp-roleplay_color-table")
+const $rowTemplate = $('#cp-roleplay_template_color-table_entry')
 tblRoleplayContent.forEach((entry) => {
     const rowEntry = $($rowTemplate.html())
     rowEntry.appendTo($tblRoleplay)
@@ -50,13 +55,8 @@ tblRoleplayContent.forEach((entry) => {
 
 binding.initialize()
 
-const $segmentsEntryTmpl = $("#c_roleplay_template_segments-table_entry")
-const $tblSegments = $("#c_roleplay_segments-table")
-
-const ConfigKeyData = "behaviour.segment.data"
-const ConfigKeyOrder = "behaviour.segment.order"
-const SegmentDatabindingKey = "ConfigBinding"
-const DataAttributeElementId = "data-gob-entryid"
+const $segmentsEntryTmpl = $("#cp-roleplay_template_segments-table_entry")
+const $tblSegments = $("#cp-roleplay_segments-table")
 
 function convertTokenInput(str: string) {
     const text = str.trim()
@@ -137,7 +137,7 @@ function buildSegmentsTableEntry(entryId: string) {
             elementSetAccessor: ($element, value) => $element.val(value.join(" "))
         })
 
-        Databinding.bindListener(binding, Databinding.getConfigKey(dpdSegmentType), (value) => {
+    Databinding.bindListener(binding, Databinding.getConfigKey(dpdSegmentType), (value) => {
         updateEntryHeader()
     })
     Databinding.bindListener(binding, Databinding.getConfigKey(txtStartTokens), (value) => {
@@ -152,7 +152,7 @@ function buildSegmentsTableEntry(entryId: string) {
         updateEntryHeader(value)
     })
 
-    async function updateEntryHeader(locale?:string) {
+    async function updateEntryHeader(locale?: string) {
         const txtStart = gobConfig.get(Databinding.getConfigKey(txtStartTokens)).join(" or ")
         const txtEnd = gobConfig.get(Databinding.getConfigKey(txtEndTokens)).join(" or ")
         const txtType = dpdSegmentType.find("option:selected").text()
@@ -179,17 +179,17 @@ function addNewEntrySegmentsTable() {
     order.push(id)
     gobConfig.set(ConfigKeyOrder, order)
 }
-const btnAddSegment = $("#c_roleplay_segments_add")
+const btnAddSegment = $("#cp-roleplay_segments_add")
 btnAddSegment.on("click", (event) => addNewEntrySegmentsTable())
 
-const btnTblSegmentsReset = $("#c_roleplay_segments_reset")
+const btnTblSegmentsReset = $("#cp-roleplay_segments_reset")
 btnTblSegmentsReset.on("click", (event) => {
     gobConfig.reset(ConfigKeyData)
     gobConfig.reset(ConfigKeyOrder)
 })
 
 function clearSegmentsTable() {
-    $tblSegments.children().each(function (){
+    $tblSegments.children().each(function () {
         $(this).data<Databinding.BindingContext>(SegmentDatabindingKey).clear()
     })
     $tblSegments.empty()
@@ -240,7 +240,7 @@ gobConfig.addPropertyEventListener(ConfigKeyOrder, (event) => {
 })
 populateSegmentsTable()
 
-const btnCopyProfile = $("#c_roleplay_copyprofile")
+const btnCopyProfile = $("#cp-roleplay_copyprofile")
 const copyKeys = ["behaviour.segment"]
 tblRoleplayContent.forEach(entry => {
     if (entry.styleId === undefined || entry.styleId === null) return

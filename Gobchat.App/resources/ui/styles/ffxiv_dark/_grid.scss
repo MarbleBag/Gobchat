@@ -1,29 +1,39 @@
-.gob-grid {
-
-}
-
 .gob-grid_header {
-
+    color: var(--table-header-color);
+    text-shadow: var(--table-header-shadow);
+    text-align: center;
+    padding: 0 0.2em;
 }
 
 .gob-grid_item {
-
+    padding: 0 0.5em;
 }
 
+@mixin gob-grid($columns) {
+    display: grid;
+    gap: 0.3em 0.5em;
+    align-items: center;
+    grid-template-columns: repeat(#{$columns}, auto);
+}
+ 
 @mixin gob-grid-small($columns) {
     display: inline-grid;
     gap: 0.3em 0.5em;
+    align-items: center;
     grid-template-columns: repeat(#{$columns}, auto);
     max-width: fit-content;
-    align-items: center;
 }
 
-@mixin generate_small-grids($max){
-    @for $i from 2 to $max+1 {
+@mixin generate_grids($max) {
+    @for $i from 2 to $max + 1 {
+        .gob-grid-#{$i} {
+            @include gob-grid($i);
+        }
+
         .gob-grid-small-#{$i} {
             @include gob-grid-small($i);
         }
     }
 }
 
-@include generate_small-grids(8);
+@include generate_grids(8);

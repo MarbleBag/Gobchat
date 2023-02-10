@@ -1,120 +1,89 @@
-
-<button class="gob-config-icon-button gob-button-copypage" id="cmentions_copyprofile"><i class="fas fa-clone"></i></button>
+<button class="gob-config-icon-button gob-button-copypage" id="cp-mentions_copyprofile"><i
+        class="fas fa-clone"></i></button>
 
 <p>
+<div>
+    <button disabled hidden id="cmentions_add_new_mention1" data-gob-locale-title="config.mentions.newmention.tooltip">
+        <i style="color:green;" class="fas fa-plus-circle"></i>
+    </button>
+</div>
+</p>
+
+<p>
+<div>
+    <div id="cmentions_mention_table">
+    </div>
     <div>
-        <button disabled hidden id="cmentions_add_new_mention1"
-                data-gob-locale-title="config.mentions.newmention.tooltip">
+    </div>
+    <div>
+        <button disabled hidden id="cmentions_add_new_mention2"
+            data-gob-locale-title="config.mentions.newmention.tooltip">
             <i style="color:green;" class="fas fa-plus-circle"></i>
         </button>
     </div>
+</div>
 </p>
 
-<p>
-    <div>
-        <div id="cmentions_mention_table">
-        </div>
-        <div>
-        </div>
-        <div>
-            <button disabled hidden id="cmentions_add_new_mention2"
-                    data-gob-locale-title="config.mentions.newmention.tooltip">
-                <i style="color:green;" class="fas fa-plus-circle"></i>
-            </button>
-        </div>
-    </div>
-</p>
-
-<template id="cmention_template_mention">
+<div id="cp-mentions">
     <div data-gob-entryid class="gob-config-group">
-        <div>
-            <div class="gob-config-group_text"
-                 data-gob-locale-text="config.mentions.mentions.label">
-            </div>
-            <span>
-                <button hidden class="tmpl-delete-entry gob-config-icon-button gob-button-delete"
-                        data-gob-locale-title="config.main.button.delete.tooltip">
-                    <i class="fa fa-trash"></i>
-                </button>
-            </span>
-        </div>
-        <div class="gob-config-group-item">
-            <div>
-                <textarea rows="3" class="tmpl-trigger"
-                          data-gob-configkey="behaviour.mentions.{0}.trigger"
-                          data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
-            </div>
-        </div>
-        <!-- deactivated til multiple mentions are really needed
-        <div>
-            <label>Color:</label>
-            <input class="tmpl-color-forground" type="text" />
-            <button class="tmpl-color-forground-reset ui-gc-btn"
-                    title="Resets the field to its default value">
-                <i class='fas fa-undo-alt'></i>
-            </button>
-        </div>
-        -->
+        <label class="gob-config-text" data-gob-locale-text="config.mentions.description"></label>
 
         <div class="gob-config-group-item">
-            <div>
-                <input type="checkbox" class="tmpl-play-sound"
-                       data-gob-configkey="behaviour.mentions.{0}.playsound"
-                       data-gob-locale-title="config.mentions.audio.play.tooltip" />
-                <div data-gob-locale-text="config.mentions.audio.play"
-                     data-gob-locale-title="config.mentions.audio.play.tooltip"></div>
-            </div>
+            <textarea rows="3" class="gob-input-textarea" id="cp-mentions-triggerwords"
+                data-gob-configkey="behaviour.mentions.triggerwords"
+                data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
+        </div>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" data-gob-configkey="behaviour.mentions.playsound"
+                data-gob-locale-title="config.mentions.audio.play.tooltip" />
+            <label data-gob-locale-text="config.mentions.audio.play"
+                data-gob-locale-title="config.mentions.audio.play.tooltip"></label>
         </div>
 
         <div class="gob-config-group-item tmp-sound-options" hidden>
-            <div>
-                <table>
-                    <tr>
-                        <td>
-                            <div data-gob-locale-text="config.mentions.audio.path"
-                                 data-gob-locale-title="config.mentions.audio.path.tooltip"></div>
-                        </td>
-                        <td>
-                            <div>
-                                <input type="text" class="tmpl-sound-path"
-                                       data-gob-configkey="behaviour.mentions.{0}.sound"
-                                       data-gob-locale-title="config.mentions.audio.path.tooltip" />
-                                <button class="gob-config-icon-button tmpl-sound-selector"
-                                        data-gob-locale-title="config.mentions.audio.select.tooltip">
-                                    <i class="fas fa-file-audio"></i>
-                                </button>
-                                <button class="gob-config-icon-button tmpl-test-sound"
-                                        data-gob-locale-title="config.mentions.audio.test.tooltip">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div data-gob-locale-text="config.mentions.audio.volume"
-                                 data-gob-locale-title="config.mentions.audio.volume.tooltip"></div>
-                        </td>
-                        <td>
-                            <input class="tmpl-sound-volume" type="range" min="0" max="100"
-                                   data-gob-locale-title="config.mentions.audio.volume.tooltip" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div data-gob-locale-text="config.mentions.audio.interval"
-                                 data-gob-locale-title="config.mentions.audio.interval.tooltip"></div>
-                        </td>
-                        <td>
-                            <input class="tmpl-sound-rest" type="number" min="1"
-                                   style="width:50px;"
-                                   data-gob-locale-title="config.mentions.audio.interval.tooltip" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <label data-gob-locale-text="config.mentions.audio.path"
+                            data-gob-locale-title="config.mentions.audio.path.tooltip"></label>
+                    </td>
+                    <td>
+                        <input type="text" class="tmpl-sound-path" data-gob-configkey="behaviour.mentions.sound"
+                            data-gob-locale-title="config.mentions.audio.path.tooltip" />
+                        <button class="gob-config-icon-button tmpl-sound-selector"
+                            data-gob-locale-title="config.mentions.audio.select.tooltip">
+                            <i class="fas fa-file-audio"></i>
+                        </button>
+                        <button class="gob-config-icon-button tmpl-test-sound"
+                            data-gob-locale-title="config.mentions.audio.test.tooltip">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label data-gob-locale-text="config.mentions.audio.volume"
+                            data-gob-locale-title="config.mentions.audio.volume.tooltip"></label>
+                    </td>
+                    <td>
+                        <input class="tmpl-sound-volume" type="range" min="0" max="100"
+                            data-gob-locale-title="config.mentions.audio.volume.tooltip" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label data-gob-locale-text="config.mentions.audio.interval"
+                            data-gob-locale-title="config.mentions.audio.interval.tooltip"></label>
+                    </td>
+                    <td>
+                        <input class="gob-input-numberbox" type="number" min="1" style="width:50px;"
+                            data-gob-locale-title="config.mentions.audio.interval.tooltip" />
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
-</template>
+</div>
 
 <script defer type="module" src="config_mentions.js"></script>

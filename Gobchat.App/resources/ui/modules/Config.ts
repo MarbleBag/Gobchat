@@ -39,7 +39,7 @@ function removeInvalidKeys(map: JObject, allowedKeys: string[]) {
  * @param extendedData
  */
 function retainChangesIterator(data: JObject, extendedData: JObject) {
-    const callbackHelper = {
+    const callbackHelper: TreeIteratorCallback = {
         onArray: function (data, extendedData) {
             //return _.isEqual(data,extendedData) //same objects can be removed
             return _.isEqual(_.sortBy(data), _.sortBy(extendedData)) //same objects can be removed
@@ -70,14 +70,14 @@ function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc:
     var path: string[] = [];
     var changes = new Set<string>();
 
-    const callbacks = {
-        onArray: function (source: JArray, destination: JArray) {
+    const callbacks: TreeIteratorCallback = {
+        onArray: function (source, destination) {
             return false
         },
-        onCompare: function (source: JToken, destination: JToken) {
+        onCompare: function (source, destination) {
             return false
         },
-        onObject: function (source: JObject, destination: JObject) {
+        onObject: function (source, destination) {
             const availableKeys = Object.keys(destination)
             const allowedKeys = Object.keys(source)
             const keysToRemove = availableKeys.filter((k) => { return !_.includes(allowedKeys, k) })
@@ -116,18 +116,18 @@ function removeMissingObjects(source: JObject, destination: JObject, ignoreFunc:
  * @param copyOnWrite
  * @param ignoreFunc
  */
-function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean = false, ignoreFunc: (key: string) => boolean): [string[], boolean] {
+function writeObject(source: JObject, destination: JObject, copyOnWrite: boolean = false, ignoreFunc: (key: string) => boolean): [changedKeys: string[], replaceTree: boolean] {
     var path: string[] = [];
     var changes = new Set<string>();
 
-    const callbacks = {
-        onArray: function (source: JArray, destination: JArray) {
+    const callbacks: TreeIteratorCallback = {
+        onArray: function (source, destination) {
             return true //lazy, just merge
         },
-        onCompare: function (source: JToken, destination: JToken) {
+        onCompare: function (source, destination) {
             return true //lazy, just merge
         },
-        onObject: function (source: JObject, destination: JObject) {
+        onObject: function (source, destination) {
             for (let key of Object.keys(source)) {
                 path.push(key)
                 const fullPath = path.join(".")
@@ -543,7 +543,7 @@ export class GobchatConfig {
     }
 
     //TODO remove later
-    loadFromLocalStore(keepLocaleStore: boolean): void {
+    loadFromLocalStore(keepLocaleStore: boolean = false): void {
         const json = window.localStorage.getItem("gobchat-config")
         if (!keepLocaleStore)
             window.localStorage.removeItem("gobchat-config")

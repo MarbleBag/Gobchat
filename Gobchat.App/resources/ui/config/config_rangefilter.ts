@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -16,30 +16,31 @@
 import * as Databinding from "/module/Databinding"
 import * as Utility from "/module/CommonUtility"
 import * as Components from "/module/Components"
+import * as Chat from "/module/Chat"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-Databinding.bindCheckbox(binding, $("#c_rangefilter_mention"))
+Databinding.bindCheckbox(binding, $("#cp-rangefilter_mention"))
 
-const parseNumber = ($element) => {
-    const value = parseInt($element.val())
+const parseNonNegativeNumber = (element: JQuery) => {
+    const value = parseInt(element.val())
     return Utility.isNumber(value) && value >= 0 ? value : undefined
 }
 
-Databinding.bindElement(binding, $("#c_rangefilter_cutoff"), { elementGetAccessor: parseNumber })
-Components.makeResetButton($("#c_rangefilter_cutoff_reset"))
+Databinding.bindElement(binding, $("#cp-rangefilter_cutoff"), { elementGetAccessor: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_cutoff_reset"))
 
-Databinding.bindElement(binding, $("#c_rangefilter_fadeout"), { elementGetAccessor: parseNumber })
-Components.makeResetButton($("#c_rangefilter_fadeout_reset"))
+Databinding.bindElement(binding, $("#cp-rangefilter_fadeout"), { elementGetAccessor: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_fadeout_reset"))
 
-Databinding.bindElement(binding, $("#c_rangefilter_startopacity"), { elementGetAccessor: parseNumber })
-Components.makeResetButton($("#c_rangefilter_startopacity_reset"))
+Databinding.bindElement(binding, $("#cp-rangefilter_startopacity"), { elementGetAccessor: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_startopacity_reset"))
 
-Databinding.bindElement(binding, $("#c_rangefilter_endopacity"), { elementGetAccessor: parseNumber })
-Components.makeResetButton($("#c_rangefilter_endopacity_reset"))
+Databinding.bindElement(binding, $("#cp-rangefilter_endopacity"), { elementGetAccessor: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_endopacity_reset"))
 
-const $table = $("#c_rangefilter_table > tbody")
-const $tableEntryTemplate = $('#c_rangefilter_template_table_entry')
+const $table = $("#cp-rangefilter_table > tbody")
+const $tableEntryTemplate = $('#cp-rangefilter_template_table_entry')
 
 Object.entries(Gobchat.Channels).forEach((entry) => {
     const channelData = entry[1]
@@ -48,13 +49,13 @@ Object.entries(Gobchat.Channels).forEach((entry) => {
     addEntryToTable(channelData)
 })
 
-function addEntryToTable(channelData) {
-    const channelEnums = [].concat(channelData.chatChannel || [])
+function addEntryToTable(channelData: Chat.Channel) {
+    const channelEnums = ([] as Chat.ChatChannelEnum[]).concat(channelData.chatChannel || [])
     if (channelEnums.length === 0)
         return // channel is not associated with any ingame channel
 
     const $entry = $($tableEntryTemplate.html())
-    $table.append($entry) // append alternately
+        .appendTo($table)
 
     $entry.find(".js-label")
         .attr("data-gob-locale-text", `${channelData.translationId}`)
@@ -69,13 +70,13 @@ binding.initialize()
 
 {
     const configKeys = new Set<string>()
-    $(`#c_rangefilter [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
+    $(`#cp-rangefilter [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
         const key = Databinding.getConfigKey(this)
-        if (key !== null && key !== undefined && key.length > 0)
+        if (key && key.length > 0)
             configKeys.add(key)
     })
 
-    const btnCopyProfile = $("#c_rangefilter_copyprofile")
+    const btnCopyProfile = $("#cp-rangefilter_copyprofile")
     Components.makeCopyProfileButton(btnCopyProfile, { configKeys: Array.from(configKeys) })
 }
 

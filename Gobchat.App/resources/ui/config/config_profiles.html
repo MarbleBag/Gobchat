@@ -1,21 +1,21 @@
 ﻿<div class="gob-config-group">
     <div class="gob-config-group_item">
-        <button id="cprofiles_profile_new" class="gob-config-secondary-button">
+        <button id="cp-profiles_profile_new" class="gob-config-secondary-button">
             <i class="fas fa-plus"></i>
             <span data-gob-locale-text="config.profiles.newprofile"></span>
         </button>
-        <button id="cprofiles_profile_import" class="gob-config-secondary-button">
+        <button id="cp-profiles_profile_import" class="gob-config-secondary-button">
             <i class="fas fa-file-import"></i>
             <span data-gob-locale-text="config.profiles.importprofile"></span>
         </button>
     </div>
 
-    <div class="gob-config_profile-table" id="cprofiles_profiles">
-        <div class="gob-config_profile-table_header" data-gob-locale-text="config.profiles.profiles.name"></div>
-        <div class="gob-config_profile-table_header" data-gob-locale-text="config.profiles.profiles.actions"></div>
+    <div class="gob-config_cp-profile-table" id="cp-profiles_profiles">
+        <div class="gob-config_cp-profile-table_header" data-gob-locale-text="config.profiles.profiles.name"></div>
+        <div class="gob-config_cp-profile-table_header" data-gob-locale-text="config.profiles.profiles.actions"></div>
     </div>
 
-    <!--<table id="cprofiles_profiles">
+    <!--<table id="cp-profiles_profiles">
         <thead>
             <tr>
                 <th data-gob-locale-text="config.profiles.profiles.name"></th>
@@ -28,9 +28,9 @@
     </table>-->
 </div>
 
-<template id="cprofiles_template_profiles_entry">
-    <input data-profile-id class="gob-config_profile-table_profile-name js-name" type="text" />
-    <div data-profile-id class="gob-config_profile-table_profile-actions">
+<template id="cp-profiles_template_profile-table_entry">
+    <input data-profile-id class="gob-config_cp-profile-table_profile-name js-name" type="text" />
+    <div data-profile-id class="gob-config_cp-profile-table_profile-actions">
         <button class="gob-config-secondary-button js-activate">
             <i class="fas fa-check-square"></i>
             <span data-gob-locale-text="config.profiles.profile.activate"></span>
@@ -65,7 +65,7 @@
 
 
 <!--
-<template id="cprofiles_template_profiles_entry">
+<template id="cp-profiles_template_profile-table_entry">
     <tr draggable="true" data-profile-id>
         <td>
             <input class="gob-input-text js-name" type="text" />

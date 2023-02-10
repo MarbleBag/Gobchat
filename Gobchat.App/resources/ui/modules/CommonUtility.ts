@@ -128,8 +128,8 @@ export function extendObject<A extends object, B extends object>(base: A, overwr
     return base
 }
 
-export function toNumber(value: string | number | boolean | undefined | null, fallback: number): number
-export function toNumber(value: string | number | boolean | undefined | null, fallback?: number): number | null {
+export function toFloat(value: string | number | boolean | undefined | null, fallback: number): number 
+export function toFloat(value: string | number | boolean | undefined | null, fallback?: number): number | null {
     if (isNumber(value))
         return value as number
 

@@ -266,7 +266,7 @@ export class StyleBuilder {
 
             for (let tab of tabs) {
                 const tabClass = Utility.formatString(Chat.CssClass.Chat_History_Tab_Partial, tab.id)
-                const invisibleChannels = _.difference(Constants.ChannelEnumValues, tab.channel.visible)
+                const invisibleChannels = _.difference(Constants.ChannelEnumValues, tab.channel.visible as number[])
                     .map(id => Constants.ChannelEnumToKey[id])
                     .map(key => Gobchat.Channels[key])
                     .map(channel => channel.internalName)

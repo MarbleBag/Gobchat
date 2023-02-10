@@ -1,13 +1,13 @@
 @use "../table";
 @use "../input";
 
-.gob-config_chatlog_table-wrapper {
+.gob-config_cp-tabs_channel-table-wrapper {
     columns: 2 15em;
     gap: 1em;
     width: fit-content;
 }
 
-.gob-config_chatlog_table-wrapper_table {
+.gob-config_cp-tabs_channel-table-wrapper_table{
     @extend .gob-table;
     @extend .gob-table--strips-horizontal;
     @extend .gob-table--hoverable;

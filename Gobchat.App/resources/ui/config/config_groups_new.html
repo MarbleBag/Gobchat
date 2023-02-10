@@ -7,12 +7,12 @@
 </head>
 <body>
     <button class="gob-button-copypage"
-            id="cgroups_copyprofile">
+            id="cp-groups_copyprofile">
         <i class="fas fa-clone"></i>
     </button>
 
     <div>
-        <button id="cgroups_addnewgrouptop"
+        <button id="cp-groups_addnewgrouptop"
                 class="gob-button-secondary"
                 data-gob-addtop="true">
             <i style="color:green;" class="fa fa-plus"></i>
@@ -20,11 +20,11 @@
         </button>
     </div>
 
-    <div id="cgroups_groups" class="gob-accordion">
+    <div id="cp-groups_groups" class="gob-accordion">
     </div>
 
     <div>
-        <button id="cgroups_addnewgroupbot"
+        <button id="cp-groups_addnewgroupbot"
                 class="gob-button-secondary"
                 data-gob-addtop="false">
             <i style="color:green;" class="fa fa-plus"></i>
@@ -32,7 +32,7 @@
         </button>
     </div>
 
-    <template id="cgroups_template_entry">
+    <template id="cp-groups_template_entry">
         <div class="gob-accordion-item" data-gob-entryid>
             <div class="gob-accordion-handle">
                 <span>
@@ -57,7 +57,7 @@
         'use strict';
         (async function () {
 
-            const tblEntries = $("#cgroups_groups")
+            const tblEntries = $("#cp-groups_groups")
 
             async function buildTable(openIndex) {
                 //const lastOpenEntry = findOpenEntry()
@@ -109,7 +109,7 @@
                 tblEntries.accordion('option', 'active', index);
             }
 
-            const templateEntry = $("#cgroups_template_entry")
+            const templateEntry = $("#cp-groups_template_entry")
             function addEntry(entryId) {
                 const binding = GobConfigHelper.makeDatabinding(gobconfig)
                 const entry = $(templateEntry.html())
@@ -163,14 +163,14 @@
                 }
             })
 
-            $("#cgroups_addnewgrouptop").on("click", function (event) {
+            $("#cp-groups_addnewgrouptop").on("click", function (event) {
                 (async () => {
                     createNewEntry(true)
                     await buildTable(0)
                 })()
             })
 
-            $("#cgroups_addnewgroupbot").on("click", function (event) {
+            $("#cp-groups_addnewgroupbot").on("click", function (event) {
                 (async () => {
                     createNewEntry(false)
                     await buildTable(-1)
@@ -194,7 +194,7 @@
             await buildTable()
 
             const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
-            GobConfigHelper.makeCopyProfileButton($("#cgroups_copyprofile"), { configKeys: copyKeys })
+            GobConfigHelper.makeCopyProfileButton($("#cp-groups_copyprofile"), { configKeys: copyKeys })
         }())
     </script>
     </p>

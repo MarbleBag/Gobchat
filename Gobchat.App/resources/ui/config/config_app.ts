@@ -42,10 +42,10 @@ Databinding.bindCheckbox(binding, $("#capp_userMention"))
 
 Databinding.bindCheckbox(binding, $("#capp_hide"))
 
-const $ckbUpdate = $("#capp_checkupdates")
-Databinding.bindCheckbox(binding, $ckbUpdate)
-binding.bindConfigListener(Databinding.getConfigKey($ckbUpdate), value => {
-    $(`[for='${$ckbUpdate.attr("id")}']`).toggleClass("is-disabled", !value)
+const ckbUpdate = $("#capp_checkupdates")
+Databinding.bindCheckbox(binding, ckbUpdate)
+binding.bindConfigListener(Databinding.getConfigKey(ckbUpdate), value => {
+    $(`[for='${ckbUpdate.attr("id")}']`).toggleClass("is-disabled", !value)
 })
 
 Databinding.bindCheckbox(binding, $("#capp_checkbetaupdates"))
@@ -64,25 +64,25 @@ Databinding.bindCheckbox(binding, $("#capp_rangefilter_mention"))
 Databinding.bindElement(binding, $("#capp_font_family"))
 Components.makeResetButton($("#capp_font_family_reset"))
 
-const $dpdProcessSelector = $("#capp_process_selector")
+const dpdProcessSelector = $("#capp_process_selector")
 $("#capp_process_selector_refresh").on("click", function () {
     const $icon = $("#capp_process_selector_refresh").find("svg");
     (async () => {
         try {
             //$icon.addClass("fa-spin")
 
-            const defaultElement = $dpdProcessSelector.find("[value='-1']")
-            const previousSelected = $dpdProcessSelector.val()
-            $dpdProcessSelector.empty().append(defaultElement)
+            const defaultElement = dpdProcessSelector.find("[value='-1']")
+            const previousSelected = dpdProcessSelector.val()
+            dpdProcessSelector.empty().append(defaultElement)
 
             const availableProcesses = await GobchatAPI.getAttachableFFXIVProcesses()
             for (const processId of availableProcesses)
-                $dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId.toString()))
+                dpdProcessSelector.append(new Option(`FFXIV: ${processId}`, processId.toString()))
 
-            if ($dpdProcessSelector.find(`[value='${previousSelected}'`).length > 0) {
-                $dpdProcessSelector.val(previousSelected)
+            if (dpdProcessSelector.find(`[value='${previousSelected}'`).length > 0) {
+                dpdProcessSelector.val(previousSelected)
             } else {
-                $dpdProcessSelector.val("-1")
+                dpdProcessSelector.val("-1")
                 await GobchatAPI.attachToFFXIVProcess(-1)
             }
 
@@ -102,8 +102,8 @@ async function process_UpdateLabel() {
         const txtNotConnected = await gobLocale.get("config.app.process.info.notconnected")
         const txtConnectedTo = await gobLocale.get("config.app.process.info.connected")
 
-        const $txtLabel = $("#capp_process_info")
-        const $icon = $("#capp_process_selector_link").find("svg")
+        const txtLabel = $("#capp_process_info")
+        const icon = $("#capp_process_selector_link").find("svg")
 
         async function updateLabel() {
             try {
@@ -111,16 +111,21 @@ async function process_UpdateLabel() {
                 const connectionState = connectionInfo.Item1 //0 - none, 1 - connected, 2 - not found, 3 - searching
                 const processId = connectionInfo.Item2
 
-                if (connectionState === 0) {
-                } else if (connectionState === 1) {
-                    $txtLabel.text(Utility.formatString(txtConnectedTo, processId));
-                    $icon.removeClass("fa-spin")
-                    clearInterval(process_IntervalTimer)
-                    process_IntervalTimer = 0
-                } else if (connectionState === 2) {
-                    $txtLabel.text(txtNotConnected);
-                } else if (connectionState === 3) {
-                    $txtLabel.text(txtSearch);
+                switch (connectionState) {
+                    case 0:
+                        break
+                    case 1:
+                        txtLabel.text(Utility.formatString(txtConnectedTo, processId));
+                        icon.removeClass("fa-spin")
+                        clearInterval(process_IntervalTimer)
+                        process_IntervalTimer = 0
+                        break;
+                    case 2:
+                        txtLabel.text(txtNotConnected);
+                        break;
+                    case 3:
+                        txtLabel.text(txtSearch);
+                        break
                 }
             } catch (e) {
                 console.error(e)
@@ -135,43 +140,46 @@ async function process_UpdateLabel() {
     }
 }
 
-$("#capp_process_selector_link").on("click", function () {
-    (async () => {
-        try {
-            $("#capp_process_selector_link").find("svg").addClass("fa-spin")
+$("#capp_process_selector_link").on("click", async function () {
+    try {
+        $("#capp_process_selector_link").find("svg").addClass("fa-spin")
 
-            const processId = $dpdProcessSelector.val()
-            if (processId != null && processId != undefined)
-                GobchatAPI.attachToFFXIVProcess(parseInt(processId))
+        const processId = dpdProcessSelector.val()
+        if (processId != null && processId != undefined)
+            GobchatAPI.attachToFFXIVProcess(parseInt(processId))
 
-            await process_UpdateLabel()
-        } catch (e) {
-            console.error(e)
-        }
-    })();
+        await process_UpdateLabel()
+    } catch (e) {
+        console.error(e)
+    }
 })
 
-const parseNumber = ($element) => {
-    const value = parseInt($element.val())
-    return Utility.isNumber(value) && value >= 0 ? value : undefined
+const parseNonNegativeNumber = (element: JQuery) => {
+    const value = parseInt(element.val())
+    return Utility.isNumber(value)  && value >= 0 ? value : undefined
 }
 
-Databinding.bindElement(binding, $("#capp_rangefilter_cutoff"), { elementGetAccessor: parseNumber })
+const parseNumber = (element: JQuery) => {
+    const value = parseInt(element.val())
+    return Utility.isNumber(value) ? value : undefined
+}
+
+Databinding.bindElement(binding, $("#capp_rangefilter_cutoff"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("#capp_rangefilter_cutoff_reset"))
 
-Databinding.bindElement(binding, $("#capp_rangefilter_fadeout"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_rangefilter_fadeout"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("#capp_rangefilter_fadeout_reset"))
 
-Databinding.bindElement(binding, $("#capp_rangefilter_startopacity"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_rangefilter_startopacity"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("#capp_rangefilter_startopacity_reset"))
 
-Databinding.bindElement(binding, $("#capp_rangefilter_endopacity"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_rangefilter_endopacity"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("#capp_rangefilter_endopacity_reset"))
 
 Databinding.bindElement(binding, $("#capp_frame_x"), { elementGetAccessor: parseNumber })
 Databinding.bindElement(binding, $("#capp_frame_y"), { elementGetAccessor: parseNumber })
-Databinding.bindElement(binding, $("#capp_frame_height"), { elementGetAccessor: parseNumber })
-Databinding.bindElement(binding, $("#capp_frame_width"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_frame_height"), { elementGetAccessor: parseNonNegativeNumber })
+Databinding.bindElement(binding, $("#capp_frame_width"), { elementGetAccessor: parseNonNegativeNumber })
 
 const clrChatboxBackground = $("#capp_chatbox_backgroundcolor")
 Components.makeColorSelector(clrChatboxBackground)
@@ -179,34 +187,34 @@ Databinding.bindColorSelector(binding, clrChatboxBackground)
 Components.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
 
 {
-    function makeFontSizeSelector($input: JQuery, $selector: JQuery) {
+    function makeFontSizeSelector(input: JQuery, selector: JQuery) {
         const regexValue = /\d+\.?\d*/
 
-        Databinding.bindElement(binding, $input, { elementGetAccessor: parseNumber })
+        Databinding.bindElement(binding, input, { elementGetAccessor: parseNonNegativeNumber })
 
-        binding.bindConfigListener($input, function (fontSize) {
+        binding.bindConfigListener(input, function (fontSize) {
             fontSize = parseFloat(fontSize)
             const baseSize = parseFloat(gobConfig.get("style.base-font-size"))
             const factor = fontSize / baseSize
 
-            $selector.val(factor + "")
-            if ($selector.val() === null)
-                $selector.val("")
+            selector.val(factor + "")
+            if (selector.val() === null)
+                selector.val("")
         })
 
-        $input.on('change', function () {
+        input.on('change', function () {
             let value = parseFloat($(this).val()) || 0
             if (value < 8)
                 value = 8
             $(this).val(value)
         })
 
-        $selector.on("change", function () {
+        selector.on("change", function () {
             const selectedFormat = $(this).val()
             if (selectedFormat.length > 0) {
                 const baseSize = parseFloat(gobConfig.get("style.base-font-size"))
                 const factor = parseFloat(selectedFormat)
-                $input.val(baseSize * factor).change()
+                input.val(baseSize * factor).change()
             }
         })
     }
@@ -227,15 +235,15 @@ Components.makeResetButton($("#capp_search_selected_reset"))
 
 // setup hotkey group
 // setup hotkey field
-const getHotkey = ($element, event) => Utility.decodeKeyEventToText(event, true)
+const getHotkey = (element: JQuery, event: KeyboardEvent) => Utility.decodeKeyEventToText(event, true)
 Databinding.bindElement(binding, $("#capp_hotkey_show"), { elementKey: "keydown", elementGetAccessor: getHotkey })
 Components.makeResetButton($("#capp_hotkey_show_reset"))
 
 // setup ungrouped
-Databinding.bindElement(binding, $("#capp_chat_updateInterval"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_chat_updateInterval"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("#capp_chat_updateInterval_reset"))
 
-Databinding.bindElement(binding, $("#capp_actor_updateInterval"), { elementGetAccessor: parseNumber })
+Databinding.bindElement(binding, $("#capp_actor_updateInterval"), { elementGetAccessor: parseNonNegativeNumber })
 Components.makeResetButton($("capp_actor_updateInterval_reset"))
 
 // activate bindings

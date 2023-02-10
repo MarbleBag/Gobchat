@@ -1,17 +1,29 @@
-// globals, create in js code
-declare var gobConfig: import("./modules/Config").GobchatConfig
-declare var gobChatManager: import("./modules/Chat").ChatControl
-declare var gobStyles: import("./modules/Style").StyleLoader
-declare var gobLocale: import("./modules/Locale").LocaleManager
-declare function openGobConfig(): void
-declare function saveConfig(): void
-
 declare type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-declare var _: any
+// lodash
+declare var _: Lodash
+type Lodash_ListIteratee<T> = string
+
+declare interface Lodash {
+    remove<T>(iterable: T[], predicate: (element: T) => boolean): T[]
+    includes<T, V extends T>(collection: readonly T[], values: readonly V, fromIndex?: number): boolean
+    difference<T, V extends T>(array: readonly T[], values: readonly V[]): T[];
+    difference<T, V extends T>(array: readonly T[], ...values: readonly V): T[];
+    without<T>(collection: readonly T[], values: readonly T[]): T[]
+    without<T>(collection: readonly T[], ...values: readonly T): T[]
+    indexOf<T, V extends T>(collection: readonly T[], value: readonly T, fromIndex?: number): number
+    sortBy<T>(collection: readonly T[], sorters?: ((element: T) => unknown)[]): T[]
+    isEqual(a: unknown, b: unknown): boolean
+    every<T>(collection: readonly T[], predicate: (element: T) => boolean): boolean
+    mapKeys<T extends object>(collection: readonly T, mapping: (value: T[keyof T], key: string, collection: readonly T) => string): { [index: string]: T[keyof T] }
+
+}
+
+// jquery
 declare var $: JQuery
 declare var jQuery: JQuery
 declare interface JQuery<T = HTMLElement> extends Iterable<T> {
+    fn: { [name: string]: Function }
     empty(): JQuery<T>;
     (a?: any, options?: any): JQuery<T>
     [i: number]: T
@@ -65,7 +77,8 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     extend<A, B>(a: A, b: B): A & B
     extend<A, B, C>(a: A, b: B, c: C): A & B & C
     append(e: any): JQuery<T>
-    appendTo(e: any): void
+    appendTo(e: any): JQuery<T>
+    add(e: any): JQuery<T>
     after(e: any): JQuery<T>
     before(e: any): JQuery<T>
     insertAfter(e: any): JQuery<T>
@@ -134,12 +147,25 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     }>): JQuery<T>
 }
 
+// browser
 // should be included in es2021 ?!
 declare interface Object {
     entries: (any) => any
 }
 
+// gobchat
 // created by backend and some js files
+declare var gobConfig: import("./modules/Config").GobchatConfig
+declare var gobChatManager: import("./modules/Chat").ChatControl
+declare var gobStyles: import("./modules/Style").StyleLoader
+declare var gobLocale: import("./modules/Locale").LocaleManager
+declare function openGobConfig(): void
+declare function saveConfig(): void
+
+declare interface Window {
+    saveConfig(): void
+}
+
 declare namespace Gobchat {
     const DefaultProfileConfig: any
     const KeyCodeToKeyEnum: (number) => string

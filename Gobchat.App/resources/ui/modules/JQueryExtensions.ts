@@ -13,12 +13,24 @@
 
 'use strict'
 
-export * as Chat from "./Chat.js"
-export * as Utility from "./CommonUtility.js"
-export * as Components from "./Components.js"
-export * as Config from "./Config.js"
-export * as Constants from "./Constants.js"
-export * as Databinding from "./Databinding.js"
-export * as Dialog from "./Dialog.js"
-export * as Locale from "./Locale.js"
-export * as Style from "./Style.js"
+declare interface JQuery<T = HTMLElement> extends Iterable<T> {
+    filterAndFind(selector: string): JQuery<T>
+}
+
+$.fn.filterAndFind = function<T>(this: JQuery<T>, selector: string): JQuery<T>{
+    return this.filter(selector).add(this.find(selector))
+}
+
+$.fn.assertSetIsNotEmpty = function<T>(this: JQuery<T>): any{
+    if(this.length === 0)
+        throw new Error("jquery set is empty")
+    return this
+}
+
+$.fn.isSetEmpty = function<T>(this: JQuery<T>): boolean{
+    return this.length === 0
+}
+
+$.fn.isSetNotEmpty = function<T>(this: JQuery<T>): boolean{
+    return this.length !== 0
+}

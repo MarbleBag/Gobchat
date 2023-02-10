@@ -23,13 +23,14 @@
     border-collapse: collapse;
     border-spacing: 0px;
     text-align: left;
+    white-space: nowrap;
 
     & > thead {
         break-inside: avoid;
         color: var(--table-header-color);
-        text-shadow: var(--table-shadow);
+        text-shadow: var(--table-header-shadow);
 
-        & > tr {          
+        & > tr {
             & > th {
                 text-align: center;
                 padding: 0 0.2em;
@@ -45,8 +46,15 @@
 }
 
 .gob-table--strips-horizontal {
-    & > tbody > tr:nth-child(even),
-    & > thead > tr:nth-child(even) {
+    & > thead > tr:nth-child(even),
+    & > tbody > tr:nth-child(even) {
+        background: var(--table-stripped-background);
+    }
+}
+
+.gob-table--strips-vertical {
+    & > thead > tr > th:nth-child(even),
+    & > tbody > tr > td:nth-child(even) {
         background: var(--table-stripped-background);
     }
 }
@@ -75,9 +83,9 @@
     }
 }
 
-@mixin body_checkbox_rule($col){
-    .gob-table--checkbox-#{$col}{
-        & > tbody > tr > td:nth-child(#{$col}){
+@mixin body_checkbox_rule($col) {
+    .gob-table--checkbox-#{$col} {
+        & > tbody > tr > td:nth-child(#{$col}) {
             text-align: center;
             padding-left: var(--checkbox-size);
             padding-right: var(--checkbox-size);
@@ -85,16 +93,16 @@
     }
 }
 
-@mixin header_alignment_rule($col, $align){
-    .gob-table--header-#{$col}--#{$align}{
-        & > thead > tr > th:nth-child(#{$col}){
+@mixin header_alignment_rule($col, $align) {
+    .gob-table--header-#{$col}--#{$align} {
+        & > thead > tr > th:nth-child(#{$col}) {
             text-align: #{$align};
         }
     }
 }
 
-@mixin table_rules($max_columns){
-    @for $i from 1 to $max_columns+1 {
+@mixin table_rules($max_columns) {
+    @for $i from 1 to $max_columns + 1 {
         @include body_checkbox_rule($i);
 
         @include header_alignment_rule($i, left);
@@ -104,3 +112,14 @@
 }
 
 @include table_rules(8);
+
+.gob-label-checkbox-table-wrapper {
+    columns: 2 15em;
+    gap: 1em;
+    width: fit-content;
+}
+
+.gob-label-checkbox-table {
+    @extend .gob-table;
+    @extend .gob-table--checkbox-2;
+}

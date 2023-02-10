@@ -2,21 +2,7 @@
         class="fas fa-clone"></i></button>
 
 <div class="gob-config-group" style="overflow-x: auto;">
-    <div class="gob-config-group_item-3-small-columns" id="c_roleplay_color-table">
-        <div class="gob-grid_header" data-gob-locale-text="config.profiles.profiles.name"></div>
-        <div class="gob-grid_header" data-gob-locale-text="config.profiles.profiles.actions"></div>
-    </div>
-
-    <template id="c_roleplay_template_color-table_entry">
-        <label class="gob-config-group-item_label js-label"></label>
-        <input class="js-color-forground" type="text" />
-        <button class="js-color-forground-reset"
-            data-gob-locale-title="config.main.button.reset.tooltip">
-            <i class='fas fa-undo-alt'></i>
-        </button>
-    </template>
-
-    <table id="croleplay_roleplay" class="gob-config-table gob-config-table--hoverable">
+    <table id="cp-roleplay_color-table" class="gob-table gob-table--hoverable">
         <thead>
             <tr>
                 <th data-gob-locale-text="config.roleplay.tokentbl.header.name"></th>
@@ -26,122 +12,119 @@
         <tbody>
         </tbody>
     </table>
-
-    <template id="croleplay_template_roleplayentry">
-        <tr>
-            <td>
-                <label class="entry-label"></label>
-            </td>
-            <td>
-                <div>
-                    <input class="entry-color-forground" type="text" />
-                    <button class="entry-color-forground-reset gob-config-icon-button gob-button-reset"
-                        data-gob-locale-title="config.main.button.reset.tooltip">
-                        <i class='fas fa-undo-alt'></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    </template>
 </div>
 
 <div class="gob-config-group">
     <div class="gob-config-group_item">
-        <button id="c_roleplay_segments_add" class="gob-config-secondary-button">
+        <button id="cp-roleplay_segments_add" class="gob-config-secondary-button">
             <i class="fa fa-plus"></i>
             <span data-gob-locale-text="config.roleplay.tokentbl.new"></span>
         </button>
-        <button id="c_roleplay_segments_reset" class="gob-config-secondary-button">
+        <button id="cp-roleplay_segments_reset" class="gob-config-secondary-button">
             <i class="fas fa-undo-alt"></i>
             <span data-gob-locale-text="config.roleplay.tokentbl.reset"></span>
         </button>
     </div>
 
-    <div id="c_roleplay_segments-table">
+    <div id="cp-roleplay_segments-table">
     </div>
+</div>
 
-    <template id="c_roleplay_template_segments-table_entry">
-        <div data-gob-entryid>
-            <h4>
-                <span class="ui-gc-group-header">
-                    <span>
-                        <span class="js-header-index"></span>
-                        <span>. </span>
-                        <span class="js-header-name"></span>
-                        <!--
-                        <span class="js-header-name-type"></span>
-                        <span> starts with </span>
-                        <span class="js-header-name-start"></span>
-                        <span> and ends with </span>
-                        <span class="js-header-name-end"></span>
-                        -->
-                    </span>
-                    <span style="float:right;">
-                        <button class="js-delete-entry gob-config-icon-button"
-                            data-gob-locale-title="config.main.button.delete.tooltip">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </span>
+<template id="cp-roleplay_template_color-table_entry">
+    <tr>
+        <td>
+            <label class="gob-config-label js-label"></label>
+        </td>
+        <td>
+            <input class="js-color-forground" type="text" />
+            <button class="js-color-forground-reset" data-gob-locale-title="config.main.button.reset.tooltip">
+                <i class='fas fa-undo-alt'></i>
+            </button>
+        </td>
+    </tr>
+</template>
+
+<template id="cp-roleplay_template_segments-table_entry">
+    <div data-gob-entryid>
+        <h4>
+            <span class="ui-gc-group-header">
+                <span>
+                    <span class="js-header-index"></span>
+                    <span>. </span>
+                    <span class="js-header-name"></span>
+                    <!--
+                    <span class="js-header-name-type"></span>
+                    <span> starts with </span>
+                    <span class="js-header-name-start"></span>
+                    <span> and ends with </span>
+                    <span class="js-header-name-end"></span>
+                    -->
                 </span>
-            </h4>
-            <div>
+                <span style="float:right;">
+                    <button class="js-delete-entry gob-config-icon-button"
+                        data-gob-locale-title="config.main.button.delete.tooltip">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </span>
+            </span>
+        </h4>
+        <div>
+            <div class="gob-config-group_item">
+                <span data-gob-locale-text="config.roleplay.entry.info"></span>
+            </div>
+            <div class="gob-config-group">
                 <div class="gob-config-group_item">
-                    <span data-gob-locale-text="config.roleplay.entry.info"></span>
-                </div>
-                <div class="gob-config-group">
-                    <div class="gob-config-group_item">
-                        <div>
-                            <input type="checkbox" class="gob-input-checkbox js-entry-active" />
-                            <div data-gob-locale-text="config.roleplay.entry.active"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gob-config-group">
-                    <div class="gob-config-group_item">
-                        <table>
-                            <tr>
-                                <td>
-                                    <span>Type</span>
-                                </td>
-                                <td>
-                                    <select class="gob-input-dropdown js-segment-selector">
-                                        <option value=1>SAY</option>
-                                        <option value=2>EMOTE</option>
-                                        <option value=3>OOC</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span data-gob-locale-text="config.roleplay.entry.tokenstart"></span>
-                                </td>
-                                <td>
-                                    <input type="text" class="gob-input-textbox js-startTokens" />
-                                </td>
-                                <td>
-                                    <span>Unicode:</span>
-                                    <span class="js-startTokens-unicode"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span data-gob-locale-text="config.roleplay.entry.tokenend"></span>
-                                </td>
-                                <td>
-                                    <input type="text" class="gob-input-textbox js-endTokens" />
-                                </td>
-                                <td>
-                                    <span>Unicode:</span>
-                                    <span class="js-endTokens-unicode"></span>
-                                </td>
-                            </tr>
-                        </table>
+                    <div>
+                        <input type="checkbox" class="gob-input-checkbox js-entry-active" />
+                        <div data-gob-locale-text="config.roleplay.entry.active"></div>
                     </div>
                 </div>
             </div>
+
+            <div class="gob-config-group">
+                <div class="gob-config-group_item">
+                    <table>
+                        <tr>
+                            <td>
+                                <span>Type</span>
+                            </td>
+                            <td>
+                                <select class="gob-input-dropdown js-segment-selector">
+                                    <option value=1>SAY</option>
+                                    <option value=2>EMOTE</option>
+                                    <option value=3>OOC</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span data-gob-locale-text="config.roleplay.entry.tokenstart"></span>
+                            </td>
+                            <td>
+                                <input type="text" class="gob-input-textbox js-startTokens" />
+                            </td>
+                            <td>
+                                <span>Unicode:</span>
+                                <span class="js-startTokens-unicode"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span data-gob-locale-text="config.roleplay.entry.tokenend"></span>
+                            </td>
+                            <td>
+                                <input type="text" class="gob-input-textbox js-endTokens" />
+                            </td>
+                            <td>
+                                <span>Unicode:</span>
+                                <span class="js-endTokens-unicode"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-    </template>
-</div>
+    </div>
+</template>
 
 <script defer type="module" src="config_roleplay.js"></script>

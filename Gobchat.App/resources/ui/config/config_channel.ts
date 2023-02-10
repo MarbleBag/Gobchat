@@ -18,8 +18,8 @@ import * as Components from "/module/Components"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-const table = $("#c_channel_channels > tbody")
-const rowTemplate = $('#c_channel_template_channelentry')
+const table = $("#c_channel_table > tbody")
+const rowTemplate = $('#c_channel_template_table_entry')
 
 function buildChannelEntry(channelData) {
     const rowEntry = $(rowTemplate.html())

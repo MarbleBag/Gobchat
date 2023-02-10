@@ -68,33 +68,39 @@ export function showMessageDialog(options: MessageDialogOptions): Promise<number
     return _showMessageDialog(options, {})
 }
 
-export function showProfileIdSelectionDialog(callback, options) {
+interface ProfileSelectionDialogOptionTypes {
+    exclude: string[]
+}
+
+export type ProfileSelectionDialogOptions = Partial<ProfileSelectionDialogOptionTypes>
+
+export function showProfileIdSelectionDialog(callback: (selection:string) => void, options: ProfileSelectionDialogOptions) {
     {
         (async () => {
-            let defOptions = { exclude: [] }
+            let defOptions: ProfileSelectionDialogOptionTypes = { exclude: [] }
             defOptions = $.extend(defOptions, options)
 
             let profileIds = gobConfig.profileIds
             if (defOptions.exclude)
                 profileIds = _.without(profileIds, defOptions.exclude)
 
-            const $selector = $("<select/>")
+            const selector = $("<select/>")
             profileIds.forEach((profileId) => {
                 var profile = gobConfig.getProfile(profileId)
                 if (profile !== null)
-                    $selector.append(new Option(profile.profileName, profileId))
+                    selector.append(new Option(profile.profileName, profileId))
             })
 
             const result = await showMessageDialog(
                 {
                     title: "config.profiles.dialog.copyprofilepage.title",
-                    dialogContent: $selector,
+                    dialogContent: selector,
                     dialogType: "OkCancel"
                 }
             )
 
             if (result === 1)
-                callback($selector.val())
+                callback(selector.val())
         })()
     }
 }
@@ -146,13 +152,13 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
                 }
             })
 
-            const $dialog = $(templateDialog)
+            const dialog = $(templateDialog)
 
             if (mergedOptions.dialogText === "string" && mergedOptions.dialogText.length > 0)
-                $dialog.find("#dialog_content").append($("<span/>").html(mergedOptions.dialogText))
+                dialog.find("#dialog_content").append($("<span/>").html(mergedOptions.dialogText))
 
             if (mergedOptions.dialogContent)
-                $dialog.find("#dialog_content").append($(mergedOptions.dialogContent))
+                dialog.find("#dialog_content").append($(mergedOptions.dialogContent))
 
             const jqueryDialogOptions: JQueryDialogOptionTypes = {
                 title: mergedOptions.title,
@@ -165,20 +171,20 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
                 buttons: buttons
             }
 
-            $dialog.dialog(jqueryDialogOptions)
+            dialog.dialog(jqueryDialogOptions)
 
             switch (mergedOptions.dialogIcon) {
                 case "Warning":
-                    $dialog.find("#icon_warning").show()
+                    dialog.find("#icon_warning").show()
                     break;
             }
 
-            $dialog.parent().find(".ui-dialog-titlebar-close").on("click", function () {
-                $dialog.dialog("destroy").remove()
+            dialog.parent().find(".ui-dialog-titlebar-close").on("click", function () {
+                dialog.dialog("destroy").remove()
                 resolve(0)
             })
 
-            $dialog.dialog("open")
+            dialog.dialog("open")
         } catch (e1) {
             console.error(e1)
             reject(e1)

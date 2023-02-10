@@ -30,7 +30,7 @@
 
     --symbol-button-color: #cc9f5e;
     --symbol-button-shadow-color: black;
-    --symbol-button-background: #a43131;    
+    --symbol-button-background: #a43131;
     --symbol-button-size: calc(25em / 16);
 
     --color-button-color: #cc9f5e;
@@ -57,8 +57,9 @@
 
     --table-header-color: var(--text-2-color);
     --table-header-shadow-color: var(--text-2-shadow-color);
-    --table-shadow: calc(1rem / 16) 0 var(--table-shadow-color), calc(-1rem / 16) 0 var(--table-shadow-color),
-    0 calc(1rem / 16) var(--table-shadow-color), 0 calc(-1rem / 16) var(--table-shadow-color);
+    --table-header-shadow: calc(1rem / 16) 0 var(--table-header-shadow-color),
+        calc(-1rem / 16) 0 var(--table-header-shadow-color), 0 calc(1rem / 16) var(--table-header-shadow-color),
+        0 calc(-1rem / 16) var(--table-header-shadow-color);
     --table-stripped-background: #13131350;
     --table-hover-background: linear-gradient(135deg, #131313, #13131310 80%);
 

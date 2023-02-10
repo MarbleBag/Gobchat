@@ -669,7 +669,7 @@ class TabBarControl {
 
         // remove old nav panel data
         for (let tabId of Object.keys(this.#navPanelData)) {
-            if (!_.includes(tabId, configSorting))
+            if (!_.includes(configSorting, tabId))
                 delete this.#navPanelData[tabId]
         }
 
@@ -711,8 +711,8 @@ class TabBarControl {
         this.#tabbar.find(TabBarControl.selector_scrollLeftBtn)
             .prop("disabled", isAtLeftBorder)
 
-        const scrollWidth = Utility.toNumber($content.prop("scrollWidth"), 0)
-        const clientWidth = Utility.toNumber($content.prop("clientWidth"), 0)
+        const scrollWidth = Utility.toFloat($content.prop("scrollWidth"), 0)
+        const clientWidth = Utility.toFloat($content.prop("clientWidth"), 0)
         const isAtRightBorder = (scrollWidth - clientWidth) <= newPosition
         this.#tabbar.find(TabBarControl.selector_scrollRightBtn)
             .prop("disabled", isAtRightBorder)

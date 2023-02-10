@@ -14,6 +14,7 @@
 'use strict';
 
 import * as Dialog from "/module/Dialog"
+import "/module/JQueryExtensions"
 
 const AttributeProfileId = "data-profile-id"
 
@@ -61,12 +62,12 @@ gobConfig.addPropertyEventListener("profile.name", (event) => {
 populateProfileSelection()
 
 //setup create profile
-$("#cprofiles_profile_new").on("click", function (event) {
+$("#cp-profiles_profile_new").on("click", function (event) {
     gobConfig.createNewProfile()
 })
 
 //setup import profile
-$("#cprofiles_profile_import").on("click", function (event) {
+$("#cp-profiles_profile_import").on("click", function (event) {
     (async () => {
         const stringifiedProfile = await GobchatAPI.importProfile()
         if (stringifiedProfile === undefined || stringifiedProfile === null || stringifiedProfile.length == 0) {
@@ -79,11 +80,11 @@ $("#cprofiles_profile_import").on("click", function (event) {
     })()
 })
 
-const profileTable = $("#cprofiles_profiles")
-const template = $("#cprofiles_template_profiles_entry")
+const profileTable = $("#cp-profiles_profiles")
+const template = $("#cp-profiles_template_profile-table_entry")
 
 async function populateProfileTable() {
-    profileTable.children(":not(.gob-config_profile-table_header)").remove()
+    profileTable.children(":not(.gob-config_cp-profile-table_header)").remove()
     gobConfig.profileIds.forEach((profileId) => {
         const profile = gobConfig.getProfile(profileId)
         if (profile === null)
@@ -94,13 +95,13 @@ async function populateProfileTable() {
 
         rowElement.appendTo(profileTable)
 
-        const txtProfileName = rowElement.find(".js-name")
-        const btnActiveProfile = rowElement.find(".js-activate")
-        const btnExportProfile = rowElement.find(".js-export")
-        const btnCloneProfile = rowElement.find(".js-clone")
-        const btnCopyProfile = rowElement.find(".js-copy")
-        const btnDefaultProfile = rowElement.find(".js-reset")
-        const btnDeleteProfile = rowElement.find(".js-delete")
+        const txtProfileName = rowElement.filterAndFind(".js-name")
+        const btnActiveProfile = rowElement.filterAndFind(".js-activate")
+        const btnExportProfile = rowElement.filterAndFind(".js-export")
+        const btnCloneProfile = rowElement.filterAndFind(".js-clone")
+        const btnCopyProfile = rowElement.filterAndFind(".js-copy")
+        const btnDefaultProfile = rowElement.filterAndFind(".js-reset")
+        const btnDeleteProfile = rowElement.filterAndFind(".js-delete")
 
         txtProfileName.on("change", function (event) {
             profile.profileName = event.target.value || "Unnamed"
@@ -128,7 +129,7 @@ async function populateProfileTable() {
         })
 
         btnCopyProfile.on("click", function (event) {
-            Dialog.showProfileIdSelectionDialog(selectedId => gobConfig.copyProfile(selectedId, profile.profileId), { exclude: profile.profileId })
+            Dialog.showProfileIdSelectionDialog(selectedId => gobConfig.copyProfile(selectedId, profile.profileId), { exclude: [profile.profileId] })
         })
         if (gobConfig.profileIds.length <= 1)
             btnCopyProfile.attr("disabled", true)
