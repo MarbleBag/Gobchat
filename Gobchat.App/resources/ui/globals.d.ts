@@ -153,6 +153,14 @@ declare interface Object {
     entries: (any) => any
 }
 
+declare interface NodeListOf<TNode extends Node> extends NodeList, Iterable<TNode> {
+
+}
+
+declare interface DOMTokenList extends Iterable<string> {
+
+}
+
 // gobchat
 // created by backend and some js files
 declare var gobConfig: import("./modules/Config").GobchatConfig

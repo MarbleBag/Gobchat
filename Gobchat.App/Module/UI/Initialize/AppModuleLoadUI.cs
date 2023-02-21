@@ -51,7 +51,8 @@ namespace Gobchat.Module.UI
             _resourcePaths = new ResourcePaths[]{
                 new ResourcePaths(new Regex(@"^lib\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "lib")),
                 new ResourcePaths(new Regex(@"^module\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "modules")),
-                new ResourcePaths(new Regex(@"^styles\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "styles"))
+                new ResourcePaths(new Regex(@"^styles\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "styles")),
+                new ResourcePaths(new Regex(@"^graphics\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "graphics"))
             };
         }
 

@@ -96,6 +96,15 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="resources\ui\config\ConfigTemplate.html">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConfigTemplate.tt</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\config\ConfigTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConfigTemplate.html</LastGenOutput>
+    </Content>
     <Content Include="resources\ui\config\config_rangefilter.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -103,6 +112,8 @@
       <DependentUpon>config_rangefilter.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_groups.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_mentions.ts" />
     <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
     <Content Include="resources\ui\config\config_chatlog.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -128,6 +139,9 @@
     <Content Include="resources\ui\config\config_groups.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\config\config_tabs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\lib\spectrum.min.css">
       <DependentUpon>spectrum.css</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -143,6 +157,10 @@
     <Content Include="resources\ui\modules\JQueryExtensions.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\modules\WebComponents.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\WebComponentsTemplate.html" />
     <Content Include="resources\ui\styles\ffxiv_dark.min.css">
       <DependentUpon>ffxiv_dark.css</DependentUpon>
     </Content>
@@ -173,15 +191,11 @@
     <Content Include="resources\ui\config\config_tabs.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\gobchat-test.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\gobchat-test.js" />
     <Content Include="resources\ui\gobchat.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_tabs.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_tabs.ts" />
     <Content Include="resources\ui\gobchat\web-components.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -370,6 +384,7 @@
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <TypeScriptCompile Include="resources\ui\modules\WebComponents.ts" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

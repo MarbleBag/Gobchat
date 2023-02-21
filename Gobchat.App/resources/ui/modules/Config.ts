@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
  * Copyright (C) 2019-2022 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -586,7 +586,7 @@ export class GobchatConfig {
         return this.#activeProfile.get(key, defaultValue)
     }
 
-    getDefault(key: string | null, defaultValue: any): any {
+    getDefault(key: string | null, defaultValue?: any): any {
         try {
             const value = resolvePath(key, this.#defaultProfile)
             return value === undefined ? defaultValue : value !== null ? copyByJson(value) : value

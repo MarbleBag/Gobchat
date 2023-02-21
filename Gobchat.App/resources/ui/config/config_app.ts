@@ -164,18 +164,6 @@ const parseNumber = (element: JQuery) => {
     return Utility.isNumber(value) ? value : undefined
 }
 
-Databinding.bindElement(binding, $("#capp_rangefilter_cutoff"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#capp_rangefilter_cutoff_reset"))
-
-Databinding.bindElement(binding, $("#capp_rangefilter_fadeout"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#capp_rangefilter_fadeout_reset"))
-
-Databinding.bindElement(binding, $("#capp_rangefilter_startopacity"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#capp_rangefilter_startopacity_reset"))
-
-Databinding.bindElement(binding, $("#capp_rangefilter_endopacity"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#capp_rangefilter_endopacity_reset"))
-
 Databinding.bindElement(binding, $("#capp_frame_x"), { elementGetAccessor: parseNumber })
 Databinding.bindElement(binding, $("#capp_frame_y"), { elementGetAccessor: parseNumber })
 Databinding.bindElement(binding, $("#capp_frame_height"), { elementGetAccessor: parseNonNegativeNumber })

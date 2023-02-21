@@ -20,6 +20,8 @@ import * as Style from '/module/Style'
 import * as Dialog from '/module/Dialog'
 import * as NavControl from '/module/MenuNavigationComponent'
 
+//import '/module/WebComponents'
+
 // initialize global variables
 jQuery(async function () {
     window.gobConfig = new Config.GobchatConfig()
