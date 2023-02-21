@@ -134,12 +134,15 @@
     </Content>
     <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
     <Content Include="resources\ui\config\config_mentions.js">
+	  <DependentUpon>config_mentions.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_groups.js">
+	  <DependentUpon>config_groups.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_tabs.js">
+	  <DependentUpon>config_tabs.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\spectrum.min.css">
@@ -155,9 +158,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\JQueryExtensions.js">
+	  <DependentUpon>JQueryExtensions.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\WebComponents.js">
+	  <DependentUpon>WebComponents.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\WebComponentsTemplate.html" />
@@ -651,7 +656,7 @@
     <Content Include="resources\ui\config\config.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\gob-confighelper.js">
+    <Content Include="resources\ui\config\gob-confighelper-deprecated.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_channel.html">

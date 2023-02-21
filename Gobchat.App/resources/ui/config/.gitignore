@@ -1,8 +1,2 @@
 # auto generated files
-config.js
-config_profiles.js
-config_channel.js
-config_chatlog.js
-config_app.js
-config_rangefilter.js
-config_roleplay.js
+*.js
