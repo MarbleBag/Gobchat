@@ -204,96 +204,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fonts.
-        /// </summary>
-        internal static string config_app_fonts_label {
-            get {
-                return ResourceManager.GetString("config.app.fonts.label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
-        /// </summary>
-        internal static string config_app_fonts_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.fonts.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Font size.
-        /// </summary>
-        internal static string config_app_fontsize_label {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Large.
-        /// </summary>
-        internal static string config_app_fontsize_large {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.large", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Larger.
-        /// </summary>
-        internal static string config_app_fontsize_larger {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.larger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Medium.
-        /// </summary>
-        internal static string config_app_fontsize_medium {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.medium", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Small.
-        /// </summary>
-        internal static string config_app_fontsize_small {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.small", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Smaller.
-        /// </summary>
-        internal static string config_app_fontsize_smaller {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.smaller", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string config_app_fontsize_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Very large.
-        /// </summary>
-        internal static string config_app_fontsize_verylarge {
-            get {
-                return ResourceManager.GetString("config.app.fontsize.verylarge", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Hide &amp;amp; show Gobchat.
         /// </summary>
         internal static string config_app_hotkeys_hideshow {
@@ -771,119 +681,434 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group will be deleted. Are you sure?.
+        ///   Looks up a localized string similar to Chat font size.
         /// </summary>
-        internal static string config_groups_entry_deleteconfirm {
+        internal static string config_formatting_chathistory_fontsize_label {
             get {
-                return ResourceManager.GetString("config.groups.entry.deleteconfirm", resourceCulture);
+                return ResourceManager.GetString("config.formatting.chathistory.fontsize.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_formatting_chathistory_fontsize_label_tooltip {
+            get {
+                return ResourceManager.GetString("config.formatting.chathistory.fontsize.label.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat entries gap.
+        /// </summary>
+        internal static string config_formatting_chathistory_gap_label {
+            get {
+                return ResourceManager.GetString("config.formatting.chathistory.gap.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_formatting_chathistory_gap_label_tooltip {
+            get {
+                return ResourceManager.GetString("config.formatting.chathistory.gap.label.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat menu font size.
+        /// </summary>
+        internal static string config_formatting_chatui_fontsize_label {
+            get {
+                return ResourceManager.GetString("config.formatting.chatui.fontsize.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_formatting_chatui_fontsize_label_tooltip {
+            get {
+                return ResourceManager.GetString("config.formatting.chatui.fontsize.label.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config font size.
+        /// </summary>
+        internal static string config_formatting_config_fontsize_label {
+            get {
+                return ResourceManager.GetString("config.formatting.config.fontsize.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picks the first available font on your platform, from left to right. It&apos;s also possible to use a &apos;generic font&apos;: serif, sans-serife, monospace..
+        /// </summary>
+        internal static string config_formatting_font_family_tooltip {
+            get {
+                return ResourceManager.GetString("config.formatting.font-family.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font family.
+        /// </summary>
+        internal static string config_formatting_fontfamily {
+            get {
+                return ResourceManager.GetString("config.formatting.fontfamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font.
+        /// </summary>
+        internal static string config_formatting_fonts_label {
+            get {
+                return ResourceManager.GetString("config.formatting.fonts.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2k resolution.
+        /// </summary>
+        internal static string config_formatting_fontsize_2k {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.2k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2k - larger.
+        /// </summary>
+        internal static string config_formatting_fontsize_2k_large {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.2k-large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2k - smaller.
+        /// </summary>
+        internal static string config_formatting_fontsize_2k_small {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.2k-small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4k resolution.
+        /// </summary>
+        internal static string config_formatting_fontsize_4k {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.4k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4k resolution - larger.
+        /// </summary>
+        internal static string config_formatting_fontsize_4k_large {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.4k-large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4k resolution - smaller.
+        /// </summary>
+        internal static string config_formatting_fontsize_4k_small {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.4k-small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Ultra HD.
+        /// </summary>
+        internal static string config_formatting_fontsize_8k {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.8k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Ultra HD - larger.
+        /// </summary>
+        internal static string config_formatting_fontsize_8k_large {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.8k-large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Ultra HD - smaller.
+        /// </summary>
+        internal static string config_formatting_fontsize_8k_small {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.8k-small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom size.
+        /// </summary>
+        internal static string config_formatting_fontsize_custom {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larger.
+        /// </summary>
+        internal static string config_formatting_fontsize_larger {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.larger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string config_formatting_fontsize_normal {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smaller.
+        /// </summary>
+        internal static string config_formatting_fontsize_smaller {
+            get {
+                return ResourceManager.GetString("config.formatting.fontsize.smaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text color.
+        /// </summary>
+        internal static string config_formatting_tbl_color_header_color {
+            get {
+                return ResourceManager.GetString("config.formatting.tbl.color.header.color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        internal static string config_formatting_tbl_color_header_name {
+            get {
+                return ResourceManager.GetString("config.formatting.tbl.color.header.name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
-        internal static string config_groups_group_active {
+        internal static string config_formatting_tbl_segment_entry_active {
             get {
-                return ResourceManager.GetString("config.groups.group.active", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.active", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deletes group.
+        ///   Looks up a localized string similar to Entry will be deleted. Are you sure?.
         /// </summary>
-        internal static string config_groups_group_delete_tooltip {
+        internal static string config_formatting_tbl_segment_entry_deleteconfirm {
             get {
-                return ResourceManager.GetString("config.groups.group.delete.tooltip", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.deleteconfirm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This group represents an in-game group and will be applied to any player you have marked with {0}..
+        ///   Looks up a localized string similar to {0} starts with {1} and ends with {2}.
         /// </summary>
-        internal static string config_groups_group_ffgroup_info {
+        internal static string config_formatting_tbl_segment_entry_header {
             get {
-                return ResourceManager.GetString("config.groups.group.ffgroup.info", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.header", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message background.
+        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
         /// </summary>
-        internal static string config_groups_group_message_background {
+        internal static string config_formatting_tbl_segment_entry_info {
             get {
-                return ResourceManager.GetString("config.groups.group.message.background", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.info", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group name.
+        ///   Looks up a localized string similar to End.
         /// </summary>
-        internal static string config_groups_group_name {
+        internal static string config_formatting_tbl_segment_entry_tokenend {
             get {
-                return ResourceManager.GetString("config.groups.group.name", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.tokenend", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group.
+        ///   Looks up a localized string similar to Start.
         /// </summary>
-        internal static string config_groups_group_naming {
+        internal static string config_formatting_tbl_segment_entry_tokenstart {
             get {
-                return ResourceManager.GetString("config.groups.group.naming", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.tokenstart", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sender background.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
-        internal static string config_groups_group_sender_background {
+        internal static string config_formatting_tbl_segment_entry_type {
             get {
-                return ResourceManager.GetString("config.groups.group.sender.background", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.type", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sender text.
+        ///   Looks up a localized string similar to Unicode:&amp;nbsp.
         /// </summary>
-        internal static string config_groups_group_sender_forground {
+        internal static string config_formatting_tbl_segment_entry_unicode {
             get {
-                return ResourceManager.GetString("config.groups.group.sender.forground", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.entry.unicode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Characters belonging to this group.
+        ///   Looks up a localized string similar to Segment Detection.
         /// </summary>
-        internal static string config_groups_group_trigger {
+        internal static string config_formatting_tbl_segment_name {
             get {
-                return ResourceManager.GetString("config.groups.group.trigger", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A character belongs to this group if they&apos;re listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name..
+        ///   Looks up a localized string similar to Add entry.
         /// </summary>
-        internal static string config_groups_group_trigger_tooltip {
+        internal static string config_formatting_tbl_segment_new {
             get {
-                return ResourceManager.GetString("config.groups.group.trigger.tooltip", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.new", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
+        ///   Looks up a localized string similar to Reset entries.
         /// </summary>
-        internal static string config_groups_info {
+        internal static string config_formatting_tbl_segment_reset {
             get {
-                return ResourceManager.GetString("config.groups.info", resourceCulture);
+                return ResourceManager.GetString("config.formatting.tbl.segment.reset", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to New group.
         /// </summary>
-        internal static string config_groups_newgroup {
+        internal static string config_groups_tbl_group_action_add {
             get {
-                return ResourceManager.GetString("config.groups.newgroup", resourceCulture);
+                return ResourceManager.GetString("config.groups.tbl.group.action.add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
+        /// </summary>
+        internal static string config_groups_tbl_group_description {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_active {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group will be deleted. Are you sure?.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_deleteconfirm {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.deleteconfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This group represents an in-game group and will be applied to any player you have marked with {0}..
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_ffgroup_info {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.ffgroup.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message background.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_message_background {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.message.background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group name.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_name {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_naming {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.naming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sender background.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_sender_background {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.sender.background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sender text.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_sender_forground {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.sender.forground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characters belonging to this group.
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_trigger {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.trigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A character belongs to this group if they&apos;re listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name..
+        /// </summary>
+        internal static string config_groups_tbl_group_entry_trigger_tooltip {
+            get {
+                return ResourceManager.GetString("config.groups.tbl.group.entry.trigger.tooltip", resourceCulture);
             }
         }
         
@@ -1050,6 +1275,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Formatting.
+        /// </summary>
+        internal static string config_main_nav_formatting {
+            get {
+                return ResourceManager.GetString("config.main.nav.formatting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Groups.
         /// </summary>
         internal static string config_main_nav_groups {
@@ -1082,15 +1316,6 @@ namespace Gobchat {
         internal static string config_main_nav_rangefilter {
             get {
                 return ResourceManager.GetString("config.main.nav.rangefilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Roleplay.
-        /// </summary>
-        internal static string config_main_nav_roleplay {
-            get {
-                return ResourceManager.GetString("config.main.nav.roleplay", resourceCulture);
             }
         }
         
@@ -1599,96 +1824,6 @@ namespace Gobchat {
         internal static string config_rangefilter_transparency_start_tooltip {
             get {
                 return ResourceManager.GetString("config.rangefilter.transparency.start.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string config_roleplay_entry_active {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entry will be deleted. Are you sure?.
-        /// </summary>
-        internal static string config_roleplay_entry_deleteconfirm {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.deleteconfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} starts with {1} and ends with {2}.
-        /// </summary>
-        internal static string config_roleplay_entry_header {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to They will be processed from top to down. To reorder them drag and drop the header..
-        /// </summary>
-        internal static string config_roleplay_entry_info {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.info", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End.
-        /// </summary>
-        internal static string config_roleplay_entry_tokenend {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.tokenend", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        internal static string config_roleplay_entry_tokenstart {
-            get {
-                return ResourceManager.GetString("config.roleplay.entry.tokenstart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Text color.
-        /// </summary>
-        internal static string config_roleplay_tokentbl_header_color {
-            get {
-                return ResourceManager.GetString("config.roleplay.tokentbl.header.color", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string config_roleplay_tokentbl_header_name {
-            get {
-                return ResourceManager.GetString("config.roleplay.tokentbl.header.name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add entry.
-        /// </summary>
-        internal static string config_roleplay_tokentbl_new {
-            get {
-                return ResourceManager.GetString("config.roleplay.tokentbl.new", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset entries.
-        /// </summary>
-        internal static string config_roleplay_tokentbl_reset {
-            get {
-                return ResourceManager.GetString("config.roleplay.tokentbl.reset", resourceCulture);
             }
         }
         

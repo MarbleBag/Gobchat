@@ -19,10 +19,23 @@ import { EventDispatcher } from './EventDispatcher.js'
 export const AttributeTextKey = "data-gob-locale-text"
 export const AttributeTooltipKey = "data-gob-locale-tooltip"
 export const AttributeTooltip = "data-gob-tooltip"
+export const AttributeActiveLocale = "data-gob-locale-code"
+
+export function setLocalizedText(element: HTMLElement | JQuery, key: string) {
+    $(element).attr(AttributeTextKey, key).removeAttr(AttributeActiveLocale);
+}
+
+export function setLocalizedTooltip(element: HTMLElement | JQuery, key: string) {
+    $(element).attr(AttributeTooltipKey, key).removeAttr(AttributeActiveLocale);
+}
 
 export class LocaleManager {
     #locale: string = 'en'
     #eventDispatcher: EventDispatcher = new EventDispatcher()
+
+    get locale(): string {
+        return this.#locale
+    }
 
     setLocale(locale: string) {
         const oldLocale = this.#locale
@@ -64,7 +77,7 @@ export class LocaleManager {
         const results = {}
         if (params && params.length > 0) {
             for (let key of keysToLoad)
-                results[key] = Utility.formatString(localeLookup[key], params)
+                results[key] = Utility.formatString(localeLookup[key], ...params)
         } else {
             for (let key of keysToLoad)
                 results[key] = localeLookup[key]
@@ -94,53 +107,41 @@ export class LocaleManager {
 }
 
 async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) {
-    const selector = `[${AttributeTextKey}],[${AttributeTooltipKey}]` 
-    const selectedElements = $(htmlElement).find(selector).addBack(selector)
+    const selector = `[${AttributeTextKey}],[${AttributeTooltipKey}]`
+    const selectedElements = $(htmlElement).find(selector).addBack(selector).not(`[${AttributeActiveLocale}=${locale}]`)
     if (selectedElements.length == 0)
         return
 
     const stringIds: string[] = []
 
-    selectedElements.each(function () {
-        const $this = $(this)
-        const textId = $this.attr(AttributeTextKey)
-        if (textId && typeof textId === "string") 
-            // const tooltipId = `${textId}.tooltip` // needs to be streamlined to autodetect inputs and annotate them with the tooltip class
+    for (const selectedElement of selectedElements) {
+        const textId = selectedElement.getAttribute(AttributeTextKey)
+        if (textId)
             stringIds.push(textId)
-        
 
-        const tooltipId = $this.attr(AttributeTooltipKey)
-        if (tooltipId && typeof tooltipId === "string")
+        const tooltipId = selectedElement.getAttribute(AttributeTooltipKey)
+        if (tooltipId)
             stringIds.push(tooltipId)
-    })
+
+        selectedElement.setAttribute(AttributeActiveLocale, locale)
+    }
 
     if (stringIds.length == 0)
         return
 
     const lookup = await GobchatAPI.getLocalizedStrings(locale, stringIds)
 
-    selectedElements.each(function () {
-        const $this = $(this)
-
-        const textId = $this.attr(AttributeTextKey)
-        if (textId && typeof textId === "string") {
+    for (const selectedElement of selectedElements) {
+        const textId = selectedElement.getAttribute(AttributeTextKey)
+        if (textId) {
             const text = lookup[textId]
-            const elementHtml = $this.html()
-            if(elementHtml){
-                const html = $("<div></div>").html(text).html()
-                if(elementHtml !== html)
-                    $this.html(html)
-            }else{
-                $this.html(text)
-            }
+            selectedElement.innerHTML = text
         }
 
-        const tooltipId = $this.attr(AttributeTooltipKey)
-        if (tooltipId && typeof tooltipId === "string") {
-            const text = lookup[tooltipId]            
-            if($this.attr("title") !== text)
-                $this.attr("title", text)
-            //$this.attr(AttributeTooltip, txt)            
+        const tooltipId = selectedElement.getAttribute(AttributeTooltipKey)
+        if (tooltipId) {
+            const text = lookup[tooltipId]
+            selectedElement.setAttribute("title", text)
         }
-    })
+    }
 }

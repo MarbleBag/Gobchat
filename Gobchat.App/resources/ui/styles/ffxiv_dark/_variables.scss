@@ -1,19 +1,6 @@
-@mixin font-sizes($base: 1em, $parts) {
-    @for $i from 1 to $parts + 1 {
-        --fsize-#{$i}-#{$parts}: #{$base * $i / $parts}; // calc(#{$base * $i} / #{$parts});
-    }
-}
-
 :root {
-    // generated at runtime. Only here for autocompletion
-
-    --gob-general-font-size: 16px;
-    --gob-chat-history-font-size: 16px;
-
-    //
-
     --noise-texture: url("../graphics/noise.png");
-    --dialog-background: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 1.25em, #313131 3.25em);
+    --dialog-background: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 1.25rem, #313131 3.25rem);
 
     --page-scrollbar-thumb: #f0f4ce;
     --page-scrollbar-thumb-border: #ddd391;
@@ -21,22 +8,39 @@
     --page-scrollbar-track-border: #202020;
     --page-scrollbar-track-active: #222222;
 
+    // buttons
     --primary-button-color: var(--text-2-color);
     --primary-button-icon-color: #e8a33f;
     --primary-button-shadow-color: var(--text-2-shadow);
     --primary-button-background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
     --primary-button-border-color: #141414;
+    --primary-button-border: 0.05rem solid var(--primary-button-border-color);
     --primary-button-active-border-color: #e8a33f;
 
     --symbol-button-color: #cc9f5e;
     --symbol-button-shadow-color: black;
     --symbol-button-background: #a43131;
-    --symbol-button-size: calc(25em / 16);
+    --symbol-button-size: calc(25rem / 16);
 
     --color-button-color: #cc9f5e;
     --color-button-background: var(--primary-button-background);
     --color-button-boxshadow-color: black;
 
+    // fields
+    --input-fields-background: field;
+    --input-fields-border: inset 0.125rem lightgray;
+    --input-fields-color: black;
+
+    --checkbox-size: 0.875rem;
+    --checkbox-off-texture: url("../graphics/checkbox.png");
+    --checkbox-on-texture: url("../graphics/checkbox-checked.png");
+
+    --slider-track-color: #94be10;
+    --slider-track-border: 0.125rem solid #212021;
+    --slider-thumb-border: 0.0626rem solid #484848;
+    --slider-thumb-color: radial-gradient(circle at center, #e1e0e4, #ababab);
+
+    // text
     --text-1-color: #ded2b8;
     --text-1-shadow-color: black;
     --text-1-shadow: calc(1rem / 16) 0 var(--text-1-shadow-color), calc(-1rem / 16) 0 var(--text-1-shadow-color),
@@ -62,10 +66,6 @@
         0 calc(-1rem / 16) var(--table-header-shadow-color);
     --table-stripped-background: #13131350;
     --table-hover-background: linear-gradient(135deg, #131313, #13131310 80%);
-
-    --checkbox-size: 0.875em;
-    --checkbox-off-texture: url("../graphics/checkbox.png");
-    --checkbox-on-texture: url("../graphics/checkbox-checked.png");
 
     --page-divider-color-1: black;
     --page-divider-color-2: white;

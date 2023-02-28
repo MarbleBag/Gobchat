@@ -2,23 +2,23 @@
     color: var(--table-header-color);
     text-shadow: var(--table-header-shadow);
     text-align: center;
-    padding: 0 0.2em;
+    padding: 0 0.2rem;
 }
 
 .gob-grid_item {
-    padding: 0 0.5em;
+    padding: 0 0.5rem;
 }
 
 @mixin gob-grid($columns) {
     display: grid;
-    gap: 0.3em 0.5em;
+    gap: 0.3rem 0.5rem;
     align-items: center;
     grid-template-columns: repeat(#{$columns}, auto);
 }
  
 @mixin gob-grid-small($columns) {
     display: inline-grid;
-    gap: 0.3em 0.5em;
+    gap: 0.3rem 0.5rem;
     align-items: center;
     grid-template-columns: repeat(#{$columns}, auto);
     max-width: fit-content;

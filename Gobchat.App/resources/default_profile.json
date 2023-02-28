@@ -53,6 +53,12 @@
     },
     "segment": {
       "order": [ "ooc", "emote1", "emote2", "say1", "say2", "say3", "say4", "say5" ],
+      "data-template": {
+        "active": true,
+        "type:": "SAY",
+        "startTokens": [],
+        "endTokens": []
+      },
       "data": {
         "ooc": {
           "active": true,
@@ -255,6 +261,19 @@
     },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],
+      "data-template": {
+        "name": "???",
+        "id": null,
+        "active": true,
+        "trigger:": [],
+        "style":{
+          "body": { "background-color": null },
+          "header": {
+            "background-color": null,
+            "color": null
+          }
+        }
+      },
       "data": {
         "group-ff-1": {
           "name": "\u2605",
@@ -359,16 +378,16 @@
   },
   "style": {
     "theme": "FFXIV Dark",
-    "base-font-size": "16",
     "chat": {
-      "font-size": "16"
+      "font-size": "16px"
     },
     "config": {
-      "font-size": "16"
+      "font-size": "1.6vw"
     },
     "chatbox": {
+      "font-size": "16px",
       "background-color": "rgba(20, 20, 20, 0.95)",
-      "gap": "0.1em"
+      "gap": "2px"
     },
     "channel": {
       "base": {

@@ -15,6 +15,7 @@
 
 import * as Databinding from "./Databinding.js"
 import * as Dialog from "./Dialog.js"
+import { Utility } from "./GobModule.js"
 
 interface ColorSelectorOptionTypes {
     hasAlpha: boolean
@@ -66,7 +67,10 @@ export function makeColorSelector(element: HTMLElement | JQuery, options?: Color
 
 export function makeResetButton(element: HTMLElement | JQuery, targetElement?: HTMLElement | JQuery): void {
     const $element = $(element)
-    $element.addClass("gob-config-icon-button")
+    $element.toggleClass("gob-config-icon-button", true)
+
+    if ($element.attr("data-gob-locale-title") === null)
+        $element.attr("data-gob-locale-title", "config.main.button.reset.tooltip")
 
     const getConfigKey = targetElement ?
         () => Databinding.getConfigKey(targetElement) :
@@ -74,16 +78,33 @@ export function makeResetButton(element: HTMLElement | JQuery, targetElement?: H
 
     $element.on("click", () => gobConfig.reset(getConfigKey()))
 
-    if ($element.attr("data-gob-locale-title") === null)
-        $element.attr("data-gob-locale-title", "config.main.button.reset.tooltip")
+    // if (targetElement && ($(targetElement).hasClass("is-disabled") || $(targetElement).prop("disabled")) )
+    //     $element.addClass("is-disabled").prop("disabled", true)
 
-    if (targetElement && ($(targetElement).hasClass("is-disabled") || $(targetElement).prop("disabled")) )
-        $element.addClass("is-disabled").prop("disabled", true)
+    /*
+    if ($(targetElement).length > 0) {
+        var mutationObserver = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.attributeName === "disabled") {
+                    if ((mutation.target as any).disabled) {
+                        $element.toggleClass("is-disabled", true).prop("disabled", true)
+                    } else {
+                        $element.toggleClass("is-disabled", false).prop("disabled", false)
+                    }
+                } else if (!mutation.target.isConnected) {
+                    mutationObserver.disconnect()
+                }
+            }
+        })
+        targetElement = $(targetElement)[0]
+        mutationObserver.observe(targetElement, {attributes: true})
+    }
+    */
 }
 
 interface CopyProfileOptionTypes {
     callback: null | ((profileId: string) => boolean)
-    configKeys: string[]
+    configKeys: string[] | (() => string[])
 }
 
 const DefaultCopyProfileOptions: CopyProfileOptionTypes = {
@@ -97,7 +118,7 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
     const $element = $(element)
     const options = !userOptions ? DefaultCopyProfileOptions : $.extend({}, DefaultCopyProfileOptions, userOptions)
 
-    $element.addClass("gob-config-copypage-button")
+    $element.toggleClass("gob-config-copypage-button", true)
 
     function copyProfile(profileId: string) {
         if (options.callback) {
@@ -118,7 +139,14 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
         if (srcProfile === null || dstProfile === null)
             return
 
-        options.configKeys.forEach(key => {
+        let configKeys:string[] = []
+
+        if (Utility.isFunction(options.configKeys))
+            configKeys = (options.configKeys as any)()
+        else
+            configKeys = options.configKeys as string[]
+
+        configKeys.forEach(key => {
             try {
                 dstProfile.copyFrom(srcProfile, key)
             } catch (e1) {

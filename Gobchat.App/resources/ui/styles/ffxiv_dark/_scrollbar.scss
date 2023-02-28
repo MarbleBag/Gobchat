@@ -1,15 +1,28 @@
-﻿::-webkit-scrollbar {
-    font-size: var(--gob-general-font-size);
-    width: 0.75em;
+.gob-chat {
+    ::-webkit-scrollbar {
+        font-size: var(--gob-font-size-chat-ui);
+    }
+}
+
+.gob-config-dialog {
+    ::-webkit-scrollbar {
+        font-size: var(--gob-font-size-config);
+    }
+}
+
+
+::-webkit-scrollbar {
+    //font-size: var(--gob-font-size-scrollbar);
+    width: 0.75rem;
 }
 
 ::-webkit-scrollbar-button {
-    height: 0.25em;
+    height: 0.25rem;
 }
 
 ::-webkit-scrollbar-thumb {
     background: var(--page-scrollbar-thumb);
-    border: 0.0626em inset var(--page-scrollbar-thumb-border);
+    border: 0.0626rem inset var(--page-scrollbar-thumb-border);
 
     &:hover {
         background: var(--page-scrollbar-thumb);
@@ -22,7 +35,7 @@
 
 ::-webkit-scrollbar-track {
     background: var(--page-scrollbar-track);
-    border: 0.25em solid var(--page-scrollbar-track-border);
+    border: 0.25rem solid var(--page-scrollbar-track-border);
 
     &:hover {
         background: var(--page-scrollbar-track);

@@ -37,6 +37,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     length: number
     attr(key: string, value: any): JQuery<T>
     attr(key: string): string | number | boolean | undefined | null
+    removeAttr(attribute: string): JQuery<T>
     prop(key: string, value: any): JQuery<T>
     prop(key: string): string | number | boolean | null
     each(callback: (this: T, index: number, element: T) => boolean): void
@@ -72,6 +73,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     last(): JQuery<T>
     focus(): JQuery<T>
     animate(a: any, time?: number): JQuery<T>
+    not(selector: string): JQuery<T>
     prevAll(selector: string): JQuery<T>
     nextAll(selector: string): JQuery<T>
     extend<A, B>(a: A, b: B): A & B
@@ -83,7 +85,6 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     before(e: any): JQuery<T>
     insertAfter(e: any): JQuery<T>
     insertBefore(e: any): JQuery<T>
-    dialog(e: any): JQuery<T>
     parent(selector?: string): JQuery<T>
     hasClass(selector: string): boolean
     is(selector: string): boolean
@@ -147,6 +148,13 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     }>): JQuery<T>
 }
 
+declare interface JQuery<T = HTMLElement> extends Iterable<T> {
+    dialog(action: "widget"): JQuery<T>
+    dialog(options: Partial<{
+
+    }>): JQuery<T>
+}
+
 // browser
 // should be included in es2021 ?!
 declare interface Object {
@@ -163,10 +171,10 @@ declare interface DOMTokenList extends Iterable<string> {
 
 // gobchat
 // created by backend and some js files
-declare var gobConfig: import("./modules/Config").GobchatConfig
-declare var gobChatManager: import("./modules/Chat").ChatControl
-declare var gobStyles: import("./modules/Style").StyleLoader
-declare var gobLocale: import("./modules/Locale").LocaleManager
+declare var gobConfig: import("/module/Config").GobchatConfig
+declare var gobChatManager: import("/module/Chat").ChatControl
+declare var gobStyles: import("/module/Style").StyleLoader
+declare var gobLocale: import("/module/Locale").LocaleManager
 declare function openGobConfig(): void
 declare function saveConfig(): void
 
@@ -177,16 +185,17 @@ declare interface Window {
 declare namespace Gobchat {
     const DefaultProfileConfig: any
     const KeyCodeToKeyEnum: (number) => string
+    // deprecated
     const MessageSegmentEnum: {
-        UNDEFINED: import("./modules/Chat").MessageSegmentEnum
-        SAY: import("./modules/Chat").MessageSegmentEnum
-        EMOTE: import("./modules/Chat").MessageSegmentEnum
-        OOC: import("./modules/Chat").MessageSegmentEnum
-        MENTION: import("./modules/Chat").MessageSegmentEnum
-        WEBLINK: import("./modules/Chat").MessageSegmentEnum
+        UNDEFINED: import("/module/Chat").MessageSegmentEnum
+        SAY: import("/module/Chat").MessageSegmentEnum
+        EMOTE: import("/module/Chat").MessageSegmentEnum
+        OOC: import("/module/Chat").MessageSegmentEnum
+        MENTION: import("/module/Chat").MessageSegmentEnum
+        WEBLINK: import("/module/Chat").MessageSegmentEnum
     }
-    const Channels: { [s: string]: import("./modules/Chat").Channel }
-    const ChannelEnum: { [s: string]: import("./modules/Chat").ChatChannelEnum }
+    const Channels: { [s: string]: import("/module/Chat").Channel }
+    const ChannelEnum: { [s: string]: import("/module/Chat").ChatChannelEnum }
 }
 
 // created by backend

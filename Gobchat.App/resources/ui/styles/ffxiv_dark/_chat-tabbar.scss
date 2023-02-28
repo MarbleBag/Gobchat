@@ -18,26 +18,26 @@
 
 .gob-chat-tabbar_button {
     @extend .gob-chat-toolbar_button;
-    border-right: solid 0.03125em #0000007a;
-    box-shadow: inset 0.0625em 0 0 0 #868686, inset 0 0.0625em 0 0 #868686;
+    border-right: solid 0.03125rem #0000007a;
+    box-shadow: inset 0.0625rem 0 0 0 #868686, inset 0 0.0625rem 0 0 #868686;
 }
 
 .gob-chat-tabbar_button--left {
-    padding-right: 0.3125em;
+    padding-right: 0.3125rem;
     border-radius: 50% 0 0 50%;
-    box-shadow: inset 0 0.0625em 0 0 #868686;
+    box-shadow: inset 0 0.0625rem 0 0 #868686;
 }
 
 .gob-chat-tabbar_button--right {
-    padding-left: 0.3125em;
+    padding-left: 0.3125rem;
     border-right: none;
     border-radius: 0 50% 50% 0;
 }
 
 .gob-chat-tabbar_content_tab {
     @extend .gob-chat-tabbar_button;
-    --padding-sides: 0.625em;
-    --active-icon-size: 0.375em;
+    --padding-sides: 0.625rem;
+    --active-icon-size: 0.375rem;
 
     min-width: auto;
     font-weight: bold;
@@ -53,10 +53,10 @@
         width: var(--active-icon-size);
         height: var(--active-icon-size);
         position: relative;
-        left: -0.125em;
-        top: -0.5em;
+        left: -0.125rem;
+        top: -0.5rem;
         display: inline-block;
-        box-shadow: 0 0 0.25em 0.0625em var(--chat-active-tab-color);
+        box-shadow: 0 0 0.25rem 0.0625rem var(--chat-active-tab-color);
     }
 }
 

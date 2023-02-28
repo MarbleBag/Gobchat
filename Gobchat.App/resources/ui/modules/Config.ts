@@ -288,6 +288,7 @@ export class InvalidKeyError extends Error {
 }
 
 export interface ActiveProfileConfigEvent {
+    config: GobchatConfig
     type: "profile"
     action: "active"
     oldProfileId: string | null
@@ -295,12 +296,14 @@ export interface ActiveProfileConfigEvent {
 }
 
 export interface ModifyProfileConfigEvent {
+    config: GobchatConfig
     type: "profile"
     action: "new" | "delete"
     profileId: string
 }
 
 export interface PropertyConfigEvent {
+    config: GobchatConfig
     type: "property"
     key: string
     sourceProfileId: string
@@ -359,7 +362,7 @@ export class GobchatConfig {
 
     #OnPropertyChange = (event: ConfigProfileEvent) => { //binded to this
         const isActiveProfile = event.source === this.activeProfileId
-        this.#eventDispatcher.dispatch(`property:${event.key}`, { type: "property", key: event.key, sourceProfileId: event.source, isActiveProfile: isActiveProfile })
+        this.#eventDispatcher.dispatch(`property:${event.key}`, { config: this,  type: "property", key: event.key, sourceProfileId: event.source, isActiveProfile: isActiveProfile })
     }
 
     #loadConfig(json: string) {
@@ -465,7 +468,7 @@ export class GobchatConfig {
         this.#activeProfileId = profileId
         this.#activeProfile = this.#profiles[this.#activeProfileId]
 
-        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "active", oldProfileId: previousId, newProfileId: this.#activeProfileId })
+        this.#eventDispatcher.dispatch("profile:", { config:this, type: "profile", action: "active", oldProfileId: previousId, newProfileId: this.#activeProfileId })
 
         if (this.#isSynced)
             GobchatAPI.setConfigActiveProfile(this.#activeProfileId)
@@ -499,7 +502,7 @@ export class GobchatConfig {
 
         profile.addPropertyListener("*", this.#OnPropertyChange)
         this.#profiles[profileId] = profile
-        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "new", profileId: profileId })
+        this.#eventDispatcher.dispatch("profile:", { config: this, type: "profile", action: "new", profileId: profileId })
     }
 
     deleteProfile(profileId: string): void {
@@ -514,7 +517,7 @@ export class GobchatConfig {
         if (this.activeProfileId === profileId)
             this.activeProfileId = this.profileIds[0]
 
-        this.#eventDispatcher.dispatch("profile:", { type: "profile", action: "delete", profileId: profileId })
+        this.#eventDispatcher.dispatch("profile:", { config: this, type: "profile", action: "delete", profileId: profileId })
     }
 
     copyProfile(sourceProfileId: string, destinationProfileId: string): void {
@@ -565,19 +568,27 @@ export class GobchatConfig {
     }
 
     addProfileEventListener(callback: GobchatConfigListener<ProfileConfigEvent>): boolean {
-        return this.#eventDispatcher.on("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
+        const dispatcher = this.#eventDispatcher
+        const isAdded = dispatcher.on("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
+        return isAdded
     }
 
     removeProfileEventListener(callback: GobchatConfigListener<ProfileConfigEvent>): boolean {
-        return this.#eventDispatcher.off("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
+        const dispatcher = this.#eventDispatcher
+        const isRemoved = dispatcher.off("profile:", callback as GobchatConfigListener<GobchatConfigEvent>)
+        return isRemoved
     }
 
     addPropertyEventListener(topic: string, callback: GobchatConfigListener<PropertyConfigEvent>): boolean {
-        return this.#eventDispatcher.on("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
+        const dispatcher = this.#eventDispatcher
+        const isAdded = dispatcher.on("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
+        return isAdded
     }
 
     removePropertyEventListener(topic: string, callback: GobchatConfigListener<PropertyConfigEvent>): boolean {
-        return this.#eventDispatcher.off("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
+        const dispatcher = this.#eventDispatcher
+        const isRemoved = dispatcher.off("property:" + topic, callback as GobchatConfigListener<GobchatConfigEvent>)
+        return isRemoved
     }
 
     get(key: string | null, defaultValue?: any): any {
@@ -638,7 +649,7 @@ interface ConfigProfileEvent {
 
 type ConfigProfileEventListener = (evt: ConfigProfileEvent) => void
 
-class ConfigProfile {
+export class ConfigProfile {
     #propertyListener: EventDispatcher<ConfigProfileEvent>
     #config: JsonConfigProfile
 

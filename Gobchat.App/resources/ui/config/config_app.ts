@@ -44,7 +44,7 @@ Databinding.bindCheckbox(binding, $("#capp_hide"))
 
 const ckbUpdate = $("#capp_checkupdates")
 Databinding.bindCheckbox(binding, ckbUpdate)
-binding.bindConfigListener(Databinding.getConfigKey(ckbUpdate), value => {
+binding.bindCallback(Databinding.getConfigKey(ckbUpdate), value => {
     $(`[for='${ckbUpdate.attr("id")}']`).toggleClass("is-disabled", !value)
 })
 
@@ -174,43 +174,6 @@ Components.makeColorSelector(clrChatboxBackground)
 Databinding.bindColorSelector(binding, clrChatboxBackground)
 Components.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
 
-{
-    function makeFontSizeSelector(input: JQuery, selector: JQuery) {
-        const regexValue = /\d+\.?\d*/
-
-        Databinding.bindElement(binding, input, { elementGetAccessor: parseNonNegativeNumber })
-
-        binding.bindConfigListener(input, function (fontSize) {
-            fontSize = parseFloat(fontSize)
-            const baseSize = parseFloat(gobConfig.get("style.base-font-size"))
-            const factor = fontSize / baseSize
-
-            selector.val(factor + "")
-            if (selector.val() === null)
-                selector.val("")
-        })
-
-        input.on('change', function () {
-            let value = parseFloat($(this).val()) || 0
-            if (value < 8)
-                value = 8
-            $(this).val(value)
-        })
-
-        selector.on("change", function () {
-            const selectedFormat = $(this).val()
-            if (selectedFormat.length > 0) {
-                const baseSize = parseFloat(gobConfig.get("style.base-font-size"))
-                const factor = parseFloat(selectedFormat)
-                input.val(baseSize * factor).change()
-            }
-        })
-    }
-
-    makeFontSizeSelector($("#capp_chat_font-size"), $("#capp_chat_font-size_selector"))
-    makeFontSizeSelector($("#capp_config_font-size"), $("#capp_config_font-size_selector"))
-}
-
 const clrSearchMarked = $("#capp_search_marked")
 Components.makeColorSelector(clrSearchMarked)
 Databinding.bindColorSelector(binding, clrSearchMarked)
@@ -235,7 +198,7 @@ Databinding.bindElement(binding, $("#capp_actor_updateInterval"), { elementGetAc
 Components.makeResetButton($("capp_actor_updateInterval_reset"))
 
 // activate bindings
-binding.initialize()
+binding.loadBindings()
 
 // setup profile copy
 /*

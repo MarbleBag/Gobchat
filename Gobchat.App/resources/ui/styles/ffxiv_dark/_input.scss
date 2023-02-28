@@ -1,3 +1,10 @@
+.gob-input-field {
+    background: var(--input-fields-background);
+    border: var(--input-fields-border);
+    color: var(--input-fields-color);
+    padding: 0.06rem 0.12rem;
+}
+
 .gob-input-checkbox {
     cursor: pointer;
     font-size: 1em;
@@ -9,7 +16,6 @@
     margin: unset;
     padding: unset;
     border: unset;
-
     // outline: none;
     background-image: var(--checkbox-off-texture);
 
@@ -22,8 +28,11 @@
 }
 
 .gob-input-dropdown {
+    @extend .gob-input-field;
+
+    cursor: pointer;
     font-size: 0.85em;
-    padding: 0 0.4em;
+    padding: 0 0.5rem;
     font-weight: bold;
     box-sizing: border-box;
 
@@ -32,6 +41,9 @@
 }
 
 .gob-input-text {
+    @extend .gob-input-field;
+
+    cursor: text;
     font-size: 0.8em;
     font-weight: bold;
     box-sizing: border-box;
@@ -41,6 +53,9 @@
 }
 
 .gob-input-textarea {
+    @extend .gob-input-field;
+
+    cursor: text;
     font-size: 0.8em;
     font-weight: bold;
     box-sizing: border-box;
@@ -50,45 +65,49 @@
     }
 }
 
+.gob-input-textarea--wide{
+    width: auto;
+}
+
 .gob-input-number {
+    @extend .gob-input-field;
+    cursor: text;
     font-size: 0.8em;
-    padding-left: 0.4em;
+    padding-left: 0.5rem;
     font-weight: bold;
     box-sizing: border-box;
-    width: 8em;
+    width: 8rem;
 
     :disabled {
     }
 }
 
 .gob-input-rangeslider {
+    cursor: pointer;
     font-size: 0.8em;
     appearance: none;
-    cursor: pointer;
     outline: none;
     background-color: transparent;
+    width: 12rem;
 
     &::-webkit-slider-runnable-track {
         appearance: none;
-        border-radius: 25px;
-        height: 8px;
-
-        color: #e1e0e4;
-        background-color: #94be10;
-        border-top: 2px solid #212021;
-        border-bottom: 2px solid #212021;
+        border-radius: 1rem;
+        height: 0.5rem;
+        background: var(--slider-track-color);
+        border-top: var(--slider-track-border);
+        border-bottom: var(--slider-track-border);
     }
 
     &::-webkit-slider-thumb {
         appearance: none;
-        margin-top: -5px;
-        width: 14px;
-        height: 14px;
-        border-radius: 50px;
+        margin-top: -0.30rem;
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 1rem;
         cursor: ew-resize;
-
-        border: 1px solid #484848;
-        background: radial-gradient(circle at center, #e1e0e4, #ababab);
+        border: var(--slider-thumb-border);
+        background: var(--slider-thumb-color);
     }
 
     :disabled {

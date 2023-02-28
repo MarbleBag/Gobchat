@@ -72,7 +72,7 @@ namespace Gobchat.Core.Chat
                     if (substringLength <= 0)
                         continue; //ignore empty marks
 
-                    var newSegment = new MessageSegment(mark.Type, messageSegment.Text.Substring(substringStart, substringLength));
+                    var newSegment = new ChatMessageSegment(mark.Type, messageSegment.Text.Substring(substringStart, substringLength));
                     message.Content.Add(newSegment);
                 }
             }

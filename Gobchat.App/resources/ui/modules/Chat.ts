@@ -37,6 +37,18 @@ export interface Channel {
 }
 
 // created by backend
+export type MessageSegmentEnum = number
+
+// created by backend
+export interface ChatMessage {
+    source: ChatMessageSource
+    timestamp: Date
+    channel: ChatChannelEnum
+    content: ChatMessageSegment[]
+    containsMentions: boolean
+}
+
+// created by backend
 export interface ChatMessageSource {
     original: string
     characterName: string
@@ -51,21 +63,9 @@ export interface ChatMessageSource {
 }
 
 // created by backend
-export type MessageSegmentEnum = number
-
-// created by backend
-export interface MessageSegment {
+export interface ChatMessageSegment {
     type: MessageSegmentEnum
     text: string
-}
-
-// created by backend
-export interface ChatMessage {
-    source: ChatMessageSource
-    timestamp: Date
-    channel: ChatChannelEnum
-    content: MessageSegment[]
-    containsMentions: boolean
 }
 
 //#endregion
@@ -179,7 +179,7 @@ export class ChatControl {
     control(chatBox: HTMLElement | JQuery | null): void {
         // unbind
         document.removeEventListener("ChatMessagesEvent", this.#onNewMessageEvent as EventListener)
-        this.#databinding?.clear()
+        this.#databinding?.clearBindings()
 
         // rebind
         this.#chatBox = $(chatBox)
@@ -206,7 +206,7 @@ export class ChatControl {
                     channelLookup[data.chatChannel] = translations[data.abbreviationId]
             }
         })
-        this.#databinding.initialize()
+        this.#databinding.loadBindings()
     }
 }
 
@@ -470,7 +470,7 @@ class TabBarControl {
         this.#tabbar.find(TabBarControl.selector_scrollRightBtn).off("click", this.#onNavBarBtnScroll)
         this.#tabbar.find(TabBarControl.selector_allTabs).off("click", this.#onTabClick)
         this.#navPanel.off("scroll", this.#onPanelScroll)
-        this.#databinding?.clear()
+        this.#databinding?.clearBindings()
 
         // rebind
         const $navBar = $(navBar)
@@ -498,7 +498,7 @@ class TabBarControl {
             this.#cssClassForMentionTabEffect = effect.mention > 0 ? Utility.formatString(TabBarControl.CssTabButtonMentionEffect, effect.mention) : null
             this.#cssClassForNewMessageTabEffect = effect.message > 0 ? Utility.formatString(TabBarControl.CssTabButtonMessageEffect, effect.message) : null
         })
-        this.#databinding.initialize()
+        this.#databinding.loadBindings()
     }
 
     applyNewMessageAnimationToTabs(channel: number, hasMention: boolean): void {
@@ -544,7 +544,7 @@ class TabBarControl {
     }
 
     #onNavBarBtnScroll = (event: any) => { // bound to this class instance
-        const scrollDirection = $(event.target).hasClass(TabBarControl.CssScrollRightButton) ? 1 : -1
+        const scrollDirection = $(event.currentTarget).hasClass(TabBarControl.CssScrollRightButton) ? 1 : -1
         this.#scrollTabs(scrollDirection)
     }
 
@@ -554,14 +554,14 @@ class TabBarControl {
     }
 
     #onPanelScroll = (event: any) => {
-        const $panel = $(event.target)
+        const $panel = $(event.currentTarget)
         const panelBottom = $panel.scrollTop() + $panel.innerHeight()
-        const closeToBottm = panelBottom + TabBarControl.ScrollToleranceZone >= event.target.scrollHeight
+        const closeToBottm = panelBottom + TabBarControl.ScrollToleranceZone >= event.currentTarget.scrollHeight
         this.#isPanelScrolledToBottom = closeToBottm
     }
 
     #onTabClick = (event: any) => { // bound to this class instance
-        const id = $(event.target).attr(TabBarControl.AttributeTabId) as string
+        const id = $(event.currentTarget).attr(TabBarControl.AttributeTabId) as string
         this.#activateTab(id)
     }
 
@@ -631,7 +631,10 @@ class TabBarControl {
     }
 
     get #activeTabId(): string {
-        return this.#tabbar.find(TabBarControl.selector_activeTab).attr(TabBarControl.AttributeTabId) as string
+        const activeTab = this.#tabbar.find(TabBarControl.selector_activeTab)
+        if (activeTab.length === 0)
+            return "";
+        return activeTab.attr(TabBarControl.AttributeTabId) as string
     }
 
     #updateTabs(config: any): void {

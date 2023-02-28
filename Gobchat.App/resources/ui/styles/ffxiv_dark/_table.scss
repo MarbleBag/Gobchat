@@ -2,26 +2,26 @@
 }
 
 .gob-table-container--split-on-20em {
-    columns: auto 20em;
-    gap: 1em;
+    columns: auto 20rem;
+    gap: 1rem;
     column-rule: thin solid var(--page-divider-color-1);
 }
 
 .gob-table-container--split-on-30em {
-    columns: auto 30em;
-    gap: 1em;
+    columns: auto 30rem;
+    gap: 1rem;
     column-rule: thin solid var(--page-divider-color-1);
 }
 
 .gob-table-container--split-on-40em {
-    columns: auto 40em;
-    gap: 1em;
+    columns: auto 40rem;
+    gap: 1rem;
     column-rule: thin solid var(--page-divider-color-1);
 }
 
 .gob-table {
-    border-collapse: collapse;
-    border-spacing: 0px;
+    border-collapse: separate;
+    border-spacing: 0 0.1rem;
     text-align: left;
     white-space: nowrap;
 
@@ -33,14 +33,14 @@
         & > tr {
             & > th {
                 text-align: center;
-                padding: 0 0.2em;
+                padding: 0 0.2rem;
             }
         }
     }
 
     & > tbody > tr {
         & > td {
-            padding: 0 0.5em;
+            padding: 0 0.5rem;
         }
     }
 }
@@ -114,8 +114,8 @@
 @include table_rules(8);
 
 .gob-label-checkbox-table-wrapper {
-    columns: 2 15em;
-    gap: 1em;
+    columns: 2 15rem;
+    gap: 1rem;
     width: fit-content;
 }
 

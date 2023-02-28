@@ -2,8 +2,8 @@
 @use "grid";
 
 .gob-config-page {
-    columns: auto 40em;
-    gap: 1em;
+    //columns: auto 40em;
+    gap: 1rem;
     column-rule: thin solid var(--page-divider-color-1);
 }
 
@@ -27,11 +27,11 @@
 
     display: flex;
     flex-direction: column;
-    gap: 0.3em;
+    gap: 0.3rem;
 
     color: var(--text-1-color);
     text-shadow: var(--text-1-shadow);
-    margin: calc(13em / 16) 0 calc(13em / 16) calc(5em / 16);
+    margin: calc(13rem / 16) 0 calc(13rem / 16) calc(5rem / 16);
 }
 
 .gob-config-sub-group {
@@ -39,7 +39,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 0.3em;
+    gap: 0.3rem;
 
     margin-left: calc(1.5 * var(--checkbox-size));
 }
@@ -51,7 +51,7 @@
 }
 
 .gob-config-group_entry {
-    margin-left: 0.5em;
+    margin-left: 0.5rem;
 }
 
 .gob-config-group_item {
@@ -62,7 +62,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.4em;
+    gap: 0.4rem;
 }
 
 @mixin gob-config-group_small-columns($columns) {
@@ -91,26 +91,26 @@
 }
 
 .gob-config-group_item_checkbox {
-    // maybe removable
+    // deprecated
     @extend .gob-input-checkbox;
 }
 
 .gob-config-group_item_dropdown {
-    // maybe removable
+    // deprecated
     @extend .gob-input-dropdown;
 }
 
 .gob-config-group_item_numberbox {
-    // maybe removable
+    // deprecated
     @extend .gob-input-number;
 }
 
 .gob-config-group_item_textbox {
-    // maybe removable
+    // deprecated
     @extend .gob-input-text;
 }
 
 .gob-config-group_item_textarea {
-    // maybe removable
+    // deprecated
     @extend .gob-input-textarea;
 }

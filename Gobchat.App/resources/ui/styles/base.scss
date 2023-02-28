@@ -5,7 +5,6 @@ html {
     margin: 0;
     height: 100%;
     width: 100%;
-    font-size: var(--gob-general-font-size);
 }
 
 .is-hidden {
@@ -24,6 +23,14 @@ html {
     background-repeat: no-repeat;
     //box-sizing: border-box;
     background-color: rgba(0, 0, 150, 0.2);
+}
+
+.chat-frame {
+    font-size: var(--gob-font-size-chat-ui);
+}
+
+.config-frame {
+    font-size: var(--gob-font-size-config);
 }
 
 .gob-config-navigation-panel_entry {

@@ -191,35 +191,32 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckblabel" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="config.app.fonts.label" xml:space="preserve">
-    <value>Fonts</value>
+  <data name="config.formatting.fonts.label" xml:space="preserve">
+    <value>Font</value>
   </data>
-  <data name="config.app.fonts.tooltip" xml:space="preserve">
+  <data name="config.formatting.font-family.tooltip" xml:space="preserve">
     <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.</value>
   </data>
-  <data name="config.app.fontsize.label" xml:space="preserve">
-    <value>Font size</value>
+  <data name="config.formatting.chatui.fontsize.label" xml:space="preserve">
+    <value>Chat menu font size</value>
   </data>
-  <data name="config.app.fontsize.large" xml:space="preserve">
-    <value>Large</value>
+  <data name="config.formatting.fontsize.2k-small" xml:space="preserve">
+    <value>2k - smaller</value>
   </data>
-  <data name="config.app.fontsize.larger" xml:space="preserve">
-    <value>Larger</value>
+  <data name="config.formatting.fontsize.2k" xml:space="preserve">
+    <value>2k resolution</value>
   </data>
-  <data name="config.app.fontsize.medium" xml:space="preserve">
-    <value>Medium</value>
+  <data name="config.formatting.fontsize.4k" xml:space="preserve">
+    <value>4k resolution</value>
   </data>
-  <data name="config.app.fontsize.small" xml:space="preserve">
-    <value>Small</value>
+  <data name="config.formatting.fontsize.8k" xml:space="preserve">
+    <value>Full Ultra HD</value>
   </data>
-  <data name="config.app.fontsize.smaller" xml:space="preserve">
-    <value>Smaller</value>
+  <data name="config.formatting.fontsize.2k-large" xml:space="preserve">
+    <value>2k - larger</value>
   </data>
-  <data name="config.app.fontsize.tooltip" xml:space="preserve">
+  <data name="config.formatting.chatui.fontsize.label.tooltip" xml:space="preserve">
     <value />
-  </data>
-  <data name="config.app.fontsize.verylarge" xml:space="preserve">
-    <value>Very large</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Hide &amp;amp; show Gobchat</value>
@@ -363,44 +360,41 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.channel.tbl.visible" xml:space="preserve">
     <value>Visible</value>
   </data>
-  <data name="config.groups.entry.deleteconfirm" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.deleteconfirm" xml:space="preserve">
     <value>Group will be deleted. Are you sure?</value>
   </data>
-  <data name="config.groups.group.active" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="config.groups.group.delete.tooltip" xml:space="preserve">
-    <value>Deletes group</value>
-  </data>
-  <data name="config.groups.group.ffgroup.info" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.ffgroup.info" xml:space="preserve">
     <value>This group represents an in-game group and will be applied to any player you have marked with {0}.</value>
     <comment>0: icon</comment>
   </data>
-  <data name="config.groups.group.message.background" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.message.background" xml:space="preserve">
     <value>Message background</value>
   </data>
-  <data name="config.groups.group.name" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.name" xml:space="preserve">
     <value>Group name</value>
   </data>
-  <data name="config.groups.group.naming" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.naming" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="config.groups.group.sender.background" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.sender.background" xml:space="preserve">
     <value>Sender background</value>
   </data>
-  <data name="config.groups.group.sender.forground" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.sender.forground" xml:space="preserve">
     <value>Sender text</value>
   </data>
-  <data name="config.groups.group.trigger" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.trigger" xml:space="preserve">
     <value>Characters belonging to this group</value>
   </data>
-  <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
     <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name.</value>
   </data>
-  <data name="config.groups.info" xml:space="preserve">
+  <data name="config.groups.tbl.group.description" xml:space="preserve">
     <value>Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
   </data>
-  <data name="config.groups.newgroup" xml:space="preserve">
+  <data name="config.groups.tbl.group.action.add" xml:space="preserve">
     <value>New group</value>
   </data>
   <data name="config.main.button.delete.tooltip" xml:space="preserve">
@@ -460,8 +454,8 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
-  <data name="config.main.nav.roleplay" xml:space="preserve">
-    <value>Roleplay</value>
+  <data name="config.main.nav.formatting" xml:space="preserve">
+    <value>Formatting</value>
   </data>
   <data name="config.main.nav.save" xml:space="preserve">
     <value>Save</value>
@@ -584,35 +578,35 @@ Restoration is final after clicking save.</value>
   <data name="config.profiles.profiles.name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="config.roleplay.entry.active" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="config.roleplay.entry.deleteconfirm" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.deleteconfirm" xml:space="preserve">
     <value>Entry will be deleted. Are you sure?</value>
   </data>
-  <data name="config.roleplay.entry.header" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.header" xml:space="preserve">
     <value>{0} starts with {1} and ends with {2}</value>
     <comment>0: type, 1: start tokens, 2: end tokens</comment>
   </data>
-  <data name="config.roleplay.entry.info" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.info" xml:space="preserve">
     <value>They will be processed from top to down. To reorder them drag and drop the header.</value>
   </data>
-  <data name="config.roleplay.entry.tokenend" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.tokenend" xml:space="preserve">
     <value>End</value>
   </data>
-  <data name="config.roleplay.entry.tokenstart" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.tokenstart" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="config.roleplay.tokentbl.header.color" xml:space="preserve">
+  <data name="config.formatting.tbl.color.header.color" xml:space="preserve">
     <value>Text color</value>
   </data>
-  <data name="config.roleplay.tokentbl.header.name" xml:space="preserve">
-    <value>Type</value>
+  <data name="config.formatting.tbl.color.header.name" xml:space="preserve">
+    <value>Channel</value>
   </data>
-  <data name="config.roleplay.tokentbl.new" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.new" xml:space="preserve">
     <value>Add entry</value>
   </data>
-  <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.reset" xml:space="preserve">
     <value>Reset entries</value>
   </data>
   <data name="config.tabs.btn.newtab" xml:space="preserve">
@@ -1090,5 +1084,56 @@ group groupnumber clear</value>
   </data>
   <data name="config.rangefilter.tbl.col.name" xml:space="preserve">
     <value>Channel</value>
+  </data>
+  <data name="config.formatting.fontsize.custom" xml:space="preserve">
+    <value>Custom size</value>
+  </data>
+  <data name="config.formatting.config.fontsize.label" xml:space="preserve">
+    <value>Config font size</value>
+  </data>
+  <data name="config.formatting.fontsize.4k-large" xml:space="preserve">
+    <value>4k resolution - larger</value>
+  </data>
+  <data name="config.formatting.fontsize.4k-small" xml:space="preserve">
+    <value>4k resolution - smaller</value>
+  </data>
+  <data name="config.formatting.fontsize.8k-small" xml:space="preserve">
+    <value>Full Ultra HD - smaller</value>
+  </data>
+  <data name="config.formatting.fontsize.8k-large" xml:space="preserve">
+    <value>Full Ultra HD - larger</value>
+  </data>
+  <data name="config.formatting.fontfamily" xml:space="preserve">
+    <value>Font family</value>
+  </data>
+  <data name="config.formatting.chathistory.fontsize.label" xml:space="preserve">
+    <value>Chat font size</value>
+  </data>
+  <data name="config.formatting.chathistory.fontsize.label.tooltip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.formatting.chathistory.gap.label" xml:space="preserve">
+    <value>Chat entries gap</value>
+  </data>
+  <data name="config.formatting.chathistory.gap.label.tooltip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.formatting.fontsize.normal" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="config.formatting.fontsize.larger" xml:space="preserve">
+    <value>Larger</value>
+  </data>
+  <data name="config.formatting.fontsize.smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.unicode" xml:space="preserve">
+    <value>Unicode:&amp;nbsp</value>
+  </data>
+  <data name="config.formatting.tbl.segment.name" xml:space="preserve">
+    <value>Segment Detection</value>
   </data>
 </root>

@@ -18,73 +18,29 @@ import "/module/JQueryExtensions"
 
 const AttributeProfileId = "data-profile-id"
 
-//setup profile selector
-const profileSelectionDropdown = $("#cmain_profileselect")
-profileSelectionDropdown.on("change", function (event) {
-    const profileId = event.target.value
-    gobConfig.activeProfileId = profileId
-})
-
-function populateProfileSelection() {
-    profileSelectionDropdown.empty()
-    gobConfig.profileIds
-        .map(profileId => {
-            var profile = gobConfig.getProfile(profileId)
-            return { name: profile!.profileName, id: profileId }
-        })
-        .sort((a, b) => {
-            if (a.name < b.name)
-                return -1;
-            if (a.name > b.name)
-                return 1;
-            return 0;
-        })
-        .forEach(e => {
-            profileSelectionDropdown.append(new Option(e.name, e.id))
-        })
-
-    profileSelectionDropdown.val(gobConfig.activeProfileId)
-}
-
-gobConfig.addProfileEventListener((event) => {
-    if (event.action === "active")
-        profileSelectionDropdown.val(event.newProfileId)
-    else
-        populateProfileSelection()
-})
-
-gobConfig.addPropertyEventListener("profile.name", (event) => {
-    const profileId = profileSelectionDropdown.val()
-    populateProfileSelection()
-    profileSelectionDropdown.val(profileId)
-})
-
-populateProfileSelection()
-
 //setup create profile
 $("#cp-profiles_profile_new").on("click", function (event) {
     gobConfig.createNewProfile()
 })
 
 //setup import profile
-$("#cp-profiles_profile_import").on("click", function (event) {
-    (async () => {
-        const stringifiedProfile = await GobchatAPI.importProfile()
-        if (stringifiedProfile === undefined || stringifiedProfile === null || stringifiedProfile.length == 0) {
-            Dialog.showErrorDialog({ dialogText: "config.profiles.importprofile.error" });
-            return
-        }
+$("#cp-profiles_profile_import").on("click", async function (event) {
+    const stringifiedProfile = await GobchatAPI.importProfile()
+    if (stringifiedProfile === undefined || stringifiedProfile === null || stringifiedProfile.length == 0) {
+        Dialog.showErrorDialog({ dialogText: "config.profiles.importprofile.error" });
+        return
+    }
 
-        const newProfile = JSON.parse(stringifiedProfile)
-        gobConfig.importProfile(newProfile)
-    })()
+    const newProfile = JSON.parse(stringifiedProfile)
+    gobConfig.importProfile(newProfile)
 })
 
-const profileTable = $("#cp-profiles_profiles")
+const profileTable = $("#cp-profiles_profiles > tbody")
 const template = $("#cp-profiles_template_profile-table_entry")
 
 async function populateProfileTable() {
     profileTable.children(":not(.gob-config_cp-profile-table_header)").remove()
+
     gobConfig.profileIds.forEach((profileId) => {
         const profile = gobConfig.getProfile(profileId)
         if (profile === null)
@@ -93,15 +49,15 @@ async function populateProfileTable() {
         const rowElement = $(template.html())
             .attr(AttributeProfileId, profile.profileId)
 
-        rowElement.appendTo(profileTable)
+        profileTable.append(rowElement)
 
-        const txtProfileName = rowElement.filterAndFind(".js-name")
-        const btnActiveProfile = rowElement.filterAndFind(".js-activate")
-        const btnExportProfile = rowElement.filterAndFind(".js-export")
-        const btnCloneProfile = rowElement.filterAndFind(".js-clone")
-        const btnCopyProfile = rowElement.filterAndFind(".js-copy")
-        const btnDefaultProfile = rowElement.filterAndFind(".js-reset")
-        const btnDeleteProfile = rowElement.filterAndFind(".js-delete")
+        const txtProfileName = rowElement.find(".js-name")
+        const btnActiveProfile = rowElement.find(".js-activate")
+        const btnExportProfile = rowElement.find(".js-export")
+        const btnCloneProfile = rowElement.find(".js-clone")
+        const btnCopyProfile = rowElement.find(".js-copy")
+        const btnDefaultProfile = rowElement.find(".js-reset")
+        const btnDeleteProfile = rowElement.find(".js-delete")
 
         txtProfileName.on("change", function (event) {
             profile.profileName = event.target.value || "Unnamed"
@@ -114,13 +70,11 @@ async function populateProfileTable() {
         if (gobConfig.activeProfileId === profile.profileId)
             btnActiveProfile.attr("disabled", true)
 
-        btnExportProfile.on("click", function (event) {
-            (async () => {
-                const selection = await GobchatAPI.saveFileDialog("Json files (*.json)|*.json", `profile_${profile.profileId}.json`)
-                if (selection === null || selection === undefined || selection.length === 0)
-                    return
-                await GobchatAPI.writeTextToFile(selection, JSON.stringify(profile.config))
-            })()
+        btnExportProfile.on("click", async function (event) {
+            const selection = await GobchatAPI.saveFileDialog("Json files (*.json)|*.json", `profile_${profile.profileId}.json`)
+            if (selection === null || selection === undefined || selection.length === 0)
+                return
+            await GobchatAPI.writeTextToFile(selection, JSON.stringify(profile.config))
         })
 
         btnCloneProfile.on("click", function (event) {
@@ -134,28 +88,22 @@ async function populateProfileTable() {
         if (gobConfig.profileIds.length <= 1)
             btnCopyProfile.attr("disabled", true)
 
-        btnDefaultProfile.on("click", function (event) {
-            (async () => {
-                const result = await Dialog.showConfirmationDialog({
-                    dialogText: "config.profiles.profile.reset.dialog.text",
-                })
+        btnDefaultProfile.on("click", async function (event) {
+            const result = await Dialog.showConfirmationDialog({
+                dialogText: "config.profiles.profile.reset.dialog.text",
+            })
 
-                if (result === 1) {
-                    profile.restoreDefaultConfig()
-                }
-            })()
+            if (result === 1) 
+                profile.restoreDefaultConfig()            
         })
 
-        btnDeleteProfile.on("click", function (event) {
-            (async () => {
-                const result = await Dialog.showConfirmationDialog({
-                    dialogText: "config.profiles.profile.delete.dialog.text",
-                })
+        btnDeleteProfile.on("click", async function (event) {
+            const result = await Dialog.showConfirmationDialog({
+                dialogText: "config.profiles.profile.delete.dialog.text",
+            })
 
-                if (result === 1) {
-                    gobConfig.deleteProfile(profile.profileId)
-                }
-            })()
+            if (result === 1) 
+                gobConfig.deleteProfile(profile.profileId)            
         })
         if (gobConfig.profileIds.length <= 1)
             btnDeleteProfile.attr("disabled", true)
@@ -170,7 +118,7 @@ await populateProfileTable()
 gobConfig.addPropertyEventListener("profile.name", (event) => {
     const profile = gobConfig.getProfile(event.sourceProfileId)
     if (profile)
-        profileTable.find(`.js-name[${AttributeProfileId}='${profile.profileId}']`).val(profile.get("profile.name"))
+        profileTable.find(`[${AttributeProfileId}='${profile.profileId}'] .js-name`).val(profile.get("profile.name"))
 })
 
 

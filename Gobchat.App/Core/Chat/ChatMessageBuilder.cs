@@ -82,7 +82,7 @@ namespace Gobchat.Core.Chat
             };
 
             SetMessageSource(chatMessage, source);
-            chatMessage.Content.Add(new MessageSegment(MessageSegmentType.Undefined, message));
+            chatMessage.Content.Add(new ChatMessageSegment(MessageSegmentType.Undefined, message));
 
             return chatMessage;
         }

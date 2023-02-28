@@ -136,6 +136,14 @@ export class StyleLoader {
 
 type CssRuleGenerator = () => string
 
+function hasValueNoUnit(value: string) {
+    return /\d$/.test(value)
+}
+
+function addUnitToValueIfMissing(value: string, fallbackUnit: string) {
+    return hasValueNoUnit(value) ? value + fallbackUnit : value
+}
+
 export class StyleBuilder {
 
     private static RuleGenerators: CssRuleGenerator[] = []
@@ -155,13 +163,21 @@ export class StyleBuilder {
 
     static { // font size
         StyleBuilder.RuleGenerators.push(() => {
-            const baseFontSize = gobConfig.get("style.base-font-size")
+            //const baseFontSize = gobConfig.get("style.base-font-size")
+
+            const configFontSize = gobConfig.get("style.config.font-size") as string
+            const uiFontSize = gobConfig.get("style.chat.font-size") as string
+
+            //configFontSize = addUnitToValueIfMissing(configFontSize, "px")
+            //uiFontSize = addUnitToValueIfMissing(uiFontSize, "px")
+
             return StyleBuilder.toCss(":root", {
-                "--gob-general-font-size": `max(8px, ${gobConfig.get("style.config.font-size", baseFontSize)}px)`,
-                "--gob-chat-history-font-size": `max(8px, ${gobConfig.get("style.chat.font-size", baseFontSize)}px)`,
+                "--gob-font-size-config": `max(8px, ${configFontSize})`,
+                "--gob-font-size-chat-ui": `max(8px, ${uiFontSize})`,
             })
         })
     }
+
     static { // general rules
         StyleBuilder.RuleGenerators.push(() => {
             const configStyle = gobConfig.get("style")
@@ -367,6 +383,4 @@ export class StyleBuilder {
         }
         styleElement.innerHTML = cssRules
     }
-
-
 }

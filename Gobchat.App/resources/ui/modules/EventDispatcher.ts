@@ -22,7 +22,7 @@ export class EventDispatcher<T = {}> {
     }
 
     dispatch(topic: string, data: T) {
-        const listeners = this.#listenersByTopic[topic] //.get(topic)
+        const listeners = this.#listenersByTopic.get(topic)
         if (listeners) {
             const callbacks = listeners.slice(0) // defensive copy
             callbacks.forEach((callback) => callback(data))
@@ -33,10 +33,10 @@ export class EventDispatcher<T = {}> {
         if (!callback)
             return false
 
-        let listeners = this.#listenersByTopic[topic]//.get(topic)
+        let listeners = this.#listenersByTopic.get(topic)
         if (!listeners) {
             listeners = []
-            this.#listenersByTopic[topic] = listeners // .set(topic, listeners)
+            this.#listenersByTopic.set(topic, listeners)
         }
 
         listeners.push(callback)
@@ -44,7 +44,7 @@ export class EventDispatcher<T = {}> {
     }
 
     off(topic: string, callback: Callback<T>): boolean {
-        let listeners = this.#listenersByTopic.get(topic)
+        const listeners = this.#listenersByTopic.get(topic)
         if (listeners) {
             const idx = listeners.indexOf(callback)
             if (idx > -1)

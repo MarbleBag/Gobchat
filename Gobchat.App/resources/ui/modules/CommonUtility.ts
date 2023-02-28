@@ -13,32 +13,32 @@
 
 'use strict'
 
-export function isString(value: unknown): boolean {
+export function isString(value: unknown): value is string {
     return typeof value === 'string' || value instanceof String
 }
 
-export function isNonEmptyString(value: unknown): boolean {
+export function isNonEmptyString(value: unknown): value is string {
     return isString(value) && (value as string).trim().length > 0
 }
 
-export function isBoolean(value: unknown): boolean {
+export function isBoolean(value: unknown): value is boolean {
     return typeof value === 'boolean' || value instanceof Boolean
 }
 
-export function isNumber(value: unknown): boolean {
+export function isNumber(value: unknown): value is number {
     return typeof value === 'number' && isFinite(value)
 }
 
-export function isFunction(value: unknown): boolean {
+export function isFunction(value: unknown): value is Function {
     return typeof value === 'function';
 }
 
-export function isArray(value: unknown): boolean {
+export function isArray(value: unknown): value is Array<unknown> {
     return Array.isArray(value)
     //return value && typeof value === 'object' && value.constructor === Array
 }
 
-export function isObject(value: unknown): boolean {
+export function isObject(value: unknown): value is object {
     return Object.prototype.toString.call(value) === "[object Object]"
     //return value && typeof value === 'object' && value.constructor === Object;
 }
@@ -128,18 +128,49 @@ export function extendObject<A extends object, B extends object>(base: A, overwr
     return base
 }
 
+export function toFloat(value: string | number | boolean | undefined | null): number | null
 export function toFloat(value: string | number | boolean | undefined | null, fallback: number): number 
 export function toFloat(value: string | number | boolean | undefined | null, fallback?: number): number | null {
     if (isNumber(value))
-        return value as number
+        return value
 
     if (isString(value))
-        return parseFloat(value as string)
+        return parseFloat(value)
 
     if (isBoolean(value))
-        return value as boolean ? 1 : 0
+        return value ? 1 : 0
 
     return fallback !== null && fallback !== undefined ? fallback : null
+}
+
+export function toInt(value: string | number | boolean | undefined | null): number | null
+export function toInt(value: string | number | boolean | undefined | null, fallback: number): number
+export function toInt(value: string | number | boolean | undefined | null, fallback?: number): number | null {
+    if (isNumber(value))
+        return Math.round(value)
+
+    if (isString(value))
+        return parseInt(value)
+
+    if (isBoolean(value))
+        return value ? 1 : 0
+
+    return fallback !== null && fallback !== undefined ? fallback : null
+}
+
+export function extractNumbers(value: string): number[] {
+    const result = value.match(/\d+\.\d+|\d+/g)
+    if (result === null)
+        return []
+
+    return result.map(element => +element) 
+}
+
+export function extractFirstNumber(value: string): number | null {
+    const result = value.match(/\d+\.\d+|\d+/)
+    if (result === null)
+        return null
+    return +result[0]
 }
 
 export function generateId(length: number, exclude?:string[]): string {
@@ -153,9 +184,9 @@ export function generateId(length: number, exclude?:string[]): string {
     }
 }
 
-export function formatString(text: string, ...args: any[]) {
-    for (let key in args) {
-        text = text.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key])
+export function formatString(text: string, ...args: (string|number)[]) {
+    for (const key in args) {
+        text = text.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key].toString())
     }
     return text
 }

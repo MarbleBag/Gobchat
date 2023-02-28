@@ -32,28 +32,6 @@ export function setConfigKey(element: HTMLElement | JQuery, configKey: string) {
 }
 
 /**
- * Wraps the given delegate in a GobConfig listener. The delegate will be called if the active profile changes or an observed property changes
- * 
- * @param delegate
- * @param profileToObserve
- * @param onlyIfProfileIsActive
- */
-function createConfigListener(delegate: (propertyKey: string | null) => void, profileToObserve: string | null = null, onlyIfProfileIsActive: boolean = false): Config.GobchatConfigListener<Config.GobchatConfigEvent> {
-    return (event) => {
-        switch (event.type) {
-            case 'profile':
-                if (event.action === 'active' && (profileToObserve === null || profileToObserve === event.newProfileId))
-                    delegate(null)
-                break
-            case 'property':
-                if ((!onlyIfProfileIsActive || (onlyIfProfileIsActive && event.isActiveProfile)) && (profileToObserve === null || profileToObserve === event.sourceProfileId))
-                    delegate(event.key)
-                break
-        }
-    }
-}
-
-/**
  * Adds or removes values from an array. Does not add duplicates.
  * @param {Array} array 
  * @param {Array} values 
@@ -82,189 +60,256 @@ function setValuesInArray<T>(array: T[], values: T[], doSet: boolean) {
     return changed
 }
 
-interface BindElementOptionTypes<T> {
-    disabled: boolean
-    elementKey: null | "change" | "keydown" | "keyup"
-    configKey: string | null
-    elementGetAccessor: null | (($element: JQuery, event: any, storedValue: T) => T | undefined)
-    elementSetAccessor: null | (($element: JQuery, storedValue: T) => void)
+module BindingContext {
+    export interface BindElementOptionTypes<T> {
+        disabled: boolean
+        elementKey: null | "change" | "keydown" | "keyup"
+        configKey: string
+        /* Called to retrieve a value from the element */
+        elementGetAccessor: null | (($element: JQuery, event: any, storedValue: T) => T | undefined)
+        /* Called to set a value on the element */
+        elementSetAccessor: null | (($element: JQuery, storedValue: T) => void)
+    }
+
+    export interface ElementBindContext<T> extends BindElementOptionTypes<T> {
+        onElementChange: null | (($event) => void)
+        configListener: null | ConfigListener
+        initializer: null | ((config: Config.GobchatConfig) => void)
+    }
 }
 
-export type BindElementOptions<T> = Partial<BindElementOptionTypes<T>>
+export type BindElementOptions<T> = Partial<BindingContext.BindElementOptionTypes<T>>
 
 export class BindingContext {
     #bindings: Binding[]
     #config: Config.GobchatConfig
+    #isInitialized: boolean
 
     constructor(gobConfig: Config.GobchatConfig) {
         this.#bindings = []
         this.#config = gobConfig
+        this.#isInitialized = false
     }
 
-    #loadValues(): BindingContext {
-        for (let binding of this.#bindings)
-            binding.initializeElement()
+    get isLoaded(): boolean {
+        return this.#isInitialized
+    }
+
+    loadBindings(): BindingContext {
+        const config = this.#config
+        for (const binding of this.#bindings)
+            binding.bind(config)
+
+        this.#isInitialized = true
         return this
     }
 
-    #loadBindings(): BindingContext {
-        for (let binding of this.#bindings)
-            binding.bind()
-        return this
-    }
-
-    #unloadBindings(): BindingContext {
-        for (let binding of this.#bindings)
+    unloadBindings(): BindingContext {
+        for (const binding of this.#bindings)
             binding.unbind()
+
+        this.#isInitialized = false
         return this
     }
 
-    initialize(): BindingContext {
-        this.#loadValues()
-        this.#loadBindings()
-        return this
-    }
+    clearBindings(): BindingContext {
+        for (const binding of this.#bindings)
+            binding.unbind()
 
-    clear(): BindingContext {
-        this.#unloadBindings()
         this.#bindings = []
+        this.#isInitialized = false
         return this
     }
 
     bindElement(element: HTMLElement | JQuery, bindOptions?: BindElementOptions<any>): BindingContext {
         const $element = $(element)
-        const config = this.#config
 
-        const defOptions: BindElementOptionTypes<any> = {
+        const defOptions: BindingContext.ElementBindContext<any> = {
             disabled: false,
             elementKey: "change",
-            configKey: $element.attr(DataAttributeConfigKey)?.toString() || null,
+            configKey: $element.attr(DataAttributeConfigKey)?.toString() || "",
             elementGetAccessor: ($element) => $element.val(),
-            elementSetAccessor: ($element, value) => $element.val(value)
+            elementSetAccessor: ($element, value) => $element.val(value),
+            onElementChange: null,
+            initializer: null,
+            configListener: null
         }
-        const options = $.extend(defOptions, bindOptions)
 
-        if (options.disabled || options.configKey === null || options.configKey.length === 0) {
+        const innerContext = { ...$.extend(defOptions, bindOptions) }
+
+        if (innerContext.disabled || innerContext.configKey === null || innerContext.configKey.length === 0) {
             $element.addClass("is-disabled").prop("disabled", true)
             return this //done
         }
 
-        const onElementChange = (event) => {
-            if (options.elementGetAccessor) {
-                const result = options.elementGetAccessor($element, event, config.get(options.configKey, null))
-                if (result !== undefined)
-                    config.set(options.configKey, result)
+        if (innerContext.elementSetAccessor) {
+            innerContext.initializer = config => innerContext.elementSetAccessor!($element, config.get(innerContext.configKey, null))
+            innerContext.configListener = createConfigListener(innerContext.initializer, null, true)
+        }
+
+        const bind: Binding.OnBind = (config) => {
+            // initialize
+            if (innerContext.initializer)
+                innerContext.initializer(config)
+
+            if (innerContext.elementGetAccessor) {
+                innerContext.onElementChange = (event) => {
+                    const oldValue = config.get(innerContext.configKey, null)
+                    const currentValue = innerContext.elementGetAccessor!($element, event, oldValue)
+                    if (currentValue !== undefined)
+                        config.set(innerContext.configKey, currentValue)
+                }
+            }
+
+            // bind element
+            if (innerContext.elementKey && innerContext.onElementChange)
+                $element.on(innerContext.elementKey, innerContext.onElementChange)
+
+            // bind config
+            if (innerContext.configListener) {
+                config.addProfileEventListener(innerContext.configListener)
+                config.addPropertyEventListener(innerContext.configKey, innerContext.configListener)
             }
         }
 
-        const onConfigChange = () => {
-            if (options.elementSetAccessor)
-                options.elementSetAccessor($element, config.get(options.configKey, null))
-        }
-        const profileListener = createConfigListener(onConfigChange, null, true)
+        const unbind: Binding.OnUnbind = (config) => {
+            // unbind element
+            if (innerContext.elementKey && innerContext.onElementChange)
+                $element.off(innerContext.elementKey, innerContext.onElementChange)
 
-        const initialize = onConfigChange
+            innerContext.onElementChange = null
 
-        const bind = () => {
-            //bind element
-            if (options.elementKey && options.elementGetAccessor)
-                $element.on(options.elementKey, onElementChange)
-
-            //bind config
-            if (options.elementSetAccessor) {
-                config.addProfileEventListener(profileListener)
-                config.addPropertyEventListener(options.configKey as string, profileListener)
-            }
-        }
-
-        const unbind = () => {
-            //unbind element
-            if (options.elementKey && options.elementGetAccessor)
-                $element.off(options.elementKey, onElementChange)
-
-            //unbind config
-            if (options.elementSetAccessor) {
-                if (!config.removeProfileEventListener(profileListener))
+            // unbind config
+            if (innerContext.configListener) {
+                if (!config.removeProfileEventListener(innerContext.configListener))
                     console.log("Error: Databinding. Unable to remove profile listener")
-                if (!config.removePropertyEventListener(options.configKey as string, profileListener))
-                    console.log("Error: Databinding. Unable to remove property listener: " + options.configKey)
+                if (!config.removePropertyEventListener(innerContext.configKey, innerContext.configListener))
+                    console.log("Error: Databinding. Unable to remove property listener: " + innerContext.configKey)
             }
         }
 
-        const binding = new Binding(initialize, bind, unbind)
+        const binding = new Binding(bind, unbind)
         this.#bindings.push(binding)
 
         return this
     }
 
-    bindConfigListener(configKey: string | null, callback: (configValue: any) => void): BindingContext
-    bindConfigListener(element: HTMLElement | JQuery | null, callback: (configValue: any) => void): BindingContext
-    bindConfigListener(element: string | HTMLElement | JQuery | null, callback: (configValue: any) => void): BindingContext {
-        if (element === null)
-            throw new Error("'element' is null")
+    bindCallback(element: string | HTMLElement | JQuery | null, onChange: (configValue: any) => void): BindingContext {
 
-        const configKey = typeof element === 'string' ? element : getConfigKey(element)
+        let configKey: string | null
+        if (typeof element === 'string') {
+            configKey = element
+        } else {
+            if (element === null)
+                throw new Error("'element' is null")
+            configKey = getConfigKey(element)
+        }
 
         if (configKey === null)
             throw new Error("'configKey' is null")
 
-        const config = this.#config
-        const onConfigChange = () => callback(config.get(configKey, null))
+        const delegate = (config: Config.GobchatConfig) => onChange(config.get(configKey, null))
+        const listener = createConfigListener(delegate, null, true)
+        return this.bindConfigListener(configKey, listener, delegate /*also used for init*/)
+    }
 
-        const profileListener = createConfigListener(onConfigChange, null, true)
+    bindConfigListener(configKey: string | null, listener: ConfigListener, onInitialize: ((config: Config.GobchatConfig) => void) | null = null): BindingContext {
+        const bind: Binding.OnBind = (config) => {
+            if (onInitialize)
+                onInitialize(config)
 
-        const bind = () => {
-            //bind config
-            config.addProfileEventListener(profileListener)
-            config.addPropertyEventListener(configKey, profileListener)
+            config.addProfileEventListener(listener)
+            if (configKey !== null)
+                config.addPropertyEventListener(configKey, listener)
         }
-        const unbind = () => {
-            //unbind config
-            config.removeProfileEventListener(profileListener)
-            config.removePropertyEventListener(configKey, profileListener)
+
+        const unbind: Binding.OnUnbind = (config) => {
+            if (!config.removeProfileEventListener(listener))
+                console.log("Error: Databinding. Unable to remove profile listener")
+            if (configKey !== null)
+                if (!config.removePropertyEventListener(configKey, listener))
+                    console.log("Error: Databinding. Unable to remove property listener: " + configKey)
         }
 
-        const binding = new Binding(onConfigChange, bind, unbind)
+        const binding = new Binding(bind, unbind)
         this.#bindings.push(binding)
 
         return this
     }
 }
 
-class Binding {
-    #isBindActive: boolean = false
-    #initializeFunction: () => void
-    #doBind: () => void
-    #doUnbind: () => void
 
-    constructor(initializeFunction: () => void, bindFunction: () => void, unbindFunction: () => void) {
-        this.#initializeFunction = initializeFunction
+
+class Binding {
+    #boundTo: Config.GobchatConfig | null
+    #doBind: Binding.OnBind
+    #doUnbind: Binding.OnUnbind
+
+    constructor(bindFunction: Binding.OnBind, unbindFunction: Binding.OnUnbind) {
+        this.#boundTo = null
         this.#doBind = bindFunction
         this.#doUnbind = unbindFunction
     }
 
     get isBindActive() {
-        return this.#isBindActive
+        return this.#boundTo !== null
     }
 
-    initializeElement() {
-        this.#initializeFunction()
-    }
+    bind(config: Config.GobchatConfig) {
+        if (this.#boundTo) {
+            if (this.#boundTo === config)
+                return
+            throw new Error("Binding already active for another config")
+        }
 
-    bind() {
-        if (this.#isBindActive)
-            return
-
-        this.#doBind()
-        this.#isBindActive = true
+        this.#boundTo = config
+        this.#doBind(this.#boundTo)
     }
 
     unbind() {
-        if (!this.#isBindActive)
+        if (!this.#boundTo)
             return
 
-        this.#doUnbind()
-        this.#isBindActive = false
+        this.#doUnbind(this.#boundTo)
+        this.#boundTo = null
+    }
+}
+
+module Binding {
+    export type OnBind = (config: Config.GobchatConfig) => void
+    export type OnUnbind = (config: Config.GobchatConfig) => void
+}
+
+export type ConfigListenerDelegate = (config: Config.GobchatConfig, propertyKey: string | null) => void
+export type ConfigListener = Config.GobchatConfigListener<Config.GobchatConfigEvent>
+
+/**
+ * Wraps the given delegate in a GobConfig listener, which can be used for property and profile events. The delegate will only be called according to the choosen arguments.
+ * 
+ * @param delegate
+ * @param profileToObserve Only call delegate if a specific profile changes
+ * @param onlyForActiveProfile Only call delegate if a property on the active profile changes
+ */
+export function createConfigListener(delegate: ConfigListenerDelegate, profileToObserve: string | null = null, onlyForActiveProfile: boolean = false): ConfigListener {
+    return (event) => {
+        switch (event.type) {
+            case 'profile':
+                if (event.action === 'active') {
+                    if (profileToObserve === null || profileToObserve === event.newProfileId)
+                        delegate(event.config, null)
+                } else {
+                    if (!onlyForActiveProfile)
+                        if (profileToObserve === null || profileToObserve === event.profileId)
+                            delegate(event.config, null)
+                }
+                break
+
+            case 'property':
+                if (!onlyForActiveProfile || (onlyForActiveProfile && event.isActiveProfile))
+                    if (profileToObserve === null || profileToObserve === event.sourceProfileId)
+                        delegate(event.config, event.key)
+                break
+        }
     }
 }
 
@@ -382,8 +427,8 @@ export function bindDropdown(bindingContext: BindingContext, element: HTMLElemen
     return bindingContext.bindElement(element, options)
 }
 
-export function bindListener(bindingContext: BindingContext, configKey: string | null, callback: (configValue: any) => void): BindingContext {
-    return bindingContext.bindConfigListener(configKey, callback)
+export function bindListener(bindingContext: BindingContext, element: HTMLElement | JQuery | string | null, callback: (configValue: any) => void): BindingContext {
+    return bindingContext.bindCallback(element, callback)
 }
 
 
