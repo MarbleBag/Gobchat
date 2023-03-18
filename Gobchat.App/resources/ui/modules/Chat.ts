@@ -70,7 +70,7 @@ export interface ChatMessageSegment {
 
 //#endregion
 
-export namespace CssClass {
+export module CssClass {
     export const Chat = "gob-chat"
     export const Chat_Toolbar = "gob-chat-toolbar"
 
@@ -184,28 +184,33 @@ export class ChatControl {
         // rebind
         this.#chatBox = $(chatBox)
         this.#chatHistory = this.#chatBox.find(ChatControl.selector_chat_history)
+
+        if (this.#chatBox.length === 0)
+            throw new Error("No chat html element found")
+
+        if (this.#chatHistory.length === 0)
+            throw new Error("No chat history html element found")
+
         this.#tabControl.control(this.#chatBox.find(ChatControl.selector_tabbar), this.#chatHistory)
         this.#searchControl.control(this.#chatBox.find(ChatControl.selector_search), this.#chatHistory)
 
-        if (this.#chatBox.length > 0)
-            document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent as EventListener)
+        document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent as EventListener)
 
         this.#databinding = new Databinding.BindingContext(gobConfig)
         Databinding.bindListener(this.#databinding, "behaviour.language", async () => {
             const channels = Object.values(Gobchat.Channels)
 
             const requestTranslation = channels.map(data => data.abbreviationId)
-                .filter(id => Utility.isString(id))
 
             const translations = await gobLocale.getAll(requestTranslation)
             const channelLookup = MessageBuilder.AbbreviationCache
             channelLookup.length = 0
 
-            for (let data of channels) {
-                if (data.abbreviationId)
-                    channelLookup[data.chatChannel] = translations[data.abbreviationId]
+            for (const data of channels) {
+                channelLookup[data.chatChannel] = translations[data.abbreviationId]
             }
         })
+
         this.#databinding.loadBindings()
     }
 }
@@ -237,7 +242,7 @@ class MessageBuilder {
                 .appendTo($content)
         }
 
-        for (let messageSegment of message.content) {
+        for (const messageSegment of message.content) {
             $("<span></span>")
                 .addClass(CssClass.ChatEntry_Segment)
                 .addClass(MessageBuilder.getMessageSegmentClass(messageSegment.type))
@@ -372,15 +377,30 @@ class MessageBuilder {
     }
 }
 
+module AudioPlayer {
+    export interface MentionConfig {
+        playSound: boolean,
+        volume: number,
+        soundPath: string,
+        soundInterval: number
+        trigger: string[]
+        userCanTriggerMention: boolean
+    }
+}
+
 class AudioPlayer {
     private static lastSoundPlayed: Date = new Date()
 
     constructor() {
     }
 
+    private static getMentionConfig(): AudioPlayer.MentionConfig {
+        return gobConfig.get("behaviour.mentions")
+    }
+
     public static playMentionSoundIfPossible(message: ChatMessage): void {
-        const data = gobConfig.get("behaviour.mentions.data.base")
-        if (!data.playSound || data.volume <= 0 || !data.soundPath)
+        const config = AudioPlayer.getMentionConfig()
+        if (!config.playSound || config.volume <= 0 || !config.soundPath)
             return
 
         if (!message.containsMentions)
@@ -393,23 +413,23 @@ class AudioPlayer {
         }
 
         const time = new Date()
-        if (time.valueOf() - AudioPlayer.lastSoundPlayed.valueOf() < data.soundInterval)
+        if (time.valueOf() - AudioPlayer.lastSoundPlayed.valueOf() < config.soundInterval)
             return
 
         AudioPlayer.lastSoundPlayed = time
-        const audio = new Audio(data.soundPath)
-        audio.volume = data.volume
+        const audio = new Audio(config.soundPath)
+        audio.volume = config.volume
         audio.play()
     }
 
     public static playMentionSound(): void {
-        const data = gobConfig.get("behaviour.mentions.data.base")
-        if (!data.playSound || data.volume <= 0 || !data.soundPath)
+        const config = AudioPlayer.getMentionConfig()
+        if (!config.playSound || config.volume <= 0 || !config.soundPath)
             return
 
         AudioPlayer.lastSoundPlayed = new Date()
-        const audio = new Audio(data.soundPath)
-        audio.volume = data.volume
+        const audio = new Audio(config.soundPath)
+        audio.volume = config.volume
         audio.play()
     }
 }
@@ -553,7 +573,7 @@ class TabBarControl {
         this.#scrollTabs(scrollDirection)
     }
 
-    #onPanelScroll = (event: any) => {
+    #onPanelScroll = (event: any) => { // bound to this class instance
         const $panel = $(event.currentTarget)
         const panelBottom = $panel.scrollTop() + $panel.innerHeight()
         const closeToBottm = panelBottom + TabBarControl.ScrollToleranceZone >= event.currentTarget.scrollHeight

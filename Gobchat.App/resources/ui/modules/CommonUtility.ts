@@ -43,6 +43,10 @@ export function isObject(value: unknown): value is object {
     //return value && typeof value === 'object' && value.constructor === Object;
 }
 
+export function isjQuery(value: unknown): value is JQuery {
+    return (value && (value instanceof jQuery || value.constructor.prototype.jquery));
+}
+
 interface ExtendOptionsDefault {
 
 }

@@ -800,7 +800,7 @@ export class ConfigProfile {
             return a.localeCompare(b)
         })
 
-        sorted.forEach((propertyPath) => {
+        sorted.forEach(propertyPath => {
             const data: ConfigProfileEvent = { "key": propertyPath, "source": this.profileId }
             this.#propertyListener.dispatch(propertyPath, data)
             this.#propertyListener.dispatch("*", data)

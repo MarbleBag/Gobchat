@@ -30,6 +30,19 @@ window.gobLocale = new Locale.LocaleManager()
 
 window.gobStyles = new Style.StyleLoader("..")
 await gobStyles.initialize()
+{
+    const configBinding = new Databinding.BindingContext(window.opener.gobConfig)
+    configBinding.bindCallback("behaviour.frame.chat.position.x", value => gobConfig.set("behaviour.frame.chat.position.x", value))
+    configBinding.bindCallback("behaviour.frame.chat.position.y", value => gobConfig.set("behaviour.frame.chat.position.y", value))
+    configBinding.bindCallback("behaviour.frame.chat.size.width", value => gobConfig.set("behaviour.frame.chat.size.width", value))
+    configBinding.bindCallback("behaviour.frame.chat.size.height", value => gobConfig.set("behaviour.frame.chat.size.height", value))
+    configBinding.loadBindings()
+
+    $(window).on("beforeunload", function () {
+        configBinding.clearBindings()
+    })
+}
+
 
 const binding = new Databinding.BindingContext(gobConfig)
 
@@ -59,7 +72,7 @@ binding.bindCallback("style", (value) => {
 
 const selProfile = $("#cp-main_profile-select")
 selProfile.on("change", (event) => {
-    const profileId = event.target.value
+    const profileId = event.target.value as string
     gobConfig.activeProfileId = profileId
 })
 
@@ -105,11 +118,11 @@ const mutationObserver = new window.MutationObserver((mutations, observer) => {
         let updateElement = false
 
         if (mutation.type === 'attributes')
-            updateElement = mutation.attributeName === Locale.AttributeTextKey || mutation.attributeName === Locale.AttributeTooltipKey
+            updateElement = mutation.attributeName === Locale.HtmlAttribute.TextId || mutation.attributeName === Locale.HtmlAttribute.TooltipId
 
         if (updateElement && mutation.target instanceof HTMLElement) {
             const target = mutation.target
-            if (target.getAttribute(Locale.AttributeActiveLocale) !== gobLocale.locale)
+            if (target.getAttribute(Locale.HtmlAttribute.ActiveLocale) !== gobLocale.locale)
                 gobLocale.updateElement(target)
         }
             

@@ -19,32 +19,42 @@ namespace Gobchat.Core.Config
     {
         public int MinVersion => 1900;
 
-        public int MaxVersion => 1900;
+        public int MaxVersion => 1999;
 
-        public int TargetVersion => 1901;
+        public int TargetVersion => 1903;
 
         public JObject Upgrade(JObject src)
         {
             JObject dst = (JObject)src.DeepClone();
 
-            JsonUtil.MoveIfAvailable(dst, "style.chatbox.background-color", dst, "style.chat.background-color");
-            JsonUtil.MoveIfAvailable(dst, "style.channel.base.font-size", dst, "style.chat.font-size");
-            JsonUtil.ModifyIfAvailable(dst, "style.chat.font-size", node => {
+            JsonUtil.MoveIfAvailable(dst, "style.chatbox", dst, "style.chat-history");
+            JsonUtil.MoveIfAvailable(dst, "style.channel.base.font-size", dst, "style.chat-history.font-size");
+            JsonUtil.ModifyIfAvailable(dst, "style.chat-history.font-size", node => {
                 if(node.Type != JTokenType.String)
                     return null;
                 
                 var value = node.ToString().ToLowerInvariant();
                 switch (value)
                 {
-                    case "SMALLER": return "10 px";
-                    case "SMALL": return "13.04 px";
-                    case "MEDIUM": return "16 px";
-                    case "LARGE": return "18 px";
-                    case "LARGER": return "19.2 px";
-                    case "VERY LARGE": return "24 px";
-                    default: return null;
+                    case "smaller": return "10px";
+                    case "small": return "13px";                    
+                    case "medium": return "16px";
+                    case "large": return "18px";
+                    case "larger": return "20px";
+                    case "very large": return "24px";
+                    default: return "16px";
                 }
             });
+
+            JsonUtil.DeleteIfAvailable(dst, "behaviour.chattabs.data.default");
+
+            JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.trigger", dst, "behaviour.mentions.trigger");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.playSound", dst, "behaviour.mentions.playSound");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.soundPath", dst, "behaviour.mentions.soundPath");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.soundInterval", dst, "behaviour.mentions.soundInterval");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.volume", dst, "behaviour.mentions.volume");
+            JsonUtil.DeleteIfAvailable(dst, "behaviour.mentions.data");
+            JsonUtil.DeleteIfAvailable(dst, "behaviour.mentions.order");
 
             return dst;
         }

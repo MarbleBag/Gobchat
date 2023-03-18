@@ -26,13 +26,15 @@ $("#cp-profiles_profile_new").on("click", function (event) {
 //setup import profile
 $("#cp-profiles_profile_import").on("click", async function (event) {
     const stringifiedProfile = await GobchatAPI.importProfile()
-    if (stringifiedProfile === undefined || stringifiedProfile === null || stringifiedProfile.length == 0) {
-        Dialog.showErrorDialog({ dialogText: "config.profiles.importprofile.error" });
+    if (!stringifiedProfile)       
         return
+    
+    try {
+        const newProfile = JSON.parse(stringifiedProfile)
+        gobConfig.importProfile(newProfile)
+    } catch (error) {
+        Dialog.showErrorDialog({ dialogText: "config.profiles.importprofile.error" });
     }
-
-    const newProfile = JSON.parse(stringifiedProfile)
-    gobConfig.importProfile(newProfile)
 })
 
 const profileTable = $("#cp-profiles_profiles > tbody")
@@ -68,7 +70,7 @@ async function populateProfileTable() {
             gobConfig.activeProfileId = profile.profileId
         })
         if (gobConfig.activeProfileId === profile.profileId)
-            btnActiveProfile.attr("disabled", true)
+            btnActiveProfile.prop("disabled", true)
 
         btnExportProfile.on("click", async function (event) {
             const selection = await GobchatAPI.saveFileDialog("Json files (*.json)|*.json", `profile_${profile.profileId}.json`)
@@ -86,7 +88,7 @@ async function populateProfileTable() {
             Dialog.showProfileIdSelectionDialog(selectedId => gobConfig.copyProfile(selectedId, profile.profileId), { exclude: [profile.profileId] })
         })
         if (gobConfig.profileIds.length <= 1)
-            btnCopyProfile.attr("disabled", true)
+            btnCopyProfile.prop("disabled", true)
 
         btnDefaultProfile.on("click", async function (event) {
             const result = await Dialog.showConfirmationDialog({
@@ -106,7 +108,7 @@ async function populateProfileTable() {
                 gobConfig.deleteProfile(profile.profileId)            
         })
         if (gobConfig.profileIds.length <= 1)
-            btnDeleteProfile.attr("disabled", true)
+            btnDeleteProfile.prop("disabled", true)
     })
 
     await gobLocale.updateElement(profileTable)

@@ -67,10 +67,11 @@ namespace Gobchat.Module.Chat
             _configManager.AddPropertyChangeListener("behaviour.channel", true, true, ConfigManager_UpdateChannelProperties);
             _configManager.AddPropertyChangeListener("behaviour.segment", true, true, ConfigManager_UpdateFormaterProperties);
             _configManager.AddPropertyChangeListener("behaviour.groups", true, true, ConfigManager_UpdateTriggerGroupProperties);
-            _configManager.AddPropertyChangeListener("behaviour.mentions", true, true, ConfigManager_UpdateMentions);
             _configManager.AddPropertyChangeListener("behaviour.chat.autodetectEmoteInSay", true, true, ConfigManager_UpdateAutodetectProperties);
             _configManager.AddPropertyChangeListener("behaviour.language", true, true, ConfigManager_UpdateLanguage);
             _configManager.AddPropertyChangeListener("behaviour.rangefilter", true, true, ConfigManager_UpdateRangeFilter);
+
+            _configManager.AddPropertyChangeListener("behaviour.mentions.trigger", true, true, ConfigManager_UpdateMentions);
             _configManager.AddPropertyChangeListener("behaviour.mentions.userCanTriggerMention", true, true, ConfigManager_UpdateUserMentionProperties);
 
             _configManager.AddPropertyChangeListener("behaviour.chattabs.data", true, true, ConfigManager_UpdateVisibleChannel);
@@ -302,18 +303,8 @@ namespace Gobchat.Module.Chat
         {
             try
             {
-                var ids = config.GetProperty<List<string>>("behaviour.mentions.order");
-                var list = config.GetProperty<JToken>("behaviour.mentions.data");
-
-                var mentions = new List<string>();
-                foreach (var id in ids)
-                {
-                    var data = list[id];
-                    foreach (var trigger in data["trigger"].ToObject<List<string>>())
-                        mentions.Add(trigger);
-                }
-
-                var newMentions = mentions.ToArray();
+                var triggers = config.GetProperty<List<string>>("behaviour.mentions.trigger");
+                var newMentions = triggers.ToArray();
                 logger.Debug(() => $"Set mentions to: {string.Join(", ", newMentions)}");
                 _chatManager.Config.Mentions = newMentions;
             }

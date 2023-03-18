@@ -1,0 +1,117 @@
+@use "input";
+@use "config-button";
+
+$color_neutral-grey: hsl(0deg 0% 50%);
+
+.sp-replacer {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem;
+    box-sizing: border-box;
+    vertical-align: middle;
+    background: var(--primary-button-background);
+    color: var(--symbol-button-color);
+    border: 0.0625rem solid var(--symbol-button-color);
+    border-radius: 0.3125rem;
+    box-shadow: inset 0.03125rem 0.03125rem 0 var(--color-button-boxshadow-color), inset -0.03125rem -0.03125rem 0 var(--color-button-boxshadow-color);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--symbol-button-color);
+        filter: brightness(110%);
+    }
+
+    &.sp-active {
+        color: var(--symbol-button-color);
+        box-shadow: inset 0.03125rem 0.03125rem 0.625rem #020202a6;
+    }
+}
+
+.sp-dd {
+    all: unset;
+    display: block;
+    font-size: 0.625em;
+    padding: unset;
+    height: 1rem;
+    line-height: 1rem;
+}
+
+.sp-preview {
+    all: unset;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+    border: solid 1px #222;
+}
+
+.sp-preview-inner {
+    all: unset;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sp-container {
+    font-size: 1em;
+    background: var(--dialog-background);
+    border: 0.0625rem solid var(--symbol-button-color);
+    border-radius: 0.5rem;
+}
+
+.sp-palette-container {
+    border: unset;
+    //border-right: 0.0625em solid var(--page-divider-color-1);
+}
+
+.sp-picker-container {
+    border: unset;
+}
+
+.sp-palette {
+    max-width: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+
+    .sp-palette-row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.05rem;
+    }
+
+    .sp-thumb-el {
+        margin: unset;
+        width: 1rem;
+        height: 1rem;
+        border: solid 0.0625rem $color_neutral-grey;
+
+        .sp-thumb-active {
+            border-color: var(--primary-button-active-border-color);
+        }
+    }
+}
+
+.sp-initial {
+    border: solid 1px $color_neutral-grey;
+}
+
+.sp-container button {
+    @extend .gob-config-primary-button;
+
+    &:hover {
+        background: var(--primary-button-background);
+        border: var(--primary-button-border);
+        text-shadow: var(--primary-button-shadow-color);
+    }
+}
+
+.sp-input-container {
+    margin-bottom: 0.25rem;
+}
+
+.sp-input {
+    @extend .gob-input-text;
+}

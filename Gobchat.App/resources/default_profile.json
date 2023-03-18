@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1901,
+  "version": 1903,
   "profile": {
     "id": null,
     "name": null,
@@ -130,17 +130,11 @@
     },
     "language": "en",
     "mentions": {
-      "data": {
-        "base": {
-          "id": "base",
-          "trigger": [],
-          "playSound": false,
-          "soundPath": "../sounds/FFXIV_Linkshell_Transmission.mp3",
-          "soundInterval": 5000,
-          "volume": 0.2
-        }
-      },
-      "order": [ "base" ],
+      "trigger": [],
+      "playSound": false,
+      "soundPath": "../sounds/FFXIV_Linkshell_Transmission.mp3",
+      "soundInterval": 5000,
+      "volume": 0.2,
       "userCanTriggerMention": false
     },
     "rangefilter": {
@@ -166,6 +160,20 @@
         "mention": 2
       },
       "sorting": [ "chat", "sys" ],
+      "data-template": {
+        "id": "default",
+        "name": "Tab",
+        "visible": false,
+        "channel": {
+          "visible": []
+        },
+        "formatting": {
+          "timestamps": true,
+          "mentions": true,
+          "rangefilter": false,
+          "roleplay": true
+        }
+      },
       "data": {
         "chat": {
           "id": "chat",
@@ -229,20 +237,6 @@
             "rangefilter": false,
             "roleplay": false
           }
-        },
-        "default": {
-          "id": "default",
-          "name": "Tab",
-          "visible": false,
-          "channel": {
-            "visible": []
-          },
-          "formatting": {
-            "timestamps": true,
-            "mentions": true,
-            "rangefilter": false,
-            "roleplay": true
-          }
         }
       }
     },
@@ -266,7 +260,7 @@
         "id": null,
         "active": true,
         "trigger:": [],
-        "style":{
+        "style": {
           "body": { "background-color": null },
           "header": {
             "background-color": null,
@@ -378,13 +372,13 @@
   },
   "style": {
     "theme": "FFXIV Dark",
-    "chat": {
+    "chatui": {
       "font-size": "16px"
     },
     "config": {
-      "font-size": "1.6vw"
+      "font-size": "1.4vw"
     },
-    "chatbox": {
+    "chat-history": {
       "font-size": "16px",
       "background-color": "rgba(20, 20, 20, 0.95)",
       "gap": "2px"

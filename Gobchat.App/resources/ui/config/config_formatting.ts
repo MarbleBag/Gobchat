@@ -50,7 +50,7 @@ function makeFontSizeSelector(id: string, minValue: number | null, maxValue: num
     const btnReset = $(`#${id}_reset`)
 
     Databinding.bindElement<string>(binding, input, {
-        elementGetAccessor: (element, event, storedValue) => {
+        elementToConfig: (element, event, storedValue) => {
             let newValue = Utility.toInt(element.val())
 
             if (newValue === null) {  // restore old value                    
@@ -76,7 +76,7 @@ function makeFontSizeSelector(id: string, minValue: number | null, maxValue: num
             return `${newValue}${unit}`
         },
 
-        elementSetAccessor: (element, storedValue) => {
+        configToElement: (element, storedValue) => {
             const value = Utility.extractFirstNumber(storedValue)
             element.val(value)
             slider.val(value)
@@ -104,10 +104,7 @@ function makeFontSizeSelector(id: string, minValue: number | null, maxValue: num
 
 makeFontSizeSelector("cp-formatting_chat-history_font-size", 8, 64, "px")
 makeFontSizeSelector("cp-formatting_chat-ui_font-size", 8, 64, "px")
-//makeFontSizeSelector("cp-formatting_config_font-size", 8, null, "px")
 makeFontSizeSelector("cp-formatting_chat-history_gap", 0, 64, "px")
-Databinding.bindDropdown(binding, $("#cp-formatting_config_font-size_selector"))
-
 
 // group 2
 // item 1
@@ -121,8 +118,8 @@ Object.values(MessageSegments).forEach(messageSegment => {
     const selColor = entry.find(".js-color-selector")
     const btnResetColor = entry.find(".js-color-reset")
 
-    lblName.attr(Locale.AttributeTextKey, `${messageSegment.translationId}`)
-    lblName.attr(Locale.AttributeTooltipKey, `${messageSegment.translationId}.tooltip`)
+    lblName.attr(Locale.HtmlAttribute.TextId, `${messageSegment.translationId}`)
+    lblName.attr(Locale.HtmlAttribute.TooltipId, `${messageSegment.translationId}.tooltip`)
 
     Databinding.setConfigKey(selColor, `${messageSegment.styleId}.color`)
     Components.makeColorSelector(selColor)
@@ -211,7 +208,7 @@ async function buildSegmentDetectionTableEntry(id: string, idx: number) {
 
     btnDeleteEntry.on("click", async (event) => {
         const result = await Dialog.showConfirmationDialog({
-            dialogText: "config.formatting.tbl.segment.entry.deleteconfirm",
+            dialogText: "config.formatting.tbl.segment.entry.action.delete.confirm",
         })
 
         if (result !== 1)
@@ -235,14 +232,14 @@ async function buildSegmentDetectionTableEntry(id: string, idx: number) {
 
     Databinding.setConfigKey(txtStartToken, `${configKey}.startTokens`)
     Databinding.bindElement(binding, txtStartToken, {
-        elementGetAccessor: (element) => convertTokenInput(element.val()),
-        elementSetAccessor: (element, value) => element.val(value.join(", "))
+        elementToConfig: (element) => convertTokenInput(element.val()),
+        configToElement: (element, value) => element.val(value.join(", "))
     })
 
     Databinding.setConfigKey(txtEndToken, `${configKey}.endTokens`)
     Databinding.bindElement(binding, txtEndToken, {
-        elementGetAccessor: (element) => convertTokenInput(element.val()),
-        elementSetAccessor: (element, value) => element.val(value.join(", "))
+        elementToConfig: (element) => convertTokenInput(element.val()),
+        configToElement: (element, value) => element.val(value.join(", "))
     })
 
     binding.bindCallback(selSegmentType, () => updateEntryHeader())
@@ -297,7 +294,7 @@ function toUnicodeString(arr: string[]): string {
 
 // --------------------------------------------------------------------------------------------------------
 
-const configKeys = new Set<string>(["behaviour.segment.order", "behaviour.segment.data", "style.segment", "style.channel.base.font-family", "style.chatbox.font-size", "style.chatbox.gap", "style.chat.font-size", "style.config.font-size"])
+const configKeys = new Set<string>(["behaviour.segment.order", "behaviour.segment.data", "style.segment", "style.channel.base.font-family", "style.chat-history.font-size", "style.chat-history.gap", "style.chatui.font-size"])
 Components.makeCopyProfileButton($("#cp-formatting_copyprofile"), {
         configKeys: Array.from(configKeys)
     })

@@ -1,87 +1,86 @@
-<button class="gob-config-icon-button gob-button-copypage" id="cp-mentions_copyprofile"><i
-        class="fas fa-clone"></i></button>
+<button id="cp-mentions_copyprofile" class="gob-config-copypage-button"><i class="fas fa-clone"></i></button>
 
-<p>
-<div>
-    <button disabled hidden id="cmentions_add_new_mention1" data-gob-locale-title="config.mentions.newmention.tooltip">
-        <i style="color:green;" class="fas fa-plus-circle"></i>
-    </button>
-</div>
-</p>
-
-<p>
-<div>
-    <div id="cmentions_mention_table">
-    </div>
-    <div>
-    </div>
-    <div>
-        <button disabled hidden id="cmentions_add_new_mention2"
-            data-gob-locale-title="config.mentions.newmention.tooltip">
-            <i style="color:green;" class="fas fa-plus-circle"></i>
-        </button>
-    </div>
-</div>
-</p>
-
-<div id="cp-mentions">
-    <div data-gob-entryid class="gob-config-group">
+<div id="cp-mention">
+    <div class="gob-config-group">
         <label class="gob-config-text" data-gob-locale-text="config.mentions.description"></label>
 
-        <div class="gob-config-group-item">
-            <textarea rows="3" class="gob-input-textarea" id="cp-mentions-triggerwords"
-                data-gob-configkey="behaviour.mentions.triggerwords"
-                data-gob-locale-title="config.mentions.trigger.tooltip"></textarea>
+        <div class="gob-config-group_item">
+            <textarea class="gob-input-textarea" rows="3"
+                      id="cp-mentions_triggerwords"
+                      data-gob-configkey="behaviour.mentions.trigger"
+                      data-gob-locale-tooltip="config.mentions.trigger.tooltip"></textarea>
         </div>
 
         <div class="gob-config-group_item">
-            <input type="checkbox" class="gob-input-checkbox" data-gob-configkey="behaviour.mentions.playsound"
-                data-gob-locale-title="config.mentions.audio.play.tooltip" />
-            <label data-gob-locale-text="config.mentions.audio.play"
-                data-gob-locale-title="config.mentions.audio.play.tooltip"></label>
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-mentions_mentions-on-user"
+                   data-gob-configkey="behaviour.mentions.userCanTriggerMention"
+                   data-gob-locale-tooltip="config.mentions.ckb.usermention.tooltip" />
+            <label data-gob-locale-text="config.mentions.ckb.usermention"
+                   data-gob-locale-tooltip="config.mentions.ckb.usermention.tooltip"></label>
         </div>
 
-        <div class="gob-config-group-item tmp-sound-options" hidden>
-            <table>
-                <tr>
-                    <td>
-                        <label data-gob-locale-text="config.mentions.audio.path"
-                            data-gob-locale-title="config.mentions.audio.path.tooltip"></label>
-                    </td>
-                    <td>
-                        <input type="text" class="tmpl-sound-path" data-gob-configkey="behaviour.mentions.sound"
-                            data-gob-locale-title="config.mentions.audio.path.tooltip" />
-                        <button class="gob-config-icon-button tmpl-sound-selector"
-                            data-gob-locale-title="config.mentions.audio.select.tooltip">
-                            <i class="fas fa-file-audio"></i>
-                        </button>
-                        <button class="gob-config-icon-button tmpl-test-sound"
-                            data-gob-locale-title="config.mentions.audio.test.tooltip">
-                            <i class="fas fa-play"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label data-gob-locale-text="config.mentions.audio.volume"
-                            data-gob-locale-title="config.mentions.audio.volume.tooltip"></label>
-                    </td>
-                    <td>
-                        <input class="tmpl-sound-volume" type="range" min="0" max="100"
-                            data-gob-locale-title="config.mentions.audio.volume.tooltip" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label data-gob-locale-text="config.mentions.audio.interval"
-                            data-gob-locale-title="config.mentions.audio.interval.tooltip"></label>
-                    </td>
-                    <td>
-                        <input class="gob-input-numberbox" type="number" min="1" style="width:50px;"
-                            data-gob-locale-title="config.mentions.audio.interval.tooltip" />
-                    </td>
-                </tr>
-            </table>
+        <div class="gob-config-group_item">
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-mentions_audio-play"
+                   data-gob-configkey="behaviour.mentions.playSound"
+                   data-gob-locale-tooltip="config.mentions.audio.play.tooltip" />
+            <label data-gob-locale-text="config.mentions.audio.play"
+                   data-gob-locale-tooltip="config.mentions.audio.play.tooltip"></label>
+        </div>
+
+        <div class="gob-config-sub-group">
+            <div class="gob-config-group_item-4-small-columns">
+                <label data-gob-locale-text="config.mentions.audio.path"
+                       data-gob-locale-tooltip="config.mentions.audio.path.tooltip"></label>
+                <input class="gob-input-text" type="text"
+                       id="cp-mentions_audio-path"
+                       data-gob-configkey="behaviour.mentions.soundPath"
+                       data-gob-locale-tooltip="config.mentions.audio.path.tooltip" />
+                <button class="gob-config-icon-button"
+                        id="cp-mentions_audio-path_select"
+                        data-gob-locale-tooltip="config.mentions.audio.select.tooltip">
+                    <i class="fas fa-file-audio"></i>
+                </button>
+                <button class="gob-config-icon-button"
+                        id="cp-mentions_audio-test"
+                        data-gob-locale-tooltip="config.mentions.audio.test.tooltip">
+                    <i class="fas fa-play"></i>
+                </button>
+
+
+                <label data-gob-locale-text="config.mentions.audio.volume"
+                       data-gob-locale-tooltip="config.mentions.audio.volume.tooltip"></label>
+                <input class="gob-input-rangeslider" type="range" min="0" max="100"
+                       id="cp-mentions_audio-volume"
+                       data-gob-configkey="behaviour.mentions.volume"
+                       data-gob-locale-tooltip="config.mentions.audio.volume.tooltip" />
+                <div></div>
+                <div></div>
+
+                <label data-gob-locale-text="config.mentions.audio.interval"
+                       data-gob-locale-tooltip="config.mentions.audio.interval.tooltip"></label>
+                <input class="gob-input-number" type="number" min="1"
+                       id="cp-mentions_audio-replay-interval"
+                       data-gob-configkey="behaviour.mentions.soundInterval"
+                       data-gob-locale-tooltip="config.mentions.audio.interval.tooltip" />
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gob-config-group">
+        <label class="gob-config-group_title" data-gob-locale-text="config.rangefilter.page.name"></label>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-mentions_ignore-range-filter"
+                   data-gob-configkey="behaviour.rangefilter.ignoreMention"
+                   data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip" />
+            <label class="gob-config-label" for="cp-rangefilter_mention"
+                   data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip"
+                   data-gob-locale-text="config.rangefilter.ckb.mentions">
+            </label>
         </div>
     </div>
 </div>

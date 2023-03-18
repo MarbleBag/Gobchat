@@ -16,17 +16,18 @@
 import * as Utility from './CommonUtility.js'
 import { EventDispatcher } from './EventDispatcher.js'
 
-export const AttributeTextKey = "data-gob-locale-text"
-export const AttributeTooltipKey = "data-gob-locale-tooltip"
-export const AttributeTooltip = "data-gob-tooltip"
-export const AttributeActiveLocale = "data-gob-locale-code"
-
-export function setLocalizedText(element: HTMLElement | JQuery, key: string) {
-    $(element).attr(AttributeTextKey, key).removeAttr(AttributeActiveLocale);
+export module HtmlAttribute {
+    export const TextId = "data-gob-locale-text"
+    export const TooltipId = "data-gob-locale-tooltip"
+    export const ActiveLocale = "data-gob-locale-code"
 }
 
-export function setLocalizedTooltip(element: HTMLElement | JQuery, key: string) {
-    $(element).attr(AttributeTooltipKey, key).removeAttr(AttributeActiveLocale);
+export function setLocalizedTextId(element: HTMLElement | JQuery, id: string) {
+    $(element).attr(HtmlAttribute.TextId, id).removeAttr(HtmlAttribute.ActiveLocale);
+}
+
+export function setLocalizedTooltipId(element: HTMLElement | JQuery, id: string) {
+    $(element).attr(HtmlAttribute.TooltipId, id).removeAttr(HtmlAttribute.ActiveLocale);
 }
 
 export class LocaleManager {
@@ -54,19 +55,19 @@ export class LocaleManager {
     }
 
 
-    async loadIntoLookup(keys: string | string[], params?: string[] | null, lookup?: { [s: string]: string } | null, language?: string | null): Promise<{ [s: string]: string }> {
+    async loadIntoLookup(keys: string | string[], params?: string[] | null, lookup?: { [s: string]: string } | null, locale?: string | null): Promise<{ [s: string]: string }> {
         const keysToLoad = ([] as string[]).concat(keys)
         let localeLookup = lookup ?? {}
-        language = language ?? this.#locale
+        locale = locale ?? this.#locale
         
         let missingKeys = keysToLoad
         if (Object.keys(localeLookup).length > 0)
             missingKeys = keysToLoad.filter(key => !(localeLookup[key] === undefined || localeLookup[key] === null))        
 
         if (missingKeys.length > 0) {
-            const localization = await GobchatAPI.getLocalizedStrings(language, missingKeys)
+            const localization = await GobchatAPI.getLocalizedStrings(locale, missingKeys)
             if (localeLookup) {
-                for (let key in localization)
+                for (const key in localization)
                     localeLookup[key] = localization[key]
             }
             else {
@@ -76,10 +77,10 @@ export class LocaleManager {
 
         const results = {}
         if (params && params.length > 0) {
-            for (let key of keysToLoad)
+            for (const key of keysToLoad)
                 results[key] = Utility.formatString(localeLookup[key], ...params)
         } else {
-            for (let key of keysToLoad)
+            for (const key of keysToLoad)
                 results[key] = localeLookup[key]
         }
         return results
@@ -102,46 +103,64 @@ export class LocaleManager {
     }
 
     async updateElement(element: HTMLElement | JQuery, language?: string) {
-        await updateDomTree(element, language || this.#locale)
+        await updateElementTree([element], language || this.#locale)
+    }
+
+    async updateElements(elements: (HTMLElement | JQuery)[], language?: string) {
+        await updateElementTree(elements, language || this.#locale)
     }
 }
 
-async function updateDomTree(htmlElement: HTMLElement | JQuery, locale: string) {
-    const selector = `[${AttributeTextKey}],[${AttributeTooltipKey}]`
-    const selectedElements = $(htmlElement).find(selector).addBack(selector).not(`[${AttributeActiveLocale}=${locale}]`)
-    if (selectedElements.length == 0)
-        return
+async function updateElementTree(roots: (HTMLElement | JQuery)[], locale: string) {
+    const includeElementsWith = `[${HtmlAttribute.TextId}],[${HtmlAttribute.TooltipId}]`
+    const ignoreElementsWith = `[${HtmlAttribute.ActiveLocale}=${locale}]`
 
-    const stringIds: string[] = []
-
-    for (const selectedElement of selectedElements) {
-        const textId = selectedElement.getAttribute(AttributeTextKey)
-        if (textId)
-            stringIds.push(textId)
-
-        const tooltipId = selectedElement.getAttribute(AttributeTooltipKey)
-        if (tooltipId)
-            stringIds.push(tooltipId)
-
-        selectedElement.setAttribute(AttributeActiveLocale, locale)
+    const elements: HTMLElement[] = []
+    for (const root of roots) {
+        const selectedElements = $(root).find(includeElementsWith).addBack(includeElementsWith).not(ignoreElementsWith)
+        elements.push(...selectedElements)
     }
 
-    if (stringIds.length == 0)
+    await updateElements(elements, locale)
+}
+
+async function updateElements(elements: HTMLElement[], locale: string) {
+    const ids = collectIds(elements)
+    await loadLocalizedText(elements, ids, locale)
+}
+
+function collectIds(elements: HTMLElement[]) {
+    const ids: string[] = []
+    for (const htmlElement of elements) {
+        const textId = htmlElement.getAttribute(HtmlAttribute.TextId)
+        if (textId !== null)
+            ids.push(textId)
+
+        const tooltipId = htmlElement.getAttribute(HtmlAttribute.TooltipId)
+        if (tooltipId !== null)
+            ids.push(tooltipId)
+    }
+    return ids
+}
+
+async function loadLocalizedText(elements: HTMLElement[], ids: string[], locale: string) {
+    if (ids.length === 0)
         return
 
-    const lookup = await GobchatAPI.getLocalizedStrings(locale, stringIds)
+    const lookup = await GobchatAPI.getLocalizedStrings(locale, ids)
+    for (const element of elements) {
+        element.setAttribute(HtmlAttribute.ActiveLocale, locale)
 
-    for (const selectedElement of selectedElements) {
-        const textId = selectedElement.getAttribute(AttributeTextKey)
+        const textId = element.getAttribute(HtmlAttribute.TextId)
         if (textId) {
             const text = lookup[textId]
-            selectedElement.innerHTML = text
+            element.innerHTML = text
         }
 
-        const tooltipId = selectedElement.getAttribute(AttributeTooltipKey)
+        const tooltipId = element.getAttribute(HtmlAttribute.TooltipId)
         if (tooltipId) {
             const text = lookup[tooltipId]
-            selectedElement.setAttribute("title", text)
+            element.setAttribute("title", text)
         }
     }
 }

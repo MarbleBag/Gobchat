@@ -138,7 +138,7 @@ var GobConfigHelper = (function (module, undefined) {
             options = $.extend(defOptions, options)
 
             if (options.disabled || options.configKey === undefined || options.configKey === null) {
-                $element.attr("disabled", true)
+                $element.prop("disabled", true)
                 return //done
             }
 

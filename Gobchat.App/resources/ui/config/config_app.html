@@ -1,16 +1,16 @@
-<button id="capp_copyprofile" class="gob-config-copypage-button"><i class="fas fa-clone"></i></button>
+<button id="cp-app_copyprofile" class="gob-config-copypage-button"><i class="fas fa-clone"></i></button>
 
-<div id="capp" class="gob-config-page">
+<div id="cp-app" class="gob-config-page">
     <!-- Language and theme -->
     <div class="gob-config-group">
         <div class="gob-config-group_item-2-small-columns">
-            <label class="gob-config-label" data-gob-locale-text="config.app.language" for="capp_language"></label>
-            <select class="gob-config-group_item_dropdown" id="capp_language" data-gob-configkey="behaviour.language">
+            <label class="gob-config-label" data-gob-locale-text="config.app.language" for="cp-app_language"></label>
+            <select class="gob-input-dropdown" id="cp-app_language" data-gob-configkey="behaviour.language">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
             <label class="gob-config-label" data-gob-locale-text="config.app.theme"></label>
-            <select class="gob-config-group_item_dropdown" id="capp_theme" data-gob-configkey="style.theme"></select>
+            <select class="gob-input-dropdown" id="cp-app_theme" data-gob-configkey="style.theme"></select>
         </div>
     </div>
 
@@ -18,64 +18,93 @@
     <div class="gob-config-group">
         <div class="gob-config-group_title" data-gob-locale-text="config.app.ckblabel"></div>
 
-        <!-- auto detect emote -->
-        <div class="gob-config-group_item">
-            <input class="gob-config-group_item_checkbox" type="checkbox" id="capp_autodetectemote"
-                   data-gob-configkey="behaviour.chat.autodetectEmoteInSay"
-                   data-gob-locale-title="config.app.ckb.emoteinsay.tooltip" />
-            <label class="gob-config-label" for="capp_autodetectemote" data-gob-locale-text="config.app.ckb.emoteinsay"
-                   data-gob-locale-title="config.app.ckb.emoteinsay.tooltip">
-            </label>
+        <!-- config font size -->
+        <div class="gob-config-group_item-2-small-columns">
+            <label class="gob-config-label"
+                   data-gob-locale-text="config.app.config.fontsize.label"
+                   data-gob-locale-tooltip="config.app.config.fontsize.label.tooltip"></label>
+            <!-- <input class="gob-input-number" type="number" min="8" hidden
+                id="cp-formatting_config_font-size"
+                data-gob-configkey="style.config.font-size"
+                data-gob-locale-tooltip="config.formatting.config.fontsize.label.tooltip" />-->
+            <select class="gob-input-dropdown"
+                    id="cp-app_config_font-size_selector"
+                    data-gob-configkey="style.config.font-size"
+                    data-gob-locale-tooltip="config.app.config.fontsize.label.tooltip">
+                <option value="1.1vw" data-gob-locale-text="config.app.config.fontsize.smaller"></option>
+                <option value="1.4vw" data-gob-locale-text="config.app.config.fontsize.normal"></option>
+                <option value="1.7vw" data-gob-locale-text="config.app.config.fontsize.larger"></option>
+                <!--<option value="12" data-gob-locale-text="config.formatting.fontsize.2k-small"></option>
+            <option value="16" data-gob-locale-text="config.formatting.fontsize.2k"></option>
+            <option value="20" data-gob-locale-text="config.formatting.fontsize.2k-large"></option>
+            <option value="24" data-gob-locale-text="config.formatting.fontsize.4k-small"></option>
+            <option value="32" data-gob-locale-text="config.formatting.fontsize.4k"></option>
+            <option value="40" data-gob-locale-text="config.formatting.fontsize.4k-large"></option>
+            <option value="48" data-gob-locale-text="config.formatting.fontsize.8k-small"></option>
+            <option value="64" data-gob-locale-text="config.formatting.fontsize.8k"></option>
+            <option value="80" data-gob-locale-text="config.formatting.fontsize.8k-large"></option>
+            <option value="" data-gob-locale-text="config.formatting.fontsize.custom"></option>-->
+            </select>
         </div>
 
-        <!-- allow user to mention itself -->
+        <!-- auto detect emote -->
         <div class="gob-config-group_item">
-            <input class="gob-config-group_item_checkbox" type="checkbox" id="capp_userMention"
-                   data-gob-configkey="behaviour.mentions.userCanTriggerMention"
-                   data-gob-locale-title="config.app.ckb.usermention.tooltip" />
-            <label class="gob-config-label" for="capp_userMention" data-gob-locale-text="config.app.ckb.usermention"
-                   data-gob-locale-title="config.app.ckb.usermention.tooltip">
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-app_autodetectemote"
+                   data-gob-configkey="behaviour.chat.autodetectEmoteInSay"
+                   data-gob-locale-tooltip="config.app.ckb.emoteinsay.tooltip" />
+            <label class="gob-config-label" for="cp-app_autodetectemote" data-gob-locale-text="config.app.ckb.emoteinsay"
+                   data-gob-locale-tooltip="config.app.ckb.emoteinsay.tooltip">
             </label>
         </div>
 
         <!-- hide on minimize -->
         <div class="gob-config-group_item">
-            <input type="checkbox" id="capp_hide" class="gob-config-group_item_checkbox"
-                   data-gob-configkey="behaviour.hideOnMinimize" data-gob-locale-title="config.app.ckb.autohide.tooltip" />
-            <label class="gob-config-label" for="capp_hide" data-gob-locale-text="config.app.ckb.autohide"
-                   data-gob-locale-title="config.app.ckb.autohide.tooltip">
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-app_hide" 
+                   data-gob-configkey="behaviour.hideOnMinimize"
+                   data-gob-locale-tooltip="config.app.ckb.autohide.tooltip" />
+            <label class="gob-config-label" for="cp-app_hide"
+                   data-gob-locale-text="config.app.ckb.autohide"
+                   data-gob-locale-tooltip="config.app.ckb.autohide.tooltip">
             </label>
         </div>
 
         <!-- check for updates on start -->
         <div class="gob-config-group_item">
-            <input type="checkbox" id="capp_checkupdates" class="gob-config-group_item_checkbox"
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-app_checkupdates" 
                    data-gob-configkey="behaviour.appUpdate.checkOnline"
-                   data-gob-locale-title="config.app.ckb.update.tooltip" />
-            <label class="gob-config-label" for="capp_checkupdates" data-gob-locale-text="config.app.ckb.update"
-                   data-gob-locale-title="config.app.ckb.update.tooltip">
+                   data-gob-locale-tooltip="config.app.ckb.update.tooltip" />
+            <label class="gob-config-label" for="cp-app_checkupdates"
+                   data-gob-locale-text="config.app.ckb.update"
+                   data-gob-locale-tooltip="config.app.ckb.update.tooltip">
             </label>
         </div>
 
         <div class="gob-config-sub-group">
-            <div class="gob-config-group_item" for="capp_checkupdates">
-                <input type="checkbox" id="capp_checkbetaupdates" class="gob-config-group_item_checkbox"
+            <div class="gob-config-group_item" data-enabled-by="cp-app_checkupdates">
+                <input class="gob-input-checkbox" type="checkbox"
+                       id="cp-app_checkbetaupdates" 
                        data-gob-configkey="behaviour.appUpdate.acceptBeta"
-                       data-gob-locale-title="config.app.ckb.betaupdate.tooltip" />
-                <label class="gob-config-label" for="capp_checkbetaupdates"
-                       data-gob-locale-title="config.app.ckb.betaupdate.tooltip"
+                       data-gob-locale-tooltip="config.app.ckb.betaupdate.tooltip" />
+                <label class="gob-config-label" for="cp-app_checkbetaupdates"
+                       data-gob-locale-tooltip="config.app.ckb.betaupdate.tooltip"
                        data-gob-locale-text="config.app.ckb.betaupdate">
                 </label>
             </div>
         </div>
 
-        <div class="gob-config-text  is-error" id="capp_characterlocations_feature"
+        <div class="gob-config-text  is-error" id="cp-app_characterlocations_feature"
              data-gob-locale-text="config.app.ckb.actor.label"></div>
         <div class="gob-config-group_item">
-            <input type="checkbox" id="capp_actor_updateActive" class="gob-config-group_item_checkbox"
-                   data-gob-configkey="behaviour.actor.active" data-gob-locale-title="config.app.ckb.actor.tooltip" />
-            <label class="gob-config-label" for="capp_actor_updateActive" data-gob-locale-text="config.app.ckb.actor"
-                   data-gob-locale-title="config.app.ckb.actor.tooltip">
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-app_actor_updateActive" 
+                   data-gob-configkey="behaviour.actor.active"
+                   data-gob-locale-tooltip="config.app.ckb.actor.tooltip" />
+            <label class="gob-config-label" for="cp-app_actor_updateActive"
+                   data-gob-locale-text="config.app.ckb.actor"
+                   data-gob-locale-tooltip="config.app.ckb.actor.tooltip">
             </label>
         </div>
     </div>
@@ -88,33 +117,36 @@
 
         <div class="gob-config-group_item-4-small-columns">
             <label class="gob-config-label" data-gob-locale-text="config.app.position.x"></label>
-            <input class="gob-config-group_item_numberbox" type="number" id="capp_frame_x"
+            <input class="gob-input-number" type="number" 
+                   id="cp-app_frame_x"
                    data-gob-configkey="behaviour.frame.chat.position.x" />
 
             <label class="gob-config-label" data-gob-locale-text="config.app.position.height"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="200" id="capp_frame_height"
+            <input class="gob-input-number" type="number" min="200" 
+                   id="cp-app_frame_height"
                    data-gob-configkey="behaviour.frame.chat.size.height" />
 
             <label class="gob-config-label" data-gob-locale-text="config.app.position.y"></label>
-            <input class="gob-config-group_item_numberbox" type="number" id="capp_frame_y"
+            <input class="gob-input-number" type="number" 
+                   id="cp-app_frame_y"
                    data-gob-configkey="behaviour.frame.chat.position.y" />
 
             <label class="gob-config-label" data-gob-locale-text="config.app.position.width"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="200" id="capp_frame_width"
+            <input class="gob-input-number" type="number" min="200" 
+                   id="cp-app_frame_width"
                    data-gob-configkey="behaviour.frame.chat.size.width" />
         </div>
 
         <div class="gob-config-group_item">
-            <label class="gob-config-label" data-gob-locale-text="config.app.chatbox.backgroundcolor"
-                   data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip">
+            <label class="gob-config-label" 
+                   data-gob-locale-text="config.app.chatbox.backgroundcolor"
+                   data-gob-locale-tooltip="config.app.chatbox.backgroundcolor.tooltip">
             </label>
-            <input id="capp_chatbox_backgroundcolor" type="text" data-gob-configkey="style.chatbox.background-color"
-                   data-gob-locale-title="config.app.chatbox.backgroundcolor.tooltip" />
-            <button id="capp_chatbox_backgroundcolor_reset" class="gob-config-icon-button gob-button-reset"
-                    data-gob-configkey="style.chatbox.background-color"
-                    data-gob-locale-title="config.main.button.reset.tooltip">
-                <i class='fas fa-undo-alt'></i>
-            </button>
+            <input class="" type="text" 
+                   id="cp-app_chat-history_backgroundcolor" 
+                   data-gob-configkey="style.chat-history.background-color"
+                   data-gob-locale-tooltip="config.app.chatbox.backgroundcolor.tooltip" />
+            <button id="cp-app_chat-history_backgroundcolor_reset"></button>
         </div>
     </div>
 
@@ -123,23 +155,29 @@
         <div class="gob-config-group_title" data-gob-locale-text="config.app.process.label"></div>
 
         <div class="gob-config-group_item">
-            <label class="gob-config-label" data-gob-locale-text="config.app.process.selector"
-                   data-gob-locale-title="config.app.process.selector.tooltip">
+            <label class="gob-config-label" 
+                   data-gob-locale-text="config.app.process.selector"
+                   data-gob-locale-tooltip="config.app.process.selector.tooltip">
             </label>
-            <button class="gob-config-icon-button" id="capp_process_selector_refresh"
-                    data-gob-locale-title="config.main.button.refresh.tooltip">
+            <button class="gob-config-icon-button" 
+                    id="cp-app_process_selector_refresh"
+                    data-gob-locale-tooltip="config.main.button.refresh.tooltip">
                 <i class="fas fa-sync-alt"></i>
             </button>
-            <select class="gob-config-group_item_dropdown" type="text" id="capp_process_selector"
-                    data-gob-locale-title="config.app.process.selector.tooltip">
+            <select class="gob-input-dropdown" type="text" 
+                    id="cp-app_process_selector"
+                    data-gob-locale-tooltip="config.app.process.selector.tooltip">
                 <option value="-1" data-gob-locale-text="config.app.process.selector.default"></option>
             </select>
-            <button class="gob-config-icon-button" id="capp_process_selector_link"
-                    data-gob-locale-title="config.app.process.link.tooltip">
+            <button class="gob-config-icon-button" 
+                    id="cp-app_process_selector_link"
+                    data-gob-locale-tooltip="config.app.process.link.tooltip">
                 <i class="fas fa-link"></i>
             </button>
-            <div id="capp_process_info" class="gob-config-label"
-                 data-gob-locale-text="config.app.process.info.initialize"></div>
+            <div class="gob-config-label"
+                 id="cp-app_process_info" 
+                 data-gob-locale-text="config.app.process.info.initialize">
+            </div>
         </div>
     </div>
 
@@ -147,28 +185,25 @@
     <div class="gob-config-group">
         <div class="gob-config-group_title" data-gob-locale-text="config.app.search.label"></div>
         <div class="gob-config-group_item-3-small-columns">
-            <div class="gob-config-label" data-gob-locale-text="config.app.search.results"
-                 data-gob-locale-title="config.app.search.results.tooltip">
+            <div class="gob-config-label"
+                 data-gob-locale-text="config.app.search.results"
+                 data-gob-locale-tooltip="config.app.search.results.tooltip">
             </div>
-            <input id="capp_search_marked" type="text" data-gob-configkey="style.chatsearch.marked.background-color"
-                   data-gob-locale-title="config.app.search.results.tooltip" />
-            <button id="capp_search_marked_reset" class="gob-config-icon-button gob-button-reset"
-                    data-gob-configkey="style.chatsearch.marked.background-color"
-                    data-gob-locale-title="config.main.button.reset.tooltip">
-                <i class='fas fa-undo-alt'></i>
-            </button>
+            <input class="" type="text" 
+                   id="cp-app_search_marked" 
+                   data-gob-configkey="style.chatsearch.marked.background-color"
+                   data-gob-locale-tooltip="config.app.search.results.tooltip" />
+            <button id="cp-app_search_marked_reset"></button>
 
-            <div class="gob-config-label" data-gob-locale-text="config.app.search.border"
-                 data-gob-locale-title="config.app.search.border.tooltip">
+            <div class="gob-config-label" 
+                 data-gob-locale-text="config.app.search.border"
+                 data-gob-locale-tooltip="config.app.search.border.tooltip">
             </div>
-            <input id="capp_search_selected" class="" type="text"
+            <input class="" type="text"
+                   id="cp-app_search_selected" 
                    data-gob-configkey="style.chatsearch.selected.border-color"
-                   data-gob-locale-title="config.app.search.border.tooltip" />
-            <button id="capp_search_selected_reset" class="gob-config-icon-button gob-button-reset"
-                    data-gob-configkey="style.chatsearch.selected.border-color"
-                    data-gob-locale-title="config.main.button.reset.tooltip">
-                <i class='fas fa-undo-alt'></i>
-            </button>
+                   data-gob-locale-tooltip="config.app.search.border.tooltip" />
+            <button id="cp-app_search_selected_reset"></button>
         </div>
     </div>
 
@@ -176,16 +211,14 @@
     <div class="gob-config-group">
         <div class="gob-config-group_title" data-gob-locale-text="config.app.hotkeys.label"></div>
         <div class="gob-config-group_item-3-small-columns">
-            <label class="gob-config-label" for="capp_hotkey_show" data-gob-locale-text="config.app.hotkeys.hideshow"
-                   data-gob-locale-title="config.app.hotkeys.hideshow.tooltip"></label>
-            <input class="gob-config-group_item_textbox" type="text" id="capp_hotkey_show"
+            <label class="gob-config-label" for="cp-app_hotkey_show" 
+                   data-gob-locale-text="config.app.hotkeys.hideshow"
+                   data-gob-locale-tooltip="config.app.hotkeys.hideshow.tooltip"></label>
+            <input class="gob-config-group_item_textbox" type="text"
+                   id="cp-app_hotkey_show"
                    data-gob-configkey="behaviour.hotkeys.showhide"
-                   data-gob-locale-title="config.app.hotkeys.hideshow.tooltip" />
-            <button class="tmpl-delete-entry gob-config-icon-button gob-button-delete" id="capp_hotkey_show_reset"
-                    data-gob-configkey="behaviour.hotkeys.showhide"
-                    data-gob-locale-title="config.main.button.delete.tooltip">
-                <i class="fa fa-trash"></i>
-            </button>
+                   data-gob-locale-tooltip="config.app.hotkeys.hideshow.tooltip" />
+            <button id="cp-app_hotkey_show_reset"></button>
         </div>
     </div>
 
@@ -195,29 +228,25 @@
         </div>
 
         <div class="gob-config-group_item-3-small-columns">
-            <div class="gob-config-label" data-gob-locale-text="config.app.intervals.chat"
-                 data-gob-locale-title="config.app.intervals.chat.tooltip">
+            <div class="gob-config-label" 
+                 data-gob-locale-text="config.app.intervals.chat"
+                 data-gob-locale-tooltip="config.app.intervals.chat.tooltip">
             </div>
-            <input class="gob-config-group_item_numberbox" type="number" min="50" max="5000"
-                   id="capp_chat_updateInterval" data-gob-configkey="behaviour.chat.updateInterval"
-                   data-gob-locale-title="config.app.intervals.chat.tooltip" />
-            <button class="gob-config-icon-button gob-button-reset" id="capp_chat_updateInterval_reset"
-                    data-gob-configkey="behaviour.chat.updateInterval"
-                    data-gob-locale-title="config.main.button.reset.tooltip">
-                <i class="fas fa-undo-alt"></i>
-            </button>
+            <input class="gob-input-number" type="number" min="50" max="5000"
+                   id="cp-app_chat_updateInterval" 
+                   data-gob-configkey="behaviour.chat.updateInterval"
+                   data-gob-locale-tooltip="config.app.intervals.chat.tooltip" />
+            <button id="cp-app_chat_updateInterval_reset"></button>
 
-            <div class="gob-config-label" data-gob-locale-text="config.app.intervals.actor"
-                 data-gob-locale-title="config.app.intervals.actor.tooltip">
+            <div class="gob-config-label" 
+                 data-gob-locale-text="config.app.intervals.actor"
+                 data-gob-locale-tooltip="config.app.intervals.actor.tooltip">
             </div>
-            <input class="gob-config-group_item_numberbox" type="number" min="200" max="20000"
-                   id="capp_actor_updateInterval" class="" data-gob-configkey="behaviour.actor.updateInterval"
-                   data-gob-locale-title="config.app.intervals.actor.tooltip" />
-            <button class="gob-config-icon-button gob-button-reset" id="capp_actor_updateInterval_reset"
-                    data-gob-configkey="behaviour.actor.updateInterval"
-                    data-gob-locale-title="config.main.button.reset.tooltip">
-                <i class="fas fa-undo-alt"></i>
-            </button>
+            <input class="gob-input-number" type="number" min="200" max="20000"
+                   id="cp-app_actor_updateInterval" 
+                   data-gob-configkey="behaviour.actor.updateInterval"
+                   data-gob-locale-tooltip="config.app.intervals.actor.tooltip" />
+            <button id="cp-app_actor_updateInterval_reset"></button>
         </div>
     </div>
 </div>

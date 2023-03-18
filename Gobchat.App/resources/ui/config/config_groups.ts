@@ -92,13 +92,13 @@ async function buildGroupTableEntry(groupId: string, groupIndex: number) {
 
     Databinding.bindElement(binding, txtTriggers, {
         configKey: `${configKey}.trigger`,
-        elementGetAccessor: (element) => {
+        elementToConfig: (element) => {
             let words = element.val().split(",")
             words = words.filter(w => w !== null && w !== undefined).map(w => w.toLowerCase().trim()).filter(w => w.length > 0)
             element.val(words.join(", "))
             return words
         },
-        elementSetAccessor: (element, storedValue) => {
+        configToElement: (element, storedValue) => {
             element.val((storedValue || []).join(", "))
         }
     })
@@ -122,7 +122,7 @@ async function buildGroupTableEntry(groupId: string, groupIndex: number) {
     makeColorSelector("js-msg-bgcolor", `${configKey}.style.body.background-color`)
 
     if (isNonCustomGroup) {
-        btnDeleteEntry.attr("disabled", true).hide() // default groups are non deletable
+        btnDeleteEntry.prop("disabled", true).hide() // default groups are non deletable
 
         Databinding.bindListener(binding, "behaviour.language", async (value) => {
             const label = entry.find(".js-ffgroup-icon")
@@ -136,7 +136,7 @@ async function buildGroupTableEntry(groupId: string, groupIndex: number) {
 
         entry.find(".js-mode-custom").hide()
     } else {
-        btnGroupNameReset.attr("disabled", true).hide()
+        btnGroupNameReset.prop("disabled", true).hide()
 
         entry.find(".js-color-selections").addClass("gob-config-group_item-2-small-columns")
 

@@ -1,0 +1,118 @@
+@use "config-button";
+
+// accordion
+.ui-accordion {
+    .ui-accordion-content {
+        background: #00000030;
+        border: unset;
+    }
+
+    .ui-accordion-header {
+        background: var(--primary-button-background);
+        border: var(--primary-button-border);
+        border-radius: 0.5rem;
+        color: var(--primary-button-color);
+        text-shadow: var(--primary-button-shadow-color);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        &:before {
+            content: "+";
+            font-weight: 500;
+        }
+
+        &.ui-state-active {
+            border-color: var(--primary-button-active-border-color);
+
+            &:before {
+                content: "-";
+                font-weight: 500;
+            }
+        }
+
+        > .gob-config-icon-button {
+            margin-left: auto;
+        }
+    }
+}
+
+// ui dialog
+.ui-widget-overlay {
+    background: #1a1a1a;
+    opacity: 0.5;
+}
+
+.ui-dialog {
+    width: 38rem;
+    background: var(--dialog-background);
+    color: var(--text-1-color);
+    text-shadow: var(--text-1-shadow);
+    box-shadow: inset 0.05rem 0.05rem 0 var(--symbol-button-shadow-color), inset -0.05rem -0.05rem 0 var(--symbol-button-shadow-color);
+
+    &.ui-widget.ui-widget-content {
+        border: 0.06rem solid var(--symbol-button-color);
+    }
+
+    &.ui-corner-all {
+        border-radius: 0.75rem;
+    }
+
+    .ui-widget-header {
+        border: unset;
+        background: unset;
+        color: inherit;
+    }
+
+    .ui-widget-content {
+        border: unset;
+        background: unset;
+        color: inherit;
+    }
+
+    .ui-dialog-titlebar {
+        display: flex;
+        flex-direction: row;
+        padding: 0rem 1rem 0.2rem;
+        align-items: center;
+
+        .ui-dialog-title {
+            color: var(--text-2-color);
+            text-shadow: var(--text-2-shadow);
+            float: unset;
+            width: unset;
+        }
+
+        .ui-button.ui-dialog-titlebar-close {
+            @extend .gob-config-icon-button;
+            position: relative;
+            right: unset;
+            top: unset;
+            margin: 0 -0.5rem 0 auto;
+            text-indent: 0px;
+            white-space: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .ui-dialog-titlebar-close.ui-dialog-titlebar-close--hide {
+            display: none;
+        }
+    }
+
+    .ui-dialog-content {
+    }
+
+    .ui-dialog-buttonpane {
+        padding: unset;
+        margin: unset;
+
+        .ui-dialog-buttonset {
+            .ui-button {
+                @extend .gob-config-primary-button;
+            }
+        }
+    }
+}

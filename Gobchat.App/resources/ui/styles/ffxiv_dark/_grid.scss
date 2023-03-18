@@ -6,7 +6,6 @@
 }
 
 .gob-grid_item {
-    padding: 0 0.5rem;
 }
 
 @mixin gob-grid($columns) {
@@ -32,6 +31,10 @@
 
         .gob-grid-small-#{$i} {
             @include gob-grid-small($i);
+        }
+
+        .gob-grid_item--span-#{$i} {
+            grid-column: span #{$i};
         }
     }
 }

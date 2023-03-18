@@ -15,66 +15,72 @@
 
 import * as Databinding from "/module/Databinding"
 import * as Components from "/module/Components"
+import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-Databinding.bindCheckbox(binding, $("#cp-chatlog_active"))
+const chkEnableChahlog = $("#cp-chatlog_active")
+const txtChatlogPath = $("#cp-chatlog_path")
+const btnChatlogPathReset = $("#cp-chatlog_path_reset")
+const btnChatlogPathSelect = $("#cp-chatlog_path_select")
+const txtChatlogFormat = $("#cp-chatlog_format")
+const selChatlogFormat = $("#cp-chatlog_format_selector")
 
-const $txtChatlogPath = $("#cp-chatlog_path")
-Components.makeResetButton($("#cp-chatlog_path_reset"), $txtChatlogPath)
+const chatlogTable = $("#cp-chatlog_table > tbody")
+const templateChatlogTableEntry = $('#cp-chatlog_template_table_entry')
 
-$txtChatlogPath.on("change", async function () {
+Databinding.bindCheckbox(binding, chkEnableChahlog)
+Components.makeResetButton(btnChatlogPathReset, txtChatlogPath)
+
+txtChatlogPath.on("change", async function () {
     try { // show absolute path to user, but if possible, only store a relative path and/or symbolic link
-        const currentPath = $txtChatlogPath.val()
+        const currentPath = txtChatlogPath.val()
         const relCurrentPath = await GobchatAPI.getRelativeChatLogPath(currentPath)
-        gobConfig.set(Databinding.getConfigKey($txtChatlogPath), relCurrentPath)
+        gobConfig.set(Databinding.getConfigKey(txtChatlogPath), relCurrentPath)
         const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(relCurrentPath)
-        $txtChatlogPath.val(absCurrentPath)
+        txtChatlogPath.val(absCurrentPath)
     } catch (e) {
         console.error(e)
     }
 })
 
-binding.bindConfigListener(Databinding.getConfigKey($txtChatlogPath), async function (path) {
+binding.bindCallback(Databinding.getConfigKey(txtChatlogPath), async function (path) {
     try { // show absolute path to user
         const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(path)
-        $txtChatlogPath.val(absCurrentPath)
+        txtChatlogPath.val(absCurrentPath)
     } catch (e) {
         console.error(e)
     }
 })
 
-$("#cp-chatlog_path_select").on("click", async function () {
+btnChatlogPathSelect.on("click", async function () {
     try { // open directory selector in previously selected directory
-        const relCurrentPath = gobConfig.get(Databinding.getConfigKey($txtChatlogPath))
+        const relCurrentPath = gobConfig.get(Databinding.getConfigKey(txtChatlogPath))
         const absCurrentPath = await GobchatAPI.getAbsoluteChatLogPath(relCurrentPath)
 
         const absNewPath = await GobchatAPI.openDirectoryDialog(absCurrentPath)
         const relNewPath = await GobchatAPI.getRelativeChatLogPath(absNewPath) // only store a relative path and/or symbolic link
-        gobConfig.set(Databinding.getConfigKey($txtChatlogPath), relNewPath)
+        gobConfig.set(Databinding.getConfigKey(txtChatlogPath), relNewPath)
     } catch (e) {
         console.error(e)
     }
 })
 
-Databinding.bindElement(binding, $("#cp-chatlog_format"))
+Databinding.bindElement(binding, txtChatlogFormat)
 
-binding.bindConfigListener($("#cp-chatlog_format"), value => {
-    $("#cp-chatlog_format_selector").val(value)
-    const selectedFormat = $("#cp-chatlog_format_selector").val()
+binding.bindCallback(txtChatlogFormat, value => {
+    selChatlogFormat.val(value)
+    const selectedFormat = selChatlogFormat.val()
     if (selectedFormat === null)
-        $("#cp-chatlog_format_selector").val("")
+        selChatlogFormat.val("")
 })
 
-$("#cp-chatlog_format_selector").on("change", function () {
+selChatlogFormat.on("change", function () {
     const selectedFormat = $(this).val()
     if (selectedFormat.length > 0)
-        $("#cp-chatlog_format").val(selectedFormat).change()
+        txtChatlogFormat.val(selectedFormat).change()
 })
 
-
-const $table = $("#cp-chatlog_table > tbody")
-const $tableEntryTemplate = $('#cp-chatlog_template_table_entry')
 
 Object.entries(Gobchat.Channels).forEach((entry) => {
     const channelData = entry[1]
@@ -88,29 +94,27 @@ function addEntryToTable(channelData) {
     if (channelEnums.length === 0)
         return // channel is not associated with any ingame channel
 
-    const id = `cp-chatlog_table_entry-${$table.children().length}`
+    const id = `cp-chatlog_table_entry-${chatlogTable.children().length}`
 
-    const $entry = $($tableEntryTemplate.html())
-    $entry.appendTo($table)
+    const entry = $(templateChatlogTableEntry.html())
+    entry.appendTo(chatlogTable)
 
-    $entry.find(".js-label")
-        .attr("data-gob-locale-text", `${channelData.translationId}`)
-        .attr("data-gob-locale-title", `${channelData.tooltipId}`)
+    entry.find(".js-label")
+        .attr(Locale.HtmlAttribute.TextId, `${channelData.translationId}`)
+        .attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
         .attr("for", id)
 
-    const $chkLog = $entry.find(".js-checkbox")
+    const chkLog = entry.find(".js-checkbox")
         .attr("id", id)
 
-    Databinding.setConfigKey($chkLog, "behaviour.channel.log")
-
-    Databinding.bindCheckboxArrayInverse(binding, $chkLog, channelEnums)
+    Databinding.bindCheckboxArrayInverse(binding, chkLog, channelEnums, { configKey: "behaviour.channel.log" })
 }
 
-binding.initialize()
+binding.loadBindings()
 
 {
-    const configKeys = new Set<string>()
-    $(`#cp-chatlog [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
+    const configKeys = new Set<string>(["behaviour.channel.log"])
+    $(`#cp-chatlog [${Databinding.HtmlAttribute.ConfigKey}]:not(.button)`).each(function () {
         const key = Databinding.getConfigKey(this)
         if (key !== null && key !== undefined && key.length > 0)
             configKeys.add(key)

@@ -1,25 +1,25 @@
-﻿<button class="gob-config-icon-button gob-button-copypage" id="ctabs_copyprofile"><i class="fas fa-clone"></i></button>
+<button class="gob-config-icon-button gob-button-copypage" id="cp-tabs_copyprofile"><i class="fas fa-clone"></i></button>
 <div id="cp-tabs">
     <div class="gob-config-group">
         <div class="gob-config-group_item-2-small-columns">
             <label class="gob-config-label" for="cp-tabs_effects_message"
-                data-gob-locale-text="config.tabs.effect.message"
-                data-gob-locale-title="config.tabs.effect.message.tooltip"></label>
+                   data-gob-locale-text="config.tabs.effect.message"
+                   data-gob-locale-tooltip="config.tabs.effect.message.tooltip"></label>
             <select id="cp-tabs_effects_message" class="gob-input-dropdown"
-                data-gob-configkey="behaviour.chattabs.effect.message"
-                data-gob-locale-title="config.tabs.effect.message.tooltip">
+                    data-gob-configkey="behaviour.chattabs.effect.message"
+                    data-gob-locale-tooltip="config.tabs.effect.message.tooltip">
                 <option value="0" data-gob-locale-text="config.tabs.effect.0"></option>
                 <option value="1" data-gob-locale-text="config.tabs.effect.1"></option>
                 <option value="2" data-gob-locale-text="config.tabs.effect.2"></option>
                 <option value="3" data-gob-locale-text="config.tabs.effect.3"></option>
             </select>
 
-            <label class="gob-config-label" id="cp-tabs_effects_mention"
-                data-gob-locale-text="config.tabs.effect.mention"
-                data-gob-locale-title="config.tabs.effect.mention.tooltip"></label>
+            <label class="gob-config-label" for="cp-tabs_effects_mention"
+                   data-gob-locale-text="config.tabs.effect.mention"
+                   data-gob-locale-tooltip="config.tabs.effect.mention.tooltip"></label>
             <select id="cp-tabs_effects_mention" class="gob-input-dropdown"
-                data-gob-configkey="behaviour.chattabs.effect.mention"
-                data-gob-locale-title="config.tabs.effect.mention.tooltip">
+                    data-gob-configkey="behaviour.chattabs.effect.mention"
+                    data-gob-locale-tooltip="config.tabs.effect.mention.tooltip">
                 <option value="0" data-gob-locale-text="config.tabs.effect.0"></option>
                 <option value="1" data-gob-locale-text="config.tabs.effect.1"></option>
                 <option value="2" data-gob-locale-text="config.tabs.effect.2"></option>
@@ -29,107 +29,115 @@
     </div>
 
     <div class="gob-config-group">
-        <button id="cp-tabs_add-new-tab" class="gob-config-secondary-button">
-            <i class="fas fa-plus"></i>
-            <span data-gob-locale-text="config.tabs.btn.newtab"></span>
-        </button>
-        <table id="cp-tabs_overview-table" class="gob-table gob-table--hoverable">
-            <thead>
-                <tr>
-                    <th data-gob-locale-text="config.tabs.tabtable.name"></th>
-                    <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
-                    <th data-gob-locale-text="config.tabs.tabtable.actions"></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="gob-config-divider--horizontal"></div>
-
-    <div id="cp-tabs_tab_config">
-        <div class="gob-config-group">
-            <div class="gob-config-text">
-                <span data-gob-locale-text="config.tabs.tab.label"></span>
-                <span>: </span>
-                <span id="cp_tabs_config_tabname"></span>
-            </div>
-
-            <div class="gob-config-group_item">
-                <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_formatting_mention" data-gob-configkey
-                    data-gob-locale-title="config.tabs.tab.mention.tooltip" />
-                <label for="cp-tabs_formatting_mention" data-gob-locale-text="config.tabs.tab.mention"
-                    data-gob-locale-title="config.tabs.tab.mention.tooltip">
-                </label>
-            </div>
-
-            <div class="gob-config-group_item">
-                <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_formatting_roleplay" data-gob-configkey
-                    data-gob-locale-title="config.tabs.tab.roleplay.tooltip" />
-                <label for="cp-tabs_formatting_roleplay" data-gob-locale-text="config.tabs.tab.roleplay"
-                    data-gob-locale-title="config.tabs.tab.roleplay.tooltip">
-                </label>
-            </div>
-
-            <div class="gob-config-group_item">
-                <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_formatting_timestamp" data-gob-configkey
-                    data-gob-locale-title="config.tabs.tab.timestamp.tooltip" />
-                <label for="cp-tabs_formatting_timestamp" data-gob-locale-text="config.tabs.tab.timestamp"
-                    data-gob-locale-title="config.tabs.tab.timestamp.tooltip">
-                </label>
-            </div>
-
-            <div class="gob-config-group_item">
-                <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_formatting_rangefilter" data-gob-configkey
-                    data-gob-locale-title="config.tabs.tab.rangefilter.tooltip" />
-                <label for="cp-tabs_formatting_rangefilter" data-gob-locale-text="config.tabs.tab.rangefilter"
-                    data-gob-locale-title="config.tabs.tab.rangefilter.tooltip">
-                </label>
-            </div>
+        <div class="gob-config-group_item">
+            <button id="cp-tabs_tabs-table_add" class="gob-config-secondary-button">
+                <i class="fas fa-plus"></i>
+                <span data-gob-locale-text="config.tabs.btn.newtab"></span>
+            </button>
         </div>
-
-        <div class="gob-config-divider--horizontal"></div>
-
-        <div class="gob-config-group">
-            <div class="gob-config_cp-tabs_channel-table-wrapper">
-                <table id="cp_tabs_channel-table" class="gob-config_cp-tabs_channel-table-wrapper_table">
-                    <thead>
-                        <tr>
-                            <th data-gob-locale-text="config.tabs.tabtable.name"></th>
-                            <th data-gob-locale-text="config.tabs.tabtable.visible"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+        <div class="gob-config_cp-tabs_tabs-table-wrapper">
+            <table class="gob-config_cp-tabs_tabs-table" 
+                   id="cp-tabs_tabs-table" >
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.tabs.tbl.tabs.name"></th>
+                        <th data-gob-locale-text="config.tabs.tbl.tabs.visible"></th>
+                        <th data-gob-locale-text="config.tabs.tbl.tabs.actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <div class="gob-config-divider gob-config-divider--horizontal"></div>
+
+    <div class="gob-config-group">
+        <div class="gob-config-text">
+            <span data-gob-locale-text="config.tabs.tabconfig.label"></span>
+            <span>:&nbsp;</span>
+            <span id="cp-tabs_tab-config_name"></span>
+        </div>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-tabs-tab-config_mention"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip" />
+            <label for="cp-tabs-tab-config_mention" 
+                   data-gob-locale-text="config.tabs.tabconfig.mention"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip">
+            </label>
+        </div>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_tab-config_roleplay"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.roleplay.tooltip" />
+            <label for="cp-tabs_tab-config_roleplay" 
+                   data-gob-locale-text="config.tabs.tabconfig.roleplay"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.roleplay.tooltip">
+            </label>
+        </div>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_tab-config_timestamp"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.timestamp.tooltip" />
+            <label for="cp-tabs_tab-config_timestamp" 
+                   data-gob-locale-text="config.tabs.tabconfig.timestamp"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.timestamp.tooltip">
+            </label>
+        </div>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_tab-config_rangefilter"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.rangefilter.tooltip" />
+            <label for="cp-tabs_tab-config_rangefilter"
+                   data-gob-locale-text="config.tabs.tabconfig.rangefilter"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.rangefilter.tooltip">
+            </label>
+        </div>
+    </div>
+
+    <div class="gob-config-divider gob-config-divider--horizontal"></div>
+
+    <div class="gob-config-group">
+        <div class="gob-config_cp-tabs_channel-table-wrapper">
+            <table id="cp-tabs_channel-table" class="gob-config_cp-tabs_channel-table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.tabs.tbl.channel.name"></th>
+                        <th data-gob-locale-text="config.tabs.tbl.channel.visible"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
-<template id="cp-tabs_template_overview-table_entry">
+<template id="cp-tabs_template_tabs-table_entry">
     <tr data-gob-entryid>
         <td>
-            <input class="gob-input-textbox" type="text" class="js-name" />
+            <input class="gob-input-textbox js-name" type="text" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.name.tooltip" />
         </td>
         <td>
-            <input class="gob-input-checkbox" type="checkbox" class="js-visible" />
+            <input class="gob-input-checkbox js-visible" type="checkbox" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.visible.tooltip" />
         </td>
         <td>
             <button class="gob-config-icon-button js-action-config"
-                data-gob-locale-title="config.tabs.tabtable.action.config">
+                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.config.tooltip">
                 <i class="fas fa-cog"></i>
             </button>
-            <button class="gob-config-icon-button js-action-mup" data-gob-locale-title="config.tabs.tabtable.action.up">
+            <button class="gob-config-icon-button js-action-moveup" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.up.tooltip">
                 <i class="fas fa-arrow-up"></i>
             </button>
-            <button class="gob-config-icon-button js-action-mdown"
-                data-gob-locale-title="config.tabs.tabtable.action.down">
+            <button class="gob-config-icon-button js-action-movedown"
+                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.down.tooltip">
                 <i class="fas fa-arrow-down"></i>
             </button>
             <button class="gob-config-icon-button js-action-delete"
-                data-gob-locale-title="config.tabs.tabtable.action.delete">
+                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.delete.tooltip">
                 <i class="fa fa-trash"></i>
             </button>
         </td>

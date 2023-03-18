@@ -13,15 +13,14 @@
 
 import * as Utility from "./CommonUtility.js"
 
-const templateDialog =
-    `<div class="gob-config">
-    <div class="gob-config-group">
-        <span style="float:left; margin:24px 24px 20px 0;">
-            <span id="icon_warning" hidden>
-                <i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i>
-            </span>
+const dialogTemplate =
+`<div class="gob-popup-dialog">
+    <div class="gob-popup-dialog_icon">
+        <span id="icon_warning" hidden>
+            <i class="fas fa-exclamation-triangle fa-3x gob-icon-warning"></i>
         </span>
-        <span id="dialog_content"></span>
+    </div>
+    <div class="gob-popup-dialog_content">
     </div>
 </div>`
 
@@ -104,7 +103,7 @@ export async function showProfileIdSelectionDialog(callback: (selection: string)
 
 const DefaultDialogOptions: DialogOptionTypes = {
     resizable: false,
-    width: 600,
+    width: "Auto",
     modal: true,
     autoOpen: false,
     buttons: {},
@@ -114,7 +113,7 @@ const DefaultDialogOptions: DialogOptionTypes = {
     dialogContent: null,
     localized: true,
     title: "",
-    height: 0
+    height: "Auto"
 }
 
 interface JQueryDialogOptionTypes {
@@ -148,13 +147,17 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
                 }
             })
 
-            const dialog = $(templateDialog)
+            const dialog = $(dialogTemplate)
 
-            if (mergedOptions.dialogText === "string" && mergedOptions.dialogText.length > 0)
-                dialog.find("#dialog_content").append($("<span/>").html(mergedOptions.dialogText))
+            if (mergedOptions.dialogText !== null && mergedOptions.dialogText.length > 0)
+                dialog.find(".gob-popup-dialog_content").append(
+                    $("<span></span>").html(mergedOptions.dialogText).addClass("gob-config-text")
+                )
 
             if (mergedOptions.dialogContent)
-                dialog.find("#dialog_content").append($(mergedOptions.dialogContent))
+                dialog.find(".gob-popup-dialog_content").append(
+                    $(mergedOptions.dialogContent)
+                )
 
             const jqueryDialogOptions: JQueryDialogOptionTypes = {
                 title: mergedOptions.title,
@@ -162,7 +165,9 @@ function _showMessageDialog(userOptions: DialogOptions, enforcedOptions: DialogO
                 resizable: mergedOptions.resizable,
                 height: mergedOptions.height === "Auto" ? "auto" : mergedOptions.height,
                 width: mergedOptions.width === "Auto" ? "auto" : mergedOptions.width,
-                classes: { "ui-dialog-titlebar-close": "ui-dialog-titlebar-close--hide" },
+                classes: {
+                    "ui-dialog-titlebar-close": "ui-dialog-titlebar-close--hide"
+                },
                 closeOnEscape: false,
                 buttons: buttons,
                 create: function (event) {

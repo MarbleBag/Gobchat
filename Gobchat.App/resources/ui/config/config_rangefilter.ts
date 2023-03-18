@@ -17,6 +17,7 @@ import * as Databinding from "/module/Databinding"
 import * as Utility from "/module/CommonUtility"
 import * as Components from "/module/Components"
 import * as Chat from "/module/Chat"
+import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
@@ -27,23 +28,27 @@ const parseNonNegativeNumber = (element: JQuery) => {
     return Utility.isNumber(value) && value >= 0 ? value : undefined
 }
 
-Databinding.bindElement(binding, $("#cp-rangefilter_cutoff"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#cp-rangefilter_cutoff_reset"))
+const txtCutOff = $("#cp-rangefilter_cutoff")
+const txtFadeOut = $("#cp-rangefilter_fadeout")
+const txtStartOpacity = $("#cp-rangefilter_startopacity")
+const txtEndOpacity = $("#cp-rangefilter_endopacity")
 
-Databinding.bindElement(binding, $("#cp-rangefilter_fadeout"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#cp-rangefilter_fadeout_reset"))
+const channelTable = $("#cp-rangefilter_channel-table > tbody")
+const channelTableEntryTemplate = $("#cp-rangefilter_template_channel-table_entry")
 
-Databinding.bindElement(binding, $("#cp-rangefilter_startopacity"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#cp-rangefilter_startopacity_reset"))
+Databinding.bindElement(binding, txtCutOff, { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_cutoff_reset"), txtCutOff)
 
-Databinding.bindElement(binding, $("#cp-rangefilter_endopacity"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#cp-rangefilter_endopacity_reset"))
+Databinding.bindElement(binding, txtFadeOut, { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_fadeout_reset"), txtFadeOut)
 
-const $table = $("#cp-rangefilter_table > tbody")
-const $tableEntryTemplate = $('#cp-rangefilter_template_table_entry')
+Databinding.bindElement(binding, txtStartOpacity, { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_startopacity_reset"), txtStartOpacity)
 
-Object.entries(Gobchat.Channels).forEach((entry) => {
-    const channelData = entry[1]
+Databinding.bindElement(binding, txtEndOpacity, { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-rangefilter_endopacity_reset"), txtEndOpacity)
+
+Object.values(Gobchat.Channels).forEach(channelData => {
     if (!channelData.relevant)
         return
     addEntryToTable(channelData)
@@ -54,29 +59,25 @@ function addEntryToTable(channelData: Chat.Channel) {
     if (channelEnums.length === 0)
         return // channel is not associated with any ingame channel
 
-    const $entry = $($tableEntryTemplate.html())
-        .appendTo($table)
+    const id = `cp-rangefilter_channel-table_entry-${channelTable.children().length}`
 
-    $entry.find(".js-label")
-        .attr("data-gob-locale-text", `${channelData.translationId}`)
-        .attr("data-gob-locale-title", `${channelData.tooltipId}`)
+    const entry = $(channelTableEntryTemplate.html())
+        .appendTo(channelTable)
 
-    const $ckbApplyFilter = $entry.find(".js-filter")
-    Databinding.setConfigKey($ckbApplyFilter, "behaviour.channel.rangefilter")
-    Databinding.bindCheckboxArray(binding, $ckbApplyFilter, channelEnums)
+    entry.find(".js-label")
+        .attr(Locale.HtmlAttribute.TextId, `${channelData.translationId}`)
+        .attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
+        .prop("for", id)
+
+    const ckbApplyFilter = entry.find(".js-checkbox")
+        .prop("id", id)
+
+    Databinding.bindCheckboxArray(binding, ckbApplyFilter, channelEnums, { configKey: "behaviour.channel.rangefilter" })
 }
 
-binding.initialize()
+binding.loadBindings()
 
-{
-    const configKeys = new Set<string>()
-    $(`#cp-rangefilter [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
-        const key = Databinding.getConfigKey(this)
-        if (key && key.length > 0)
-            configKeys.add(key)
-    })
+const configKeys = new Set<string>(["behaviour.channel.rangefilter", "behaviour.rangefilter"])
+Components.makeCopyProfileButton($("#cp-rangefilter_copyprofile"), { configKeys: Array.from(configKeys) })
 
-    const btnCopyProfile = $("#cp-rangefilter_copyprofile")
-    Components.makeCopyProfileButton(btnCopyProfile, { configKeys: Array.from(configKeys) })
-}
 

@@ -33,7 +33,7 @@ export class StyleLoader {
         const json = await GobchatAPI.readTextFromFile("ui/styles/styles.json")
         const styles = JSON.parse(json);
 
-        for (let style of styles) {
+        for (const style of styles) {
             const styleKey = style.label.toLowerCase().trim()
             if (styleKey.length == 0)
                 continue
@@ -61,21 +61,24 @@ export class StyleLoader {
         return ([] as string[]).concat(this.#activeStyles || [])
     }
 
+    async activateStyles(): Promise<void>
+    async activateStyles(styleIds: string | string[], target: HTMLElement | JQuery): Promise<void>
+    async activateStyles(styleIds: string | string[], target: HTMLElement | JQuery, insertMod: "in" | "after" | "before"): Promise<void>
     async activateStyles(styleIds?: string | string[], target?: HTMLElement | JQuery, insertMod: "in"|"after"|"before" = "in"): Promise<void> {
         styleIds = ([] as string[]).concat(styleIds || []).filter(e => Utility.isString(e)).map(e => e.toLowerCase())
 
-        for (let styleId of styleIds)
+        for (const styleId of styleIds)
             if (!this.#styles[styleId])
                 throw new Error(`Style with id '${styleId}' not available`)
 
-        const $target = !target || $(target).length === 0 ? $("head") : $(target).first()
-        const $body = $("body")
+        const _target = !target || $(target).length === 0 ? $("head") : $(target).first()
+        const body = $("body")
 
         // use hide / show to trigger a reflow, so the new loaded style gets applied everywhere.
         // Sometimes, without this, styles aren't applied to scrollbars. Still no idea why.
-        $body.hide()
+        body.hide()
 
-        for (let id of this.#activeStyleSheetIds)
+        for (const id of this.#activeStyleSheetIds)
             $(`#${id}`).remove()
 
         this.#activeStyleSheetIds = []
@@ -83,13 +86,13 @@ export class StyleLoader {
 
         const awaitPromises: Promise<void>[] = []
 
-        for (let styleId of styleIds) {
+        for (const styleId of styleIds) {
             this.#activeStyles.push(styleId)
 
             const style = this.#styles[styleId]
             const randomIdPrefix = Utility.generateId(8)
 
-            for (let file of style.files) {
+            for (const file of style.files) {
                 const id = `gobstyle-${randomIdPrefix}-${file.replace(/[\s\\/]+/g, '_').replace(/[^-\.\w]+/g, '')}`
 
                 const $link = $(`<link rel="stylesheet" href="">`).attr('id', id)
@@ -105,13 +108,13 @@ export class StyleLoader {
 
                 switch(insertMod){
                     case 'in':
-                        $link.appendTo($target)
+                        $link.appendTo(_target)
                         break
                     case 'after':
-                        $link.insertAfter($target)
+                        $link.insertAfter(_target)
                         break
                     case 'before':
-                        $link.insertBefore($target)
+                        $link.insertBefore(_target)
                 }                
             }
         }
@@ -122,7 +125,7 @@ export class StyleLoader {
 
         const results = await Promise.allSettled(awaitPromises)
 
-        $body.show()
+        body.show()
 
         let errorMsg = ""
         for (const result of results) {
@@ -166,7 +169,7 @@ export class StyleBuilder {
             //const baseFontSize = gobConfig.get("style.base-font-size")
 
             const configFontSize = gobConfig.get("style.config.font-size") as string
-            const uiFontSize = gobConfig.get("style.chat.font-size") as string
+            const uiFontSize = gobConfig.get("style.chatui.font-size") as string
 
             //configFontSize = addUnitToValueIfMissing(configFontSize, "px")
             //uiFontSize = addUnitToValueIfMissing(uiFontSize, "px")
@@ -184,11 +187,11 @@ export class StyleBuilder {
 
             const results: string[] = []
 
-            results.push(StyleBuilder.toCss(`.${Chat.CssClass.Chat_History}`, configStyle.chatbox))
+            results.push(StyleBuilder.toCss(`.${Chat.CssClass.Chat_History}`, configStyle["chat-history"]))
 
             results.push(StyleBuilder.toCss(`.${Chat.CssClass.ChatEntry}`, configStyle.channel.base))
 
-            for (let channel of Object.values(Gobchat.Channels)) {
+            for (const channel of Object.values(Gobchat.Channels)) {
                 if (channel.internalName in configStyle.channel) {
                     const channelClass = Utility.formatString(Chat.CssClass.ChatEntry_Channel_Partial, channel.internalName)
                     const selector = `.${channelClass} .${Chat.CssClass.ChatEntry_Text}`
@@ -280,7 +283,7 @@ export class StyleBuilder {
 
             const results: string[] = []
 
-            for (let tab of tabs) {
+            for (const tab of tabs) {
                 const tabClass = Utility.formatString(Chat.CssClass.Chat_History_Tab_Partial, tab.id)
                 const invisibleChannels = _.difference(Constants.ChannelEnumValues, tab.channel.visible as number[])
                     .map(id => Constants.ChannelEnumToKey[id])
@@ -300,7 +303,7 @@ export class StyleBuilder {
             const configTriggerGroups = gobConfig.get("behaviour.groups.data")
             const results: string[] = []
 
-            for (let key of Object.keys(configTriggerGroups)) {
+            for (const key of Object.keys(configTriggerGroups)) {
                 const triggerGroup = configTriggerGroups[key]
                 const cssClass = Utility.formatString(Chat.CssClass.ChatEntry_TriggerGroup_Partial, triggerGroup.id)
                 results.push(StyleBuilder.toCss(`.${cssClass}`, triggerGroup.style.body))
@@ -369,7 +372,7 @@ export class StyleBuilder {
 
     private static generateCssRules(): string {
         const results: string[] = []
-        for (let ruleGenerator of StyleBuilder.RuleGenerators)
+        for (const ruleGenerator of StyleBuilder.RuleGenerators)
             results.push(ruleGenerator())
         return results.join("")
     }

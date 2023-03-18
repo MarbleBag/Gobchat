@@ -15,46 +15,25 @@
 
 import * as Databinding from "/module/Databinding"
 import * as Components from "/module/Components"
+import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-const table = $("#c_channel_table > tbody")
-const rowTemplate = $('#c_channel_template_table_entry')
+const table = $("#cp-channel_channel-table > tbody")
+const rowTemplate = $('#cp-channel_template_channel-table_entry')
 
 function buildChannelEntry(channelData) {
     const rowEntry = $(rowTemplate.html())
     rowEntry.appendTo(table)
 
     const lblName = rowEntry.find(".js-name")
-    const chkMention = rowEntry.find(".js-mention")
-    const chkRoleplay = rowEntry.find(".js-roleplay")
-    //const chkRangefilter = rowEntry.find(".js-rangefilter")
-    //const chkLog = rowEntry.find(".js-log")
     const clrSelectorFG = rowEntry.find(".js-color-forground")
     const btnResetFG = rowEntry.find(".js-color-forground-reset")
     const clrSelectorBG = rowEntry.find(".js-color-background")
     const btnResetBG = rowEntry.find(".js-color-background-reset")
 
-    lblName.attr("data-gob-locale-text", `${channelData.translationId}`)
-    lblName.attr("data-gob-locale-title", `${channelData.tooltipId}`)
-
-    Databinding.setConfigKey(chkMention, "behaviour.channel.mention")
-    Databinding.setConfigKey(chkRoleplay, "behaviour.channel.roleplay")
-    //Databinding.setConfigKey(chkRangefilter, "behaviour.channel.rangefilter")
-    //Databinding.setConfigKey(chkLog, "behaviour.channel.log")
-
-    const channelEnums = [].concat(channelData.chatChannel || [])
-    if (channelEnums.length === 0) {
-        chkMention.hide()
-        chkRoleplay.hide()
-        //chkRangefilter.hide()
-        //chkLog.hide()
-    } else {
-        Databinding.bindCheckboxArray(binding, chkMention, channelEnums)
-        Databinding.bindCheckboxArray(binding, chkRoleplay, channelEnums)
-        //Databinding.bindCheckboxArray(binding, chkRangefilter, channelEnums)
-        //Databinding.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
-    }
+    lblName.attr(Locale.HtmlAttribute.TextId, `${channelData.translationId}`)
+    lblName.attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
 
     if (channelData.configId === null) {
         clrSelectorFG.parent().hide()
@@ -86,7 +65,7 @@ Object.entries(Gobchat.Channels).forEach((entry) => {
     buildChannelEntry(channelData)
 })
 
-binding.initialize()
+binding.loadBindings()
 
 const copyKeys = new Set<string>(["behaviour.channel.roleplay", "behaviour.channel.mention"])
 table.find(".entry-color-forground, .entry-color-background").each(function () {
@@ -95,6 +74,6 @@ table.find(".entry-color-forground, .entry-color-background").each(function () {
         copyKeys.add(configId)
 })
 
-Components.makeCopyProfileButton($("#c_channel_copyprofile"), { configKeys: Array.from(copyKeys) })
+Components.makeCopyProfileButton($("#cp-channel_copyprofile"), { configKeys: Array.from(copyKeys) })
 
 //# sourceURL=config_channel.js

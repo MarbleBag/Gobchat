@@ -1,4 +1,4 @@
-﻿<button id="cp-rangefilter_copyprofile" class="gob-config-icon-button gob-button-copypage"><i
+<button id="cp-rangefilter_copyprofile" class="gob-config-icon-button gob-button-copypage"><i
         class="fas fa-clone"></i></button>
 
 <div id="cp-rangefilter">
@@ -6,73 +6,69 @@
         <label class="gob-config-text" data-gob-locale-text="config.rangefilter.description"></label>
 
         <div class="gob-config-group_item">
-            <input type="checkbox" class="gob-config-group_item_checkbox" id="cp-rangefilter_mention"
+            <input type="checkbox" class="gob-input-checkbox" id="cp-rangefilter_mention"
                 data-gob-configkey="behaviour.rangefilter.ignoreMention"
-                data-gob-locale-title="config.rangefilter.ckb.mentions.tooltip" />
+                data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip" />
             <label class="gob-config-label" for="cp-rangefilter_mention"
-                data-gob-locale-title="config.rangefilter.ckb.mentions.tooltip"
+                data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip"
                 data-gob-locale-text="config.rangefilter.ckb.mentions">
             </label>
         </div>
 
         <div class="gob-config-group_item-3-small-columns">
             <label class="gob-config-label" for="cp-rangefilter_cutoff" data-gob-locale-text="config.rangefilter.cutoff"
-                data-gob-locale-title="config.rangefilter.cutoff.tooltip"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="0" id="cp-rangefilter_cutoff"
+                data-gob-locale-tooltip="config.rangefilter.cutoff.tooltip"></label>
+            <input class="gob-input-number" type="number" min="0" id="cp-rangefilter_cutoff"
                 data-gob-configkey="behaviour.rangefilter.cutoff"
-                data-gob-locale-title="config.rangefilter.cutoff.tooltip">
+                data-gob-locale-tooltip="config.rangefilter.cutoff.tooltip">
             <button class="gob-config-icon-button" id="cp-rangefilter_cutoff-reset"
-                data-gob-configkey="behaviour.rangefilter.cutoff"
-                data-gob-locale-title="config.main.button.reset.tooltip">
+                data-gob-locale-tooltip="config.main.button.reset.tooltip">
                 <i class="fas fa-undo-alt"></i>
             </button>
 
             <label class="gob-config-label" for="cp-rangefilter_fadeout"
                 data-gob-locale-text="config.rangefilter.fadeout"
-                data-gob-locale-title="config.rangefilter.fadeout.tooltip"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="0" id="cp-rangefilter_fadeout"
+                data-gob-locale-tooltip="config.rangefilter.fadeout.tooltip"></label>
+            <input class="gob-input-number" type="number" min="0" id="cp-rangefilter_fadeout"
                 data-gob-configkey="behaviour.rangefilter.fadeout"
-                data-gob-locale-title="config.rangefilter.fadeout.tooltip">
+                data-gob-locale-tooltip="config.rangefilter.fadeout.tooltip">
             <button class="gob-config-icon-button" id="cp-rangefilter_fadeout_reset"
-                data-gob-configkey="behaviour.rangefilter.fadeout"
-                data-gob-locale-title="config.main.button.reset.tooltip">
+                data-gob-locale-tooltip="config.main.button.reset.tooltip">
                 <i class="fas fa-undo-alt"></i>
             </button>
 
             <label class="gob-config-label" for="cp-rangefilter_startopacity"
                 data-gob-locale-text="config.rangefilter.transparency.start"
-                data-gob-locale-title="config.rangefilter.transparency.start.tooltip"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="1" max="100"
+                data-gob-locale-tooltip="config.rangefilter.transparency.start.tooltip"></label>
+            <input class="gob-input-number" type="number" min="1" max="100"
                 id="cp-rangefilter_startopacity" data-gob-configkey="behaviour.rangefilter.startopacity"
-                data-gob-locale-title="config.rangefilter.transparency.start.tooltip">
+                data-gob-locale-tooltip="config.rangefilter.transparency.start.tooltip">
             <button class="gob-config-icon-button" id="cp-rangefilter_startopacity_reset"
-                data-gob-configkey="behaviour.rangefilter.startopacity"
-                data-gob-locale-title="config.main.button.reset.tooltip">
+                data-gob-locale-tooltip="config.main.button.reset.tooltip">
                 <i class="fas fa-undo-alt"></i>
             </button>
 
             <label class="gob-config-label" for="cp-rangefilter_endopacity"
                 data-gob-locale-text="config.rangefilter.transparency.end"
-                data-gob-locale-title="config.rangefilter.transparency.end.tooltip"></label>
-            <input class="gob-config-group_item_numberbox" type="number" min="1" max="100" id="cp-rangefilter_endopacity"
+                data-gob-locale-tooltip="config.rangefilter.transparency.end.tooltip"></label>
+            <input class="gob-input-number" type="number" min="1" max="100" id="cp-rangefilter_endopacity"
                 data-gob-configkey="behaviour.rangefilter.endopacity"
-                data-gob-locale-title="config.rangefilter.transparency.end.tooltip">
+                data-gob-locale-tooltip="config.rangefilter.transparency.end.tooltip">
             <button class="gob-config-icon-button" id="cp-rangefilter_endopacity_reset"
-                data-gob-configkey="behaviour.rangefilter.endopacity"
-                data-gob-locale-title="config.main.button.reset.tooltip">
+                data-gob-locale-tooltip="config.main.button.reset.tooltip">
                 <i class="fas fa-undo-alt"></i>
             </button>
         </div>
     </div>
 
     <div class="gob-config-group">
-        <div class="gob-config-text" data-gob-locale-text="config.chatlog.tbllabel"></div>
-        <div class="gob-config_cp-rangefilter_table-wrapper">
-            <table class="gob-config_cp-rangefilter_table-wrapper_table" id="cp-rangefilter_table">
+        <div class="gob-config-text" data-gob-locale-text="config.rangefilter.tbl.channel.name"></div>
+        <div class="gob-config_cp-rangefilter_channel-table-wrapper">
+            <table class="gob-config_cp-rangefilter_channel-table" id="cp-rangefilter_channel-table">
                 <thead>
                     <tr>
-                        <th data-gob-locale-text="config.rangefilter.tbl.name"></th>
-                        <th data-gob-locale-text="config.rangefilter.tbl.rangefilter"></th>
+                        <th data-gob-locale-text="config.rangefilter.tbl.channel.header.name"></th>
+                        <th data-gob-locale-text="config.rangefilter.tbl.channel.header.filter"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,7 +77,7 @@
         </div>
     </div>
 
-    <template id="cp-rangefilter_template_table_entry">
+    <template id="cp-rangefilter_template_channel-table_entry">
         <tr>
             <td>
                 <label class="gob-config-label js-label"></label>

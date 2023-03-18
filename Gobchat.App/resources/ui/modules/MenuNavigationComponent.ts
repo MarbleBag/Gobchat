@@ -51,7 +51,7 @@ function loadThen($element: JQuery, url: string, params?: object): Promise<void>
 
         $element.load(url, params, (response, status, jqXHR) => {
             if (status === "error")
-                reject(jqXHR)
+                reject(`Unable to fetch '${url}'`)
             else 
                 resolve()            
         })
@@ -113,7 +113,8 @@ export async function makeControl($element: JQuery): Promise<void> {
         if (result.status === "rejected")
             errorMsg += result.reason + '\n'
     }
-    if (errorMsg.length > 0)
-        throw new Error(errorMsg)
+    //if (errorMsg.length > 0)
+    //    throw new Error(errorMsg)
+    console.error(errorMsg)
 }
 

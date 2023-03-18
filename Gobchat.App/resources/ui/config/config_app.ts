@@ -19,10 +19,10 @@ import * as Utility from "/module/CommonUtility"
 
 const binding = new Databinding.BindingContext(gobConfig);
 
-Databinding.bindElement(binding, $("#capp_language"))
+Databinding.bindElement(binding, $("#cp-app_language"))
 
 try {
-    const dpdThemes = $("#capp_theme")
+    const dpdThemes = $("#cp-app_theme")
     dpdThemes.empty()
     for (let style of gobStyles.styles) {
         $('<option>', {
@@ -30,43 +30,34 @@ try {
             value: style.label
         }).appendTo(dpdThemes)
     }
-    Databinding.bindElement(binding, $("#capp_theme"))
+    Databinding.bindElement(binding, $("#cp-app_theme"))
 } catch (e1) {
     console.error(e1)
 }
 
 // setup checkboxes
-Databinding.bindCheckbox(binding, $("#capp_autodetectemote"))
+Databinding.bindCheckbox(binding, $("#cp-app_autodetectemote"))
 
-Databinding.bindCheckbox(binding, $("#capp_userMention"))
+Databinding.bindCheckbox(binding, $("#cp-app_hide"))
 
-Databinding.bindCheckbox(binding, $("#capp_hide"))
+Databinding.bindCheckbox(binding, $("#cp-app_checkupdates"))
 
-const ckbUpdate = $("#capp_checkupdates")
-Databinding.bindCheckbox(binding, ckbUpdate)
-binding.bindCallback(Databinding.getConfigKey(ckbUpdate), value => {
-    $(`[for='${ckbUpdate.attr("id")}']`).toggleClass("is-disabled", !value)
-})
-
-Databinding.bindCheckbox(binding, $("#capp_checkbetaupdates"))
+Databinding.bindCheckbox(binding, $("#cp-app_checkbetaupdates"))
 
 {
     const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
-    $("#capp_characterlocations_feature").toggle(!available)
+    $("#cp-app_characterlocations_feature").toggle(!available)
 }
 
-Databinding.bindCheckbox(binding, $("#capp_actor_updateActive"))
+Databinding.bindCheckbox(binding, $("#cp-app_actor_updateActive"))
 
-Databinding.bindCheckbox(binding, $("#capp_rangefilter_mention"))
+Databinding.bindCheckbox(binding, $("#cp-app_rangefilter_mention"))
 
-// setup font group
-// setup font family
-Databinding.bindElement(binding, $("#capp_font_family"))
-Components.makeResetButton($("#capp_font_family_reset"))
+Databinding.bindDropdown(binding, $("#cp-app_config_font-size_selector"))
 
-const dpdProcessSelector = $("#capp_process_selector")
-$("#capp_process_selector_refresh").on("click", function () {
-    const $icon = $("#capp_process_selector_refresh").find("svg");
+const dpdProcessSelector = $("#cp-app_process_selector")
+$("#cp-app_process_selector_refresh").on("click", function () {
+    const $icon = $("#cp-app_process_selector_refresh").find("svg");
     (async () => {
         try {
             //$icon.addClass("fa-spin")
@@ -102,8 +93,8 @@ async function process_UpdateLabel() {
         const txtNotConnected = await gobLocale.get("config.app.process.info.notconnected")
         const txtConnectedTo = await gobLocale.get("config.app.process.info.connected")
 
-        const txtLabel = $("#capp_process_info")
-        const icon = $("#capp_process_selector_link").find("svg")
+        const txtLabel = $("#cp-app_process_info")
+        const icon = $("#cp-app_process_selector_link").find("svg")
 
         async function updateLabel() {
             try {
@@ -140,9 +131,9 @@ async function process_UpdateLabel() {
     }
 }
 
-$("#capp_process_selector_link").on("click", async function () {
+$("#cp-app_process_selector_link").on("click", async function () {
     try {
-        $("#capp_process_selector_link").find("svg").addClass("fa-spin")
+        $("#cp-app_process_selector_link").find("svg").addClass("fa-spin")
 
         const processId = dpdProcessSelector.val()
         if (processId != null && processId != undefined)
@@ -164,38 +155,38 @@ const parseNumber = (element: JQuery) => {
     return Utility.isNumber(value) ? value : undefined
 }
 
-Databinding.bindElement(binding, $("#capp_frame_x"), { elementGetAccessor: parseNumber })
-Databinding.bindElement(binding, $("#capp_frame_y"), { elementGetAccessor: parseNumber })
-Databinding.bindElement(binding, $("#capp_frame_height"), { elementGetAccessor: parseNonNegativeNumber })
-Databinding.bindElement(binding, $("#capp_frame_width"), { elementGetAccessor: parseNonNegativeNumber })
+Databinding.bindElement(binding, $("#cp-app_frame_x"), { elementToConfig: parseNumber })
+Databinding.bindElement(binding, $("#cp-app_frame_y"), { elementToConfig: parseNumber })
+Databinding.bindElement(binding, $("#cp-app_frame_height"), { elementToConfig: parseNonNegativeNumber })
+Databinding.bindElement(binding, $("#cp-app_frame_width"), { elementToConfig: parseNonNegativeNumber })
 
-const clrChatboxBackground = $("#capp_chatbox_backgroundcolor")
+const clrChatboxBackground = $("#cp-app_chat-history_backgroundcolor")
 Components.makeColorSelector(clrChatboxBackground)
 Databinding.bindColorSelector(binding, clrChatboxBackground)
-Components.makeResetButton($("#capp_chatbox_backgroundcolor_reset"))
+Components.makeResetButton($("#cp-app_chat-history_backgroundcolor_reset"), clrChatboxBackground)
 
-const clrSearchMarked = $("#capp_search_marked")
+const clrSearchMarked = $("#cp-app_search_marked")
 Components.makeColorSelector(clrSearchMarked)
 Databinding.bindColorSelector(binding, clrSearchMarked)
-Components.makeResetButton($("#capp_search_marked_reset"))
+Components.makeResetButton($("#cp-app_search_marked_reset"), clrSearchMarked)
 
-const clrSearchSelected = $("#capp_search_selected")
+const clrSearchSelected = $("#cp-app_search_selected")
 Components.makeColorSelector(clrSearchSelected)
 Databinding.bindColorSelector(binding, clrSearchSelected)
-Components.makeResetButton($("#capp_search_selected_reset"))
+Components.makeResetButton($("#cp-app_search_selected_reset"), clrSearchSelected)
 
 // setup hotkey group
 // setup hotkey field
 const getHotkey = (element: JQuery, event: KeyboardEvent) => Utility.decodeKeyEventToText(event, true)
-Databinding.bindElement(binding, $("#capp_hotkey_show"), { elementKey: "keydown", elementGetAccessor: getHotkey })
-Components.makeResetButton($("#capp_hotkey_show_reset"))
+Databinding.bindElement(binding, $("#cp-app_hotkey_show"), { elementKey: "keydown", elementToConfig: getHotkey })
+Components.makeResetButton($("#cp-app_hotkey_show_reset"), $("#cp-app_hotkey_show"))
 
 // setup ungrouped
-Databinding.bindElement(binding, $("#capp_chat_updateInterval"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("#capp_chat_updateInterval_reset"))
+Databinding.bindElement(binding, $("#cp-app_chat_updateInterval"), { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-app_chat_updateInterval_reset"), $("#cp-app_chat_updateInterval"))
 
-Databinding.bindElement(binding, $("#capp_actor_updateInterval"), { elementGetAccessor: parseNonNegativeNumber })
-Components.makeResetButton($("capp_actor_updateInterval_reset"))
+Databinding.bindElement(binding, $("#cp-app_actor_updateInterval"), { elementToConfig: parseNonNegativeNumber })
+Components.makeResetButton($("#cp-app_actor_updateInterval_reset"), $("#cp-app_actor_updateInterval"))
 
 // activate bindings
 binding.loadBindings()
@@ -217,13 +208,13 @@ const allFields = [
 */
 
 const configKeys = new Set<string>()
-$(`#capp [${Databinding.DataAttributeConfigKey}]:not(.button)`).each(function () {
+$(`#cp-app [${Databinding.HtmlAttribute.ConfigKey}]:not(.button)`).each(function () {
     const key = Databinding.getConfigKey(this)
     if (key !== null && key.length > 0)
         configKeys.add(key)
 })
 
-const btnCopyProfile = $("#capp_copyprofile")
+const btnCopyProfile = $("#cp-app_copyprofile")
 Components.makeCopyProfileButton(btnCopyProfile,
     {
         //configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))

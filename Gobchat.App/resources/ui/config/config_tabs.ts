@@ -16,44 +16,50 @@
 import * as Databinding from "/module/Databinding"
 import * as Components from "/module/Components"
 import * as Utility from "/module/CommonUtility"
+import * as Chat from "/module/Chat"
 import * as Dialog from "/module/Dialog"
-import { Locale } from "../modules/GobModule";
+import * as Locale from "/module/Locale"
 
 
-const keyTabsData = "behaviour.chattabs.data"
-const keyTabsSorting = "behaviour.chattabs.sorting"
-const pagebinding = new Databinding.BindingContext(gobConfig)
+const ConfigKeyOrder = "behaviour.chattabs.sorting"
+const ConfigKeyData = "behaviour.chattabs.data"
+const ConfigKeyDataTemplate = "behaviour.chattabs.data-template"
+const DataAttributeElementId = "data-gob-entryid"
+const JQueryDataKey = "configbinding"
 
-$("#ctabs_newtab").on("click", function () {
-    const data = gobConfig.get(keyTabsData)
-    const id = Utility.generateId(6, Object.keys(data))
+const binding = new Databinding.BindingContext(gobConfig)
 
-    const newConfig = gobConfig.getDefault(`${keyTabsData}.default`)
-    newConfig.id = id
-    newConfig.visible = true
-    newConfig.name = `${newConfig.name} ${Object.keys(data).length}`
+$("#cp-tabs_tabs-table_add").on("click", function () {
+    const tabsById = gobConfig.get(ConfigKeyData)
+    const id = Utility.generateId(6, Object.keys(tabsById))
 
-    data[id] = newConfig
-    gobConfig.set(keyTabsData, data)
+    const newTab = gobConfig.getDefault(ConfigKeyDataTemplate)
+    newTab.id = id
+    newTab.visible = true
+    newTab.name = `${newTab.name} ${Object.keys(tabsById).length}`
 
-    const sorting = gobConfig.get(keyTabsSorting)
+    tabsById[id] = newTab
+    gobConfig.set(ConfigKeyData, tabsById)
+
+    const sorting = gobConfig.get(ConfigKeyOrder)
     sorting.push(id)
-    gobConfig.set(keyTabsSorting, sorting)
+    gobConfig.set(ConfigKeyOrder, sorting)
 })
 
-const $tableTabs = $("#ctabs_tabs > tbody")
+const tableTabs = $("#cp-tabs_tabs-table > tbody")
+const $templateTableTabsEntry = $("#cp-tabs_template_tabs-table_entry")
 
 function buildTableTabs() {
-    $tableTabs.find("[data-gob-entryid]").each(function () {
-        $(this).data<Databinding.BindingContext>("configbinding").clear()
+    tableTabs.children().each(function () {
+        $(this).data<Databinding.BindingContext>(JQueryDataKey).clearBindings()
     })
-    $tableTabs.empty()
+    tableTabs.empty()
 
-    const entryIds = gobConfig.get(keyTabsSorting)
+    const entryIds = gobConfig.get(ConfigKeyOrder)
     entryIds.forEach(id => buildTableTabsEntry(id))
 }
 
-const swapArrayIndex = (arr, index1, index2) => {
+function swapArrayIndex(arr, index1, index2){
     try {
         [arr[index1], arr[index2]] = [arr[index2], arr[index1]]
     } catch (e) {
@@ -61,175 +67,141 @@ const swapArrayIndex = (arr, index1, index2) => {
     }
 }
 
-const $templateTableTabsEntry = $("#ctabs_template_tblentry")
 function buildTableTabsEntry(entryId) {
+    const entry = $($templateTableTabsEntry.html())
+    entry.attr(DataAttributeElementId, entryId)
+    tableTabs.append(entry)
+
     const binding = new Databinding.BindingContext(gobConfig)
+    entry.data(JQueryDataKey, binding)
 
-    const entryConfigKey = `${keyTabsData}.${entryId}`
+    const configKey = `${ConfigKeyData}.${entryId}`
 
-    const $entry = $($templateTableTabsEntry.html())
-        .attr("data-gob-entryid", entryId)
-        .data("configbinding", binding)
-        .appendTo($tableTabs)
+    const lblName = entry.find(".js-name")
+    Databinding.bindElement(binding, lblName, { configKey: `${configKey}.name`})
 
-    const $entryName = $entry.find(".js-name")
-    Databinding.setConfigKey($entryName, `${entryConfigKey}.name`)
-    Databinding.bindElement(binding, $entryName)
+    const chkVisible = entry.find(".js-visible")
+    Databinding.bindCheckbox(binding, chkVisible, { configKey: `${configKey}.visible` })
+    //chkVisible.on("click", function (event) { event.stopPropagation() })
 
-    const $entryVisible = $entry.find(".js-visible")
-    Databinding.setConfigKey($entryVisible, `${entryConfigKey}.visible`)
-    Databinding.bindCheckbox(binding, $entryVisible)
-    $entryVisible.on("click", function (event) { event.stopPropagation() })
-
-    $entry.find(".js-action-config").on("click", function (event) {
-        event.stopPropagation()
-        buildConfig(entryId)
+    entry.find(".js-action-config").on("click", function (event) {
+        buildConfigForTab(entryId)
     })
 
-    $entry.find(".js-action-delete")
-        .toggleClass("disabled", gobConfig.get(keyTabsSorting, []).length <= 1)
-        .on("click", function (event) {
-            event.stopPropagation()
-            {
-                (async () => {
-                    const result = await Dialog.showConfirmationDialog({
-                        dialogText: "config.tabs.tabtable.action.delete.confirm",
-                    })
+    const orderedEntryIds = gobConfig.get(ConfigKeyOrder, [])
 
-                    if (result === 1) {
-                        try {
-                            gobConfig.remove(entryConfigKey)
-                            const order = gobConfig.get(keyTabsSorting)
-                            _.remove(order, e => e === entryId)
-                            gobConfig.set(keyTabsSorting, order)
-                        } catch (ex) {
-                            console.error(ex)
-                        }
-                    }
-                })()
+    entry.find(".js-action-delete")
+        .prop("disabled", orderedEntryIds.length <= 1)
+        .on("click", async function (event) {
+            const result = await Dialog.showConfirmationDialog({
+                dialogText: "config.tabs.tbl.tabs.entry.action.delete.confirm",
+            })
+
+            if (result === 1) {
+                try {
+                    gobConfig.remove(configKey)
+                    const order = gobConfig.get(ConfigKeyOrder)
+                    _.remove(order, e => e === entryId)
+                    gobConfig.set(ConfigKeyOrder, order)
+                } catch (ex) {
+                    console.error(ex)
+                }
             }
         })
-
-    const entryIds = gobConfig.get(keyTabsSorting)
-    $entry.find(".js-action-mup")
-        .toggleClass("disabled", entryIds.indexOf(entryId) === 0)
+    
+    entry.find(".js-action-moveup")
+        .prop("disabled", orderedEntryIds.indexOf(entryId) === 0)
         .on("click", function (event) {
-            event.stopPropagation()
-            const entryIds = gobConfig.get(keyTabsSorting)
+            const entryIds = gobConfig.get(ConfigKeyOrder)
             const idx = entryIds.indexOf(entryId)
             swapArrayIndex(entryIds, idx, idx - 1)
-            gobConfig.set(keyTabsSorting, entryIds)
+            gobConfig.set(ConfigKeyOrder, entryIds)
         })
 
-    $entry.find(".js-action-mdown")
-        .toggleClass("disabled", entryIds.indexOf(entryId) === entryIds.length - 1)
+    entry.find(".js-action-movedown")
+        .prop("disabled", orderedEntryIds.indexOf(entryId) === orderedEntryIds.length - 1)
         .on("click", function (event) {
-            event.stopPropagation()
-            const entryIds = gobConfig.get(keyTabsSorting)
+            const entryIds = gobConfig.get(ConfigKeyOrder)
             const idx = entryIds.indexOf(entryId)
             swapArrayIndex(entryIds, idx, idx + 1)
-            gobConfig.set(keyTabsSorting, entryIds)
+            gobConfig.set(ConfigKeyOrder, entryIds)
         })
 
-    $entry.on("click", function (event) {
-        event.stopPropagation()
-        buildConfig(entryId)
+    entry.on("click", function (event) {
+        buildConfigForTab(entryId)
     })
 
-    binding.initialize()
+    binding.loadBindings()
 }
 
-function buildConfig(id) {
-    $tableTabs.children(".active").removeClass("active")
-    $tableTabs.children(`[data-gob-entryid=${id}]`).addClass("active")
+const tabConfigBinding = new Databinding.BindingContext(gobConfig)
 
-    const $config = $("#ctabs_tab_config")
-    let binding = $config.data<Databinding.BindingContext>("configbinding")
-    if (binding) binding.clear()
+function buildConfigForTab(tabId) {
+    tableTabs.children(".active").removeClass("active")
+    tableTabs.children(`[${DataAttributeElementId}=${tabId}]`).addClass("active")
 
-    const $tbl1 = $("#ctabs_tab_channel1 > tbody")
-    $tbl1.empty()
-    const $tbl2 = $("#ctabs_tab_channel2 > tbody")
-    $tbl2.empty()
+    tabConfigBinding.clearBindings()
 
-    if (!id) {
-        $("#ctabs_config_tabname").html("")
-        return
-    }
+    const tblChannels = $("#cp-tabs_channel-table > tbody")
+    tblChannels.empty()
 
-    $("#ctabs_config_tabname").html(
-        Utility.encodeHtmlEntities(
-            gobConfig.get(`${keyTabsData}.${id}`).name
-        )
-    )
+    const lblName = $("#cp-tabs_tab-config_name")
+    Databinding.bindText(tabConfigBinding, lblName, { configKey: `${ConfigKeyData}.${tabId}.name` })
 
-    binding = new Databinding.BindingContext(gobConfig)
-    $config.data("configbinding", binding)
+    const ckbMention = $("#cp-tabs-tab-config_mention")
+    Databinding.bindCheckbox(tabConfigBinding, ckbMention, { configKey: `${ConfigKeyData}.${tabId}.formatting.mentions` })
 
-    const ckbMention = $("#ctabs_formatting_mention")
-    Databinding.setConfigKey(ckbMention, `${keyTabsData}.${id}.formatting.mentions`)
-    Databinding.bindCheckbox(binding, ckbMention)
+    const ckbRoleplay = $("#cp-tabs-tab-config_roleplay")
+    Databinding.bindCheckbox(tabConfigBinding, ckbRoleplay, { configKey: `${ConfigKeyData}.${tabId}.formatting.roleplay` })
 
-    const ckbRoleplay = $("#ctabs_formatting_roleplay")
-    Databinding.setConfigKey(ckbRoleplay, `${keyTabsData}.${id}.formatting.roleplay`)
-    Databinding.bindCheckbox(binding, ckbRoleplay)
+    const ckbTimestamp = $("#cp-tabs-tab-config_timestamp")
+    Databinding.bindCheckbox(tabConfigBinding, ckbTimestamp, { configKey: `${ConfigKeyData}.${tabId}.formatting.timestamps` })
 
-    const ckbTimestamp = $("#ctabs_formatting_timestamp")
-    Databinding.setConfigKey(ckbTimestamp, `${keyTabsData}.${id}.formatting.timestamps`)
-    Databinding.bindCheckbox(binding, ckbTimestamp)
+    const ckbRangefilter = $("#cp-tabs-tab-config_rangefilter")
+    Databinding.bindCheckbox(tabConfigBinding, ckbRangefilter, { configKey: `${ConfigKeyData}.${tabId}.formatting.rangefilter` })
 
-    const ckbRangefilter = $("#ctabs_formatting_rangefilter")
-    Databinding.setConfigKey(ckbRangefilter, `${keyTabsData}.${id}.formatting.rangefilter`)
-    Databinding.bindCheckbox(binding, ckbRangefilter)
+    const templateTableChannelsEntry = $("#cp-tabs_template_channel-table_entry")
+    Object.values(Gobchat.Channels).forEach((channel) => {
+        if (!channel.relevant)
+            return
 
-    const $rowTemplate = $("#ctabs_template_channelentry")
-    function buildChannelEntry(channelData) {
-        const $table = $tbl1.children().length <= $tbl2.children().length ? $tbl1 : $tbl2
-        const $rowEntry = $($rowTemplate.html()).appendTo($table)
+        const entry = $(templateTableChannelsEntry.html())
+        tblChannels.append(entry)
 
-        $rowEntry.find(".js-label")
-            .attr(Locale.AttributeTextKey, `${channelData.translationId}`)
-            .attr(Locale.AttributeTooltipKey, `${channelData.tooltipId}`)
+        entry.find(".js-label")
+            .attr(Locale.HtmlAttribute.TextId, `${channel.translationId}`)
+            .attr(Locale.HtmlAttribute.TooltipId, `${channel.tooltipId}`)
 
-        const $chkVisible = $rowEntry.find(".js-visible")
-        Databinding.setConfigKey($chkVisible, `${keyTabsData}.${id}.channel.visible`)
+        const chkVisible = entry.find(".js-visible")
+        Databinding.setConfigKey(chkVisible, `${ConfigKeyData}.${tabId}.channel.visible`)
 
-        const channelEnums = [].concat(channelData.chatChannel || [])
+        const channelEnums = ([] as Chat.ChatChannelEnum[]).concat(channel.chatChannel || [])
         if (channelEnums.length === 0) {
-            $chkVisible.hide()
+            chkVisible.hide()
         } else {
-            Databinding.bindCheckboxArray(binding, $chkVisible, channelEnums)
+            Databinding.bindCheckboxArray(tabConfigBinding, chkVisible, channelEnums)
         }
-    }
-
-    Object.entries(Gobchat.Channels).forEach((entry) => {
-        const channelData = entry[1]
-        if (!channelData.relevant) return
-        buildChannelEntry(channelData)
     })
 
-    gobLocale.updateElement($tbl1)
-    gobLocale.updateElement($tbl2)
-    binding.initialize()
+    gobLocale.updateElement(tblChannels)
+
+    tabConfigBinding.loadBindings()
 }
 
-Databinding.bindListener(pagebinding, keyTabsSorting, function (entryIds) {
+Databinding.bindListener(binding, ConfigKeyOrder, function (entryIds) {
     buildTableTabs()
     if (entryIds.length > 0)
-        buildConfig(entryIds[0])
-    else
-        buildConfig(null)
+        buildConfigForTab(entryIds[0])
 })
 
-Databinding.bindElement(pagebinding, $("#ctabs_effects_message"), { elementGetAccessor: ($element) => parseInt($element.val()) })
-Databinding.bindElement(pagebinding, $("#ctabs_effects_mention"), { elementGetAccessor: ($element) => parseInt($element.val()) })
+Databinding.bindElement(binding, $("#cp-tabs_effects_message"), { elementToConfig: ($element) => parseInt($element.val()) })
+Databinding.bindElement(binding, $("#cp-tabs_effects_mention"), { elementToConfig: ($element) => parseInt($element.val()) })
 
-pagebinding.initialize()
+binding.loadBindings()
 
-//doesn't work. Old tabs are keept around?
-Components.makeCopyProfileButton($("#ctabs_copyprofile"),
+Components.makeCopyProfileButton($("#cp-tabs_copyprofile"),
     {
-        configKeys: [keyTabsData, keyTabsSorting, "behaviour.chattabs.effect"]
+        configKeys: [ConfigKeyData, ConfigKeyOrder, "behaviour.chattabs.effect"]
     })
 
 

@@ -13,9 +13,10 @@
 
 'use strict'
 
-import * as Databinding from "./Databinding.js"
-import * as Dialog from "./Dialog.js"
-import { Utility } from "./GobModule.js"
+import * as Databinding from "/module/Databinding"
+import * as Dialog from "/module/Dialog"
+import * as Locale from "/module/Locale"
+import * as Utility from "/module/CommonUtility"
 
 interface ColorSelectorOptionTypes {
     hasAlpha: boolean
@@ -32,9 +33,15 @@ const DefaultColorSelectorOptions: ColorSelectorOptionTypes = {
 export type ColorSelectorOptions = Partial<ColorSelectorOptionTypes>
 
 function _makeColorSelector(element: JQuery, options: ColorSelectorOptionTypes): void {
+    if (element.length < 1)
+        throw new Error("An empty element can't be turned into a color selector")
+
+    if (element.length > 1)
+        throw new Error(`Unable to turn multiple elements into the same color selector`)
+
     const configKey = Databinding.getConfigKey(element)
     if (configKey === null)
-        throw new Error(`Attribute '${Databinding.DataAttributeConfigKey}' not set`)
+        throw new Error(`Attribute '${Databinding.HtmlAttribute.ConfigKey}' not set`)
 
     element.spectrum({
         preferredFormat: "hex3",
@@ -67,10 +74,15 @@ export function makeColorSelector(element: HTMLElement | JQuery, options?: Color
 
 export function makeResetButton(element: HTMLElement | JQuery, targetElement?: HTMLElement | JQuery): void {
     const $element = $(element)
-    $element.toggleClass("gob-config-icon-button", true)
+    if ($element.length === 0)
+        throw new Error("No html element found")
 
-    if ($element.attr("data-gob-locale-title") === null)
-        $element.attr("data-gob-locale-title", "config.main.button.reset.tooltip")
+    $element.toggleClass("gob-config-icon-button", true)
+    $element.empty()
+    $element.append($("<i class='fas fa-undo-alt'></i>"))
+
+    if ($element.attr(Locale.HtmlAttribute.TooltipId) === null)
+        $element.attr(Locale.HtmlAttribute.TooltipId, "config.main.button.reset.tooltip")
 
     const getConfigKey = targetElement ?
         () => Databinding.getConfigKey(targetElement) :
@@ -116,6 +128,9 @@ export type CopyProfileOptions = Partial<CopyProfileOptionTypes>
 
 export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions?: CopyProfileOptions) {
     const $element = $(element)
+    if ($element.length === 0)
+        throw new Error("No html element found")
+
     const options = !userOptions ? DefaultCopyProfileOptions : $.extend({}, DefaultCopyProfileOptions, userOptions)
 
     $element.toggleClass("gob-config-copypage-button", true)
@@ -157,9 +172,9 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
 
     $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: [gobConfig.activeProfileId ?? ""] }))
     $element.addClass("gob-button-copypage")
-    $element.attr("data-gob-locale-title", "config.main.profile.copypage")
+    $element.attr(Locale.HtmlAttribute.TooltipId, "config.main.profile.copypage")
 
-    const checkCopyProfileState = () => $element.attr("disabled", (gobConfig.profileIds.length <= 1))
+    const checkCopyProfileState = () => $element.prop("disabled", (gobConfig.profileIds.length <= 1))
     gobConfig.addProfileEventListener(event => checkCopyProfileState())
     checkCopyProfileState()
 }

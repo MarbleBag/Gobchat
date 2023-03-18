@@ -96,14 +96,69 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="resources\ui\config\ConfigTemplate.html">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConfigTemplate.tt</DependentUpon>
+    <Content Include="resources\ui\config\about.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\ConfigTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConfigTemplate.html</LastGenOutput>
+    <Content Include="resources\ui\config\config.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config.js">
+      <DependentUpon>config.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_app.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_app.js">
+      <DependentUpon>config_app.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_channel.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_channel.js">
+      <DependentUpon>config_channel.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_chatlog.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_chatlog.js">
+      <DependentUpon>config_chatlog.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_formatting.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\config\config.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_formatting.ts" />
+    <Content Include="resources\ui\config\config_formatting.js">
+      <DependentUpon>config_formatting.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_groups.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_groups.js">
+      <DependentUpon>config_groups.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_mentions.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_mentions.js">
+      <DependentUpon>config_mentions.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_profiles.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_profiles.js">
+      <DependentUpon>config_profiles.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_rangefilter.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -112,37 +167,11 @@
       <DependentUpon>config_rangefilter.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_groups.ts" />
-    <TypeScriptCompile Include="resources\ui\config\config_mentions.ts" />
-    <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
-    <Content Include="resources\ui\config\config_chatlog.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_chatlog.js">
-      <DependentUpon>config_chatlog.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
-    <Content Include="resources\ui\config\config_roleplay.js">
-      <DependentUpon>config_roleplay.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_roleplay.ts" />
-    <Content Include="resources\ui\config\config_profiles.js">
-      <DependentUpon>config_profiles.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
-    <Content Include="resources\ui\config\config_mentions.js">
-	  <DependentUpon>config_mentions.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_groups.js">
-	  <DependentUpon>config_groups.ts</DependentUpon>
+    <Content Include="resources\ui\config\config_tabs.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_tabs.js">
-	  <DependentUpon>config_tabs.ts</DependentUpon>
+      <DependentUpon>config_tabs.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\lib\spectrum.min.css">
@@ -158,11 +187,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\JQueryExtensions.js">
-	  <DependentUpon>JQueryExtensions.ts</DependentUpon>
+      <DependentUpon>JQueryExtensions.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\WebComponents.js">
-	  <DependentUpon>WebComponents.ts</DependentUpon>
+      <DependentUpon>WebComponents.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\modules\WebComponentsTemplate.html" />
@@ -177,30 +206,10 @@
       <DependentUpon>ffxiv_light.css</DependentUpon>
     </Content>
     <Content Include="resources\ui\tsconfig.json" />
-    <Content Include="resources\ui\config\config.js">
-      <DependentUpon>config.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config.ts" />
-    <Content Include="resources\ui\config\config_app.js">
-      <DependentUpon>config_app.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
-    <Content Include="resources\ui\config\config_channel.js">
-      <DependentUpon>config_channel.ts</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
-    <Content Include="resources\ui\config\config_groups_new.html" />
-    <Content Include="resources\ui\config\config_tabs.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="resources\ui\gobchat-test.js" />
     <Content Include="resources\ui\gobchat.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <TypeScriptCompile Include="resources\ui\config\config_tabs.ts" />
     <Content Include="resources\ui\gobchat\web-components.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -226,6 +235,11 @@
       <DependentUpon>CommonUtility.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\config\config_groups.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_mentions.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_tabs.ts" />
     <TypeScriptCompile Include="resources\ui\globals.d.ts" />
     <Content Include="resources\ui\modules\Dialog.js">
       <DependentUpon>Dialog.ts</DependentUpon>
@@ -319,10 +333,15 @@
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\page\_config_chatlog.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\page\_config_profile.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\third-party.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\variables.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config-cp-tabs.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-chatlog.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-profile.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_jquery.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config_page-specific.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_constants.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-popup.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_spectrum.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_variables.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-tabbar.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-toolbar.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat.scss" />
@@ -648,33 +667,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\sounds\FFXIV_Notification.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\about.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\gob-confighelper-deprecated.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_channel.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_app.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_groups.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_mentions.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_profiles.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_roleplay.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\ChatTabHtmlElement.js" />

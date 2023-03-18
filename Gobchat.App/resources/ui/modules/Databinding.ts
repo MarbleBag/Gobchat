@@ -18,17 +18,46 @@
 import * as Utility from './CommonUtility.js'
 import * as Config from './Config.js'
 
-export const DataAttributeConfigKey = "data-gob-configkey"
+export module HtmlAttribute {
+    export const ConfigKey = "data-gob-configkey"
+}
 
 export function getConfigKey(element: HTMLElement | JQuery): string | null {
-    const key = $(element).attr(DataAttributeConfigKey)
+    /*
+    const key = $(element).attr(HtmlAttribute.ConfigKey)
     if (typeof key === 'string')
         return key
     return null
+    */
+
+    if (Utility.isjQuery(element)) {
+        if (element.length === 0)
+            throw new Error("Invalid element. No element found")
+        if (element.length > 1)
+            throw new Error("Invalid element. More than one element found")
+
+        const key = element.attr(HtmlAttribute.ConfigKey)
+        if (key === null || key === undefined)
+            return null
+
+        return key.toString()
+    } else {
+        if (!element)
+            throw new Error("Invalid element. No element found")
+
+        const key = element.getAttribute(HtmlAttribute.ConfigKey)
+        return key
+    }
 }
 
-export function setConfigKey(element: HTMLElement | JQuery, configKey: string) {
-    return $(element).attr(DataAttributeConfigKey, configKey)
+export function setConfigKey(element: HTMLElement | JQuery, configKey: string): void {
+    // return $(element).attr(HtmlAttribute.ConfigKey, configKey)
+
+    if (Utility.isjQuery(element)) {
+        element.attr(HtmlAttribute.ConfigKey, configKey)
+    } else {
+        element.setAttribute(HtmlAttribute.ConfigKey, configKey)
+    }
 }
 
 /**
@@ -66,9 +95,9 @@ module BindingContext {
         elementKey: null | "change" | "keydown" | "keyup"
         configKey: string
         /* Called to retrieve a value from the element */
-        elementGetAccessor: null | (($element: JQuery, event: any, storedValue: T) => T | undefined)
+        elementToConfig: null | (($element: JQuery, event: any, storedValue: T) => T | undefined)
         /* Called to set a value on the element */
-        elementSetAccessor: null | (($element: JQuery, storedValue: T) => void)
+        configToElement: null | (($element: JQuery, storedValue: T) => void)
     }
 
     export interface ElementBindContext<T> extends BindElementOptionTypes<T> {
@@ -127,9 +156,9 @@ export class BindingContext {
         const defOptions: BindingContext.ElementBindContext<any> = {
             disabled: false,
             elementKey: "change",
-            configKey: $element.attr(DataAttributeConfigKey)?.toString() || "",
-            elementGetAccessor: ($element) => $element.val(),
-            elementSetAccessor: ($element, value) => $element.val(value),
+            configKey: $element.attr(HtmlAttribute.ConfigKey)?.toString() || "",
+            elementToConfig: ($element) => $element.val(),
+            configToElement: ($element, value) => $element.val(value),
             onElementChange: null,
             initializer: null,
             configListener: null
@@ -142,8 +171,8 @@ export class BindingContext {
             return this //done
         }
 
-        if (innerContext.elementSetAccessor) {
-            innerContext.initializer = config => innerContext.elementSetAccessor!($element, config.get(innerContext.configKey, null))
+        if (innerContext.configToElement) {
+            innerContext.initializer = config => innerContext.configToElement!($element, config.get(innerContext.configKey, null))
             innerContext.configListener = createConfigListener(innerContext.initializer, null, true)
         }
 
@@ -152,10 +181,10 @@ export class BindingContext {
             if (innerContext.initializer)
                 innerContext.initializer(config)
 
-            if (innerContext.elementGetAccessor) {
+            if (innerContext.elementToConfig) {
                 innerContext.onElementChange = (event) => {
                     const oldValue = config.get(innerContext.configKey, null)
-                    const currentValue = innerContext.elementGetAccessor!($element, event, oldValue)
+                    const currentValue = innerContext.elementToConfig!($element, event, oldValue)
                     if (currentValue !== undefined)
                         config.set(innerContext.configKey, currentValue)
                 }
@@ -328,8 +357,8 @@ export function bindElement<A>(bindingContext: BindingContext, element: HTMLElem
 
 export function bindText(bindingContext: BindingContext, element: HTMLElement | JQuery, options?: BindElementOptions<string>): BindingContext {
     const defOptions: BindElementOptions<string> = {
-        elementGetAccessor: ($element) => $element.text(),
-        elementSetAccessor: ($element, value) => $element.text(value)
+        elementToConfig: ($element) => $element.text(),
+        configToElement: ($element, value) => $element.text(value)
     }
     return bindingContext.bindElement(element, $.extend(defOptions, options))
 }
@@ -349,16 +378,16 @@ export function bindTextCollection(bindingContext: BindingContext, element: HTML
     }
 
     const _options = $.extend(defOptions, options)
-    _options.elementGetAccessor = ($element) => split($element.val())
-    _options.elementSetAccessor = ($element, value) => $element.val(value.join(_options.joinSequence))
+    _options.elementToConfig = ($element) => split($element.val())
+    _options.configToElement = ($element, value) => $element.val(value.join(_options.joinSequence))
 
     return bindingContext.bindElement(element, _options)
 }
 
 export function bindCheckbox(bindingContext: BindingContext, element: HTMLElement | JQuery, options?: BindElementOptions<boolean>): BindingContext {
     const defOptions: BindElementOptions<boolean> = {
-        elementGetAccessor: ($element) => $element.prop("checked") as boolean,
-        elementSetAccessor: ($element, value) => $element.prop("checked", value)
+        elementToConfig: ($element) => $element.prop("checked") as boolean,
+        configToElement: ($element, value) => $element.prop("checked", value)
     }
 
     return bindingContext.bindElement(element, $.extend(defOptions, options))
@@ -366,8 +395,8 @@ export function bindCheckbox(bindingContext: BindingContext, element: HTMLElemen
 
 export function bindCheckboxValue<A>(bindingContext: BindingContext, element: HTMLElement | JQuery, checkValue: A, uncheckValue: A, options?: BindElementOptions<A>): BindingContext {
     const defOptions: BindElementOptions<A> = {
-        elementGetAccessor: ($element) => $element.prop("checked") ? checkValue : uncheckValue,
-        elementSetAccessor: ($element, value) => $element.prop("checked", value === checkValue)
+        elementToConfig: ($element) => $element.prop("checked") ? checkValue : uncheckValue,
+        configToElement: ($element, value) => $element.prop("checked", value === checkValue)
     }
 
     return bindingContext.bindElement(element, $.extend(defOptions, options))
@@ -376,13 +405,13 @@ export function bindCheckboxValue<A>(bindingContext: BindingContext, element: HT
 export function bindCheckboxArray<A>(bindingContext: BindingContext, element: HTMLElement | JQuery, values: A[], options?: BindElementOptions<A[]>): BindingContext {
     const defOptions: BindElementOptions<A[]> = {
         disabled: values === null || values === undefined || values.length === 0,
-        elementGetAccessor: ($element, event, oldValues) => {
+        elementToConfig: ($element, event, oldValues) => {
             const checked = $element.prop("checked") as boolean
             const changed = setValuesInArray(oldValues, values, checked)
             if (changed) oldValues.sort()
             return changed ? oldValues : undefined
         },
-        elementSetAccessor: ($element, value) => {
+        configToElement: ($element, value) => {
             const checked = _.every(values, (e) => _.includes(value, e))
             $element.prop("checked", checked)
         }
@@ -394,13 +423,13 @@ export function bindCheckboxArray<A>(bindingContext: BindingContext, element: HT
 export function bindCheckboxArrayInverse<A>(bindingContext: BindingContext, element: HTMLElement | JQuery, values: A[], options?: BindElementOptions<A[]>): BindingContext {
     const defOptions: BindElementOptions<A[]> = {
         disabled: values === null || values === undefined || values.length === 0,
-        elementGetAccessor: ($element, event, oldValues) => {
+        elementToConfig: ($element, event, oldValues) => {
             const checked = $element.prop("checked")
             const changed = setValuesInArray(oldValues, values, !checked)
             if (changed) oldValues.sort()
             return changed ? oldValues : undefined
         },
-        elementSetAccessor: ($element, value) => {
+        configToElement: ($element, value) => {
             const checked = _.every(values, (e) => _.includes(value, e))
             $element.prop("checked", !checked)
         }
@@ -412,11 +441,11 @@ export function bindCheckboxArrayInverse<A>(bindingContext: BindingContext, elem
 export function bindColorSelector(bindingContext: BindingContext, element: HTMLElement | JQuery, options?: BindElementOptions<string>): BindingContext {
     const defOptions: BindElementOptions<string> = {
         elementKey: null,
-        elementGetAccessor: null,
+        elementToConfig: null,
         //  ($element) => {
         //      const color = $element.spectrum("get"); return color === null ? null : color.toString();
         //  },
-        elementSetAccessor: ($element, value) => $element.spectrum("set", value)
+        configToElement: ($element, value) => $element.spectrum("set", value)
     }
 
     return bindingContext.bindElement(element, $.extend(defOptions, options))
