@@ -69,13 +69,18 @@
         calc(-1rem / 16) 0 var(--text-error-shadow-color), 0 calc(1rem / 16) var(--text-error-shadow-color),
         0 calc(-1rem / 16) var(--text-error-shadow-color);
 
-    --table-header-color: var(--text-2_color);
-    --table-header-shadow-color: var(--text-2_shadow-color);
-    --table-header-shadow: calc(1rem / 16) 0 var(--table-header-shadow-color),
-        calc(-1rem / 16) 0 var(--table-header-shadow-color), 0 calc(1rem / 16) var(--table-header-shadow-color),
-        0 calc(-1rem / 16) var(--table-header-shadow-color);
-    --table-stripped-background: #13131350;
-    --table-hover-background: linear-gradient(135deg, #131313, #13131310 80%);
+
+    --navigation_entry--hover_background: linear-gradient(135deg, #131313, #ffff0000 80%);
+    --navigation_entry--active_background: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+
+    --table_header_text-color: var(--text-2_color);
+    --table_header_text-shadow-color: var(--text-2_shadow-color);
+    --table_header_text-shadow: calc(1rem / 16) 0 var(--table_header_text-shadow-color),
+        calc(-1rem / 16) 0 var(--table_header_text-shadow-color), 0 calc(1rem / 16) var(--table_header_text-shadow-color),
+        0 calc(-1rem / 16) var(--table_header_text-shadow-color);
+    --table--stripped_background: #13131350;
+    --table--hover_background: linear-gradient(135deg, #131313, #13131310 80%);
+    --table--active_background: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
 
     --page-divider-color-1: black;
     --page-divider-color-2: white;

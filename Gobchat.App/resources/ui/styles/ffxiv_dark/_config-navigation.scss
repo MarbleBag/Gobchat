@@ -23,11 +23,11 @@
 
     &.is-active {
         font-weight: bold;
-        background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+        background-image: var(--navigation_entry--active_background);
     }
 
     &:hover:not(.is-active) {
-        background-image: linear-gradient(135deg, #131313, #ffff0000 80%);
+        background: var(--navigation_entry--hover_background);
     }
 }
 

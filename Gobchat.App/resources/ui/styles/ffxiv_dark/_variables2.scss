@@ -1,0 +1,105 @@
+:root {
+    --noise-texture: url("graphics/noise.png");
+
+    // general
+    --primary-color-h: 0;
+    --primary-color-s: 0%;
+    --primary-color-l: 27%;
+    --primary-color: hsla(var(--primary-color-h), var(--primary-color-s), var(--primary-color-l));
+
+    --secondary-color-h: 0;
+    --secondary-color-s: 54%;
+    --secondary-color-l: 42%;
+    --secondary-color: hsla(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
+
+    --accent-color-1-h: 35;
+    --accent-color-1-s: 52%;
+    --accent-color-1-l: 58%;
+    --accent-color-1: hsla(var(--accent-color-1-h), var(--accent-color-1-s), var(--accent-color-1-l));
+
+    --accent-color-2-h: 66;
+    --accent-color-2-s: 63%;
+    --accent-color-2-l: 88%;
+    --accent-color-2-h: 52;
+    --accent-color-2-s: 53%;
+    --accent-color-2-l: 73%;
+    --accent-color-2: hsla(var(--accent-color-2-h), var(--accent-color-2-s), var(--accent-color-2-l));
+
+    --dialog_background-color-v0: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) + 13%));
+    --dialog_background-color-v1: hsl(var(--primary-color-h), var(--primary-color-s), var(--primary-color-l));
+    --dialog_background-color-v2: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) - 8%));
+    --dialog_background: var(--noise-texture), linear-gradient(to bottom, var(--dialog_background-color-v0), var(--dialog_background-color-v1) 1.25rem, var(--dialog_background-color-v2) 3.25rem);
+
+    --primary-button_background-color-v0: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) + 14%));
+    --primary-button_background-color-v1: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) + 4%));
+    --primary-button_background-color-v2: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) + 0%));
+    --primary-button_background-color-v3: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) - 7%));
+    --primary-button_background-color-v4: hsl(var(--primary-color-h), var(--primary-color-s), calc(var(--primary-color-l) + 0%));
+    --primary-button_background: linear-gradient(to bottom, var(--primary-button_background-color-v0), var(--primary-button_background-color-v1) 45%, var(--primary-button_background-color-v2) 55%, var(--primary-button_background-color-v3) 60%, var(--primary-button_background-color-v4));
+    
+    --browser_scollbar_thumb_color: #f0f4ce;
+    --browser_scollbar_thumb_color--active:#f0f4ce;
+    --browser_scollbar_thumb_border-color: #ddd391;
+    --browser_scollbar_track_color: #666666;
+    --browser_scollbar_track_color--active: #222222;
+    --browser_scollbar_track_border-color: #202020;
+
+/*
+    --cp-background-color-1: hsl(var(--cpalette-1_main-color-h), var(--cpalette-1_main-color-s), var(--cpalette-1_main-color-l));
+    --cp-background-color-1--darker: hsl(var(--cpalette-1_main-color-h), var(--cpalette-1_main-color-s), calc(var(--cpalette-1_main-color-l) - 8%));
+    --cp-background-color-1--lighter: hsl(var(--cpalette-1_main-color-h), var(--cpalette-1_main-color-s), calc(var(--cpalette-1_main-color-l) + 24%));
+
+
+    --text-header-1-color:;
+    --text-header-1-shadow-color:;
+    --text-header-1-shadow:;
+    --text-header-1-disabled-color:;
+
+    --text-regular-1-color:;
+    --text-regular-1-shadow-color:;
+    --text-regular-1-shadow:;
+    --text-regular-1-disabled-color:;
+
+    --text-label-1-color:;
+    --text-label-1-shadow-color:;
+    --text-label-1-shadow:;
+    --text-label-1-disabled-color:;
+
+    --primary-button_text-color:;
+    --primary-button_text-shadow-color: black;
+    --primary-button_text-shadow:;
+    --primary-button_icon-color:;
+    --primary-button_icon-shadow-color: black;
+    --primary-button_icon-shadow:;
+    --primary-button_background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
+    --primary-button_border-color: #cc9f5e;
+    --primary-button_border: 0.05rem solid var(--config_primary-button_border-color);
+
+    --icon-button_text-color: #cc9f5e;
+    --icon-button_text-shadow-color: black;
+    --icon-button_text-shadow:;
+    --icon-button_background: #a43131;
+    --icon-button_border-color: #cc9f5e;
+    --icon-button_shadow-color: #cc9f5e;
+
+    --color-button_text-color: var(--primary-button_border-color);
+    --color-button_text-shadow-color: var(--primary-button_text-shadow-color);
+    --color-button_text-shadow:;
+    --color-button_background: var(--primary-button_background);
+    --color-button_box-shadow-color: black;
+    --color-button_box-shadow:;
+    --color-button_border-color: var(--primary-button_border-color);
+    --color-button_border: 0.05rem solid var(--config_primary-button_border-color);
+
+    --chat_toolbar_button_background:;
+    --chat_toolbar_button_text_color:;
+    --chat_toolbar_button_text_shadow:;
+    --chat_toolbar_icon-button_text_color:;
+    --chat_toolbar_icon-button_text_shadow-color:;
+    --chat_toolbar_icon-button_text_shadow:;
+    --chat_tabbar_tab_active-color: #c79300;
+    --chat_tabbar_tab_effect-1-color: rgba(245, 160, 0, 0.2);
+    --chat_tabbar_tab_effect-2-background: #73cf4b;
+    --chat_tabbar_tab_effect-3-background: rgba(245, 160, 0, 0.25);
+    */
+}

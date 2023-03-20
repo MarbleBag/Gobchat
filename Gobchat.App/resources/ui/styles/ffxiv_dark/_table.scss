@@ -29,8 +29,8 @@
 
     & > thead {
         break-inside: avoid;
-        color: var(--table-header-color);
-        text-shadow: var(--table-header-shadow);
+        color: var(--table_header_text-color);
+        text-shadow: var(--table_header_text-shadow);
 
         & > tr {
             & > th {
@@ -46,7 +46,7 @@
         }
 
         &.is-active {
-            background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+            background: var(--table--active_background);
         }
     }
 }
@@ -54,20 +54,20 @@
 .gob-table--strips-horizontal {
     & > thead > tr:nth-child(even),
     & > tbody > tr:nth-child(even) {
-        background: var(--table-stripped-background);
+        background: var(--table--stripped_background);
     }
 }
 
 .gob-table--strips-vertical {
     & > thead > tr > th:nth-child(even),
     & > tbody > tr > td:nth-child(even) {
-        background: var(--table-stripped-background);
+        background: var(--table--stripped_background);
     }
 }
 
 .gob-table--hoverable {
-    & > tbody > tr:hover {
-        background: var(--table-hover-background);
+    & > tbody > tr:hover:not(.is-active) {
+        background: var(--table--hover_background);
     }
 }
 
