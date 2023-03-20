@@ -10,11 +10,12 @@
 .gob-config-text {
     &.is-error {
         font-weight: bold;
-        color: var(--text-error-color);
+        color: var(--text-error_text-color);
+        text-shadow: var(--text-error_text-shadow);
     }
 
     &.is-disabled {
-        color: var(--text-1_color--disabled);
+        color: var(--text-1--disabled_color);
     }
 }
 
@@ -41,7 +42,7 @@
     flex-direction: column;
     gap: 0.3rem;
 
-    margin-left: calc(1.5 * var(--checkbox_size));
+    margin-left: calc(1.5 * var(--input-checkbox_size));
 }
 
 .gob-config-group_title {

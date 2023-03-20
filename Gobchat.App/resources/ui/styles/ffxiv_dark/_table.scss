@@ -111,8 +111,8 @@
     .gob-table--checkbox-#{$col} {
         & > tbody > tr > td:nth-child(#{$col}) {
             text-align: center;
-            padding-left: var(--checkbox_size);
-            padding-right: var(--checkbox_size);
+            padding-left: var(--input-checkbox_size);
+            padding-right: var(--input-checkbox_size);
         }
     }
 }

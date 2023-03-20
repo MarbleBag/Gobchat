@@ -23,7 +23,7 @@ using System.IO;
 namespace Gobchat.Module.Updater.Internal
 {
     [Serializable]
-    [UpdateTaskAlias("Delete")]
+    [UpdateTaskAlias("fileDelete")]
     internal sealed class NAUDeleteTask : NAppUpdate.Framework.Tasks.UpdateTaskBase
     {
         private string _backupPath;
@@ -80,10 +80,7 @@ namespace Gobchat.Module.Updater.Internal
             catch (Exception ex)
             {
                 if (coldRun)
-                {
-                    ExecutionStatus = TaskExecutionStatus.Failed;
-                    throw new UpdateProcessFailedException($"Unable to delete file: {path}", ex);
-                }
+                    throw new UpdateProcessFailedException($"Unable to delete file: {path}", ex);                
             }
 
             if (File.Exists(path))

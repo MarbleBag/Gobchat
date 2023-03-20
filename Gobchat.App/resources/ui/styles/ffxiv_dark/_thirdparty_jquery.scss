@@ -23,7 +23,7 @@
         }
 
         &.ui-state-active {
-            border-color: var(--primary-button_border-color--active);
+            border-color: var(--primary-button--active_border-color);
 
             &:before {
                 content: "-";

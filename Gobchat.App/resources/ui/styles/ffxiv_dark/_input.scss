@@ -8,8 +8,8 @@
 .gob-input-checkbox {
     cursor: pointer;
     font-size: 1em;
-    width: var(--checkbox_size);
-    height: var(--checkbox_size);
+    width: var(--input-checkbox_size);
+    height: var(--input-checkbox_size);
     appearance: none;
     background-repeat: no-repeat;
     background-size: contain;
@@ -17,10 +17,10 @@
     padding: unset;
     border: unset;
     // outline: none;
-    background-image: var(--checkbox_background--unchecked);
+    background-image: var(--input-checkbox--unchecked_background);
 
     &:checked {
-        background-image: var(--checkbox_background--checked);
+        background-image: var(--input-checkbox--checked_background);
     }
 
     :disabled {
@@ -83,8 +83,8 @@
 }
 
 .gob-input-rangeslider {
-    --slider_track_height: 0.2rem;
-    --slider_thumb_height: 0.8rem;
+    --input-slider_track_height: 0.2rem;
+    --input-slider_thumb_height: 0.8rem;
 
     cursor: pointer;
     appearance: none;
@@ -95,19 +95,19 @@
     &::-webkit-slider-runnable-track {
         appearance: none;
         box-sizing: content-box;
-        height: var(--slider_track_height);
-        background: var(--slider_track_color);
-        border: 0.3rem solid var(--slider_track_border-color);
+        height: var(--input-slider_track_height);
+        background: var(--input-slider_track_color);
+        border: 0.3rem solid var(--input-slider_track_border-color);
     }
 
     &::-webkit-slider-thumb {
         appearance: none;
-        margin-top: calc(var(--slider_thumb_height) / -2 + var(--slider_track_height) / 2);
+        margin-top: calc(var(--input-slider_thumb_height) / -2 + var(--input-slider_track_height) / 2);
         width: 1.5rem;
-        height: var(--slider_thumb_height);
+        height: var(--input-slider_thumb_height);
         cursor: ew-resize;
-        border: 0.1rem solid var(--slider_thumb_border-color);
-        background: var(--slider_thumb_color);
+        border: 0.1rem solid var(--input-slider_thumb_border-color);
+        background: var(--input-slider_thumb_color);
     }
 
     :disabled {
