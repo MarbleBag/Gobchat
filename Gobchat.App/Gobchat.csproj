@@ -330,6 +330,8 @@
     </Content>
     <None Include="bundleconfig.json" />
     <None Include="resources\.gitignore" />
+    <None Include="resources\sharlayan\signatures-latest.json" />
+    <None Include="resources\sharlayan\structures-latest.json" />
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
@@ -337,10 +339,10 @@
     <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-chatlog.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-profile.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_jquery.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\_config_page-specific.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_constants.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_config-popup.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_spectrum.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_variables2.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_variables.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-tabbar.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_chat-toolbar.scss" />

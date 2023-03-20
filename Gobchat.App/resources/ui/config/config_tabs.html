@@ -1,5 +1,6 @@
-<button class="gob-config-icon-button gob-button-copypage" id="cp-tabs_copyprofile"><i class="fas fa-clone"></i></button>
-<div id="cp-tabs">
+<button id="cp-tabs_copyprofile"></button>
+
+<div class="gob-config-page" id="cp-tabs">
     <div class="gob-config-group">
         <div class="gob-config-group_item-2-small-columns">
             <label class="gob-config-label" for="cp-tabs_effects_message"
@@ -35,20 +36,18 @@
                 <span data-gob-locale-text="config.tabs.btn.newtab"></span>
             </button>
         </div>
-        <div class="gob-config_cp-tabs_tabs-table-wrapper">
-            <table class="gob-config_cp-tabs_tabs-table" 
-                   id="cp-tabs_tabs-table" >
-                <thead>
-                    <tr>
-                        <th data-gob-locale-text="config.tabs.tbl.tabs.name"></th>
-                        <th data-gob-locale-text="config.tabs.tbl.tabs.visible"></th>
-                        <th data-gob-locale-text="config.tabs.tbl.tabs.actions"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+        <table class="gob-table gob-table--default" 
+                id="cp-tabs_tabs-table" >
+            <thead>
+                <tr>
+                    <th data-gob-locale-text="config.tabs.tbl.tabs.name"></th>
+                    <th data-gob-locale-text="config.tabs.tbl.tabs.visible"></th>
+                    <th data-gob-locale-text="config.tabs.tbl.tabs.actions"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 
     <div class="gob-config-divider gob-config-divider--horizontal"></div>
@@ -63,7 +62,7 @@
         <div class="gob-config-group_item">
             <input type="checkbox" class="gob-input-checkbox" id="cp-tabs-tab-config_mention"
                    data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip" />
-            <label for="cp-tabs-tab-config_mention" 
+            <label for="cp-tabs_tab-config_mention" 
                    data-gob-locale-text="config.tabs.tabconfig.mention"
                    data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip">
             </label>
@@ -100,8 +99,8 @@
     <div class="gob-config-divider gob-config-divider--horizontal"></div>
 
     <div class="gob-config-group">
-        <div class="gob-config_cp-tabs_channel-table-wrapper">
-            <table id="cp-tabs_channel-table" class="gob-config_cp-tabs_channel-table">
+        <div class="gob-table-wrapper--split-in-2">
+            <table  class="gob-table gob-table--confirm" id="cp-tabs_channel-table">
                 <thead>
                     <tr>
                         <th data-gob-locale-text="config.tabs.tbl.channel.name"></th>

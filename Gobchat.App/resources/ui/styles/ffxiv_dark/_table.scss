@@ -22,8 +22,10 @@
 .gob-table {
     border-collapse: separate;
     border-spacing: 0 0.1rem;
-    text-align: left;
     white-space: nowrap;
+    text-align: left;
+    width: max-content;
+    height: fit-content;
 
     & > thead {
         break-inside: avoid;
@@ -33,7 +35,7 @@
         & > tr {
             & > th {
                 text-align: center;
-                padding: 0 0.2rem;
+                padding: 0 0.5rem;
             }
         }
     }
@@ -41,6 +43,10 @@
     & > tbody > tr {
         & > td {
             padding: 0 0.5rem;
+        }
+
+        &.is-active {
+            background-image: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
         }
     }
 }
@@ -83,19 +89,43 @@
     }
 }
 
+.gob-table--column--centered {
+    & > tbody > tr > td {
+        text-align: center;
+    }
+}
+
+.gob-table--column--left {
+    & > tbody > tr > td {
+        text-align: left;
+    }
+}
+
+.gob-table--column--right {
+    & > tbody > tr > td {
+        text-align: right;
+    }
+}
+
 @mixin body_checkbox_rule($col) {
     .gob-table--checkbox-#{$col} {
         & > tbody > tr > td:nth-child(#{$col}) {
             text-align: center;
-            padding-left: var(--checkbox-size);
-            padding-right: var(--checkbox-size);
+            padding-left: var(--checkbox_size);
+            padding-right: var(--checkbox_size);
         }
     }
 }
 
-@mixin header_alignment_rule($col, $align) {
+@mixin table_alignment_rule($col, $align) {
     .gob-table--header-#{$col}--#{$align} {
         & > thead > tr > th:nth-child(#{$col}) {
+            text-align: #{$align};
+        }
+    }
+
+    .gob-table--column-#{$col}--#{$align} {
+        & > tbody > tr > td:nth-child(#{$col}) {
             text-align: #{$align};
         }
     }
@@ -104,22 +134,32 @@
 @mixin table_rules($max_columns) {
     @for $i from 1 to $max_columns + 1 {
         @include body_checkbox_rule($i);
-
-        @include header_alignment_rule($i, left);
-        @include header_alignment_rule($i, center);
-        @include header_alignment_rule($i, right);
+        @include table_alignment_rule($i, left);
+        @include table_alignment_rule($i, center);
+        @include table_alignment_rule($i, right);
     }
 }
 
 @include table_rules(8);
 
-.gob-label-checkbox-table-wrapper {
-    columns: 2 15rem;
+.gob-table-wrapper--split-in-2 {
+    columns: 2;
     gap: 1rem;
     width: fit-content;
+    column-rule: thin solid var(--page-divider-color-1);
 }
 
-.gob-label-checkbox-table {
+.gob-table--default {
     @extend .gob-table;
+    @extend .gob-table--header--centered;
+    @extend .gob-table--column--centered;
+    @extend .gob-table--header-1--left;
+    @extend .gob-table--column-1--left;
+    @extend .gob-table--hoverable;
+}
+
+.gob-table--confirm {
+    @extend .gob-table--default;
+    @extend .gob-table--strips-horizontal;
     @extend .gob-table--checkbox-2;
 }

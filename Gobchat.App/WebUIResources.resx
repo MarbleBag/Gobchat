@@ -236,9 +236,6 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.position.lable" xml:space="preserve">
     <value>Chat position and size</value>
   </data>
-  <data name="config.app.position.sublable" xml:space="preserve">
-    <value>Values will only be applied</value>
-  </data>
   <data name="config.app.position.width" xml:space="preserve">
     <value>Width</value>
   </data>
@@ -307,7 +304,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Border for current result</value>
   </data>
   <data name="config.app.search.border.tooltip" xml:space="preserve">
-    <value>Selected search result will be outlined with this color</value>
+    <value>Selected search result will be outlined with this color.</value>
   </data>
   <data name="config.app.search.label" xml:space="preserve">
     <value>Search</value>
@@ -472,10 +469,10 @@ Make sure to place any sound files you want to use in Gobchat under 'resources/s
     <value>Audio volume</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
-    <value>Audio volume</value>
+    <value>Audio volume.</value>
   </data>
   <data name="config.mentions.trigger.tooltip" xml:space="preserve">
-    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention</value>
+    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention.</value>
   </data>
   <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
     <value>Select a profile to copy</value>
@@ -1077,7 +1074,7 @@ group groupnumber clear</value>
     <value>Unicode:&amp;nbsp</value>
   </data>
   <data name="config.formatting.tbl.segment.name" xml:space="preserve">
-    <value>Segment Detection</value>
+    <value>Text detection</value>
   </data>
   <data name="config.tabs.tbl.channel.name" xml:space="preserve">
     <value>Name</value>

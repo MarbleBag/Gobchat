@@ -9,7 +9,7 @@
     height: 1.5rem;
     min-width: 1.5rem;
     line-height: 1;
-    background-image: var(--primary-button-background);
+    background-image: var(--primary-button_background);
     white-space: nowrap;
     border: none;
 }
@@ -24,15 +24,15 @@
     cursor: pointer; // overrides button
 
     padding: 0 0.625rem;
-    color: var(--text-1-color);
-    text-shadow: var(--text-1-shadow);
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
 
     &:hover {
         filter: brightness(115%);
     }
 
     &:disabled {
-        color: var(--text-1-color-disabled);
+        color: var(--text-1_color--disabled);
     }
 }
 
@@ -42,15 +42,15 @@
     width: 1.5rem;
     padding: 0.18rem;
     border-radius: 50%;
-    color: var(--text-2-color);
-    text-shadow: var(--text-2-shadow);
+    color: var(--text-2_color);
+    text-shadow: var(--text-2_shadow);
 
     &:hover {
         filter: brightness(115%);
     }
 
     &:disabled {
-        color: var(--text-2-color-disabled);
+        color: var(--text-2_color--disabled);
     }
 }
 

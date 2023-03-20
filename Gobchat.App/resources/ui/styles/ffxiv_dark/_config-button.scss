@@ -3,11 +3,11 @@
     cursor: pointer;
     font-size: 1em;
     padding: calc(3/16 * 1rem) calc(28/16 * 1rem);
-    color: var(--primary-button-color);
-    text-shadow: var(--primary-button-shadow-color);
+    color: var(--primary-button_text-color);
+    text-shadow: var(--primary-button_text-shadow);
 
-    background: var(--primary-button-background);
-    border: var(--primary-button-border);
+    background: var(--primary-button_background);
+    border: var(--primary-button_border);
 
     border-radius: 1rem;
     text-overflow: ellipsis;
@@ -39,7 +39,8 @@
     }
 
     & > svg {
-        color: var(--primary-button-icon-color);
+        color: var(--primary-button_icon-color);
+        text-shadow: var(--primary-button_icon-shadow);
     }
 }
 
@@ -50,22 +51,24 @@
 }
 
 .gob-config-icon-button {
+    --icon-button_size: 1.8rem;
+
     font-size: 1em;
     appearance: none;
     cursor: pointer;
     padding: unset;
-    width: 1.8rem;
-    height: 1.8rem;
-    border: 0.06rem solid var(--symbol-button-color);
+    width: var(--icon-button_size);
+    height: var(--icon-button_size);
+    border: 0.06rem solid var(--icon-button_border-color);
     border-radius: 0.35rem;
-    box-shadow: inset 0.05rem 0.05rem 0 var(--symbol-button-shadow-color), inset -0.05rem -0.05rem 0 var(--symbol-button-shadow-color);
-    background: var(--symbol-button-background);
-    color: var(--symbol-button-color);
+    box-shadow: inset 0.05rem 0.05rem 0 var(--icon-button_shadow-color), inset -0.05rem -0.05rem 0 var(--icon-button_shadow-color);
+    background: var(--icon-button_background);
+    color: var(--icon-button_icon-color);
     box-sizing: border-box;
     vertical-align: middle;
 
     & > * {
-        filter: drop-shadow(0.1rem 0.1rem 0.1rem var(--symbol-button-shadow-color));
+        filter: drop-shadow(0.1rem 0.1rem 0.1rem var(--icon-button_icon-shadow-color));
     }
 
     &:hover {

@@ -6,16 +6,16 @@
     box-sizing: border-box;
     height:100%;
     padding: 0.1rem;
-    color: var(--text-1-color);
-    text-shadow: var(--text-1-shadow);
-    background: var(--dialog-background);
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
+    background: var(--dialog_background);
 }
 
 .gob-config-dialog_header {
     font-size: 1.5em;
     margin: 0.15rem 0 -0.3rem 1rem;
-    color: var(--text-2-color);
-    text-shadow: var(--text-2-shadow);
+    color: var(--text-2_color);
+    text-shadow: var(--text-2_shadow);
 }
 
 .gob-config-dialog_panel {

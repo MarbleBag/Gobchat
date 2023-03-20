@@ -8,8 +8,13 @@
 
     <script>
         //await CefSharp.BindObjectAsync("GobchatAPI")
-        window.GobchatAPI = window.opener.GobchatAPI
         window.console = window.opener.console
+
+        window.addEventListener('error', function (evt) {
+            console.error(evt.error.stack);
+        });
+
+        window.GobchatAPI = window.opener.GobchatAPI        
         window.Gobchat = window.opener.Gobchat
     </script>
 

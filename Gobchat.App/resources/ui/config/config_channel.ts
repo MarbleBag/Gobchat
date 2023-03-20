@@ -24,7 +24,7 @@ const rowTemplate = $('#cp-channel_template_channel-table_entry')
 
 function buildChannelEntry(channelData) {
     const rowEntry = $(rowTemplate.html())
-    rowEntry.appendTo(table)
+    table.appendEvenly(rowEntry)
 
     const lblName = rowEntry.find(".js-name")
     const clrSelectorFG = rowEntry.find(".js-color-forground")

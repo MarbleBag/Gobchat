@@ -161,9 +161,6 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt.</value>
   </data>
-  <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
-  </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
   </data>
@@ -193,9 +190,6 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.app.position.lable" xml:space="preserve">
     <value>Chat Position und Größe</value>
-  </data>
-  <data name="config.app.position.sublable" xml:space="preserve">
-    <value>Das Chatfenster nimmt diese Werte erst beim Speichern an.</value>
   </data>
   <data name="config.app.position.width" xml:space="preserve">
     <value>Breite</value>
@@ -332,7 +326,7 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
     <value>Lautstärke</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
-    <value>Lautstärke</value>
+    <value>Lautstärke.</value>
   </data>
   <data name="config.profiles.importprofile" xml:space="preserve">
     <value>Importiere Profil</value>
@@ -943,5 +937,17 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="config.profiles.page.name" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
+    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
+  </data>
+  <data name="config.formatting.tbl.segment.name" xml:space="preserve">
+    <value>Texterkennung</value>
+  </data>
+  <data name="config.main.dialog.label" xml:space="preserve">
+    <value>Gobchat Einstellungen</value>
+  </data>
+  <data name="config.mentions.trigger.tooltip" xml:space="preserve">
+    <value>Worte welche eine Erwähnung auslösen. Möchte man mehrere Wörter angeben, nutze Kommas um diese voneinander abzutrennen. Es werden nur ganze Wörter erkannt! Wörter die als Bestandteil anderer Wörter auftauchen lösen nicht aus.</value>
   </data>
 </root>

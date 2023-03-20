@@ -131,10 +131,16 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
     if ($element.length === 0)
         throw new Error("No html element found")
 
-    const options = !userOptions ? DefaultCopyProfileOptions : $.extend({}, DefaultCopyProfileOptions, userOptions)
-
+    $element.toggleClass("gob-config-icon-button", true)
     $element.toggleClass("gob-config-copypage-button", true)
+    $element.attr(Locale.HtmlAttribute.TooltipId, "config.main.profile.copypage")
 
+    $element.empty()
+    $element.append($("<i class='fas fa-clone'></i>"))
+
+    $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: [gobConfig.activeProfileId ?? ""] }))
+
+    const options = !userOptions ? DefaultCopyProfileOptions : $.extend({}, DefaultCopyProfileOptions, userOptions)
     function copyProfile(profileId: string) {
         if (options.callback) {
             const result = options.callback(profileId)
@@ -169,10 +175,6 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
             }
         })
     }
-
-    $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: [gobConfig.activeProfileId ?? ""] }))
-    $element.addClass("gob-button-copypage")
-    $element.attr(Locale.HtmlAttribute.TooltipId, "config.main.profile.copypage")
 
     const checkCopyProfileState = () => $element.prop("disabled", (gobConfig.profileIds.length <= 1))
     gobConfig.addProfileEventListener(event => checkCopyProfileState())

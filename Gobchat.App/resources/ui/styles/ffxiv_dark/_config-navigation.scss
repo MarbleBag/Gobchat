@@ -39,11 +39,12 @@
     @extend .gob-config-primary-button;
     text-align: left;
     padding: calc(3rem / 16) calc(28rem / 16);
+    flex: 0 0 auto;
 }
 
 .gob-config-navigation-panel {
     width: 100%;
-    overflow: hidden auto;
+    overflow: auto auto;
     padding-right: 1rem;
 }
 

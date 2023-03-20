@@ -26,6 +26,7 @@ const ConfigKeyData = "behaviour.chattabs.data"
 const ConfigKeyDataTemplate = "behaviour.chattabs.data-template"
 const DataAttributeElementId = "data-gob-entryid"
 const JQueryDataKey = "configbinding"
+const cssActive = "is-active"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
@@ -137,8 +138,8 @@ function buildTableTabsEntry(entryId) {
 const tabConfigBinding = new Databinding.BindingContext(gobConfig)
 
 function buildConfigForTab(tabId) {
-    tableTabs.children(".active").removeClass("active")
-    tableTabs.children(`[${DataAttributeElementId}=${tabId}]`).addClass("active")
+    tableTabs.children(`.${cssActive}`).removeClass(cssActive)
+    tableTabs.children(`[${DataAttributeElementId}=${tabId}]`).addClass(cssActive)
 
     tabConfigBinding.clearBindings()
 
@@ -148,16 +149,16 @@ function buildConfigForTab(tabId) {
     const lblName = $("#cp-tabs_tab-config_name")
     Databinding.bindText(tabConfigBinding, lblName, { configKey: `${ConfigKeyData}.${tabId}.name` })
 
-    const ckbMention = $("#cp-tabs-tab-config_mention")
+    const ckbMention = $("#cp-tabs_tab-config_mention")
     Databinding.bindCheckbox(tabConfigBinding, ckbMention, { configKey: `${ConfigKeyData}.${tabId}.formatting.mentions` })
 
-    const ckbRoleplay = $("#cp-tabs-tab-config_roleplay")
+    const ckbRoleplay = $("#cp-tabs_tab-config_roleplay")
     Databinding.bindCheckbox(tabConfigBinding, ckbRoleplay, { configKey: `${ConfigKeyData}.${tabId}.formatting.roleplay` })
 
-    const ckbTimestamp = $("#cp-tabs-tab-config_timestamp")
+    const ckbTimestamp = $("#cp-tabs_tab-config_timestamp")
     Databinding.bindCheckbox(tabConfigBinding, ckbTimestamp, { configKey: `${ConfigKeyData}.${tabId}.formatting.timestamps` })
 
-    const ckbRangefilter = $("#cp-tabs-tab-config_rangefilter")
+    const ckbRangefilter = $("#cp-tabs_tab-config_rangefilter")
     Databinding.bindCheckbox(tabConfigBinding, ckbRangefilter, { configKey: `${ConfigKeyData}.${tabId}.formatting.rangefilter` })
 
     const templateTableChannelsEntry = $("#cp-tabs_template_channel-table_entry")

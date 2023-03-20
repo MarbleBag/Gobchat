@@ -1,10 +1,12 @@
-﻿<h1>Gobchat</h1>
-<div class="gob-config-group">
-    <p>
-        Version <span id="c_about_version" style="font-weight:bold;"></span><br />
-        Copyright (C) 2019 - 2022 MarbleBag
-    </p>
-    <p data-gob-locale-text="config.about.text"></p>
+<div id="cp-about" class="gob-config-page">
+    <h1>Gobchat</h1>
+    <div class="gob-config-group">
+        <p>
+            Version <span id="cp-about_version" style="font-weight:bold;"></span><br />
+            Copyright (C) 2019 - 2023 MarbleBag
+        </p>
+        <p data-gob-locale-text="config.about.text"></p>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -12,7 +14,7 @@
 
     (async () => {
         const version = await GobchatAPI.getAppVersion()
-        const $version = $("#c_about_version")
+        const $version = $("#cp-about_version")
         if (version.includes("-")) {
             $version.text(`Beta ${version}`)
         } else {

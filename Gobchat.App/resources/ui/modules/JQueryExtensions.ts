@@ -15,6 +15,7 @@
 
 declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     filterAndFind(selector: string): JQuery<T>
+    appendEvenly(element: any): JQuery<T>
 }
 
 $.fn.filterAndFind = function<T>(this: JQuery<T>, selector: string): JQuery<T>{
@@ -33,4 +34,24 @@ $.fn.isSetEmpty = function<T>(this: JQuery<T>): boolean{
 
 $.fn.isSetNotEmpty = function<T>(this: JQuery<T>): boolean{
     return this.length !== 0
+}
+
+$.fn.appendEvenly = function <T extends HTMLElement>(this: JQuery<T>, element: any): JQuery<T> {
+    if (this.length === 0)
+        return this.append(element)
+
+    let minimum = this[0].childNodes.length
+    let index = 0
+
+    for (let i = 1; i < this.length; ++i) {
+        const numberOfChilds = this[i].childNodes.length
+        if (numberOfChilds < minimum) {
+            minimum = numberOfChilds
+            index = i
+        }
+    }
+
+    $(this[index]).append(element)
+
+    return this
 }

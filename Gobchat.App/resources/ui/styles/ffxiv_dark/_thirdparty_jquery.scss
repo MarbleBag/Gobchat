@@ -8,11 +8,11 @@
     }
 
     .ui-accordion-header {
-        background: var(--primary-button-background);
-        border: var(--primary-button-border);
+        background: var(--primary-button_background);
+        border: var(--primary-button_border);
         border-radius: 0.5rem;
-        color: var(--primary-button-color);
-        text-shadow: var(--primary-button-shadow-color);
+        color: var(--primary-button_text-color);
+        text-shadow: var(--primary-button_text-shadow);
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -23,7 +23,7 @@
         }
 
         &.ui-state-active {
-            border-color: var(--primary-button-active-border-color);
+            border-color: var(--primary-button_border-color--active);
 
             &:before {
                 content: "-";
@@ -45,13 +45,13 @@
 
 .ui-dialog {
     width: 38rem;
-    background: var(--dialog-background);
-    color: var(--text-1-color);
-    text-shadow: var(--text-1-shadow);
-    box-shadow: inset 0.05rem 0.05rem 0 var(--symbol-button-shadow-color), inset -0.05rem -0.05rem 0 var(--symbol-button-shadow-color);
+    background: var(--dialog_background);
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
+    box-shadow: inset 0.05rem 0.05rem 0 var(--icon-button_shadow-color), inset -0.05rem -0.05rem 0 var(--icon-button_shadow-color);
 
     &.ui-widget.ui-widget-content {
-        border: 0.06rem solid var(--symbol-button-color);
+        border: 0.06rem solid var(--icon-button_border-color);
     }
 
     &.ui-corner-all {
@@ -77,8 +77,8 @@
         align-items: center;
 
         .ui-dialog-title {
-            color: var(--text-2-color);
-            text-shadow: var(--text-2-shadow);
+            color: var(--text-2_color);
+            text-shadow: var(--text-2_shadow);
             float: unset;
             width: unset;
         }

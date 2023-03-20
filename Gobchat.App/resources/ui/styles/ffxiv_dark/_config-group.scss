@@ -14,7 +14,7 @@
     }
 
     &.is-disabled {
-        color: var(--text-1-color-disabled);
+        color: var(--text-1_color--disabled);
     }
 }
 
@@ -29,8 +29,8 @@
     flex-direction: column;
     gap: 0.3rem;
 
-    color: var(--text-1-color);
-    text-shadow: var(--text-1-shadow);
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
     margin: calc(13rem / 16) 0 calc(13rem / 16) calc(5rem / 16);
 }
 
@@ -41,13 +41,13 @@
     flex-direction: column;
     gap: 0.3rem;
 
-    margin-left: calc(1.5 * var(--checkbox-size));
+    margin-left: calc(1.5 * var(--checkbox_size));
 }
 
 .gob-config-group_title {
     font-size: 1.125em;
-    color: var(--text-2-color);
-    text-shadow: var(--text-2-shadow);
+    color: var(--text-2_color);
+    text-shadow: var(--text-2_shadow);
 }
 
 .gob-config-group_entry {

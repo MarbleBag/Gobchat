@@ -357,15 +357,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Values will only be applied.
-        /// </summary>
-        internal static string config_app_position_sublable {
-            get {
-                return ResourceManager.GetString("config.app.position.sublable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
         internal static string config_app_position_width {
@@ -483,7 +474,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected search result will be outlined with this color.
+        ///   Looks up a localized string similar to Selected search result will be outlined with this color..
         /// </summary>
         internal static string config_app_search_border_tooltip {
             get {
@@ -897,7 +888,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Segment Detection.
+        ///   Looks up a localized string similar to Text detection.
         /// </summary>
         internal static string config_formatting_tbl_segment_name {
             get {
@@ -1295,7 +1286,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio volume.
+        ///   Looks up a localized string similar to Audio volume..
         /// </summary>
         internal static string config_mentions_audio_volume_tooltip {
             get {
@@ -1331,7 +1322,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention.
+        ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention..
         /// </summary>
         internal static string config_mentions_trigger_tooltip {
             get {
