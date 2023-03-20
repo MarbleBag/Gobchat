@@ -28,7 +28,7 @@ var Gobchat = (function(Gobchat, undefined) {
             this.registerCmdHandler(new PlayerDistanceCommandHandler())
             this.registerCmdHandler(new DisableGobInfoHandler())
         }
-
+        
         async processCommand(message) {
             if (message === null || message === undefined) return
             message = message.trim()

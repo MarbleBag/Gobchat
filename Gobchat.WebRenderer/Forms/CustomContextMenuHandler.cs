@@ -18,6 +18,9 @@ namespace Gobchat.UI.Forms
     // Context menu does not work correctly and doesn't show up at the position of the right click. For now, it will be disabled.
     internal sealed class CustomContextMenuHandler : IContextMenuHandler
     {
+        private const CefMenuCommand ShowDevTools = (CefMenuCommand)26501;
+        private const CefMenuCommand CloseDevTools = (CefMenuCommand)26502;
+
         // howto: https://github.com/cefsharp/CefSharp/blob/935d3900ba2147f4786386596b62339087ff61b0/CefSharp.WinForms.Example/Handlers/MenuHandler.cs#L15
         void IContextMenuHandler.OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
         {
@@ -27,8 +30,8 @@ namespace Gobchat.UI.Forms
 #if DEBUG
             if (model.Count > 0)            
                 model.AddSeparator();            
-            model.AddItem((CefMenuCommand)26501, "Show DevTools");
-            model.AddItem((CefMenuCommand)26502, "Close DevTools");
+            model.AddItem(ShowDevTools, "Show DevTools");
+            model.AddItem(CloseDevTools, "Close DevTools");
 
 #else
             // context menu doesn't show up when it has no entries.
@@ -38,13 +41,14 @@ namespace Gobchat.UI.Forms
 
         bool IContextMenuHandler.OnContextMenuCommand(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
         {
-            if (commandId == (CefMenuCommand)26501)
+            if (commandId == ShowDevTools)
             {
-                browser.GetHost().ShowDevTools();
+                //browser.GetHost().ShowDevTools();
+                browser.ShowDevTools();
                 return true;
             }
 
-            if (commandId == (CefMenuCommand)26502)
+            if (commandId == CloseDevTools)
             {
                 browser.GetHost().CloseDevTools();
                 return true;

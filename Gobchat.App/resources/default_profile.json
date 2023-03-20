@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1901,
+  "version": 1903,
   "profile": {
     "id": null,
     "name": null,
@@ -53,6 +53,12 @@
     },
     "segment": {
       "order": [ "ooc", "emote1", "emote2", "say1", "say2", "say3", "say4", "say5" ],
+      "data-template": {
+        "active": true,
+        "type:": "SAY",
+        "startTokens": [],
+        "endTokens": []
+      },
       "data": {
         "ooc": {
           "active": true,
@@ -124,17 +130,11 @@
     },
     "language": "en",
     "mentions": {
-      "data": {
-        "base": {
-          "id": "base",
-          "trigger": [],
-          "playSound": false,
-          "soundPath": "../sounds/FFXIV_Linkshell_Transmission.mp3",
-          "soundInterval": 5000,
-          "volume": 0.2
-        }
-      },
-      "order": [ "base" ],
+      "trigger": [],
+      "playSound": false,
+      "soundPath": "../sounds/FFXIV_Linkshell_Transmission.mp3",
+      "soundInterval": 5000,
+      "volume": 0.2,
       "userCanTriggerMention": false
     },
     "rangefilter": {
@@ -142,6 +142,8 @@
       "fadeout": 16,
       "endopacity": 30,
       "startopacity": 80,
+      "maxopacity": 100,
+      "opacitysteps": 10,
       "ignoreMention": true
     },
     "actor": {
@@ -158,6 +160,20 @@
         "mention": 2
       },
       "sorting": [ "chat", "sys" ],
+      "data-template": {
+        "id": "default",
+        "name": "Tab",
+        "visible": false,
+        "channel": {
+          "visible": []
+        },
+        "formatting": {
+          "timestamps": true,
+          "mentions": true,
+          "rangefilter": false,
+          "roleplay": true
+        }
+      },
       "data": {
         "chat": {
           "id": "chat",
@@ -221,20 +237,6 @@
             "rangefilter": false,
             "roleplay": false
           }
-        },
-        "default": {
-          "id": "default",
-          "name": "Tab",
-          "visible": false,
-          "channel": {
-            "visible": []
-          },
-          "formatting": {
-            "timestamps": true,
-            "mentions": true,
-            "rangefilter": false,
-            "roleplay": true
-          }
         }
       }
     },
@@ -253,6 +255,19 @@
     },
     "groups": {
       "sorting": [ "group-ff-1", "group-ff-2", "group-ff-3", "group-ff-4", "group-ff-5", "group-ff-6", "group-ff-7" ],
+      "data-template": {
+        "name": "???",
+        "id": null,
+        "active": true,
+        "trigger:": [],
+        "style": {
+          "body": { "background-color": null },
+          "header": {
+            "background-color": null,
+            "color": null
+          }
+        }
+      },
       "data": {
         "group-ff-1": {
           "name": "\u2605",
@@ -357,19 +372,16 @@
   },
   "style": {
     "theme": "FFXIV Dark",
-    "base-font-size": "16px",
-    "chatbox": {
-      "background-color": "rgba(20, 20, 20, 0.95)"
+    "chatui": {
+      "font-size": "16px"
     },
     "config": {
-      "font-size": "16px"
+      "font-size": "1.56vw"
     },
-    "chat": {
+    "chat-history": {
+      "font-size": "16px",
       "background-color": "rgba(20, 20, 20, 0.95)",
-      "font-size": "16px"
-    },
-    "chat-toolbar": {
-      "font-size": "16px"
+      "gap": "2px"
     },
     "channel": {
       "base": {

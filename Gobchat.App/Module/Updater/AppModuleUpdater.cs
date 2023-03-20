@@ -26,8 +26,8 @@ namespace Gobchat.Module.Updater
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private const string PatchFolder = "patch";
-        private const string TempPatchFolder = "temp";
+        private string PatchStorageFolder => System.IO.Path.Combine(GobchatContext.ApplicationLocation, "patch");
+        private string PatchArchiveExtractionFolder => System.IO.Path.Combine(PatchStorageFolder, "extracted");
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
@@ -77,13 +77,10 @@ namespace Gobchat.Module.Updater
         {
             try
             {
-                var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
-                var tmpFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
-
-                if (System.IO.Directory.Exists(tmpFolder))
+                if (System.IO.Directory.Exists(PatchArchiveExtractionFolder))
                 {
                     logger.Info("Deleting temp update data");
-                    System.IO.Directory.Delete(tmpFolder, true);
+                    System.IO.Directory.Delete(PatchArchiveExtractionFolder, true);
                 }
             }
             catch (Exception ex)
@@ -109,19 +106,18 @@ namespace Gobchat.Module.Updater
                 var progressDisplay = uiManager.GetUIElement<ProgressDisplayForm>(displayId);
                 using (var progressMonitor = new ProgressMonitorAdapter(progressDisplay))
                 {
-                    var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
-
-                    (var downloadResult, var filePath) = PerformAutoUpdateDownload(update, patchFolder, progressMonitor);
+                    var patchFolder = PatchStorageFolder;
+                    (var downloadResult, var archivePath) = PerformAutoUpdateDownload(update, PatchStorageFolder, progressMonitor);
                     logger.Info($"Download complete: {downloadResult}");
                     if (!downloadResult)
                         return false;
 
-                    (var extractionResult, var unpackedArchive) = PerformAutoUpdateExtraction(filePath, patchFolder, progressMonitor);
+                    (var extractionResult, var unpackedPatchDir) = PerformAutoUpdateExtraction(archivePath, PatchArchiveExtractionFolder, progressMonitor);
                     logger.Info($"Extraction complete {extractionResult}");
                     if (!extractionResult)
                         return false;
 
-                    PerformAutoUpdateInstall(unpackedArchive, progressMonitor);
+                    PerformAutoUpdateInstall(unpackedPatchDir, progressMonitor);
                 }
 
                 return true;
@@ -158,6 +154,9 @@ namespace Gobchat.Module.Updater
         {
             var fileDownloader = new GitHubFileDownloader(update.DirectDownloadUrl, targetFolder);
             fileDownloader.FileName = $"gobchat-{update.Version.Major}.{update.Version.Minor}.{update.Version.Patch}-{update.Version.PreRelease}.zip";
+#if DEBUG
+            fileDownloader.DeleteFileOnCancelOrError = false;
+#endif
 
             try
             {
@@ -185,16 +184,14 @@ namespace Gobchat.Module.Updater
             return (true, fileDownloader.FilePath);
         }
 
-        private (bool, string) PerformAutoUpdateExtraction(string archivePath, string patchFolder, IProgressMonitor progressMonitor)
+        private (bool, string) PerformAutoUpdateExtraction(string archivePath, string extractTo, IProgressMonitor progressMonitor)
         {
-            var outputFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
-            var unpacker = new ArchiveUnpacker(archivePath, outputFolder);
+            var unpacker = new ArchiveUnpacker(archivePath, extractTo);
 #if DEBUG
             unpacker.DeleteArchiveOnCompletion = false;
-#else
-            unpacker.DeleteArchiveOnCompletion = true;
+            unpacker.DeleteOutputFolderOnFail = false;
 #endif
-            unpacker.DeleteOutputFolderOnFail = true;
+
 
             try
             {
@@ -219,22 +216,22 @@ namespace Gobchat.Module.Updater
                 return (false, null);
             }
 
-            return (true, outputFolder);
+            return (true, extractTo);
         }
 
-        private void PerformAutoUpdateInstall(string patchFolder, IProgressMonitor progressMonitor)
+        private void PerformAutoUpdateInstall(string unpackedArchive, IProgressMonitor progressMonitor)
         {
             logger.Info("Prepare updates");
 
             progressMonitor.StatusText = Resources.Module_Updater_UI_Log_PrepareUpdates;
             progressMonitor.Progress = 0d;
 
-            var tmp = System.IO.Path.Combine(patchFolder, "Gobchat");
-            if (System.IO.Directory.Exists(tmp))
-                patchFolder = tmp;
+            var innerPath = System.IO.Path.Combine(unpackedArchive, "Gobchat");
+            if (System.IO.Directory.Exists(innerPath)) // happens, if it wasn't packed with a parent folder
+                unpackedArchive = innerPath;
 
             var manager = NAppUpdate.Framework.UpdateManager.Instance;
-            manager.UpdateSource = new NAULocalFileUpdateSource(patchFolder);
+            manager.UpdateSource = new NAULocalFileUpdateSource(unpackedArchive);
             manager.UpdateFeedReader = new NAULocalFileFeedReader();
             manager.Config.UpdateExecutableName = System.AppDomain.CurrentDomain.FriendlyName;
 

@@ -24,6 +24,8 @@ namespace Gobchat.Module.Updater.Internal
         public string URL { get; private set; }
         public string OutputFolder { get; private set; }
 
+        public bool DeleteFileOnCancelOrError { get; set; } = true;
+
         public string FileName
         {
             get
@@ -80,14 +82,16 @@ namespace Gobchat.Module.Updater.Internal
                 switch (result)
                 {
                     case DownloadHelper.DownloadResult.Canceled:
-                        DeleteFile(progressMonitor);
+                        if(DeleteFileOnCancelOrError)
+                            DeleteFile(progressMonitor);
                         return Result.Canceled;
                 }
             }
             catch (DownloadFailedException ex)
             {
                 progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
-                DeleteFile(progressMonitor);
+                if (DeleteFileOnCancelOrError)
+                    DeleteFile(progressMonitor);
                 throw;
             }
 

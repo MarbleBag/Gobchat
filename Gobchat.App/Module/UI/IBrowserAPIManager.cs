@@ -31,7 +31,7 @@ namespace Gobchat.Module.UI
 
         IBrowserMemoryHandler MemoryHandler { get; set; }
 
-        event EventHandler<UIReadChangedEventArgs> OnUIReadyChanged;
+        event EventHandler<UIReadyChangedEventArgs> OnUIReadyChanged;
 
         void DispatchEventToBrowser(global::Gobchat.UI.Web.JavascriptEvents.JSEvent jsEvent);
 

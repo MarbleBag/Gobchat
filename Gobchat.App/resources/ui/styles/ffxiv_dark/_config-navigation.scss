@@ -1,0 +1,51 @@
+@use "config-button";
+@use "config-divider";
+@use "input";
+
+.gob-config-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1rem / 8);
+    flex: 1 0 auto;
+    overflow: hidden auto;
+    & > .gob-config-divider {
+        @extend .gob-config-divider--horizontal;
+    }
+}
+
+.gob-config-navigation_entry {
+    cursor: pointer;
+    display: block;
+    border-radius: 1rem;
+    padding: 0.07rem 0.75rem;
+    white-space: nowrap;
+    // margin: calc(2em / 16) 0 calc(2em / 16) calc(5em / 16);
+
+    &.is-active {
+        font-weight: bold;
+        background-image: var(--navigation_entry--active_background);
+    }
+
+    &:hover:not(.is-active) {
+        background: var(--navigation_entry--hover_background);
+    }
+}
+
+.gob-config-navigation_selection {
+    @extend .gob-input-dropdown;
+}
+
+.gob-config-navigation_button {
+    @extend .gob-config-primary-button;
+    text-align: left;
+    padding: calc(3rem / 16) calc(28rem / 16);
+    flex: 0 0 auto;
+}
+
+.gob-config-navigation-panel {
+    width: 100%;
+    overflow: auto auto;
+    padding-right: 1rem;
+}
+
+

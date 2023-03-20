@@ -25,7 +25,7 @@ namespace Gobchat.Module.UI.Internal
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private event EventHandler<UIReadChangedEventArgs> _onUIReadyChanged;
+        private event EventHandler<UIReadyChangedEventArgs> _onUIReadyChanged;
 
         private readonly JavascriptBuilder _jsBuilder = new JavascriptBuilder();
         private readonly List<IBrowserAPI> _apis = new List<IBrowserAPI>();
@@ -52,7 +52,7 @@ namespace Gobchat.Module.UI.Internal
                 if (_isUIReady == value)
                     return;
                 _isUIReady = value;
-                _onUIReadyChanged?.Invoke(this, new UIReadChangedEventArgs(IsUIReady));
+                _onUIReadyChanged?.Invoke(this, new UIReadyChangedEventArgs(IsUIReady));
             }
         }
 
@@ -62,12 +62,12 @@ namespace Gobchat.Module.UI.Internal
 
         public IBrowserMemoryHandler MemoryHandler { get; set; }
 
-        public event EventHandler<UIReadChangedEventArgs> OnUIReadyChanged
+        public event EventHandler<UIReadyChangedEventArgs> OnUIReadyChanged
         {
             add
             {
                 _onUIReadyChanged += value;
-                _onUIReadyChanged?.Invoke(this, new UIReadChangedEventArgs(IsUIReady));
+                _onUIReadyChanged?.Invoke(this, new UIReadyChangedEventArgs(IsUIReady));
             }
             remove => _onUIReadyChanged -= value;
         }

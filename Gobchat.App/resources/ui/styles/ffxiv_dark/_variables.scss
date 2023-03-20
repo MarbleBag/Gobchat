@@ -1,0 +1,92 @@
+:root {
+    // general
+    --browser_scollbar_thumb_color: #f0f4ce;
+    --browser_scollbar_thumb_color--active:#f0f4ce;
+    --browser_scollbar_thumb_border-color: #ddd391;
+    --browser_scollbar_track_color: #666666;
+    --browser_scollbar_track_color--active: #222222;
+    --browser_scollbar_track_border-color: #202020;
+
+    // config dialog
+    --noise-texture: url("../graphics/noise.png");
+    --dialog_background: var(--noise-texture), linear-gradient(to bottom, #666666, #444444 1.25rem, #313131 3.25rem);
+    --dialog_border-color: var(--icon-button_icon-color);
+    
+    // buttons
+    --primary-button_text-color: var(--text-2_color);
+    --primary-button_text-shadow-color: var(--text-2_shadow);
+    --primary-button_text-shadow: var(--primary-button_text-shadow-color);
+    --primary-button_icon-color: #e8a33f;
+    --primary-button_icon-shadow-color: var(--primary-button_text-shadow-color);
+    --primary-button_text-shadow: var(--primary-button_icon-shadow-color);
+    --primary-button_background: linear-gradient(to bottom, #636563, #525152 45%, #423d42 55%, #393839 60%, #474647);
+    --primary-button_border-color: #141414;
+    --primary-button--active_border-color: #cc9f5e;
+    --primary-button_border: 0.05rem solid var(--primary-button_border-color);
+
+    --icon-button_icon-color: #cc9f5e;
+    --icon-button_icon-shadow-color: black;
+    --icon-button_border-color: var(--icon-button_icon-color);
+    --icon-button_background: #a43131;
+    --icon-button_shadow-color: black;
+    
+    --color-button_icon-color: var(--icon-button_icon-color);
+    --color-button_border-color: var(--icon-button_icon-color);
+    --color-button_selected-color_border-color: var(--color-button_border-color);
+    --color-button_background: var(--primary-button_background);
+    --color-button_shadow-color: var(--icon-button_shadow-color);
+
+    // fields
+    --input_background: field;
+    --input_border-color: lightgray;
+    --input_text-color: black;
+
+    --input-checkbox_size: 0.875rem;
+    --input-checkbox--unchecked_background: url("../graphics/checkbox.png");
+    --input-checkbox--checked_background: url("../graphics/checkbox-checked.png");
+
+    --input-slider_track_color: var(--browser_scollbar_track_color);
+    --input-slider_track_border-color: var(--browser_scollbar_track_border-color);
+    --input-slider_thumb_border-color: var(--browser_scollbar_thumb_border-color);
+    --input-slider_thumb_color: var(--browser_scollbar_thumb_color);
+
+    // text
+    --text-1_color: #ded2b8;
+    --text-1_shadow-color: black;
+    --text-1_shadow: calc(1rem / 16) 0 var(--text-1_shadow-color), calc(-1rem / 16) 0 var(--text-1_shadow-color),
+        0 calc(1rem / 16) var(--text-1_shadow-color), 0 calc(-1rem / 16) var(--text-1_shadow-color);
+    --text-1--disabled_color: #756f62;
+
+    --text-2_color: #cccccc;
+    --text-2_shadow-color: black;
+    --text-2_shadow: calc(1rem / 16) 0 var(--text-2_shadow-color), calc(-1rem / 16) 0 var(--text-2_shadow-color),
+        0 calc(1rem / 16) var(--text-2_shadow-color), 0 calc(-1rem / 16) var(--text-2_shadow-color);
+    --text-2--disabled_color: #7e7e7e;
+
+    --text-error_text-color: crimson;
+    --text-error_text-shadow-color: black;
+    --text-error_text-shadow: calc(1rem / 16) 0 var(--text-error_text-shadow-color),
+        calc(-1rem / 16) 0 var(--text-error_text-shadow-color), 0 calc(1rem / 16) var(--text-error_text-shadow-color),
+        0 calc(-1rem / 16) var(--text-error_text-shadow-color);
+
+
+    --navigation_entry--hover_background: linear-gradient(135deg, #131313, #ffff0000 80%);
+    --navigation_entry--active_background: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+
+    --table_header_text-color: var(--text-2_color);
+    --table_header_text-shadow-color: var(--text-2_shadow-color);
+    --table_header_text-shadow: calc(1rem / 16) 0 var(--table_header_text-shadow-color),
+        calc(-1rem / 16) 0 var(--table_header_text-shadow-color), 0 calc(1rem / 16) var(--table_header_text-shadow-color),
+        0 calc(-1rem / 16) var(--table_header_text-shadow-color);
+    --table--stripped_background: #13131350;
+    --table--hover_background: linear-gradient(135deg, #131313, #13131310 80%);
+    --table--active_background: linear-gradient(135deg, #a98b5694, #ffff0000 80%);
+
+    --page-divider-color-1: black;
+    --page-divider-color-2: white;
+
+    --chat-active-tab-color: #c79300;
+
+    --active-selection-border-color: 0; // not good
+    --nonactive-selection-border-color: 0; // not good
+}

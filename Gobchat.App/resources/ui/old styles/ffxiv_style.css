@@ -1,0 +1,337 @@
+/*******************************************************************************
+ * Copyright (C) 2019-2022 MarbleBag
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *******************************************************************************/
+
+:root {
+    --noise-texture: url("../graphics/noise.png");
+    --color-gold: #cc9f5e;
+}
+
+.gob-separator-horizontal {
+    margin: 5px 10px 5px 10px;
+}
+
+.gob-separator-vertical {
+    margin: 1px 3px 1px 3px;
+}
+
+.gob-separator-gold-vertical {
+    margin: 1px 3px 1px 3px;
+}
+
+.gob-text-error {
+    font-weight: bold;
+}
+
+.gob-column-navigation > select {
+    margin: 3px 3px 3px 3px;
+}
+
+.gob-nav-panel {
+}
+
+    .gob-nav-panel::-webkit-scrollbar {
+        width: 11px;
+        height: 11px;
+    }
+
+    .gob-nav-panel::-webkit-scrollbar-button {
+        width: 4px;
+        height: 4px;
+    }
+
+    .gob-nav-panel::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+    }
+
+    .gob-nav-panel::-webkit-scrollbar-track {
+        border-radius: 0px;
+    }
+
+    .gob-nav-panel::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+.gob-selectable-element {
+    border-radius: 20px;
+    padding-left: 12px;
+}
+
+.gob-config-group {
+    margin: 10px 0px 10px 5px;
+}
+
+    .gob-config-group .gob-config-group-label {
+        font-size: 18px;
+        text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+    }
+
+.gob-config-dialog-header {
+    min-height: 30px;
+    max-height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: 15px;
+    font-size: 24px;
+    z-index: 1;
+    text-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black;
+}
+
+    .gob-config-dialog-header + .gob-separator-horizontal {
+        margin-top: -2px;
+    }
+
+/* table styles */
+
+.gob-table {
+    border-spacing: 0px;
+    text-align: center;
+}
+
+.gob-table-t-channel > thead > tr > th {
+    text-align: left;
+    padding: 10px 5px 0px 10px;
+}
+
+    .gob-table-t-channel > thead > tr > th:nth-child(1) { /*remove padding from first header*/
+        padding-left: 0px;
+    }
+
+.gob-table-t-channel > tbody > tr > td:nth-child(1) {
+    text-align: left;
+    padding-right: 15px;
+}
+
+/* button styles */
+
+.gob-button-primary {
+    text-shadow: 1px 1px 0px #000000;
+    border-radius: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+    .gob-button-primary:hover {
+        filter: brightness(110%);
+    }
+
+    .gob-button-primary:disabled {
+        opacity: 1;
+        filter: brightness(50%);
+    }
+
+.gob-button-secondary {
+    border-radius: 14px;
+    padding: 2px 14px 2px 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+    .gob-button-secondary:disabled {
+        opacity: 1;
+        filter: brightness(50%);
+    }
+
+    .gob-button-secondary:hover {
+        filter: brightness(110%);
+    }
+
+.gob-button-tertiary {
+    min-height: 25px;
+    max-height: 25px;
+    max-width: 28px;
+    min-width: 28px;
+    border: 1px solid var(--color-gold);
+    border-radius: 5px;
+    box-shadow: inset 0.5px .5px 0px black, inset -0.5px -0.5px 0px black;
+    background: #a43131;
+    color: var(--color-gold);
+    box-sizing: border-box;
+}
+
+    .gob-button-tertiary > * {
+        filter: drop-shadow(1px 1px 1px black);
+    }
+
+    .gob-button-tertiary:hover {
+        filter: brightness(110%);
+    }
+
+    .gob-button-tertiary:disabled {
+        opacity: 1;
+        filter: brightness(50%);
+    }
+
+.gob-button-delete {
+}
+
+.ui-accordion-header .gob-button-delete {
+    min-height: 28px;
+    min-width: 28px;
+    position: relative;
+    top: -4px;
+    right: 0px;
+}
+
+.gob-button-reset {
+}
+
+.gob-button-copypage {
+    margin: 0px;
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    min-width: 30px;
+    max-height: 26px;
+    z-index: 1;
+}
+
+/* general styles */
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    min-width: 14px;
+    max-width: 14px;
+    min-height: 14px;
+    max-height: 14px;
+    cursor: pointer;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    cursor: pointer;
+    outline: none;
+    background-color: transparent;
+}
+
+    input[type="range"]::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
+        border-radius: 25px;
+        height: 8px;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        margin-top: -5px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50px;
+        cursor: ew-resize;
+    }
+
+/* jQuery UI */
+/* jQuery UI accordion */
+.ui-accordion .ui-accordion-content {
+    background: unset;
+    color: unset;
+    text-shadow: unset;
+    border: unset;
+}
+
+.ui-accordion .ui-accordion-header {
+    background: unset;
+    border-radius: 5px;
+}
+
+    .ui-accordion .ui-accordion-header:before {
+        content: "+";
+        font-weight: 500;
+    }
+
+    .ui-accordion .ui-accordion-header.ui-state-active:before {
+        content: "-";
+        font-weight: 500;
+    }
+
+    .ui-accordion .ui-accordion-header.ui-state-active {
+        border-radius: 5px 5px 0px 0px;
+        border: unset;
+    }
+
+/* jQuery UI dialog */
+.ui-dialog.ui-corner-all {
+    border-radius: 9px;
+}
+
+.ui-dialog > .ui-widget-content {
+    background: unset;
+    border: unset;
+    border-radius: unset;
+}
+
+.ui-dialog > .ui-widget-header {
+    background: unset;
+    border: unset;
+    border-radius: unset;
+}
+
+.ui-dialog .ui-dialog-buttonset > button {
+    -webkit-appearance: none;
+    border-radius: 14px;
+    padding: 2px 14px 2px 14px;
+}
+
+    .ui-dialog .ui-dialog-buttonset > button:disabled {
+        opacity: 1;
+        filter: brightness(50%);
+    }
+
+    .ui-dialog .ui-dialog-buttonset > button:hover {
+        filter: brightness(110%);
+    }
+
+.ui-dialog .ui-dialog-titlebar-close {
+    min-height: 20px;
+    max-height: 20px;
+    max-width: 20px;
+    min-width: 20px;
+    border: 1px solid var(--color-gold);
+    border-radius: 5px;
+    box-shadow: inset 0.5px .5px 0px black, inset -0.5px -0.5px 0px black;
+    background: #a43131;
+    color: var(--color-gold);
+    box-sizing: border-box;
+}
+
+    .ui-dialog .ui-dialog-titlebar-close > * {
+        filter: drop-shadow(1px 1px 1px black);
+    }
+
+    .ui-dialog .ui-dialog-titlebar-close:hover {
+        filter: brightness(110%);
+    }
+
+/* spectrum */
+
+.sp-replacer {
+    background: linear-gradient(to bottom, #676767, #393939 50%, #444444 80%, #4a4a4a);
+    box-sizing: border-box;
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+    border-radius: 5px;
+    box-shadow: inset 0.5px 0.5px 0px black, inset -0.5px -0.5px 0px black;
+}
+
+    .sp-replacer:hover {
+        color: var(--color-gold);
+        filter: brightness(110%);
+    }
+
+    .sp-replacer.sp-active {
+        color: var(--color-gold);
+        box-shadow: inset 1px 1px 10px #020202a6;
+    }

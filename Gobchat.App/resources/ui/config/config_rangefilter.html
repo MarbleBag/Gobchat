@@ -1,166 +1,79 @@
-﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <button id="c_rangefilter_copyprofile" class="gob-button-tertiary gob-button-copypage"><i class="fas fa-clone"></i></button>
+<button id="cp-rangefilter_copyprofile"></button>
 
-    <div id="c_rangefilter">
-        <div class="gob-config-group">
-            <div class="gob-config-group-item">
-                <div>
-                    <div data-gob-locale-text="config.rangefilter.description"></div>
-                </div>
-            </div>
+<div class="gob-config-page" id="cp-rangefilter">
+    <div class="gob-config-group">
+        <label class="gob-config-text" data-gob-locale-text="config.rangefilter.description"></label>
+
+        <div class="gob-config-group_item">
+            <input type="checkbox" class="gob-input-checkbox" id="cp-rangefilter_mention"
+                data-gob-configkey="behaviour.rangefilter.ignoreMention"
+                data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip" />
+            <label class="gob-config-label" for="cp-rangefilter_mention"
+                data-gob-locale-tooltip="config.rangefilter.ckb.mentions.tooltip"
+                data-gob-locale-text="config.rangefilter.ckb.mentions">
+            </label>
         </div>
 
-        <div class="gob-config-group">
-            <div class="gob-config-group-item">
-                <div class="gob-config__checkbox">
-                    <input type="checkbox" id="c_rangefilter_mention"
-                           data-gob-configkey="behaviour.rangefilter.ignoreMention"
-                           data-gob-locale-title="config.rangefilter.ckb.mentions.tooltip" />
-                    <div data-gob-locale-title="config.rangefilter.ckb.mentions.tooltip"
-                         data-gob-locale-text="config.rangefilter.ckb.mentions">
-                    </div>
-                </div>
-            </div>
+        <div class="gob-config-group_item-3-small-columns">
+            <label class="gob-config-label" for="cp-rangefilter_cutoff" data-gob-locale-text="config.rangefilter.cutoff"
+                   data-gob-locale-tooltip="config.rangefilter.cutoff.tooltip"></label>
+            <input class="gob-input-number" type="number" min="0" id="cp-rangefilter_cutoff"
+                   data-gob-configkey="behaviour.rangefilter.cutoff"
+                   data-gob-locale-tooltip="config.rangefilter.cutoff.tooltip">
+            <button id="cp-rangefilter_cutoff_reset"></button>
 
-            <div class="gob-config-group-item">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class=""
-                                     data-gob-locale-text="config.rangefilter.cutoff"
-                                     data-gob-locale-title="config.rangefilter.cutoff.tooltip"></div>
-                            </td>
-                            <td>
-                                <input class=""
-                                       type="number" min="0" id="c_rangefilter_cutoff"
-                                       data-gob-configkey="behaviour.rangefilter.cutoff"
-                                       data-gob-locale-title="config.rangefilter.cutoff.tooltip">
-                            </td>
-                            <td>
-                                <button class="gob-button-tertiary gob-button-reset"
-                                        id="c_rangefilter_cutoff-reset"
-                                        data-gob-configkey="behaviour.rangefilter.cutoff"
-                                        data-gob-locale-title="config.main.button.reset.tooltip">
-                                    <i class="fas fa-undo-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
+            <label class="gob-config-label" for="cp-rangefilter_fadeout"
+                   data-gob-locale-text="config.rangefilter.fadeout"
+                   data-gob-locale-tooltip="config.rangefilter.fadeout.tooltip"></label>
+            <input class="gob-input-number" type="number" min="0" id="cp-rangefilter_fadeout"
+                   data-gob-configkey="behaviour.rangefilter.fadeout"
+                   data-gob-locale-tooltip="config.rangefilter.fadeout.tooltip">
+            <button id="cp-rangefilter_fadeout_reset"></button>
 
-                        <tr>
-                            <td>
-                                <div class=""
-                                     data-gob-locale-text="config.rangefilter.fadeout"
-                                     data-gob-locale-title="config.rangefilter.fadeout.tooltip"></div>
-                            </td>
-                            <td>
-                                <input class=""
-                                       type="number" min="0" id="c_rangefilter_fadeout"
-                                       data-gob-configkey="behaviour.rangefilter.fadeout"
-                                       data-gob-locale-title="config.rangefilter.fadeout.tooltip">
-                            </td>
-                            <td>
-                                <button class="gob-button-tertiary gob-button-reset"
-                                        id="c_rangefilter_fadeout_reset"
-                                        data-gob-configkey="behaviour.rangefilter.fadeout"
-                                        data-gob-locale-title="config.main.button.reset.tooltip">
-                                    <i class="fas fa-undo-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
+            <label class="gob-config-label" for="cp-rangefilter_startopacity"
+                   data-gob-locale-text="config.rangefilter.transparency.start"
+                   data-gob-locale-tooltip="config.rangefilter.transparency.start.tooltip"></label>
+            <input class="gob-input-number" type="number" min="1" max="100"
+                   id="cp-rangefilter_startopacity" data-gob-configkey="behaviour.rangefilter.startopacity"
+                   data-gob-locale-tooltip="config.rangefilter.transparency.start.tooltip">
+            <button id="cp-rangefilter_startopacity_reset"></button>
 
-                        <tr>
-                            <td>
-                                <div class=""
-                                     data-gob-locale-text="config.rangefilter.transparency.start"
-                                     data-gob-locale-title="config.rangefilter.transparency.start.tooltip"></div>
-                            </td>
-                            <td>
-                                <input class=""
-                                       type="number" min="1" max="100" id="c_rangefilter_startopacity"
-                                       data-gob-configkey="behaviour.rangefilter.startopacity"
-                                       data-gob-locale-title="config.rangefilter.transparency.start.tooltip">
-                            </td>
-                            <td>
-                                <button class="gob-button-tertiary gob-button-reset"
-                                        id="c_rangefilter_startopacity_reset"
-                                        data-gob-configkey="behaviour.rangefilter.startopacity"
-                                        data-gob-locale-title="config.main.button.reset.tooltip">
-                                    <i class="fas fa-undo-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class=""
-                                     data-gob-locale-text="config.rangefilter.transparency.end"
-                                     data-gob-locale-title="config.rangefilter.transparency.end.tooltip"></div>
-                            </td>
-                            <td>
-                                <input class=""
-                                       type="number" min="1" max="100" id="c_rangefilter_endopacity"
-                                       data-gob-configkey="behaviour.rangefilter.endopacity"
-                                       data-gob-locale-title="config.rangefilter.transparency.end.tooltip">
-                            </td>
-                            <td>
-                                <button class="gob-button-tertiary gob-button-reset"
-                                        id="c_rangefilter_endopacity_reset"
-                                        data-gob-configkey="behaviour.rangefilter.endopacity"
-                                        data-gob-locale-title="config.main.button.reset.tooltip">
-                                    <i class="fas fa-undo-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="gob-config-group" style="overflow-x: auto;">
-            <div class="gob-table-double">
-                <table id="c_rangefilter_table-1" class="gob-table gob-table-t-channel gob-table-row-hover gob-table-stripes-hrzt">
-                    <thead>
-                        <tr>
-                            <th data-gob-locale-text="config.rangefilter.tbl.name"></th>
-                            <th data-gob-locale-text="config.rangefilter.tbl.rangefilter"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <div class="gob-separator-vertical"></div>
-                <table id="c_rangefilter_table-2" class="gob-table gob-table-t-channel gob-table-row-hover gob-table-stripes-hrzt">
-                    <thead>
-                        <tr>
-                            <th data-gob-locale-text="config.rangefilter.tbl.name"></th>
-                            <th data-gob-locale-text="config.rangefilter.tbl.rangefilter"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <label class="gob-config-label" for="cp-rangefilter_endopacity"
+                   data-gob-locale-text="config.rangefilter.transparency.end"
+                   data-gob-locale-tooltip="config.rangefilter.transparency.end.tooltip"></label>
+            <input class="gob-input-number" type="number" min="1" max="100" id="cp-rangefilter_endopacity"
+                   data-gob-configkey="behaviour.rangefilter.endopacity"
+                   data-gob-locale-tooltip="config.rangefilter.transparency.end.tooltip">
+            <button id="cp-rangefilter_endopacity_reset"></button>
         </div>
     </div>
 
-    <template id="c_rangefilter_template_tableentry">
+    <div class="gob-config-group">
+        <div class="gob-config-text" data-gob-locale-text="config.rangefilter.tbl.channel.name"></div>
+        <div class="gob-table-wrapper--split-in-2">
+            <table class="gob-table gob-table--confirm" id="cp-rangefilter_channel-table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.rangefilter.tbl.channel.header.name"></th>
+                        <th data-gob-locale-text="config.rangefilter.tbl.channel.header.filter"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <template id="cp-rangefilter_template_channel-table_entry">
         <tr>
             <td>
-                <label class="js-label"></label>
+                <label class="gob-config-label js-label"></label>
             </td>
             <td>
-                <input class="js-filter" type="checkbox" />
+                <input class="gob-input-checkbox js-checkbox" type="checkbox" />
             </td>
         </tr>
     </template>
+</div>
 
-    <script type="text/javascript" src="config_rangefilter.js"></script>
-</body>
-</html>
+<script defer type="module" src="config_rangefilter.js"></script>

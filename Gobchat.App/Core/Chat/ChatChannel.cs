@@ -13,7 +13,7 @@
 
 namespace Gobchat.Core.Chat
 {
-    //Do never ever change any name. The names are used to resolve values if read from any config file.
+    //Do never ever change any name. The names are used to resolve values read from any config file.
 
     public enum ChatChannel : int
     {

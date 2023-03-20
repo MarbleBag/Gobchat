@@ -48,7 +48,7 @@ namespace Sharlayan.Utilities {
                 entry.TargetType = (Actor.TargetType) entry.TargetTypeID;
 
                 entry.GatheringStatus = source[MemoryHandler.Instance.Structures.ActorItem.GatheringStatus];
-                entry.Distance = source[MemoryHandler.Instance.Structures.ActorItem.Distance];
+                entry.DistanceOnXAxisToPlayer = source[MemoryHandler.Instance.Structures.ActorItem.Distance];
 
                 entry.X = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.X + defaultBaseOffset);
                 entry.Z = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Z + defaultBaseOffset);

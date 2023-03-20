@@ -96,7 +96,15 @@ namespace Gobchat.Core.Runtime
             logger.Info("Install updates app");
             try
             {
-                manager.ApplyUpdates(true, true, false);
+                manager.ApplyUpdates(
+                    true, 
+                    true,
+                    #if DEBUG
+                        true
+                    #else
+                        false
+                    #endif
+                    );
             }
             catch (Exception ex)
             {

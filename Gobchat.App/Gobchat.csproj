@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,6 +42,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <TypeScriptTarget>ES2021</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +66,19 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>false</DebugSymbols>
+    <TypeScriptTarget>ES2021</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ESNEXT</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Gobchat.App</StartupObject>
@@ -69,48 +96,118 @@
     <ApplicationIcon>resources\GobIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="resources\ui\config\config_rangefilter.html">
+    <Content Include="resources\ui\config\about.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_rangefilter.js">
+    <Content Include="resources\ui\config\config.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config.js">
+      <DependentUpon>config.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_app.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_app.js">
+      <DependentUpon>config_app.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_channel.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_channel.js">
+      <DependentUpon>config_channel.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_chatlog.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_chatlog.js">
+      <DependentUpon>config_chatlog.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_roleplay.js">
+    <Content Include="resources\ui\config\config_formatting.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_profiles.js">
+    <TypeScriptCompile Include="resources\ui\config\config.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_app.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_channel.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_chatlog.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_formatting.ts" />
+    <Content Include="resources\ui\config\config_formatting.js">
+      <DependentUpon>config_formatting.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_mentions.js">
+    <Content Include="resources\ui\config\config_groups.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\config\config_groups.js">
+      <DependentUpon>config_groups.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config.js">
+    <Content Include="resources\ui\config\config_mentions.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_app.js">
+    <Content Include="resources\ui\config\config_mentions.js">
+      <DependentUpon>config_mentions.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_channel.js">
+    <Content Include="resources\ui\config\config_profiles.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_groups_new.html" />
+    <Content Include="resources\ui\config\config_profiles.js">
+      <DependentUpon>config_profiles.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_rangefilter.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\config\config_rangefilter.js">
+      <DependentUpon>config_rangefilter.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\ui\config\config_tabs.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\gobchat-test.js" />
-    <Content Include="resources\ui\gobchat.js">
+    <Content Include="resources\ui\config\config_tabs.js">
+      <DependentUpon>config_tabs.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\config_tabs.js">
+    <Content Include="resources\ui\lib\spectrum.min.css">
+      <DependentUpon>spectrum.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\lib\spectrum.min.js">
+      <DependentUpon>spectrum.js</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\Components.js">
+      <DependentUpon>Components.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\JQueryExtensions.js">
+      <DependentUpon>JQueryExtensions.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\WebComponents.js">
+      <DependentUpon>WebComponents.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\WebComponentsTemplate.html" />
+    <Content Include="resources\ui\styles\ffxiv_dark.min.css">
+      <DependentUpon>ffxiv_dark.css</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light.css">
+      <DependentUpon>ffxiv_light.scss</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_light.min.css">
+      <DependentUpon>ffxiv_light.css</DependentUpon>
+    </Content>
+    <Content Include="resources\ui\tsconfig.json" />
+    <Content Include="resources\ui\gobchat-test.js" />
+    <Content Include="resources\ui\gobchat.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\web-components.js">
@@ -134,13 +231,76 @@
     <Content Include="resources\ui\graphics\checkbox-light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_light_style.css">
+    <Content Include="resources\ui\modules\CommonUtility.js">
+      <DependentUpon>CommonUtility.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_style.css">
+    <TypeScriptCompile Include="resources\ui\config\config_groups.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_mentions.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_profiles.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_rangefilter.ts" />
+    <TypeScriptCompile Include="resources\ui\config\config_tabs.ts" />
+    <TypeScriptCompile Include="resources\ui\globals.d.ts" />
+    <Content Include="resources\ui\modules\Dialog.js">
+      <DependentUpon>Dialog.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\ffxiv_dark_style.css">
+    <TypeScriptCompile Include="resources\ui\modules\Dialog.ts" />
+    <Content Include="resources\ui\modules\Command.js">
+      <DependentUpon>Command.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Command.ts" />
+    <TypeScriptCompile Include="resources\ui\modules\CommonUtility.ts" />
+    <Content Include="resources\ui\modules\Chat.js">
+      <DependentUpon>Chat.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Chat.ts" />
+    <Content Include="resources\ui\modules\EventDispatcher.js">
+      <DependentUpon>EventDispatcher.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\EventDispatcher.ts" />
+    <Content Include="resources\ui\modules\Style.js">
+      <DependentUpon>Style.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\modules\Style.ts" />
+    <Content Include="resources\ui\modules\Config.js">
+      <DependentUpon>Config.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Config.ts" />
+    <Content Include="resources\ui\modules\MenuNavigationComponent.js">
+      <DependentUpon>MenuNavigationComponent.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Components.ts" />
+    <TypeScriptCompile Include="resources\ui\modules\JQueryExtensions.ts" />
+    <TypeScriptCompile Include="resources\ui\modules\MenuNavigationComponent.ts" />
+    <Content Include="resources\ui\modules\Constants.js">
+      <DependentUpon>Constants.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Constants.ts" />
+    <Content Include="resources\ui\modules\GobModule.js">
+      <DependentUpon>GobModule.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\GobModule.ts" />
+    <Content Include="resources\ui\modules\Locale.js">
+      <DependentUpon>Locale.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Locale.ts" />
+    <Content Include="resources\ui\old styles\ffxiv_light_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\old styles\ffxiv_style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\old styles\ffxiv_dark_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\graphics\ButtonActive.png" />
@@ -154,12 +314,49 @@
     <Content Include="resources\ui\graphics\noise.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\styles\gobchat_v1_style.css">
+    <Content Include="resources\ui\old styles\gobchat_v1_style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobui_default.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\styles\base.css">
+      <DependentUpon>base.scss</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\ui\styles\ffxiv_dark.css">
+      <DependentUpon>ffxiv_dark.scss</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="bundleconfig.json" />
+    <None Include="resources\.gitignore" />
+    <None Include="resources\sharlayan\signatures-latest.json" />
+    <None Include="resources\sharlayan\structures-latest.json" />
+    <None Include="resources\ui\lib\.gitignore" />
+    <None Include="resources\ui\styles\class_overview.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config-cp-tabs.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-chatlog.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-profile.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_jquery.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_constants.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-popup.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_spectrum.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_variables2.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_variables.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat-tabbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat-toolbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_chat.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-button.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-dialog.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-divider.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-group.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_config-navigation.scss" />
+    <None Include="resources\ui\styles\base.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="pack-release.ps1" />
     <None Include=".editorconfig" />
     <None Include="App.config" />
@@ -197,9 +394,23 @@
     <Content Include="resources\default_profile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\modules\Databinding.js">
+      <DependentUpon>Databinding.ts</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <TypeScriptCompile Include="resources\ui\modules\Databinding.ts" />
+    <None Include="resources\ui\old styles\styles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\ui\styles\ffxiv_dark\_grid.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_input.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_scrollbar.scss" />
+    <None Include="resources\ui\styles\ffxiv_dark\_table.scss" />
+    <None Include="resources\ui\styles\ffxiv_light.scss" />
     <None Include="resources\ui\styles\styles.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <TypeScriptCompile Include="resources\ui\modules\WebComponents.ts" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Hjson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -210,10 +421,10 @@
       <HintPath>..\packages\NAppUpdate.Framework.0.5.1.0\lib\net40\NAppUpdate.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.1.0\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.1.2\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="SharpCompress, Version=0.32.2.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.32.2\lib\net461\SharpCompress.dll</HintPath>
@@ -460,33 +671,6 @@
     <Content Include="resources\sounds\FFXIV_Notification.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\config\about.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\gob-confighelper.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_channel.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_app.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_groups.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_mentions.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_profiles.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\config\config_roleplay.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="resources\ui\gobchat\deprecated\ChatTabHtmlElement.js" />
     <Content Include="resources\ui\gobchat\Databinding.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -567,11 +751,9 @@
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\lib\spectrum.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\lib\spectrum.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Compile Include="Core\Chat\AutotranslateProvider.cs" />
@@ -645,4 +827,12 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.5.0.2\build\Microsoft.TypeScript.MSBuild.targets')" />
 </Project>

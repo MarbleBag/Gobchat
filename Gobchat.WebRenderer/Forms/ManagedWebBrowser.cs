@@ -17,6 +17,7 @@ using Gobchat.UI.Forms.Helper;
 using Gobchat.UI.Web;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -72,6 +73,8 @@ namespace Gobchat.UI.Forms
 
         public event EventHandler<BrowserAPIBindingEventArgs> OnResolveBrowserAPI;
 
+        public event EventHandler<RedirectResourceRequestEventArgs> OnRedirectableResourceRequests;
+
         event EventHandler<BrowserInitializedEventArgs> IManagedWebBrowser.OnBrowserInitialized
         {
             //someone may register after the original event has already fired
@@ -125,7 +128,9 @@ namespace Gobchat.UI.Forms
 
             MenuHandler = new CustomContextMenuHandler(); //deactives context menu
             DownloadHandler = new CustomDownloadHandler();
-            //LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
+           // LifeSpanHandler = new CustomLifeSpanHandler(); //TODO use to set icon and handle window.open
+             RequestHandler = new CustomRequestHandler(this);
+
 #if DEBUG
             KeyboardHandler = new CustomKeyboardHandler();
 #endif
@@ -191,6 +196,32 @@ namespace Gobchat.UI.Forms
             Form.InvokeSyncOnUI(f => f.Cursor = new Cursor(cursor));
         }
 
+        internal bool RedirectableResourceRequests(IRequest request)
+        {
+            var uri = request.Url;
+            RedirectResourceRequestEventArgs.Type resourceType;
+            switch (request.ResourceType)
+            {
+                case ResourceType.Script:
+                    resourceType = RedirectResourceRequestEventArgs.Type.Script; break;
+                case ResourceType.Stylesheet:
+                    resourceType = RedirectResourceRequestEventArgs.Type.Stylesheet; break;
+                default:
+                    return false;
+            }
+
+            var eventArgs = new RedirectResourceRequestEventArgs(request.Url, resourceType);
+            OnRedirectableResourceRequests?.Invoke(this, eventArgs);
+
+            if(eventArgs.RedirectUri != null && eventArgs.RedirectUri.Trim().Length > 0)
+            {
+                request.Url = eventArgs.RedirectUri;
+                return true;
+            }
+
+            return false;
+        }
+
         internal void StartBrowser(int width, int height)
         {
             var cefWindowInfo = new CefSharp.WindowInfo();
@@ -203,13 +234,17 @@ namespace Gobchat.UI.Forms
             cefBrowserSettings.Javascript = CefState.Enabled;
             cefBrowserSettings.LocalStorage = CefState.Enabled;
 
+            //TODO
+            //CefBrowser.JavascriptObjectRepository.ResolveObject += (sender, e) => { Debug.WriteLine($"Request Object '{e.ObjectName}' in repository '{e.ObjectRepository}'"); };
+            //CefBrowser.JavascriptObjectRepository.ObjectBoundInJavascript += (sender, e) => { Debug.WriteLine($"Bound Object '{e.ObjectName}' in repository '{e.ObjectRepository}'"); };
+
             CefBrowser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
         }
 
         public void ShowDevTools()
         {
             if (IsBrowserInitialized)
-                CefBrowser.ShowDevTools();
+                CefBrowser.GetBrowser().ShowDevTools();
         }
 
         public void CloseBrowser(bool forceClose)
@@ -259,7 +294,7 @@ namespace Gobchat.UI.Forms
             if (!CefBrowser.JavascriptObjectRepository.IsBound(api.APIName))
                 return false;
 
-            var script = $@"(async ()=>{{ return await CefSharp.DeleteBoundObject('{ api.APIName}') }})();";
+            var script = $@"(async ()=>{{ return await CefSharp.DeleteBoundObject('{api.APIName}') }})();";
 
             if (this.CefBrowser.CanExecuteJavascriptInMainFrame)
             {
@@ -351,7 +386,7 @@ namespace Gobchat.UI.Forms
                 return;
 
             var sendToBrowser = true;
-            if (keyEvent.Type == KeyEventType.KeyUp)
+            if (keyEvent.Type == KeyEventType.KeyUp) // ctrl+c hotkey
             {
                 if (keyEvent.Modifiers.HasFlag(CefEventFlags.ControlDown))
                 {
@@ -366,5 +401,7 @@ namespace Gobchat.UI.Forms
             if (sendToBrowser)
                 CefBrowser.GetBrowserHost().SendKeyEvent(keyEvent);
         }
+
+
     }
 }

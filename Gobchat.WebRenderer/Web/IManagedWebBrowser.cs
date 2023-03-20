@@ -36,6 +36,8 @@ namespace Gobchat.UI.Web
 
         event EventHandler<BrowserAPIBindingEventArgs> OnResolveBrowserAPI;
 
+        event EventHandler<RedirectResourceRequestEventArgs> OnRedirectableResourceRequests;
+
         bool IsBrowserInitialized { get; }
         Size Size { get; set; }
 
@@ -69,6 +71,28 @@ namespace Gobchat.UI.Web
     }
 
     #region EventArgs
+
+    public class RedirectResourceRequestEventArgs : EventArgs
+    {
+        public enum Type
+        {
+            Unknown,
+            Stylesheet,
+            Script
+        }
+
+        public string OriginalUri { get; }
+
+        public Type ResourceType { get; }
+
+        public string RedirectUri { get; set; }
+
+        public RedirectResourceRequestEventArgs(string originalUri, Type resourceType)
+        {
+            OriginalUri = originalUri;
+            ResourceType = resourceType;
+        }
+    }
 
     public class BrowserLoadPageEventArgs : EventArgs
     {

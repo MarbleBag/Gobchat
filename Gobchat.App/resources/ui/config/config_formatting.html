@@ -1,0 +1,147 @@
+<button id="cp-formatting_copyprofile"></button>
+
+<div class="gob-config-page" id="cp-formatting">
+    <div class="gob-config-group">
+        <div class="gob-config-group_title" data-gob-locale-text="config.formatting.fonts.label"></div>
+
+        <div class="gob-config-group_item-4-small-columns">
+            <label class="gob-config-label"
+                   data-gob-locale-text="config.formatting.fontfamily"
+                   data-gob-locale-tooltip="config.formatting.fontfamily.tooltip"
+                   for="cp-formatting_chat_font-family"></label>
+            <input class="gob-input-text gob-grid_item--span-2"
+                   id="cp-formatting_chat_font-family"
+                   data-gob-configkey="style.channel.base.font-family"
+                   data-gob-locale-tooltip="config.formatting.fontfamily.tooltip" />
+            <button id="cp-formatting_chat_font-family_reset"></button>
+
+            <label class="gob-config-label"
+                   data-gob-locale-text="config.formatting.chathistory.fontsize.label"
+                   data-gob-locale-tooltip="config.formatting.chathistory.fontsize.label.tooltip"></label>
+            <input class="gob-input-number" type="number" min="8"
+                   id="cp-formatting_chat-history_font-size"
+                   data-gob-configkey="style.chat-history.font-size"
+                   data-gob-locale-tooltip="config.formatting.chathistory.fontsize.label.tooltip" />
+            <input class="gob-input-rangeslider" type="range" min="8" max="64" step="1"
+                   id="cp-formatting_chat-history_font-size_slider"
+                   data-gob-locale-tooltip="config.formatting.chathistory.fontsize.label.tooltip" />
+            <button id="cp-formatting_chat-history_font-size_reset"></button>
+
+            <label class="gob-config-label"
+                   data-gob-locale-text="config.formatting.chatui.fontsize.label"
+                   data-gob-locale-tooltip="config.formatting.chatui.fontsize.label.tooltip"></label>
+            <input class="gob-input-number" type="number" min="8"
+                   id="cp-formatting_chat-ui_font-size"
+                   data-gob-configkey="style.chatui.font-size"
+                   data-gob-locale-tooltip="config.formatting.chatui.fontsize.label.tooltip" />
+            <input class="gob-input-rangeslider" type="range" min="8" max="64" step="1"
+                   id="cp-formatting_chat-ui_font-size_slider"
+                   data-gob-locale-tooltip="config.formatting.chatui.fontsize.label.tooltip" />
+            <button id="cp-formatting_chat-ui_font-size_reset"></button>
+
+            <label class="gob-config-label"
+                   data-gob-locale-text="config.formatting.chathistory.gap.label"
+                   data-gob-locale-tooltip="config.formatting.chathistory.gap.label.tooltip"></label>
+            <input class="gob-input-number" type="number" min="0"
+                   id="cp-formatting_chat-history_gap"
+                   data-gob-configkey="style.chat-history.gap"
+                   data-gob-locale-tooltip="config.formatting.chathistory.gap.label.tooltip" />
+            <input class="gob-input-rangeslider" type="range" min="0" max="64" step="1"
+                   id="cp-formatting_chat-history_gap_slider"
+                   data-gob-locale-tooltip="config.formatting.chathistory.gap.label.tooltip" />
+            <button id="cp-formatting_chat-history_gap_reset"></button>
+        </div>
+    </div>
+
+    <div class="gob-config-group">
+        <div class="gob-config-group_title" data-gob-locale-text="config.formatting.tbl.color.name"></div>
+
+        <table class="gob-table gob-table--default"
+                id="cp-formatting_color-table">
+            <thead>
+                <tr>
+                    <th data-gob-locale-text="config.formatting.tbl.color.header.name"></th>
+                    <th data-gob-locale-text="config.formatting.tbl.color.header.color"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <template id="cp-formatting_template_color-table_entry">
+            <tr>
+                <td>
+                    <label class="gob-config-label js-label"></label>
+                </td>
+                <td>
+                    <input class="gob-input-text js-color-selector" type="text" />
+                    <button class="js-color-reset"></button>
+                </td>
+            </tr>
+        </template>
+    </div>
+
+    <div class="gob-config-group">
+        <div class="gob-config-group_title" data-gob-locale-text="config.formatting.tbl.segment.name"></div>
+        
+        <div class="gob-config-text" data-gob-locale-text="config.formatting.tbl.segment.description"></div>
+
+        <div class="gob-config-group_item">
+            <button class="gob-config-secondary-button"
+                    id="cp-formatting_segment-detection_add" >
+                <i class="fa fa-plus"></i>
+                <span data-gob-locale-text="config.formatting.tbl.segment.new"></span>
+            </button>
+            <button class="gob-config-icon-button"
+                    id="cp-formatting_segment-detection_reset" data-gob-locale-tooltip="config.formatting.tbl.segment.reset" >
+                <i class="fas fa-undo-alt"></i>
+            </button>
+        </div>
+
+        <div class="" id="cp-formatting_segment-detection-table">
+        </div>
+
+        <template id="cp-formatting_template_segment-detection-table_entry">
+            <div data-gob-entryid>
+                <h4 class="ui-gc-group-header">
+                    <span class="js-header_index"></span>
+                    <span>.&nbsp</span>
+                    <span class="js-header_name"></span>
+                    <button class="gob-config-icon-button js-delete-entry "
+                            data-gob-locale-tooltip="config.main.button.delete.tooltip">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </h4>
+                <div class="gob-config-group">
+                    <div class="gob-config-text" data-gob-locale-text="config.formatting.tbl.segment.entry.info"></div>
+
+                    <div class="gob-config-group_item">
+                        <input class="gob-input-checkbox js-entry-active" type="checkbox" />
+                        <label class="gob-config-label" data-gob-locale-text="config.formatting.tbl.segment.entry.active"></label>
+                    </div>
+
+                    <dic class="gob-config-group_item-3-small-columns">
+                        <label data-gob-locale-text="config.formatting.tbl.segment.entry.type"></label>
+                        <select class="gob-input-dropdown js-segment-selector">
+                            <option value=1 data-gob-locale-text="main.chat.segment.type.say"></option>
+                            <option value=2 data-gob-locale-text="main.chat.segment.type.emote"></option>
+                            <option value=3 data-gob-locale-text="main.chat.segment.type.ooc"></option>
+                        </select>
+                        <div></div>
+
+                        <label data-gob-locale-text="config.formatting.tbl.segment.entry.tokenstart"></label>
+                        <input class="gob-input-text js-start-token" type="text" />
+                        <div><span data-gob-locale-text="config.formatting.tbl.segment.entry.unicode"></span><span class="js-start-token-unicode"></span></div>
+
+                        <label data-gob-locale-text="config.formatting.tbl.segment.entry.tokenend"></label>
+                        <input class="gob-input-text js-end-token" type="text" />
+                        <div><span data-gob-locale-text="config.formatting.tbl.segment.entry.unicode"></span><span class="js-end-token-unicode"></span></div>
+
+                    </dic>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+
+<script defer type="module" src="config_formatting.js"></script>

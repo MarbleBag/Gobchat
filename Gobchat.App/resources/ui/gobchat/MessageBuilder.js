@@ -24,7 +24,7 @@ var Gobchat = (function (Gobchat) {
 
     // End - Constants
 
-    function getVisibilityCssClass(message) {
+    function getEntryVisibilityCssClass(message) {
         if (!message.source)
             return null
 
@@ -38,34 +38,28 @@ var Gobchat = (function (Gobchat) {
 
         const fadeOutStepSize = (100 / Gobchat.RangeFilterFadeOutLevels)
         const visibilityLevel = ((visibility + fadeOutStepSize - 1) / fadeOutStepSize) >> 0 //truncat decimals, makes the LSV an integer
-        return `chat-msg-fadeout-${visibilityLevel}`
+        return `gob-chat-entry--fadeout-${visibilityLevel}`
     }
 
-    function getTriggerGroupBodyCssClass(message) {
+    function getEntryTriggerGroupCssClass(message) {
         if (message.source.triggerGroupId)
-            return `chat-msg-tg-b-${message.source.triggerGroupId}`
+            return `gob-chat-entry--trigger-group-${message.source.triggerGroupId}`
         return null
     }
 
-    function getTriggerGroupSenderCssClass(message) {
-        if (message.source.triggerGroupId)
-            return `chat-msg-tg-s-${message.source.triggerGroupId}`
-        return null
-    }
-
-    function getChannelCssClass(message) {
+    function getEntryChannelCssClass(message) {
         const channelName = Gobchat.ChannelEnumToKey[message.channel]
         const data = Gobchat.Channels[channelName]
-        return `chat-msg-c-${data.internalName}`
+        return `gob-chat-entry--channel-${data.internalName}`
     }
 
     function getMessageSegmentCssClass(segmentType) {
         switch (segmentType) {
-            case MessageSegmentEnum.SAY: return "chat-msg-seg-say"
-            case MessageSegmentEnum.EMOTE: return "chat-msg-seg-emote"
-            case MessageSegmentEnum.OOC: return "chat-msg-seg-ooc"
-            case MessageSegmentEnum.MENTION: return "chat-msg-seg-mention"
-            case MessageSegmentEnum.LINK: return "chat-msg-seg-link"
+            case MessageSegmentEnum.SAY: return "gob-chat-entry__text__segment--say"
+            case MessageSegmentEnum.EMOTE: return "gob-chat-entry__text__segment--emote"
+            case MessageSegmentEnum.OOC: return "gob-chat-entry__text__segment--ooc"
+            case MessageSegmentEnum.MENTION: return "gob-chat-entry__text__segment--mention"
+            case MessageSegmentEnum.LINK: return "gob-chat-entry__text__segment--link"
             default: return null
         }
     }
@@ -157,28 +151,25 @@ var Gobchat = (function (Gobchat) {
         }
 
         buildHtmlElement(message) {
-            const channelClass = getChannelCssClass(message)
-
             const $body = $("<div/>")
-                .addClass("chat-msg-c-base")
-                .addClass(channelClass)
-                .addClass(getTriggerGroupBodyCssClass(message))
-                .addClass(getVisibilityCssClass(message))
+                .addClass("gob-chat-entry")
+                .addClass(getEntryChannelCssClass(message))           
+                .addClass(getEntryTriggerGroupCssClass(message))
+                .addClass(getEntryVisibilityCssClass(message))
 
             $(`<span>[${formatTime(message)}] </span>`)
                 .appendTo($body)
-                .addClass("chat-msg-time")
+                .addClass("gob-chat-entry__time")
 
             const $content = $("<span/>")
                 .appendTo($body)
-                .addClass("chat-msg-text")
-                .addClass(channelClass)
+                .addClass("gob-chat-entry__text")
 
             const sender = formatSender(this, message)
             if (sender !== null) {
                 $(`<span>${sender} </span>`)
                     .appendTo($content)
-                    .addClass(getTriggerGroupSenderCssClass(message))
+                    .addClass("gob-chat-entry__sender")
             }
 
             message.content.forEach((messageSegment) => {
@@ -186,7 +177,7 @@ var Gobchat = (function (Gobchat) {
 
                 $(`<span>${innerHtml}</span>`)
                     .appendTo($content)
-                    .addClass("chat-msg-seg-base")
+                    .addClass("gob-chat-entry__text__segment")
                     .addClass(getMessageSegmentCssClass(messageSegment.type))
             })
 

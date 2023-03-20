@@ -11,66 +11,85 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using CefSharp;
+using CefSharp.DevTools.Debugger;
 
 namespace Gobchat.UI.Forms
 {
-    internal sealed class CustomRequestHandler : IRequestHandler
+    internal sealed class CustomResourceRequestHandler : CefSharp.Handler.ResourceRequestHandler
     {
-        public bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
+        private readonly ManagedWebBrowser  managedWebBrowser;
+
+        public CustomResourceRequestHandler(ManagedWebBrowser managedWebBrowser)
         {
-            throw new System.NotImplementedException();
+            this.managedWebBrowser = managedWebBrowser;
         }
 
-        public IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
+        private static string AppLocation { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+
+        protected override CefReturnValue OnBeforeResourceLoad(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
         {
-            throw new System.NotImplementedException();
+            var isHandeld = managedWebBrowser.RedirectableResourceRequests(request);
+            if (isHandeld)
+                return CefReturnValue.Continue;
+            return base.OnBeforeResourceLoad(chromiumWebBrowser, browser, frame, request, callback);
+
+            
+        }
+    }
+
+    internal sealed class CustomRequestHandler : CefSharp.Handler.RequestHandler
+    {
+
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly ManagedWebBrowser managedWebBrowser;
+
+        public CustomRequestHandler(ManagedWebBrowser managedWebBrowser)
+        {
+            this.managedWebBrowser = managedWebBrowser;
         }
 
-        public bool OnBeforeBrowse(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool userGesture, bool isRedirect)
+        override protected IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
-            throw new System.NotImplementedException();
+            if (isDownload)
+            {
+                logger.Error($"Denied resource download request: {request.Url}");
+                disableDefaultHandling = true;
+                return null;
+            }
+
+            if (isNavigation)
+                return null;
+
+            if (request.Url.StartsWith("devtools://"))
+                return null;
+
+
+
+            if ("file://".Equals(requestInitiator))
+            {
+                switch (request.ResourceType)
+                {
+                    case ResourceType.Stylesheet:
+                    case ResourceType.Script:
+                        return new CustomResourceRequestHandler(managedWebBrowser);
+                }
+            }
+
+            return null;
         }
 
-        public bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback)
+        override protected bool OnBeforeBrowse(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool userGesture, bool isRedirect)
         {
-            throw new System.NotImplementedException();
-        }
+            if (request.Url.StartsWith("file:///") || request.Url.Equals("devtools://devtools/devtools_app.html"))
+                return false;
 
-        public void OnDocumentAvailableInMainFrame(IWebBrowser chromiumWebBrowser, IBrowser browser)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPluginCrashed(IWebBrowser chromiumWebBrowser, IBrowser browser, string pluginPath)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool OnQuotaRequest(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, long newSize, IRequestCallback callback)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnRenderViewReady(IWebBrowser chromiumWebBrowser, IBrowser browser)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool OnSelectClientCertificate(IWebBrowser chromiumWebBrowser, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback)
-        {
-            throw new System.NotImplementedException();
+            logger.Error("Denied browser target", request.Url);
+            return true; // cancels
         }
     }
 }

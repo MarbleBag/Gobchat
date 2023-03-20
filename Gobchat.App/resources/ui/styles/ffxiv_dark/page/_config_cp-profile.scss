@@ -1,0 +1,28 @@
+@use "../input";
+@use "../grid";
+
+.gob-config_cp-profile-table {
+    @extend .gob-grid-small-2;
+
+    & > .gob-config_cp-profile-table_header:last-child {
+        text-align: left;
+        padding-left: 1em;
+    }
+}
+
+.gob-config_cp-profile-table_header {
+    @extend .gob-grid_header;
+}
+
+.gob-config_cp-profile-table_profile-name {
+    @extend .gob-grid_item;
+    @extend .gob-input-text;
+}
+
+.gob-config_cp-profile-table_profile-actions {
+    @extend .gob-grid_item;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.2em;
+}

@@ -459,6 +459,7 @@ var Gobchat = (function (Gobchat) {
             {
                 const isAtLeftBorder = position <= 0
                 $element.find(".js-nav-left")
+                    .prop("disabled", isAtLeftBorder)
                     .toggleClass("disabled", isAtLeftBorder)
             } // update left button
 
@@ -467,6 +468,7 @@ var Gobchat = (function (Gobchat) {
                 const clientWidth = $btnPanel.prop("clientWidth") || 0
                 const isAtRightBorder = (scrollWidth - clientWidth) <= position
                 $element.find(".js-nav-right")
+                    .prop("disabled", isAtLeftBorder)
                     .toggleClass("disabled", isAtRightBorder)
             } // update right button
         }
@@ -492,7 +494,7 @@ var Gobchat = (function (Gobchat) {
             $("<button/>")
                 .appendTo($buttons)
                 .attr("data-gob-tab-id", id)
-                .addClass("chat-tabnav-btn")
+                .addClass("gob-chatbox__chat-navi__button")
                 .append(
                     $("<span></span>").html(Gobchat.encodeHtmlEntities(name))
                 )

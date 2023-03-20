@@ -1,0 +1,61 @@
+@use "input";
+
+.gob-chat-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.gob-chat-toolbar_element {
+    height: 1.5rem;
+    min-width: 1.5rem;
+    line-height: 1;
+    background-image: var(--primary-button_background);
+    white-space: nowrap;
+    border: none;
+}
+
+.gob-chat-toolbar_search_input {
+    @extend .gob-input-text;
+}
+
+.gob-chat-toolbar_button {
+    @extend .gob-chat-toolbar_element;
+    font-size: inherit; // overrides button
+    cursor: pointer; // overrides button
+
+    padding: 0 0.625rem;
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:disabled {
+        color: var(--text-1--disabled_color);
+    }
+}
+
+.gob-chat-toolbar_icon-button {
+    @extend .gob-chat-toolbar_button;
+
+    width: 1.5rem;
+    padding: 0.18rem;
+    border-radius: 50%;
+    color: var(--text-2_color);
+    text-shadow: var(--text-2_shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:disabled {
+        color: var(--text-2--disabled_color);
+    }
+}
+
+.gob-chat-toolbar_search {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}

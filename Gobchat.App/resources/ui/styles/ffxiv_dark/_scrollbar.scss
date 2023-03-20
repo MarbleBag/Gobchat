@@ -1,0 +1,52 @@
+.gob-chat {
+    ::-webkit-scrollbar {
+        font-size: var(--gob-font-size-chat-ui);
+    }
+}
+
+.gob-config-dialog {
+    ::-webkit-scrollbar {
+        font-size: var(--gob-font-size-config);
+    }
+}
+
+
+::-webkit-scrollbar {
+    height: 0.75rem;
+    width: 0.75rem;
+}
+
+::-webkit-scrollbar-button {
+    height: 0.25rem;
+    height: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--browser_scollbar_thumb_color);
+    border: 0.0626rem inset var(--browser_scollbar_thumb_border-color);
+
+    &:hover {
+        background: var(--browser_scollbar_thumb_color);
+    }
+
+    &:active {
+        background: var(--browser_scollbar_thumb_color--active);
+    }
+}
+
+::-webkit-scrollbar-track {
+    background: var(--browser_scollbar_track_color);
+    border: 0.25rem solid var(--browser_scollbar_track_border-color);
+
+    &:hover {
+        background: var(--browser_scollbar_track_color);
+    }
+
+    &:active {
+        background: var(--browser_scollbar_track_color--active);
+    }
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}

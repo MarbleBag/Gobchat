@@ -28,8 +28,15 @@ var Gobchat = (function (Gobchat) {
 
         selectedElements.each(function () {
             const $this = $(this)
-            if ($this.attr(DataAttributeText)) stringIds.push($this.attr(DataAttributeText))
-            if ($this.attr(DataAttributeTitle)) stringIds.push($this.attr(DataAttributeTitle))
+            if ($this.attr(DataAttributeText)) {
+                const textId = $this.attr(DataAttributeText)
+               // const tooltipId = `${textId}.tooltip` // needs to be streamlined to autodetect inputs and annotate them with the tooltip class
+                stringIds.push(textId)
+               // stringIds.push(tooltipId)
+            }
+
+            if ($this.attr(DataAttributeTitle))
+                stringIds.push($this.attr(DataAttributeTitle))
         })
 
         if (stringIds.length == 0)

@@ -165,7 +165,8 @@ namespace Gobchat.Module.UI.Internal
                 dialog.RestoreDirectory = true;
                 dialog.Filter = filter ?? "Json files (*.json)|*.json";
                 dialog.FileName = fileName ?? "";
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                var dialogResult = dialog.ShowDialog();
+                if (dialogResult == System.Windows.Forms.DialogResult.OK)
                     return dialog.FileName;
                 return null;
             }

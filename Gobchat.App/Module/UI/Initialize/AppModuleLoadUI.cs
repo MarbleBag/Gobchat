@@ -17,12 +17,121 @@ using Gobchat.Core.Runtime;
 using Gobchat.Core.Util.Extension;
 using Gobchat.Module.Overlay;
 using Gobchat.UI.Forms;
+using Gobchat.UI.Web;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Gobchat.Module.UI
 {
+    internal sealed class UIResourceHandler
+    {
+        private sealed class ResourcePaths
+        {
+            public Regex PathMatcher { get; }
+            public string NewPath { get; }
+
+            public ResourcePaths(Regex pathMatcher, string newPath)
+            {
+                PathMatcher = pathMatcher ?? throw new ArgumentNullException(nameof(pathMatcher));
+                NewPath = newPath ?? throw new ArgumentNullException(nameof(newPath));
+            }
+        }
+
+        private ResourcePaths[] _resourcePaths;
+        private Dictionary<string, string> _resolvedPaths = new Dictionary<string, string>();
+
+        public UIResourceHandler()
+        {
+            _resourcePaths = new ResourcePaths[]{
+                new ResourcePaths(new Regex(@"^lib\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "lib")),
+                new ResourcePaths(new Regex(@"^module\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "modules")),
+                new ResourcePaths(new Regex(@"^styles\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "styles")),
+                new ResourcePaths(new Regex(@"^graphics\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "graphics"))
+            };
+        }
+
+        public bool CheckForResourceRedirection(string originalUri, RedirectResourceRequestEventArgs.Type resourceType, out string newUri)
+        {
+            var appLocation = GobchatContext.ApplicationLocation;
+            newUri = null;
+
+            if (!Uri.TryCreate(appLocation, UriKind.Absolute, out var appUri))
+                return false;
+
+            if (!Uri.TryCreate(originalUri, UriKind.RelativeOrAbsolute, out var requestUri))
+                return false;
+
+            if (_resolvedPaths.TryGetValue(requestUri.LocalPath, out newUri))
+                return true;
+
+            string targetPath = null;
+
+            if (appUri.IsBaseOf(requestUri))
+            {
+                targetPath = requestUri.LocalPath;
+            }
+            else
+            {
+                var relativePath = requestUri.LocalPath.Substring(Path.GetPathRoot(appLocation).Length);
+
+                foreach (var redirect in _resourcePaths)
+                {
+                    var match = redirect.PathMatcher.Match(relativePath);
+                    if (match.Success)
+                    {
+                        targetPath = redirect.PathMatcher.Replace(relativePath, redirect.NewPath + "\\");
+                        break;
+                    }
+                }
+            }
+
+            if (targetPath == null)
+            {
+                _resolvedPaths.Add(requestUri.LocalPath, null);
+                return false;
+            }
+
+            if (File.Exists(targetPath))
+            {
+                newUri = new Uri(targetPath).AbsoluteUri;
+                _resolvedPaths.Add(requestUri.LocalPath, newUri);
+                return true;
+            }
+
+            var possiblePaths = new List<string>();
+
+            switch (resourceType)
+            {
+                case RedirectResourceRequestEventArgs.Type.Stylesheet:
+                    possiblePaths.Add(Path.ChangeExtension(targetPath, "min.css"));
+                    possiblePaths.Add(Path.ChangeExtension(targetPath, "css"));
+                    break;
+                case RedirectResourceRequestEventArgs.Type.Script:
+                    possiblePaths.Add(Path.ChangeExtension(targetPath, "min.js"));
+                    possiblePaths.Add(Path.ChangeExtension(targetPath, "js"));
+                    break;
+            }
+
+            foreach (var possiblePath in possiblePaths)
+            {
+                if (File.Exists(possiblePath))
+                {
+                    newUri = new Uri(possiblePath).AbsoluteUri;
+                    _resolvedPaths.Add(requestUri.LocalPath, newUri);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
     public sealed class AppModuleLoadUI : IApplicationModule
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -31,6 +140,8 @@ namespace Gobchat.Module.UI
         private IConfigManager _configManager;
         private IBrowserAPIManager _browserAPIManager;
         private CefOverlayForm _cefOverlay;
+        private UIResourceHandler _resourceHandler;
+
 
         /// <summary>
         /// Requires: <see cref="IBrowserAPIManager"/> <br></br>
@@ -49,24 +160,36 @@ namespace Gobchat.Module.UI
             _configManager = _container.Resolve<IConfigManager>();
             _browserAPIManager = _container.Resolve<IBrowserAPIManager>();
 
+            _resourceHandler = new UIResourceHandler();
+
             var uiManager = _container.Resolve<IUIManager>();
 
             _cefOverlay = uiManager.GetUIElement<CefOverlayForm>(AppModuleChatOverlay.OverlayUIId);
 
+            _cefOverlay.Browser.OnRedirectableResourceRequests += Browser_RedirectResources;
             _cefOverlay.Browser.OnBrowserLoadPage += Browser_BrowserLoadPage;
             _cefOverlay.Browser.OnBrowserLoadPageDone += Browser_BrowserLoadPageDone;
             _cefOverlay.Browser.OnBrowserInitialized += Browser_BrowserInitialized;
         }
 
+
         public void Dispose()
         {
+            _cefOverlay.Browser.OnRedirectableResourceRequests -= Browser_RedirectResources;
             _cefOverlay.Browser.OnBrowserInitialized -= Browser_BrowserInitialized;
             _cefOverlay.Browser.OnBrowserLoadPage -= Browser_BrowserLoadPage;
             _cefOverlay.Browser.OnBrowserLoadPageDone -= Browser_BrowserLoadPageDone;
 
+            _resourceHandler = null;
             _configManager = null;
             _cefOverlay = null;
             _container = null;
+        }
+
+        private void Browser_RedirectResources(object sender, RedirectResourceRequestEventArgs e)
+        {
+            if (_resourceHandler.CheckForResourceRedirection(e.OriginalUri, e.ResourceType, out var newUri))
+                e.RedirectUri = newUri;
         }
 
         private void Browser_BrowserInitialized(object sender, Gobchat.UI.Web.BrowserInitializedEventArgs e)
@@ -176,5 +299,9 @@ namespace Gobchat.Module.UI
                 _cefOverlay.InvokeSyncOnUI((overlay) => overlay.Visible = true);
             //_synchronizer.RunSync();
         }
+
+
     }
+
+
 }
