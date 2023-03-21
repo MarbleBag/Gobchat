@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Gobchat.Memory")]
-[assembly: AssemblyCopyright("Copyright © 2019-2022 MarbleBag")]
+[assembly: AssemblyCopyright("Copyright © 2019-2023 MarbleBag")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
