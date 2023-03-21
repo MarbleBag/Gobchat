@@ -6,16 +6,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 ### Added
 - Font size
   - There is now a wider range of sizes to choose from - or just enter whatever number you like
-  
-- Customizeable gap between chat messages
 
-- Customizeable chat UI size
-  - UI scales with menu font size, independently from your font size for chat messages
+
+- Customizable gap between chat messages
+
+
+- Customizable chat UI size
+  - UI scales with menu font size, independently of your font size for chat messages
+
 
 - Config
   - UI scales automatically with the width of the dialog
   
+
 - Previous messages are updated if group settings are changed
+
+
+### Changed
+- Some settings were split into their own tabs
+  - Chat log
+  - Range filter
+  - Formatting
+
+
+- Some settings were moved to another tab
+  - Mentions
+  
+
+### Fixed
+- Chat position and size
+  - The values in config will now update if you move your chat around (hover with your mouse over it and press ctrl-key) 
+  - It's now possible to enter negative values for multi-monitor setups
+
+
+## [1.11.4] - 2023.01.13
+### Fixed
+With 6.3 Gobchat was unable to identify player characters from the game. While no error message was shown, features like rangefilter and `Check own messages for mentions` were not working previously.
+
+- Rangefilter
+
+- Mentions
+
 
 ## [1.11.3] - 2022.08.03
 ### Added
