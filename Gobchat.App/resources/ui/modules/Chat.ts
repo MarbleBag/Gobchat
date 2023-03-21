@@ -102,6 +102,12 @@ export module CssClass {
     export const ChatEntry_Segment_Link = "gob-chat-entry_text_segment--link"
 }
 
+export module HtmlAttribute {
+    export const ChatEntry_Source = "data-source"
+    export const ChatEntry_Friendgroup = "data-friendgroup"
+    export const ChatEntry_TriggerId = "data-triggerid"
+}
+
 export class ChatControl {
     static readonly selector_chat_history = `.${CssClass.Chat_History}`
     static readonly selector_tabbar = `.${CssClass.Chat_Tabs}`
@@ -110,6 +116,7 @@ export class ChatControl {
     #cmdManager: Cmd.CommandManager
     #tabControl: TabBarControl
     #searchControl: ChatSearchControl
+    #groupControl: ChatGroupControl
 
     #databinding: Databinding.BindingContext | null = null
     #chatBox: JQuery = $()
@@ -122,6 +129,7 @@ export class ChatControl {
         this.#cmdManager = new Cmd.CommandManager()
         this.#tabControl = new TabBarControl()
         this.#searchControl = new ChatSearchControl()
+        this.#groupControl = new ChatGroupControl()
     }
 
     destructor() {
@@ -193,6 +201,7 @@ export class ChatControl {
 
         this.#tabControl.control(this.#chatBox.find(ChatControl.selector_tabbar), this.#chatHistory)
         this.#searchControl.control(this.#chatBox.find(ChatControl.selector_search), this.#chatHistory)
+        this.#groupControl.control(this.#chatHistory)
 
         document.addEventListener("ChatMessagesEvent", this.#onNewMessageEvent as EventListener)
 
@@ -224,17 +233,20 @@ class MessageBuilder {
             .addClass(MessageBuilder.getMessageChannelCssClass(message))
             .addClass(MessageBuilder.getMessageTriggerGroupCssClass(message))
             .addClass(MessageBuilder.getMessageVisibilityCssClass(message))
+            .attr(HtmlAttribute.ChatEntry_Source, MessageBuilder.getSource(message))
+            .attr(HtmlAttribute.ChatEntry_Friendgroup, MessageBuilder.getFriendGroup(message))
+            .attr(HtmlAttribute.ChatEntry_TriggerId, MessageBuilder.getTriggerGroup(message))
 
         $("<span></span>")
             .addClass(CssClass.ChatEntry_Time)
-            .text(`[${MessageBuilder.getMessageTimestamp(message)}] `)
+            .text(`[${MessageBuilder.formatTimestamp(message)}] `)
             .appendTo($body)
 
         const $content = $("<span></span>")
             .addClass(CssClass.ChatEntry_Text)
             .appendTo($body)
 
-        const sender = MessageBuilder.getSender(message)
+        const sender = MessageBuilder.formatSender(message)
         if (sender !== null) {
             $("<span></span>")
                 .addClass(CssClass.ChatEntry_Sender)
@@ -264,6 +276,10 @@ class MessageBuilder {
         if (message.source.triggerGroupId)
             return Utility.formatString(CssClass.ChatEntry_TriggerGroup_Partial, message.source.triggerGroupId)
         return null
+    }
+
+    static getTriggerGroup(message: ChatMessage): string | null {
+        return message.source.triggerGroupId
     }
 
     static getMessageVisibilityCssClass(message: ChatMessage): string | null {
@@ -296,7 +312,7 @@ class MessageBuilder {
         }
     }
 
-    static getMessageTimestamp(message: ChatMessage): string {
+    static formatTimestamp(message: ChatMessage): string {
         function twoDigits(v: number): string {
             return v < 10 ? '0' + v : v.toString()
         }
@@ -307,16 +323,27 @@ class MessageBuilder {
         return `${hours}:${minutes}`
     }
 
-    static getSender(message: ChatMessage): string | null {
-        const senderRaw = MessageBuilder.getSenderFromSource(message.source)
-        return MessageBuilder.formatSenderAccordingToChannel(senderRaw, message.channel)
+    static formatSender(message: ChatMessage): string | null {
+        const formatedSource = MessageBuilder.formatSource(message.source)
+        return MessageBuilder.formatSourceAccordingToChannel(formatedSource, message.channel)
     }
 
-    static getSenderFromSource(messageSource: ChatMessageSource): string | null {
-        if (messageSource === null || messageSource.original === null)
+    static getFriendGroup(message: ChatMessage): string | null {
+        const group = message.source.ffGroup
+        return group < 0 ? null : group.toString()
+    }
+
+    static getSource(message: ChatMessage): string | null {
+        if (message.source === null)
+            return null
+        return message.source.characterName !== null ? message.source.characterName : message.source.original
+    }
+
+    static formatSource(messageSource: ChatMessageSource): string | null {
+        if (messageSource === null)
             return null
 
-        if (messageSource.characterName !== null && messageSource.characterName !== undefined) {
+        if (messageSource.characterName !== null) {
             let prefix = ""
             if (messageSource.party >= 0)
                 prefix += `[${messageSource.party + 1}]`
@@ -333,18 +360,18 @@ class MessageBuilder {
         return messageSource.original
     }
 
-    static formatSenderAccordingToChannel(sender: string | null, channel: number): string | null {
+    static formatSourceAccordingToChannel(source: string | null, channel: number): string | null {
         switch (channel) {
             case Gobchat.ChannelEnum.GOBCHATINFO:
-            case Gobchat.ChannelEnum.GOBCHATERROR: return `[${sender}]`
+            case Gobchat.ChannelEnum.GOBCHATERROR: return `[${source}]`
             case Gobchat.ChannelEnum.ECHO: return "Echo:"
-            case Gobchat.ChannelEnum.EMOTE: return sender
-            case Gobchat.ChannelEnum.TELLSEND: return `>> ${sender}:`
-            case Gobchat.ChannelEnum.TELLRECIEVE: return `${sender} >>`
+            case Gobchat.ChannelEnum.EMOTE: return source
+            case Gobchat.ChannelEnum.TELLSEND: return `>> ${source}:`
+            case Gobchat.ChannelEnum.TELLRECIEVE: return `${source} >>`
             case Gobchat.ChannelEnum.ERROR: return null
             case Gobchat.ChannelEnum.ANIMATEDEMOTE: return null //source is set, but the animation message already contains the source name
-            case Gobchat.ChannelEnum.PARTY: return `(${sender})`
-            case Gobchat.ChannelEnum.ALLIANCE: return `<${sender}>`
+            case Gobchat.ChannelEnum.PARTY: return `(${source})`
+            case Gobchat.ChannelEnum.ALLIANCE: return `<${source}>`
             case Gobchat.ChannelEnum.GUILD:
             case Gobchat.ChannelEnum.LINKSHELL_1:
             case Gobchat.ChannelEnum.LINKSHELL_2:
@@ -362,10 +389,10 @@ class MessageBuilder {
             case Gobchat.ChannelEnum.CROSSWORLDLINKSHELL_6:
             case Gobchat.ChannelEnum.CROSSWORLDLINKSHELL_7:
             case Gobchat.ChannelEnum.CROSSWORLDLINKSHELL_8:
-                return `[${MessageBuilder.getChannelAbbreviation(channel)}]<${sender}>`
+                return `[${MessageBuilder.getChannelAbbreviation(channel)}]<${source}>`
             default:
-                if (sender !== null && sender !== undefined)
-                    return sender + ":"
+                if (source !== null && source !== undefined)
+                    return source + ":"
                 return null
         }
     }
@@ -530,7 +557,7 @@ class TabBarControl {
         const cssClassForMentionEffect = this.#cssClassForMentionTabEffect
         const cssClassForNewMessageEffect = this.#cssClassForNewMessageTabEffect
 
-        for (let tabId of affectedTabs) {
+        for (const tabId of affectedTabs) {
             if (tabId === activeTabId)
                 continue // do not apply any effects to the active tab
 
@@ -668,14 +695,14 @@ class TabBarControl {
         const $content = this.#tabbar.find(TabBarControl.selector_content)
         const $oldTabs = $content.children().detach()
         const oldTabsLookup: { [id: string]: HTMLElement } = {}
-        for (let tab of $oldTabs) {
+        for (const tab of $oldTabs) {
             const id = tab.getAttribute(TabBarControl.AttributeTabId)
             if(id)
                 oldTabsLookup[id] = tab
         }
 
         // add new tabs or reattach old tabs in order
-        for (let entry of newTabsInOrder) {
+        for (const entry of newTabsInOrder) {
             if (entry.id in oldTabsLookup) {
                 $(oldTabsLookup[entry.id])
                     .text(entry.name)
@@ -691,13 +718,13 @@ class TabBarControl {
         }
 
         // remove old nav panel data
-        for (let tabId of Object.keys(this.#navPanelData)) {
+        for (const tabId of Object.keys(this.#navPanelData)) {
             if (!_.includes(configSorting, tabId))
                 delete this.#navPanelData[tabId]
         }
 
         // add new nav panel data
-        for (let tabId of configSorting) {
+        for (const tabId of configSorting) {
             if (!(tabId in this.#navPanelData)) {
                 this.#navPanelData[tabId] = {
                     scrollPosition: -1
@@ -934,5 +961,70 @@ class ChatSearchControl {
 
         this.#updateCounterValue()
         this.scrollToSelection()
+    }
+}
+
+class ChatGroupControl {
+
+    private static readonly selector_messages = `.${CssClass.ChatEntry}`
+
+    #databinding = new Databinding.BindingContext(gobConfig)
+    #chatHistory: JQuery = $()
+
+    control(chatHistory: HTMLElement | JQuery): void {
+        this.#databinding.clearBindings()
+        this.#chatHistory = $(chatHistory)
+
+        this.#databinding.bindCallback("behaviour.groups.sorting", () => {
+            this.#updateTriggerGroupsForChatEntries()
+        }, false)
+
+
+        this.#databinding.bindCallback("behaviour.groups.data", () => {
+            this.#updateTriggerGroupsForChatEntries()
+        }, false)
+
+        this.#databinding.loadBindings()
+    }
+
+    #updateTriggerGroupsForChatEntries() {
+        const doUpdate = gobConfig.get("behaviour.groups.updateChat", false)
+        if (!doUpdate)
+            return
+
+        const groupOrder = gobConfig.get("behaviour.groups.sorting")
+        const groups = groupOrder.map(id => gobConfig.get(`behaviour.groups.data.${id}`)) as any[]
+
+        for (const message of this.#chatHistory.find(ChatGroupControl.selector_messages)) {
+            const triggerId = message.getAttribute(HtmlAttribute.ChatEntry_TriggerId)
+            if (triggerId !== null) {
+                const cssClass = Utility.formatString(CssClass.ChatEntry_TriggerGroup_Partial, triggerId)
+                message.classList.remove(cssClass)
+            }
+
+            let matchingGroupId: string | null = null
+            for (const group of groups) {
+                if ("ffgroup" in group) {
+                    if (message.getAttribute(HtmlAttribute.ChatEntry_Friendgroup) == group.ffgroup) {
+                        matchingGroupId = group.id as string
+                        break
+                    }
+                } else {
+                    const source = message.getAttribute(HtmlAttribute.ChatEntry_Source)?.toLowerCase()
+                    if (source !== undefined) {
+                        if (_.includes(group.trigger, source)) {
+                            matchingGroupId = group.id as string
+                            break
+                        }
+                    }
+                }
+            }
+
+            if (matchingGroupId !== null) {
+                const cssClass = Utility.formatString(CssClass.ChatEntry_TriggerGroup_Partial, matchingGroupId)
+                message.setAttribute(HtmlAttribute.ChatEntry_TriggerId, matchingGroupId)
+                message.classList.add(cssClass)
+            }
+        }
     }
 }

@@ -191,10 +191,11 @@ tblGroups.accordion({
     });
 
 const binding = new Databinding.BindingContext(gobConfig)
+Databinding.bindCheckbox(binding, $("#cp-groups_updateChat"))
 binding.bindConfigListener(ConfigKeyOrder, Databinding.createConfigListener(() => populateGroupTable(), null, true), () => populateGroupTable())
 binding.loadBindings()
 
-const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting"]
+const copyKeys = ["behaviour.groups.data", "behaviour.groups.sorting", "behaviour.groups.updateChat"]
 Components.makeCopyProfileButton($("#cp-groups_copyprofile"), { configKeys: copyKeys })
 
 //# sourceURL=config_groups.js
