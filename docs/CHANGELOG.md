@@ -29,13 +29,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - Formatting
 
 
-- Some settings were moved to another tab
-  - Mentions
-  
-
 ### Fixed
 - Chat position and size
-  - The values in config will now update if you move your chat around (hover with your mouse over it and press ctrl-key) 
+  - The values in config will now update if you move your chat around (hover with your mouse over it and press ctrl-key, now you can drag and resize it!) 
   - It's now possible to enter negative values for multi-monitor setups
 
 
