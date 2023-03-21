@@ -210,18 +210,10 @@
     <Content Include="resources\ui\gobchat.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\gobchat\web-components.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobchat\MessageBuilder.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobchat\CssFileLoader.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobchat\ChatCssStyleBuilder.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\gobchat\deprecated\web-components.js" />
+    <Content Include="resources\ui\gobchat\deprecated\MessageBuilder.js" />
+    <Content Include="resources\ui\gobchat\deprecated\CssFileLoader.js" />
+    <Content Include="resources\ui\gobchat\deprecated\ChatCssStyleBuilder.js" />
     <Content Include="resources\ui\gobui_chat.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -335,9 +327,6 @@
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\page\_config-cp-tabs.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-chatlog.scss" />
-    <None Include="resources\ui\styles\ffxiv_dark\page\_config_cp-profile.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_thirdparty_jquery.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_constants.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_config-popup.scss" />
@@ -466,9 +455,14 @@
       <Project>{9b4f225d-b0a3-400e-92e0-6f4cd53ac8b5}</Project>
       <Name>Gobchat.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GobUpdater\GobUpdater.csproj">
+      <Project>{0b809be9-1323-4758-af46-9eff29853be3}</Project>
+      <Name>GobUpdater</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v2000.cs" />
+    <Compile Include="Core\UI\NullProgressMonitor.cs" />
     <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
@@ -672,19 +666,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\ChatTabHtmlElement.js" />
-    <Content Include="resources\ui\gobchat\Databinding.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobchat\jQuery-extension.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobchat\LocaleManager.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\gobchat\deprecated\Databinding.js" />
+    <Content Include="resources\ui\gobchat\deprecated\jQuery-extension.js" />
+    <Content Include="resources\ui\gobchat\deprecated\LocaleManager.js" />
     <Content Include="resources\ui\gobchat\deprecated\GobchatSearch.js" />
-    <Content Include="resources\ui\gobchat\MessageSoundPlayer.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\gobchat\deprecated\MessageSoundPlayer.js" />
     <Content Include="resources\ui\lib\fontawesome\js\all.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -695,34 +681,28 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\Constants.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\Constants.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\CommandManager.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\CommandManager.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\CommonUtilFunctions.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\CommonUtilFunctions.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\Datacenters.js">
+    <Content Include="resources\ui\gobchat\deprecated\Datacenters.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\Message.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\FFUnicodes.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\FFUnicodes.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\GobchatConfig.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\GobchatConfig.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
-    <Content Include="resources\ui\gobchat\ChatManager.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="resources\ui\gobchat\deprecated\ChatManager.js">
       <DestinationFolder>resources\</DestinationFolder>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\MessageHtmlBuilder.js">
