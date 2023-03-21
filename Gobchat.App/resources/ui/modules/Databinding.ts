@@ -223,7 +223,7 @@ export class BindingContext {
         return this
     }
 
-    bindCallback(element: string | HTMLElement | JQuery | null, onChange: (configValue: any) => void): BindingContext {
+    bindCallback(element: string | HTMLElement | JQuery | null, onChange: (configValue: any) => void, doInitialize: boolean = true): BindingContext {
 
         let configKey: string | null
         if (typeof element === 'string') {
@@ -239,7 +239,7 @@ export class BindingContext {
 
         const delegate = (config: Config.GobchatConfig) => onChange(config.get(configKey, null))
         const listener = createConfigListener(delegate, null, true)
-        return this.bindConfigListener(configKey, listener, delegate /*also used for init*/)
+        return this.bindConfigListener(configKey, listener,  doInitialize ? delegate : null /*also used for init*/)
     }
 
     bindConfigListener(configKey: string | null, listener: ConfigListener, onInitialize: ((config: Config.GobchatConfig) => void) | null = null): BindingContext {
