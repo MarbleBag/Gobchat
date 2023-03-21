@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.12.0-1] - 2023.??.??
+### Added
+- Font size
+  - There is now a wider range of sizes to choose from - or just enter whatever number you like
+  
+- Customizeable gap between chat messages
+
+- Customizeable chat UI size
+  - UI scales with menu font size, independently from your font size for chat messages
+
+- Config
+  - UI scales automatically with the width of the dialog
+  
+- Previous messages are updated if group settings are changed
+
 ## [1.11.3] - 2022.08.03
 ### Added
 - Chat log
