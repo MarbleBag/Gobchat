@@ -13,6 +13,7 @@
 
 'use strict';
 
+import "/module/JQueryExtensions"
 import * as Databinding from '/module/Databinding'
 import * as Config from '/module/Config'
 import * as Locale from '/module/Locale'

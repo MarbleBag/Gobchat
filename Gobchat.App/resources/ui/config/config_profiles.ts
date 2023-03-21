@@ -14,7 +14,6 @@
 'use strict';
 
 import * as Dialog from "/module/Dialog"
-import "/module/JQueryExtensions"
 
 const AttributeProfileId = "data-profile-id"
 
