@@ -48,7 +48,7 @@ namespace Gobchat.Core.Resource
         {
             foreach (var key in data.Keys)
             {
-                var lookupKey = (path == null ? key : $"{path}.{key}").ToUpperInvariant();
+                var lookupKey = (path == null ? key : $"{path}.{key}");
                 var value = data[key];
 
                 if (value == null)
@@ -79,7 +79,7 @@ namespace Gobchat.Core.Resource
             var count = data.Count;
             for (var i = 0; i < count; ++i)
             {
-                var lookupKey = (path == null ? i.ToString() : $"{path}.{i}").ToUpperInvariant();
+                var lookupKey = (path == null ? i.ToString() : $"{path}.{i}");
                 var value = data[i];
 
                 if (value == null)
