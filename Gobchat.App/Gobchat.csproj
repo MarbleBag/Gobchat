@@ -322,6 +322,15 @@
     </Content>
     <None Include="bundleconfig.json" />
     <None Include="resources\.gitignore" />
+    <Content Include="resources\lang\autotranslate_de.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\lang\autotranslate_fr.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\lang\autotranslate_jp.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="resources\sharlayan\signatures-latest.json" />
     <None Include="resources\sharlayan\structures-latest.json" />
     <None Include="resources\ui\lib\.gitignore" />
