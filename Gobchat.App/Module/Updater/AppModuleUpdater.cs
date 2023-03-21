@@ -18,6 +18,7 @@ using Gobchat.Core.Util;
 using Gobchat.Module.Updater.Internal;
 using NLog;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Gobchat.Module.Updater
@@ -34,6 +35,12 @@ namespace Gobchat.Module.Updater
             if (handler == null) throw new System.ArgumentNullException(nameof(handler));
 
             DeleteOldPatchData();
+
+#if DEBUG
+            handler.StopStartup = DoLocaleUpdate();
+            if (handler.StopStartup)
+                return;
+#endif
 
             var configManager = container.Resolve<IConfigManager>();
             var doUpdate = configManager.GetProperty<bool>("behaviour.appUpdate.checkOnline");
@@ -89,6 +96,45 @@ namespace Gobchat.Module.Updater
             }
         }
 
+        private bool DoLocaleUpdate()
+        {
+            if (!Directory.Exists(PatchStorageFolder))
+                return false;
+
+            var archives = Directory.EnumerateFiles(PatchStorageFolder, "*.zip", SearchOption.TopDirectoryOnly);
+
+            GobVersion lastVersion = null;
+            string archivePath = null;
+
+            foreach( var archive in archives)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(archive);
+                var hasVersion = fileName.IndexOf("-");
+                if (hasVersion <= 0)
+                    continue;
+
+                if(!GobVersion.TryParse(fileName.Substring(hasVersion+1), out var gobVersion))
+                    continue;
+
+                if(gobVersion <= GobchatContext.ApplicationVersion)
+                    continue;
+
+                if(lastVersion == null || lastVersion <= gobVersion)
+                {
+                    lastVersion = gobVersion;
+                    archivePath = archive;
+                }
+            }
+
+            if (archivePath == null)
+                return false;
+
+            if (!PerformExtractionAndUpdate(archivePath, new NullProgressMonitor()))
+                return false;
+
+            return true;
+        }
+
         private bool PerformAutoUpdate(IDIContext container, IUpdateDescription update)
         {
             logger.Info("Performing auto update");
@@ -112,12 +158,8 @@ namespace Gobchat.Module.Updater
                     if (!downloadResult)
                         return false;
 
-                    (var extractionResult, var unpackedPatchDir) = PerformAutoUpdateExtraction(archivePath, PatchArchiveExtractionFolder, progressMonitor);
-                    logger.Info($"Extraction complete {extractionResult}");
-                    if (!extractionResult)
+                    if(!PerformExtractionAndUpdate(archivePath, progressMonitor))
                         return false;
-
-                    PerformAutoUpdateInstall(unpackedPatchDir, progressMonitor);
                 }
 
                 return true;
@@ -126,6 +168,17 @@ namespace Gobchat.Module.Updater
             {
                 uiManager.DisposeUIElement(displayId);
             }
+        }
+
+        private bool PerformExtractionAndUpdate(string archivePath, IProgressMonitor progressMonitor)
+        {
+            (var extractionResult, var unpackedPatchDir) = PerformAutoUpdateExtraction(archivePath, PatchArchiveExtractionFolder, progressMonitor);
+            logger.Info($"Extraction complete {extractionResult}");
+            if (!extractionResult)
+                return false;
+
+            PerformAutoUpdateInstall(unpackedPatchDir, progressMonitor);
+            return true;
         }
 
         private static void MoveDirectory(string source, string target)

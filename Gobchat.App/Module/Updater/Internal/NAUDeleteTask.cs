@@ -19,6 +19,7 @@ using NAppUpdate.Framework.Tasks;
 using NAppUpdate.Framework.Utils;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Gobchat.Module.Updater.Internal
 {
@@ -84,10 +85,23 @@ namespace Gobchat.Module.Updater.Internal
             }
 
             if (File.Exists(path))
+            {
                 if (PermissionsCheck.HaveWritePermissionsForFileOrFolder(path))
                     return TaskExecutionStatus.RequiresAppRestart;
                 else
                     return TaskExecutionStatus.RequiresPrivilegedAppRestart;
+            }
+
+            try
+            {
+                var folder = Path.GetDirectoryName(path);
+                if (folder != null && Directory.Exists(folder) && !Directory.EnumerateFileSystemEntries(folder).Any())
+                    DeleteFolder(folder, coldRun);
+            }catch(Exception e)
+            {
+                // ignore
+            }
+
             return TaskExecutionStatus.Successful;
         }
 
@@ -100,10 +114,7 @@ namespace Gobchat.Module.Updater.Internal
             catch (Exception ex)
             {
                 if (coldRun)
-                {
-                    ExecutionStatus = TaskExecutionStatus.Failed;
                     throw new UpdateProcessFailedException($"Unable to delete folder: {path}", ex);
-                }
             }
 
             if (Directory.Exists(path))

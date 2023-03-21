@@ -34,9 +34,8 @@ namespace Gobchat.Module.Updater.Internal
             var updateContent = GetContent(feed);
             var appContent = GetContent(GobchatContext.ApplicationLocation);
 
-            // delete stuff if and only if both lists are not empty, otherwise stuff can really go sideway
-            /*
-            if (appContent.Count > 0 && updateContent.Count > 0)
+            // delete stuff if and only if both lists are not empty, otherwise stuff can really go sideway            
+            /*if (appContent.Count > 0 && updateContent.Count > 0)
             {
                 foreach (var file in appContent)
                     if (!updateContent.Contains(file))
@@ -45,8 +44,8 @@ namespace Gobchat.Module.Updater.Internal
                         {
                             LocalPath = file.Replace(feed, "").TrimStart('\\', ' ') // Path.Combine(GobchatContext.ApplicationLocation, file)
                         });
-            }
-            */
+            }*/
+            
 
             var files = System.IO.Directory.EnumerateFiles(feed, "*", System.IO.SearchOption.AllDirectories)
              .GroupBy(s => System.IO.Path.GetDirectoryName(s));
@@ -78,8 +77,10 @@ namespace Gobchat.Module.Updater.Internal
                 {
                     if (xmlReader.NodeType == System.Xml.XmlNodeType.Element && xmlReader.Name == "File")
                         readFile = true;
+
                     if (readFile && xmlReader.NodeType == System.Xml.XmlNodeType.Text)
                         content.Add(xmlReader.Value);
+
                     if (xmlReader.NodeType == System.Xml.XmlNodeType.EndElement && xmlReader.Name == "File")
                         readFile = false;
                 }
