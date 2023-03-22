@@ -102,9 +102,9 @@ function makeFontSizeSelector(id: string, minValue: number | null, maxValue: num
     Components.makeResetButton(btnReset, input)
 }
 
-makeFontSizeSelector("cp-formatting_chat-history_font-size", 8, 64, "px")
-makeFontSizeSelector("cp-formatting_chat-ui_font-size", 8, 64, "px")
-makeFontSizeSelector("cp-formatting_chat-history_gap", 0, 64, "px")
+makeFontSizeSelector("cp-formatting_chat-history_font-size", 8, null, "px")
+makeFontSizeSelector("cp-formatting_chat-ui_font-size", 8, null, "px")
+makeFontSizeSelector("cp-formatting_chat-history_gap", 0, null, "px")
 
 // group 2
 // item 1
