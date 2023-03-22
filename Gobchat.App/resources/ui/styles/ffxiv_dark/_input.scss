@@ -27,6 +27,27 @@
     }
 }
 
+.gob-input-radio {
+    cursor: pointer;
+    font-size: 1em;
+    width: var(--input-checkbox_size);
+    height: var(--input-checkbox_size);
+    appearance: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: unset;
+    padding: unset;
+    border: unset;
+    background-image: var(--input-checkbox--unchecked_background);
+
+    &:checked {
+        background-image: var(--input-checkbox--checked_background);
+    }
+
+    :disabled {
+    }
+}
+
 .gob-input-dropdown {
     @extend .gob-input-field;
 
