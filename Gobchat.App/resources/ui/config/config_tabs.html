@@ -36,8 +36,8 @@
                 <span data-gob-locale-text="config.tabs.btn.newtab"></span>
             </button>
         </div>
-        <table class="gob-table gob-table--default" 
-                id="cp-tabs_tabs-table" >
+        <table class="gob-table gob-table--default"
+               id="cp-tabs_tabs-table">
             <thead>
                 <tr>
                     <th data-gob-locale-text="config.tabs.tbl.tabs.name"></th>
@@ -62,7 +62,7 @@
         <div class="gob-config-group_item">
             <input type="checkbox" class="gob-input-checkbox" id="cp-tabs-tab-config_mention"
                    data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip" />
-            <label for="cp-tabs_tab-config_mention" 
+            <label for="cp-tabs_tab-config_mention"
                    data-gob-locale-text="config.tabs.tabconfig.mention"
                    data-gob-locale-tooltip="config.tabs.tabconfig.mention.tooltip">
             </label>
@@ -71,7 +71,7 @@
         <div class="gob-config-group_item">
             <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_tab-config_roleplay"
                    data-gob-locale-tooltip="config.tabs.tabconfig.roleplay.tooltip" />
-            <label for="cp-tabs_tab-config_roleplay" 
+            <label for="cp-tabs_tab-config_roleplay"
                    data-gob-locale-text="config.tabs.tabconfig.roleplay"
                    data-gob-locale-tooltip="config.tabs.tabconfig.roleplay.tooltip">
             </label>
@@ -80,7 +80,7 @@
         <div class="gob-config-group_item">
             <input type="checkbox" class="gob-input-checkbox" id="cp-tabs_tab-config_timestamp"
                    data-gob-locale-tooltip="config.tabs.tabconfig.timestamp.tooltip" />
-            <label for="cp-tabs_tab-config_timestamp" 
+            <label for="cp-tabs_tab-config_timestamp"
                    data-gob-locale-text="config.tabs.tabconfig.timestamp"
                    data-gob-locale-tooltip="config.tabs.tabconfig.timestamp.tooltip">
             </label>
@@ -100,7 +100,7 @@
 
     <div class="gob-config-group">
         <div class="gob-table-wrapper--split-in-2">
-            <table  class="gob-table gob-table--confirm" id="cp-tabs_channel-table">
+            <table class="gob-table gob-table--confirm" id="cp-tabs_channel-table">
                 <thead>
                     <tr>
                         <th data-gob-locale-text="config.tabs.tbl.channel.name"></th>
@@ -113,6 +113,32 @@
         </div>
     </div>
 
+    <div class="gob-config-group">
+        <div class="gob-config-group_item">
+            <label class="gob-config-label" for="cp-tabs_tab-config_groups"
+                   data-gob-locale-text="config.tabs.tabconfig.groups"
+                   data-gob-locale-tooltip="config.tabs.tabconfig.groups.tooltip"></label>
+            <select class="gob-input-dropdown" id="cp-tabs_tab-config_groups"
+                    data-gob-locale-tooltip="config.tabs.tabconfig.groups.tooltip">
+                <option value="off" data-gob-locale-text="config.tabs.tabconfig.groups.off"></option>
+                <option value="only" data-gob-locale-text="config.tabs.tabconfig.groups.only"></option>
+                <option value="hide" data-gob-locale-text="config.tabs.tabconfig.groups.hide"></option>
+            </select>
+        </div>
+
+        <div class="gob-table-wrapper--split-in-2">
+            <table class="gob-table gob-table--confirm" id="cp-tabs_groups-table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.tabs.tbl.groups.name"></th>
+                        <th data-gob-locale-text="config.tabs.tbl.groups.visible"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <template id="cp-tabs_template_tabs-table_entry">
@@ -144,6 +170,17 @@
 </template>
 
 <template id="cp-tabs_template_channel-table_entry">
+    <tr>
+        <td>
+            <label class="gob-config-label js-label"></label>
+        </td>
+        <td>
+            <input class="gob-input-checkbox js-visible" type="checkbox" />
+        </td>
+    </tr>
+</template>
+
+<template id="cp-tabs_template_groups-table_entry">
     <tr>
         <td>
             <label class="gob-config-label js-label"></label>

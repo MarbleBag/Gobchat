@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1903,
+  "version": 1904,
   "profile": {
     "id": null,
     "name": null,
@@ -167,6 +167,10 @@
         "channel": {
           "visible": []
         },
+        "groups": {
+          "filter": [],
+          "type": "off"
+        },
         "formatting": {
           "timestamps": true,
           "mentions": true,
@@ -212,6 +216,10 @@
               "LINKSHELL_8"
             ]
           },
+          "groups": {
+            "filter": [],
+            "type": "off"
+          },
           "formatting": {
             "timestamps": true,
             "mentions": true,
@@ -230,6 +238,10 @@
               "ECHO",
               "ERROR"
             ]
+          },
+          "groups": {
+            "filter": [],
+            "type": "off"
           },
           "formatting": {
             "timestamps": true,

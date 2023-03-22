@@ -21,7 +21,7 @@ namespace Gobchat.Core.Config
 
         public int MaxVersion => 1999;
 
-        public int TargetVersion => 1903;
+        public int TargetVersion => 1904;
 
         public JObject Upgrade(JObject src)
         {
@@ -47,6 +47,14 @@ namespace Gobchat.Core.Config
             });
 
             JsonUtil.DeleteIfAvailable(dst, "behaviour.chattabs.data.default");
+            JsonUtil.IterateIfAvailable(dst, "behaviour.chattabs.data", node =>
+            {
+                node["groups"] = new JObject();
+                node["groups"]["filter"] = new JArray();
+                node["groups"]["type"] = "off";
+
+                return JsonUtil.IterateeResult.Continue;
+            });
 
             JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.trigger", dst, "behaviour.mentions.trigger");
             JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.playSound", dst, "behaviour.mentions.playSound");

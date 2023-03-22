@@ -279,19 +279,33 @@ export class StyleBuilder {
     static { // visible chat entries by channel by tab
         StyleBuilder.RuleGenerators.push(() => {
             const configTabs = gobConfig.get("behaviour.chattabs.data")
+            const configGroups = gobConfig.get("behaviour.groups.data")
+
             const tabs = Object.values(configTabs) as any[]
 
             const results: string[] = []
 
             for (const tab of tabs) {
                 const tabClass = Utility.formatString(Chat.CssClass.Chat_History_Tab_Partial, tab.id)
-                const invisibleChannels = _.difference(Constants.ChannelEnumValues, tab.channel.visible as number[])
-                    .map(id => Constants.ChannelEnumToKey[id])
-                    .map(key => Gobchat.Channels[key])
-                    .map(channel => channel.internalName)
 
-                const selectors = invisibleChannels.map(channelName => `.${tabClass} .${Utility.formatString(Chat.CssClass.ChatEntry_Channel_Partial, channelName)}`)
-                results.push(StyleBuilder.toCss(selectors, { "display": "none" }))
+                {
+                    const invisibleChannels = _.difference(Constants.ChannelEnumValues, tab.channel.visible as number[])
+                        .map(id => Constants.ChannelEnumToKey[id])
+                        .map(key => Gobchat.Channels[key])
+                        .map(channel => channel.internalName)
+
+                    const selectors = invisibleChannels.map(channelName => `.${tabClass} .${Utility.formatString(Chat.CssClass.ChatEntry_Channel_Partial, channelName)}`)
+                    results.push(StyleBuilder.toCss(selectors, { "display": "none" }))
+                }
+
+                if (tab.groups.type === "only") {
+                    const notSelector = tab.groups.filter.map(groupId => `.${Utility.formatString(Chat.CssClass.ChatEntry_TriggerGroup_Partial, groupId)}`).join(",")
+                    const selector = `.${tabClass} .${Chat.CssClass.ChatEntry}:not(${notSelector})`
+                    results.push(StyleBuilder.toCss(selector, { "display": "None" }))
+                } else if (tab.groups.type === "hide") {
+                    const selectors = tab.groups.filter.map(groupId => `.${tabClass} .${Utility.formatString(Chat.CssClass.ChatEntry_TriggerGroup_Partial, groupId)}`)
+                    results.push(StyleBuilder.toCss(selectors, { "display": "none" }))
+                }
             }
 
             return results.join("")

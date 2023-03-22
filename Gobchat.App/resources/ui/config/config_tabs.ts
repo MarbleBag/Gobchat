@@ -144,24 +144,25 @@ function buildConfigForTab(tabId) {
     tabConfigBinding.clearBindings()
 
     const tblChannels = $("#cp-tabs_channel-table > tbody")
-    tblChannels.empty()
-
-    const lblName = $("#cp-tabs_tab-config_name")
-    Databinding.bindText(tabConfigBinding, lblName, { configKey: `${ConfigKeyData}.${tabId}.name` })
-
-    const ckbMention = $("#cp-tabs_tab-config_mention")
-    Databinding.bindCheckbox(tabConfigBinding, ckbMention, { configKey: `${ConfigKeyData}.${tabId}.formatting.mentions` })
-
-    const ckbRoleplay = $("#cp-tabs_tab-config_roleplay")
-    Databinding.bindCheckbox(tabConfigBinding, ckbRoleplay, { configKey: `${ConfigKeyData}.${tabId}.formatting.roleplay` })
-
-    const ckbTimestamp = $("#cp-tabs_tab-config_timestamp")
-    Databinding.bindCheckbox(tabConfigBinding, ckbTimestamp, { configKey: `${ConfigKeyData}.${tabId}.formatting.timestamps` })
-
-    const ckbRangefilter = $("#cp-tabs_tab-config_rangefilter")
-    Databinding.bindCheckbox(tabConfigBinding, ckbRangefilter, { configKey: `${ConfigKeyData}.${tabId}.formatting.rangefilter` })
-
     const templateTableChannelsEntry = $("#cp-tabs_template_channel-table_entry")
+    const tblGroups = $("#cp-tabs_groups-table > tbody")
+    const templateTableGroupssEntry = $("#cp-tabs_template_groups-table_entry")
+    const lblName = $("#cp-tabs_tab-config_name")
+    const ckbMention = $("#cp-tabs_tab-config_mention")
+    const ckbRoleplay = $("#cp-tabs_tab-config_roleplay")
+    const ckbTimestamp = $("#cp-tabs_tab-config_timestamp")
+    const ckbRangefilter = $("#cp-tabs_tab-config_rangefilter")
+    const selGroupsFilter= $("#cp-tabs_tab-config_groups")
+    
+    tblChannels.empty()
+    tblGroups.empty()
+    Databinding.bindText(tabConfigBinding, lblName, { configKey: `${ConfigKeyData}.${tabId}.name` })    
+    Databinding.bindCheckbox(tabConfigBinding, ckbMention, { configKey: `${ConfigKeyData}.${tabId}.formatting.mentions` })    
+    Databinding.bindCheckbox(tabConfigBinding, ckbRoleplay, { configKey: `${ConfigKeyData}.${tabId}.formatting.roleplay` })    
+    Databinding.bindCheckbox(tabConfigBinding, ckbTimestamp, { configKey: `${ConfigKeyData}.${tabId}.formatting.timestamps` })    
+    Databinding.bindCheckbox(tabConfigBinding, ckbRangefilter, { configKey: `${ConfigKeyData}.${tabId}.formatting.rangefilter` })
+    Databinding.bindDropdown(tabConfigBinding, selGroupsFilter, { configKey: `${ConfigKeyData}.${tabId}.groups.type` })
+  
     Object.values(Gobchat.Channels).forEach((channel) => {
         if (!channel.relevant)
             return
@@ -184,6 +185,19 @@ function buildConfigForTab(tabId) {
         }
     })
 
+    for (const groupId of gobConfig.get("behaviour.groups.sorting")) {
+        const groupKey = `behaviour.groups.data.${groupId}`
+
+        const entry = $(templateTableGroupssEntry.html())
+        tblGroups.append(entry)
+
+        const lblName = entry.find(".js-label")
+        const chkVisible = entry.find(".js-visible")
+
+        Databinding.bindText(tabConfigBinding, lblName, { configKey: `${groupKey}.name` })
+        Databinding.bindCheckboxArray(tabConfigBinding, chkVisible, [groupId], { configKey: `${ConfigKeyData}.${tabId}.groups.filter` })
+    }
+
     gobLocale.updateElement(tblChannels)
 
     tabConfigBinding.loadBindings()
@@ -191,6 +205,13 @@ function buildConfigForTab(tabId) {
 
 Databinding.bindListener(binding, ConfigKeyOrder, function (entryIds) {
     buildTableTabs()
+    if (entryIds.length > 0)
+        buildConfigForTab(entryIds[0])
+})
+
+Databinding.bindListener(binding, "behaviour.groups.sorting", function () {
+    buildTableTabs()
+    const entryIds = gobConfig.get(ConfigKeyOrder)
     if (entryIds.length > 0)
         buildConfigForTab(entryIds[0])
 })
