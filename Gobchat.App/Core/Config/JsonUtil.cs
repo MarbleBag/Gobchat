@@ -372,6 +372,41 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public enum IterateeResult
+        {
+            Continue,
+            Stop
+        }
+
+        public static bool IterateIfAvailable(JObject src, string srcPath, Func<JToken, IterateeResult> iteratee)
+        {
+            var found = false;
+            AccessIfAvailable(src, srcPath, (node) =>
+            {
+                if(node is JObject jObject)
+                {
+                    found = true;
+                    foreach (var item in jObject.Properties())
+                    {
+                        var result = iteratee(jObject[item.Name]);
+                        if (result == IterateeResult.Stop)
+                            break;
+                    }
+                }
+                else if(node is JArray jArray)
+                {
+                    found = true;
+                    foreach (var item in jArray)
+                    {
+                        var result = iteratee(item);
+                        if (result == IterateeResult.Stop)
+                            break;
+                    }
+                }
+            });
+            return found;
+        }
+
         public static List<string> GetKeysIfAvailable(JObject src, string srcPath)
         {
             var result = new List<string>();
@@ -389,32 +424,29 @@ namespace Gobchat.Core.Config
             return result;
         }
 
+        [Obsolete("Use ModifyIfAvailable<T>")]
         public static bool ReplaceArrayIfAvailable(JObject src, string srcPath, Func<JArray, JToken> converter)
+        {
+            return ModifyIfAvailable<JArray>(src, srcPath, converter);
+        }
+
+        public static bool ModifyIfAvailable(JObject src, string srcPath, Func<JToken, JToken> converter) => ModifyIfAvailable<JToken>(src, srcPath, converter);
+
+        public static bool ModifyIfAvailable<T>(JObject src, string srcPath, Func<T, JToken> converter) where T : JToken
         {
             var found = false;
             JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
             {
                 if (node == null)
                     return;
-                if (node[key] is JArray array)
-                {
-                    found = true;
-                    node[key] = converter(array);
-                }
-            });
-            return found;
-        }
 
-        public static bool ModifyIfAvailable(JObject src, string srcPath, Func<JToken, JToken> converter)
-        {
-            var found = false;
-            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
-            {
-                if (node == null)
+                if (!(node[key] is T target))
                     return;
 
                 found = true;
-                var newValue = converter(node[key]);
+
+                var newValue = converter(target);
+
                 if (newValue == null)
                     node.Remove(key);
                 else
