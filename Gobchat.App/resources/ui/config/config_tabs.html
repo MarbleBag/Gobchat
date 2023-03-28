@@ -139,56 +139,57 @@
             </table>
         </div>
     </div>
+
+
+    <template id="cp-tabs_template_tabs-table_entry">
+        <tr data-gob-entryid>
+            <td>
+                <input class="gob-input-text js-name" type="text" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.name.tooltip" />
+            </td>
+            <td>
+                <input class="gob-input-checkbox js-visible" type="checkbox" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.visible.tooltip" />
+            </td>
+            <td>
+                <button class="gob-config-icon-button js-action-config"
+                        data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.config.tooltip">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="gob-config-icon-button js-action-moveup" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.up.tooltip">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="gob-config-icon-button js-action-movedown"
+                        data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.down.tooltip">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <button class="gob-config-icon-button js-action-delete"
+                        data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.delete.tooltip">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="cp-tabs_template_channel-table_entry">
+        <tr>
+            <td>
+                <label class="gob-config-label js-label"></label>
+            </td>
+            <td>
+                <input class="gob-input-checkbox js-visible" type="checkbox" />
+            </td>
+        </tr>
+    </template>
+
+    <template id="cp-tabs_template_groups-table_entry">
+        <tr>
+            <td>
+                <label class="gob-config-label js-label"></label>
+            </td>
+            <td>
+                <input class="gob-input-checkbox js-visible" type="checkbox" />
+            </td>
+        </tr>
+    </template>
 </div>
-
-<template id="cp-tabs_template_tabs-table_entry">
-    <tr data-gob-entryid>
-        <td>
-            <input class="gob-input-textbox js-name" type="text" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.name.tooltip" />
-        </td>
-        <td>
-            <input class="gob-input-checkbox js-visible" type="checkbox" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.visible.tooltip" />
-        </td>
-        <td>
-            <button class="gob-config-icon-button js-action-config"
-                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.config.tooltip">
-                <i class="fas fa-cog"></i>
-            </button>
-            <button class="gob-config-icon-button js-action-moveup" data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.up.tooltip">
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            <button class="gob-config-icon-button js-action-movedown"
-                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.down.tooltip">
-                <i class="fas fa-arrow-down"></i>
-            </button>
-            <button class="gob-config-icon-button js-action-delete"
-                    data-gob-locale-tooltip="config.tabs.tbl.tabs.entry.action.delete.tooltip">
-                <i class="fa fa-trash"></i>
-            </button>
-        </td>
-    </tr>
-</template>
-
-<template id="cp-tabs_template_channel-table_entry">
-    <tr>
-        <td>
-            <label class="gob-config-label js-label"></label>
-        </td>
-        <td>
-            <input class="gob-input-checkbox js-visible" type="checkbox" />
-        </td>
-    </tr>
-</template>
-
-<template id="cp-tabs_template_groups-table_entry">
-    <tr>
-        <td>
-            <label class="gob-config-label js-label"></label>
-        </td>
-        <td>
-            <input class="gob-input-checkbox js-visible" type="checkbox" />
-        </td>
-    </tr>
-</template>
 
 <script defer type="module" src="config_tabs.js"></script>
