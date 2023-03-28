@@ -146,6 +146,7 @@
       <DependentUpon>config_groups.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\ui\config\config_colors.html" />
     <Content Include="resources\ui\config\config_mentions.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
