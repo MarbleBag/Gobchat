@@ -31,9 +31,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ### Fixed
 - Chat position and size
-  - The values in config will now update if you move your chat around (hover with your mouse over it and press ctrl-key, now you can drag and resize it!) 
+  - The values in config will now update if you move your chat around (hover with your mouse over the chat and press ctrl-key, you can drag and resize it now!) 
   - It's now possible to enter negative values for multi-monitor setups
 
+- Gobchat will now recognize more FF14 auto translated terms
 
 ## [1.11.4] - 2023.01.13
 ### Fixed
