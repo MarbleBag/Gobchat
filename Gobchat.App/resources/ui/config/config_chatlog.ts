@@ -107,17 +107,15 @@ function addEntryToTable(channelData) {
     const chkLog = entry.find(".js-checkbox")
         .attr("id", id)
 
-    Databinding.bindCheckboxArrayInverse(binding, chkLog, channelEnums, { configKey: "behaviour.channel.log" })
+    Databinding.setConfigKey(chkLog, "behaviour.channel.log")
+    Databinding.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
 }
 
 binding.loadBindings()
 
-{
-    const configKeys = new Set<string>(["behaviour.channel.log"])
-    $(`#cp-chatlog [${Databinding.HtmlAttribute.ConfigKey}]:not(.button)`).each(function () {
-        const key = Databinding.getConfigKey(this)
-        if (key !== null && key !== undefined && key.length > 0)
-            configKeys.add(key)
+Components.makeCopyProfileButton($("#cp-chatlog_copyprofile"),
+    {
+        configKeys: () => {
+            return $("#cp-chatlog").find(`input[${Databinding.HtmlAttribute.ConfigKey}]`).map((i, e) => Databinding.getConfigKey(e)!).get()
+        }
     })
-    Components.makeCopyProfileButton($("#cp-chatlog_copyprofile"), { configKeys: Array.from(configKeys) })
-}

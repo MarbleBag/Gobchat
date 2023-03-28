@@ -67,13 +67,10 @@ Object.entries(Gobchat.Channels).forEach((entry) => {
 
 binding.loadBindings()
 
-const copyKeys = new Set<string>(["behaviour.channel.roleplay", "behaviour.channel.mention"])
-table.find(".entry-color-forground, .entry-color-background").each(function () {
-    const configId = Databinding.getConfigKey(this)
-    if (configId)
-        copyKeys.add(configId)
+Components.makeCopyProfileButton($("#cp-channel_copyprofile"), {
+    configKeys: () => {
+       return $("#cp-channel").find(`input[${Databinding.HtmlAttribute.ConfigKey}]`).map((i, e) => Databinding.getConfigKey(e)!).get()
+    }    
 })
-
-Components.makeCopyProfileButton($("#cp-channel_copyprofile"), { configKeys: Array.from(copyKeys) })
 
 //# sourceURL=config_channel.js

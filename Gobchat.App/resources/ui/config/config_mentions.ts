@@ -135,6 +135,6 @@ Databinding.bindCheckbox(binding, chkIgnoreRangeFilter)
 
 binding.loadBindings()
 
-Components.makeCopyProfileButton($("#cp-mentions_copyprofile"), { configKeys: ["behaviour.mentions"] })
+Components.makeCopyProfileButton($("#cp-mentions_copyprofile"), { configKeys: ["behaviour.mentions", "behaviour.rangefilter.ignoreMention"] })
 
 //# sourceURL=config_mentions.js

@@ -72,12 +72,16 @@ function addEntryToTable(channelData: Chat.Channel) {
     const ckbApplyFilter = entry.find(".js-checkbox")
         .prop("id", id)
 
-    Databinding.bindCheckboxArray(binding, ckbApplyFilter, channelEnums, { configKey: "behaviour.channel.rangefilter" })
+    Databinding.setConfigKey(ckbApplyFilter, "behaviour.channel.rangefilter")
+    Databinding.bindCheckboxArray(binding, ckbApplyFilter, channelEnums)
 }
 
 binding.loadBindings()
 
-const configKeys = new Set<string>(["behaviour.channel.rangefilter", "behaviour.rangefilter"])
-Components.makeCopyProfileButton($("#cp-rangefilter_copyprofile"), { configKeys: Array.from(configKeys) })
-
+Components.makeCopyProfileButton($("#cp-rangefilter_copyprofile"),
+    {
+        configKeys: () => {
+            return $("#cp-rangefilter").find(`input[${Databinding.HtmlAttribute.ConfigKey}]`).map((i, e) => Databinding.getConfigKey(e)!).get()
+        }
+    })
 
