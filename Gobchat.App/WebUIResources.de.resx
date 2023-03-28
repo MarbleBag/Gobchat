@@ -155,10 +155,10 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.chatlog.active.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.app.ckb.emoteinsay" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay" xml:space="preserve">
     <value>Erkenne Emotes im Sagen Kanal</value>
   </data>
-  <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt.</value>
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
@@ -240,7 +240,7 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
     <value>Absenderfarbe</value>
   </data>
   <data name="config.groups.tbl.group.entry.trigger" xml:space="preserve">
-    <value>Die zu dieser Gruppe gehörende Charaktere</value>
+    <value>Die zu dieser Gruppe gehörende Charaktere:</value>
   </data>
   <data name="config.groups.tbl.group.action.add" xml:space="preserve">
     <value>Neue Gruppe</value>
@@ -715,7 +715,7 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Diese Gruppe repräsentiert die Freundesgruppe aus dem Spiel und wird all jenen Spielern zugeordnet, die im Spiel mit dem Symbol {0} markiert sind.</value>
   </data>
   <data name="config.groups.tbl.group.description" xml:space="preserve">
-    <value>Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den Charakternamen oder ein Symbol der Freundesgruppen aus dem Spiel, wird auf den Chat-Text die Formatierung der zuerst gefundenen Gruppe angewandt. Um die Reihenfolge der Gruppen zu ändern, kann die Box mit dem Gruppen-Namen per Drag and Drop verschoben werden.</value>
+    <value>Jede neue Nachricht wird mit diesen Gruppen hier, von oben nach unten, verglichen. Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den Charakternamen oder ein Symbol der Freundesgruppen, wird diese Nachricht entsprechend der Einstellung formatiert. Eine Nachricht wird nur entsprechend einer Gruppe formatiert. Um die Reihenfolge zu ändern, können die Boxen via Drag &amp; Drop verschoben werden.</value>
   </data>
   <data name="config.main.nav.closegobchat" xml:space="preserve">
     <value>Gobchat beenden</value>
@@ -852,7 +852,7 @@ group Gruppen-Nummer clear</value>
     <value>Kompakt</value>
   </data>
   <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
-    <value>Charaktere die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden.</value>
+    <value>Charaktere, die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden. Beispiel: Khada Iriq oder Khada Iriq [Balmung], wenn dieser Charakter von einem anderen Server als dein Charakter ist.</value>
   </data>
   <data name="config.chatlog.tbl.chatlog.log" xml:space="preserve">
     <value>Diesen Kanal speichern</value>
@@ -906,7 +906,7 @@ group Gruppen-Nummer clear</value>
     <value>Schriftgröße</value>
   </data>
   <data name="config.formatting.chathistory.gap.label" xml:space="preserve">
-    <value>Abstand</value>
+    <value>Abstand zwischen Nachrichten</value>
   </data>
   <data name="config.app.config.fontsize.normal" xml:space="preserve">
     <value>Standard</value>
@@ -949,5 +949,29 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="config.mentions.trigger.tooltip" xml:space="preserve">
     <value>Worte welche eine Erwähnung auslösen. Möchte man mehrere Wörter angeben, nutze Kommas um diese voneinander abzutrennen. Es werden nur ganze Wörter erkannt! Wörter die als Bestandteil anderer Wörter auftauchen lösen nicht aus.</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups" xml:space="preserve">
+    <value>Wie soll mit Gruppen umgegangen werden?</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.off" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.only" xml:space="preserve">
+    <value>Nur diese Gruppen zeigen</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.hide" xml:space="preserve">
+    <value>Diese Gruppen verstecken</value>
+  </data>
+  <data name="config.tabs.tbl.groups.name" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="config.tabs.tbl.groups.visible" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="config.formatting.tbl.color.name" xml:space="preserve">
+    <value>Farbauswahl für Text-Typen</value>
+  </data>
+  <data name="config.groups.ckb.updatechat" xml:space="preserve">
+    <value>Alte Nachrichten nachträglich anpassen</value>
   </data>
 </root>

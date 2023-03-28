@@ -164,10 +164,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
     <value>To safely test a beta update, please ensure you have a backup of your Gobchat profile under 'AppData\Roaming\Gobchat\config' by copying the whole folder!</value>
   </data>
-  <data name="config.app.ckb.emoteinsay" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay" xml:space="preserve">
     <value>Autodetect emotes in say channel</value>
   </data>
-  <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>When direct speech is marked, everything else will be automatically flagged as emote.</value>
   </data>
   <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
@@ -356,13 +356,13 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
     <value>Sender text</value>
   </data>
   <data name="config.groups.tbl.group.entry.trigger" xml:space="preserve">
-    <value>Characters belonging to this group</value>
+    <value>Characters belonging to this group:</value>
   </data>
   <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
-    <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name.</value>
+    <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [server], after a whitespace, to the end of their name. Example: Khada Iriq or Khada Iriq [Balmung], if they are from Balmung and you're not.</value>
   </data>
   <data name="config.groups.tbl.group.description" xml:space="preserve">
-    <value>Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
+    <value>Each new message will be checked against these groups here, from top to bottom. If a group matches, either by character name or symbol, the formatting of the that, and only that, group will be applied to the message. You can change the order by drag &amp; drop.</value>
   </data>
   <data name="config.groups.tbl.group.action.add" xml:space="preserve">
     <value>New group</value>
@@ -989,9 +989,6 @@ group groupnumber clear</value>
   <data name="config.chatlog.format.selector.ingame" xml:space="preserve">
     <value>Ingame</value>
   </data>
-  <data name="config.rangefilter.description" xml:space="preserve">
-    <value>HELP</value>
-  </data>
   <data name="config.rangefilter.tbl.channel.name" xml:space="preserve">
     <value>Range filter</value>
   </data>
@@ -1053,7 +1050,7 @@ group groupnumber clear</value>
     <value></value>
   </data>
   <data name="config.formatting.chathistory.gap.label" xml:space="preserve">
-    <value>Entries gap</value>
+    <value>Gap between entries</value>
   </data>
   <data name="config.formatting.chathistory.gap.label.tooltip" xml:space="preserve">
     <value></value>
@@ -1087,5 +1084,35 @@ group groupnumber clear</value>
   </data>
   <data name="config.profiles.page.name" xml:space="preserve">
     <value>Profiles</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups" xml:space="preserve">
+    <value>How to handle groups?</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.off" xml:space="preserve">
+    <value>Do nothing</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.only" xml:space="preserve">
+    <value>Only show these groups</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.hide" xml:space="preserve">
+    <value>Hide these groups</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.tooltips" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.tabs.tbl.groups.name" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="config.tabs.tbl.groups.visible" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="config.formatting.tbl.color.name" xml:space="preserve">
+    <value>Color selection for text types</value>
+  </data>
+  <data name="config.formatting.tbl.segment.description" xml:space="preserve">
+    <value>These are used to determine the type of a text section.</value>
+  </data>
+  <data name="config.groups.ckb.updatechat" xml:space="preserve">
+    <value>Update previous messages</value>
   </data>
 </root>

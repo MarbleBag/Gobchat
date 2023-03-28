@@ -168,24 +168,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Autodetect emotes in say channel.
-        /// </summary>
-        internal static string config_app_ckb_emoteinsay {
-            get {
-                return ResourceManager.GetString("config.app.ckb.emoteinsay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote..
-        /// </summary>
-        internal static string config_app_ckb_emoteinsay_tooltip {
-            get {
-                return ResourceManager.GetString("config.app.ckb.emoteinsay.tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check for updates on start.
         /// </summary>
         internal static string config_app_ckb_update {
@@ -726,7 +708,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entries gap.
+        ///   Looks up a localized string similar to Gap between entries.
         /// </summary>
         internal static string config_formatting_chathistory_gap_label {
             get {
@@ -758,6 +740,24 @@ namespace Gobchat {
         internal static string config_formatting_chatui_fontsize_label_tooltip {
             get {
                 return ResourceManager.GetString("config.formatting.chatui.fontsize.label.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Autodetect emotes in say channel.
+        /// </summary>
+        internal static string config_formatting_ckb_emoteinsay {
+            get {
+                return ResourceManager.GetString("config.formatting.ckb.emoteinsay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When direct speech is marked, everything else will be automatically flagged as emote..
+        /// </summary>
+        internal static string config_formatting_ckb_emoteinsay_tooltip {
+            get {
+                return ResourceManager.GetString("config.formatting.ckb.emoteinsay.tooltip", resourceCulture);
             }
         }
         
@@ -812,6 +812,24 @@ namespace Gobchat {
         internal static string config_formatting_tbl_color_header_name {
             get {
                 return ResourceManager.GetString("config.formatting.tbl.color.header.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color selection for text types.
+        /// </summary>
+        internal static string config_formatting_tbl_color_name {
+            get {
+                return ResourceManager.GetString("config.formatting.tbl.color.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These are used to determine the type of a text section..
+        /// </summary>
+        internal static string config_formatting_tbl_segment_description {
+            get {
+                return ResourceManager.GetString("config.formatting.tbl.segment.description", resourceCulture);
             }
         }
         
@@ -915,6 +933,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update previous messages.
+        /// </summary>
+        internal static string config_groups_ckb_updatechat {
+            get {
+                return ResourceManager.GetString("config.groups.ckb.updatechat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Groups.
         /// </summary>
         internal static string config_groups_page_name {
@@ -933,7 +960,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name..
+        ///   Looks up a localized string similar to Each new message will be checked against these groups here, from top to bottom. If a group matches, either by character name or symbol, the formatting of the that, and only that, group will be applied to the message. You can change the order by drag &amp; drop..
         /// </summary>
         internal static string config_groups_tbl_group_description {
             get {
@@ -1014,7 +1041,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Characters belonging to this group.
+        ///   Looks up a localized string similar to Characters belonging to this group:.
         /// </summary>
         internal static string config_groups_tbl_group_entry_trigger {
             get {
@@ -1023,7 +1050,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A character belongs to this group if they&apos;re listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name..
+        ///   Looks up a localized string similar to A character belongs to this group if they&apos;re listed with their full name. Names are separated by a comma. If a character is from a different server, add [server], after a whitespace, to the end of their name. Example: Khada Iriq or Khada Iriq [Balmung], if they are from Balmung and you&apos;re not..
         /// </summary>
         internal static string config_groups_tbl_group_entry_trigger_tooltip {
             get {
@@ -1558,15 +1585,6 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HELP.
-        /// </summary>
-        internal static string config_rangefilter_description {
-            get {
-                return ResourceManager.GetString("config.rangefilter.description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start to fade out at (yalm).
         /// </summary>
         internal static string config_rangefilter_fadeout {
@@ -1747,6 +1765,51 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How to handle groups?.
+        /// </summary>
+        internal static string config_tabs_tabconfig_groups {
+            get {
+                return ResourceManager.GetString("config.tabs.tabconfig.groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide these groups.
+        /// </summary>
+        internal static string config_tabs_tabconfig_groups_hide {
+            get {
+                return ResourceManager.GetString("config.tabs.tabconfig.groups.hide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do nothing.
+        /// </summary>
+        internal static string config_tabs_tabconfig_groups_off {
+            get {
+                return ResourceManager.GetString("config.tabs.tabconfig.groups.off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only show these groups.
+        /// </summary>
+        internal static string config_tabs_tabconfig_groups_only {
+            get {
+                return ResourceManager.GetString("config.tabs.tabconfig.groups.only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string config_tabs_tabconfig_groups_tooltips {
+            get {
+                return ResourceManager.GetString("config.tabs.tabconfig.groups.tooltips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected tab.
         /// </summary>
         internal static string config_tabs_tabconfig_label {
@@ -1842,6 +1905,24 @@ namespace Gobchat {
         internal static string config_tabs_tbl_channel_visible {
             get {
                 return ResourceManager.GetString("config.tabs.tbl.channel.visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string config_tabs_tbl_groups_name {
+            get {
+                return ResourceManager.GetString("config.tabs.tbl.groups.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string config_tabs_tbl_groups_visible {
+            get {
+                return ResourceManager.GetString("config.tabs.tbl.groups.visible", resourceCulture);
             }
         }
         
