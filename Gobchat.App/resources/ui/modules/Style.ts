@@ -119,11 +119,11 @@ export class StyleLoader {
             }
         }
 
-        awaitPromises.push(new Promise((resolve, reject) => {
-            window.requestAnimationFrame(() => resolve())
-        }))
-
         const results = await Promise.allSettled(awaitPromises)
+
+        await new Promise<void>((resolve, reject) => {
+            window.requestAnimationFrame(() => resolve())
+        })
 
         body.show()
 
