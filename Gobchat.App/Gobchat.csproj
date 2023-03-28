@@ -214,9 +214,7 @@
     <Content Include="resources\ui\gobchat\deprecated\MessageBuilder.js" />
     <Content Include="resources\ui\gobchat\deprecated\CssFileLoader.js" />
     <Content Include="resources\ui\gobchat\deprecated\ChatCssStyleBuilder.js" />
-    <Content Include="resources\ui\gobui_chat.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\gobui_chat.css" />
     <Content Include="resources\ui\graphics\checkbox-checked-light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -286,15 +284,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Locale.ts" />
-    <Content Include="resources\ui\old styles\ffxiv_light_style.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\old styles\ffxiv_style.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\old styles\ffxiv_dark_style.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\old styles\ffxiv_light_style.css" />
+    <Content Include="resources\ui\old styles\ffxiv_style.css" />
+    <Content Include="resources\ui\old styles\ffxiv_dark_style.css" />
     <Content Include="resources\ui\graphics\ButtonActive.png" />
     <Content Include="resources\ui\graphics\ButtonIdle.png" />
     <Content Include="resources\ui\graphics\checkbox-checked.png">
@@ -306,12 +298,8 @@
     <Content Include="resources\ui\graphics\noise.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\ui\old styles\gobchat_v1_style.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\ui\gobui_default.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="resources\ui\old styles\gobchat_v1_style.css" />
+    <Content Include="resources\ui\gobui_default.css" />
     <Content Include="resources\ui\styles\base.css">
       <DependentUpon>base.scss</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -397,9 +385,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <TypeScriptCompile Include="resources\ui\modules\Databinding.ts" />
-    <None Include="resources\ui\old styles\styles.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="resources\ui\old styles\styles.json" />
     <None Include="resources\ui\styles\ffxiv_dark\_grid.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_input.scss" />
     <None Include="resources\ui\styles\ffxiv_dark\_scrollbar.scss" />
