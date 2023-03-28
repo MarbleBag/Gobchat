@@ -1,14 +1,82 @@
 @use "ffxiv_dark.scss";
 
 :root {
-    --text-1_color: #855b43;
-    --text-1_shadow-color: #ffe8bf;
-    --text-2_color: #674f45;
-    --text-2_shadow-color: #ffe8bf;
-    --page-divider-color-1: #bba38c;
-    --page-divider-color-2: #d0b59c;
+    // general
+    --browser_scollbar_track_color: #ccaa88;    
+    --browser_scollbar_track_border-color: transparent;
+    --browser_scollbar_track_color--active: #5e5e5e0a;    
+
+    --browser_scollbar_thumb_color: #bc987b;
+    --browser_scollbar_thumb_border-color: #8c6749;
+    --browser_scollbar_thumb_color--active:#ac8464;
+    
+    // config dialog
+    --dialog_background: var(--noise-texture), linear-gradient(to bottom, #fbe8cd, #efd6b2 1.25rem, #e6cba4 3.25rem);
+
+    // buttons
+    --primary-button_text-color: #f6f4f2;
+    --primary-button_text-shadow: none;
+    --primary-button_icon-color: #bea986;
+    --primary-button_icon-shadow: none;
+    --primary-button_background: linear-gradient(to bottom, #967661, #896c58 50%, #553f2b 90%, #79614d);
+    --primary-button_border-color:#746653;
+
+    --icon-button_icon-color: #afbbc1;
+    --icon-button_border-color: #704939;
+    --icon-button_background: #967859;
+    
+
+    // fields
+    --input_background: #ccaa88;
+    --input_text-color: #4c342f;      
+
     --input-checkbox--unchecked_background: url("../graphics/checkbox-light.png");
     --input-checkbox--checked_background: url("../graphics/checkbox-checked-light.png");
-    --chat-toolbar-buttons-background: linear-gradient(to bottom, #8b6e5b, #533c29 50%, #664f3b 80%, #664f3b);
-    --dialog_background: var(--noise-texture), linear-gradient(to bottom, #fbe8cd, #efd6b2 20px, #e6cba4 50px);
+
+    // text
+    --text-1_color: #846b5d;
+    --text-1_shadow-color: none;
+    --text-2_color: #674f45;
+    --text-2_shadow-color: none;
+    --text-error_text-color: crimson;
+    --text-error_text-shadow: none;
+
+    // tables
+    --table--stripped_background: #110e0328;
+    --table--hover_background: linear-gradient(135deg, #ab541678, #13131310 80%);
+    --table--active_background: linear-gradient(135deg, #e5b81694, #ffff0000 80%);
+
+    // misc
+    --page-divider-color-1: #bba38c;
+    --page-divider-color-2: #d0b59c;
+
+    --navigation_entry--hover_background: linear-gradient(135deg, #ab541678, #ffff0000 80%);
+    --navigation_entry--active_background: linear-gradient(135deg, #e5b81694, #ffff0000 80%);
+
+    // chat
+    --toolbar_button_text-color: var(--primary-button_text-color);
+    --toolbar_button_text-shadow: var(--primary-button_text-shadow);
+    --toolbar_button--disabled_text-color: #c5c5c3;
+    --toolbar_icon-button_text-color: var(--primary-button_icon-color);
+    --toolbar_icon-button_text-shadow: var(--primary-button_icon-shadow);
+    --toolbar_icon-button--disabled_text-color: #97876c;
+}
+
+.gob-config-dialog {
+    font-weight: bold;
+}
+
+%gob-input-field {
+    &:focus{
+        outline: solid 0.1rem #efbb36;
+        box-shadow: 0 0 0.2rem #d39010;
+    }
+}
+
+.gob-input-number,
+.gob-input-text, 
+.gob-input-textarea, 
+.gob-input-dropdown, 
+.gob-config-navigation_selection {
+    @extend %gob-input-field;
 }
