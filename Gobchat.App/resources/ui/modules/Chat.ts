@@ -492,7 +492,8 @@ class TabBarControl {
     private static readonly selector_tabWithId = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}[${TabBarControl.AttributeTabId}={0}]`
     private static readonly selector_allTabs = `> .${TabBarControl.CssTabBarContent} > .${TabBarControl.CssTabButton}`
 
-    #databinding: Databinding.BindingContext | null = null
+    #databinding: Databinding.BindingContext
+    #resizeObserver: ResizeObserver
     #channelToTab: { [channelId: number]: string[] } = {}
     #navPanelData: {
         [tabId: string]: {
@@ -507,7 +508,8 @@ class TabBarControl {
     #navPanel: JQuery = $()
 
     constructor() {
-
+        this.#databinding = new Databinding.BindingContext(gobConfig)
+        this.#resizeObserver = new ResizeObserver(this.#onTabbarResize)
     }
 
     control(navBar: HTMLElement | JQuery, navPanel: HTMLElement | JQuery): void {
@@ -517,7 +519,9 @@ class TabBarControl {
         this.#tabbar.find(TabBarControl.selector_scrollRightBtn).off("click", this.#onNavBarBtnScroll)
         this.#tabbar.find(TabBarControl.selector_allTabs).off("click", this.#onTabClick)
         this.#navPanel.off("scroll", this.#onPanelScroll)
-        this.#databinding?.clearBindings()
+        this.#resizeObserver.disconnect()
+        this.#databinding.clearBindings()
+        
 
         // rebind
         const $navBar = $(navBar)
@@ -532,13 +536,13 @@ class TabBarControl {
         this.#tabbar.on("wheel", this.#onNavBarWheelScroll)
         this.#tabbar.find(TabBarControl.selector_scrollLeftBtn).on("click", this.#onNavBarBtnScroll)
         this.#tabbar.find(TabBarControl.selector_scrollRightBtn).on("click", this.#onNavBarBtnScroll)
+        this.#resizeObserver.observe(this.#tabbar[0])
 
         this.#navPanel = $navPanel
         this.#navPanel.on("scroll", this.#onPanelScroll)
 
         this.#isPanelScrolledToBottom = true
 
-        this.#databinding = new Databinding.BindingContext(gobConfig)
         Databinding.bindListener(this.#databinding, "behaviour.chattabs", config => this.#updateTabs(config))
         Databinding.bindListener(this.#databinding, "behaviour.chattabs.data", config => this.#buildChannelToTabMapping(config))
         Databinding.bindListener(this.#databinding, "behaviour.chattabs.effect", (effect) => {
@@ -590,24 +594,28 @@ class TabBarControl {
             this.#scrollPanelToBottom(scrollFast)
     }
 
-    #onNavBarBtnScroll = (event: any) => { // bound to this class instance
+    #onTabbarResize = () => {
+        this.#scrollTabs(0)
+    }
+
+    #onNavBarBtnScroll = (event: any) => {
         const scrollDirection = $(event.currentTarget).hasClass(TabBarControl.CssScrollRightButton) ? 1 : -1
         this.#scrollTabs(scrollDirection)
     }
 
-    #onNavBarWheelScroll = (event: any) => { // bound to this class instance
+    #onNavBarWheelScroll = (event: any) => {
         const scrollDirection = (event.originalEvent as WheelEvent).deltaY > 0 ? 1 : -1
         this.#scrollTabs(scrollDirection)
     }
 
-    #onPanelScroll = (event: any) => { // bound to this class instance
+    #onPanelScroll = (event: any) => {
         const $panel = $(event.currentTarget)
         const panelBottom = $panel.scrollTop() + $panel.innerHeight()
         const closeToBottm = panelBottom + TabBarControl.ScrollToleranceZone >= event.currentTarget.scrollHeight
         this.#isPanelScrolledToBottom = closeToBottm
     }
 
-    #onTabClick = (event: any) => { // bound to this class instance
+    #onTabClick = (event: any) => {
         const id = $(event.currentTarget).attr(TabBarControl.AttributeTabId) as string
         this.#activateTab(id)
     }
@@ -680,7 +688,7 @@ class TabBarControl {
     get #activeTabId(): string {
         const activeTab = this.#tabbar.find(TabBarControl.selector_activeTab)
         if (activeTab.length === 0)
-            return "";
+            return ""
         return activeTab.attr(TabBarControl.AttributeTabId) as string
     }
 
@@ -934,31 +942,27 @@ class ChatSearchControl {
     }
 
     moveSelectionUp = () => {
-        const $activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
-        $activeSelection.removeClass(ChatSearchControl.cssActiveSelection)
-
-        let $prevMarked = $activeSelection.prevAll(ChatSearchControl.selector_markedBySearch).first()
-
-        if ($prevMarked.length === 0) //wrap around
-            $prevMarked = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch).last()
-
-        $prevMarked.addClass(ChatSearchControl.cssActiveSelection)
-
-        this.#updateCounterValue()
-        this.scrollToSelection()
+        this.#moveSelection(
+            activeSelection => activeSelection.prevAll(ChatSearchControl.selector_markedBySearch).first(),
+            allElements => allElements.last()
+        )
     }
 
     moveSelectionDown = () => {
-        const $activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
-        $activeSelection.removeClass(ChatSearchControl.cssActiveSelection)
+        this.#moveSelection(
+            activeSelection => activeSelection.nextAll(ChatSearchControl.selector_markedBySearch).first(),
+            allElements => allElements.first()
+        )
+    }
 
-        let $nextMarked = $activeSelection.nextAll(ChatSearchControl.selector_markedBySearch).first()
+    #moveSelection(selectNext: (currentSelection: JQuery) => JQuery, restartSelectionAt: (allElements: JQuery) => JQuery) {
+        const activeSelection = this.#chatHistory.find(ChatSearchControl.selector_activeSelection)
+        activeSelection.removeClass(ChatSearchControl.cssActiveSelection)
+        let nextSelection = selectNext(activeSelection)
+        if (nextSelection.length === 0)
+            nextSelection = restartSelectionAt(this.#chatHistory.find(ChatSearchControl.selector_markedBySearch))
 
-        if ($nextMarked.length === 0) //wrap around
-            $nextMarked = this.#chatHistory.find(ChatSearchControl.selector_markedBySearch).first()
-
-        $nextMarked.addClass(ChatSearchControl.cssActiveSelection)
-
+        nextSelection.addClass(ChatSearchControl.cssActiveSelection)
         this.#updateCounterValue()
         this.scrollToSelection()
     }
@@ -998,6 +1002,7 @@ class ChatGroupControl {
         for (const message of this.#chatHistory.find(ChatGroupControl.selector_messages)) {
             const triggerId = message.getAttribute(HtmlAttribute.ChatEntry_TriggerId)
             if (triggerId !== null) {
+                message.removeAttribute(HtmlAttribute.ChatEntry_TriggerId)
                 const cssClass = Utility.formatString(CssClass.ChatEntry_TriggerGroup_Partial, triggerId)
                 message.classList.remove(cssClass)
             }
