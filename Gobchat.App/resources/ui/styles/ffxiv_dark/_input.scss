@@ -1,4 +1,4 @@
-.gob-input-field {
+%gob-input-field {
     background: var(--input_background);
     border: inset 0.125rem var(--input_border-color);
     color: var(--input_text-color);
@@ -28,28 +28,11 @@
 }
 
 .gob-input-radio {
-    cursor: pointer;
-    font-size: 1em;
-    width: var(--input-checkbox_size);
-    height: var(--input-checkbox_size);
-    appearance: none;
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin: unset;
-    padding: unset;
-    border: unset;
-    background-image: var(--input-checkbox--unchecked_background);
-
-    &:checked {
-        background-image: var(--input-checkbox--checked_background);
-    }
-
-    :disabled {
-    }
+    @extend .gob-input-checkbox;
 }
 
 .gob-input-dropdown {
-    @extend .gob-input-field;
+    @extend %gob-input-field;
 
     cursor: pointer;
     font-size: 0.85em;
@@ -62,7 +45,7 @@
 }
 
 .gob-input-text {
-    @extend .gob-input-field;
+    @extend %gob-input-field;
 
     cursor: text;
     font-size: 0.8em;
@@ -74,7 +57,7 @@
 }
 
 .gob-input-textarea {
-    @extend .gob-input-field;
+    @extend %gob-input-field;
 
     cursor: text;
     font-size: 0.8em;
@@ -91,7 +74,7 @@
 }
 
 .gob-input-number {
-    @extend .gob-input-field;
+    @extend %gob-input-field;
     cursor: text;
     font-size: 0.8em;
     padding-left: 0.5rem;

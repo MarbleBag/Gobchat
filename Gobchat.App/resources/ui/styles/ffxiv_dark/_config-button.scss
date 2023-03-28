@@ -26,21 +26,21 @@
     // width: 100%;
     // height: 25px;
 
+    & > svg {
+        color: var(--primary-button_icon-color);
+        text-shadow: var(--primary-button_icon-shadow);
+    }
+
     &:hover {
         filter: brightness(115%);
     }
 
     &:active {
-        border-color: var(--primary-button-active-border-color);
+        border-color: var(--primary-button--active_border-color);
     }
 
     &:disabled {
         filter: brightness(50%);
-    }
-
-    & > svg {
-        color: var(--primary-button_icon-color);
-        text-shadow: var(--primary-button_icon-shadow);
     }
 }
 

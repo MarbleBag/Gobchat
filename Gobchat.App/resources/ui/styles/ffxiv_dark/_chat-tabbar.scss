@@ -18,17 +18,23 @@
 
 .gob-chat-tabbar_button {
     @extend .gob-chat-toolbar_button;
-    border-right: solid 0.03125rem #0000007a;
-    box-shadow: inset 0.0625rem 0 0 0 #868686, inset 0 0.0625rem 0 0 #868686;
+    border-right: solid 0.03125rem var(--tabbar_indentation-shadow-color);
+    box-shadow: inset 0.0625rem 0 0 0 var(--tabbar_indentation-color), inset 0 0.0625rem 0 0 var(--tabbar_indentation-color);
 }
 
 .gob-chat-tabbar_button--left {
+    display:flex;
+    justify-content:center;
+    align-items:center;
     padding-right: 0.3125rem;
     border-radius: 50% 0 0 50%;
-    box-shadow: inset 0 0.0625rem 0 0 #868686;
+    box-shadow: inset 0 0.0625rem 0 0 var(--tabbar_indentation-color);
 }
 
 .gob-chat-tabbar_button--right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-left: 0.3125rem;
     border-right: none;
     border-radius: 0 50% 50% 0;
@@ -48,7 +54,7 @@
 
     &.is-active::before {
         content: "";
-        background: #fffbf7;
+        background: var(--tabbar_tab--active_base-color);
         border-radius: 50%;
         width: var(--active-icon-size);
         height: var(--active-icon-size);
@@ -56,7 +62,7 @@
         left: -0.125rem;
         top: -0.5rem;
         display: inline-block;
-        box-shadow: 0 0 0.25rem 0.0625rem var(--chat-active-tab-color);
+        box-shadow: 0 0 0.25rem 0.0625rem var(--tabbar_tab--active_blur-color);
     }
 }
 
@@ -68,7 +74,7 @@
         content: "";
         position: absolute;
         inset: 0 0 0 0;
-        background: rgba(245, 160, 0, 0.2);
+        background: var(--tabbar_tab--effect_overlay_color);
     }
 }
 
@@ -79,11 +85,11 @@
 
 .gob-chat-tabbar_content_tab--mention-3,
 .gob-chat-tabbar_content_tab--new-message-3 {
-    color: #73cf4b;
+    color: var(--tabbar_tab--effect_highlight_color);
 }
 
 @keyframes subtile-blinker {
     50% {
-        background: rgba(245, 160, 0, 0.25);
+        background: var(--tabbar_tab--effect_blink_color);
     }
 }
