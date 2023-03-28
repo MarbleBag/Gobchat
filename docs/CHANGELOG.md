@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.12.0-1] - 2023.??.??
+## [1.12.0-1] - 2023.03.28
 ### Added
 - Font size
   - There is now a wider range of sizes to choose from - or just enter whatever number you like
@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 - Config
   - UI scales automatically with the width of the dialog
-  
+
 
 - Previous messages are updated if group settings are changed
 
@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 
 ### Fixed
 - Chat position and size
-  - The values in config will now update if you move your chat around (hover with your mouse over the chat and press ctrl-key, you can drag and resize it now!) 
+  - The values in config will now update if you move your chat around (hover with your mouse over the chat and press ctrl-key, you can drag and resize it now!)
   - It's now possible to enter negative values for multi-monitor setups
 
 - Gobchat will now recognize more FF14 auto translated terms
