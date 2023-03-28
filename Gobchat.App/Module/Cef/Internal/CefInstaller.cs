@@ -23,7 +23,7 @@ namespace Gobchat.Module.Cef.Internal
     internal sealed class CefInstaller
     {
         private const string CURRENT_VERSION = "107.1.12";
-        private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.0.0/Cef-75.1.14-{ARCH}.7z"; //@"https://github.com/MarbleBag/Gobchat/releases/download/cef-v2/Cef-107.1.12-{ARCH}.7z";
+        private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.12.0-cef/Cef-107.1.12-{ARCH}.7z";
         
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
