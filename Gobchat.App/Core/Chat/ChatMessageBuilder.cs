@@ -13,6 +13,7 @@
 
 using System;
 using System.Linq;
+using System.Net.Configuration;
 using Gobchat.Core.Util.Extension;
 
 namespace Gobchat.Core.Chat
@@ -81,8 +82,8 @@ namespace Gobchat.Core.Chat
                 Channel = channel
             };
 
-            SetMessageSource(chatMessage, source);
             chatMessage.Content.Add(new ChatMessageSegment(MessageSegmentType.Undefined, message));
+            SetMessageSource(chatMessage, source);
 
             return chatMessage;
         }
@@ -137,6 +138,22 @@ namespace Gobchat.Core.Chat
                 }
 
                 chatMessage.Source.CharacterName = chatMessage.Source.Original.Substring(readIdx);
+
+                if (chatMessage.Channel == ChatChannel.AnimatedEmote && chatMessage.Content.Count > 0)
+                { // these are special
+                    var serverStart = chatMessage.Source.CharacterName.Length + 1;
+                    var msg = chatMessage.Content[0];
+
+                    if (msg.Text.Length > serverStart && msg.Text[serverStart] == '[')
+                    {
+                        var serverEnd = msg.Text.IndexOf(']', serverStart);
+                        if(serverEnd > 0)
+                        {
+                            var server = msg.Text.Substring(serverStart, serverEnd - serverStart + 1);
+                            chatMessage.Source.CharacterName += " " + server;
+                        }
+                    }
+                }
             }
         }
 
