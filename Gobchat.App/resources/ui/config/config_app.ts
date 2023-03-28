@@ -36,18 +36,13 @@ try {
 }
 
 // setup checkboxes
-Databinding.bindCheckbox(binding, $("#cp-app_autodetectemote"))
-
 Databinding.bindCheckbox(binding, $("#cp-app_hide"))
 
 Databinding.bindCheckbox(binding, $("#cp-app_checkupdates"))
 
 Databinding.bindCheckbox(binding, $("#cp-app_checkbetaupdates"))
 
-{
-    const available = await GobchatAPI.isFeaturePlayerLocationAvailable()
-    $("#cp-app_characterlocations_feature").toggle(!available)
-}
+$("#cp-app_characterlocations_feature").toggle(!await GobchatAPI.isFeaturePlayerLocationAvailable())
 
 Databinding.bindCheckbox(binding, $("#cp-app_actor_updateActive"))
 
@@ -191,34 +186,11 @@ Components.makeResetButton($("#cp-app_actor_updateInterval_reset"), $("#cp-app_a
 // activate bindings
 binding.loadBindings()
 
-// setup profile copy
-/*
-const allFields = [
-    dpdLanguage, dpdTheme,
-    ckbChatLog, ckbAutodetect, ckbUserMention, ckbHide, ckbUpdate, ckbBetaUpdate, ckbRangeFilterMention,
-    txtRangeFilterCutOff, txtRangeFilterFadeOut, txtRangeFilterStartOpacity, txtRangeFilterEndOpacity,
-    txtFrameX, txtFrameY, txtFrameHeight, txtFrameWidth,
-    clrChatboxBackground,
-    clrSearchMarked, clrSearchSelected,
-    txtFontFamily, dpdFontSize,
-    txtHotkeyShow,
-    txtChatUpdateInterval, txtActorUpdateInterval,
-    ckbActorActive
-]
-*/
-
-const configKeys = new Set<string>()
-$(`#cp-app [${Databinding.HtmlAttribute.ConfigKey}]:not(.button)`).each(function () {
-    const key = Databinding.getConfigKey(this)
-    if (key !== null && key.length > 0)
-        configKeys.add(key)
-})
-
-const btnCopyProfile = $("#cp-app_copyprofile")
-Components.makeCopyProfileButton(btnCopyProfile,
+Components.makeCopyProfileButton($("#cp-app_copyprofile"),
     {
-        //configKeys: _.map(allFields, e => e.attr(GobConfigHelper.ConfigKeyAttribute))
-        configKeys: Array.from(configKeys)
+        configKeys: () => {
+            return $("#cp-app").find(`input[${Databinding.HtmlAttribute.ConfigKey}]`).map((i, e) => Databinding.getConfigKey(e)!).get()
+        }  
     })
 
 //# sourceURL=config_app.js

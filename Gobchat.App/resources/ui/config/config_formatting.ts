@@ -130,6 +130,9 @@ gobLocale.updateElement(colorTable)
 
 // group 3
 // item 1
+Databinding.bindCheckbox(binding, $("#cp-formatting_autodetectemote"))
+
+// item 2
 const btnAddSegmentDetection = $("#cp-formatting_segment-detection_add")
 btnAddSegmentDetection.on("click", event => {
     const data = gobConfig.get(ConfigKeyData)
@@ -149,7 +152,7 @@ btnSegmentDetectionTableReset.on("click", (event) => {
     gobConfig.reset(ConfigKeyOrder)
 })
 
-// item 2
+// item 3
 const segmentDetectionTable = $("#cp-formatting_segment-detection-table")
 const segmentDetectionTableEntryTemplate = $("#cp-formatting_template_segment-detection-table_entry")
 

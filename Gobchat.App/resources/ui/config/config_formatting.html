@@ -83,17 +83,28 @@
 
     <div class="gob-config-group">
         <div class="gob-config-group_title" data-gob-locale-text="config.formatting.tbl.segment.name"></div>
-        
-        <div class="gob-config-text" data-gob-locale-text="config.formatting.tbl.segment.description"></div>
+
+        <!--<div class="gob-config-text" data-gob-locale-text="config.formatting.tbl.segment.description"></div>-->
+
+        <!-- auto detect emote -->
+        <div class="gob-config-group_item">
+            <input class="gob-input-checkbox" type="checkbox"
+                   id="cp-formatting_autodetectemote"
+                   data-gob-configkey="behaviour.chat.autodetectEmoteInSay"
+                   data-gob-locale-tooltip="config.formatting.ckb.emoteinsay.tooltip" />
+            <label class="gob-config-label" for="cp-formatting_autodetectemote" data-gob-locale-text="config.formatting.ckb.emoteinsay"
+                   data-gob-locale-tooltip="config.formatting.ckb.emoteinsay.tooltip">
+            </label>
+        </div>
 
         <div class="gob-config-group_item">
             <button class="gob-config-secondary-button"
-                    id="cp-formatting_segment-detection_add" >
+                    id="cp-formatting_segment-detection_add">
                 <i class="fa fa-plus"></i>
                 <span data-gob-locale-text="config.formatting.tbl.segment.new"></span>
             </button>
             <button class="gob-config-icon-button"
-                    id="cp-formatting_segment-detection_reset" data-gob-locale-tooltip="config.formatting.tbl.segment.reset" >
+                    id="cp-formatting_segment-detection_reset" data-gob-locale-tooltip="config.formatting.tbl.segment.reset">
                 <i class="fas fa-undo-alt"></i>
             </button>
         </div>
