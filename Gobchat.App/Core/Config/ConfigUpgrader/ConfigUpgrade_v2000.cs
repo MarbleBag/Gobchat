@@ -19,17 +19,17 @@ namespace Gobchat.Core.Config
     {
         public int MinVersion => 1900;
 
-        public int MaxVersion => 1999;
+        public int MaxVersion => 1904;
 
-        public int TargetVersion => 1904;
+        public int TargetVersion => 1905;
 
         public JObject Upgrade(JObject src)
         {
             JObject dst = (JObject)src.DeepClone();
 
-            JsonUtil.MoveIfAvailable(dst, "style.chatbox", dst, "style.chat-history");
-            JsonUtil.MoveIfAvailable(dst, "style.channel.base.font-size", dst, "style.chat-history.font-size");
-            JsonUtil.ModifyIfAvailable(dst, "style.chat-history.font-size", node => {
+            JsonUtil.MoveIfAvailable(dst, "style.chatbox", dst, "style.chat-history");    
+            
+            JsonUtil.ModifyIfAvailable(dst, "style.channel.base.font-size", node => {
                 if(node.Type != JTokenType.String)
                     return null;
                 
@@ -45,13 +45,18 @@ namespace Gobchat.Core.Config
                     default: return "16px";
                 }
             });
+            JsonUtil.MoveIfAvailable(dst, "style.channel.base.font-size", dst, "style.chat-history.font-size");
 
             JsonUtil.DeleteIfAvailable(dst, "behaviour.chattabs.data.default");
-            JsonUtil.IterateIfAvailable(dst, "behaviour.chattabs.data", node =>
+            JsonUtil.IterateIfAvailable<JObject>(dst, "behaviour.chattabs.data", node =>
             {
-                node["groups"] = new JObject();
-                node["groups"]["filter"] = new JArray();
-                node["groups"]["type"] = "off";
+                JsonUtil.SetIfUnavailable(node, "groups", () =>
+                {
+                    var grp = new JObject();
+                    grp["filter"] = new JArray();
+                    grp["type"] = "off";
+                    return grp;
+                });
 
                 return JsonUtil.IterateeResult.Continue;
             });

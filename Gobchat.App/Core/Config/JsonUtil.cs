@@ -372,6 +372,37 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public static bool SetIfUnavailable(JObject src, string srcPath, JToken value)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            {
+                if (node[propertyName] != null)
+                    return;
+
+                node[propertyName] = value != null ? value.DeepClone() : value;
+                found = true;
+            });
+            return found;
+        }
+
+        public static bool SetIfUnavailable(JObject src, string srcPath, Func<JToken> producer)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            {
+                if (node[propertyName] != null)
+                    return;
+
+                var value = producer();
+                node[propertyName] = value != null ? value.DeepClone() : value;
+                found = true;
+            });
+            return found;
+        }
+
+
+
         public enum IterateeResult
         {
             Continue,
@@ -380,17 +411,25 @@ namespace Gobchat.Core.Config
 
         public static bool IterateIfAvailable(JObject src, string srcPath, Func<JToken, IterateeResult> iteratee)
         {
+            return IterateIfAvailable<JToken>(src, srcPath, iteratee);
+        }
+
+        public static bool IterateIfAvailable<T>(JObject src, string srcPath, Func<T, IterateeResult> iteratee) where T : JToken
+        {
             var found = false;
             AccessIfAvailable(src, srcPath, (node) =>
             {
                 if(node is JObject jObject)
                 {
                     found = true;
-                    foreach (var item in jObject.Properties())
+                    foreach (var propertyName in jObject.Properties())
                     {
-                        var result = iteratee(jObject[item.Name]);
-                        if (result == IterateeResult.Stop)
-                            break;
+                        var item = jObject[propertyName.Name];
+                        if(item is T)                        {
+                            var result = iteratee((T)item);
+                            if (result == IterateeResult.Stop)
+                                break;
+                        }
                     }
                 }
                 else if(node is JArray jArray)
@@ -398,9 +437,12 @@ namespace Gobchat.Core.Config
                     found = true;
                     foreach (var item in jArray)
                     {
-                        var result = iteratee(item);
-                        if (result == IterateeResult.Stop)
-                            break;
+                        if (item is T)
+                        {
+                            var result = iteratee((T)item);
+                            if (result == IterateeResult.Stop)
+                                break;
+                        }
                     }
                 }
             });
