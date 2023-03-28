@@ -95,9 +95,11 @@ module BindingContext {
         elementKey: null | "change" | "keydown" | "keyup"
         configKey: string
         /* Called to retrieve a value from the element */
-        elementToConfig: null | (($element: JQuery, event: any, storedValue: T) => T | undefined)
+        elementToConfig: null | ((element: JQuery, event: any, storedValue: T) => T | undefined)
         /* Called to set a value on the element */
-        configToElement: null | (($element: JQuery, storedValue: T) => void)
+        configToElement: null | ((element: JQuery, storedValue: T) => void)
+        onBind: null | ((element: JQuery, config: Config.GobchatConfig, configKey: string) => void)
+        onUnbind: null | ((element: JQuery, config: Config.GobchatConfig, configKey: string) => void)
     }
 
     export interface ElementBindContext<T> extends BindElementOptionTypes<T> {
@@ -118,6 +120,10 @@ export class BindingContext {
         this.#bindings = []
         this.#config = gobConfig
         this.#isInitialized = false
+    }
+
+    get config() {
+        return this.#config
     }
 
     get isLoaded(): boolean {
@@ -159,6 +165,8 @@ export class BindingContext {
             configKey: $element.attr(HtmlAttribute.ConfigKey)?.toString() || "",
             elementToConfig: ($element) => $element.val(),
             configToElement: ($element, value) => $element.val(value),
+            onBind: null,
+            onUnbind: null,
             onElementChange: null,
             initializer: null,
             configListener: null
@@ -177,6 +185,9 @@ export class BindingContext {
         }
 
         const bind: Binding.OnBind = (config) => {
+            if (innerContext.onBind)
+                innerContext.onBind($element, config, innerContext.configKey)
+
             // initialize
             if (innerContext.initializer)
                 innerContext.initializer(config)
@@ -215,6 +226,9 @@ export class BindingContext {
                 if (!config.removePropertyEventListener(innerContext.configKey, innerContext.configListener))
                     console.log("Error: Databinding. Unable to remove property listener: " + innerContext.configKey)
             }
+
+            if (innerContext.onUnbind)
+                innerContext.onUnbind($element, config, innerContext.configKey)
         }
 
         const binding = new Binding(bind, unbind)
@@ -442,10 +456,15 @@ export function bindColorSelector(bindingContext: BindingContext, element: HTMLE
     const defOptions: BindElementOptions<string> = {
         elementKey: null,
         elementToConfig: null,
-        //  ($element) => {
-        //      const color = $element.spectrum("get"); return color === null ? null : color.toString();
-        //  },
-        configToElement: ($element, value) => $element.spectrum("set", value)
+        configToElement: (element, value) => element.spectrum("set", value),
+        onBind: (element, config, key) => {
+            element.on("hide.spectrum", function (e, color) {
+                if (color !== null)
+                    config.set(key, color.toString())
+                else
+                    config.set(key, null)
+            })
+        }
     }
 
     return bindingContext.bindElement(element, $.extend(defOptions, options))

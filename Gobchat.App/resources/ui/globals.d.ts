@@ -92,7 +92,8 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     parent(): JQuery<T>
     eq(e: any): JQuery<T>
     detach(): JQuery<T>
-    map<B>(fn: (element: T, index: number) => B): JQuery<B>
+    map<B>(fn: (index: number, element: T) => B): JQuery<B>
+    get() : T[]
     change(): JQuery
     data(key: string, value: any): JQuery
     data<T>(key: string): T
@@ -131,6 +132,7 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     spectrum(action: "set", color: string): void
     spectrum(action: "option", optionName: string): any
     spectrum(action: "option", optionName: string, newOptionValue: any): void
+    on(action: "hide.spectrum", callback: (this: HTMLElement, e: T, color: any) => void): JQuery<T>
 }
 
 declare interface JQuery<T = HTMLElement> extends Iterable<T> {

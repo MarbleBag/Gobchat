@@ -500,16 +500,16 @@ export class GobchatConfig {
         const profile = new ConfigProfile(data)
         const profileId = profile.profileId
 
+        if (profileId in this.#profiles)
+            throw new Error(`Profile id ${profileId} already in use`)
+
         profile.addPropertyListener("*", this.#OnPropertyChange)
         this.#profiles[profileId] = profile
         this.#eventDispatcher.dispatch("profile:", { config: this, type: "profile", action: "new", profileId: profileId })
     }
 
     deleteProfile(profileId: string): void {
-        if (this.profileIds.length <= 1)
-            return
-
-        if (!_.includes(this.profileIds, profileId))
+        if (this.profileIds.length <= 1 || !(profileId in this.#profiles))
             return
 
         delete this.#profiles[profileId]

@@ -39,10 +39,6 @@ function _makeColorSelector(element: JQuery, options: ColorSelectorOptionTypes):
     if (element.length > 1)
         throw new Error(`Unable to turn multiple elements into the same color selector`)
 
-    const configKey = Databinding.getConfigKey(element)
-    if (configKey === null)
-        throw new Error(`Attribute '${Databinding.HtmlAttribute.ConfigKey}' not set`)
-
     element.spectrum({
         preferredFormat: "hex3",
         // color: data,
@@ -56,12 +52,6 @@ function _makeColorSelector(element: JQuery, options: ColorSelectorOptionTypes):
         selectionPalette: [],
         maxSelectionSize: 6,
         clickoutFiresChange: false,
-        hide: function (color) {
-            if (color !== null)
-                gobConfig.set(configKey, color.toString())
-            else
-                gobConfig.set(configKey, null)
-        },
         beforeShow: function (color) {
             return options.onBeforeShow ? options.onBeforeShow(color) : true;
         }
@@ -141,6 +131,13 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
     $element.on("click", event => Dialog.showProfileIdSelectionDialog(copyProfile, { exclude: [gobConfig.activeProfileId ?? ""] }))
 
     const options = !userOptions ? DefaultCopyProfileOptions : $.extend({}, DefaultCopyProfileOptions, userOptions)
+
+    /*{
+        const keys = Utility.isFunction(options.configKeys) ? options.configKeys() : options.configKeys
+        const keySet = new Set<string>(keys)
+        console.log(`Selected keys for copy profile {${$element.attr("id")}} are [${Array.from(keySet).join(", ")}]`)
+    }*/
+
     function copyProfile(profileId: string) {
         if (options.callback) {
             const result = options.callback(profileId)
@@ -160,20 +157,19 @@ export function makeCopyProfileButton(element: HTMLElement | JQuery, userOptions
         if (srcProfile === null || dstProfile === null)
             return
 
-        let configKeys:string[] = []
+        const keys = Utility.isFunction(options.configKeys) ? options.configKeys() : options.configKeys
+        const keySet = new Set<string>(keys)
 
-        if (Utility.isFunction(options.configKeys))
-            configKeys = (options.configKeys as any)()
-        else
-            configKeys = options.configKeys as string[]
+        for (const key of keySet) {
+            if (key === null || key === "")
+                continue
 
-        configKeys.forEach(key => {
             try {
                 dstProfile.copyFrom(srcProfile, key)
             } catch (e1) {
                 console.error(`Profile copy Error in key '${key}'. Reason: ${e1}`)
             }
-        })
+        }
     }
 
     const checkCopyProfileState = () => $element.prop("disabled", (gobConfig.profileIds.length <= 1))
