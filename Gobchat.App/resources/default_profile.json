@@ -152,7 +152,99 @@
     },
     "chat": {
       "updateInterval": 1000,
-      "autodetectEmoteInSay": true
+      "autodetectEmoteInSay": true,
+      "senderInBold": false,
+      "colors": {
+        "selectedColorSet": "kelly",
+        "predefined": {
+          "kelly": {
+            "name": "color.name.kelly",
+            "colors": [
+              {
+                "color": "#FFB300",
+                "use": true
+              },
+              {
+                "color": "#803E75",
+                "use": true
+              },
+              {
+                "color": "#FF6800",
+                "use": true
+              },
+              {
+                "color": "#A6BDD7",
+                "use": true
+              },
+              {
+                "color": "#C10020",
+                "use": true
+              },
+              {
+                "color": "#CEA262",
+                "use": true
+              },
+              {
+                "color": "#817066",
+                "use": true
+              },
+              {
+                "color": "#007D34",
+                "use": true
+              },
+              {
+                "color": "#F6768E",
+                "use": true
+              },
+              {
+                "color": "#00538A",
+                "use": true
+              },
+              {
+                "color": "#FF7A5C",
+                "use": true
+              },
+              {
+                "color": "#53377A",
+                "use": true
+              },
+              {
+                "color": "#FF8E00",
+                "use": true
+              },
+              {
+                "color": "#B32851",
+                "use": true
+              },
+              {
+                "color": "#F4C800",
+                "use": true
+              },
+              {
+                "color": "#7F180D",
+                "use": true
+              },
+              {
+                "color": "#93AA00",
+                "use": true
+              },
+              {
+                "color": "#593315",
+                "use": true
+              },
+              {
+                "color": "#F13A13",
+                "use": true
+              },
+              {
+                "color": "#232C16",
+                "use": true
+              }
+            ]
+          }
+        },
+        "userdefined": []
+      }
     },
     "chattabs": {
       "effect": {

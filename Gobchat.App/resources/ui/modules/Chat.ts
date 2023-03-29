@@ -227,6 +227,38 @@ export class ChatControl {
 class MessageBuilder {
     public static AbbreviationCache: string[] = []
 
+    private static Colors: { [color: string]: Set<string> } = {}
+    private static PlayerByColors: { [characterName: string]: string } = {}
+
+    static {
+        const colors = [
+            "#FFB300",
+            "#803E75",
+            "#FF6800",
+            "#A6BDD7",
+            "#C10020",
+            "#CEA262",
+            "#817066",
+
+            "#007D34",
+            "#F6768E",
+            "#00538A",
+            "#FF7A5C",
+            "#53377A",
+            "#FF8E00",
+            "#B32851",
+            "#F4C800",
+            "#7F180D",
+            "#93AA00",
+            "#593315",
+            "#F13A13",
+            "#232C16"
+        ]
+        for (const color of colors) {
+            MessageBuilder.Colors[color] = new Set<string>()
+        }
+    }
+
     public static build(message: ChatMessage): HTMLElement {
         const $body = $("<div></div>")
             .addClass(CssClass.ChatEntry)
@@ -248,10 +280,31 @@ class MessageBuilder {
 
         const sender = MessageBuilder.formatSender(message)
         if (sender !== null) {
-            $("<span></span>")
+            const $sender = $("<span></span>")
                 .addClass(CssClass.ChatEntry_Sender)
                 .text(`${sender} `)
                 .appendTo($content)
+
+            if (message.source.isAPlayer) {
+                if (sender in MessageBuilder.PlayerByColors) {
+                    $sender.css("color", MessageBuilder.PlayerByColors[sender])
+                } else {
+                    let nextColor: string | null = null
+                    let units = Number.POSITIVE_INFINITY
+                    for (const color of Object.keys(MessageBuilder.Colors)) {
+                        if (units > MessageBuilder.Colors[color].size) {
+                            units = MessageBuilder.Colors[color].size
+                            nextColor = color
+                        }
+                    }
+
+                    if (nextColor !== null) {
+                        MessageBuilder.PlayerByColors[sender] = nextColor
+                        MessageBuilder.Colors[nextColor].add(sender)
+                        $sender.css("color", nextColor)
+                    }
+                }
+            }
         }
 
         for (const messageSegment of message.content) {
