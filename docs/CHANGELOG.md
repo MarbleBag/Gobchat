@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.12.0-2] - 2023.03.29
+### Fixed
+- Rangefilter
+- Mentions
+
 ## [1.12.0-1] - 2023.03.28
 ### Added
 - Font size

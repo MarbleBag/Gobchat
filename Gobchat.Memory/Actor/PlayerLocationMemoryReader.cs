@@ -34,7 +34,7 @@ namespace Gobchat.Memory.Actor
                     Id = actor.ID,
                     UId = actor.UUID,
                     Flag = flag,
-                    SimplifiedDistanceToPlayer = actor.DistanceOnXAxisToPlayer,
+                    SimplifiedDistanceToPlayer = actor.Distance,
                 };
 
                 if (mainActor != null)

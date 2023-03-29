@@ -44,6 +44,7 @@ namespace Sharlayan.Core {
         public byte Distance2 { get; set; }
 
         public byte TargetStatus { get; set; }
+
         public byte Distance { get; set; }
 
         public Actor.EventObjectType EventObjectType { get; set; }
