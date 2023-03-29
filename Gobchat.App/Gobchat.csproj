@@ -319,8 +319,6 @@
     <Content Include="resources\lang\autotranslate_jp.hjson">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="resources\sharlayan\signatures-latest.json" />
-    <None Include="resources\sharlayan\structures-latest.json" />
     <None Include="resources\ui\lib\.gitignore" />
     <None Include="resources\ui\styles\class_overview.scss" />
     <None Include="resources\ui\styles\ffxiv_dark.scss" />
