@@ -27,6 +27,8 @@ namespace Gobchat.Module.Actor.Internal
             public PlayerCharacter Actor;
         }
 
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly Dictionary<string, Data> _realm = new Dictionary<string, Data>();
         private readonly Queue<Data> _pendingUpdates = new Queue<Data>();
         private PlayerCharacter User { get; set; }
@@ -56,7 +58,7 @@ namespace Gobchat.Module.Actor.Internal
         {
             lock (_realm)
             {
-                return _realm.Keys.ToArray();
+                return _realm.Values.Select(data => data.Actor.Name).ToArray();
             }
         }
 
@@ -103,7 +105,8 @@ namespace Gobchat.Module.Actor.Internal
             lock (_realm)
             {
                 _realm.Clear();
-                User = null;
+                PlayerCharacter newUser = null;
+
 
                 foreach (var newData in _pendingUpdates)
                 {
@@ -121,7 +124,13 @@ namespace Gobchat.Module.Actor.Internal
                     }
 
                     if (newData.Actor.IsUser)
-                        User = newData.Actor;
+                        newUser = newData.Actor;
+                }
+
+                if(newUser != null && (User == null || User.Id != newUser.Id))
+                {
+                    User = newUser;
+                    logger.Debug($"Set active player to '{newUser?.Name}'");
                 }
 
                 _pendingUpdates.Clear();

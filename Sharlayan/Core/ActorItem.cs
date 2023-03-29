@@ -41,7 +41,10 @@ namespace Sharlayan.Core {
 
         public byte DifficultyRank { get; set; }
 
-        public byte DistanceOnXAxisToPlayer { get; set; }
+        public byte Distance2 { get; set; }
+
+        public byte TargetStatus { get; set; }
+        public byte Distance { get; set; }
 
         public Actor.EventObjectType EventObjectType { get; set; }
 
@@ -57,8 +60,8 @@ namespace Sharlayan.Core {
 
         public byte GrandCompanyRank { get; set; }
 
-        public float Heading { get; set; }
-        
+        public float Rotation { get; set; }
+
         public Actor.Icon Icon { get; set; }
 
         public byte IconID { get; set; }
@@ -129,11 +132,13 @@ namespace Sharlayan.Core {
 
         public byte TypeID { get; set; }
 
+        public byte SubType { get; set; }
+
         public bool WeaponUnsheathed => (this.CombatFlags & (1 << 3)) != 0;
 
         public ActorItem Clone() {
             var cloned = (ActorItem) this.MemberwiseClone();
-            
+
             cloned.Coordinate = new Coordinate(this.Coordinate.X, this.Coordinate.Z, this.Coordinate.Y);
             cloned.EnmityItems = new System.Collections.Generic.List<EnmityItem>();
             cloned.StatusItems = new System.Collections.Generic.List<StatusItem>();
@@ -162,6 +167,6 @@ namespace Sharlayan.Core {
 
             return cloned;
         }
-        
+
     }
 }

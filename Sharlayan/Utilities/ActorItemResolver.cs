@@ -21,7 +21,7 @@ namespace Sharlayan.Utilities {
 
     internal static class ActorItemResolver {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         public static ActorItem ResolveActorFromBytes(byte[] source, bool isCurrentUser = false, ActorItem entry = null)
         {
             entry = entry ?? new ActorItem();
@@ -44,16 +44,24 @@ namespace Sharlayan.Utilities {
                 entry.TypeID = source[MemoryHandler.Instance.Structures.ActorItem.Type];
                 entry.Type = (Actor.Type) entry.TypeID;
 
+                entry.SubType = source[MemoryHandler.Instance.Structures.ActorItem.SubType];
+
                 entry.TargetTypeID = source[MemoryHandler.Instance.Structures.ActorItem.TargetType];
                 entry.TargetType = (Actor.TargetType) entry.TargetTypeID;
 
                 entry.GatheringStatus = source[MemoryHandler.Instance.Structures.ActorItem.GatheringStatus];
-                entry.DistanceOnXAxisToPlayer = source[MemoryHandler.Instance.Structures.ActorItem.Distance];
+                entry.SexID = source[MemoryHandler.Instance.Structures.ActorItem.Gender];
+                entry.Sex = (Actor.Sex)entry.SexID;
+
+                entry.Distance2 = source[MemoryHandler.Instance.Structures.ActorItem.Distance2];
+                entry.TargetStatus = source[MemoryHandler.Instance.Structures.ActorItem.TargetStatus];
+                entry.Distance = source[MemoryHandler.Instance.Structures.ActorItem.Distance];
+
 
                 entry.X = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.X + defaultBaseOffset);
                 entry.Z = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Z + defaultBaseOffset);
                 entry.Y = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Y + defaultBaseOffset);
-                entry.Heading = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Heading + defaultBaseOffset);
+                entry.Rotation = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.Rotation + defaultBaseOffset);
                 entry.HitBoxRadius = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.ActorItem.HitBoxRadius + defaultBaseOffset);
                 entry.Fate = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.ActorItem.Fate + defaultBaseOffset); // ??
                 entry.TargetFlags = source[MemoryHandler.Instance.Structures.ActorItem.TargetFlags]; // ??
@@ -204,7 +212,7 @@ namespace Sharlayan.Utilities {
                         foundStatuses.Add(statusEntry);
                     }
                 }
-                
+
                 entry.StatusItems.RemoveAll(x => !foundStatuses.Contains(x));
 
                 // handle empty names

@@ -36,11 +36,11 @@ namespace Sharlayan.Core.Interfaces {
 
         string UUID { get; set; }
 
-        double X { get; set; }
+        float X { get; set; }
 
-        double Y { get; set; }
+        float Y { get; set; }
 
-        double Z { get; set; }
+        float Z { get; set; }
 
         PartyMember Clone();
     }
