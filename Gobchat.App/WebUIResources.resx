@@ -1115,4 +1115,13 @@ group groupnumber clear</value>
   <data name="config.groups.ckb.updatechat" xml:space="preserve">
     <value>Update previous messages</value>
   </data>
+  <data name="config.mentions.tbl.mentions.name" xml:space="preserve">
+    <value>Mentions</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.name" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.apply" xml:space="preserve">
+    <value>Show</value>
+  </data>
 </root>

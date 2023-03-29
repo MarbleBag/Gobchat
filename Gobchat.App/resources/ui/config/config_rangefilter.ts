@@ -69,11 +69,11 @@ function addEntryToTable(channelData: Chat.Channel) {
         .attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
         .prop("for", id)
 
-    const ckbApplyFilter = entry.find(".js-checkbox")
+    const ckbApply = entry.find(".js-checkbox")
         .prop("id", id)
 
-    Databinding.setConfigKey(ckbApplyFilter, "behaviour.channel.rangefilter")
-    Databinding.bindCheckboxArray(binding, ckbApplyFilter, channelEnums)
+    Databinding.setConfigKey(ckbApply, "behaviour.channel.rangefilter")
+    Databinding.bindCheckboxArray(binding, ckbApply, channelEnums)
 }
 
 binding.loadBindings()

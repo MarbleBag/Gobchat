@@ -1349,6 +1349,33 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        internal static string config_mentions_tbl_mentions_header_apply {
+            get {
+                return ResourceManager.GetString("config.mentions.tbl.mentions.header.apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel.
+        /// </summary>
+        internal static string config_mentions_tbl_mentions_header_name {
+            get {
+                return ResourceManager.GetString("config.mentions.tbl.mentions.header.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mentions.
+        /// </summary>
+        internal static string config_mentions_tbl_mentions_name {
+            get {
+                return ResourceManager.GetString("config.mentions.tbl.mentions.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention..
         /// </summary>
         internal static string config_mentions_trigger_tooltip {

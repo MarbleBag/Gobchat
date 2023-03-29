@@ -974,4 +974,13 @@ group Gruppen-Nummer clear</value>
   <data name="config.groups.ckb.updatechat" xml:space="preserve">
     <value>Alte Nachrichten nachträglich anpassen</value>
   </data>
+  <data name="config.mentions.tbl.mentions.name" xml:space="preserve">
+    <value>Erwähnungen</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.name" xml:space="preserve">
+    <value>Kanal</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.apply" xml:space="preserve">
+    <value>Zeigen</value>
+  </data>
 </root>

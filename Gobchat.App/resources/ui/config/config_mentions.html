@@ -83,6 +83,34 @@
             </label>
         </div>
     </div>
+
+    <div class="gob-config-group">
+        <div class="gob-config-group_title" data-gob-locale-text="config.mentions.tbl.mentions.name"></div>
+
+        <div class="gob-table-wrapper--split-in-2">
+            <table class="gob-table gob-table--confirm" id="cp-mentions_mentions-table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.mentions.tbl.mentions.header.name"></th>
+                        <th data-gob-locale-text="config.mentions.tbl.mentions.header.apply"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <template id="cp-mentions_template_mentions-table_entry">
+        <tr>
+            <td>
+                <label class="gob-config-label js-label"></label>
+            </td>
+            <td>
+                <input class="gob-input-checkbox js-checkbox" type="checkbox" />
+            </td>
+        </tr>
+    </template>
 </div>
 
 <script defer type="module" src="config_mentions.js"></script>

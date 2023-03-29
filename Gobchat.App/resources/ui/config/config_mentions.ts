@@ -17,6 +17,8 @@ import * as Databinding from "/module/Databinding"
 import * as Dialog from "/module/Dialog"
 import * as Utility from "/module/CommonUtility"
 import * as Components from "/module/Components"
+import * as Chat from "/module/Chat"
+import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
@@ -29,6 +31,8 @@ const btnPlayAudio = $("#cp-mentions_audio-test")
 const sliderAudioVolume = $("#cp-mentions_audio-volume")
 const txtAudioReplayInterval = $("#cp-mentions_audio-replay-interval")
 const chkIgnoreRangeFilter = $("#cp-mentions_ignore-range-filter")
+const mentionsTable = $("#cp-mentions_mentions-table > tbody")
+const mentionsTableEntryTemplate = $("#cp-mentions_template_mentions-table_entry")
 
 const iconCanPlay = $("")
 const iconMaybePlay = $("")
@@ -133,8 +137,36 @@ Databinding.bindElement(binding, txtAudioReplayInterval, {
 
 Databinding.bindCheckbox(binding, chkIgnoreRangeFilter)
 
+Object.values(Gobchat.Channels).forEach(channelData => {
+    if (!channelData.relevant)
+        return
+    addEntryToTable(channelData)
+})
+
+function addEntryToTable(channelData: Chat.Channel) {
+    const channelEnums = ([] as Chat.ChatChannelEnum[]).concat(channelData.chatChannel || [])
+    if (channelEnums.length === 0)
+        return // channel is not associated with any ingame channel
+
+    const id = `cp-mentions_mentions-table_entry-${mentionsTable.children().length}`
+
+    const entry = $(mentionsTableEntryTemplate.html())
+        .appendTo(mentionsTable)
+
+    entry.find(".js-label")
+        .attr(Locale.HtmlAttribute.TextId, `${channelData.translationId}`)
+        .attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
+        .prop("for", id)
+
+    const ckbApply = entry.find(".js-checkbox")
+        .prop("id", id)
+
+    Databinding.setConfigKey(ckbApply, "behaviour.channel.mention")
+    Databinding.bindCheckboxArray(binding, ckbApply, channelEnums)
+}
+
 binding.loadBindings()
 
-Components.makeCopyProfileButton($("#cp-mentions_copyprofile"), { configKeys: ["behaviour.mentions", "behaviour.rangefilter.ignoreMention"] })
+Components.makeCopyProfileButton($("#cp-mentions_copyprofile"), { configKeys: ["behaviour.mentions", "behaviour.rangefilter.ignoreMention", "behaviour.channel.mention"] })
 
 //# sourceURL=config_mentions.js

@@ -104,11 +104,11 @@ function addEntryToTable(channelData) {
         .attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
         .attr("for", id)
 
-    const chkLog = entry.find(".js-checkbox")
+    const ckbApply = entry.find(".js-checkbox")
         .attr("id", id)
 
-    Databinding.setConfigKey(chkLog, "behaviour.channel.log")
-    Databinding.bindCheckboxArrayInverse(binding, chkLog, channelEnums)
+    Databinding.setConfigKey(ckbApply, "behaviour.channel.log")
+    Databinding.bindCheckboxArrayInverse(binding, ckbApply, channelEnums)
 }
 
 binding.loadBindings()
