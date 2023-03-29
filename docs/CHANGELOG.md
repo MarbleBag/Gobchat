@@ -27,6 +27,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
 - Previous messages are updated if group settings are changed
 
 
+- Tabs can be filtered by groups
+
+
 ### Changed
 - Some settings were split into their own tabs
   - Chat log
