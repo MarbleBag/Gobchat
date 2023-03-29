@@ -49,6 +49,10 @@ declare interface JQuery<T = HTMLElement> extends Iterable<T> {
     html(): string
     text(val: string | number | boolean): JQuery<T>
     text(): string
+    css(property: string): string
+    css(property: string[]): { [property: string]: string }
+    css(property: string, value: string | number | ((index: number, value: string) => string | number)): JQuery<T>
+    css(properties: { [property: string]: string | number }): JQuery<T>
     val(val: string | number | null): JQuery<T>
     val(): string
     width(): number
