@@ -528,6 +528,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sender color.
+        /// </summary>
+        internal static string config_channel_tbl_channel_header_sendercolor {
+            get {
+                return ResourceManager.GetString("config.channel.tbl.channel.header.sendercolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text color.
         /// </summary>
         internal static string config_channel_tbl_channel_header_textcolor {

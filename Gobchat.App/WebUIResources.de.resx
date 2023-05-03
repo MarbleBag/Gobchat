@@ -983,4 +983,7 @@ group Gruppen-Nummer clear</value>
   <data name="config.mentions.tbl.mentions.header.apply" xml:space="preserve">
     <value>Zeigen</value>
   </data>
+  <data name="config.channel.tbl.channel.header.sendercolor" xml:space="preserve">
+    <value>Absenderfarbe</value>
+  </data>
 </root>

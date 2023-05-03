@@ -193,13 +193,19 @@ export class StyleBuilder {
 
             results.push(StyleBuilder.toCss(`.${Chat.CssClass.Chat_History}`, configStyle["chat-history"]))
 
-            results.push(StyleBuilder.toCss(`.${Chat.CssClass.ChatEntry}`, configStyle.channel.base))
+            results.push(StyleBuilder.toCss(`.${Chat.CssClass.ChatEntry}`, configStyle.channel["base"]["general"]))
+            results.push(StyleBuilder.toCss(`.${Chat.CssClass.ChatEntry_Sender}`, configStyle.channel["base"]["sender"]))
 
             for (const channel of Object.values(Gobchat.Channels)) {
                 if (channel.internalName in configStyle.channel) {
                     const channelClass = Utility.formatString(Chat.CssClass.ChatEntry_Channel_Partial, channel.internalName)
-                    const selector = `.${channelClass} .${Chat.CssClass.ChatEntry_Text}`
-                    results.push(StyleBuilder.toCss(selector, configStyle.channel[channel.internalName]))
+                    const channelStyles = configStyle.channel[channel.internalName]
+
+                    const textSelector = `.${channelClass} .${Chat.CssClass.ChatEntry_Text}`
+                    results.push(StyleBuilder.toCss(textSelector, channelStyles["general"]))
+
+                    const senderSelector = `.${channelClass} .${Chat.CssClass.ChatEntry_Sender}`
+                    results.push(StyleBuilder.toCss(senderSelector, channelStyles["sender"]))
                 }
             }
 
@@ -349,8 +355,10 @@ export class StyleBuilder {
     }
 
     private static toCss(selectors: string | string[], ...properties: { [property: string]: string }[]): string {
-        selectors = ([] as string[]).concat(selectors)
-        if (selectors.length === 0 || !properties || properties.length === 0)
+        selectors = ([] as string[]).concat(selectors).filter(e => e !== undefined && e !== null)
+        properties = ([] as { [property: string]: string }[]).concat(properties).filter(e => e !== undefined && e !== null)
+
+        if (selectors.length === 0 || properties.length === 0)
             return ""
 
         let baseProperties = properties[0]
