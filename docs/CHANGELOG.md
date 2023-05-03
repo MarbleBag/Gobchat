@@ -34,6 +34,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com)
   - Range filter
   - Formatting
 
+- Chat log
+  - by default enabled
 
 ### Fixed
 - Chat position and size

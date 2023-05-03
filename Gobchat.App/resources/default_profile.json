@@ -257,7 +257,7 @@
       "acceptBeta": false
     },
     "chatlog": {
-      "active": false,
+      "active": true,
       "format": "{channel} [{date} {time-full}] {sender}: {message}",
       "path": "log"
     },
