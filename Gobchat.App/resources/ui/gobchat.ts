@@ -86,7 +86,7 @@ jQuery(function ($) {
         }
     }
 
-    function openGobchatConfig() {
+    async function openGobchatConfig() {
         const isConfigOpen = window.localStorage.getItem(localStorageKey) || "false"
 
         if (isConfigOpen === "true")
@@ -96,10 +96,17 @@ jQuery(function ($) {
 
         gobConfig.saveToLocalStore()
 
-        const configWidth = gobConfig.get("behaviour.frame.config.size.width")
-        const configHeight = gobConfig.get("behaviour.frame.config.size.height")
+       // const configWidth = gobConfig.get("behaviour.frame.config.size.width")
+       // const configHeight = gobConfig.get("behaviour.frame.config.size.height")
 
-        const handle = window.open("config/config.html", 'Settings', `width=${configWidth},height=${configHeight}`)
+        const bounds = await GobchatAPI.getScreenDimensions()
+        const screenWidth = bounds.Item1
+        const screenHeight = bounds.Item2
+
+        const dialogWidth = screenWidth / 2
+        const dialogHeight = screenHeight / 2
+
+        const handle = window.open("config/config.html", 'Settings', `width=${dialogWidth},height=${dialogHeight}`)
         if(handle === null){
             console.error("unable to open popup window")
             return

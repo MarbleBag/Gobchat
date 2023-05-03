@@ -39,7 +39,7 @@ namespace Gobchat.UI.Forms
         private readonly FormResizeHelper _formResizer;
         private readonly FormEnsureTopmostHelper _formEnsureTopmost;
         private readonly FormMessageToCefKeyEventConverter _formKeyConverter;
-        private readonly Web.JavascriptBuilder _jsBuilder = new Web.JavascriptBuilder();
+        private readonly Web.JavascriptAndJsonBuilder _jsBuilder = new Web.JavascriptAndJsonBuilder();
 
         private DeviceIndependentBitmap _colorBuffer;
 

@@ -237,7 +237,8 @@ declare namespace GobchatAPI {
     function importProfile(): Promise<string | null>
 
     // some
-    function setUIReady(isReady: boolean)
+    function setUIReady(isReady: boolean): void
+    function getScreenDimensions(): Promise<{ Item1: number, Item2: number }>
     function getAppVersion(): Promise<string>
     function getLocalizedStrings(language: string, keys: string[]): Promise<{ [s: string]: string }>
     function closeGobchat(): void

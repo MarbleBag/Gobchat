@@ -18,6 +18,7 @@ using Gobchat.Core.Runtime;
 using Gobchat.UI.Forms;
 using Gobchat.UI.Web;
 using Gobchat.UI.Web.JavascriptEvents;
+using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Module.UI.Internal
 {
@@ -27,7 +28,7 @@ namespace Gobchat.Module.UI.Internal
 
         private event EventHandler<UIReadyChangedEventArgs> _onUIReadyChanged;
 
-        private readonly JavascriptBuilder _jsBuilder = new JavascriptBuilder();
+        private readonly JavascriptAndJsonBuilder _jsBuilder = new JavascriptAndJsonBuilder();
         private readonly List<IBrowserAPI> _apis = new List<IBrowserAPI>();
         private IUISynchronizer _synchronizer;
         private CefOverlayForm _overlay;
@@ -55,11 +56,10 @@ namespace Gobchat.Module.UI.Internal
                 _onUIReadyChanged?.Invoke(this, new UIReadyChangedEventArgs(IsUIReady));
             }
         }
-
+        public IUISynchronizer UISynchronizer { get { return _synchronizer; } }
         public IBrowserChatHandler ChatHandler { get; set; }
         public IBrowserConfigHandler ConfigHandler { get; set; }
         public IBrowserActorHandler ActorHandler { get; set; }
-
         public IBrowserMemoryHandler MemoryHandler { get; set; }
 
         public event EventHandler<UIReadyChangedEventArgs> OnUIReadyChanged

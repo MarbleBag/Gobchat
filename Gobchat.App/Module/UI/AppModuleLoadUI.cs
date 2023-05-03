@@ -19,8 +19,6 @@ using Gobchat.Module.Overlay;
 using Gobchat.UI.Forms;
 using Gobchat.UI.Web;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
@@ -29,108 +27,6 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Gobchat.Module.UI
 {
-    internal sealed class UIResourceHandler
-    {
-        private sealed class ResourcePaths
-        {
-            public Regex PathMatcher { get; }
-            public string NewPath { get; }
-
-            public ResourcePaths(Regex pathMatcher, string newPath)
-            {
-                PathMatcher = pathMatcher ?? throw new ArgumentNullException(nameof(pathMatcher));
-                NewPath = newPath ?? throw new ArgumentNullException(nameof(newPath));
-            }
-        }
-
-        private ResourcePaths[] _resourcePaths;
-        private Dictionary<string, string> _resolvedPaths = new Dictionary<string, string>();
-
-        public UIResourceHandler()
-        {
-            _resourcePaths = new ResourcePaths[]{
-                new ResourcePaths(new Regex(@"^lib\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "lib")),
-                new ResourcePaths(new Regex(@"^module\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "modules")),
-                new ResourcePaths(new Regex(@"^styles\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "styles")),
-                new ResourcePaths(new Regex(@"^graphics\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "graphics"))
-            };
-        }
-
-        public bool CheckForResourceRedirection(string originalUri, RedirectResourceRequestEventArgs.Type resourceType, out string newUri)
-        {
-            var appLocation = GobchatContext.ApplicationLocation;
-            newUri = null;
-
-            if (!Uri.TryCreate(appLocation, UriKind.Absolute, out var appUri))
-                return false;
-
-            if (!Uri.TryCreate(originalUri, UriKind.RelativeOrAbsolute, out var requestUri))
-                return false;
-
-            if (_resolvedPaths.TryGetValue(requestUri.LocalPath, out newUri))
-                return true;
-
-            string targetPath = null;
-
-            if (appUri.IsBaseOf(requestUri))
-            {
-                targetPath = requestUri.LocalPath;
-            }
-            else
-            {
-                var relativePath = requestUri.LocalPath.Substring(Path.GetPathRoot(appLocation).Length);
-
-                foreach (var redirect in _resourcePaths)
-                {
-                    var match = redirect.PathMatcher.Match(relativePath);
-                    if (match.Success)
-                    {
-                        targetPath = redirect.PathMatcher.Replace(relativePath, redirect.NewPath + "\\");
-                        break;
-                    }
-                }
-            }
-
-            if (targetPath == null)
-            {
-                _resolvedPaths.Add(requestUri.LocalPath, null);
-                return false;
-            }
-
-            if (File.Exists(targetPath))
-            {
-                newUri = new Uri(targetPath).AbsoluteUri;
-                _resolvedPaths.Add(requestUri.LocalPath, newUri);
-                return true;
-            }
-
-            var possiblePaths = new List<string>();
-
-            switch (resourceType)
-            {
-                case RedirectResourceRequestEventArgs.Type.Stylesheet:
-                    possiblePaths.Add(Path.ChangeExtension(targetPath, "min.css"));
-                    possiblePaths.Add(Path.ChangeExtension(targetPath, "css"));
-                    break;
-                case RedirectResourceRequestEventArgs.Type.Script:
-                    possiblePaths.Add(Path.ChangeExtension(targetPath, "min.js"));
-                    possiblePaths.Add(Path.ChangeExtension(targetPath, "js"));
-                    break;
-            }
-
-            foreach (var possiblePath in possiblePaths)
-            {
-                if (File.Exists(possiblePath))
-                {
-                    newUri = new Uri(possiblePath).AbsoluteUri;
-                    _resolvedPaths.Add(requestUri.LocalPath, newUri);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
 
     public sealed class AppModuleLoadUI : IApplicationModule
     {
@@ -161,6 +57,10 @@ namespace Gobchat.Module.UI
             _browserAPIManager = _container.Resolve<IBrowserAPIManager>();
 
             _resourceHandler = new UIResourceHandler();
+            _resourceHandler.AddResourceRedirect(new Regex(@"^lib\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "lib"));
+            _resourceHandler.AddResourceRedirect(new Regex(@"^module\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "modules"));
+            _resourceHandler.AddResourceRedirect(new Regex(@"^styles\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "styles"));
+            _resourceHandler.AddResourceRedirect(new Regex(@"^graphics\\"), System.IO.Path.Combine(GobchatContext.ResourceLocation, "ui", "graphics"));
 
             var uiManager = _container.Resolve<IUIManager>();
 

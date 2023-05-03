@@ -16,13 +16,13 @@ using Newtonsoft.Json.Serialization;
 
 namespace Gobchat.UI.Web
 {
-    public sealed class JavascriptBuilder
+    public sealed class JavascriptAndJsonBuilder
     {
         private readonly System.Text.StringBuilder _stringbuilder;
         public Newtonsoft.Json.JsonSerializer JsonSerializer { get; }
         public Newtonsoft.Json.JsonTextWriter JsonWriter { get; }
 
-        public JavascriptBuilder()
+        public JavascriptAndJsonBuilder()
         {
             _stringbuilder = new System.Text.StringBuilder(1000);
             JsonSerializer = new Newtonsoft.Json.JsonSerializer();
