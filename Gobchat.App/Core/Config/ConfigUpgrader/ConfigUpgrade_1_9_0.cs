@@ -15,23 +15,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class ConfigUpgrade_v1800 : IConfigUpgrade
+    internal sealed class ConfigUpgrade_1_9_0 : IConfigUpgrade
     {
-        public int MinVersion => 1701;
+        public int MinVersion => 1800;
 
-        public int MaxVersion => 1799;
+        public int MaxVersion => 1899;
 
-        public int TargetVersion => 1800;
+        public int TargetVersion => 1900;
 
         public JObject Upgrade(JObject src)
         {
             JObject dst = (JObject)src.DeepClone();
 
-            JsonUtil.MoveIfAvailable(dst, "behaviour.autodetectEmoteInSay", dst, "behaviour.chat.autodetectEmoteInSay");
-
-            JsonUtil.MoveIfAvailable(dst, "behaviour.channel.visible", dst, "behaviour.chattabs.data.chat.channel.visible");
-            JsonUtil.MoveIfAvailable(dst, "behaviour.showTimestamp", dst, "behaviour.chattabs.data.chat.formatting.timestamps");
-            JsonUtil.MoveIfAvailable(dst, "behaviour.rangefilter.active", dst, "behaviour.chattabs.data.chat.formatting.rangefilter");
+            JsonUtil.MoveIfAvailable(dst, "behaviour.writeChatLog", dst, "behaviour.chatlog.active");
 
             return dst;
         }

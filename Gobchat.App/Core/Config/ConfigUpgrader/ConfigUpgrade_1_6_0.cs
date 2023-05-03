@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class ConfigUpgrade_v16 : IConfigUpgrade
+    internal sealed class ConfigUpgrade_1_6_0 : IConfigUpgrade
     {
         public int MinVersion => 3;
 

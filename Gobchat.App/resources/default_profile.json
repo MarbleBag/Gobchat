@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1905,
+  "version": 11200,
   "profile": {
     "id": null,
     "name": null,
@@ -398,135 +398,300 @@
     },
     "channel": {
       "base": {
-        "color": "#DEDEDE",
-        "font-family": "'Times New Roman', Times, sans-serif",
-        "white-space": "pre-wrap"
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#DEDEDE",
+          "font-family": "'Times New Roman', Times, sans-serif",
+          "white-space": "pre-wrap"
+        }
       },
       "gobchatinfo": {
-        "color": "#3660ff",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#3660ff",
+          "background-color": null
+        }
       },
       "gobchaterror": {
-        "color": "#cb0101",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#cb0101",
+          "background-color": null
+        }
       },
       "echo": {
-        "color": null,
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": null,
+          "background-color": null
+        }
       },
       "error": {
-        "color": "#d40420",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#d40420",
+          "background-color": null
+        }
       },
       "say": {
-        "color": "#FFFFFF",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#FFFFFF",
+          "background-color": null
+        }
       },
       "emote": {
-        "color": "#F19212",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#F19212",
+          "background-color": null
+        }
       },
       "animatedemote": {
-        "color": "#F19212",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#F19212",
+          "background-color": null
+        }
       },
       "yell": {
-        "color": "#D1DE09",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#D1DE09",
+          "background-color": null
+        }
       },
       "shout": {
-        "color": "#D1DE09",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#D1DE09",
+          "background-color": null
+        }
       },
       "party": {
-        "color": "#05f7ff",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#05f7ff",
+          "background-color": null
+        }
       },
       "guild": {
-        "color": "#50DE09",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#50DE09",
+          "background-color": null
+        }
       },
       "alliance": {
-        "color": "#ff5005",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#ff5005",
+          "background-color": null
+        }
       },
       "tellrecieve": {
-        "color": "#A118BC"
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#A118BC"
+        }
       },
       "tellsend": {
-        "color": "#AA3DC0"
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#AA3DC0"
+        }
       },
       "linkshell-1": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-2": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-3": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-4": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-5": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-6": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-7": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "linkshell-8": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-1": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-2": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-3": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-4": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-5": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-6": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-7": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "crossworldlinkshell-8": {
-        "color": "#03fc73",
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": "#03fc73",
+          "background-color": null
+        }
       },
       "npc-dialog": {
-        "color": null,
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": null,
+          "background-color": null
+        }
       },
       "random": {
-        "color": null,
-        "background-color": null
+        "sender": {
+          "color": null
+        },
+        "general": {
+          "color": null,
+          "background-color": null
+        }
       }
     },
     "segment": {

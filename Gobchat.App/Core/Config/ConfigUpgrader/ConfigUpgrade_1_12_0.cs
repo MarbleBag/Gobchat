@@ -15,13 +15,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class ConfigUpgrade_v2000 : IConfigUpgrade
+    internal sealed class ConfigUpgrade_1_12_0 : IConfigUpgrade
     {
         public int MinVersion => 1900;
 
-        public int MaxVersion => 1904;
+        public int MaxVersion => 1906;
 
-        public int TargetVersion => 1905;
+        public int TargetVersion => 11200;
 
         public JObject Upgrade(JObject src)
         {
@@ -68,6 +68,23 @@ namespace Gobchat.Core.Config
             JsonUtil.MoveIfAvailable(dst, "behaviour.mentions.data.base.volume", dst, "behaviour.mentions.volume");
             JsonUtil.DeleteIfAvailable(dst, "behaviour.mentions.data");
             JsonUtil.DeleteIfAvailable(dst, "behaviour.mentions.order");
+
+            JsonUtil.IterateIfAvailable<JObject>(dst, "style.channel", node =>
+            {
+                JsonUtil.SetIfUnavailable(node, "sender", () =>
+                {
+                    var values = new JObject();
+                    values["color"] = null;
+                    return values;
+                });
+
+                JsonUtil.MoveIfAvailable(node, "color", node, "general.color");
+                JsonUtil.MoveIfAvailable(node, "background-color", node, "general.background-color");
+                JsonUtil.MoveIfAvailable(node, "font-family", node, "general.font-family");
+                JsonUtil.MoveIfAvailable(node, "white-space", node, "general.white-space");
+
+                return JsonUtil.IterateeResult.Continue;
+            });
 
             return dst;
         }
