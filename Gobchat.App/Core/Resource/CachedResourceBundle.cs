@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -96,7 +96,7 @@ namespace Gobchat.Core.Resource
         {
             get
             {
-                if (_mapping.TryGetValue(key.ToUpperInvariant(), out object result))
+                if (_mapping.TryGetValue(key.ToLowerInvariant(), out object result))
                     return result != null ? result.ToString() : null;
                 return null;
             }
@@ -156,7 +156,7 @@ namespace Gobchat.Core.Resource
         {
             var data = _resourceLoader.LoadResource(_resourceResolver, fileName);
             foreach (var entry in data)
-                _mapping.Add(entry);
+                _mapping[entry.Key.ToLowerInvariant()] = entry.Value;
         }
     }
 }

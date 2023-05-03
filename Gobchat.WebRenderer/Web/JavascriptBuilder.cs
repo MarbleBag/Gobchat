@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -16,13 +16,13 @@ using Newtonsoft.Json.Serialization;
 
 namespace Gobchat.UI.Web
 {
-    public sealed class JavascriptBuilder
+    public sealed class JavascriptAndJsonBuilder
     {
         private readonly System.Text.StringBuilder _stringbuilder;
         public Newtonsoft.Json.JsonSerializer JsonSerializer { get; }
         public Newtonsoft.Json.JsonTextWriter JsonWriter { get; }
 
-        public JavascriptBuilder()
+        public JavascriptAndJsonBuilder()
         {
             _stringbuilder = new System.Text.StringBuilder(1000);
             JsonSerializer = new Newtonsoft.Json.JsonSerializer();

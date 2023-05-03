@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -23,6 +23,8 @@ namespace Gobchat.Module.Updater.Internal
     {
         public string URL { get; private set; }
         public string OutputFolder { get; private set; }
+
+        public bool DeleteFileOnCancelOrError { get; set; } = true;
 
         public string FileName
         {
@@ -80,14 +82,16 @@ namespace Gobchat.Module.Updater.Internal
                 switch (result)
                 {
                     case DownloadHelper.DownloadResult.Canceled:
-                        DeleteFile(progressMonitor);
+                        if(DeleteFileOnCancelOrError)
+                            DeleteFile(progressMonitor);
                         return Result.Canceled;
                 }
             }
             catch (DownloadFailedException ex)
             {
                 progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
-                DeleteFile(progressMonitor);
+                if (DeleteFileOnCancelOrError)
+                    DeleteFile(progressMonitor);
                 throw;
             }
 

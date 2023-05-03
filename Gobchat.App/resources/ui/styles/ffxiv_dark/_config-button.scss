@@ -1,0 +1,89 @@
+.gob-config-primary-button {
+    appearance: none;
+    cursor: pointer;
+    font-size: 1em;
+    padding: calc(3/16 * 1rem) calc(28/16 * 1rem);
+    color: var(--primary-button_text-color);
+    text-shadow: var(--primary-button_text-shadow);
+
+    background: var(--primary-button_background);
+    border: var(--primary-button_border);
+
+    border-radius: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    vertical-align: middle;
+
+    // margin: 2px;
+    // word-spacing: normal;
+    // letter-spacing: normal;
+    // font-family: Arial;
+
+    // text-decoration: none;
+    // outline: none;
+    // width: 100%;
+    // height: 25px;
+
+    & > svg {
+        color: var(--primary-button_icon-color);
+        text-shadow: var(--primary-button_icon-shadow);
+    }
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:active {
+        border-color: var(--primary-button--active_border-color);
+    }
+
+    &:disabled {
+        filter: brightness(50%);
+    }
+}
+
+.gob-config-secondary-button {
+    @extend .gob-config-primary-button;
+    font-size: 0.8em;
+    padding: .15rem 1rem;
+}
+
+.gob-config-icon-button {
+    --icon-button_size: 1.8rem;
+
+    font-size: 1em;
+    appearance: none;
+    cursor: pointer;
+    padding: unset;
+    width: var(--icon-button_size);
+    height: var(--icon-button_size);
+    border: 0.06rem solid var(--icon-button_border-color);
+    border-radius: 0.35rem;
+    box-shadow: inset 0.05rem 0.05rem 0 var(--icon-button_shadow-color), inset -0.05rem -0.05rem 0 var(--icon-button_shadow-color);
+    background: var(--icon-button_background);
+    color: var(--icon-button_icon-color);
+    box-sizing: border-box;
+    vertical-align: middle;
+
+    & > * {
+        filter: drop-shadow(0.1rem 0.1rem 0.1rem var(--icon-button_icon-shadow-color));
+    }
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:disabled {
+        filter: brightness(50%);
+    }
+}
+
+.gob-config-copypage-button {
+    @extend .gob-config-icon-button;
+
+    position: absolute;
+    top: 0.1rem;
+    right: 0.7rem;
+}

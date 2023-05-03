@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -12,18 +12,24 @@
  *******************************************************************************/
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using Gobchat.Core.Runtime;
 using Gobchat.Core.Util;
+using NLog;
 
 namespace Gobchat.Module.Cef.Internal
 {
     internal sealed class CefInstaller
     {
-        private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.0.0/Cef-75.1.14-{ARCH}.7z";
+        private const string CURRENT_VERSION = "107.1.12";
+        private const string CEF_URL = @"https://github.com/MarbleBag/Gobchat/releases/download/v1.12.0-cef/Cef-107.1.12-{ARCH}.7z";
+        
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private string cefLibDll { get { return Path.Combine(_cefLibFolder, "libcef.dll"); } }
 
         private string _cefDownloadUrl;
-
         private string _cefLibFolder;
         private string _cefPatchFolder;
         private string _cefPatchArchive;
@@ -43,7 +49,7 @@ namespace Gobchat.Module.Cef.Internal
 
         public string DownloadCef(IProgressMonitor progressMonitor)
         {
-            if (!IsCefArchiveAvailable())
+            if (!IsArchiveAvailable())
             {
                 try
                 {
@@ -68,8 +74,9 @@ namespace Gobchat.Module.Cef.Internal
                     throw;
                 }
 
-                if (!IsCefArchiveAvailable())
+                if (!IsArchiveAvailable())
                 {
+
                     throw new DirectoryNotFoundException(_cefPatchArchive);
                 }
             }
@@ -80,7 +87,7 @@ namespace Gobchat.Module.Cef.Internal
         //TODO exception handling
         public string ExtractCef(IProgressMonitor progressMonitor)
         {
-            if (IsCefAvailable())
+            if (IsCorrectCefVersionAvailable())
                 return _cefLibFolder; //Done
 
             Directory.CreateDirectory(_cefLibFolder);
@@ -98,21 +105,34 @@ namespace Gobchat.Module.Cef.Internal
                     throw new OperationCanceledException("Unpacking canceled");
             }
 
-            if (!IsCefAvailable())
-            {
-                //TODO throw exception
+            if (!Directory.Exists(_cefLibFolder))          
                 throw new DirectoryNotFoundException(_cefLibFolder);
+
+            if (!IsCorrectCefVersionAvailable())
+            {
+                throw new Exception("Version missmatch.");
             }
 
             return _cefLibFolder;
         }
-
-        public bool IsCefAvailable()
+        
+        public void RemoveCef(IProgressMonitor progressMonitor)
         {
-            return File.Exists(Path.Combine(_cefLibFolder, "libcef.dll"));
+            progressMonitor.Log(StringFormat.Format(Resources.Module_Cef_Installer_Delete, _cefLibFolder));
+            Directory.Delete(_cefLibFolder, true);
         }
 
-        public bool IsCefArchiveAvailable()
+        public bool IsCorrectCefVersionAvailable()
+        {
+            return File.Exists(cefLibDll) && FileVersionInfo.GetVersionInfo(cefLibDll).FileVersion.StartsWith(CURRENT_VERSION);
+        }
+
+        public bool DoesCefNeedAnUpdate()
+        {
+            return File.Exists(cefLibDll) && !FileVersionInfo.GetVersionInfo(cefLibDll).FileVersion.StartsWith(CURRENT_VERSION);
+        }
+
+        private bool IsArchiveAvailable()
         {
             return File.Exists(_cefPatchArchive);
         }

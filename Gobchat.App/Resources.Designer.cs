@@ -19,7 +19,7 @@ namespace Gobchat {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -227,6 +227,15 @@ namespace Gobchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CEF requires an update. This will take a moment..
+        /// </summary>
+        internal static string Module_Cef_Dialog_CefUpdate_Text {
+            get {
+                return ResourceManager.GetString("Module.Cef.Dialog.CefUpdate.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CEF installation failed. Reason:
         ///{0}
         ///
@@ -244,6 +253,15 @@ namespace Gobchat {
         internal static string Module_Cef_Dialog_InstallFailed_Title {
             get {
                 return ResourceManager.GetString("Module.Cef.Dialog.InstallFailed.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete CEF folder: {0}.
+        /// </summary>
+        internal static string Module_Cef_Installer_Delete {
+            get {
+                return ResourceManager.GetString("Module.Cef.Installer.Delete", resourceCulture);
             }
         }
         

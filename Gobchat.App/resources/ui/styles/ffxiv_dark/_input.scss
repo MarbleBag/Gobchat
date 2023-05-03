@@ -1,0 +1,119 @@
+%gob-input-field {
+    background: var(--input_background);
+    border: inset 0.125rem var(--input_border-color);
+    color: var(--input_text-color);
+    padding: 0.06rem 0.12rem;
+}
+
+.gob-input-checkbox {
+    cursor: pointer;
+    font-size: 1em;
+    width: var(--input-checkbox_size);
+    height: var(--input-checkbox_size);
+    appearance: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: unset;
+    padding: unset;
+    border: unset;
+    // outline: none;
+    background-image: var(--input-checkbox--unchecked_background);
+
+    &:checked {
+        background-image: var(--input-checkbox--checked_background);
+    }
+
+    :disabled {
+    }
+}
+
+.gob-input-radio {
+    @extend .gob-input-checkbox;
+}
+
+.gob-input-dropdown {
+    @extend %gob-input-field;
+
+    cursor: pointer;
+    font-size: 0.85em;
+    padding: 0 0.5rem;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    :disabled {
+    }
+}
+
+.gob-input-text {
+    @extend %gob-input-field;
+
+    cursor: text;
+    font-size: 0.8em;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    :disabled {
+    }
+}
+
+.gob-input-textarea {
+    @extend %gob-input-field;
+
+    cursor: text;
+    font-size: 0.8em;
+    font-weight: bold;
+    box-sizing: border-box;
+    width: max(200px, 50%);
+
+    :disabled {
+    }
+}
+
+.gob-input-textarea--wide{
+    width: auto;
+}
+
+.gob-input-number {
+    @extend %gob-input-field;
+    cursor: text;
+    font-size: 0.8em;
+    padding-left: 0.5rem;
+    font-weight: bold;
+    box-sizing: border-box;
+    width: 8rem;
+
+    :disabled {
+    }
+}
+
+.gob-input-rangeslider {
+    --input-slider_track_height: 0.2rem;
+    --input-slider_thumb_height: 0.8rem;
+
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    background-color: transparent;
+    width: 12rem;
+
+    &::-webkit-slider-runnable-track {
+        appearance: none;
+        box-sizing: content-box;
+        height: var(--input-slider_track_height);
+        background: var(--input-slider_track_color);
+        border: 0.3rem solid var(--input-slider_track_border-color);
+    }
+
+    &::-webkit-slider-thumb {
+        appearance: none;
+        margin-top: calc(var(--input-slider_thumb_height) / -2 + var(--input-slider_track_height) / 2);
+        width: 1.5rem;
+        height: var(--input-slider_thumb_height);
+        cursor: ew-resize;
+        border: 0.1rem solid var(--input-slider_thumb_border-color);
+        background: var(--input-slider_thumb_color);
+    }
+
+    :disabled {
+    }
+}

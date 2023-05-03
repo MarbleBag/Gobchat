@@ -1,67 +1,42 @@
-﻿<!DOCTYPE html>
+<button id="cp-channel_copyprofile"></button>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <button class="gob-button-tertiary gob-button-copypage" id="cchannel_copyprofile"><i class="fas fa-clone"></i></button>
-
-    <div class="gob-config-group" style="overflow-x: auto;">
-        <table id="cchannel_channels" class="gob-table gob-table-t-channel gob-table-row-hover gob-table-stripes-hrzt">
-            <thead>
-                <tr>
-                    <th data-gob-locale-text="config.channel.tbl.name"></th>
-                    <th data-gob-locale-text="config.channel.tbl.mention"></th>
-                    <th data-gob-locale-text="config.channel.tbl.roleplay"></th>
-                    <th data-gob-locale-text="config.channel.tbl.rangefilter"></th>
-                    <th data-gob-locale-text="config.channel.tbl.log"></th>
-                    <th data-gob-locale-text="config.channel.tbl.textcolor"></th>
-                    <th data-gob-locale-text="config.channel.tbl.backgroundcolor"></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+<div class="gob-config-page" id="cp-channel">
+    <div class="gob-config-group">
+        <div class="">
+            <table class="gob-table gob-table--default gob-table--strips-horizontal" id="cp-channel_channel-table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.channel.tbl.channel.header.name"></th>
+                        <th data-gob-locale-text="config.channel.tbl.channel.header.sendercolor"></th>
+                        <th data-gob-locale-text="config.channel.tbl.channel.header.textcolor"></th>
+                        <th data-gob-locale-text="config.channel.tbl.channel.header.backgroundcolor"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <template id="cchannel_template_channelentry">
+    <template id="cp-channel_template_channel-table_entry">
         <tr>
             <td>
-                <label class="entry-label"></label>
+                <label class="gob-config-text js-name"></label>
             </td>
             <td>
-                <input class="entry-mention" type="checkbox" />
+                <input class="gob-input-text js-color-sender" type="text" />
+                <button class="js-color-sender-reset"></button>
             </td>
             <td>
-                <input class="entry-roleplay" type="checkbox" />
+                <input class="gob-input-text js-color-text" type="text" />
+                <button class="js-color-text-reset"></button>
             </td>
             <td>
-                <input class="entry-rangefilter" type="checkbox" />
-            </td>
-            <td>
-                <input class="entry-log" type="checkbox" />
-            </td>
-            <td>
-                <div>
-                    <input class="entry-color-forground" type="text" />
-                    <button class="entry-color-forground-reset" data-gob-locale-title="config.main.button.reset.tooltip">
-                        <i class='fas fa-undo-alt'></i>
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <input class="entry-color-background" type="text" />
-                    <button class="entry-color-background-reset" data-gob-locale-title="config.main.button.reset.tooltip">
-                        <i class='fas fa-undo-alt'></i>
-                    </button>
-                </div>
+                <input class="gob-input-text js-color-background" type="text" />
+                <button class="js-color-background-reset"></button>
             </td>
         </tr>
     </template>
+</div>
 
-    <script type="text/javascript" src="config_channel.js"></script>
-</body>
-</html>
+<script type="module" src="config_channel.js"></script>

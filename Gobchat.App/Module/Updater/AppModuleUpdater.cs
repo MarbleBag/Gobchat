@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -18,6 +18,7 @@ using Gobchat.Core.Util;
 using Gobchat.Module.Updater.Internal;
 using NLog;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Gobchat.Module.Updater
@@ -26,14 +27,20 @@ namespace Gobchat.Module.Updater
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private const string PatchFolder = "patch";
-        private const string TempPatchFolder = "temp";
+        private string PatchStorageFolder => System.IO.Path.Combine(GobchatContext.ApplicationLocation, "patch");
+        private string PatchArchiveExtractionFolder => System.IO.Path.Combine(PatchStorageFolder, "extracted");
 
         public void Initialize(ApplicationStartupHandler handler, IDIContext container)
         {
             if (handler == null) throw new System.ArgumentNullException(nameof(handler));
 
             DeleteOldPatchData();
+
+#if DEBUG
+            handler.StopStartup = DoLocaleUpdate();
+            if (handler.StopStartup)
+                return;
+#endif
 
             var configManager = container.Resolve<IConfigManager>();
             var doUpdate = configManager.GetProperty<bool>("behaviour.appUpdate.checkOnline");
@@ -77,19 +84,55 @@ namespace Gobchat.Module.Updater
         {
             try
             {
-                var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
-                var tmpFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
-
-                if (System.IO.Directory.Exists(tmpFolder))
+                if (System.IO.Directory.Exists(PatchArchiveExtractionFolder))
                 {
                     logger.Info("Deleting temp update data");
-                    System.IO.Directory.Delete(tmpFolder, true);
+                    System.IO.Directory.Delete(PatchArchiveExtractionFolder, true);
                 }
             }
             catch (Exception ex)
             {
                 logger.Warn(ex);
             }
+        }
+
+        private bool DoLocaleUpdate()
+        {
+            if (!Directory.Exists(PatchStorageFolder))
+                return false;
+
+            var archives = Directory.EnumerateFiles(PatchStorageFolder, "*.zip", SearchOption.TopDirectoryOnly);
+
+            GobVersion lastVersion = null;
+            string archivePath = null;
+
+            foreach( var archive in archives)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(archive);
+                var hasVersion = fileName.IndexOf("-");
+                if (hasVersion <= 0)
+                    continue;
+
+                if(!GobVersion.TryParse(fileName.Substring(hasVersion+1), out var gobVersion))
+                    continue;
+
+                if(gobVersion <= GobchatContext.ApplicationVersion)
+                    continue;
+
+                if(lastVersion == null || lastVersion <= gobVersion)
+                {
+                    lastVersion = gobVersion;
+                    archivePath = archive;
+                }
+            }
+
+            if (archivePath == null)
+                return false;
+
+            if (!PerformExtractionAndUpdate(archivePath, new NullProgressMonitor()))
+                return false;
+
+            return true;
         }
 
         private bool PerformAutoUpdate(IDIContext container, IUpdateDescription update)
@@ -109,19 +152,14 @@ namespace Gobchat.Module.Updater
                 var progressDisplay = uiManager.GetUIElement<ProgressDisplayForm>(displayId);
                 using (var progressMonitor = new ProgressMonitorAdapter(progressDisplay))
                 {
-                    var patchFolder = System.IO.Path.Combine(GobchatContext.ApplicationLocation, PatchFolder);
-
-                    (var downloadResult, var filePath) = PerformAutoUpdateDownload(update, patchFolder, progressMonitor);
+                    var patchFolder = PatchStorageFolder;
+                    (var downloadResult, var archivePath) = PerformAutoUpdateDownload(update, PatchStorageFolder, progressMonitor);
                     logger.Info($"Download complete: {downloadResult}");
                     if (!downloadResult)
                         return false;
 
-                    (var extractionResult, var unpackedArchive) = PerformAutoUpdateExtraction(filePath, patchFolder, progressMonitor);
-                    logger.Info($"Extraction complete {extractionResult}");
-                    if (!extractionResult)
+                    if(!PerformExtractionAndUpdate(archivePath, progressMonitor))
                         return false;
-
-                    PerformAutoUpdateInstall(unpackedArchive, progressMonitor);
                 }
 
                 return true;
@@ -130,6 +168,17 @@ namespace Gobchat.Module.Updater
             {
                 uiManager.DisposeUIElement(displayId);
             }
+        }
+
+        private bool PerformExtractionAndUpdate(string archivePath, IProgressMonitor progressMonitor)
+        {
+            (var extractionResult, var unpackedPatchDir) = PerformAutoUpdateExtraction(archivePath, PatchArchiveExtractionFolder, progressMonitor);
+            logger.Info($"Extraction complete {extractionResult}");
+            if (!extractionResult)
+                return false;
+
+            PerformAutoUpdateInstall(unpackedPatchDir, progressMonitor);
+            return true;
         }
 
         private static void MoveDirectory(string source, string target)
@@ -158,6 +207,9 @@ namespace Gobchat.Module.Updater
         {
             var fileDownloader = new GitHubFileDownloader(update.DirectDownloadUrl, targetFolder);
             fileDownloader.FileName = $"gobchat-{update.Version.Major}.{update.Version.Minor}.{update.Version.Patch}-{update.Version.PreRelease}.zip";
+#if DEBUG
+            fileDownloader.DeleteFileOnCancelOrError = false;
+#endif
 
             try
             {
@@ -185,16 +237,14 @@ namespace Gobchat.Module.Updater
             return (true, fileDownloader.FilePath);
         }
 
-        private (bool, string) PerformAutoUpdateExtraction(string archivePath, string patchFolder, IProgressMonitor progressMonitor)
+        private (bool, string) PerformAutoUpdateExtraction(string archivePath, string extractTo, IProgressMonitor progressMonitor)
         {
-            var outputFolder = System.IO.Path.Combine(patchFolder, TempPatchFolder);
-            var unpacker = new ArchiveUnpacker(archivePath, outputFolder);
+            var unpacker = new ArchiveUnpacker(archivePath, extractTo);
 #if DEBUG
             unpacker.DeleteArchiveOnCompletion = false;
-#else
-            unpacker.DeleteArchiveOnCompletion = true;
+            unpacker.DeleteOutputFolderOnFail = false;
 #endif
-            unpacker.DeleteOutputFolderOnFail = true;
+
 
             try
             {
@@ -219,22 +269,22 @@ namespace Gobchat.Module.Updater
                 return (false, null);
             }
 
-            return (true, outputFolder);
+            return (true, extractTo);
         }
 
-        private void PerformAutoUpdateInstall(string patchFolder, IProgressMonitor progressMonitor)
+        private void PerformAutoUpdateInstall(string unpackedArchive, IProgressMonitor progressMonitor)
         {
             logger.Info("Prepare updates");
 
             progressMonitor.StatusText = Resources.Module_Updater_UI_Log_PrepareUpdates;
             progressMonitor.Progress = 0d;
 
-            var tmp = System.IO.Path.Combine(patchFolder, "Gobchat");
-            if (System.IO.Directory.Exists(tmp))
-                patchFolder = tmp;
+            var innerPath = System.IO.Path.Combine(unpackedArchive, "Gobchat");
+            if (System.IO.Directory.Exists(innerPath)) // happens, if it wasn't packed with a parent folder
+                unpackedArchive = innerPath;
 
             var manager = NAppUpdate.Framework.UpdateManager.Instance;
-            manager.UpdateSource = new NAULocalFileUpdateSource(patchFolder);
+            manager.UpdateSource = new NAULocalFileUpdateSource(unpackedArchive);
             manager.UpdateFeedReader = new NAULocalFileFeedReader();
             manager.Config.UpdateExecutableName = System.AppDomain.CurrentDomain.FriendlyName;
 

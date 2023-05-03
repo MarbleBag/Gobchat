@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -27,11 +27,12 @@ namespace Gobchat.Core.Config
         {
             _upgrades = new IConfigUpgrade[]
             {
-                new ConfigUpgrade_v3(),
-                new ConfigUpgrade_v16(),
-                new ConfigUpgrade_v1701(),
-                new ConfigUpgrade_v1800(),
-                new ConfigUpgrade_v1900()
+                new ConfigUpgrade_1_3_0(),
+                new ConfigUpgrade_1_6_0(),
+                new ConfigUpgrade_1_7_1(),
+                new ConfigUpgrade_1_8_0(),
+                new ConfigUpgrade_1_9_0(),
+                new ConfigUpgrade_1_12_0()
             };
         }
 
@@ -89,7 +90,7 @@ namespace Gobchat.Core.Config
             IConfigUpgrade bestUpgrade = null;
             foreach (var upgrade in _upgrades)
             {
-                if (version < upgrade.MinVersion || upgrade.MaxVersion < version)
+                if (version < upgrade.MinVersion || upgrade.MaxVersion < version || upgrade.TargetVersion == version)
                     continue;
 
                 if (bestUpgrade == null || bestUpgrade.TargetVersion < upgrade.TargetVersion)

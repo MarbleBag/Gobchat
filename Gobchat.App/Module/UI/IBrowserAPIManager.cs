@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -11,9 +11,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
-using Gobchat.Module.MemoryReader;
+using Gobchat.Core.Runtime;
 using Gobchat.UI.Web;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace Gobchat.Module.UI
 
         IBrowserMemoryHandler MemoryHandler { get; set; }
 
-        event EventHandler<UIReadChangedEventArgs> OnUIReadyChanged;
+        event EventHandler<UIReadyChangedEventArgs> OnUIReadyChanged;
 
         void DispatchEventToBrowser(global::Gobchat.UI.Web.JavascriptEvents.JSEvent jsEvent);
 
@@ -44,45 +43,7 @@ namespace Gobchat.Module.UI
         void RegisterAPI(IBrowserAPI api);
 
         void UnregisterAPI(IBrowserAPI api);
-    }
 
-    public interface IBrowserChatHandler
-    {
-        Task SendChatMessage(int channel, string source, string message);
-
-        Task SendInfoChatMessage(string message);
-
-        Task SendErrorChatMessage(string message);
-    }
-
-    public interface IBrowserConfigHandler
-    {
-        Task<JToken> GetConfigAsJson();
-
-        Task SynchronizeConfig(JToken configJson);
-
-        Task SetActiveProfile(string profileId);
-
-        Task<JToken> ParseProfile(string file);
-    }
-
-    public interface IBrowserActorHandler
-    {
-        Task<bool> IsFeatureAvailable();
-
-        Task<int> GetPlayerNearbyCount();
-
-        Task<string[]> GetPlayersNearby();
-
-        Task<float> GetDistanceToPlayer(string name);
-    }
-
-    public interface IBrowserMemoryHandler
-    {
-        Task<int[]> GetAttachableFFXIVProcesses();
-
-        Task<(ConnectionState state, int id)> GetAttachedFFXIVProcess();
-
-        Task<bool> AttachToFFXIVProcess(int id);
+        IUISynchronizer UISynchronizer { get; }
     }
 }

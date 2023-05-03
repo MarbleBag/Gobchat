@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -95,6 +95,11 @@ namespace Gobchat.Core.Runtime
 
         public static bool operator ==(GobVersion v1, GobVersion v2)
         {
+            if (ReferenceEquals(v1, v2))
+                return true;
+            if (v1 is null || v2 is null)
+                return false;
+
             return v1.Major == v2.Major && v1.Minor == v2.Minor && v1.Patch == v2.Patch && v1.PreRelease == v2.PreRelease;
         }
 

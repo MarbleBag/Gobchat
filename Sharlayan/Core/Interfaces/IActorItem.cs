@@ -38,6 +38,10 @@ namespace Sharlayan.Core.Interfaces {
 
         byte DifficultyRank { get; set; }
 
+        byte Distance2 { get; set; }
+
+        byte TargetStatus { get; set; }
+
         byte Distance { get; set; }
 
         Actor.EventObjectType EventObjectType { get; set; }

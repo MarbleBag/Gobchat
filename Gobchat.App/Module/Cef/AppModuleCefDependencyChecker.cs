@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -69,7 +69,7 @@ namespace Gobchat.Module.Cef
 
         private bool AnyRedistributableLibraryLoadable()
         {
-            return AnyRedistributableLibraryLoadable(new string[] { "msvcp140.dll", "msvcr140.dll" });
+            return AnyRedistributableLibraryLoadable(new string[] { "msvcp140.dll", "msvcr140.dll", "msvcp170.dll", "msvcr170.dll" });
         }
 
         private bool AnyRedistributableLibraryLoadable(IEnumerable<string> libNames)
@@ -116,6 +116,7 @@ namespace Gobchat.Module.Cef
             {
                 private static readonly string[] displayNames = new string[]
                     {
+                        @"Microsoft Visual C++ 2015-2022 Redistributable",
                         @"Microsoft Visual C++ 2015-2019 Redistributable",
                         @"Microsoft Visual C++ 2017 Redistributable",
                         @"Microsoft Visual C++ 2015 Redistributable"

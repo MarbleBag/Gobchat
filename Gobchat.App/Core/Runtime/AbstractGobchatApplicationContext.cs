@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -96,7 +96,15 @@ namespace Gobchat.Core.Runtime
             logger.Info("Install updates app");
             try
             {
-                manager.ApplyUpdates(true, true, false);
+                manager.ApplyUpdates(
+                    true, 
+                    true,
+                    #if DEBUG
+                        true
+                    #else
+                        false
+                    #endif
+                    );
             }
             catch (Exception ex)
             {

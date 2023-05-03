@@ -1,0 +1,29 @@
+$s05: $s1u / 2;
+$s1u: 1rem / 16;
+$s2u: $s1u * 2;
+$s3u: $s1u * 3;
+$s4u: $s1u * 4;
+$s5u: $s1u * 5;
+$s6u: $s1u * 6;
+$s7u: $s1u * 7;
+$s8u: $s1u * 8;
+$s9u: $s1u * 9;
+$s10u: $s1u * 10;
+$s11u: $s1u * 11;
+$s12u: $s1u * 12;
+$s13u: $s1u * 13;
+$s14u: $s1u * 14;
+$s15u: $s1u * 15;
+$s16u: $s1u * 16;
+
+@function size($parts){
+    @return calc(1/16 *1rem * $parts);
+}
+
+$s1-8: 1 / 8;
+$s1-4: 1 / 4;
+$s1-3: 1 / 3;
+$s1-2: 1 / 2;
+$s1-1: 1;
+
+$color_neutral-grey: hsl(0deg 0% 50%);

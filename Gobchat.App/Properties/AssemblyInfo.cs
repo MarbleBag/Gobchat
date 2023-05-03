@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Gobchat")]
-[assembly: AssemblyCopyright("Copyright © 2019-2022 MarbleBag")]
+[assembly: AssemblyCopyright("Copyright © 2019-2023 MarbleBag")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Pre-Release (Used for betas)
 //
-[assembly: AssemblyVersion("1.11.4.0")]
-[assembly: AssemblyFileVersion("1.11.4.0")]
+[assembly: AssemblyVersion("1.12.0.0")]
+[assembly: AssemblyFileVersion("1.12.0.0")]

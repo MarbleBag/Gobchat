@@ -127,9 +127,9 @@ Beispiele:
 
 Installiere [.NET Framework](https://www.microsoft.com/net/download/framework) version 4.7.2 oder höher
 
-Visual C++ Redistributable Packages
-Installiere [redistributables x64](https://aka.ms/vs/16/release/vc_redist.x64.exe) für 64-bit Windows
-Installiere [redistributables x84](https://aka.ms/vs/16/release/vc_redist.x86.exe) für 32-bit Windows
+Die neuste Visual C++ Redistributable Packages (download startet direkt)
+Installiere [redistributables x64](https://aka.ms/vs/17/release/vc_redist.x64.exe) für 64-bit Windows
+Installiere [redistributables x84](https://aka.ms/vs/17/release/vc_redist.x86.exe) für 32-bit Windows
 
 ### Installation von Gobchat
 

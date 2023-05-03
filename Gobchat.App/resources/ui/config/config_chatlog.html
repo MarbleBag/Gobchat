@@ -1,0 +1,95 @@
+<button id="cp-chatlog_copyprofile"></button>
+
+<div class="gob-config-page" id="cp-chatlog">
+    <div class="gob-config-group">
+        <div class="gob-config-group_item">
+            <input class="gob-input-checkbox" type="checkbox" 
+                id="cp-chatlog_active"
+                data-gob-configkey="behaviour.chatlog.active"
+                data-gob-locale-tooltip="config.chatlog.active.tooltip" />
+            <label class="gob-config-label"
+                 data-gob-locale-text="config.chatlog.active" 
+                 data-gob-locale-tooltip="config.chatlog.active.tooltip">
+            </label>
+        </div>
+
+        <div class="gob-config-sub-group">
+            <div class="gob-config-group_item-4-columns">
+                <label class="gob-config-label"
+                       data-gob-locale-text="config.chatlog.path"
+                       data-gob-locale-tooltip="config.chatlog.path.tooltip">
+                </label>
+                <input class="gob-input-text gob-grid_item--span-2" type="text"
+                       id="cp-chatlog_path"
+                       data-gob-configkey="behaviour.chatlog.path"
+                       data-gob-locale-tooltip="config.chatlog.path.tooltip" />
+                <div>
+                    <button class="gob-config-icon-button"
+                            id="cp-chatlog_path_select"
+                            data-gob-locale-tooltip="config.chatlog.pathselect.tooltip">
+                        <i class="fas fa-file"></i>
+                    </button>
+                    <button id="cp-chatlog_path_reset"></button>
+                </div>
+
+                <label class="gob-config-label"
+                       data-gob-locale-text="config.chatlog.format"
+                       data-gob-locale-tooltip="config.chatlog.format.tooltip">
+                </label>
+                <input class="gob-input-text gob-grid_item--span-2" type="text"
+                       id="cp-chatlog_format"
+                       data-gob-configkey="behaviour.chatlog.format"
+                       data-gob-locale-tooltip="config.chatlog.format.tooltip" />
+                <select type="text" class="gob-input-dropdown"
+                        id="cp-chatlog_format_selector"
+                        data-gob-configkey="behaviour.chatlog.format"
+                        data-gob-locale-tooltip="config.chatlog.format.tooltip">
+                    <option value="" data-gob-locale-text="config.chatlog.format.selector.custom"></option>
+                    <option value="{channel} [{date} {time-full}] {sender}: {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.default"></option>
+                    <option value="{channel} [{date} {time}] {sender}: {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.short"></option>
+                    <option value="{channel} [{date} {time-full}] {sender}:{break}{message}{break}"
+                            data-gob-locale-text="config.chatlog.format.selector.newline"></option>
+                    <option value="{channel-padl} [{date} {time-full}] {sender}: {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.padleft"></option>
+                    <option value="{channel-padr} [{date} {time-full}] {sender}: {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.padright"></option>
+                    <option value="[{time-short}] {sender}: {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.compact"></option>
+                    <option value="[{time-short}]{sender-cha} {message}"
+                            data-gob-locale-text="config.chatlog.format.selector.ingame"></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="gob-config-group">
+        <!--<div class="gob-config-title" data-gob-locale-text="config.chatlog.tbl.chatlog.label"></div>-->
+        <div class="gob-table-wrapper--split-in-2">
+            <table class="gob-table gob-table--confirm" id="cp-chatlog_table">
+                <thead>
+                    <tr>
+                        <th data-gob-locale-text="config.chatlog.tbl.chatlog.name"></th>
+                        <th data-gob-locale-text="config.chatlog.tbl.chatlog.log"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <template id="cp-chatlog_template_table_entry">
+        <tr>
+            <td>
+                <label class="gob-config-label js-label"></label>
+            </td>
+            <td>
+                <input class="gob-input-checkbox js-checkbox" type="checkbox" />
+            </td>
+        </tr>
+    </template>
+</div>
+
+<script defer type="module" src="config_chatlog.js"></script>

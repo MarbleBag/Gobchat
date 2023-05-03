@@ -1,0 +1,58 @@
+@use "input";
+
+.gob-chat-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.gob-chat-toolbar_search_input {
+    @extend .gob-input-text;
+}
+
+.gob-chat-toolbar_button {
+    height: 1.5rem;
+    min-width: 1.5rem;
+    line-height: 1;
+    background: var(--toolbar_button_background);
+    white-space: nowrap;
+    border: none;
+    
+    font-size: inherit; // overrides button
+    cursor: pointer; // overrides button
+
+    padding: 0 0.625rem;
+    color: var(--toolbar_button_text-color);
+    text-shadow: var(--toolbar_button_text-shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:disabled {
+        color: var(--toolbar_button--disabled_text-color);
+    }
+}
+
+.gob-chat-toolbar_icon-button {
+    @extend .gob-chat-toolbar_button;
+
+    width: 1.5rem;
+    padding: 0.18rem;
+    border-radius: 50%;
+    color: var(--toolbar_icon-button_text-color);
+    text-shadow: var(--toolbar_icon-button_text-shadow);
+
+    &:hover {
+        filter: brightness(115%);
+    }
+
+    &:disabled {
+        color: var(--toolbar_icon-button--disabled_text-color);
+    }
+}
+
+.gob-chat-toolbar_search {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}

@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -48,7 +48,7 @@ namespace Gobchat.Core.Resource
         {
             foreach (var key in data.Keys)
             {
-                var lookupKey = (path == null ? key : $"{path}.{key}").ToUpperInvariant();
+                var lookupKey = (path == null ? key : $"{path}.{key}");
                 var value = data[key];
 
                 if (value == null)
@@ -79,7 +79,7 @@ namespace Gobchat.Core.Resource
             var count = data.Count;
             for (var i = 0; i < count; ++i)
             {
-                var lookupKey = (path == null ? i.ToString() : $"{path}.{i}").ToUpperInvariant();
+                var lookupKey = (path == null ? i.ToString() : $"{path}.{i}");
                 var value = data[i];
 
                 if (value == null)

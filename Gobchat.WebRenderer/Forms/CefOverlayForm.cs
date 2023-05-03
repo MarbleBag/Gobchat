@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -39,7 +39,7 @@ namespace Gobchat.UI.Forms
         private readonly FormResizeHelper _formResizer;
         private readonly FormEnsureTopmostHelper _formEnsureTopmost;
         private readonly FormMessageToCefKeyEventConverter _formKeyConverter;
-        private readonly Web.JavascriptBuilder _jsBuilder = new Web.JavascriptBuilder();
+        private readonly Web.JavascriptAndJsonBuilder _jsBuilder = new Web.JavascriptAndJsonBuilder();
 
         private DeviceIndependentBitmap _colorBuffer;
 

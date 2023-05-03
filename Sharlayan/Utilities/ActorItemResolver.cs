@@ -21,7 +21,7 @@ namespace Sharlayan.Utilities {
 
     internal static class ActorItemResolver {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         public static ActorItem ResolveActorFromBytes(byte[] source, bool isCurrentUser = false, ActorItem entry = null)
         {
             entry = entry ?? new ActorItem();
@@ -212,7 +212,7 @@ namespace Sharlayan.Utilities {
                         foundStatuses.Add(statusEntry);
                     }
                 }
-                
+
                 entry.StatusItems.RemoveAll(x => !foundStatuses.Contains(x));
 
                 // handle empty names

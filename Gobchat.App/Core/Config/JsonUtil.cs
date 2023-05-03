@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -372,6 +372,83 @@ namespace Gobchat.Core.Config
             return found;
         }
 
+        public static bool SetIfUnavailable(JObject src, string srcPath, JToken value)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            {
+                if (node[propertyName] != null)
+                    return;
+
+                node[propertyName] = value != null ? value.DeepClone() : value;
+                found = true;
+            });
+            return found;
+        }
+
+        public static bool SetIfUnavailable(JObject src, string srcPath, Func<JToken> producer)
+        {
+            var found = false;
+            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Create, (node, propertyName) =>
+            {
+                if (node[propertyName] != null)
+                    return;
+
+                var value = producer();
+                node[propertyName] = value != null ? value.DeepClone() : value;
+                found = true;
+            });
+            return found;
+        }
+
+
+
+        public enum IterateeResult
+        {
+            Continue,
+            Stop
+        }
+
+        public static bool IterateIfAvailable(JObject src, string srcPath, Func<JToken, IterateeResult> iteratee)
+        {
+            return IterateIfAvailable<JToken>(src, srcPath, iteratee);
+        }
+
+        public static bool IterateIfAvailable<T>(JObject src, string srcPath, Func<T, IterateeResult> iteratee) where T : JToken
+        {
+            var found = false;
+            AccessIfAvailable(src, srcPath, (node) =>
+            {
+                if(node is JObject jObject)
+                {
+                    found = true;
+                    foreach (var propertyName in jObject.Properties())
+                    {
+                        var item = jObject[propertyName.Name];
+                        if(item is T)                        {
+                            var result = iteratee((T)item);
+                            if (result == IterateeResult.Stop)
+                                break;
+                        }
+                    }
+                }
+                else if(node is JArray jArray)
+                {
+                    found = true;
+                    foreach (var item in jArray)
+                    {
+                        if (item is T)
+                        {
+                            var result = iteratee((T)item);
+                            if (result == IterateeResult.Stop)
+                                break;
+                        }
+                    }
+                }
+            });
+            return found;
+        }
+
         public static List<string> GetKeysIfAvailable(JObject src, string srcPath)
         {
             var result = new List<string>();
@@ -389,44 +466,52 @@ namespace Gobchat.Core.Config
             return result;
         }
 
+        [Obsolete("Use ModifyIfAvailable<T>")]
         public static bool ReplaceArrayIfAvailable(JObject src, string srcPath, Func<JArray, JToken> converter)
+        {
+            return ModifyIfAvailable<JArray>(src, srcPath, converter);
+        }
+
+        public static bool ModifyIfAvailable(JObject src, string srcPath, Func<JToken, JToken> converter) => ModifyIfAvailable<JToken>(src, srcPath, converter);
+
+        public static bool ModifyIfAvailable<T>(JObject src, string srcPath, Func<T, JToken> converter) where T : JToken
         {
             var found = false;
             JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
             {
                 if (node == null)
                     return;
-                if (node[key] is JArray array)
-                {
-                    found = true;
-                    node[key] = converter(array);
-                }
+
+                if (!(node[key] is T target))
+                    return;
+
+                found = true;
+
+                var newValue = converter(target);
+
+                if (newValue == null)
+                    node.Remove(key);
+                else
+                    node[key] = newValue;
             });
             return found;
         }
 
-        public static bool Remove(JObject src, string srcPath)
-        {
-            var found = false;
-            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
-            {
-                if (node == null)
-                    return;
-                found = node.Remove(key);
-            });
-            return found;
-        }
+        public static bool Remove(JObject src, string srcPath) => DeleteIfAvailable(src, srcPath);
 
         public static bool AccessIfAvailable(JObject src, string srcPath, Action<JToken> action)
         {
-            var found = false;
-            JsonUtil.WalkJson(src, srcPath, JsonUtil.MissingElementHandling.Stop, (node, key) =>
-            {
-                if (node == null)
-                    return;
-                action(node[key]);
-            });
-            return found;
+            var token = src.SelectToken(srcPath);
+            if (token == null)
+                return false;
+            action(token);
+            return true;
+        }
+
+        public static bool TryGet(JObject src, string srcPath, out JToken token)
+        {
+            token = src.SelectToken(srcPath);
+            return token != null;
         }
 
         public static bool TryConvertValueToEnum<TEnum>(JToken value, out TEnum e) where TEnum : struct, IConvertible

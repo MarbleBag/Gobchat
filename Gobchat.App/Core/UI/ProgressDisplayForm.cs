@@ -33,7 +33,10 @@ namespace Gobchat.Core.UI
 
         public void AppendLog(string log)
         {
-            txtLog.AppendText(log + "\n");
+            if (txtLog.Text.Length == 0)
+                txtLog.Text = log;
+            else
+                txtLog.AppendText($"{Environment.NewLine}{log}");
         }
 
         public void ClearLog()

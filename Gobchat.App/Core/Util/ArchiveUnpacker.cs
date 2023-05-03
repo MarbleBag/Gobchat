@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -24,7 +24,7 @@ namespace Gobchat.Core.Util
 
         public bool DeleteArchiveOnCompletion { get; set; } = true;
 
-        public bool DeleteOutputFolderOnFail { get; set; } = false;
+        public bool DeleteOutputFolderOnFail { get; set; } = true;
 
         public ArchiveUnpacker(string archivePath, string outputFolderPath)
         {
@@ -47,7 +47,8 @@ namespace Gobchat.Core.Util
             catch (ExtractionFailedException ex)
             {
                 progressMonitor.Log(StringFormat.Format(Resources.GeneralErrorOccured, ex.Message));
-                DeleteExtractedData(progressMonitor);
+                if (DeleteOutputFolderOnFail)
+                    DeleteExtractedData(progressMonitor);
                 DeleteArchive(progressMonitor);
                 throw;
             }
@@ -61,7 +62,8 @@ namespace Gobchat.Core.Util
                     return Result.Completed;
 
                 case ArchiveUnpackerHelper.ExtractionResult.Canceled:
-                    DeleteExtractedData(progressMonitor);
+                    if (DeleteOutputFolderOnFail)
+                        DeleteExtractedData(progressMonitor);
                     return Result.Canceled;
             }
 
@@ -76,9 +78,8 @@ namespace Gobchat.Core.Util
 
         private void DeleteExtractedData(IProgressMonitor progressMonitor)
         {
-            progressMonitor.Log(Resources.Core_Util_ArchiveUnpacker_DeleteIncomplete);
-            if (DeleteOutputFolderOnFail)
-                Directory.Delete(OutputFolderPath, true);
+            progressMonitor.Log(Resources.Core_Util_ArchiveUnpacker_DeleteIncomplete);            
+            Directory.Delete(OutputFolderPath, true);
         }
 
         public enum Result

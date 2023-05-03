@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -60,7 +60,7 @@ namespace Gobchat.Module.UI
             _container = null;
         }
 
-        private void BrowserAPIManager_OnUIReadyChanged(object sender, UIReadChangedEventArgs e)
+        private void BrowserAPIManager_OnUIReadyChanged(object sender, UIReadyChangedEventArgs e)
         {
             var chatManager = _chatManager;
             if (chatManager != null)

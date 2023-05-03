@@ -1,0 +1,42 @@
+// functional and not for styling
+
+body,
+html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+[disabled],
+.is-disabled,
+:disabled {
+    pointer-events: none;
+}
+
+.gob-document--resize {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAAAGZJREFUOE+ljEEOACEIA92f+f9XaQ822EUgajJJC4xtvu+BPnEXFSBff7Bk5N8yw8pgW2aojLwdRHhy+YOTjMzhiUgGDB6ZjMyiVGTAgeV0rB1wqMusL7iIjrVb0mPtypMMGC7k1geoEhcn0OEM6wAAAABJRU5ErkJggg==);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    //box-sizing: border-box;
+    background-color: rgba(0, 0, 150, 0.2);
+}
+
+.chat-frame {
+    font-size: var(--gob-font-size-chat-ui);
+}
+
+.config-frame {
+    font-size: var(--gob-font-size-config);
+}
+
+.gob-config-navigation-panel_entry {
+    display: none;
+
+    &.is-active {
+        display: block;
+    }
+}

@@ -1,0 +1,83 @@
+@use "input";
+@use "grid";
+
+.gob-config-page {
+    //columns: auto 40em;
+    gap: 1rem;
+    column-rule: thin solid var(--page-divider-color-1);
+}
+
+.gob-config-text {
+    &.is-error {
+        font-weight: bold;
+        color: var(--text-error_text-color);
+        text-shadow: var(--text-error_text-shadow);
+    }
+
+    &.is-disabled {
+        color: var(--text-1--disabled_color);
+    }
+}
+
+.gob-config-label {
+    @extend .gob-config-text;
+}
+
+.gob-config-group {
+    break-inside: avoid;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    color: var(--text-1_color);
+    text-shadow: var(--text-1_shadow);
+    margin: calc(13rem / 16) 0 calc(13rem / 16) calc(5rem / 16);
+}
+
+.gob-config-sub-group {
+    break-inside: avoid;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    margin-left: calc(1.5 * var(--input-checkbox_size));
+}
+
+.gob-config-group_title {
+    font-size: 1.125em;
+    color: var(--text-2_color);
+    text-shadow: var(--text-2_shadow);
+}
+
+.gob-config-group_entry {
+    margin-left: 0.5rem;
+}
+
+.gob-config-group_item {
+    @extend .gob-config-group_entry;
+
+    break-inside: avoid;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+@mixin generate_grids($max) {
+    @for $i from 2 to $max + 1 {
+        .gob-config-group_item-#{$i}-small-columns {
+            @extend .gob-grid-small-#{$i};
+            @extend .gob-config-group_entry;
+        }
+
+        .gob-config-group_item-#{$i}-columns {
+            @extend .gob-grid-#{$i};
+            @extend .gob-config-group_entry;
+        }
+    }
+}
+
+@include generate_grids(8);

@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2022 MarbleBag
+ * Copyright (C) 2019-2023 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -20,7 +20,7 @@ namespace Gobchat.Core.Chat
         public ChatMessageSource Source { get; set; } = null;
         public System.DateTime Timestamp { get; set; }
         public ChatChannel Channel { get; set; } = ChatChannel.None;
-        public System.Collections.Generic.List<MessageSegment> Content { get; } = new System.Collections.Generic.List<MessageSegment>();
+        public System.Collections.Generic.List<ChatMessageSegment> Content { get; } = new System.Collections.Generic.List<ChatMessageSegment>();
 
         public bool ContainsMentions { get => Content.Any(e => e.Type == MessageSegmentType.Mention); }
 
@@ -58,12 +58,12 @@ namespace Gobchat.Core.Chat
         }
     }
 
-    public sealed class MessageSegment
+    public sealed class ChatMessageSegment
     {
         public MessageSegmentType Type { get; set; }
         public string Text { get; set; }
 
-        public MessageSegment(MessageSegmentType type, string message)
+        public ChatMessageSegment(MessageSegmentType type, string message)
         {
             this.Type = type;
             this.Text = message;

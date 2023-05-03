@@ -134,35 +134,14 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
     <value>Changes the background color of the chat. Don't go full transparent.</value>
   </data>
-  <data name="config.app.chatlog.format" xml:space="preserve">
-    <value>Log format</value>
-  </data>
-  <data name="config.app.chatlog.format.selector.custom" xml:space="preserve">
-    <value>Custom format</value>
-  </data>
-  <data name="config.app.chatlog.format.selector.default" xml:space="preserve">
-    <value>Default format</value>
-  </data>
-  <data name="config.app.chatlog.format.selector.newline" xml:space="preserve">
-    <value>New line</value>
-  </data>
-  <data name="config.app.chatlog.format.selector.padleft" xml:space="preserve">
+  <data name="config.chatlog.format.selector.padleft" xml:space="preserve">
     <value>Channel name padded left</value>
   </data>
-  <data name="config.app.chatlog.format.selector.padright" xml:space="preserve">
+  <data name="config.chatlog.format.selector.padright" xml:space="preserve">
     <value>Channel name padded right</value>
   </data>
-  <data name="config.app.chatlog.format.tooltip" xml:space="preserve">
+  <data name="config.chatlog.format.tooltip" xml:space="preserve">
     <value />
-  </data>
-  <data name="config.app.chatlog.path" xml:space="preserve">
-    <value>Chat log path</value>
-  </data>
-  <data name="config.app.chatlog.path.tooltip" xml:space="preserve">
-    <value>Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won't be moved.</value>
-  </data>
-  <data name="config.app.chatlog.pathselect.tooltip" xml:space="preserve">
-    <value>Select a folder</value>
   </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Collect information about character locations</value>
@@ -185,22 +164,16 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
     <value>To safely test a beta update, please ensure you have a backup of your Gobchat profile under 'AppData\Roaming\Gobchat\config' by copying the whole folder!</value>
   </data>
-  <data name="config.app.ckb.chatlog" xml:space="preserve">
-    <value>Save chat log</value>
-  </data>
-  <data name="config.app.ckb.chatlog.tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="config.app.ckb.emoteinsay" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay" xml:space="preserve">
     <value>Autodetect emotes in say channel</value>
   </data>
-  <data name="config.app.ckb.emoteinsay.tooltip" xml:space="preserve">
+  <data name="config.formatting.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>When direct speech is marked, everything else will be automatically flagged as emote.</value>
   </data>
-  <data name="config.app.ckb.mentions" xml:space="preserve">
-    <value>Exclude mentions from range filter</value>
+  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
+    <value>Exclude messages with mentions from filtering</value>
   </data>
-  <data name="config.app.ckb.mentions.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.ckb.mentions.tooltip" xml:space="preserve">
     <value />
   </data>
   <data name="config.app.ckb.update" xml:space="preserve">
@@ -209,44 +182,26 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.update.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.app.ckb.usermention" xml:space="preserve">
+  <data name="config.mentions.ckb.usermention" xml:space="preserve">
     <value>Check own messages for mentions</value>
   </data>
-  <data name="config.app.ckb.usermention.tooltip" xml:space="preserve">
+  <data name="config.mentions.ckb.usermention.tooltip" xml:space="preserve">
     <value>Mentions are meant to catch your attention. By checking this, you can test your mentions by yourself.</value>
   </data>
   <data name="config.app.ckblabel" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="config.app.fonts.label" xml:space="preserve">
-    <value>Fonts</value>
+  <data name="config.formatting.fonts.label" xml:space="preserve">
+    <value>Chat</value>
   </data>
-  <data name="config.app.fonts.tooltip" xml:space="preserve">
+  <data name="config.formatting.font-family.tooltip" xml:space="preserve">
     <value>Picks the first available font on your platform, from left to right. It's also possible to use a 'generic font': serif, sans-serife, monospace.</value>
   </data>
-  <data name="config.app.fontsize.label" xml:space="preserve">
-    <value>Font size</value>
+  <data name="config.formatting.chatui.fontsize.label" xml:space="preserve">
+    <value>Chat menu font size</value>
   </data>
-  <data name="config.app.fontsize.large" xml:space="preserve">
-    <value>Large</value>
-  </data>
-  <data name="config.app.fontsize.larger" xml:space="preserve">
-    <value>Larger</value>
-  </data>
-  <data name="config.app.fontsize.medium" xml:space="preserve">
-    <value>Medium</value>
-  </data>
-  <data name="config.app.fontsize.small" xml:space="preserve">
-    <value>Small</value>
-  </data>
-  <data name="config.app.fontsize.smaller" xml:space="preserve">
-    <value>Smaller</value>
-  </data>
-  <data name="config.app.fontsize.tooltip" xml:space="preserve">
+  <data name="config.formatting.chatui.fontsize.label.tooltip" xml:space="preserve">
     <value />
-  </data>
-  <data name="config.app.fontsize.verylarge" xml:space="preserve">
-    <value>Very large</value>
   </data>
   <data name="config.app.hotkeys.hideshow" xml:space="preserve">
     <value>Hide &amp;amp; show Gobchat</value>
@@ -280,9 +235,6 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.app.position.lable" xml:space="preserve">
     <value>Chat position and size</value>
-  </data>
-  <data name="config.app.position.sublable" xml:space="preserve">
-    <value>Values won't be updated as long as the config is open</value>
   </data>
   <data name="config.app.position.width" xml:space="preserve">
     <value>Width</value>
@@ -321,38 +273,38 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.process.selector.tooltip" xml:space="preserve">
     <value>If you run more than one process of FFXIV, select here to which process Gobchat should connect. Hit the refresh button to the left of this field, select your process or any and hit the connect button to the right.</value>
   </data>
-  <data name="config.app.rangefilter.cutoff" xml:space="preserve">
-    <value>Cut off (yalm)</value>
+  <data name="config.rangefilter.cutoff" xml:space="preserve">
+    <value>Hide messages farther than  (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.cutoff.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.cutoff.tooltip" xml:space="preserve">
     <value>Hides other players' messages at this distance.</value>
   </data>
-  <data name="config.app.rangefilter.fadeout" xml:space="preserve">
-    <value>Fade out (yalm)</value>
+  <data name="config.rangefilter.fadeout" xml:space="preserve">
+    <value>Start to fade out at (yalm)</value>
   </data>
-  <data name="config.app.rangefilter.fadeout.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.fadeout.tooltip" xml:space="preserve">
     <value>Starts reducing opacity of other players' messages at this distance. Message opacity declines until either the cut off is reached or the game no longer shows it.</value>
   </data>
-  <data name="config.app.rangefilter.label" xml:space="preserve">
+  <data name="config.rangefilter.page.name" xml:space="preserve">
     <value>Range filter</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend" xml:space="preserve">
+  <data name="config.rangefilter.transparency.end" xml:space="preserve">
     <value>Opacity end (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencyend.tooltip" xml:space="preserve">
-    <value>Final opacity at cut off distance.</value>
+  <data name="config.rangefilter.transparency.end.tooltip" xml:space="preserve">
+    <value>Final opacity at cut off distance, before it disappears completely.</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start" xml:space="preserve">
     <value>Opacity start (%)</value>
   </data>
-  <data name="config.app.rangefilter.transparencystart.tooltip" xml:space="preserve">
+  <data name="config.rangefilter.transparency.start.tooltip" xml:space="preserve">
     <value>Initial opacity at fade out distance.</value>
   </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Border for current result</value>
   </data>
   <data name="config.app.search.border.tooltip" xml:space="preserve">
-    <value>Selected search result will be outlined with this color</value>
+    <value>Selected search result will be outlined with this color.</value>
   </data>
   <data name="config.app.search.label" xml:space="preserve">
     <value>Search</value>
@@ -366,68 +318,53 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.app.theme" xml:space="preserve">
     <value>Theme</value>
   </data>
-  <data name="config.channel.tbl.backgroundcolor" xml:space="preserve">
+  <data name="config.channel.tbl.channel.header.backgroundcolor" xml:space="preserve">
     <value>Background color</value>
   </data>
-  <data name="config.channel.tbl.log" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="config.channel.tbl.mention" xml:space="preserve">
-    <value>Mention</value>
-  </data>
-  <data name="config.channel.tbl.name" xml:space="preserve">
+  <data name="config.channel.tbl.channel.header.name" xml:space="preserve">
     <value>Channel name</value>
   </data>
-  <data name="config.channel.tbl.rangefilter" xml:space="preserve">
-    <value>Range filter</value>
+  <data name="config.rangefilter.tbl.channel.header.filter" xml:space="preserve">
+    <value>Apply filter</value>
   </data>
-  <data name="config.channel.tbl.roleplay" xml:space="preserve">
-    <value>Roleplay</value>
-  </data>
-  <data name="config.channel.tbl.textcolor" xml:space="preserve">
+  <data name="config.channel.tbl.channel.header.textcolor" xml:space="preserve">
     <value>Text color</value>
   </data>
-  <data name="config.channel.tbl.visible" xml:space="preserve">
-    <value>Visible</value>
-  </data>
-  <data name="config.groups.entry.deleteconfirm" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.deleteconfirm" xml:space="preserve">
     <value>Group will be deleted. Are you sure?</value>
   </data>
-  <data name="config.groups.group.active" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="config.groups.group.delete.tooltip" xml:space="preserve">
-    <value>Deletes group</value>
-  </data>
-  <data name="config.groups.group.ffgroup.info" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.ffgroup.info" xml:space="preserve">
     <value>This group represents an in-game group and will be applied to any player you have marked with {0}.</value>
     <comment>0: icon</comment>
   </data>
-  <data name="config.groups.group.message.background" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.message.background" xml:space="preserve">
     <value>Message background</value>
   </data>
-  <data name="config.groups.group.name" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.name" xml:space="preserve">
     <value>Group name</value>
   </data>
-  <data name="config.groups.group.naming" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.naming" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="config.groups.group.sender.background" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.sender.background" xml:space="preserve">
     <value>Sender background</value>
   </data>
-  <data name="config.groups.group.sender.forground" xml:space="preserve">
+  <data name="config.groups.tbl.group.entry.sender.forground" xml:space="preserve">
     <value>Sender text</value>
   </data>
-  <data name="config.groups.group.trigger" xml:space="preserve">
-    <value>Characters belonging to this group</value>
+  <data name="config.groups.tbl.group.entry.trigger" xml:space="preserve">
+    <value>Characters belonging to this group:</value>
   </data>
-  <data name="config.groups.group.trigger.tooltip" xml:space="preserve">
-    <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [servername], after a whitespace, to the end of their name.</value>
+  <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
+    <value>A character belongs to this group if they're listed with their full name. Names are separated by a comma. If a character is from a different server, add [server], after a whitespace, to the end of their name. Example: Khada Iriq or Khada Iriq [Balmung], if they are from Balmung and you're not.</value>
   </data>
-  <data name="config.groups.info" xml:space="preserve">
-    <value>Groups are processed from top to bottom. If a group matches, either by character name or in-game group symbol, the formatting of the first group will be applied to the message. To reorder them you can drag and drop the element that shows the group name.</value>
+  <data name="config.groups.tbl.group.description" xml:space="preserve">
+    <value>Each new message will be checked against these groups here, from top to bottom. If a group matches, either by character name or symbol, the formatting of the that, and only that, group will be applied to the message. You can change the order by drag &amp; drop.</value>
   </data>
-  <data name="config.groups.newgroup" xml:space="preserve">
+  <data name="config.groups.tbl.group.action.add" xml:space="preserve">
     <value>New group</value>
   </data>
   <data name="config.main.button.delete.tooltip" xml:space="preserve">
@@ -457,10 +394,10 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.dialog.title.error" xml:space="preserve">
     <value>An error occured!</value>
   </data>
-  <data name="config.main.nav.about" xml:space="preserve">
+  <data name="config.about.page.name" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="config.main.nav.app" xml:space="preserve">
+  <data name="config.app.page.name" xml:space="preserve">
     <value>App</value>
   </data>
   <data name="config.main.nav.cancel" xml:space="preserve">
@@ -469,7 +406,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.cancel.dialog" xml:space="preserve">
     <value>Any unsaved changes will be lost.</value>
   </data>
-  <data name="config.main.nav.channels" xml:space="preserve">
+  <data name="config.channel.page.name" xml:space="preserve">
     <value>Channels</value>
   </data>
   <data name="config.main.nav.closegobchat" xml:space="preserve">
@@ -478,17 +415,11 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
     <value>Close Gobchat. Are your sure?</value>
   </data>
-  <data name="config.main.nav.groups" xml:space="preserve">
+  <data name="config.groups.page.name" xml:space="preserve">
     <value>Groups</value>
   </data>
-  <data name="config.main.nav.mentions" xml:space="preserve">
-    <value>Mentions</value>
-  </data>
-  <data name="config.main.nav.profiles" xml:space="preserve">
-    <value>Profiles</value>
-  </data>
-  <data name="config.main.nav.roleplay" xml:space="preserve">
-    <value>Roleplay</value>
+  <data name="config.formatting.page.name" xml:space="preserve">
+    <value>Formatting</value>
   </data>
   <data name="config.main.nav.save" xml:space="preserve">
     <value>Save</value>
@@ -499,7 +430,7 @@ Visit this project on github under https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
     <value>Set your active profile.</value>
   </data>
-  <data name="config.main.nav.tabs" xml:space="preserve">
+  <data name="config.tabs.page.name" xml:space="preserve">
     <value>Chat tabs</value>
   </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
@@ -538,16 +469,10 @@ Make sure to place any sound files you want to use in Gobchat under 'resources/s
     <value>Audio volume</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
-    <value>Audio volume</value>
-  </data>
-  <data name="config.mentions.mentions.label" xml:space="preserve">
-    <value>Mentions</value>
-  </data>
-  <data name="config.mentions.newmention.tooltip" xml:space="preserve">
-    <value>Adds a new box for mentions</value>
+    <value>Audio volume.</value>
   </data>
   <data name="config.mentions.trigger.tooltip" xml:space="preserve">
-    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention</value>
+    <value>Words which will trigger a mention. Use comma to separate multiple words. Only whole words will trigger a mention. Words which appear as pre-, suf- or infix do not trigger a mention.</value>
   </data>
   <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
     <value>Select a profile to copy</value>
@@ -611,35 +536,35 @@ Restoration is final after clicking save.</value>
   <data name="config.profiles.profiles.name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="config.roleplay.entry.active" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="config.roleplay.entry.deleteconfirm" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.action.delete.confirm" xml:space="preserve">
     <value>Entry will be deleted. Are you sure?</value>
   </data>
-  <data name="config.roleplay.entry.header" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.header" xml:space="preserve">
     <value>{0} starts with {1} and ends with {2}</value>
     <comment>0: type, 1: start tokens, 2: end tokens</comment>
   </data>
-  <data name="config.roleplay.entry.info" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.info" xml:space="preserve">
     <value>They will be processed from top to down. To reorder them drag and drop the header.</value>
   </data>
-  <data name="config.roleplay.entry.tokenend" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.tokenend" xml:space="preserve">
     <value>End</value>
   </data>
-  <data name="config.roleplay.entry.tokenstart" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.entry.tokenstart" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="config.roleplay.tokentbl.header.color" xml:space="preserve">
+  <data name="config.formatting.tbl.color.header.color" xml:space="preserve">
     <value>Text color</value>
   </data>
-  <data name="config.roleplay.tokentbl.header.name" xml:space="preserve">
+  <data name="config.formatting.tbl.color.header.name" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="config.roleplay.tokentbl.new" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.new" xml:space="preserve">
     <value>Add entry</value>
   </data>
-  <data name="config.roleplay.tokentbl.reset" xml:space="preserve">
+  <data name="config.formatting.tbl.segment.reset" xml:space="preserve">
     <value>Reset entries</value>
   </data>
   <data name="config.tabs.btn.newtab" xml:space="preserve">
@@ -669,55 +594,55 @@ Restoration is final after clicking save.</value>
   <data name="config.tabs.effect.message.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.tabs.tab.label" xml:space="preserve">
+  <data name="config.tabs.tabconfig.label" xml:space="preserve">
     <value>Selected tab</value>
   </data>
-  <data name="config.tabs.tab.mention" xml:space="preserve">
+  <data name="config.tabs.tabconfig.mention" xml:space="preserve">
     <value>Apply mentions</value>
   </data>
-  <data name="config.tabs.tab.mention.tooltip" xml:space="preserve">
+  <data name="config.tabs.tabconfig.mention.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.tabs.tab.rangefilter" xml:space="preserve">
+  <data name="config.tabs.tabconfig.rangefilter" xml:space="preserve">
     <value>Apply rangefilter</value>
   </data>
-  <data name="config.tabs.tab.rangefilter.tooltip" xml:space="preserve">
+  <data name="config.tabs.tabconfig.rangefilter.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.tabs.tab.roleplay" xml:space="preserve">
+  <data name="config.tabs.tabconfig.roleplay" xml:space="preserve">
     <value>Apply roleplay formatting</value>
   </data>
-  <data name="config.tabs.tab.roleplay.tooltip" xml:space="preserve">
+  <data name="config.tabs.tabconfig.roleplay.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.tabs.tab.timestamp" xml:space="preserve">
+  <data name="config.tabs.tabconfig.timestamp" xml:space="preserve">
     <value>Show timestamp</value>
   </data>
-  <data name="config.tabs.tab.timestamp.tooltip" xml:space="preserve">
+  <data name="config.tabs.tabconfig.timestamp.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.tabs.tabtable.action.config" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.entry.action.config.tooltip" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="config.tabs.tabtable.action.delete" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.entry.action.delete.tooltip" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="config.tabs.tabtable.action.delete.confirm" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.entry.action.delete.confirm" xml:space="preserve">
     <value>Delete entry?</value>
   </data>
-  <data name="config.tabs.tabtable.action.down" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.entry.action.down.tooltip" xml:space="preserve">
     <value>Move one down</value>
   </data>
-  <data name="config.tabs.tabtable.action.up" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.entry.action.up.tooltip" xml:space="preserve">
     <value>Move one up</value>
   </data>
-  <data name="config.tabs.tabtable.actions" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.actions" xml:space="preserve">
     <value>Actions</value>
   </data>
-  <data name="config.tabs.tabtable.name" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="config.tabs.tabtable.visible" xml:space="preserve">
+  <data name="config.tabs.tbl.tabs.visible" xml:space="preserve">
     <value>Visible</value>
   </data>
   <data name="main.chat.channel.alliance" xml:space="preserve">
@@ -1058,16 +983,148 @@ group groupnumber clear</value>
     <value>Missing '{0}'.</value>
     <comment>0: key id</comment>
   </data>
-  <data name="config.app.chatlog.format.selector.short" xml:space="preserve">
-    <value>Short</value>
-  </data>
-  <data name="config.app.chatlog.format.selector.compact" xml:space="preserve">
-    <value>Compact</value>
-  </data>
   <data name="main.chat.channel.npc-dialog.tooltip" xml:space="preserve">
     <value />
   </data>
-  <data name="config.app.chatlog.format.selector.ingame" xml:space="preserve">
+  <data name="config.chatlog.format.selector.ingame" xml:space="preserve">
     <value>Ingame</value>
+  </data>
+  <data name="config.rangefilter.tbl.channel.name" xml:space="preserve">
+    <value>Range filter</value>
+  </data>
+  <data name="config.chatlog.page.name" xml:space="preserve">
+    <value>Chatlog</value>
+  </data>
+  <data name="config.chatlog.format.selector.compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="config.chatlog.format.selector.custom" xml:space="preserve">
+    <value>Custom format</value>
+  </data>
+  <data name="config.chatlog.format.selector.default" xml:space="preserve">
+    <value>Default format</value>
+  </data>
+  <data name="config.chatlog.format.selector.newline" xml:space="preserve">
+    <value>New line</value>
+  </data>
+  <data name="config.chatlog.format.selector.short" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="config.chatlog.format" xml:space="preserve">
+    <value>Log format</value>
+  </data>
+  <data name="config.chatlog.path" xml:space="preserve">
+    <value>Chat log path</value>
+  </data>
+  <data name="config.chatlog.path.tooltip" xml:space="preserve">
+    <value>Chat logs will be saved there. You can either choose to save all logs in the same folder or create multiple folders for each profile. Your old logs won't be moved.</value>
+  </data>
+  <data name="config.chatlog.pathselect.tooltip" xml:space="preserve">
+    <value>Select a folder</value>
+  </data>
+  <data name="config.chatlog.active" xml:space="preserve">
+    <value>Save chat log</value>
+  </data>
+  <data name="config.chatlog.tbl.chatlog.name" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="config.chatlog.tbl.chatlog.log" xml:space="preserve">
+    <value>Write to file</value>
+  </data>
+  <data name="config.main.dialog.label" xml:space="preserve">
+    <value>Gobchat Configuration</value>
+  </data>
+  <data name="config.rangefilter.tbl.channel.header.name" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="config.app.config.fontsize.label" xml:space="preserve">
+    <value>Config font size</value>
+  </data>
+  <data name="config.formatting.fontfamily" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="config.formatting.chathistory.fontsize.label" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="config.formatting.chathistory.fontsize.label.tooltip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.formatting.chathistory.gap.label" xml:space="preserve">
+    <value>Gap between entries</value>
+  </data>
+  <data name="config.formatting.chathistory.gap.label.tooltip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.app.config.fontsize.normal" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="config.app.config.fontsize.larger" xml:space="preserve">
+    <value>Larger</value>
+  </data>
+  <data name="config.app.config.fontsize.smaller" xml:space="preserve">
+    <value>Smaller</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.unicode" xml:space="preserve">
+    <value>Unicode:&amp;nbsp</value>
+  </data>
+  <data name="config.formatting.tbl.segment.name" xml:space="preserve">
+    <value>Text detection</value>
+  </data>
+  <data name="config.tabs.tbl.channel.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="config.tabs.tbl.channel.visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="config.mentions.page.name" xml:space="preserve">
+    <value>Mentions</value>
+  </data>
+  <data name="config.profiles.page.name" xml:space="preserve">
+    <value>Profiles</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups" xml:space="preserve">
+    <value>How to handle groups?</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.off" xml:space="preserve">
+    <value>Do nothing</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.only" xml:space="preserve">
+    <value>Only show these groups</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.hide" xml:space="preserve">
+    <value>Hide these groups</value>
+  </data>
+  <data name="config.tabs.tabconfig.groups.tooltips" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="config.tabs.tbl.groups.name" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="config.tabs.tbl.groups.visible" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="config.formatting.tbl.color.name" xml:space="preserve">
+    <value>Color selection for text types</value>
+  </data>
+  <data name="config.formatting.tbl.segment.description" xml:space="preserve">
+    <value>These are used to determine the type of a text section.</value>
+  </data>
+  <data name="config.groups.ckb.updatechat" xml:space="preserve">
+    <value>Update previous messages</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.name" xml:space="preserve">
+    <value>Mentions</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.name" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="config.mentions.tbl.mentions.header.apply" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="config.channel.tbl.channel.header.sendercolor" xml:space="preserve">
+    <value>Sender color</value>
   </data>
 </root>
