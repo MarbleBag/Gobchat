@@ -81,8 +81,8 @@ jQuery(function ($) {
         const bounds = await GobchatAPI.getScreenDimensions();
         const screenWidth = bounds.Item1;
         const screenHeight = bounds.Item2;
-        const dialogWidth = screenWidth / 4;
-        const dialogHeight = screenHeight / 4;
+        const dialogWidth = screenWidth / 2;
+        const dialogHeight = screenHeight / 2;
         const handle = window.open("config/config.html", 'Settings', `width=${dialogWidth},height=${dialogHeight}`);
         if (handle === null) {
             console.error("unable to open popup window");
