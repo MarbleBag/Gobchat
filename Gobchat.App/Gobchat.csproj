@@ -208,6 +208,7 @@
     <Content Include="resources\ui\tsconfig.json" />
     <Content Include="resources\ui\gobchat-test.js" />
     <Content Include="resources\ui\gobchat.js">
+      <DependentUpon>gobchat.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\ui\gobchat\deprecated\web-components.js" />
@@ -235,6 +236,7 @@
       <DependentUpon>Dialog.ts</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <TypeScriptCompile Include="resources\ui\gobchat.ts" />
     <TypeScriptCompile Include="resources\ui\modules\Dialog.ts" />
     <Content Include="resources\ui\modules\Command.js">
       <DependentUpon>Command.ts</DependentUpon>
@@ -460,18 +462,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v2000.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_12_0.cs" />
     <Compile Include="Core\UI\NullProgressMonitor.cs" />
     <Compile Include="Module\Misc\Chatlogger\Internal\ChatLoggerBase.cs" />
     <Compile Include="Core\Chat\ChatUtil.cs" />
     <Compile Include="Core\Chat\FFXIVChatChannel.cs" />
     <Compile Include="Core\Chat\GobchatChannelMapping.cs" />
     <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrader.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1900.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1800.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v3.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v16.cs" />
-    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_v1701.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_9_0.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_8_0.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_3_0.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_6_0.cs" />
+    <Compile Include="Core\Config\ConfigUpgrader\ConfigUpgrade_1_7_1.cs" />
     <Compile Include="Core\Config\Exceptions\SynchronizationException.cs" />
     <Compile Include="Core\Resource\IResourceBundle.cs" />
     <Compile Include="Core\Resource\ResourceManagerBundle.cs" />

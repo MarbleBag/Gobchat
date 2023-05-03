@@ -297,7 +297,7 @@ function toUnicodeString(arr: string[]): string {
 
 // --------------------------------------------------------------------------------------------------------
 
-const configKeys = new Set<string>(["behaviour.segment.order", "behaviour.segment.data", "style.segment", "style.channel.base.font-family", "style.chat-history.font-size", "style.chat-history.gap", "style.chatui.font-size"])
+const configKeys = new Set<string>(["behaviour.segment.order", "behaviour.segment.data", "style.segment", "style.channel.base.general.font-family", "style.chat-history.font-size", "style.chat-history.gap", "style.chatui.font-size"])
 Components.makeCopyProfileButton($("#cp-formatting_copyprofile"), {
         configKeys: Array.from(configKeys)
     })

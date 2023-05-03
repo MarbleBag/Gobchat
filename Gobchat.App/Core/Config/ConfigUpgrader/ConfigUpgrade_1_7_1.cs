@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace Gobchat.Core.Config
 {
-    internal sealed class ConfigUpgrade_v1701 : IConfigUpgrade
+    internal sealed class ConfigUpgrade_1_7_1 : IConfigUpgrade
     {
         public int MinVersion => 16;
 

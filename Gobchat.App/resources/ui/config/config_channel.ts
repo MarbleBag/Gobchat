@@ -27,28 +27,37 @@ function buildChannelEntry(channelData) {
     table.appendEvenly(rowEntry)
 
     const lblName = rowEntry.find(".js-name")
-    const clrSelectorFG = rowEntry.find(".js-color-forground")
-    const btnResetFG = rowEntry.find(".js-color-forground-reset")
-    const clrSelectorBG = rowEntry.find(".js-color-background")
-    const btnResetBG = rowEntry.find(".js-color-background-reset")
+    const clrSelectorSender = rowEntry.find(".js-color-sender")
+    const clrSelectorText = rowEntry.find(".js-color-text")    
+    const clrSelectorBackground = rowEntry.find(".js-color-background")
+
+    const btnResetSender = rowEntry.find(".js-color-sender-reset")
+    const btnResetText = rowEntry.find(".js-color-text-reset")
+    const btnResetBackground = rowEntry.find(".js-color-background-reset")
 
     lblName.attr(Locale.HtmlAttribute.TextId, `${channelData.translationId}`)
     lblName.attr(Locale.HtmlAttribute.TooltipId, `${channelData.tooltipId}`)
 
     if (channelData.configId === null) {
-        clrSelectorFG.parent().hide()
-        clrSelectorBG.parent().hide()
+        clrSelectorSender.parent().hide()
+        clrSelectorText.parent().hide()
+        clrSelectorBackground.parent().hide()
     } else {
-        Databinding.setConfigKey(clrSelectorFG, channelData.configId + ".color")
-        Databinding.setConfigKey(clrSelectorBG, channelData.configId + ".background-color")
+        Databinding.setConfigKey(clrSelectorSender, channelData.configId + ".sender.color")
+        Databinding.setConfigKey(clrSelectorText, channelData.configId + ".general.color")
+        Databinding.setConfigKey(clrSelectorBackground, channelData.configId + ".general.background-color")
 
-        Components.makeColorSelector(clrSelectorFG)
-        Components.makeColorSelector(clrSelectorBG)
+        Components.makeColorSelector(clrSelectorSender)
+        Components.makeColorSelector(clrSelectorText)
+        Components.makeColorSelector(clrSelectorBackground)
 
-        Databinding.bindColorSelector(binding, clrSelectorFG)
-        Databinding.bindColorSelector(binding, clrSelectorBG)
-        Components.makeResetButton(btnResetFG, clrSelectorFG)
-        Components.makeResetButton(btnResetBG, clrSelectorBG)
+        Databinding.bindColorSelector(binding, clrSelectorSender)
+        Databinding.bindColorSelector(binding, clrSelectorText)
+        Databinding.bindColorSelector(binding, clrSelectorBackground)
+
+        Components.makeResetButton(btnResetSender, clrSelectorSender)
+        Components.makeResetButton(btnResetText, clrSelectorText)
+        Components.makeResetButton(btnResetBackground, clrSelectorBackground)
     }
 }
 
