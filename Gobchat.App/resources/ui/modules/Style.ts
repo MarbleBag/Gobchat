@@ -228,12 +228,12 @@ export class StyleBuilder {
 
             results.push(StyleBuilder.toCss(
                 tabClassesWithRoleplay.map(tabClass => `.${tabClass} .${Chat.CssClass.ChatEntry_Segment_Say}`),
-                configStyle.segment.say, configStyle.channel.say
+                configStyle.segment.say, configStyle.channel.say.general
             ))
 
             results.push(StyleBuilder.toCss(
                 tabClassesWithRoleplay.map(tabClass => `.${tabClass} .${Chat.CssClass.ChatEntry_Segment_Emote}`),
-                configStyle.segment.emote, configStyle.channel.emote
+                configStyle.segment.emote, configStyle.channel.emote.general
             ))
 
             results.push(StyleBuilder.toCss(
