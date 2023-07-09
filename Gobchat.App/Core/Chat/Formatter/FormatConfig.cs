@@ -11,13 +11,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *******************************************************************************/
 
+using System;
+
 namespace Gobchat.Core.Chat
 {
     public sealed class FormatConfig
     {
         public bool Active { get; set; }
         public MessageSegmentType Type { get; set; }
-        public string[] StartTokens { get; set; }
-        public string[] EndTokens { get; set; }
+        public string[] StartTokens { get; set; } = Array.Empty<string>();
+        public string[] EndTokens { get; set; } = Array.Empty<string>();
     }
 }
