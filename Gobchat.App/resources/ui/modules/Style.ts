@@ -289,7 +289,6 @@ export class StyleBuilder {
     static { // visible chat entries by channel by tab
         StyleBuilder.RuleGenerators.push(() => {
             const configTabs = gobConfig.get("behaviour.chattabs.data")
-            const configGroups = gobConfig.get("behaviour.groups.data")
 
             const tabs = Object.values(configTabs) as any[]
 
