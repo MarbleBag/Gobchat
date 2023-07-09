@@ -42,6 +42,8 @@ namespace Gobchat.Core.Chat
             {
                 case ChatChannel.TellRecieve:
                 case ChatChannel.TellSend:
+                case ChatChannel.Echo:
+                case ChatChannel.Error:
                     return null;
             }
 
@@ -78,6 +80,6 @@ namespace Gobchat.Core.Chat
         public string Id { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> Trigger { get; set; }
+        public List<string> Trigger { get; set; } = new List<string>();
     }
 }

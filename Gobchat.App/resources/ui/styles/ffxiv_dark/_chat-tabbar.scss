@@ -80,7 +80,14 @@
 
 .gob-chat-tabbar_content_tab--mention-2,
 .gob-chat-tabbar_content_tab--new-message-2 {
-    animation: subtile-blinker 2s linear infinite;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 0 0;
+        animation: subtile-blinker 2s linear infinite;
+    }
 }
 
 .gob-chat-tabbar_content_tab--mention-3,

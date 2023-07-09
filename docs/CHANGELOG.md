@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.12.2] - 2023.07.09
+### Fixed
+- Blink animation on Tabs
+
+- Broken chat if you have an empty group
+
 ## [1.12.1] - 2023.05.04
 ### Fixed
 - chat formatting for say and emote
