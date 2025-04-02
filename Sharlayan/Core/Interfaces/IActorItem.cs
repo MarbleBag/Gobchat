@@ -38,11 +38,11 @@ namespace Sharlayan.Core.Interfaces {
 
         byte DifficultyRank { get; set; }
 
-        byte Distance2 { get; set; }
+        byte YalmFromPlayerX { get; set; }
 
         byte TargetStatus { get; set; }
 
-        byte Distance { get; set; }
+        byte YalmFromPlayerZ { get; set; }
 
         Actor.EventObjectType EventObjectType { get; set; }
 
@@ -74,7 +74,7 @@ namespace Sharlayan.Core.Interfaces {
 
         byte IconID { get; set; }
 
-        uint ID { get; set; }
+        uint EntityId { get; set; }
 
         bool InCombat { get; }
 
@@ -104,11 +104,11 @@ namespace Sharlayan.Core.Interfaces {
 
         string Name { get; set; }
 
-        uint NPCID1 { get; set; }
+        uint LayoutId { get; set; }
 
-        uint NPCID2 { get; set; }
+        uint BaseId { get; set; }
 
-        uint OwnerID { get; set; }
+        uint OwnerId { get; set; }
 
         byte Race { get; set; }
 
@@ -136,17 +136,17 @@ namespace Sharlayan.Core.Interfaces {
 
         Actor.Type Type { get; set; }
 
-        byte TypeID { get; set; }
+        byte TypeId { get; set; }
 
         string UUID { get; set; }
 
         bool WeaponUnsheathed { get; }
 
-        float X { get; set; }
+        float PositionX { get; set; }
 
-        float Y { get; set; }
+        float PositionY { get; set; }
 
-        float Z { get; set; }
+        float PositionZ { get; set; }
 
         ActorItem Clone();
     }

@@ -80,19 +80,19 @@ namespace Sharlayan {
                         }
 
                         if (newEntry) {
-                            PartyWorkerDelegate.EnsurePartyMember(entry.ID, entry);
-                            result.NewPartyMembers.TryAdd(entry.ID, entry.Clone());
+                            PartyWorkerDelegate.EnsurePartyMember(entry.EntityId, entry);
+                            result.NewPartyMembers.TryAdd(entry.EntityId, entry.Clone());
                         }
                     }
                 }
 
                 if (partyCount <= 1) {
                     PartyMember entry = PartyMemberResolver.ResolvePartyMemberFromBytes(Array.Empty<byte>(), PCWorkerDelegate.CurrentUser);
-                    if (result.RemovedPartyMembers.ContainsKey(entry.ID)) {
-                        result.RemovedPartyMembers.TryRemove(entry.ID, out PartyMember removedPartyMember);
+                    if (result.RemovedPartyMembers.ContainsKey(entry.EntityId)) {
+                        result.RemovedPartyMembers.TryRemove(entry.EntityId, out PartyMember removedPartyMember);
                     }
 
-                    PartyWorkerDelegate.EnsurePartyMember(entry.ID, entry);
+                    PartyWorkerDelegate.EnsurePartyMember(entry.EntityId, entry);
                 }
             }
             catch (Exception ex) {

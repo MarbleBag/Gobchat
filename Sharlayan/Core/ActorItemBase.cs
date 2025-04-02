@@ -48,7 +48,7 @@ namespace Sharlayan.Core {
 
         public string HPString => $"{this.HPCurrent}/{this.HPMax} [{this.HPPercent:P2}]";
 
-        public uint ID { get; set; }
+        public uint EntityId { get; set; }
 
         public Actor.Job Job { get; set; }
 
@@ -81,11 +81,11 @@ namespace Sharlayan.Core {
 
         public string UUID { get; set; }
 
-        public float X { get; set; }
+        public float PositionX { get; set; }
 
-        public float Y { get; set; }
+        public float PositionY { get; set; }
 
-        public float Z { get; set; }
+        public float PositionZ { get; set; }
 
         private double safeDivide(double a, double b)
         {
@@ -112,15 +112,15 @@ namespace Sharlayan.Core {
         }
 
         public float GetDistanceTo(ActorItem compare) {
-            var distanceX = (float) Math.Abs(compare.X - this.X);
-            var distanceY = (float) Math.Abs(compare.Y - this.Y);
-            var distanceZ = (float) Math.Abs(compare.Z - this.Z);
+            var distanceX = (float) Math.Abs(compare.PositionX - this.PositionX);
+            var distanceY = (float) Math.Abs(compare.PositionY - this.PositionY);
+            var distanceZ = (float) Math.Abs(compare.PositionZ - this.PositionZ);
             return (float) Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2) + Math.Pow(distanceZ, 2));
         }
 
         public float GetHorizontalDistanceTo(ActorItem compare) {
-            var distanceX = (float) Math.Abs(compare.X - this.X);
-            var distanceY = (float) Math.Abs(compare.Y - this.Y);
+            var distanceX = (float) Math.Abs(compare.PositionX - this.PositionX);
+            var distanceY = (float) Math.Abs(compare.PositionY - this.PositionY);
             return (float) Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
         }
     }

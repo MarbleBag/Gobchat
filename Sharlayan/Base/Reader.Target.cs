@@ -52,7 +52,7 @@ namespace Sharlayan {
                     if (currentTarget > 0) {
                         try {
                             ActorItem entry = GetTargetActorItemFromSource(currentTarget);
-                            currentTargetID = entry.ID;
+                            currentTargetID = entry.EntityId;
                             if (entry.IsValid) {
                                 result.TargetsFound = true;
                                 result.TargetInfo.CurrentTarget = entry;
@@ -166,12 +166,6 @@ namespace Sharlayan {
 
             byte[] source = MemoryHandler.Instance.GetByteArray(targetAddress, MemoryHandler.Instance.Structures.TargetInfo.Size);
             ActorItem entry = ActorItemResolver.ResolveActorFromBytes(source);
-
-            if (entry.Type == Actor.Type.EventObject) {
-                var (EventObjectTypeID, EventObjectType) = GetEventObjectType(targetAddress);
-                entry.EventObjectTypeID = EventObjectTypeID;
-                entry.EventObjectType = EventObjectType;
-            }
 
             EnsureMapAndZone(entry);
 

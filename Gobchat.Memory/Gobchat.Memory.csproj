@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor\ActorPosition.cs" />
     <Compile Include="Actor\PlayerCharacter.cs" />
     <Compile Include="Actor\PlayerEventArgs.cs" />
     <Compile Include="Actor\PlayerLocationMemoryReader.cs" />

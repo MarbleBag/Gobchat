@@ -24,11 +24,11 @@ namespace Sharlayan.Utilities {
         public static PartyMember ResolvePartyMemberFromBytes(byte[] source, ActorItem actorItem = null) {
             if (actorItem != null) {
                 var entry = new PartyMember {
-                    X = actorItem.X,
-                    Y = actorItem.Y,
-                    Z = actorItem.Z,
+                    PositionX = actorItem.PositionX,
+                    PositionY = actorItem.PositionY,
+                    PositionZ = actorItem.PositionZ,
                     Coordinate = actorItem.Coordinate,
-                    ID = actorItem.ID,
+                    EntityId = actorItem.EntityId,
                     UUID = actorItem.UUID,
                     Name = actorItem.Name,
                     Job = actorItem.Job,
@@ -47,11 +47,11 @@ namespace Sharlayan.Utilities {
                 var defaultStatusEffectOffset = MemoryHandler.Instance.Structures.PartyMember.DefaultStatusEffectOffset;
                 var entry = new PartyMember();
                 try {
-                    entry.X = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.X);
-                    entry.Z = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.Z);
-                    entry.Y = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.Y);
-                    entry.Coordinate = new Coordinate(entry.X, entry.Z, entry.Z);
-                    entry.ID = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.PartyMember.ID);
+                    entry.PositionX = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.X);
+                    entry.PositionZ = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.Z);
+                    entry.PositionY = BitConverter.TryToSingle(source, MemoryHandler.Instance.Structures.PartyMember.Y);
+                    entry.Coordinate = new Coordinate(entry.PositionX, entry.PositionZ, entry.PositionZ);
+                    entry.EntityId = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.PartyMember.ID);
                     entry.UUID = Guid.NewGuid().ToString();
                     entry.Name = MemoryHandler.Instance.GetStringFromBytes(source, MemoryHandler.Instance.Structures.PartyMember.Name);
                     entry.JobID = source[MemoryHandler.Instance.Structures.PartyMember.Job];

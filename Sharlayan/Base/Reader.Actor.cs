@@ -99,8 +99,8 @@ namespace Sharlayan {
                         byte[] source = MemoryHandler.Instance.GetByteArray(characterAddress, sourceSize);
 
                         // var source = MemoryHandler.Instance.GetByteArray(characterAddress, 0x3F40);
-                        var ID = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.ActorItem.ID);
-                        var NPCID2 = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.ActorItem.NPCID2);
+                        var ID = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.ActorItem.EntityId);
+                        var NPCID2 = BitConverter.TryToUInt32(source, MemoryHandler.Instance.Structures.ActorItem.BaseId);
                         var Type = (Actor.Type) source[MemoryHandler.Instance.Structures.ActorItem.Type];
 
                         ActorItem existing = null;
@@ -163,31 +163,25 @@ namespace Sharlayan {
                             }
                         }
 
-                        if (entry.Type == Actor.Type.EventObject) {
-                            var (EventObjectTypeID, EventObjectType) = GetEventObjectType(targetAddress);
-                            entry.EventObjectTypeID = EventObjectTypeID;
-                            entry.EventObjectType = EventObjectType;
-                        }
-
                         EnsureMapAndZone(entry);
 
-                        if (isFirstEntry) {
-                            if (targetAddress.ToInt64() > 0) {
-                                byte[] targetInfoSource = MemoryHandler.Instance.GetByteArray(targetAddress, 128);
-                                entry.TargetID = (int) BitConverter.TryToUInt32(targetInfoSource, MemoryHandler.Instance.Structures.ActorItem.ID);
-                            }
-                        }
+                        //if (isFirstEntry) {
+                        //    if (targetAddress.ToInt64() > 0) {
+                        //        byte[] targetInfoSource = MemoryHandler.Instance.GetByteArray(targetAddress, 128);
+                        //        entry.TargetID = (int) BitConverter.TryToUInt32(targetInfoSource, MemoryHandler.Instance.Structures.ActorItem.EntityId);
+                        //    }
+                        //}
 
                         // it doesn't matter what this is set to; it won't be used in code below
                         ActorItem removed;
 
                         if (!entry.IsValid) {
-                            result.NewMonsters.TryRemove(entry.ID, out removed);
-                            result.NewMonsters.TryRemove(entry.NPCID2, out removed);
-                            result.NewNPCs.TryRemove(entry.ID, out removed);
-                            result.NewNPCs.TryRemove(entry.NPCID2, out removed);
-                            result.NewPCs.TryRemove(entry.ID, out removed);
-                            result.NewPCs.TryRemove(entry.NPCID2, out removed);
+                            result.NewMonsters.TryRemove(entry.EntityId, out removed);
+                            result.NewMonsters.TryRemove(entry.BaseId, out removed);
+                            result.NewNPCs.TryRemove(entry.EntityId, out removed);
+                            result.NewNPCs.TryRemove(entry.BaseId, out removed);
+                            result.NewPCs.TryRemove(entry.EntityId, out removed);
+                            result.NewPCs.TryRemove(entry.BaseId, out removed);
                             continue;
                         }
 
@@ -198,22 +192,22 @@ namespace Sharlayan {
                         if (newEntry) {
                             switch (entry.Type) {
                                 case Actor.Type.Monster:
-                                    MonsterWorkerDelegate.EnsureActorItem(entry.ID, entry);
-                                    result.NewMonsters.TryAdd(entry.ID, entry.Clone());
+                                    MonsterWorkerDelegate.EnsureActorItem(entry.EntityId, entry);
+                                    result.NewMonsters.TryAdd(entry.EntityId, entry.Clone());
                                     break;
                                 case Actor.Type.PC:
-                                    PCWorkerDelegate.EnsureActorItem(entry.ID, entry);
-                                    result.NewPCs.TryAdd(entry.ID, entry.Clone());
+                                    PCWorkerDelegate.EnsureActorItem(entry.EntityId, entry);
+                                    result.NewPCs.TryAdd(entry.EntityId, entry.Clone());
                                     break;
                                 case Actor.Type.Aetheryte:
                                 case Actor.Type.EventObject:
                                 case Actor.Type.NPC:
-                                    NPCWorkerDelegate.EnsureActorItem(entry.NPCID2, entry);
-                                    result.NewNPCs.TryAdd(entry.NPCID2, entry.Clone());
+                                    NPCWorkerDelegate.EnsureActorItem(entry.BaseId, entry);
+                                    result.NewNPCs.TryAdd(entry.BaseId, entry.Clone());
                                     break;
                                 default:
-                                    NPCWorkerDelegate.EnsureActorItem(entry.ID, entry);
-                                    result.NewNPCs.TryAdd(entry.ID, entry.Clone());
+                                    NPCWorkerDelegate.EnsureActorItem(entry.EntityId, entry);
+                                    result.NewNPCs.TryAdd(entry.EntityId, entry.Clone());
                                     break;
                             }
                         }

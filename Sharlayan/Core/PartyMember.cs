@@ -12,7 +12,7 @@ namespace Sharlayan.Core {
     using Sharlayan.Core.Interfaces;
 
     public class PartyMember : ActorItemBase, IPartyMember {
-        public bool IsValid => this.ID > 0 && !string.IsNullOrWhiteSpace(this.Name);
+        public bool IsValid => this.EntityId > 0 && !string.IsNullOrWhiteSpace(this.Name);
 
         public PartyMember Clone() {
             var cloned = (PartyMember) this.MemberwiseClone();
