@@ -26,7 +26,7 @@ namespace Gobchat.Core.Chat
         public static readonly FFXIVUnicode Group_6 = new FFXIVUnicode("\u2660");
         public static readonly FFXIVUnicode Group_7 = new FFXIVUnicode("\u2663");
 
-        public static readonly FFXIVUnicode Party_1 = new FFXIVUnicode("\uE090");
+        public static readonly FFXIVUnicode Party_1 = new FFXIVUnicode("\uE0E1");// new FFXIVUnicode("\uE090");
         public static readonly FFXIVUnicode Party_2 = new FFXIVUnicode("\uE091");
         public static readonly FFXIVUnicode Party_3 = new FFXIVUnicode("\uE092");
         public static readonly FFXIVUnicode Party_4 = new FFXIVUnicode("\uE093");
