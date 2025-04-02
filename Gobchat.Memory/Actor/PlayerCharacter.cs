@@ -35,7 +35,7 @@ namespace Gobchat.Memory.Actor
 
         public int SimplifiedDistanceToPlayer { get; internal set; }
 
-        public float SquaredDistanceToPlayer { get; internal set; }
+        public float DistanceToPlayer { get; internal set; }
 
         //public float DistanceToPlayer { get; internal set; }
 

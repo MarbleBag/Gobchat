@@ -62,7 +62,7 @@ namespace Gobchat.Module.Actor.Internal
             }
         }
 
-        public float GetFastDistanceToPlayerWithName(string name)
+        public float GetDistanceToPlayerWithName(string name)
         {
             if (name == null)
                 return 0;
@@ -72,17 +72,9 @@ namespace Gobchat.Module.Actor.Internal
             lock (_realm)
             {
                 if (_realm.TryGetValue(name.ToUpperInvariant(), out var storedData))
-                    return storedData.Actor.SquaredDistanceToPlayer;
+                    return storedData.Actor.DistanceToPlayer;
                 return 0;
             }
-        }
-
-        public float GetDistanceToPlayerWithName(string name)
-        {
-            var sqrtDistance = GetFastDistanceToPlayerWithName(name);
-            if (sqrtDistance <= 0)
-                return sqrtDistance;
-            return (float)Math.Sqrt(sqrtDistance);
         }
 
         internal void AddUpdate(IEnumerable<PlayerCharacter> actors)
@@ -115,7 +107,7 @@ namespace Gobchat.Module.Actor.Internal
                     if (_realm.TryGetValue(key, out var oldData))
                     {
                         //if (newData.LastUpdateTime > oldData.LastUpdateTime)
-                        if (newData.Actor.SquaredDistanceToPlayer < oldData.Actor.SquaredDistanceToPlayer)
+                        if (newData.Actor.DistanceToPlayer < oldData.Actor.DistanceToPlayer)
                             _realm[key] = newData;
                     }
                     else

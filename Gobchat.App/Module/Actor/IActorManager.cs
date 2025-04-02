@@ -23,8 +23,6 @@ namespace Gobchat.Module.Actor
 
         float GetDistanceToPlayerWithName(string name);
 
-        float GetFastDistanceToPlayerWithName(string name);
-
         string[] GetPlayersInArea();
     }
 }

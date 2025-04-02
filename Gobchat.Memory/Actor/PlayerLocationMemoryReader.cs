@@ -39,7 +39,7 @@ namespace Gobchat.Memory.Actor
                 };
                 
                 if (mainActorPosition != null)
-                    data.SquaredDistanceToPlayer = mainActorPosition.DistanceTo(actor.Coordinate);
+                    data.DistanceToPlayer = mainActorPosition.DistanceTo(actor.Coordinate);
 
                 results.Add(data);
             }
