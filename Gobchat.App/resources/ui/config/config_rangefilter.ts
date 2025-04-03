@@ -21,8 +21,6 @@ import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-Databinding.bindCheckbox(binding, $("#cp-rangefilter_mention"))
-
 const parseNonNegativeNumber = (element: JQuery) => {
     const value = Utility.toInt(element.val())
     if (value === null)
