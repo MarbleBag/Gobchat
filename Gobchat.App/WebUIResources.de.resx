@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -120,13 +120,19 @@
   <data name="config.about.text" xml:space="preserve">
     <value>&lt;p&gt;
 Ein Chat Overlay für FFXIV, mit dem Ziel eine bessere Chat-Übersicht für Rollenspieler zu bieten. &lt;br/&gt;
-Für FFXIV 6.1
+Für FFXIV
 &lt;/p&gt;&lt;p&gt;
 Kontakt über Github.
 &lt;/p&gt;&lt;p&gt;
 Willst du selbst etwas beitragen oder einen Blick auf den Quellcode von Gobchat werfen? &lt;br/&gt;
 Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
 &lt;/p&gt;</value>
+  </data>
+  <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
+    <value>Chat Hintergrundfarbe</value>
+  </data>
+  <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
+    <value>Ändert die Hintergrundfarbe des Chats. Volle Transparenz sollte vermieden werden.</value>
   </data>
   <data name="config.app.ckb.actor" xml:space="preserve">
     <value>Charakterpositionen erfassen</value>
@@ -149,20 +155,26 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.app.ckb.betaupdate.tooltip" xml:space="preserve">
     <value>Um ein Beta Update zu testen, stellt sicher, dass ihr ein Backup eures Gobchat Profils erstellt, in dem ihr den Ordner unter 'AppData\Roaming\Gobchat\config' kopiert!</value>
   </data>
-  <data name="config.chatlog.active" xml:space="preserve">
-    <value>Chatverlauf speichern</value>
-  </data>
-  <data name="config.chatlog.active.tooltip" xml:space="preserve">
-    <value />
-  </data>
   <data name="config.formatting.ckb.emoteinsay" xml:space="preserve">
     <value>Erkenne Emotes im Sagen Kanal</value>
   </data>
   <data name="config.formatting.ckb.emoteinsay.tooltip" xml:space="preserve">
     <value>Wird die wörtliche Rede gekennzeichnet, so wird automatisch alles andere als Emote erkannt.</value>
   </data>
+  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
+    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
+  </data>
   <data name="config.app.ckb.update" xml:space="preserve">
     <value>Prüfe auf Updates bei Programmstart</value>
+  </data>
+  <data name="config.mentions.ckb.usermention" xml:space="preserve">
+    <value>Prüfe eigene Nachrichten auf Erwähnungen</value>
+  </data>
+  <data name="config.mentions.ckb.usermention.tooltip" xml:space="preserve">
+    <value>Gobchat hebt normalerweise nur die Erwähnungen in den Nachrichten von anderen hervor. Wird diese Option gewählt, durchsucht Gobchat auch die Nachrichten des Spielers nach Erwähnungen.</value>
+  </data>
+  <data name="config.app.ckblabel" xml:space="preserve">
+    <value>Einstellungen</value>
   </data>
   <data name="config.formatting.fonts.label" xml:space="preserve">
     <value>Chat</value>
@@ -194,6 +206,57 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.app.position.width" xml:space="preserve">
     <value>Breite</value>
   </data>
+  <data name="config.app.process.info.connected" xml:space="preserve">
+    <value>Verbunden mit {0}</value>
+  </data>
+  <data name="config.app.process.info.initialize" xml:space="preserve">
+    <value>Klick 'Aktualisieren' für Status</value>
+  </data>
+  <data name="config.app.process.info.notconnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="config.app.process.info.search" xml:space="preserve">
+    <value>Suche ...</value>
+  </data>
+  <data name="config.app.process.link.tooltip" xml:space="preserve">
+    <value>Verbinde zu</value>
+  </data>
+  <data name="config.app.process.selector" xml:space="preserve">
+    <value>Wähle welcher FFXIV Prozess Gobchat anzeigen soll</value>
+  </data>
+  <data name="config.app.process.selector.default" xml:space="preserve">
+    <value>Erster Prozess</value>
+  </data>
+  <data name="config.app.process.selector.tooltip" xml:space="preserve">
+    <value>Erlaubt es den Prozess mit dem sich Gobchat verbindet auszusuchen. Klicke auf den Aktualisierungsknopf links von diesem Feld, wähle den gewünschten Prozess und klicke dann auf den Verbindungsknopf rechts von diesem Feld.</value>
+  </data>
+  <data name="config.rangefilter.cutoff" xml:space="preserve">
+    <value>Ausblenden (yalm)</value>
+  </data>
+  <data name="config.rangefilter.cutoff.tooltip" xml:space="preserve">
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt.</value>
+  </data>
+  <data name="config.rangefilter.fadeout" xml:space="preserve">
+    <value>Verblassen (yalm)</value>
+  </data>
+  <data name="config.rangefilter.fadeout.tooltip" xml:space="preserve">
+    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird.</value>
+  </data>
+  <data name="config.rangefilter.page.name" xml:space="preserve">
+    <value>Reichweitenfilter</value>
+  </data>
+  <data name="config.rangefilter.transparency.end" xml:space="preserve">
+    <value>Sichtbarkeit fern (%)</value>
+  </data>
+  <data name="config.rangefilter.transparency.end.tooltip" xml:space="preserve">
+    <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'.</value>
+  </data>
+  <data name="config.rangefilter.transparency.start" xml:space="preserve">
+    <value>Sichtbarkeit nah (%)</value>
+  </data>
+  <data name="config.rangefilter.transparency.start.tooltip" xml:space="preserve">
+    <value>Wie sichtbar soll eine Nachricht sein, wenn sie anfängt zu verblassen.</value>
+  </data>
   <data name="config.app.search.border" xml:space="preserve">
     <value>Markierung</value>
   </data>
@@ -215,6 +278,9 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.channel.tbl.channel.header.name" xml:space="preserve">
     <value>Kanalname</value>
   </data>
+  <data name="config.rangefilter.tbl.channel.header.filter" xml:space="preserve">
+    <value>Filter anwenden</value>
+  </data>
   <data name="config.channel.tbl.channel.header.textcolor" xml:space="preserve">
     <value>Textfarbe</value>
   </data>
@@ -223,6 +289,9 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   </data>
   <data name="config.groups.tbl.group.entry.active" xml:space="preserve">
     <value>Aktiv</value>
+  </data>
+  <data name="config.groups.tbl.group.entry.ffgroup.info" xml:space="preserve">
+    <value>Diese Gruppe repräsentiert die Freundesgruppe aus dem Spiel und wird all jenen Spielern zugeordnet, die im Spiel mit dem Symbol {0} markiert sind.</value>
   </data>
   <data name="config.groups.tbl.group.entry.message.background" xml:space="preserve">
     <value>Hintergrundfarbe</value>
@@ -242,11 +311,23 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.groups.tbl.group.entry.trigger" xml:space="preserve">
     <value>Die zu dieser Gruppe gehörende Charaktere:</value>
   </data>
+  <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
+    <value>Charaktere, die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden. Beispiel: Khada Iriq oder Khada Iriq [Balmung], wenn dieser Charakter von einem anderen Server als dein Charakter ist.</value>
+  </data>
+  <data name="config.groups.tbl.group.description" xml:space="preserve">
+    <value>Jede neue Nachricht wird mit diesen Gruppen hier, von oben nach unten, verglichen. Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den Charakternamen oder ein Symbol der Freundesgruppen, wird diese Nachricht entsprechend der Einstellung formatiert. Eine Nachricht wird nur entsprechend einer Gruppe formatiert. Um die Reihenfolge zu ändern, können die Boxen via Drag &amp; Drop verschoben werden.</value>
+  </data>
   <data name="config.groups.tbl.group.action.add" xml:space="preserve">
     <value>Neue Gruppe</value>
   </data>
   <data name="config.main.button.delete.tooltip" xml:space="preserve">
     <value>Lösche diesen Eintrag</value>
+  </data>
+  <data name="config.main.button.refresh.tooltip" xml:space="preserve">
+    <value>Werte updaten</value>
+  </data>
+  <data name="config.main.button.reset.tooltip" xml:space="preserve">
+    <value>Wert zurücksetzen</value>
   </data>
   <data name="config.main.dialog.btn.cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -254,11 +335,11 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.main.dialog.btn.no" xml:space="preserve">
     <value>Nein</value>
   </data>
+  <data name="config.main.dialog.btn.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="config.main.dialog.btn.yes" xml:space="preserve">
     <value>Ja</value>
-  </data>
-  <data name="config.main.nav.cancel.dialog" xml:space="preserve">
-    <value>Alle nicht gespeicherten Änderungen gehen verloren.</value>
   </data>
   <data name="config.main.dialog.title.confirm" xml:space="preserve">
     <value>Bestätigen</value>
@@ -269,11 +350,23 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.about.page.name" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="config.app.page.name" xml:space="preserve">
+    <value>App</value>
+  </data>
   <data name="config.main.nav.cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="config.main.nav.cancel.dialog" xml:space="preserve">
+    <value>Alle nicht gespeicherten Änderungen gehen verloren.</value>
+  </data>
   <data name="config.channel.page.name" xml:space="preserve">
     <value>Kanäle</value>
+  </data>
+  <data name="config.main.nav.closegobchat" xml:space="preserve">
+    <value>Gobchat beenden</value>
+  </data>
+  <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
+    <value>Gobchat wird beendet. Fortfahren?</value>
   </data>
   <data name="config.groups.page.name" xml:space="preserve">
     <value>Gruppen</value>
@@ -287,14 +380,14 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
   <data name="config.main.nav.saveandexit" xml:space="preserve">
     <value>Speichern &amp;amp; Schließen</value>
   </data>
+  <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
+    <value>Aktives Profil auswählen.</value>
+  </data>
   <data name="config.tabs.page.name" xml:space="preserve">
     <value>Chat Reiter</value>
   </data>
   <data name="config.main.profile.copypage" xml:space="preserve">
     <value>Kopiere diese Seite von einem anderen Profil</value>
-  </data>
-  <data name="config.main.button.reset.tooltip" xml:space="preserve">
-    <value>Wert zurücksetzen</value>
   </data>
   <data name="config.mentions.audio.interval" xml:space="preserve">
     <value>Zeit zwischen dem Abspielen</value>
@@ -322,11 +415,20 @@ Dann besuche das Projekt auf Github unter https://github.com/MarbleBag/Gobchat
 Entweder wird das Format nicht unterstützt oder die Datei kann nicht gefunden werden!&lt;br/&gt;
 Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   </data>
+  <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
+    <value>Audio abspielen.</value>
+  </data>
   <data name="config.mentions.audio.volume" xml:space="preserve">
     <value>Lautstärke</value>
   </data>
   <data name="config.mentions.audio.volume.tooltip" xml:space="preserve">
     <value>Lautstärke.</value>
+  </data>
+  <data name="config.mentions.trigger.tooltip" xml:space="preserve">
+    <value>Worte welche eine Erwähnung auslösen. Möchte man mehrere Wörter angeben, nutze Kommas um diese voneinander abzutrennen. Es werden nur ganze Wörter erkannt! Wörter die als Bestandteil anderer Wörter auftauchen lösen nicht aus.</value>
+  </data>
+  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
+    <value>Profil zum Kopieren auswählen</value>
   </data>
   <data name="config.profiles.importprofile" xml:space="preserve">
     <value>Importiere Profil</value>
@@ -340,17 +442,29 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
   <data name="config.profiles.profile.activate" xml:space="preserve">
     <value>Aktivieren</value>
   </data>
+  <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
+    <value>Aktiviert dieses Profil.</value>
+  </data>
   <data name="config.profiles.profile.clone" xml:space="preserve">
     <value>Clonen</value>
   </data>
+  <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
+    <value>Erzeugt eine Kopie von diesem Profil.</value>
+  </data>
   <data name="config.profiles.profile.copy" xml:space="preserve">
     <value>Kopieren</value>
+  </data>
+  <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
+    <value>Überschreibt dieses Profil mit einem anderen.</value>
   </data>
   <data name="config.profiles.profile.delete" xml:space="preserve">
     <value>Löschen</value>
   </data>
   <data name="config.profiles.profile.delete.dialog.text" xml:space="preserve">
     <value>Profil löschen? Die Löschung kann nicht mehr rückgängig gemacht werden, wenn gespeichert wird.</value>
+  </data>
+  <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
+    <value>Lösche dieses profil.</value>
   </data>
   <data name="config.profiles.profile.export" xml:space="preserve">
     <value>Exportieren</value>
@@ -362,8 +476,14 @@ Audiodateien müssen sich im Gobchat Ordner 'resources/sounds' befinden.</value>
     <value>Alle Einstellungen werden für dieses Profil gelöscht!
 Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
+  <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
+    <value>Setzt das Profil zurück.</value>
+  </data>
   <data name="config.profiles.profiles.actions" xml:space="preserve">
     <value>Aktionen</value>
+  </data>
+  <data name="config.profiles.profiles.name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="config.formatting.tbl.segment.entry.active" xml:space="preserve">
     <value>Aktiv</value>
@@ -376,6 +496,12 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   </data>
   <data name="config.formatting.tbl.segment.entry.info" xml:space="preserve">
     <value>Die Einträge werden von oben beginnend abgearbeitet. Um die Reihenfolge zu ändern, die Elemente am Kopf greifen und auf die neue Position ziehen.</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.tokenend" xml:space="preserve">
+    <value>Ende</value>
+  </data>
+  <data name="config.formatting.tbl.segment.entry.tokenstart" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="config.formatting.tbl.color.header.color" xml:space="preserve">
     <value>Farbe</value>
@@ -647,8 +773,14 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.channel.tellrecieve" xml:space="preserve">
     <value>Flüstern von</value>
   </data>
+  <data name="main.chat.channel.tellrecieve.tooltip" xml:space="preserve">
+    <value />
+  </data>
   <data name="main.chat.channel.tellsend" xml:space="preserve">
     <value>Flüstern an</value>
+  </data>
+  <data name="main.chat.channel.tellsend.tooltip" xml:space="preserve">
+    <value />
   </data>
   <data name="main.chat.channel.yell" xml:space="preserve">
     <value>Rufen</value>
@@ -659,96 +791,30 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
   <data name="main.chat.segment.type.emote" xml:space="preserve">
     <value>Emote</value>
   </data>
-  <data name="main.chat.segment.type.mention" xml:space="preserve">
-    <value>Erwähnung</value>
-  </data>
-  <data name="main.chat.segment.type.ooc" xml:space="preserve">
-    <value>OoC</value>
-  </data>
-  <data name="main.chat.segment.type.say" xml:space="preserve">
-    <value>Sagen</value>
-  </data>
-  <data name="main.cmdmanager.availablecmds" xml:space="preserve">
-    <value>Verfügbare Befehle: {0}.</value>
-    <comment>0: list of cmds</comment>
-  </data>
-  <data name="main.cmdmanager.cmd.playercount" xml:space="preserve">
-    <value>Spieler in der Umgebung: {0}.</value>
-  </data>
-  <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
-    <value>Spieler in der Umgebung: {0}.</value>
-  </data>
-  <data name="config.app.process.info.connected" xml:space="preserve">
-    <value>Verbunden mit {0}</value>
-  </data>
-  <data name="config.app.process.info.initialize" xml:space="preserve">
-    <value>Klick 'Aktualisieren' für Status</value>
-  </data>
-  <data name="config.app.process.info.notconnected" xml:space="preserve">
-    <value>Nicht verbunden</value>
-  </data>
-  <data name="config.app.process.info.search" xml:space="preserve">
-    <value>Suche ...</value>
-  </data>
-  <data name="config.app.process.link.tooltip" xml:space="preserve">
-    <value>Verbinde zu</value>
-  </data>
-  <data name="config.app.process.selector" xml:space="preserve">
-    <value>Wähle welcher FFXIV Prozess Gobchat anzeigen soll</value>
-  </data>
-  <data name="config.app.process.selector.tooltip" xml:space="preserve">
-    <value>Erlaubt es den Prozess mit dem sich Gobchat verbindet auszusuchen. Klicke auf den Aktualisierungsknopf links von diesem Feld, wähle den gewünschten Prozess und klicke dann auf den Verbindungsknopf rechts von diesem Feld.</value>
-  </data>
-  <data name="config.app.process.selector.default" xml:space="preserve">
-    <value>Erster Prozess</value>
-  </data>
-  <data name="config.chatlog.path" xml:space="preserve">
-    <value>Chatverlauf Speicherpfad</value>
-  </data>
-  <data name="config.chatlog.path.tooltip" xml:space="preserve">
-    <value>Hier werden die Chatverläufe als Textdateien gespeichert. Alte Dateien werden bei Änderung nicht verschoben.</value>
-  </data>
-  <data name="config.chatlog.pathselect.tooltip" xml:space="preserve">
-    <value>Ordner aussuchen</value>
-  </data>
-  <data name="config.groups.tbl.group.entry.ffgroup.info" xml:space="preserve">
-    <value>Diese Gruppe repräsentiert die Freundesgruppe aus dem Spiel und wird all jenen Spielern zugeordnet, die im Spiel mit dem Symbol {0} markiert sind.</value>
-  </data>
-  <data name="config.groups.tbl.group.description" xml:space="preserve">
-    <value>Jede neue Nachricht wird mit diesen Gruppen hier, von oben nach unten, verglichen. Die Erkennung von Gruppen wird von oben nach unten bearbeitet. Beinhaltet eine Gruppe entweder den Charakternamen oder ein Symbol der Freundesgruppen, wird diese Nachricht entsprechend der Einstellung formatiert. Eine Nachricht wird nur entsprechend einer Gruppe formatiert. Um die Reihenfolge zu ändern, können die Boxen via Drag &amp; Drop verschoben werden.</value>
-  </data>
-  <data name="config.main.nav.closegobchat" xml:space="preserve">
-    <value>Gobchat beenden</value>
-  </data>
-  <data name="config.app.chatbox.backgroundcolor" xml:space="preserve">
-    <value>Chat Hintergrundfarbe</value>
-  </data>
-  <data name="config.app.chatbox.backgroundcolor.tooltip" xml:space="preserve">
-    <value>Ändert die Hintergrundfarbe des Chats. Volle Transparenz sollte vermieden werden.</value>
-  </data>
-  <data name="config.app.ckblabel" xml:space="preserve">
-    <value>Einstellungen</value>
-  </data>
-  <data name="main.cmdmanager.cmd.playerdistance" xml:space="preserve">
-    <value>Entfernung zu {0} beträgt {1}.</value>
-  </data>
-  <data name="main.chat.channel.tellrecieve.tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="main.chat.channel.tellsend.tooltip" xml:space="preserve">
-    <value />
-  </data>
   <data name="main.chat.segment.type.emote.tooltip" xml:space="preserve">
     <value />
+  </data>
+  <data name="main.chat.segment.type.mention" xml:space="preserve">
+    <value>Erwähnung</value>
   </data>
   <data name="main.chat.segment.type.mention.tooltip" xml:space="preserve">
     <value />
   </data>
+  <data name="main.chat.segment.type.ooc" xml:space="preserve">
+    <value>OoC</value>
+  </data>
   <data name="main.chat.segment.type.ooc.tooltip" xml:space="preserve">
     <value />
   </data>
+  <data name="main.chat.segment.type.say" xml:space="preserve">
+    <value>Sagen</value>
+  </data>
   <data name="main.chat.segment.type.say.tooltip" xml:space="preserve">
     <value />
+  </data>
+  <data name="main.cmdmanager.availablecmds" xml:space="preserve">
+    <value>Verfügbare Befehle: {0}.</value>
+    <comment>0: list of cmds</comment>
   </data>
   <data name="main.cmdmanager.cmd.config.reset.frame" xml:space="preserve">
     <value>Größe und Position vom Overlay wird zurückgesetzt.</value>
@@ -782,44 +848,26 @@ group Gruppen-Nummer clear</value>
   <data name="main.cmdmanager.cmd.group.remove.all" xml:space="preserve">
     <value>Alle Charakter aus Gruppe [{0}] {1} entfernt.</value>
   </data>
+  <data name="main.cmdmanager.cmd.playercount" xml:space="preserve">
+    <value>Spieler in der Umgebung: {0}.</value>
+  </data>
+  <data name="main.cmdmanager.cmd.playerdistance" xml:space="preserve">
+    <value>Entfernung zu {0} beträgt {1}.</value>
+  </data>
+  <data name="main.cmdmanager.cmd.playerlist" xml:space="preserve">
+    <value>Spieler in der Umgebung: {0}.</value>
+  </data>
   <data name="main.cmdmanager.cmd.profile.load" xml:space="preserve">
     <value>Aktiviere Profil {0}.</value>
   </data>
   <data name="main.cmdmanager.cmd.profile.load.invalid" xml:space="preserve">
     <value>Um ein Profil zu laden, wird der korrekte Namen benötigt. Verfügbare Profile: {0}.</value>
   </data>
-  <data name="config.main.nav.closegobchat.dialog" xml:space="preserve">
-    <value>Gobchat wird beendet. Fortfahren?</value>
+  <data name="config.rangefilter.tbl.channel.name" xml:space="preserve">
+    <value>Reichweitenfilter</value>
   </data>
-  <data name="config.mentions.audio.test.tooltip" xml:space="preserve">
-    <value>Audio abspielen.</value>
-  </data>
-  <data name="config.profiles.dialog.copyprofilepage.title" xml:space="preserve">
-    <value>Profil zum Kopieren auswählen</value>
-  </data>
-  <data name="config.profiles.profile.activate.tooltip" xml:space="preserve">
-    <value>Aktiviert dieses Profil.</value>
-  </data>
-  <data name="config.profiles.profile.clone.tooltip" xml:space="preserve">
-    <value>Erzeugt eine Kopie von diesem Profil.</value>
-  </data>
-  <data name="config.profiles.profile.copy.tooltip" xml:space="preserve">
-    <value>Überschreibt dieses Profil mit einem anderen.</value>
-  </data>
-  <data name="config.profiles.profile.delete.tooltip" xml:space="preserve">
-    <value>Lösche dieses profil.</value>
-  </data>
-  <data name="config.profiles.profile.reset.tooltip" xml:space="preserve">
-    <value>Setzt das Profil zurück.</value>
-  </data>
-  <data name="config.formatting.tbl.segment.entry.tokenend" xml:space="preserve">
-    <value>Ende</value>
-  </data>
-  <data name="config.formatting.tbl.segment.entry.tokenstart" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="config.profiles.profiles.name" xml:space="preserve">
-    <value>Name</value>
+  <data name="config.chatlog.format.selector.compact" xml:space="preserve">
+    <value>Kompakt</value>
   </data>
   <data name="config.chatlog.format.selector.custom" xml:space="preserve">
     <value>Benutzerdefiniertes Format</value>
@@ -830,71 +878,35 @@ group Gruppen-Nummer clear</value>
   <data name="config.chatlog.format.selector.newline" xml:space="preserve">
     <value>Mit Umbruch</value>
   </data>
-  <data name="config.chatlog.format" xml:space="preserve">
-    <value>Log Format</value>
-  </data>
-  <data name="config.main.dialog.btn.ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="config.main.button.refresh.tooltip" xml:space="preserve">
-    <value>Werte updaten</value>
-  </data>
-  <data name="config.app.page.name" xml:space="preserve">
-    <value>App</value>
-  </data>
-  <data name="config.main.nav.selectprofile.tooltip" xml:space="preserve">
-    <value>Aktives Profil auswählen.</value>
-  </data>
   <data name="config.chatlog.format.selector.short" xml:space="preserve">
     <value>Kurz</value>
   </data>
-  <data name="config.chatlog.format.selector.compact" xml:space="preserve">
-    <value>Kompakt</value>
+  <data name="config.chatlog.format" xml:space="preserve">
+    <value>Log Format</value>
   </data>
-  <data name="config.groups.tbl.group.entry.trigger.tooltip" xml:space="preserve">
-    <value>Charaktere, die hier mit vollständigem Namen aufgeführt werden, gehören zu dieser Gruppe. Namen werden voneinander mit einem Komma getrennt. Wenn ein Charakter von einem anderen Server ist, muss [servername] an das Ende des Namens mit einem Leerzeichen angehängt werden. Beispiel: Khada Iriq oder Khada Iriq [Balmung], wenn dieser Charakter von einem anderen Server als dein Charakter ist.</value>
+  <data name="config.chatlog.path" xml:space="preserve">
+    <value>Chatverlauf Speicherpfad</value>
   </data>
-  <data name="config.chatlog.tbl.chatlog.log" xml:space="preserve">
-    <value>Diesen Kanal speichern</value>
+  <data name="config.chatlog.path.tooltip" xml:space="preserve">
+    <value>Hier werden die Chatverläufe als Textdateien gespeichert. Alte Dateien werden bei Änderung nicht verschoben.</value>
+  </data>
+  <data name="config.chatlog.pathselect.tooltip" xml:space="preserve">
+    <value>Ordner aussuchen</value>
+  </data>
+  <data name="config.chatlog.active" xml:space="preserve">
+    <value>Chatverlauf speichern</value>
   </data>
   <data name="config.chatlog.tbl.chatlog.name" xml:space="preserve">
     <value>Kanal</value>
   </data>
-  <data name="config.rangefilter.cutoff" xml:space="preserve">
-    <value>Ausblenden (yalm)</value>
+  <data name="config.chatlog.tbl.chatlog.log" xml:space="preserve">
+    <value>Diesen Kanal speichern</value>
   </data>
-  <data name="config.rangefilter.cutoff.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat nicht mehr angezeigt.</value>
-  </data>
-  <data name="config.rangefilter.fadeout" xml:space="preserve">
-    <value>Verblassen (yalm)</value>
-  </data>
-  <data name="config.rangefilter.fadeout.tooltip" xml:space="preserve">
-    <value>Sobald ein Spieler die angegebene Entfernung zu deinem Charakter erreicht, werden seine weiteren Nachrichten in Gobchat transparenter dargestellt, somit blasser angezeigt. Sichtbarkeit nimmt stetig ab, bis die Nachricht ausgeblendet wird.</value>
-  </data>
-  <data name="config.rangefilter.page.name" xml:space="preserve">
-    <value>Reichweitenfilter</value>
-  </data>
-  <data name="config.rangefilter.transparency.end" xml:space="preserve">
-    <value>Sichtbarkeit fern (%)</value>
-  </data>
-  <data name="config.rangefilter.transparency.end.tooltip" xml:space="preserve">
-    <value>Wie sichtbar soll eine Nachricht sein, bevor sie gänzlich verschwindet. Steht in Verbindung zu 'Ausblenden'.</value>
-  </data>
-  <data name="config.rangefilter.transparency.start" xml:space="preserve">
-    <value>Sichtbarkeit nah (%)</value>
-  </data>
-  <data name="config.rangefilter.transparency.start.tooltip" xml:space="preserve">
-    <value>Wie sichtbar soll eine Nachricht sein, wenn sie anfängt zu verblassen.</value>
-  </data>
-  <data name="config.rangefilter.tbl.channel.header.filter" xml:space="preserve">
-    <value>Filter anwenden</value>
+  <data name="config.main.dialog.label" xml:space="preserve">
+    <value>Gobchat Einstellungen</value>
   </data>
   <data name="config.rangefilter.tbl.channel.header.name" xml:space="preserve">
     <value>Kanal</value>
-  </data>
-  <data name="config.rangefilter.tbl.channel.name" xml:space="preserve">
-    <value>Reichweitenfilter</value>
   </data>
   <data name="config.app.config.fontsize.label" xml:space="preserve">
     <value>Dialog Schriftgröße</value>
@@ -920,35 +932,20 @@ group Gruppen-Nummer clear</value>
   <data name="config.formatting.tbl.segment.entry.type" xml:space="preserve">
     <value>Typ</value>
   </data>
+  <data name="config.formatting.tbl.segment.name" xml:space="preserve">
+    <value>Texterkennung</value>
+  </data>
   <data name="config.tabs.tbl.channel.name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="config.tabs.tbl.channel.visible" xml:space="preserve">
     <value>Sichtbar</value>
   </data>
-  <data name="config.mentions.ckb.usermention.tooltip" xml:space="preserve">
-    <value>Gobchat hebt normalerweise nur die Erwähnungen in den Nachrichten von anderen hervor. Wird diese Option gewählt, durchsucht Gobchat auch die Nachrichten des Spielers nach Erwähnungen.</value>
-  </data>
-  <data name="config.mentions.ckb.usermention" xml:space="preserve">
-    <value>Prüfe eigene Nachrichten auf Erwähnungen</value>
-  </data>
   <data name="config.mentions.page.name" xml:space="preserve">
     <value>Erwähnungen</value>
   </data>
   <data name="config.profiles.page.name" xml:space="preserve">
     <value>Profile</value>
-  </data>
-  <data name="config.rangefilter.ckb.mentions" xml:space="preserve">
-    <value>Reichweitenfilter nicht auf Erwähnungen anwenden</value>
-  </data>
-  <data name="config.formatting.tbl.segment.name" xml:space="preserve">
-    <value>Texterkennung</value>
-  </data>
-  <data name="config.main.dialog.label" xml:space="preserve">
-    <value>Gobchat Einstellungen</value>
-  </data>
-  <data name="config.mentions.trigger.tooltip" xml:space="preserve">
-    <value>Worte welche eine Erwähnung auslösen. Möchte man mehrere Wörter angeben, nutze Kommas um diese voneinander abzutrennen. Es werden nur ganze Wörter erkannt! Wörter die als Bestandteil anderer Wörter auftauchen lösen nicht aus.</value>
   </data>
   <data name="config.tabs.tabconfig.groups" xml:space="preserve">
     <value>Wie soll mit Gruppen umgegangen werden?</value>
@@ -985,5 +982,8 @@ group Gruppen-Nummer clear</value>
   </data>
   <data name="config.channel.tbl.channel.header.sendercolor" xml:space="preserve">
     <value>Absenderfarbe</value>
+  </data>
+  <data name="config.chatlog.active.tooltip" xml:space="preserve">
+    <value />
   </data>
 </root>

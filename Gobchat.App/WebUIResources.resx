@@ -120,7 +120,7 @@
   <data name="config.about.text" xml:space="preserve">
     <value>&lt;p&gt;
 A chat overlay for FFXIV with the goal to provide a better experience for roleplayers. &lt;br/&gt;
-For FFXIV 6.1
+For FFXIV
 &lt;/p&gt;&lt;p&gt;
 Contact via github.
 &lt;/p&gt;&lt;p&gt;
@@ -1047,13 +1047,13 @@ group groupnumber clear</value>
     <value>Font size</value>
   </data>
   <data name="config.formatting.chathistory.fontsize.label.tooltip" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="config.formatting.chathistory.gap.label" xml:space="preserve">
     <value>Gap between entries</value>
   </data>
   <data name="config.formatting.chathistory.gap.label.tooltip" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="config.app.config.fontsize.normal" xml:space="preserve">
     <value>Default</value>
@@ -1098,7 +1098,7 @@ group groupnumber clear</value>
     <value>Hide these groups</value>
   </data>
   <data name="config.tabs.tabconfig.groups.tooltips" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="config.tabs.tbl.groups.name" xml:space="preserve">
     <value>Group</value>
