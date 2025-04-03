@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2023 MarbleBag
+ * Copyright (C) 2019-2025 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -24,8 +24,6 @@ namespace Gobchat.Core.Chat
 
         private float _cutOffDistance;
         private float _fadeOutDistance;
-        private float _cutOffDistanceSquared;
-        private float _fadeOutDistanceSquared;
 
         private ChatChannel[] _channels = Array.Empty<ChatChannel>();
 
@@ -43,7 +41,6 @@ namespace Gobchat.Core.Chat
             {
                 if (value < 0f) throw new ArgumentException("Must be a value greater than or equal to 0", nameof(CutOffDistance));
                 _cutOffDistance = value;
-                _cutOffDistanceSquared = value * value;
             }
         }
 
@@ -54,7 +51,6 @@ namespace Gobchat.Core.Chat
             {
                 if (value < 0f) throw new ArgumentException("Must be a value greater than or equal to 0", nameof(FadeOutDistance));
                 _fadeOutDistance = value;
-                _fadeOutDistanceSquared = value * value;
             }
         }
 
@@ -88,7 +84,7 @@ namespace Gobchat.Core.Chat
             if (characterName == null)
                 return;
 
-            var distance = _actorManager.GetFastDistanceToPlayerWithName(characterName);
+            var distance = _actorManager.GetDistanceToPlayerWithName(characterName);
             if (distance > 0)
                 message.Source.Visibility = CalculateVisibility(distance);
         }
@@ -100,10 +96,10 @@ namespace Gobchat.Core.Chat
         /// <returns>A value from [0,100]</returns>
         private int CalculateVisibility(float distance)
         {
-            if (distance > _cutOffDistanceSquared) return 0;
-            if (distance < _fadeOutDistanceSquared) return MaxVisibility;
-            var percentage = 1 - (distance - _fadeOutDistanceSquared) / (_cutOffDistanceSquared - _fadeOutDistanceSquared);
-            return (int)Math.Round(MaxVisibility * percentage);
+            if (distance > _cutOffDistance) return 0;
+            if (distance < _fadeOutDistance) return MaxVisibility;
+            var percentage = 1 - (distance - _fadeOutDistance) / (_cutOffDistance - _fadeOutDistance);
+            return (int) Math.Round(MaxVisibility * percentage);
         }
     }
 }

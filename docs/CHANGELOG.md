@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.12.3] - 2025.04.03
+### Fixed
+- `Check own messages for mentions` in party chat
+- Rangefilter should work again with 7.2
+
+### Removed
+- Exclude Mentions from Rangefilter checkbox in `Config / Rangefilter`
+  - This was the same checkbox as in `Config / Mentions` 
+
 ## [1.12.2] - 2023.07.09
 ### Fixed
 - Blink animation on Tabs

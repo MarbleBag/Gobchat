@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************
- * Copyright (C) 2019-2023 MarbleBag
+ * Copyright (C) 2019-2025 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 using Sharlayan;
+using Sharlayan.Core;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ namespace Gobchat.Memory.Actor
     {
         public bool LocationAvailable { get { return Sharlayan.Reader.CanGetActors() && MemoryHandler.Instance.IsAttached; } }
 
-        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, ActorPosition mainActor, ICollection<PlayerCharacter> results)
+        private void Process(ICollection<Sharlayan.Core.ActorItem> actors, PlayerCharacter.UpdateFlag flag, Coordinate mainActorPosition, ICollection<PlayerCharacter> results)
         {
             foreach (var actor in actors)
             {
@@ -31,24 +32,24 @@ namespace Gobchat.Memory.Actor
                 var data = new PlayerCharacter()
                 {
                     Name = actor.Name,
-                    Id = actor.ID,
+                    Id = actor.EntityId,
                     UId = actor.UUID,
                     Flag = flag,
-                    SimplifiedDistanceToPlayer = actor.Distance,
+                    SimplifiedDistanceToPlayer = actor.YalmFromPlayerX,
                 };
-
-                if (mainActor != null)
-                    data.SquaredDistanceToPlayer = (float)mainActor.DistanceSquared(new ActorPosition(actor.X, actor.Y, actor.Z));
+                
+                if (mainActorPosition != null)
+                    data.DistanceToPlayer = mainActorPosition.DistanceTo(actor.Coordinate);
 
                 results.Add(data);
             }
         }
 
-        private ActorPosition GetActivePlayerPosition()
+        private Sharlayan.Core.Coordinate GetActivePlayerPosition()
         {
             var currentUser = Sharlayan.Core.ActorItem.CurrentUser;
             if (currentUser != null && currentUser.IsValid)
-                return new ActorPosition(currentUser.X, currentUser.Y, currentUser.Z);
+                return currentUser.Coordinate; // new Vector3(currentUser.PositionX, currentUser.PositionY, currentUser.PositionZ);
             return null;
         }
 
@@ -60,7 +61,7 @@ namespace Gobchat.Memory.Actor
 
             foreach (var character in characters)
             {
-                if (character.Id == currentUser.ID)
+                if (character.Id == currentUser.EntityId)
                 {
                     character.IsUser = true;
                     break;

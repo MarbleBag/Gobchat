@@ -18,7 +18,7 @@ namespace Sharlayan.Core.Interfaces {
 
         int HPMax { get; set; }
 
-        uint ID { get; set; }
+        uint EntityId { get; set; }
 
         Actor.Job Job { get; set; }
 
@@ -36,11 +36,11 @@ namespace Sharlayan.Core.Interfaces {
 
         string UUID { get; set; }
 
-        float X { get; set; }
+        float PositionX { get; set; }
 
-        float Y { get; set; }
+        float PositionY { get; set; }
 
-        float Z { get; set; }
+        float PositionZ { get; set; }
 
         PartyMember Clone();
     }

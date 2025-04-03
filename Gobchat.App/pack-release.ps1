@@ -30,7 +30,7 @@ function RenameAndDeleteDirectory([string] $Path, [string] $NewName){
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 # Change if needed
-$7zipPath = "F:\Program Files\7-Zip\7z.exe"
+$7zipPath = "C:\Program Files\7-Zip\7z.exe"
 
 $releaseFolder = Join-Path $scriptPath (Join-Path  "bin" "Release")
 if(-Not (Test-Path $releaseFolder)){

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2019-2023 MarbleBag
+ * Copyright (C) 2019-2025 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -150,14 +150,24 @@ export function toFloat(value: string | number | boolean | undefined | null, fal
 export function toInt(value: string | number | boolean | undefined | null): number | null
 export function toInt(value: string | number | boolean | undefined | null, fallback: number): number
 export function toInt(value: string | number | boolean | undefined | null, fallback?: number): number | null {
-    if (isNumber(value))
-        return Math.round(value)
-
-    if (isString(value))
-        return parseInt(value)
-
     if (isBoolean(value))
         return value ? 1 : 0
+
+    var number: number | null = null
+
+    if (isNumber(value)) {
+        number = Math.round(value)
+    }else if (isString(value)) {
+        number = parseInt(value)
+    }
+
+    if (number !== null) {
+        if (number > Number.MAX_SAFE_INTEGER)
+            return Number.MAX_SAFE_INTEGER
+        if (number < Number.MIN_SAFE_INTEGER)
+            return Number.MIN_SAFE_INTEGER
+        return number
+    }
 
     return fallback !== null && fallback !== undefined ? fallback : null
 }

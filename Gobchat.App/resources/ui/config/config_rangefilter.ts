@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2019-2023 MarbleBag
+ * Copyright (C) 2019-2025 MarbleBag
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -21,11 +21,11 @@ import * as Locale from "/module/Locale"
 
 const binding = new Databinding.BindingContext(gobConfig)
 
-Databinding.bindCheckbox(binding, $("#cp-rangefilter_mention"))
-
 const parseNonNegativeNumber = (element: JQuery) => {
-    const value = parseInt(element.val())
-    return Utility.isNumber(value) && value >= 0 ? value : undefined
+    const value = Utility.toInt(element.val())
+    if (value === null)
+        return undefined
+    return value >= 0 ? value : undefined
 }
 
 const txtCutOff = $("#cp-rangefilter_cutoff")
