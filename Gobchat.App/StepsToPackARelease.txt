@@ -1,14 +1,13 @@
 1. Set version in AssemblyInfo.cs
 2. Build release in Visual Studio
-3. Use atom to turn relevant files (.md) under /docs into pdfs
-	1. .md -> markdown preview
-	2. Export as html
-	4. Open in chrome
-	5. Print as pdf to /docs
+3. Use VS Code to convert relevant markdown files (.md) under /docs into PDFs
+	1. Markdown PDF Extension
+	2. Open markdown file
+	4. Right click, export to PDF
 4. Run pack-release.bat
 5. The pattern for {version} is: {Major}.{Minor}.{Patch}(-{PreRelease})?
 	1. A version with a PreRelease is a beta release
-6. The new release will be moved to the root folder (gobchat-{version}.zip) alongside a debug release (debugging symbols)
+6. The new release will be moved to the root folder (gobchat-{version}.zip) along with a debug release (debugging symbols)
 7. Upload a new release on github.com
 	1. Release title is v{version}
 	2. Description is used for patch notes
