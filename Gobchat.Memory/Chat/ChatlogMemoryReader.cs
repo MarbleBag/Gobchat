@@ -40,7 +40,9 @@ namespace Gobchat.Memory.Chat
             {
                 try
                 {
-                    result.Add(_builder.Process(rawLog));
+                    var chatLogItem = _builder.Process(rawLog);
+                    if (chatLogItem != null)
+                        result.Add(chatLogItem);
                 }
                 catch (Chat.ChatBuildException e)
                 {
