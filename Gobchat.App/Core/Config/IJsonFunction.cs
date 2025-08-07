@@ -28,10 +28,10 @@ namespace Gobchat.Core.Config
             if (json == null)
                 return null;
 
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.log", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.roleplay", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.mention", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.rangefilter", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.log", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
             {
@@ -42,7 +42,7 @@ namespace Gobchat.Core.Config
             });
 
             foreach (var id in JsonUtil.GetKeysIfAvailable(json, "behaviour.chattabs.data"))
-                JsonUtil.ReplaceArrayIfAvailable(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
+                JsonUtil.ModifyIfAvailable<JArray>(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertArrayToEnum<Chat.ChatChannel>);
 
             return json;
         }
@@ -55,10 +55,10 @@ namespace Gobchat.Core.Config
             if (json == null)
                 return null;
 
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.roleplay", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.mention", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.rangefilter", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
-            JsonUtil.ReplaceArrayIfAvailable(json, "behaviour.channel.log", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.roleplay", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.mention", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.rangefilter", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+            JsonUtil.ModifyIfAvailable<JArray>(json, "behaviour.channel.log", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
 
             JsonUtil.AccessIfAvailable(json, "behaviour.segment.data", (jToken) =>
             {
@@ -75,7 +75,7 @@ namespace Gobchat.Core.Config
             });
 
             foreach (var id in JsonUtil.GetKeysIfAvailable(json, "behaviour.chattabs.data"))
-                JsonUtil.ReplaceArrayIfAvailable(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
+                JsonUtil.ModifyIfAvailable<JArray>(json, $"behaviour.chattabs.data.{id}.channel.visible", JsonUtil.ConvertEnumArrayToString<Chat.ChatChannel>);
 
             return json;
         }

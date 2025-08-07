@@ -24,6 +24,7 @@ namespace Gobchat.Core.Resource
         public CachedResourceBundle2(IResourceBundle bundle)
         {
             this.bundle = bundle ?? throw new ArgumentNullException(nameof(bundle));
+            _cache = new Dictionary<string, object>();
         }
 
         public string this[string key]

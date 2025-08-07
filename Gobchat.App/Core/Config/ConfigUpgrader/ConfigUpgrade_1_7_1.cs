@@ -72,12 +72,12 @@ namespace Gobchat.Core.Config
             JsonUtil.MoveIfAvailable(dst, "style.channel.worldlinkshell-7", dst, "style.channel.crossworldlinkshell-7");
             JsonUtil.MoveIfAvailable(dst, "style.channel.worldlinkshell-8", dst, "style.channel.crossworldlinkshell-8");
 
-            JsonUtil.ReplaceArrayIfAvailable(dst, "behaviour.channel.roleplay", ReplaceContent);
-            JsonUtil.ReplaceArrayIfAvailable(dst, "behaviour.channel.mention", ReplaceContent);
-            JsonUtil.ReplaceArrayIfAvailable(dst, "behaviour.channel.visible", ReplaceContent);
-            JsonUtil.ReplaceArrayIfAvailable(dst, "behaviour.channel.rangefilter", ReplaceContent);
+            JsonUtil.ModifyIfAvailable<JArray>(dst, "behaviour.channel.roleplay", ReplaceContent);
+            JsonUtil.ModifyIfAvailable<JArray>(dst, "behaviour.channel.mention", ReplaceContent);
+            JsonUtil.ModifyIfAvailable<JArray>(dst, "behaviour.channel.visible", ReplaceContent);
+            JsonUtil.ModifyIfAvailable<JArray>(dst, "behaviour.channel.rangefilter", ReplaceContent);
 
-            JsonUtil.ReplaceArrayIfAvailable(dst, "behaviour.channel.visible", (array) =>
+            JsonUtil.ModifyIfAvailable<JArray>(dst, "behaviour.channel.visible", (array) =>
             {
                 array.Add(ChatChannel.GobchatInfo.ToString().ToUpperInvariant());
                 array.Add(ChatChannel.GobchatError.ToString().ToUpperInvariant());
