@@ -106,7 +106,6 @@ try{
 	$ccc = @(
 	(New-Object PSObject -Property @{src="$PWD\..\docs\CHANGELOG.pdf";			dst="$releaseFolder\docs\CHANGELOG.pdf"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE.md";				dst="$releaseFolder\docs\LICENSE.md"}),
-	(New-Object PSObject -Property @{src="$PWD\..\docs\LICENSE_Sharlayan.md";	dst="$releaseFolder\docs\LICENSE_Sharlayan.md"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README.pdf";				dst="$releaseFolder\docs\README.pdf"}),
 	(New-Object PSObject -Property @{src="$PWD\..\docs\README_de.pdf";			dst="$releaseFolder\docs\README_de.pdf"}),
 	(New-Object PSObject -Property @{src="$PWD\..\Sharlayan\LICENSE.md";		dst="$releaseFolder\docs\SHARLAYAN_LICENSE.md"})
