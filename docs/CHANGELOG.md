@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
-## [1.12.4] - 2025.07.08
+## [1.12.4] - 2025.08.07
 ### Fixed
 - Rangefilter
 - Mention checkbox in `Config / Chat tabs`
