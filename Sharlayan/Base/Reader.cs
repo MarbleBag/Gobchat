@@ -19,24 +19,6 @@ namespace Sharlayan {
     public static partial class Reader {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static bool CanGetAgroEntities() {
-            var canRead = Scanner.Instance.Locations.ContainsKey(Signatures.AgroCountKey) && Scanner.Instance.Locations.ContainsKey(Signatures.AgroMapKey);
-            if (canRead) {
-                // OTHER STUFF?
-            }
-
-            return canRead;
-        }
-
-        public static bool CanGetEnmityEntities() {
-            var canRead = Scanner.Instance.Locations.ContainsKey(Signatures.EnmityCountKey) && Scanner.Instance.Locations.ContainsKey(Signatures.EnmityMapKey);
-            if (canRead) {
-                // OTHER STUFF?
-            }
-
-            return canRead;
-        }
-
         private static void EnsureMapAndZone(ActorItem entry) {
             //if (Scanner.Instance.Locations.ContainsKey(Signatures.MapInformationKey)) {
             //    try {

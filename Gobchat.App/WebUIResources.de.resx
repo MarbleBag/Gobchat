@@ -540,13 +540,13 @@ Nach Bestätigung den Vorgang via 'Speichern' abschließen.</value>
     <value>Ausgewählter Reiter</value>
   </data>
   <data name="config.tabs.tabconfig.mention" xml:space="preserve">
-    <value>Erwähnungen</value>
+    <value>Zeige Erwähnungen</value>
   </data>
   <data name="config.tabs.tabconfig.rangefilter" xml:space="preserve">
-    <value>Reichweitenfilter</value>
+    <value>Nutze Reichweitenfilter</value>
   </data>
   <data name="config.tabs.tabconfig.roleplay" xml:space="preserve">
-    <value>Rollenspiel</value>
+    <value>Formattierung anwenden</value>
   </data>
   <data name="config.tabs.tabconfig.timestamp" xml:space="preserve">
     <value>Zeitstempel anzeigen</value>

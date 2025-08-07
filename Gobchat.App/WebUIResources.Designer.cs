@@ -1891,7 +1891,7 @@ namespace Gobchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply roleplay formatting.
+        ///   Looks up a localized string similar to Apply formatting.
         /// </summary>
         internal static string config_tabs_tabconfig_roleplay {
             get {

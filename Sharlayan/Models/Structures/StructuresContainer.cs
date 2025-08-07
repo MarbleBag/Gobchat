@@ -16,18 +16,6 @@ namespace Sharlayan.Models.Structures {
 
         public CurrentPlayer CurrentPlayer { get; set; } = new CurrentPlayer();
 
-        public EnmityItem EnmityItem { get; set; } = new EnmityItem();
-
-        public HotBarItem HotBarItem { get; set; } = new HotBarItem();
-
-        public InventoryContainer InventoryContainer { get; set; } = new InventoryContainer();
-
-        public InventoryItem InventoryItem { get; set; } = new InventoryItem();
-
-        public PartyMember PartyMember { get; set; } = new PartyMember();
-
-        public RecastItem RecastItem { get; set; } = new RecastItem();
-
         public StatusItem StatusItem { get; set; } = new StatusItem();
 
         public TargetInfo TargetInfo { get; set; } = new TargetInfo();

@@ -610,7 +610,7 @@ Restoration is final after clicking save.</value>
     <value />
   </data>
   <data name="config.tabs.tabconfig.roleplay" xml:space="preserve">
-    <value>Apply roleplay formatting</value>
+    <value>Apply formatting</value>
   </data>
   <data name="config.tabs.tabconfig.roleplay.tooltip" xml:space="preserve">
     <value />

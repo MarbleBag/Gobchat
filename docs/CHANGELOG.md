@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com)
 
+## [1.12.4] - 2025.07.08
+### Fixed
+- Rangefilter
+- Mention checkbox in `Config / Chat tabs`
+
 ## [1.12.3] - 2025.04.03
 ### Fixed
 - `Check own messages for mentions` in party chat

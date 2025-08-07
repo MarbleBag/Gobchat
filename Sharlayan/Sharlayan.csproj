@@ -78,14 +78,9 @@
     <Compile Include="Base\AttachmentWorker.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\MemoryHandler.cs" />
-    <Compile Include="Base\Reader.Actions.cs" />
     <Compile Include="Base\Reader.Actor.cs" />
     <Compile Include="Base\Reader.ChatLog.cs" />
     <Compile Include="Base\Reader.cs" />
-    <Compile Include="Base\Reader.CurrentPlayer.cs" />
-    <Compile Include="Base\Reader.Inventory.cs" />
-    <Compile Include="Base\Reader.PartyMembers.cs" />
-    <Compile Include="Base\Reader.Target.cs" />
     <Compile Include="Base\Scanner.cs" />
     <Compile Include="Base\Signatures.cs" />
     <Compile Include="Base\UnsafeNativeMethods.cs" />
@@ -141,12 +136,6 @@
     <Compile Include="Models\Structures\ActorItem.cs" />
     <Compile Include="Models\Structures\ChatLogPointers.cs" />
     <Compile Include="Models\Structures\CurrentPlayer.cs" />
-    <Compile Include="Models\Structures\EnmityItem.cs" />
-    <Compile Include="Models\Structures\HotBarItem.cs" />
-    <Compile Include="Models\Structures\InventoryContainer.cs" />
-    <Compile Include="Models\Structures\InventoryItem.cs" />
-    <Compile Include="Models\Structures\PartyMember.cs" />
-    <Compile Include="Models\Structures\RecastItem.cs" />
     <Compile Include="Models\Structures\StatusItem.cs" />
     <Compile Include="Models\Structures\StructuresContainer.cs" />
     <Compile Include="Models\Structures\TargetInfo.cs" />
@@ -160,7 +149,6 @@
     <Compile Include="Utilities\BitConverter.cs" />
     <Compile Include="Utilities\CurrentPlayerResolver.cs" />
     <Compile Include="Utilities\JsonUtilities.cs" />
-    <Compile Include="Utilities\PartyMemberResolver.cs" />
     <Compile Include="Utilities\StatusEffectLookup.cs" />
     <Compile Include="Utilities\XMLCleaner.cs" />
     <Compile Include="Utilities\ZoneLookup.cs" />
